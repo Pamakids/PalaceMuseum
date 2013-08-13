@@ -31,8 +31,19 @@ package feathers.display
 	 */
 	public class Scale9Image extends Sprite
 	{
+		/**
+		 * @private
+		 */
 		private static const HELPER_MATRIX:Matrix = new Matrix();
+
+		/**
+		 * @private
+		 */
 		private static const HELPER_POINT:Point = new Point();
+
+		/**
+		 * @private
+		 */
 		private static var helperImage:Image;
 		
 		/**
@@ -46,10 +57,6 @@ package feathers.display
 			this._hitArea = new Rectangle();
 			this.readjustSize();
 
-			this._batch = new QuadBatch();
-			this._batch.touchable = false;
-			this.addChild(this._batch);
-
 			this.addEventListener(Event.FLATTEN, flattenHandler);
 		}
 
@@ -62,6 +69,11 @@ package feathers.display
 		 * @private
 		 */
 		private var _layoutChanged:Boolean = true;
+
+		/**
+		 * @private
+		 */
+		private var _renderingChanged:Boolean = true;
 		
 		/**
 		 * @private
@@ -97,7 +109,7 @@ package feathers.display
 			this._textures = value;
 			this._frame = this._textures.texture.frame;
 			this._layoutChanged = true;
-			this._propertiesChanged = true;
+			this._renderingChanged = true;
 		}
 
 		/**
@@ -159,6 +171,8 @@ package feathers.display
 		
 		/**
 		 * The amount to scale the texture. Useful for DPI changes.
+		 *
+		 * @default 1
 		 */
 		public function get textureScale():Number
 		{
@@ -185,6 +199,8 @@ package feathers.display
 		
 		/**
 		 * The smoothing value to pass to the images.
+		 *
+		 * @default starling.textures.TextureSmoothing.BILINEAR
 		 *
 		 * @see starling.textures.TextureSmoothing
 		 */
@@ -213,6 +229,8 @@ package feathers.display
 
 		/**
 		 * The color value to pass to the images.
+		 *
+		 * @default 0xffffff
 		 */
 		public function get color():uint
 		{
@@ -231,9 +249,90 @@ package feathers.display
 			this._color = value;
 			this._propertiesChanged = true;
 		}
-		
+
+		/**
+		 * @private
+		 */
+		private var _useSeparateBatch:Boolean = true;
+
+		/**
+		 * Determines if the regions are batched normally by Starling or if
+		 * they're batched separately.
+		 *
+		 * @default true
+		 */
+		public function get useSeparateBatch():Boolean
+		{
+			return this._useSeparateBatch;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set useSeparateBatch(value:Boolean):void
+		{
+			if(this._useSeparateBatch == value)
+			{
+				return;
+			}
+			this._useSeparateBatch = value;
+			this._renderingChanged = true;
+		}
+
+		/**
+		 * @private
+		 */
 		private var _hitArea:Rectangle;
+
+		/**
+		 * @private
+		 */
 		private var _batch:QuadBatch;
+
+		/**
+		 * @private
+		 */
+		private var _topLeftImage:Image;
+
+		/**
+		 * @private
+		 */
+		private var _topCenterImage:Image;
+
+		/**
+		 * @private
+		 */
+		private var _topRightImage:Image;
+
+		/**
+		 * @private
+		 */
+		private var _middleLeftImage:Image;
+
+		/**
+		 * @private
+		 */
+		private var _middleCenterImage:Image;
+
+		/**
+		 * @private
+		 */
+		private var _middleRightImage:Image;
+
+		/**
+		 * @private
+		 */
+		private var _bottomLeftImage:Image;
+
+		/**
+		 * @private
+		 */
+		private var _bottomCenterImage:Image;
+
+		/**
+		 * @private
+		 */
+		private var _bottomRightImage:Image;
 		
 		/**
 		 * @private
@@ -336,10 +435,445 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		protected function validate():void
+		private function validate():void
 		{
-			if(this._propertiesChanged || this._layoutChanged)
+			this.refreshImages();
+			if(this._propertiesChanged || this._layoutChanged || this._renderingChanged)
 			{
+				this.refreshBatch();
+
+				const grid:Rectangle = this._textures.scale9Grid;
+				var scaledLeftWidth:Number = grid.x * this._textureScale;
+				var scaledTopHeight:Number = grid.y * this._textureScale;
+				var scaledRightWidth:Number = (this._frame.width - grid.x - grid.width) * this._textureScale;
+				var scaledBottomHeight:Number = (this._frame.height - grid.y - grid.height) * this._textureScale;
+				const scaledCenterWidth:Number = this._width - scaledLeftWidth - scaledRightWidth;
+				const scaledMiddleHeight:Number = this._height - scaledTopHeight - scaledBottomHeight;
+				if(scaledCenterWidth < 0)
+				{
+					var offset:Number = scaledCenterWidth / 2;
+					scaledLeftWidth += offset;
+					scaledRightWidth += offset;
+				}
+				if(scaledMiddleHeight < 0)
+				{
+					offset = scaledMiddleHeight / 2;
+					scaledTopHeight += offset;
+					scaledBottomHeight += offset;
+				}
+
+				var image:Image;
+				if(scaledTopHeight > 0)
+				{
+					if(this._useSeparateBatch)
+					{
+						image = helperImage;
+						helperImage.texture = this._textures.topLeft;
+						helperImage.readjustSize();
+					}
+					else
+					{
+						image = this._topLeftImage;
+						image.smoothing = this._smoothing;
+						image.color = this._color;
+						image.visible = true;
+					}
+					image.width = scaledLeftWidth;
+					image.height = scaledTopHeight;
+					image.x = scaledLeftWidth - image.width;
+					image.y = scaledTopHeight - image.height;
+					if(this._useSeparateBatch && scaledLeftWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
+
+					if(scaledCenterWidth > 0)
+					{
+						if(this._useSeparateBatch)
+						{
+							image = helperImage;
+							helperImage.texture = this._textures.topCenter;
+							helperImage.readjustSize();
+						}
+						else
+						{
+							image = this._topCenterImage;
+							image.smoothing = this._smoothing;
+							image.color = this._color;
+							image.visible = true;
+						}
+						image.width = scaledCenterWidth;
+						image.height = scaledTopHeight;
+						image.x = scaledLeftWidth;
+						image.y = scaledTopHeight - image.height;
+						if(this._useSeparateBatch)
+						{
+							this._batch.addImage(helperImage);
+						}
+					}
+					else if(!this._useSeparateBatch)
+					{
+						this._topCenterImage.visible = false;
+					}
+
+					if(this._useSeparateBatch)
+					{
+						image = helperImage;
+						helperImage.texture = this._textures.topRight;
+						helperImage.readjustSize();
+					}
+					else
+					{
+						image = this._topRightImage;
+						image.smoothing = this._smoothing;
+						image.color = this._color;
+						image.visible = true;
+					}
+					image.width = scaledRightWidth;
+					image.height = scaledTopHeight;
+					image.x = this._width - scaledRightWidth;
+					image.y = scaledTopHeight - image.height;
+					if(this._useSeparateBatch && scaledRightWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
+				}
+				else if(!this._useSeparateBatch)
+				{
+					this._topLeftImage.visible = false;
+					this._topCenterImage.visible = false;
+					this._topRightImage.visible = false;
+				}
+
+				if(scaledMiddleHeight > 0)
+				{
+					if(this._useSeparateBatch)
+					{
+						image = helperImage;
+						helperImage.texture = this._textures.middleLeft;
+						helperImage.readjustSize();
+					}
+					else
+					{
+						image = this._middleLeftImage;
+						image.smoothing = this._smoothing;
+						image.color = this._color;
+						image.visible = true;
+					}
+					image.width = scaledLeftWidth;
+					image.height = scaledMiddleHeight;
+					image.x = scaledLeftWidth - image.width;
+					image.y = scaledTopHeight;
+					if(this._useSeparateBatch && scaledLeftWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
+
+					if(scaledCenterWidth > 0)
+					{
+						if(this._useSeparateBatch)
+						{
+							image = helperImage;
+							helperImage.texture = this._textures.middleCenter;
+							helperImage.readjustSize();
+						}
+						else
+						{
+							image = this._middleCenterImage;
+							image.smoothing = this._smoothing;
+							image.color = this._color;
+							image.visible = true;
+						}
+						image.width = scaledCenterWidth;
+						image.height = scaledMiddleHeight;
+						image.x = scaledLeftWidth;
+						image.y = scaledTopHeight;
+						if(this._useSeparateBatch)
+						{
+							this._batch.addImage(helperImage);
+						}
+					}
+					else if(!this._useSeparateBatch)
+					{
+						this._middleCenterImage.visible = false;
+					}
+
+					if(this._useSeparateBatch)
+					{
+						image = helperImage;
+						helperImage.texture = this._textures.middleRight;
+						helperImage.readjustSize();
+					}
+					else
+					{
+						image = this._middleRightImage;
+						image.smoothing = this._smoothing;
+						image.color = this._color;
+						image.visible = true;
+					}
+					image.width = scaledRightWidth;
+					image.height = scaledMiddleHeight;
+					image.x = this._width - scaledRightWidth;
+					image.y = scaledTopHeight;
+					if(this._useSeparateBatch && scaledRightWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
+				}
+				else if(!this._useSeparateBatch)
+				{
+					this._middleLeftImage.visible = false;
+					this._middleCenterImage.visible = false;
+					this._middleRightImage.visible = false;
+				}
+
+				if(scaledBottomHeight > 0)
+				{
+					if(this._useSeparateBatch)
+					{
+						image = helperImage;
+						helperImage.texture = this._textures.bottomLeft;
+						helperImage.readjustSize();
+					}
+					else
+					{
+						image = this._bottomLeftImage;
+						image.smoothing = this._smoothing;
+						image.color = this._color;
+						image.visible = true;
+					}
+					image.width = scaledLeftWidth;
+					image.height = scaledBottomHeight;
+					image.x = scaledLeftWidth - image.width;
+					image.y = this._height - scaledBottomHeight;
+					if(this._useSeparateBatch && scaledLeftWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
+
+					if(scaledCenterWidth > 0)
+					{
+						if(this._useSeparateBatch)
+						{
+							image = helperImage;
+							helperImage.texture = this._textures.bottomCenter;
+							helperImage.readjustSize();
+						}
+						else
+						{
+							image = this._bottomCenterImage;
+							image.smoothing = this._smoothing;
+							image.color = this._color;
+							image.visible = true;
+						}
+						image.width = scaledCenterWidth;
+						image.height = scaledBottomHeight;
+						image.x = scaledLeftWidth;
+						image.y = this._height - scaledBottomHeight;
+						if(this._useSeparateBatch)
+						{
+							this._batch.addImage(helperImage);
+						}
+					}
+					else if(!this._useSeparateBatch)
+					{
+						this._bottomCenterImage.visible = true;
+					}
+
+					if(this._useSeparateBatch)
+					{
+						image = helperImage;
+						helperImage.texture = this._textures.bottomRight;
+						helperImage.readjustSize();
+					}
+					else
+					{
+						image = this._bottomRightImage;
+						image.smoothing = this._smoothing;
+						image.color = this._color;
+						image.visible = true;
+					}
+					image.width = scaledRightWidth;
+					image.height = scaledBottomHeight;
+					image.x = this._width - scaledRightWidth;
+					image.y = this._height - scaledBottomHeight;
+					if(this._useSeparateBatch && scaledRightWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
+				}
+				else if(!this._useSeparateBatch)
+				{
+					this._bottomLeftImage.visible = false;
+					this._bottomCenterImage.visible = false;
+					this._bottomRightImage.visible = false;
+				}
+			}
+
+			this._propertiesChanged = false;
+			this._layoutChanged = false;
+			this._renderingChanged = false;
+		}
+
+		/**
+		 * @private
+		 */
+		private function refreshImages():void
+		{
+			if(!this._renderingChanged || this._useSeparateBatch)
+			{
+				return;
+			}
+			if(this._topLeftImage)
+			{
+				this._topLeftImage.texture = this._textures.topLeft;
+				this._topLeftImage.readjustSize();
+			}
+			else
+			{
+				this._topLeftImage = new Image(this._textures.topLeft);
+				this.addChild(this._topLeftImage);
+			}
+			if(this._topCenterImage)
+			{
+				this._topCenterImage.texture = this._textures.topCenter;
+				this._topCenterImage.readjustSize();
+			}
+			else
+			{
+				this._topCenterImage = new Image(this._textures.topCenter);
+				this.addChild(this._topCenterImage);
+			}
+			if(this._topRightImage)
+			{
+				this._topRightImage.texture = this._textures.topRight;
+				this._topRightImage.readjustSize();
+			}
+			else
+			{
+				this._topRightImage = new Image(this._textures.topRight);
+				this.addChild(this._topRightImage);
+			}
+			if(this._middleLeftImage)
+			{
+				this._middleLeftImage.texture = this._textures.middleLeft;
+				this._middleLeftImage.readjustSize();
+			}
+			else
+			{
+				this._middleLeftImage = new Image(this._textures.middleLeft);
+				this.addChild(this._middleLeftImage);
+			}
+			if(this._middleCenterImage)
+			{
+				this._middleCenterImage.texture = this._textures.middleCenter;
+				this._middleCenterImage.readjustSize();
+			}
+			else
+			{
+				this._middleCenterImage = new Image(this._textures.middleCenter);
+				this.addChild(this._middleCenterImage);
+			}
+			if(this._middleRightImage)
+			{
+				this._middleRightImage.texture = this._textures.middleRight;
+				this._middleRightImage.readjustSize();
+			}
+			else
+			{
+				this._middleRightImage = new Image(this._textures.middleRight);
+				this.addChild(this._middleRightImage);
+			}
+			if(this._bottomLeftImage)
+			{
+				this._bottomLeftImage.texture = this._textures.bottomLeft;
+				this._bottomLeftImage.readjustSize();
+			}
+			else
+			{
+				this._bottomLeftImage = new Image(this._textures.bottomLeft);
+				this.addChild(this._bottomLeftImage);
+			}
+			if(this._bottomCenterImage)
+			{
+				this._bottomCenterImage.texture = this._textures.bottomCenter;
+				this._bottomCenterImage.readjustSize();
+			}
+			else
+			{
+				this._bottomCenterImage = new Image(this._textures.bottomCenter);
+				this.addChild(this._bottomCenterImage);
+			}
+			if(this._bottomRightImage)
+			{
+				this._bottomRightImage.texture = this._textures.bottomRight;
+				this._bottomRightImage.readjustSize();
+			}
+			else
+			{
+				this._bottomRightImage = new Image(this._textures.bottomRight);
+				this.addChild(this._bottomRightImage);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		private function refreshBatch():void
+		{
+			if(this._useSeparateBatch)
+			{
+				if(!this._batch)
+				{
+					this._batch = new QuadBatch();
+					this._batch.touchable = false;
+					this.addChild(this._batch);
+				}
+				if(this._topLeftImage)
+				{
+					this._topLeftImage.removeFromParent(true);
+					this._topLeftImage = null;
+				}
+				if(this._topCenterImage)
+				{
+					this._topCenterImage.removeFromParent(true);
+					this._topCenterImage = null;
+				}
+				if(this._topRightImage)
+				{
+					this._topRightImage.removeFromParent(true);
+					this._topRightImage = null;
+				}
+				if(this._middleLeftImage)
+				{
+					this._middleLeftImage.removeFromParent(true);
+					this._middleLeftImage = null;
+				}
+				if(this._middleCenterImage)
+				{
+					this._middleCenterImage.removeFromParent(true);
+					this._middleCenterImage = null;
+				}
+				if(this._middleRightImage)
+				{
+					this._middleRightImage.removeFromParent(true);
+					this._middleRightImage = null;
+				}
+				if(this._bottomLeftImage)
+				{
+					this._bottomLeftImage.removeFromParent(true);
+					this._bottomLeftImage = null;
+				}
+				if(this._bottomCenterImage)
+				{
+					this._bottomCenterImage.removeFromParent(true);
+					this._bottomCenterImage = null;
+				}
+				if(this._bottomRightImage)
+				{
+					this._bottomRightImage.removeFromParent(true);
+					this._bottomRightImage = null;
+				}
 				this._batch.reset();
 
 				if(!helperImage)
@@ -348,123 +882,12 @@ package feathers.display
 				}
 				helperImage.smoothing = this._smoothing;
 				helperImage.color = this._color;
-
-				const grid:Rectangle = this._textures.scale9Grid;
-				const scaledLeftWidth:Number = grid.x * this._textureScale;
-				const scaledTopHeight:Number = grid.y * this._textureScale;
-				const scaledRightWidth:Number = (this._frame.width - grid.x - grid.width) * this._textureScale;
-				const scaledBottomHeight:Number = (this._frame.height - grid.y - grid.height) * this._textureScale;
-				const scaledCenterWidth:Number = this._width - scaledLeftWidth - scaledRightWidth;
-				const scaledMiddleHeight:Number = this._height - scaledTopHeight - scaledBottomHeight;
-
-				if(scaledTopHeight > 0)
-				{
-					helperImage.texture = this._textures.topLeft;
-					helperImage.readjustSize();
-					helperImage.scaleX = helperImage.scaleY = this._textureScale;
-					helperImage.x = scaledLeftWidth - helperImage.width;
-					helperImage.y = scaledTopHeight - helperImage.height;
-					if(scaledLeftWidth > 0)
-					{
-						this._batch.addImage(helperImage);
-					}
-
-					helperImage.texture = this._textures.topCenter;
-					helperImage.readjustSize();
-					helperImage.scaleX = helperImage.scaleY = this._textureScale;
-					helperImage.x = scaledLeftWidth;
-					helperImage.y = scaledTopHeight - helperImage.height;
-					helperImage.width = scaledCenterWidth;
-					if(scaledCenterWidth > 0)
-					{
-						this._batch.addImage(helperImage);
-					}
-
-					helperImage.texture = this._textures.topRight;
-					helperImage.readjustSize();
-					helperImage.scaleX = helperImage.scaleY = this._textureScale;
-					helperImage.x = this._width - scaledRightWidth;
-					helperImage.y = scaledTopHeight - helperImage.height;
-					if(scaledRightWidth > 0)
-					{
-						this._batch.addImage(helperImage);
-					}
-				}
-
-				if(scaledMiddleHeight > 0)
-				{
-					helperImage.texture = this._textures.middleLeft;
-					helperImage.readjustSize();
-					helperImage.scaleX = helperImage.scaleY = this._textureScale;
-					helperImage.x = scaledLeftWidth - helperImage.width;
-					helperImage.y = scaledTopHeight;
-					helperImage.height = scaledMiddleHeight;
-					if(scaledLeftWidth > 0)
-					{
-						this._batch.addImage(helperImage);
-					}
-
-					helperImage.texture = this._textures.middleCenter;
-					helperImage.readjustSize();
-					helperImage.scaleX = helperImage.scaleY = this._textureScale;
-					helperImage.x = scaledLeftWidth;
-					helperImage.y = scaledTopHeight;
-					helperImage.width = scaledCenterWidth;
-					helperImage.height = scaledMiddleHeight;
-					if(scaledCenterWidth > 0)
-					{
-						this._batch.addImage(helperImage);
-					}
-
-					helperImage.texture = this._textures.middleRight;
-					helperImage.readjustSize();
-					helperImage.scaleX = helperImage.scaleY = this._textureScale;
-					helperImage.x = this._width - scaledRightWidth;
-					helperImage.y = scaledTopHeight;
-					helperImage.height = scaledMiddleHeight;
-					if(scaledRightWidth > 0)
-					{
-						this._batch.addImage(helperImage);
-					}
-				}
-
-				if(scaledBottomHeight > 0)
-				{
-					helperImage.texture = this._textures.bottomLeft;
-					helperImage.readjustSize();
-					helperImage.scaleX = helperImage.scaleY = this._textureScale;
-					helperImage.x = scaledLeftWidth - helperImage.width;
-					helperImage.y = this._height - scaledBottomHeight;
-					if(scaledLeftWidth > 0)
-					{
-						this._batch.addImage(helperImage);
-					}
-
-					helperImage.texture = this._textures.bottomCenter;
-					helperImage.readjustSize();
-					helperImage.scaleX = helperImage.scaleY = this._textureScale;
-					helperImage.x = scaledLeftWidth;
-					helperImage.y = this._height - scaledBottomHeight;
-					helperImage.width = scaledCenterWidth;
-					if(scaledCenterWidth > 0)
-					{
-						this._batch.addImage(helperImage);
-					}
-
-					helperImage.texture = this._textures.bottomRight;
-					helperImage.readjustSize();
-					helperImage.scaleX = helperImage.scaleY = this._textureScale;
-					helperImage.x = this._width - scaledRightWidth;
-					helperImage.y = this._height - scaledBottomHeight;
-					if(scaledRightWidth > 0)
-					{
-						this._batch.addImage(helperImage);
-					}
-				}
 			}
-
-			this._propertiesChanged = false;
-			this._layoutChanged = false;
+			else if(this._batch)
+			{
+				this._batch.removeFromParent(true);
+				this._batch = null;
+			}
 		}
 
 		/**

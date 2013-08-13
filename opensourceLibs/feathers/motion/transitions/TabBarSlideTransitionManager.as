@@ -98,6 +98,8 @@ package feathers.motion.transitions
 
 		/**
 		 * The duration of the transition, measured in seconds.
+		 *
+		 * @default 0.25
 		 */
 		public var duration:Number = 0.25;
 
@@ -105,13 +107,25 @@ package feathers.motion.transitions
 		 * A delay before the transition starts, measured in seconds. This may
 		 * be required on low-end systems that will slow down for a short time
 		 * after heavy texture uploads.
+		 *
+		 * @default 0.1
 		 */
 		public var delay:Number = 0.1;
 
 		/**
 		 * The easing function to use.
+		 *
+		 * @default starling.animation.Transitions.EASE_OUT
 		 */
 		public var ease:Object = Transitions.EASE_OUT;
+
+		/**
+		 * Determines if the next transition should be skipped. After the
+		 * transition, this value returns to <code>false</code>.
+		 *
+		 * @default false
+		 */
+		public var skipNextTransition:Boolean = false;
 
 		/**
 		 * The function passed to the <code>transition</code> property of the
@@ -145,42 +159,46 @@ package feathers.motion.transitions
 				this._activeTransition = null;
 			}
 
-			if(!this._oldScreen || !this._newScreen)
+			if(!this._oldScreen || !this._newScreen || this.skipNextTransition)
 			{
-				if(this._newScreen)
-				{
-					this._newScreen.x = 0;
-				}
+				this.skipNextTransition = false;
+				const savedCompleteHandler:Function = this._savedCompleteHandler;
+				this._savedCompleteHandler = null;
 				if(this._oldScreen)
 				{
 					this._oldScreen.x = 0;
 				}
-				if(this._savedCompleteHandler != null)
+				if(this._newScreen)
 				{
-					this._savedCompleteHandler();
+					this._newScreen.x = 0;
 				}
-				return;
-			}
-
-			this._oldScreen.x = 0;
-			var activeTransition_onUpdate:Function;
-			if(this._isFromRight)
-			{
-				this._newScreen.x = this.navigator.width;
-				activeTransition_onUpdate = this.activeTransitionFromRight_onUpdate;
+				if(savedCompleteHandler != null)
+				{
+					savedCompleteHandler();
+				}
 			}
 			else
 			{
-				this._newScreen.x = -this.navigator.width;
-				activeTransition_onUpdate = this.activeTransitionFromLeft_onUpdate;
+				this._oldScreen.x = 0;
+				var activeTransition_onUpdate:Function;
+				if(this._isFromRight)
+				{
+					this._newScreen.x = this.navigator.width;
+					activeTransition_onUpdate = this.activeTransitionFromRight_onUpdate;
+				}
+				else
+				{
+					this._newScreen.x = -this.navigator.width;
+					activeTransition_onUpdate = this.activeTransitionFromLeft_onUpdate;
+				}
+				this._savedOtherTarget = this._oldScreen;
+				this._activeTransition = new Tween(this._newScreen, this.duration, this.ease);
+				this._activeTransition.animate("x", 0);
+				this._activeTransition.delay = this.delay;
+				this._activeTransition.onUpdate = activeTransition_onUpdate;
+				this._activeTransition.onComplete = activeTransition_onComplete;
+				Starling.juggler.add(this._activeTransition);
 			}
-			this._savedOtherTarget = this._oldScreen;
-			this._activeTransition = new Tween(this._newScreen, this.duration, this.ease);
-			this._activeTransition.animate("x", 0);
-			this._activeTransition.delay = this.delay;
-			this._activeTransition.onUpdate = activeTransition_onUpdate;
-			this._activeTransition.onComplete = activeTransition_onComplete;
-			Starling.juggler.add(this._activeTransition);
 
 			this._oldScreen = null;
 			this._newScreen = null;

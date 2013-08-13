@@ -46,8 +46,15 @@ package feathers.core
 			const currentStarling:Starling = Starling.current;
 			if(currentStarling && this._starling != currentStarling)
 			{
+				if(this._starling)
+				{
+					this._starling.juggler.remove(this);
+				}
 				this._starling = currentStarling;
-				currentStarling.juggler.add(this);
+			}
+			if(!this._starling.juggler.contains(this))
+			{
+				this._starling.juggler.add(this);
 			}
 			const currentQueue:Vector.<IFeathersControl> = (this._isValidating && delayIfValidating) ? this._delayedQueue : this._queue;
 			const queueLength:int = currentQueue.length;
@@ -65,7 +72,14 @@ package feathers.core
 					break;
 				}
 			}
-			currentQueue.splice(i, 0, control);
+			if(i == queueLength)
+			{
+				currentQueue[queueLength] = control;
+			}
+			else
+			{
+				currentQueue.splice(i, 0, control);
+			}
 		}
 
 		/**

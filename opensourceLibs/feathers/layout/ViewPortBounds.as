@@ -14,6 +14,14 @@ package feathers.layout
 	public class ViewPortBounds
 	{
 		/**
+		 * Constructor.
+		 */
+		public function ViewPortBounds()
+		{
+
+		}
+
+		/**
 		 * The x position of the view port, in pixels.
 		 */
 		public var x:Number = 0;
@@ -22,6 +30,16 @@ package feathers.layout
 		 * The y position of the view port, in pixels.
 		 */
 		public var y:Number = 0;
+
+		/**
+		 * The horizontal scroll position of the view port, in pixels.
+		 */
+		public var scrollX:Number = 0;
+
+		/**
+		 * The vertical scroll position of the view port, in pixels.
+		 */
+		public var scrollY:Number = 0;
 
 		/**
 		 * The explicit width of the view port, in pixels. If <code>NaN</code>,

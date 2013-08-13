@@ -9,18 +9,18 @@ package feathers.controls
 {
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.supportClasses.ListDataViewPort;
-	import feathers.core.FeathersControl;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
-	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
 
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 
-	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 
 	/**
 	 * Dispatched when the selected item changes.
@@ -28,21 +28,6 @@ package feathers.controls
 	 * @eventType starling.events.Event.CHANGE
 	 */
 	[Event(name="change",type="starling.events.Event")]
-
-	/**
-	 * Dispatched when the list is scrolled.
-	 *
-	 * @eventType starling.events.Event.SCROLL
-	 */
-	[Event(name="scroll",type="starling.events.Event")]
-
-	/**
-	 * Dispatched when the list finishes scrolling in either direction after
-	 * being thrown.
-	 *
-	 * @eventType feathers.events.FeathersEventType.SCROLL_COMPLETE
-	 */
-	[Event(name="scrollComplete",type="starling.events.Event")]
 
 	/**
 	 * Dispatched when an item renderer is added to the list. When the layout is
@@ -75,10 +60,37 @@ package feathers.controls
 	 * renderer for every single item. This allows for optimal performance with
 	 * very large data providers.</p>
 	 *
+	 * <p>The following example creates a list, gives it a data provider, tells
+	 * the item renderer how to interpret the data, and listens for when the
+	 * selection changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var list:List = new List();
+	 *
+	 * list.dataProvider = new ListCollection(
+	 * [
+	 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
+	 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
+	 *     { text: "Bread", thumbnail: textureAtlas.getTexture( "bread" ) },
+	 *     { text: "Chicken", thumbnail: textureAtlas.getTexture( "chicken" ) },
+	 * ]);
+	 *
+	 * list.itemRendererFactory = function():IListItemRenderer
+	 * {
+	 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+	 *     renderer.labelField = "text";
+	 *     renderer.iconSourceField = "thumbnail";
+	 *     return renderer;
+	 * };
+	 *
+	 * list.addEventListener( Event.CHANGE, list_changeHandler );
+	 *
+	 * this.addChild( list );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/list
 	 * @see GroupedList
 	 */
-	public class List extends FeathersControl
+	public class List extends Scroller implements IFocusDisplayObject
 	{
 		/**
 		 * @private
@@ -86,9 +98,70 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
-		 * The default value added to the <code>nameList</code> of the scroller.
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
 		 */
-		public static const DEFAULT_CHILD_NAME_SCROLLER:String = "feathers-list-scroller";
+		public static const SCROLL_POLICY_AUTO:String = "auto";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_ON
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
+		 */
+		public static const SCROLL_POLICY_ON:String = "on";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_OFF
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
+		 */
+		public static const SCROLL_POLICY_OFF:String = "off";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_NONE
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
+		 */
+		public static const INTERACTION_MODE_TOUCH:String = "touch";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_MOUSE
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
+		 */
+		public static const INTERACTION_MODE_MOUSE:String = "mouse";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH_AND_SCROLL_BARS
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
+		 */
+		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 		
 		/**
 		 * Constructor.
@@ -96,43 +169,22 @@ package feathers.controls
 		public function List()
 		{
 			super();
+			this._selectedIndices.addEventListener(Event.CHANGE, selectedIndices_changeHandler);
 		}
-
-		/**
-		 * The value added to the <code>nameList</code> of the scroller.
-		 */
-		protected var scrollerName:String = DEFAULT_CHILD_NAME_SCROLLER;
-
-		/**
-		 * The list's scroller sub-component.
-		 */
-		protected var scroller:Scroller;
 
 		/**
 		 * @private
 		 * The guts of the List's functionality. Handles layout and selection.
 		 */
 		protected var dataViewPort:ListDataViewPort;
-		
-		/**
-		 * @private
-		 */
-		protected var _scrollToIndex:int = -1;
 
 		/**
 		 * @private
 		 */
-		protected var _scrollToHorizontalPageIndex:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _scrollToVerticalPageIndex:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _scrollToIndexDuration:Number;
+		override public function get isFocusEnabled():Boolean
+		{
+			return this._isSelectable && this._isFocusEnabled;
+		}
 
 		/**
 		 * @private
@@ -142,6 +194,20 @@ package feathers.controls
 		/**
 		 * The layout algorithm used to position and, optionally, size the
 		 * list's items.
+		 *
+		 * <p>By default, if no layout is provided by the time that the list
+		 * initializes, a vertical layout with options targeted at touch screens
+		 * is created.</p>
+		 *
+		 * <p>The following example tells the list to use a horizontal layout:</p>
+		 *
+		 * <listing version="3.0">
+		 * var layout:HorizontalLayout = new HorizontalLayout();
+		 * layout.gap = 20;
+		 * layout.padding = 20;
+		 * list.layout = layout;</listing>
+		 *
+		 * @default null
 		 */
 		public function get layout():ILayout
 		{
@@ -158,140 +224,7 @@ package feathers.controls
 				return;
 			}
 			this._layout = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _horizontalScrollPosition:Number = 0;
-
-		/**
-		 * The number of pixels the list has been scrolled horizontally (on
-		 * the x-axis).
-		 */
-		public function get horizontalScrollPosition():Number
-		{
-			return this._horizontalScrollPosition;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set horizontalScrollPosition(value:Number):void
-		{
-			if(this._horizontalScrollPosition == value)
-			{
-				return;
-			}
-			if(isNaN(value))
-			{
-				throw new ArgumentError("horizontalScrollPosition cannot be NaN.");
-			}
-			this._horizontalScrollPosition = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.dispatchEventWith(Event.SCROLL);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _maxHorizontalScrollPosition:Number = 0;
-
-		/**
-		 * The maximum number of pixels the list may be scrolled horizontally
-		 * (on the x-axis). This value is automatically calculated using the
-		 * layout algorithm. The <code>horizontalScrollPosition</code> property
-		 * may have a higher value than the maximum due to elastic edges.
-		 * However, once the user stops interacting with the list, it will
-		 * automatically animate back to the maximum (or minimum, if below 0).
-		 */
-		public function get maxHorizontalScrollPosition():Number
-		{
-			return this._maxHorizontalScrollPosition;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _horizontalPageIndex:int = 0;
-
-		/**
-		 * The index of the horizontal page, if snapping is enabled. If snapping
-		 * is disabled, the index will always be <code>0</code>.
-		 */
-		public function get horizontalPageIndex():int
-		{
-			return this._horizontalPageIndex;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _verticalScrollPosition:Number = 0;
-		
-		/**
-		 * The number of pixels the list has been scrolled vertically (on
-		 * the y-axis).
-		 */
-		public function get verticalScrollPosition():Number
-		{
-			return this._verticalScrollPosition;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set verticalScrollPosition(value:Number):void
-		{
-			if(this._verticalScrollPosition == value)
-			{
-				return;
-			}
-			if(isNaN(value))
-			{
-				throw new ArgumentError("verticalScrollPosition cannot be NaN.");
-			}
-			this._verticalScrollPosition = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.dispatchEventWith(Event.SCROLL);
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _maxVerticalScrollPosition:Number = 0;
-		
-		/**
-		 * The maximum number of pixels the list may be scrolled vertically (on
-		 * the y-axis). This value is automatically calculated based on the
-		 * total combined height of the list's item renderers. The
-		 * <code>verticalScrollPosition</code> property may have a higher value
-		 * than the maximum due to elastic edges. However, once the user stops
-		 * interacting with the list, it will automatically animate back to the
-		 * maximum (or minimum, if below 0).
-		 * 
-		 * @default 0
-		 */
-		public function get maxVerticalScrollPosition():Number
-		{
-			return this._maxVerticalScrollPosition;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _verticalPageIndex:int = 0;
-
-		/**
-		 * The index of the vertical page, if snapping is enabled. If snapping
-		 * is disabled, the index will always be <code>0</code>.
-		 *
-		 * @default 0
-		 */
-		public function get verticalPageIndex():int
-		{
-			return this._verticalPageIndex;
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 		
 		/**
@@ -301,6 +234,28 @@ package feathers.controls
 		
 		/**
 		 * The collection of data displayed by the list.
+		 *
+		 * <p>The following example passes in a data provider and tells the item
+		 * renderer how to interpret the data:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.dataProvider = new ListCollection(
+		 * [
+		 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
+		 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
+		 *     { text: "Bread", thumbnail: textureAtlas.getTexture( "bread" ) },
+		 *     { text: "Chicken", thumbnail: textureAtlas.getTexture( "chicken" ) },
+		 * ]);
+		 *
+		 * list.itemRendererFactory = function():IListItemRenderer
+		 * {
+		 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+		 *     renderer.labelField = "text";
+		 *     renderer.iconSourceField = "thumbnail";
+		 *     return renderer;
+		 * };</listing>
+		 *
+		 * @default null
 		 */
 		public function get dataProvider():ListCollection
 		{
@@ -319,11 +274,13 @@ package feathers.controls
 			if(this._dataProvider)
 			{
 				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_changeHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
 				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_changeHandler);
 			}
 
 			//reset the scroll position because this is a drastic change and
@@ -340,9 +297,21 @@ package feathers.controls
 		protected var _isSelectable:Boolean = true;
 		
 		/**
-		 * Determines if an item in the list may be selected.
-		 * 
+		 * Determines if items in the list may be selected. By default only a
+		 * single item may be selected at any given time. In other words, if
+		 * item A is selected, and the user selects item B, item A will be
+		 * deselected automatically. Set <code>allowMultipleSelection</code>
+		 * to <code>true</code> to select more than one item without
+		 * automatically deselecting other items.
+		 *
+		 * <p>The following example disables selection:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.isSelectable = false;</listing>
+		 *
 		 * @default true
+		 *
+		 * @see #allowMultipleSelection
 		 */
 		public function get isSelectable():Boolean
 		{
@@ -372,8 +341,37 @@ package feathers.controls
 		protected var _selectedIndex:int = -1;
 		
 		/**
-		 * The index of the currently selected item. Returns -1 if no item is
-		 * selected.
+		 * The index of the currently selected item. Returns <code>-1</code> if
+		 * no item is selected.
+		 *
+		 * <p>The following example selects an item by its index:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedIndex = 2;</listing>
+		 *
+		 * <p>The following example clears the selected index:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedIndex = -1;</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected index:</p>
+		 *
+		 * <listing version="3.0">
+		 * function list_changeHandler( event:Event ):void
+		 * {
+		 *     var list:List = List( event.currentTarget );
+		 *     var index:int = list.selectedIndex;
+		 *
+		 * }
+		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
+		 *
+		 * @default -1
+		 *
+		 * @see #selectedItem
+		 * @see #allowMultipleSelection
+		 * @see #selectedItems
+		 * @see #selectedIndices
 		 */
 		public function get selectedIndex():int
 		{
@@ -389,13 +387,49 @@ package feathers.controls
 			{
 				return;
 			}
-			this._selectedIndex = value;
+			if(value >= 0)
+			{
+				this._selectedIndices.data = new <int>[value];
+			}
+			else
+			{
+				this._selectedIndices.removeAll();
+			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			this.dispatchEventWith(Event.CHANGE);
 		}
-		
+
 		/**
-		 * The currently selected item. Returns null if no item is selected.
+		 * The currently selected item. Returns <code>null</code> if no item is
+		 * selected.
+		 *
+		 * <p>The following example changes the selected item:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedItem = list.dataProvider.getItemAt(0);</listing>
+		 *
+		 * <p>The following example clears the selected item:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedItem = null;</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected item:</p>
+		 *
+		 * <listing version="3.0">
+		 * function list_changeHandler( event:Event ):void
+		 * {
+		 *     var list:List = List( event.currentTarget );
+		 *     var item:Object = list.selectedItem;
+		 *
+		 * }
+		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #selectedIndex
+		 * @see #allowMultipleSelection
+		 * @see #selectedItems
+		 * @see #selectedIndices
 		 */
 		public function get selectedItem():Object
 		{
@@ -403,10 +437,10 @@ package feathers.controls
 			{
 				return null;
 			}
-			
+
 			return this._dataProvider.getItemAt(this._selectedIndex);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -414,60 +448,361 @@ package feathers.controls
 		{
 			this.selectedIndex = this._dataProvider.getItemIndex(value);
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected var _scrollerProperties:PropertyProxy;
-		
+		protected var _allowMultipleSelection:Boolean = false;
+
 		/**
-		 * A set of key/value pairs to be passed down to the list's scroller
-		 * instance. The scroller is a <code>feathers.controls.Scroller</code>
-		 * instance.
+		 * If <code>true</code> multiple items may be selected at a time. If
+		 * <code>false</code>, then only a single item may be selected at a
+		 * time, and if the selection changes, other items are deselected. Has
+		 * no effect if <code>isSelectable</code> is <code>false</code>.
 		 *
-		 * <p>If the subcomponent has its own subcomponents, their properties
-		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
-		 * 
-		 * @see feathers.controls.Scroller
+		 * <p>In the following example, multiple selection is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.allowMultipleSelection = true;</listing>
+		 *
+		 * @default false
+		 *
+		 * @see #isSelectable
+		 * @see #selectedIndices
+		 * @see #selectedItems
 		 */
-		public function get scrollerProperties():Object
+		public function get allowMultipleSelection():Boolean
 		{
-			if(!this._scrollerProperties)
-			{
-				this._scrollerProperties = new PropertyProxy(childProperties_onChange);
-			}
-			return this._scrollerProperties;
+			return this._allowMultipleSelection;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		public function set scrollerProperties(value:Object):void
+		public function set allowMultipleSelection(value:Boolean):void
 		{
-			if(this._scrollerProperties == value)
+			if(this._allowMultipleSelection == value)
 			{
 				return;
 			}
-			if(value && !(value is PropertyProxy))
+			this._allowMultipleSelection = value;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectedIndices:ListCollection = new ListCollection(new <int>[]);
+
+		/**
+		 * The indices of the currently selected items. Returns an empty <code>Vector.&lt;int&gt;</code>
+		 * if no items are selected. If <code>allowMultipleSelection</code> is
+		 * <code>false</code>, only one item may be selected at a time.
+		 *
+		 * <p>The following example selects two items by their indices:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedIndices = new &lt;int&gt;[ 2, 3 ];</listing>
+		 *
+		 * <p>The following example clears the selected indices:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedIndices = null;</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected indices:</p>
+		 *
+		 * <listing version="3.0">
+		 * function list_changeHandler( event:Event ):void
+		 * {
+		 *     var list:List = List( event.currentTarget );
+		 *     var indices:Vector.&lt;int&gt; = list.selectedIndices;
+		 *
+		 * }
+		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
+		 *
+		 * @see #allowMultipleSelection
+		 * @see #selectedItems
+		 * @see #selectedIndex
+		 * @see #selectedItem
+		 */
+		public function get selectedIndices():Vector.<int>
+		{
+			return this._selectedIndices.data as Vector.<int>;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedIndices(value:Vector.<int>):void
+		{
+			const oldValue:Vector.<int> = this._selectedIndices.data as Vector.<int>;
+			if(oldValue == value)
 			{
-				value = PropertyProxy.fromObject(value);
+				return;
 			}
-			if(this._scrollerProperties)
+			if(!value)
 			{
-				this._scrollerProperties.removeOnChangeCallback(childProperties_onChange);
+				if(this._selectedIndices.length == 0)
+				{
+					return;
+				}
+				this._selectedIndices.removeAll();
 			}
-			this._scrollerProperties = PropertyProxy(value);
-			if(this._scrollerProperties)
+			else
 			{
-				this._scrollerProperties.addOnChangeCallback(childProperties_onChange);
+				if(!this._allowMultipleSelection && value.length > 0)
+				{
+					value.length = 1;
+				}
+				this._selectedIndices.data = value;
 			}
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+		}
+
+		/**
+		 * The currently selected item. The getter returns an empty
+		 * <code>Vector.&lt;Object&gt;</code> if no item is selected. If any
+		 * items are selected, the getter creates a new
+		 * <code>Vector.&lt;Object&gt;</code> to return a list of selected
+		 * items.
+		 *
+		 * <p>The following example selects two items:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedItems = new &lt;Object&gt;[ list.dataProvider.getItemAt(2) , list.dataProvider.getItemAt(3) ];</listing>
+		 *
+		 * <p>The following example clears the selected items:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedItems = null;</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected items:</p>
+		 *
+		 * <listing version="3.0">
+		 * function list_changeHandler( event:Event ):void
+		 * {
+		 *     var list:List = List( event.currentTarget );
+		 *     var items:Vector.&lt;Object&gt; = list.selectedItems;
+		 *
+		 * }
+		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
+		 *
+		 * @see #allowMultipleSelection
+		 * @see #selectedIndices
+		 * @see #selectedIndex
+		 * @see #selectedItem
+		 */
+		public function get selectedItems():Vector.<Object>
+		{
+			const items:Vector.<Object> = new <Object>[];
+			const indexCount:int = this._selectedIndices.length;
+			for(var i:int = 0; i < indexCount; i++)
+			{
+				var index:int = this._selectedIndices.getItemAt(i) as int;
+				var item:Object = this._dataProvider.getItemAt(index);
+				items.push(item);
+			}
+			return items;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedItems(value:Vector.<Object>):void
+		{
+			if(!value)
+			{
+				this.selectedIndex = -1;
+				return;
+			}
+			const indices:Vector.<int> = new <int>[];
+			const itemCount:int = value.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:Object = value[i];
+				var index:int = this._dataProvider.getItemIndex(item);
+				if(index >= 0)
+				{
+					indices.push(index);
+				}
+			}
+			this.selectedIndices = indices;
+		}
+		
+		/**
+		 * @private
+		 */
+		protected var _itemRendererType:Class = DefaultListItemRenderer;
+		
+		/**
+		 * The class used to instantiate item renderers. Must implement the
+		 * <code>IListItemRenderer</code> interface.
+		 *
+		 * <p>To customize properties on the item renderer, use
+		 * <code>itemRendererFactory</code> instead.</p>
+		 *
+		 * <p>The following example changes the item renderer type:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererType = CustomItemRendererClass;</listing>
+		 *
+		 * @default feathers.controls.renderers.DefaultListItemRenderer
+		 *
+		 * @see feathers.controls.renderers.IListItemRenderer
+		 * @see #itemRendererFactory
+		 */
+		public function get itemRendererType():Class
+		{
+			return this._itemRendererType;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set itemRendererType(value:Class):void
+		{
+			if(this._itemRendererType == value)
+			{
+				return;
+			}
+			
+			this._itemRendererType = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
+		protected var _itemRendererFactory:Function;
+		
+		/**
+		 * A function called that is expected to return a new item renderer. Has
+		 * a higher priority than <code>itemRendererType</code>. Typically, you
+		 * would use an <code>itemRendererFactory</code> instead of an
+		 * <code>itemRendererType</code> if you wanted to initialize some
+		 * properties on each separate item renderer, such as skins.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():IListItemRenderer</pre>
+		 *
+		 * <p>The following example provides a factory for the item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererFactory = function():IListItemRenderer
+		 * {
+		 *     var renderer:CustomItemRendererClass = new CustomItemRendererClass();
+		 *     renderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return renderer;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.controls.renderers.IListItemRenderer
+		 * @see #itemRendererType
+		 */
+		public function get itemRendererFactory():Function
+		{
+			return this._itemRendererFactory;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set itemRendererFactory(value:Function):void
+		{
+			if(this._itemRendererFactory === value)
+			{
+				return;
+			}
+			
+			this._itemRendererFactory = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected var _typicalItem:Object = null;
+		
+		/**
+		 * Used to auto-size the list when a virtualized layout is used. If the
+		 * list's width or height is unknown, the list will try to automatically
+		 * pick an ideal size. This item is used to create a sample item
+		 * renderer to measure item renderers that are virtual and not visible
+		 * in the viewport.
+		 *
+		 * <p>The following example provides a typical item:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.typicalItem = { text: "A typical item", thumbnail: texture };
+		 * list.itemRendererProperties.labelField = "text";
+		 * list.itemRendererProperties.iconSourceField = "thumbnail";</listing>
+		 *
+		 * @default null
+		 */
+		public function get typicalItem():Object
+		{
+			return this._typicalItem;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set typicalItem(value:Object):void
+		{
+			if(this._typicalItem == value)
+			{
+				return;
+			}
+			this._typicalItem = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _itemRendererName:String;
+
+		/**
+		 * A name to add to all item renderers in this list. Typically used by a
+		 * theme to provide different skins to different lists.
+		 *
+		 * <p>The following example sets the item renderer name:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererName = "my-custom-item-renderer";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( DefaultListItemRenderer, customItemRendererInitializer, "my-custom-item-renderer");</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 */
+		public function get itemRendererName():String
+		{
+			return this._itemRendererName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set itemRendererName(value:String):void
+		{
+			if(this._itemRendererName == value)
+			{
+				return;
+			}
+			this._itemRendererName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
 		/**
 		 * @private
 		 */
@@ -478,7 +813,18 @@ package feathers.controls
 		 * renderers. These values are shared by each item renderer, so values
 		 * that cannot be shared (such as display objects that need to be added
 		 * to the display list) should be passed to the item renderers using an
-		 * <code>itemRendererFactory</code> or with a theme.
+		 * <code>itemRendererFactory</code> or with a theme. The item renderers
+		 * are instances of <code>IListItemRenderer</code>. The available
+		 * properties depend on which <code>IListItemRenderer</code>
+		 * implementation is returned by <code>itemRendererFactory</code>.
+		 *
+		 * <p>The following example customizes some item renderer properties
+		 * (this example assumes that the item renderer's label text renderer
+		 * is a <code>BitmapFontTextRenderer</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.&#64;defaultLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
+		 * list.itemRendererProperties.padding = 20;</listing>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -487,8 +833,15 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
-		 * @see feathers.controls.renderers.IListItemRenderer
+		 * <p>Setting properties in a <code>itemRendererFactory</code> function
+		 * instead of using <code>itemRendererProperties</code> will result in
+		 * better performance.</p>
+		 *
+		 * @default null
+		 *
 		 * @see #itemRendererFactory
+		 * @see feathers.controls.renderers.IListItemRenderer
+		 * @see feathers.controls.renderers.DefaultListItemRenderer
 		 */
 		public function get itemRendererProperties():Object
 		{
@@ -534,378 +887,77 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * The pending item index to scroll to after validating. A value of
+		 * <code>-1</code> means that the scroller won't scroll to an item after
+		 * validating.
 		 */
-		protected var currentBackgroundSkin:DisplayObject;
+		protected var pendingItemIndex:int = -1;
 
 		/**
 		 * @private
 		 */
-		protected var _backgroundSkin:DisplayObject;
-		
-		/**
-		 * A display object displayed behind the item renderers.
-		 * 
-		 * @default null
-		 */
-		public function get backgroundSkin():DisplayObject
+		override public function scrollToPosition(horizontalScrollPosition:Number, verticalScrollPosition:Number, animationDuration:Number = 0):void
 		{
-			return this._backgroundSkin;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set backgroundSkin(value:DisplayObject):void
-		{
-			if(this._backgroundSkin == value)
-			{
-				return;
-			}
-			
-			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
-			{
-				this.removeChild(this._backgroundSkin);
-			}
-			this._backgroundSkin = value;
-			if(this._backgroundSkin && this._backgroundSkin.parent != this)
-			{
-				this._backgroundSkin.visible = false;
-				this.addChildAt(this._backgroundSkin, 0);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _backgroundDisabledSkin:DisplayObject;
-		
-		/**
-		 * A background to display when the list is disabled.
-		 * 
-		 * @default null
-		 */
-		public function get backgroundDisabledSkin():DisplayObject
-		{
-			return this._backgroundDisabledSkin;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set backgroundDisabledSkin(value:DisplayObject):void
-		{
-			if(this._backgroundDisabledSkin == value)
-			{
-				return;
-			}
-			
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
-			{
-				this.removeChild(this._backgroundDisabledSkin);
-			}
-			this._backgroundDisabledSkin = value;
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
-			{
-				this._backgroundDisabledSkin.visible = false;
-				this.addChildAt(this._backgroundDisabledSkin, 0);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.pendingItemIndex = -1;
+			super.scrollToPosition(horizontalScrollPosition, verticalScrollPosition, animationDuration);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _paddingTop:Number = 0;
-
-		/**
-		 * The minimum space, in pixels, between the list's top edge and the
-		 * list's content.
-		 */
-		public function get paddingTop():Number
+		override public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
 		{
-			return this._paddingTop;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set paddingTop(value:Number):void
-		{
-			if(this._paddingTop == value)
-			{
-				return;
-			}
-			this._paddingTop = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _paddingRight:Number = 0;
-
-		/**
-		 * The minimum space, in pixels, between the list's right edge and the
-		 * list's content.
-		 */
-		public function get paddingRight():Number
-		{
-			return this._paddingRight;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set paddingRight(value:Number):void
-		{
-			if(this._paddingRight == value)
-			{
-				return;
-			}
-			this._paddingRight = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _paddingBottom:Number = 0;
-
-		/**
-		 * The minimum space, in pixels, between the list's bottom edge and
-		 * the list's content.
-		 */
-		public function get paddingBottom():Number
-		{
-			return this._paddingBottom;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set paddingBottom(value:Number):void
-		{
-			if(this._paddingBottom == value)
-			{
-				return;
-			}
-			this._paddingBottom = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _paddingLeft:Number = 0;
-
-		/**
-		 * The minimum space, in pixels, between the list's left edge and the
-		 * list's content.
-		 */
-		public function get paddingLeft():Number
-		{
-			return this._paddingLeft;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set paddingLeft(value:Number):void
-		{
-			if(this._paddingLeft == value)
-			{
-				return;
-			}
-			this._paddingLeft = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _itemRendererType:Class = DefaultListItemRenderer;
-		
-		/**
-		 * The class used to instantiate item renderers.
-		 *
-		 * @see feathers.controls.renderer.IListItemRenderer
-		 * @see #itemRendererFactory
-		 */
-		public function get itemRendererType():Class
-		{
-			return this._itemRendererType;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set itemRendererType(value:Class):void
-		{
-			if(this._itemRendererType == value)
-			{
-				return;
-			}
-			
-			this._itemRendererType = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _itemRendererFactory:Function;
-		
-		/**
-		 * A function called that is expected to return a new item renderer. Has
-		 * a higher priority than <code>itemRendererType</code>. Typically, you
-		 * would use an <code>itemRendererFactory</code> instead of an
-		 * <code>itemRendererType</code> if you wanted to initialize some
-		 * properties on each separate item renderer, such as skins.
-		 *
-		 * <p>The function is expected to have the following signature:</p>
-		 *
-		 * <pre>function():IListItemRenderer</pre>
-		 *
-		 * @see feathers.controls.renderers.IListItemRenderer
-		 * @see #itemRendererType
-		 */
-		public function get itemRendererFactory():Function
-		{
-			return this._itemRendererFactory;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set itemRendererFactory(value:Function):void
-		{
-			if(this._itemRendererFactory === value)
-			{
-				return;
-			}
-			
-			this._itemRendererFactory = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _typicalItem:Object = null;
-		
-		/**
-		 * Used to auto-size the list. If the list's width or height is NaN, the
-		 * list will try to automatically pick an ideal size. This item is
-		 * used in that process to create a sample item renderer.
-		 */
-		public function get typicalItem():Object
-		{
-			return this._typicalItem;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set typicalItem(value:Object):void
-		{
-			if(this._typicalItem == value)
-			{
-				return;
-			}
-			this._typicalItem = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _itemRendererName:String;
-
-		/**
-		 * A name to add to all item renderers in this list. Typically used by a
-		 * theme to provide different skins to different lists.
-		 *
-		 * @see feathers.core.FeathersControl#nameList
-		 */
-		public function get itemRendererName():String
-		{
-			return this._itemRendererName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set itemRendererName(value:String):void
-		{
-			if(this._itemRendererName == value)
-			{
-				return;
-			}
-			this._itemRendererName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.pendingItemIndex = -1;
+			super.scrollToPageIndex(horizontalPageIndex, verticalPageIndex, animationDuration);
 		}
 		
 		/**
 		 * Scrolls the list so that the specified item is visible. If
 		 * <code>animationDuration</code> is greater than zero, the scroll will
 		 * animate. The duration is in seconds.
+		 *
+		 * <p>If the layout is virtual with variable item dimensions, this
+		 * function may not accurately scroll to the exact correct position. A
+		 * virtual layout with variable item dimensions is often forced to
+		 * estimate positions, so the results aren't guaranteed to be accurate.</p>
+		 *
+		 * <p>If you want to scroll to the end of the list, it is better to use
+		 * <code>scrollToPosition()</code> with <code>maxHorizontalScrollPosition</code>
+		 * or <code>maxVerticalScrollPosition</code>.</p>
+		 *
+		 * <p>In the following example, the list is scrolled to display index 10:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.scrollToDisplayIndex( 10 );</listing>
 		 * 
 		 * @param index The integer index of an item from the data provider.
 		 * @param animationDuration The length of time, in seconds, of the animation. May be zero to scroll instantly.
+		 *
+		 * @see #scrollToPosition()
 		 */
 		public function scrollToDisplayIndex(index:int, animationDuration:Number = 0):void
 		{
-			if(this._scrollToIndex == index)
+			this.pendingHorizontalPageIndex = -1;
+			this.pendingVerticalPageIndex = -1;
+			this.pendingHorizontalScrollPosition = NaN;
+			this.pendingVerticalScrollPosition = NaN;
+			if(this.pendingItemIndex == index &&
+				this.pendingScrollDuration == animationDuration)
 			{
 				return;
 			}
-			this._scrollToHorizontalPageIndex = -1;
-			this._scrollToVerticalPageIndex = -1;
-			this._scrollToIndex = index;
-			this._scrollToIndexDuration = animationDuration;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.pendingItemIndex = index;
+			this.pendingScrollDuration = animationDuration;
+			this.invalidate(INVALIDATION_FLAG_PENDING_SCROLL);
 		}
 
 		/**
-		 * Scrolls the list to a specific page, horizontally and vertically. If
-		 * <code>horizontalPageIndex</code> or <code>verticalPageIndex</code> is
-		 * -1, it will be ignored
+		 * @private
 		 */
-		public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
+		override public function dispose():void
 		{
-			const horizontalPageHasChanged:Boolean = (this._scrollToHorizontalPageIndex >= 0 && this._scrollToHorizontalPageIndex != horizontalPageIndex) ||
-				(this._scrollToHorizontalPageIndex < 0 && this._horizontalPageIndex != horizontalPageIndex);
-			const verticalPageHasChanged:Boolean = (this._scrollToVerticalPageIndex >= 0 && this._scrollToVerticalPageIndex != verticalPageIndex) ||
-				(this._scrollToVerticalPageIndex < 0 && this._verticalPageIndex != verticalPageIndex);
-			const durationHasChanged:Boolean = (this._scrollToHorizontalPageIndex >= 0 || this._scrollToVerticalPageIndex >= 0) && this._scrollToIndexDuration == animationDuration
-			if(!horizontalPageHasChanged && !verticalPageHasChanged &&
-				!durationHasChanged)
-			{
-				return;
-			}
-			this._scrollToHorizontalPageIndex = horizontalPageIndex;
-			this._scrollToVerticalPageIndex = verticalPageIndex;
-			this._scrollToIndex = -1;
-			this._scrollToIndexDuration = animationDuration;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-		}
-		
-		/**
-		 * If the user is scrolling with touch or if the scrolling is animated,
-		 * calling stopScrolling() will cause the scroller to ignore the drag
-		 * and stop animations. The children of the list will still receive
-		 * touches, so it's useful to call this if the children need to support
-		 * touches or dragging without the list also scrolling.
-		 */
-		public function stopScrolling():void
-		{
-			if(!this.scroller)
-			{
-				return;
-			}
-			this.scroller.stopScrolling();
+			this.dataProvider = null;
+			super.dispose();
 		}
 		
 		/**
@@ -915,27 +967,26 @@ package feathers.controls
 		{
 			const hasLayout:Boolean = this._layout != null;
 
-			if(!this.scroller)
-			{
-				this.scroller = new Scroller();
-				this.scroller.nameList.add(this.scrollerName);
-				this.scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
-				this.scroller.verticalScrollPolicy = hasLayout ? Scroller.SCROLL_POLICY_AUTO : Scroller.SCROLL_POLICY_ON;
-				this.scroller.addEventListener(Event.SCROLL, scroller_scrollHandler);
-				this.scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, scroller_scrollCompleteHandler);
-				this.addChild(this.scroller);
-			}
+			super.initialize();
 			
 			if(!this.dataViewPort)
 			{
-				this.dataViewPort = new ListDataViewPort();
+				this.viewPort = this.dataViewPort = new ListDataViewPort();
 				this.dataViewPort.owner = this;
-				this.dataViewPort.addEventListener(Event.CHANGE, dataViewPort_changeHandler);
-				this.scroller.viewPort = this.dataViewPort;
+				this.viewPort = this.dataViewPort;
 			}
 
 			if(!hasLayout)
 			{
+				if(this._hasElasticEdges &&
+					this._verticalScrollPolicy == SCROLL_POLICY_AUTO &&
+					this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
+				{
+					//so that the elastic edges work even when the max scroll
+					//position is 0, similar to iOS.
+					this.verticalScrollPolicy = SCROLL_POLICY_ON;
+				}
+
 				const layout:VerticalLayout = new VerticalLayout();
 				layout.useVirtualLayout = true;
 				layout.paddingTop = layout.paddingRight = layout.paddingBottom =
@@ -943,6 +994,7 @@ package feathers.controls
 				layout.gap = 0;
 				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
 				layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+				layout.manageVisibility = true;
 				this._layout = layout;
 			}
 		}
@@ -952,23 +1004,19 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			
-			if(stylesInvalid)
-			{
-				this.refreshScrollerStyles();
-			}
-			
-			if(sizeInvalid || stylesInvalid || stateInvalid)
-			{
-				this.refreshBackgroundSkin();
-			}
+			this.refreshDataViewPortProperties();
+			super.draw();
+			this.refreshFocusIndicator();
+		}
 
+		/**
+		 * @private
+		 */
+		protected function refreshDataViewPortProperties():void
+		{
 			this.dataViewPort.isSelectable = this._isSelectable;
-			this.dataViewPort.selectedIndex = this._selectedIndex;
+			this.dataViewPort.allowMultipleSelection = this._allowMultipleSelection;
+			this.dataViewPort.selectedIndices = this._selectedIndices;
 			this.dataViewPort.dataProvider = this._dataProvider;
 			this.dataViewPort.itemRendererType = this._itemRendererType;
 			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
@@ -976,164 +1024,99 @@ package feathers.controls
 			this.dataViewPort.itemRendererName = this._itemRendererName;
 			this.dataViewPort.typicalItem = this._typicalItem;
 			this.dataViewPort.layout = this._layout;
-			
-			this.scroller.isEnabled = this._isEnabled;
-			this.scroller.x = this._paddingLeft;
-			this.scroller.y = this._paddingTop;
-			this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
-			this.scroller.verticalScrollPosition = this._verticalScrollPosition;
-
-			if(sizeInvalid || stylesInvalid)
-			{
-				if(isNaN(this.explicitWidth))
-				{
-					this.scroller.width = NaN;
-				}
-				else
-				{
-					this.scroller.width = Math.max(0, this.explicitWidth - this._paddingLeft - this._paddingRight);
-				}
-				if(isNaN(this.explicitHeight))
-				{
-					this.scroller.height = NaN;
-				}
-				else
-				{
-					this.scroller.height = Math.max(0, this.explicitHeight - this._paddingTop - this._paddingBottom);
-				}
-				this.scroller.minWidth = Math.max(0,  this._minWidth - this._paddingLeft - this._paddingRight);
-				this.scroller.maxWidth = Math.max(0, this._maxWidth - this._paddingLeft - this._paddingRight);
-				this.scroller.minHeight = Math.max(0, this._minHeight - this._paddingTop - this._paddingBottom);
-				this.scroller.maxHeight = Math.max(0, this._maxHeight - this._paddingTop - this._paddingBottom);
-			}
-
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-
-			if(sizeInvalid || stylesInvalid || stateInvalid)
-			{
-				if(this.currentBackgroundSkin)
-				{
-					this.currentBackgroundSkin.width = this.actualWidth;
-					this.currentBackgroundSkin.height = this.actualHeight;
-				}
-			}
-
-			this.scroller.validate();
-			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
-			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
-			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
-			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
-			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
-			this._verticalPageIndex = this.scroller.verticalPageIndex;
-
-			this.scroll();
 		}
 
 		/**
 		 * @private
 		 */
-		protected function autoSizeIfNeeded():Boolean
+		override protected function handlePendingScroll():void
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
-			if(!needsWidth && !needsHeight)
+			if(this.pendingItemIndex >= 0)
 			{
-				return false;
-			}
-
-			this.scroller.validate();
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
-			if(needsWidth)
-			{
-				newWidth = this.scroller.width + this._paddingLeft + this._paddingRight;
-			}
-			if(needsHeight)
-			{
-				newHeight = this.scroller.height + this._paddingTop + this._paddingBottom;
-			}
-
-			return this.setSizeInternal(newWidth, newHeight, false);
-		}
-		
-		/**
-		 * @private
-		 */
-		protected function refreshScrollerStyles():void
-		{
-			for(var propertyName:String in this._scrollerProperties)
-			{
-				if(this.scroller.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._scrollerProperties[propertyName];
-					this.scroller[propertyName] = propertyValue;
-				}
-			}
-		}
-		
-		/**
-		 * @private
-		 */
-		protected function refreshBackgroundSkin():void
-		{
-			this.currentBackgroundSkin = this._backgroundSkin;
-			if(!this._isEnabled && this._backgroundDisabledSkin)
-			{
-				if(this._backgroundSkin)
-				{
-					this._backgroundSkin.visible = false;
-				}
-				this.currentBackgroundSkin = this._backgroundDisabledSkin;
-			}
-			else if(this._backgroundDisabledSkin)
-			{
-				this._backgroundDisabledSkin.visible = false;
-			}
-			if(this.currentBackgroundSkin)
-			{
-				this.currentBackgroundSkin.visible = true;
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function scroll():void
-		{
-			if(this._scrollToHorizontalPageIndex >= 0 || this._scrollToVerticalPageIndex >= 0)
-			{
-				this.scroller.throwToPage(this._scrollToHorizontalPageIndex, this._scrollToVerticalPageIndex, this._scrollToIndexDuration);
-				this._scrollToHorizontalPageIndex = -1;
-				this._scrollToVerticalPageIndex = -1;
-			}
-			else if(this._scrollToIndex >= 0)
-			{
-				const item:Object = this._dataProvider.getItemAt(this._scrollToIndex);
+				const item:Object = this._dataProvider.getItemAt(this.pendingItemIndex);
 				if(item is Object)
 				{
-					this.dataViewPort.getScrollPositionForIndex(this._scrollToIndex, HELPER_POINT);
+					this.dataViewPort.getScrollPositionForIndex(this.pendingItemIndex, HELPER_POINT);
+					this.pendingItemIndex = -1;
 
-					if(this._scrollToIndexDuration > 0)
+					var targetHorizontalScrollPosition:Number = HELPER_POINT.x;
+					if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition)
 					{
-						this.scroller.throwTo(Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition)),
-							Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition)), this._scrollToIndexDuration);
+						targetHorizontalScrollPosition = this._minHorizontalScrollPosition;
 					}
-					else
+					else if(targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
 					{
-						this.horizontalScrollPosition = Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition));
-						this.verticalScrollPosition = Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition));
+						targetHorizontalScrollPosition = this._maxHorizontalScrollPosition;
 					}
+					var targetVerticalScrollPosition:Number = HELPER_POINT.y;
+					if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
+					{
+						targetVerticalScrollPosition = this._minVerticalScrollPosition;
+					}
+					else if(targetVerticalScrollPosition > this._maxVerticalScrollPosition)
+					{
+						targetVerticalScrollPosition = this._maxVerticalScrollPosition;
+					}
+					this.throwTo(targetHorizontalScrollPosition, targetVerticalScrollPosition, this.pendingScrollDuration);
 				}
-				this._scrollToIndex = -1;
+			}
+			super.handlePendingScroll();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function focusInHandler(event:Event):void
+		{
+			super.focusInHandler(event);
+			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function focusOutHandler(event:Event):void
+		{
+			super.focusOutHandler(event);
+			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(!this._dataProvider)
+			{
+				return;
+			}
+			if(event.keyCode == Keyboard.HOME)
+			{
+				if(this._dataProvider.length > 0)
+				{
+					this.selectedIndex = 0;
+				}
+			}
+			else if(event.keyCode == Keyboard.END)
+			{
+				this.selectedIndex = this._dataProvider.length - 1;
+			}
+			else if(event.keyCode == Keyboard.UP)
+			{
+				this.selectedIndex = Math.max(0, this._selectedIndex - 1);
+			}
+			else if(event.keyCode == Keyboard.DOWN)
+			{
+				this.selectedIndex = Math.min(this._dataProvider.length - 1, this._selectedIndex + 1);
 			}
 		}
 
 		/**
 		 * @private
 		 */
-		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
+		protected function dataProvider_changeHandler(event:Event):void
 		{
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -1148,32 +1131,22 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function scroller_scrollHandler(event:Event):void
+		protected function selectedIndices_changeHandler(event:Event):void
 		{
-			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
-			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
-			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
-			this._verticalPageIndex = this.scroller.verticalPageIndex;
-			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
-			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.dispatchEventWith(Event.SCROLL);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function scroller_scrollCompleteHandler(event:Event):void
-		{
-			this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
-		}
-		
-		/**
-		 * @private
-		 */
-		protected function dataViewPort_changeHandler(event:Event):void
-		{
-			this.selectedIndex = this.dataViewPort.selectedIndex;
+			if(this._selectedIndices.length > 0)
+			{
+				this._selectedIndex = this._selectedIndices.getItemAt(0) as int;
+			}
+			else
+			{
+				if(this._selectedIndex < 0)
+				{
+					//no change
+					return;
+				}
+				this._selectedIndex = -1;
+			}
+			this.dispatchEventWith(Event.CHANGE);
 		}
 	}
 }

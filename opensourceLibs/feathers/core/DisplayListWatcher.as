@@ -59,23 +59,27 @@ package feathers.core
 		/**
 		 * Constructor.
 		 *
-		 * @param root		The root display object to watch (not necessarily Starling's root object)
+		 * @param topLevelContainer		The root display object to watch (not necessarily Starling's root object)
 		 */
-		public function DisplayListWatcher(root:DisplayObjectContainer)
+		public function DisplayListWatcher(topLevelContainer:DisplayObjectContainer)
 		{
-			this.root = root;
+			this.root = topLevelContainer;
 			this.root.addEventListener(Event.ADDED, addedHandler);
 		}
 		
 		/**
 		 * The minimum base class required before the AddedWatcher will check
 		 * to see if a particular display object has any initializers.
+		 *
+		 * @default feathers.core.IFeathersControl
 		 */
 		public var requiredBaseClass:Class = IFeathersControl;
 
 		/**
 		 * Determines if only the object added should be processed or if its
 		 * children should be processed recursively.
+		 *
+		 * @default true
 		 */
 		public var processRecursively:Boolean = true;
 
@@ -94,6 +98,8 @@ package feathers.core
 		/**
 		 * Determines if objects added to the display list are initialized only
 		 * once or every time that they are re-added.
+		 *
+		 * @default true
 		 */
 		public function get initializeOnce():Boolean
 		{
@@ -146,6 +152,11 @@ package feathers.core
 		protected var _initializerSuperTypes:Vector.<Class> = new <Class>[];
 
 		/**
+		 * @private
+		 */
+		protected var _excludedObjects:Vector.<DisplayObject>;
+
+		/**
 		 * Stops listening to the root and cleans up anything else that needs to
 		 * be disposed. If a <code>DisplayListWatcher</code> is extended for a
 		 * theme, it should also dispose textures and other assets.
@@ -157,6 +168,70 @@ package feathers.core
 				this.root.removeEventListener(Event.ADDED, addedHandler);
 				this.root = null;
 			}
+			if(this._excludedObjects)
+			{
+				this._excludedObjects.length = 0;
+				this._excludedObjects = null;
+			}
+			for(var key:Object in this.initializedObjects)
+			{
+				delete this.initializedObjects[key];
+			}
+			for(key in this._initializerNameTypeMap)
+			{
+				delete this._initializerNameTypeMap[key];
+			}
+			for(key in this._initializerNoNameTypeMap)
+			{
+				delete this._initializerNoNameTypeMap[key];
+			}
+			for(key in this._initializerSuperTypeMap)
+			{
+				delete this._initializerSuperTypeMap[key];
+			}
+			this._initializerSuperTypes.length = 0;
+		}
+
+		/**
+		 * Excludes a display object, and all if its children (if any) from
+		 * being watched.
+		 */
+		public function exclude(target:DisplayObject):void
+		{
+			if(!this._excludedObjects)
+			{
+				this._excludedObjects = new <DisplayObject>[];
+			}
+			this._excludedObjects.push(target);
+		}
+
+		/**
+		 * Determines if an object is excluded from being watched.
+		 */
+		public function isExcluded(target:DisplayObject):Boolean
+		{
+			if(!this._excludedObjects)
+			{
+				return false;
+			}
+
+			const objectCount:int = this._excludedObjects.length;
+			for(var i:int = 0; i < objectCount; i++)
+			{
+				var object:DisplayObject = this._excludedObjects[i];
+				if(object is DisplayObjectContainer)
+				{
+					if(DisplayObjectContainer(object).contains(target))
+					{
+						return true;
+					}
+				}
+				else if(object == target)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 		
 		/**
@@ -317,6 +392,11 @@ package feathers.core
 				const isInitialized:Boolean = this._initializeOnce && this.initializedObjects[targetAsRequiredBaseClass];
 				if(!isInitialized)
 				{
+					if(this.isExcluded(target))
+					{
+						return;
+					}
+
 					this.initializedObjects[targetAsRequiredBaseClass] = true;
 					this.processAllInitializers(target);
 				}

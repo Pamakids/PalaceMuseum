@@ -8,80 +8,118 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.TextFieldViewPort;
-	import feathers.core.FeathersControl;
-	import feathers.core.PropertyProxy;
-	import feathers.events.FeathersEventType;
 
+	import flash.text.AntiAliasType;
+	import flash.text.GridFitType;
+	import flash.text.StyleSheet;
 	import flash.text.TextFormat;
-
-	import starling.events.Event;
-
-	/**
-	 * Dispatched when the text is scrolled.
-	 *
-	 * @eventType starling.events.Event.SCROLL
-	 */
-	[Event(name="scroll",type="starling.events.Event")]
-
-	/**
-	 * Dispatched when the container finishes scrolling in either direction after
-	 * being thrown.
-	 *
-	 * @eventType feathers.events.FeathersEventType.SCROLL_COMPLETE
-	 */
-	[Event(name="scrollComplete",type="starling.events.Event")]
 
 	/**
 	 * Displays long passages of text in a scrollable container using the
 	 * runtime's software-based <code>flash.text.TextField</code> as an overlay
-	 * above Starling content.
+	 * above Starling content on the classic display list. This component will
+	 * <strong>always</strong> appear above Starling content. The only way to
+	 * put something above ScrollText is to put something above it on the
+	 * classic display list.
+	 *
+	 * <p>Meant as a workaround component for when TextFieldTextRenderer runs
+	 * into the runtime texture limits.</p>
+	 *
+	 * <p>Since this component is rendered with the runtime's software renderer,
+	 * rather than on the GPU, it may not perform very well on mobile devices
+	 * with high resolution screens.</p>
+	 *
+	 * <p>The following example displays some text:</p>
+	 *
+	 * <listing version="3.0">
+	 * var scrollText:ScrollText = new ScrollText();
+	 * scrollText.text = "Hello World";
+	 * this.addChild( scrollText );</listing>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/scroll-text
+	 * @see feathers.controls.text.TextFieldTextRenderer
 	 */
-	public class ScrollText extends FeathersControl
+	public class ScrollText extends Scroller
 	{
 		/**
-		 * The default value added to the <code>nameList</code> of the scroller.
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
 		 */
-		public static const DEFAULT_CHILD_NAME_SCROLLER:String = "feathers-scroll-text-scroller";
+		public static const SCROLL_POLICY_AUTO:String = "auto";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_ON
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
+		 */
+		public static const SCROLL_POLICY_ON:String = "on";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_OFF
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
+		 */
+		public static const SCROLL_POLICY_OFF:String = "off";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_NONE
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
+		 */
+		public static const INTERACTION_MODE_TOUCH:String = "touch";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_MOUSE
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
+		 */
+		public static const INTERACTION_MODE_MOUSE:String = "mouse";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH_AND_SCROLL_BARS
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
+		 */
+		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
 		 * Constructor.
 		 */
 		public function ScrollText()
 		{
-			this.viewPort = new TextFieldViewPort();
+			this.textViewPort = new TextFieldViewPort();
+			this.viewPort = this.textViewPort;
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the scroller.
-		 */
-		protected var scrollerName:String = DEFAULT_CHILD_NAME_SCROLLER;
-
-		/**
-		 * The scroller sub-component.
-		 */
-		protected var scroller:Scroller;
-
-		/**
 		 * @private
 		 */
-		protected var viewPort:TextFieldViewPort;
-
-		/**
-		 * @private
-		 */
-		protected var _scrollToHorizontalPageIndex:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _scrollToVerticalPageIndex:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _scrollToIndexDuration:Number;
+		protected var textViewPort:TextFieldViewPort;
 
 		/**
 		 * @private
@@ -89,7 +127,19 @@ package feathers.controls
 		protected var _text:String = "";
 
 		/**
-		 * @inheritDoc
+		 * The text to display. If <code>isHTML</code> is <code>true</code>, the
+		 * text will be rendered as HTML with the same capabilities as the
+		 * <code>htmlText</code> property of <code>flash.text.TextField</code>.
+		 *
+		 * <p>In the following example, some text is displayed:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.text = "Hello World";</listing>
+		 *
+		 * @default ""
+		 *
+		 * @see #isHTML
+		 * @see flash.text.TextField#htmlText
 		 */
 		public function get text():String
 		{
@@ -116,62 +166,21 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _textFormat:TextFormat;
-
-		/**
-		 * The font and styles used to draw the text.
-		 */
-		public function get textFormat():TextFormat
-		{
-			return this._textFormat;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set textFormat(value:TextFormat):void
-		{
-			if(this._textFormat == value)
-			{
-				return;
-			}
-			this._textFormat = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _embedFonts:Boolean = false;
-
-		/**
-		 * Determines if the TextField should use an embedded font or not.
-		 */
-		public function get embedFonts():Boolean
-		{
-			return this._embedFonts;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set embedFonts(value:Boolean):void
-		{
-			if(this._embedFonts == value)
-			{
-				return;
-			}
-			this._embedFonts = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _isHTML:Boolean = false;
 
 		/**
 		 * Determines if the TextField should display the text as HTML or not.
+		 *
+		 * <p>In the following example, some HTML-formatted text is displayed:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.isHTML = true;
+		 * scrollText.text = "&lt;b&gt;Hello&lt;/b&gt; &lt;i&gt;World&lt;/i&gt;";</listing>
+		 *
+		 * @default false
+		 *
+		 * @see #text
+		 * @see flash.text.TextField#htmlText
 		 */
 		public function get isHTML():Boolean
 		{
@@ -194,350 +203,601 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _paddingTop:Number = 0;
+		protected var _textFormat:TextFormat;
 
 		/**
-		 * The minimum space, in pixels, between the text's top edge and the
-		 * edge of the container.
+		 * The font and styles used to draw the text.
+		 *
+		 * <p>In the following example, the text is formatted:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.textFormat = new TextFormat( "_sans", 16, 0x333333 );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see flash.text.TextFormat
 		 */
-		public function get paddingTop():Number
+		public function get textFormat():TextFormat
 		{
-			return this._paddingTop;
+			return this._textFormat;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set paddingTop(value:Number):void
+		public function set textFormat(value:TextFormat):void
 		{
-			if(this._paddingTop == value)
+			if(this._textFormat == value)
 			{
 				return;
 			}
-			this._paddingTop = value;
+			this._textFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _paddingRight:Number = 0;
+		protected var _styleSheet:StyleSheet;
 
 		/**
-		 * The minimum space, in pixels, between the text's right edge and the
-		 * edge of the container.
+		 * The <code>StyleSheet</code> object to pass to the TextField.
+		 *
+		 * @default null
+		 *
+		 * @see flash.text.StyleSheet
 		 */
-		public function get paddingRight():Number
+		public function get styleSheet():StyleSheet
 		{
-			return this._paddingRight;
+			return this._styleSheet;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set paddingRight(value:Number):void
+		public function set styleSheet(value:StyleSheet):void
 		{
-			if(this._paddingRight == value)
+			if(this._styleSheet == value)
 			{
 				return;
 			}
-			this._paddingRight = value;
+			this._styleSheet = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _paddingBottom:Number = 0;
+		protected var _embedFonts:Boolean = false;
 
 		/**
-		 * The minimum space, in pixels, between the text's bottom edge and the
-		 * edge of the container.
+		 * Determines if the TextField should use an embedded font or not.
+		 *
+		 * <p>In the following example, some text is formatted with an embedded
+		 * font:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333;
+		 * scrollText.embedFonts = true;</listing>
+		 *
+		 * @default false
 		 */
-		public function get paddingBottom():Number
+		public function get embedFonts():Boolean
 		{
-			return this._paddingBottom;
+			return this._embedFonts;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set paddingBottom(value:Number):void
+		public function set embedFonts(value:Boolean):void
 		{
-			if(this._paddingBottom == value)
+			if(this._embedFonts == value)
 			{
 				return;
 			}
-			this._paddingBottom = value;
+			this._embedFonts = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _paddingLeft:Number = 0;
+		private var _antiAliasType:String = AntiAliasType.ADVANCED;
 
 		/**
-		 * The minimum space, in pixels, between the text's left edge and the
-		 * edge of the container.
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @see flash.text.TextField#antiAliasType
+		 *
+		 * @default flash.text.AntiAliasType.ADVANCED
 		 */
-		public function get paddingLeft():Number
+		public function get antiAliasType():String
 		{
-			return this._paddingLeft;
+			return this._antiAliasType;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set paddingLeft(value:Number):void
+		public function set antiAliasType(value:String):void
 		{
-			if(this._paddingLeft == value)
+			if(this._antiAliasType == value)
 			{
 				return;
 			}
-			this._paddingLeft = value;
+			this._antiAliasType = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _horizontalScrollPosition:Number = 0;
+		private var _background:Boolean = false;
 
 		/**
-		 * The number of pixels the text has been scrolled horizontally (on
-		 * the x-axis).
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @see flash.text.TextField#background
+		 *
+		 * @default false
 		 */
-		public function get horizontalScrollPosition():Number
+		public function get background():Boolean
 		{
-			return this._horizontalScrollPosition;
+			return this._background;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set horizontalScrollPosition(value:Number):void
+		public function set background(value:Boolean):void
 		{
-			if(this._horizontalScrollPosition == value)
+			if(this._background == value)
 			{
 				return;
 			}
-			this._horizontalScrollPosition = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.dispatchEventWith(Event.SCROLL);
+			this._background = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _maxHorizontalScrollPosition:Number = 0;
+		private var _backgroundColor:uint = 0xffffff;
 
 		/**
-		 * The maximum number of pixels the text may be scrolled horizontally
-		 * (on the x-axis). This value is automatically calculated by the
-		 * supplied layout algorithm. The <code>horizontalScrollPosition</code>
-		 * property may have a higher value than the maximum due to elastic
-		 * edges. However, once the user stops interacting with the text,
-		 * it will automatically animate back to the maximum (or minimum, if
-		 * the scroll position is below 0).
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @see flash.text.TextField#backgroundColor
+		 *
+		 * @default 0xffffff
 		 */
-		public function get maxHorizontalScrollPosition():Number
+		public function get backgroundColor():uint
 		{
-			return this._maxHorizontalScrollPosition;
+			return this._backgroundColor;
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _horizontalPageIndex:int = 0;
-
-		/**
-		 * The index of the horizontal page, if snapping is enabled. If snapping
-		 * is disabled, the index will always be <code>0</code>.
-		 */
-		public function get horizontalPageIndex():int
+		public function set backgroundColor(value:uint):void
 		{
-			return this._horizontalPageIndex;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _verticalScrollPosition:Number = 0;
-
-		/**
-		 * The number of pixels the text has been scrolled vertically (on
-		 * the y-axis).
-		 */
-		public function get verticalScrollPosition():Number
-		{
-			return this._verticalScrollPosition;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set verticalScrollPosition(value:Number):void
-		{
-			if(this._verticalScrollPosition == value)
+			if(this._backgroundColor == value)
 			{
 				return;
 			}
-			this._verticalScrollPosition = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.dispatchEventWith(Event.SCROLL);
+			this._backgroundColor = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _maxVerticalScrollPosition:Number = 0;
+		private var _border:Boolean = false;
 
 		/**
-		 * The maximum number of pixels the text may be scrolled vertically
-		 * (on the y-axis). This value is automatically calculated by the
-		 * supplied layout algorithm. The <code>verticalScrollPosition</code>
-		 * property may have a higher value than the maximum due to elastic
-		 * edges. However, once the user stops interacting with the text,
-		 * it will automatically animate back to the maximum (or minimum, if
-		 * the scroll position is below 0).
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @default false
+		 *
+		 * @see flash.text.TextField#border
 		 */
-		public function get maxVerticalScrollPosition():Number
+		public function get border():Boolean
 		{
-			return this._maxVerticalScrollPosition;
+			return this._border;
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _verticalPageIndex:int = 0;
+		public function set border(value:Boolean):void
+		{
+			if(this._border == value)
+			{
+				return;
+			}
+			this._border = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
 
 		/**
-		 * The index of the vertical page, if snapping is enabled. If snapping
-		 * is disabled, the index will always be <code>0</code>.
+		 * @private
+		 */
+		private var _borderColor:uint = 0x000000;
+
+		/**
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @default 0x000000
+		 *
+		 * @see flash.text.TextField#borderColor
+		 */
+		public function get borderColor():uint
+		{
+			return this._borderColor;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set borderColor(value:uint):void
+		{
+			if(this._borderColor == value)
+			{
+				return;
+			}
+			this._borderColor = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _condenseWhite:Boolean = false;
+
+		/**
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @default false
+		 *
+		 * @see flash.text.TextField#condenseWhite
+		 */
+		public function get condenseWhite():Boolean
+		{
+			return this._condenseWhite;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set condenseWhite(value:Boolean):void
+		{
+			if(this._condenseWhite == value)
+			{
+				return;
+			}
+			this._condenseWhite = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _displayAsPassword:Boolean = false;
+
+		/**
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @default false
+		 *
+		 * @see flash.text.TextField#displayAsPassword
+		 */
+		public function get displayAsPassword():Boolean
+		{
+			return this._displayAsPassword;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set displayAsPassword(value:Boolean):void
+		{
+			if(this._displayAsPassword == value)
+			{
+				return;
+			}
+			this._displayAsPassword = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _gridFitType:String = GridFitType.PIXEL;
+
+		/**
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @default flash.text.GridFitType.PIXEL
+		 *
+		 * @see flash.text.TextField#gridFitType
+		 */
+		public function get gridFitType():String
+		{
+			return this._gridFitType;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set gridFitType(value:String):void
+		{
+			if(this._gridFitType == value)
+			{
+				return;
+			}
+			this._gridFitType = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _sharpness:Number = 0;
+
+		/**
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @default 0
+		 *
+		 * @see flash.text.TextField#sharpness
+		 */
+		public function get sharpness():Number
+		{
+			return this._sharpness;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set sharpness(value:Number):void
+		{
+			if(this._sharpness == value)
+			{
+				return;
+			}
+			this._sharpness = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _thickness:Number = 0;
+
+		/**
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @default 0
+		 *
+		 * @see flash.text.TextField#thickness
+		 */
+		public function get thickness():Number
+		{
+			return this._thickness;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set thickness(value:Number):void
+		{
+			if(this._thickness == value)
+			{
+				return;
+			}
+			this._thickness = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function get padding():Number
+		{
+			return this._textPaddingTop;
+		}
+
+		//no setter for padding because the one in Scroller is acceptable
+
+		/**
+		 * @private
+		 */
+		protected var _textPaddingTop:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the component's top edge and
+		 * the top edge of the text.
+		 *
+		 * <p>In the following example, the top padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.paddingTop = 20;</listing>
 		 *
 		 * @default 0
 		 */
-		public function get verticalPageIndex():int
+		override public function get paddingTop():Number
 		{
-			return this._verticalPageIndex;
+			return this._textPaddingTop;
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _scrollerProperties:PropertyProxy;
-
-		/**
-		 * A set of key/value pairs to be passed down to the container's
-		 * scroller sub-component. The scroller is a
-		 * <code>feathers.controls.Scroller</code> instance.
-		 *
-		 * <p>If the subcomponent has its own subcomponents, their properties
-		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
-		 *
-		 * @see feathers.controls.Scroller
-		 */
-		public function get scrollerProperties():Object
+		override public function set paddingTop(value:Number):void
 		{
-			if(!this._scrollerProperties)
-			{
-				this._scrollerProperties = new PropertyProxy(childProperties_onChange);
-			}
-			return this._scrollerProperties;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set scrollerProperties(value:Object):void
-		{
-			if(this._scrollerProperties == value)
+			if(this._textPaddingTop == value)
 			{
 				return;
 			}
-			if(!value)
-			{
-				value = new PropertyProxy();
-			}
-			if(!(value is PropertyProxy))
-			{
-				const newValue:PropertyProxy = new PropertyProxy();
-				for(var propertyName:String in value)
-				{
-					newValue[propertyName] = value[propertyName];
-				}
-				value = newValue;
-			}
-			if(this._scrollerProperties)
-			{
-				this._scrollerProperties.removeOnChangeCallback(childProperties_onChange);
-			}
-			this._scrollerProperties = PropertyProxy(value);
-			if(this._scrollerProperties)
-			{
-				this._scrollerProperties.addOnChangeCallback(childProperties_onChange);
-			}
+			this._textPaddingTop = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
-		 * If the user is dragging the scroll, calling stopScrolling() will
-		 * cause the container to ignore the drag. The children of the container
-		 * will still receive touches, so it's useful to call this if the
-		 * children need to support touches or dragging without the container
-		 * also scrolling.
+		 * @private
 		 */
-		public function stopScrolling():void
-		{
-			if(!this.scroller)
-			{
-				return;
-			}
-			this.scroller.stopScrolling();
-		}
+		protected var _textPaddingRight:Number = 0;
 
 		/**
-		 * Scrolls the list to a specific page, horizontally and vertically. If
-		 * <code>horizontalPageIndex</code> or <code>verticalPageIndex</code> is
-		 * -1, it will be ignored
+		 * The minimum space, in pixels, between the component's right edge and
+		 * the right edge of the text.
+		 *
+		 * <p>In the following example, the right padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.paddingRight = 20;</listing>
 		 */
-		public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
+		override public function get paddingRight():Number
 		{
-			const horizontalPageHasChanged:Boolean = (this._scrollToHorizontalPageIndex >= 0 && this._scrollToHorizontalPageIndex != horizontalPageIndex) ||
-				(this._scrollToHorizontalPageIndex < 0 && this._horizontalPageIndex != horizontalPageIndex);
-			const verticalPageHasChanged:Boolean = (this._scrollToVerticalPageIndex >= 0 && this._scrollToVerticalPageIndex != verticalPageIndex) ||
-				(this._scrollToVerticalPageIndex < 0 && this._verticalPageIndex != verticalPageIndex);
-			const durationHasChanged:Boolean = (this._scrollToHorizontalPageIndex >= 0 || this._scrollToVerticalPageIndex >= 0) && this._scrollToIndexDuration == animationDuration
-			if(!horizontalPageHasChanged && !verticalPageHasChanged &&
-				!durationHasChanged)
-			{
-				return;
-			}
-			this._scrollToHorizontalPageIndex = horizontalPageIndex;
-			this._scrollToVerticalPageIndex = verticalPageIndex;
-			this._scrollToIndexDuration = animationDuration;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			return this._textPaddingRight;
 		}
 
 		/**
 		 * @private
 		 */
-		override protected function initialize():void
+		override public function set paddingRight(value:Number):void
 		{
-			if(!this.scroller)
+			if(this._textPaddingRight == value)
 			{
-				this.scroller = new Scroller();
-				this.scroller.viewPort = this.viewPort;
-				this.scroller.nameList.add(this.scrollerName);
-				this.scroller.addEventListener(Event.SCROLL, scroller_scrollHandler);
-				this.scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, scroller_scrollCompleteHandler);
-				super.addChildAt(this.scroller, 0);
+				return;
 			}
+			this._textPaddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _textPaddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the component's bottom edge and
+		 * the bottom edge of the text.
+		 *
+		 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.paddingBottom = 20;</listing>
+		 */
+		override public function get paddingBottom():Number
+		{
+			return this._textPaddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set paddingBottom(value:Number):void
+		{
+			if(this._textPaddingBottom == value)
+			{
+				return;
+			}
+			this._textPaddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _textPaddingLeft:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the component's left edge and
+		 * the left edge of the text.
+		 *
+		 * <p>In the following example, the left padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.paddingLeft = 20;</listing>
+		 */
+		override public function get paddingLeft():Number
+		{
+			return this._textPaddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set paddingLeft(value:Number):void
+		{
+			if(this._textPaddingLeft == value)
+			{
+				return;
+			}
+			this._textPaddingLeft = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _visible:Boolean = true;
+
+		/**
+		 * @private
+		 */
+		override public function get visible():Boolean
+		{
+			return this._visible;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set visible(value:Boolean):void
+		{
+			if(this._visible == value)
+			{
+				return;
+			}
+			this._visible = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _alpha:Number = 1;
+
+		/**
+		 * @private
+		 */
+		override public function get alpha():Number
+		{
+			return this._alpha;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set alpha(value:Number):void
+		{
+			if(this._alpha == value)
+			{
+				return;
+			}
+			this._alpha = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function get hasVisibleArea():Boolean
+		{
+			return true;
 		}
 
 		/**
@@ -552,147 +812,34 @@ package feathers.controls
 
 			if(dataInvalid)
 			{
-				this.viewPort.text = this._text;
-				this.viewPort.isHTML = this._isHTML;
+				this.textViewPort.text = this._text;
+				this.textViewPort.isHTML = this._isHTML;
 			}
 
 			if(stylesInvalid)
 			{
-				this.viewPort.textFormat = this._textFormat;
-				this.viewPort.embedFonts = this._embedFonts;
-				this.viewPort.paddingTop = this._paddingTop;
-				this.viewPort.paddingRight = this._paddingRight;
-				this.viewPort.paddingBottom = this._paddingBottom;
-				this.viewPort.paddingLeft = this._paddingLeft;
-				this.refreshScrollerStyles();
+				this.textViewPort.antiAliasType = this._antiAliasType;
+				this.textViewPort.background = this._background;
+				this.textViewPort.backgroundColor = this._backgroundColor;
+				this.textViewPort.border = this._border;
+				this.textViewPort.borderColor = this._borderColor;
+				this.textViewPort.condenseWhite = this._condenseWhite;
+				this.textViewPort.displayAsPassword = this._displayAsPassword;
+				this.textViewPort.gridFitType = this._gridFitType;
+				this.textViewPort.sharpness = this._sharpness;
+				this.textViewPort.thickness = this._thickness;
+				this.textViewPort.textFormat = this._textFormat;
+				this.textViewPort.styleSheet = this._styleSheet;
+				this.textViewPort.embedFonts = this._embedFonts;
+				this.textViewPort.paddingTop = this._textPaddingTop;
+				this.textViewPort.paddingRight = this._textPaddingRight;
+				this.textViewPort.paddingBottom = this._textPaddingBottom;
+				this.textViewPort.paddingLeft = this._textPaddingLeft;
+				this.textViewPort.visible = this._visible;
+				this.textViewPort.alpha = this._alpha;
 			}
 
-			if(scrollInvalid)
-			{
-				this.scroller.verticalScrollPosition = this._verticalScrollPosition;
-				this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
-			}
-
-			if(sizeInvalid)
-			{
-				if(isNaN(this.explicitWidth))
-				{
-					this.scroller.width = NaN;
-				}
-				else
-				{
-					this.scroller.width = Math.max(0, this.explicitWidth);
-				}
-				if(isNaN(this.explicitHeight))
-				{
-					this.scroller.height = NaN;
-				}
-				else
-				{
-					this.scroller.height = Math.max(0, this.explicitHeight);
-				}
-				this.scroller.minWidth = Math.max(0,  this._minWidth);
-				this.scroller.maxWidth = Math.max(0, this._maxWidth);
-				this.scroller.minHeight = Math.max(0, this._minHeight);
-				this.scroller.maxHeight = Math.max(0, this._maxHeight);
-			}
-
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-
-			this.scroller.validate();
-			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
-			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
-			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
-			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
-			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
-			this._verticalPageIndex = this.scroller.verticalPageIndex;
-
-			this.scroll();
-		}
-
-		/**
-		 * @private
-		 */
-		protected function autoSizeIfNeeded():Boolean
-		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
-			if(!needsWidth && !needsHeight)
-			{
-				return false;
-			}
-
-			this.scroller.validate();
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
-			if(needsWidth)
-			{
-				newWidth = this.scroller.width;
-			}
-			if(needsHeight)
-			{
-				newHeight = this.scroller.height;
-			}
-			return this.setSizeInternal(newWidth, newHeight, false);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function refreshScrollerStyles():void
-		{
-			for(var propertyName:String in this._scrollerProperties)
-			{
-				if(this.scroller.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._scrollerProperties[propertyName];
-					this.scroller[propertyName] = propertyValue;
-				}
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function scroll():void
-		{
-			if(this._scrollToHorizontalPageIndex >= 0 || this._scrollToVerticalPageIndex >= 0)
-			{
-				this.scroller.throwToPage(this._scrollToHorizontalPageIndex, this._scrollToVerticalPageIndex, this._scrollToIndexDuration);
-				this._scrollToHorizontalPageIndex = -1;
-				this._scrollToVerticalPageIndex = -1;
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function scroller_scrollHandler(event:Event):void
-		{
-			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
-			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
-			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
-			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
-			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
-			this._verticalPageIndex = this.scroller.verticalPageIndex;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.dispatchEventWith(Event.SCROLL);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function scroller_scrollCompleteHandler(event:Event):void
-		{
-			this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
+			super.draw();
 		}
 	}
 }

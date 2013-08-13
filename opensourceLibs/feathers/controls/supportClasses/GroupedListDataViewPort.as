@@ -28,7 +28,6 @@ package feathers.controls.supportClasses
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.EventDispatcher;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -42,10 +41,7 @@ package feathers.controls.supportClasses
 		private static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
 
 		private static const HELPER_POINT:Point = new Point();
-		private static const HELPER_BOUNDS:ViewPortBounds = new ViewPortBounds();
-		private static const HELPER_LAYOUT_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
 		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
 
 		public function GroupedListDataViewPort()
 		{
@@ -55,6 +51,10 @@ package feathers.controls.supportClasses
 		}
 
 		private var touchPointID:int = -1;
+
+		private var _viewPortBounds:ViewPortBounds = new ViewPortBounds();
+
+		private var _layoutResult:LayoutBoundsResult = new LayoutBoundsResult();
 
 		private var _minVisibleWidth:Number = 0;
 
@@ -178,13 +178,35 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
+		protected var _contentX:Number = 0;
+
+		public function get contentX():Number
+		{
+			return this._contentX;
+		}
+
+		protected var _contentY:Number = 0;
+
+		public function get contentY():Number
+		{
+			return this._contentY;
+		}
+
 		public function get horizontalScrollStep():Number
 		{
-			return this._typicalItemWidth;
+			if(this._typicalItemWidth < this._typicalItemHeight)
+			{
+				return this._typicalItemWidth;
+			}
+			return this._typicalItemHeight;
 		}
 
 		public function get verticalScrollStep():Number
 		{
+			if(this._typicalItemWidth < this._typicalItemHeight)
+			{
+				return this._typicalItemWidth;
+			}
 			return this._typicalItemHeight;
 		}
 
@@ -282,12 +304,12 @@ package feathers.controls.supportClasses
 			}
 			if(this._owner)
 			{
-				this._owner.removeEventListener(Event.SCROLL, owner_scrollHandler);
+				this._owner.removeEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
 			}
 			this._owner = value;
 			if(this._owner)
 			{
-				this._owner.addEventListener(Event.SCROLL, owner_scrollHandler);
+				this._owner.addEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
 			}
 		}
 
@@ -307,13 +329,25 @@ package feathers.controls.supportClasses
 			if(this._dataProvider)
 			{
 				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_changeHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
 				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_changeHandler);
+				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
+			}
+			if(this._layout is IVariableVirtualLayout)
+			{
+				IVariableVirtualLayout(this._layout).resetVariableVirtualCache();
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -420,7 +454,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._typicalItem = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		private var _itemRendererProperties:PropertyProxy;
@@ -674,7 +708,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._typicalHeader = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		private var _headerRendererProperties:PropertyProxy;
@@ -769,7 +803,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._typicalFooter = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		private var _footerRendererProperties:PropertyProxy;
@@ -815,18 +849,20 @@ package feathers.controls.supportClasses
 			}
 			if(this._layout)
 			{
-				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_changeHandler);
+				this._layout.removeEventListener(Event.CHANGE, layout_changeHandler);
 			}
 			this._layout = value;
 			if(this._layout)
 			{
 				if(this._layout is IVariableVirtualLayout)
 				{
-					IVariableVirtualLayout(this._layout).hasVariableItemDimensions = true;
+					const variableVirtualLayout:IVariableVirtualLayout = IVariableVirtualLayout(this._layout)
+					variableVirtualLayout.hasVariableItemDimensions = true;
+					variableVirtualLayout.resetVariableVirtualCache();
 				}
-				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_changeHandler);
+				this._layout.addEventListener(Event.CHANGE, layout_changeHandler);
 			}
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private var _horizontalScrollPosition:Number = 0;
@@ -899,6 +935,14 @@ package feathers.controls.supportClasses
 			return this._layout.getScrollPositionForIndex(displayIndex, this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
 		}
 
+		override public function dispose():void
+		{
+			this.owner = null;
+			this.dataProvider = null;
+			this.layout = null;
+			super.dispose();
+		}
+
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -908,45 +952,86 @@ package feathers.controls.supportClasses
 			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 
-			if(stylesInvalid || dataInvalid || itemRendererInvalid)
+			if(stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
-				if(this._layout is IVariableVirtualLayout)
-				{
-					IVariableVirtualLayout(this._layout).resetVariableVirtualCache();
-				}
 				this.calculateTypicalValues();
 			}
 
-			if(scrollInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			if(scrollInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshRenderers(itemRendererInvalid);
 			}
-			if(scrollInvalid || sizeInvalid || dataInvalid || stylesInvalid || itemRendererInvalid)
+			if(scrollInvalid || stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshHeaderRendererStyles();
 				this.refreshFooterRendererStyles();
 				this.refreshItemRendererStyles();
 			}
-			if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshSelection();
 			}
 
-			if(scrollInvalid || stateInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			if(scrollInvalid || stateInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshEnabled();
 			}
 
-			this.validateRenderers();
-			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid)
+			if(scrollInvalid || stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this._ignoreRendererResizing = true;
-				this._layout.layout(this._layoutItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
+				this._layout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
 				this._ignoreRendererResizing = false;
-				this.setSizeInternal(HELPER_LAYOUT_RESULT.contentWidth, HELPER_LAYOUT_RESULT.contentHeight, false);
-				this.actualVisibleWidth = HELPER_LAYOUT_RESULT.viewPortWidth;
-				this.actualVisibleHeight = HELPER_LAYOUT_RESULT.viewPortHeight;
+				this._contentX = this._layoutResult.contentX;
+				this._contentY = this._layoutResult.contentY;
+				this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false);
+				this.actualVisibleWidth = this._layoutResult.viewPortWidth;
+				this.actualVisibleHeight = this._layoutResult.viewPortHeight;
+
+				//final validation to avoid juggler next frame issues
+				this.validateRenderers();
+			}
+		}
+
+		private function validateRenderers():void
+		{
+			var rendererCount:int = this._activeFirstItemRenderers ? this._activeFirstItemRenderers.length : 0;
+			for(var i:int = 0; i < rendererCount; i++)
+			{
+				var renderer:IGroupedListItemRenderer = this._activeFirstItemRenderers[i];
+				renderer.validate();
+			}
+			rendererCount = this._activeLastItemRenderers ? this._activeLastItemRenderers.length : 0;
+			for(i = 0; i < rendererCount; i++)
+			{
+				renderer = this._activeLastItemRenderers[i];
+				renderer.validate();
+			}
+			rendererCount = this._activeSingleItemRenderers ? this._activeSingleItemRenderers.length : 0;
+			for(i = 0; i < rendererCount; i++)
+			{
+				renderer = this._activeSingleItemRenderers[i];
+				renderer.validate();
+			}
+			rendererCount = this._activeItemRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				renderer = this._activeItemRenderers[i];
+				renderer.validate();
+			}
+			rendererCount = this._activeHeaderRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this._activeHeaderRenderers[i];
+				headerOrFooterRenderer.validate();
+			}
+			rendererCount = this._activeFooterRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				headerOrFooterRenderer = this._activeFooterRenderers[i];
+				headerOrFooterRenderer.validate();
 			}
 		}
 
@@ -1017,80 +1102,14 @@ package feathers.controls.supportClasses
 			}
 		}
 
-		private function validateRenderers():void
+		private function invalidateParent(flag:String = INVALIDATION_FLAG_ALL):void
 		{
-			var rendererCount:int = this._activeItemRenderers.length;
-			for(var i:int = 0; i < rendererCount; i++)
-			{
-				var renderer:DisplayObject = DisplayObject(this._activeItemRenderers[i]);
-				if(renderer is FeathersControl)
-				{
-					FeathersControl(renderer).validate();
-				}
-			}
-			if(this._activeFirstItemRenderers)
-			{
-				rendererCount = this._activeFirstItemRenderers.length;
-				for(i = 0; i < rendererCount; i++)
-				{
-					renderer = DisplayObject(this._activeFirstItemRenderers[i]);
-					if(renderer is FeathersControl)
-					{
-						FeathersControl(renderer).validate();
-					}
-				}
-			}
-			if(this._activeLastItemRenderers)
-			{
-				rendererCount = this._activeLastItemRenderers.length;
-				for(i = 0; i < rendererCount; i++)
-				{
-					renderer = DisplayObject(this._activeLastItemRenderers[i]);
-					if(renderer is FeathersControl)
-					{
-						FeathersControl(renderer).validate();
-					}
-				}
-			}
-			if(this._activeSingleItemRenderers)
-			{
-				rendererCount = this._activeSingleItemRenderers.length;
-				for(i = 0; i < rendererCount; i++)
-				{
-					renderer = DisplayObject(this._activeSingleItemRenderers[i]);
-					if(renderer is FeathersControl)
-					{
-						FeathersControl(renderer).validate();
-					}
-				}
-			}
-			rendererCount = this._activeHeaderRenderers.length;
-			for(i = 0; i < rendererCount; i++)
-			{
-				renderer = DisplayObject(this._activeHeaderRenderers[i]);
-				if(renderer is FeathersControl)
-				{
-					FeathersControl(renderer).validate();
-				}
-			}
-			rendererCount = this._activeFooterRenderers.length;
-			for(i = 0; i < rendererCount; i++)
-			{
-				renderer = DisplayObject(this._activeFooterRenderers[i]);
-				if(renderer is FeathersControl)
-				{
-					FeathersControl(renderer).validate();
-				}
-			}
-		}
-		
-		private function invalidateParent():void
-		{
-			Scroller(this.parent.parent).invalidate(INVALIDATION_FLAG_DATA);
+			Scroller(this.parent).invalidate(flag);
 		}
 
 		private function calculateTypicalValues():void
 		{
+			this._ignoreRendererResizing = true;
 			var typicalHeader:Object = this._typicalHeader;
 			var typicalFooter:Object = this._typicalFooter;
 			if(!typicalHeader || !typicalFooter)
@@ -1110,69 +1129,165 @@ package feathers.controls.supportClasses
 				else
 				{
 					this._typicalHeaderWidth = 0;
-					this._typicalFooterWidth = 0;
-					this._typicalFooterHeight= 0;
 					this._typicalHeaderHeight = 0;
+					this._typicalFooterWidth = 0;
+					this._typicalFooterHeight = 0;
 				}
 			}
 
 			//headers are optional
 			if(typicalHeader)
 			{
-				const typicalHeaderRenderer:IGroupedListHeaderOrFooterRenderer = this.createHeaderRenderer(typicalHeader, 0, 0, true);
+				var needsDestruction:Boolean = true;
+				var typicalHeaderRenderer:IGroupedListHeaderOrFooterRenderer = IGroupedListHeaderOrFooterRenderer(this._headerRendererMap[typicalHeader]);
+				if(typicalHeaderRenderer)
+				{
+					typicalHeaderRenderer.width = NaN;
+					typicalHeaderRenderer.height = NaN;
+					needsDestruction = false;
+				}
+				else
+				{
+					typicalHeaderRenderer = this.createHeaderRenderer(typicalHeader, 0, 0, true);
+				}
 				this.refreshOneHeaderRendererStyles(typicalHeaderRenderer);
 				if(typicalHeaderRenderer is FeathersControl)
 				{
 					FeathersControl(typicalHeaderRenderer).validate();
 				}
-				var displayRenderer:DisplayObject = DisplayObject(typicalHeaderRenderer);
-				this._typicalHeaderWidth = displayRenderer.width;
-				this._typicalHeaderHeight = displayRenderer.height;
-				this.destroyHeaderRenderer(typicalHeaderRenderer);
+				this._typicalHeaderWidth = typicalHeaderRenderer.width;
+				this._typicalHeaderHeight = typicalHeaderRenderer.height;
+				if(needsDestruction)
+				{
+					this.destroyHeaderRenderer(typicalHeaderRenderer);
+				}
 			}
 
 			//footers are optional
 			if(typicalFooter)
 			{
-				const typicalFooterRenderer:IGroupedListHeaderOrFooterRenderer = this.createFooterRenderer(typicalFooter, 0, 0, true);
+				needsDestruction = true;
+				var typicalFooterRenderer:IGroupedListHeaderOrFooterRenderer = IGroupedListHeaderOrFooterRenderer(this._footerRendererMap[typicalFooter]);
+				if(typicalFooterRenderer)
+				{
+					needsDestruction = false;
+					typicalFooterRenderer.width = NaN;
+					typicalFooterRenderer.height = NaN;
+				}
+				else
+				{
+					typicalFooterRenderer = this.createFooterRenderer(typicalFooter, 0, 0, true);
+				}
 				this.refreshOneFooterRendererStyles(typicalFooterRenderer);
 				if(typicalFooterRenderer is FeathersControl)
 				{
 					FeathersControl(typicalFooterRenderer).validate();
 				}
-				displayRenderer = DisplayObject(typicalFooterRenderer);
-				this._typicalFooterWidth = displayRenderer.width;
-				this._typicalFooterHeight = displayRenderer.height;
-				this.destroyFooterRenderer(typicalFooterRenderer);
+				this._typicalFooterWidth = typicalFooterRenderer.width;
+				this._typicalFooterHeight = typicalFooterRenderer.height;
+				if(needsDestruction)
+				{
+					this.destroyFooterRenderer(typicalFooterRenderer);
+				}
 			}
+			this._ignoreRendererResizing = false;
+
+			const hasCustomFirstItemRenderer:Boolean = this._firstItemRendererType || this._firstItemRendererFactory != null || this._firstItemRendererName;
+			const hasCustomSingleItemRenderer:Boolean = this._singleItemRendererType || this._singleItemRendererFactory != null || this._singleItemRendererName;
 
 			var typicalItem:Object = this._typicalItem;
+			var groupCount:int = 0;
+			var firstGroupLength:int = 0;
+			if(!typicalItem && this._dataProvider)
+			{
+				groupCount = this._dataProvider.getLength();
+				if(groupCount > 0)
+				{
+					firstGroupLength = this._dataProvider.getLength(0);
+					if(firstGroupLength > 0)
+					{
+						typicalItem = this._dataProvider.getItemAt(0, 0);
+					}
+				}
+			}
 			if(!typicalItem)
 			{
-				if(this._dataProvider && this._dataProvider.getLength() > 0)
+				this._typicalItemWidth = 0;
+				this._typicalItemHeight = 0;
+				return;
+			}
+
+			this._ignoreRendererResizing = true;
+			needsDestruction = true;
+			var isFirst:Boolean = false;
+			var isSingle:Boolean = false;
+			var typicalItemRenderer:IGroupedListItemRenderer;
+			if(hasCustomSingleItemRenderer && firstGroupLength == 1)
+			{
+				if(this._singleItemRendererMap)
 				{
-					typicalItem = this._dataProvider.getItemAt(0);
+					typicalItemRenderer = this._singleItemRendererMap[typicalItem];
+				}
+				isSingle = true;
+			}
+			else if(hasCustomFirstItemRenderer && firstGroupLength > 1)
+			{
+				if(this._firstItemRendererMap)
+				{
+					typicalItemRenderer = this._firstItemRendererMap[typicalItem];
+				}
+				isFirst = true;
+			}
+			else
+			{
+				typicalItemRenderer = this._itemRendererMap[typicalItem];
+			}
+
+			if(typicalItemRenderer)
+			{
+				needsDestruction = false;
+				typicalItemRenderer.width = NaN;
+				typicalItemRenderer.height = NaN;
+			}
+			else
+			{
+				if(isFirst)
+				{
+					var type:Class = this._firstItemRendererType ? this._firstItemRendererType : this._itemRendererType;
+					var factory:Function = this._firstItemRendererFactory != null ? this._firstItemRendererFactory : this._itemRendererFactory;
+					var name:String = this._firstItemRendererName ? this._firstItemRendererName : this._itemRendererName;
+					typicalItemRenderer = this.createItemRenderer(this._inactiveFirstItemRenderers,
+						this._activeFirstItemRenderers, this._firstItemRendererMap, type, factory,
+						name, typicalItem, 0, 0, 0, true);
+				}
+				else if(isSingle)
+				{
+					type = this._singleItemRendererType ? this._singleItemRendererType : this._itemRendererType;
+					factory = this._singleItemRendererFactory != null ? this._singleItemRendererFactory : this._itemRendererFactory;
+					name = this._singleItemRendererName ? this._singleItemRendererName : this._itemRendererName;
+					typicalItemRenderer = this.createItemRenderer(this._inactiveSingleItemRenderers,
+						this._activeSingleItemRenderers, this._singleItemRendererMap, type, factory,
+						name, typicalItem, 0, 0, 0, true);
 				}
 				else
 				{
-					this._typicalItemWidth = 0;
-					this._typicalItemHeight = 0;
-					return;
+					typicalItemRenderer = this.createItemRenderer(this._inactiveItemRenderers,
+						this._activeItemRenderers, this._itemRendererMap, this._itemRendererType, this._itemRendererFactory,
+						this._itemRendererName, typicalItem, 0, 0, 0, true);
 				}
 			}
-
-			const typicalItemRenderer:IGroupedListItemRenderer = this.createItemRenderer(this._inactiveItemRenderers,
-				this._activeItemRenderers, this._itemRendererMap, this._itemRendererType, this._itemRendererFactory,
-				this._itemRendererName, typicalItem, 0, 0, 0, true);
 			this.refreshOneItemRendererStyles(typicalItemRenderer);
 			if(typicalItemRenderer is FeathersControl)
 			{
 				FeathersControl(typicalItemRenderer).validate();
 			}
-			displayRenderer = DisplayObject(typicalItemRenderer);
-			this._typicalItemWidth = displayRenderer.width;
-			this._typicalItemHeight = displayRenderer.height;
-			this.destroyItemRenderer(typicalItemRenderer);
+			this._typicalItemWidth = typicalItemRenderer.width;
+			this._typicalItemHeight = typicalItemRenderer.height;
+			if(needsDestruction)
+			{
+				this.destroyItemRenderer(typicalItemRenderer);
+			}
+			this._ignoreRendererResizing = false;
 		}
 
 		private function refreshItemRendererStyles():void
@@ -1319,13 +1434,15 @@ package feathers.controls.supportClasses
 			this._headerIndices.length = 0;
 			this._footerIndices.length = 0;
 
-			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
-			HELPER_BOUNDS.explicitWidth = this.explicitVisibleWidth;
-			HELPER_BOUNDS.explicitHeight = this.explicitVisibleHeight;
-			HELPER_BOUNDS.minWidth = this._minVisibleWidth;
-			HELPER_BOUNDS.minHeight = this._minVisibleHeight;
-			HELPER_BOUNDS.maxWidth = this._maxVisibleWidth;
-			HELPER_BOUNDS.maxHeight = this._maxVisibleHeight;
+			this._viewPortBounds.x = this._viewPortBounds.y = 0;
+			this._viewPortBounds.scrollX = this._horizontalScrollPosition;
+			this._viewPortBounds.scrollY = this._verticalScrollPosition;
+			this._viewPortBounds.explicitWidth = this.explicitVisibleWidth;
+			this._viewPortBounds.explicitHeight = this.explicitVisibleHeight;
+			this._viewPortBounds.minWidth = this._minVisibleWidth;
+			this._viewPortBounds.minHeight = this._minVisibleHeight;
+			this._viewPortBounds.maxWidth = this._maxVisibleWidth;
+			this._viewPortBounds.maxHeight = this._maxVisibleHeight;
 
 			this.findUnrenderedData();
 			this.recoverInactiveRenderers();
@@ -1456,7 +1573,7 @@ package feathers.controls.supportClasses
 				virtualLayout.typicalItemWidth = this._typicalItemWidth;
 				virtualLayout.typicalItemHeight = this._typicalItemHeight;
 				this._ignoreLayoutChanges = false;
-				virtualLayout.measureViewPort(totalLayoutCount, HELPER_BOUNDS, HELPER_POINT);
+				virtualLayout.measureViewPort(totalLayoutCount, this._viewPortBounds, HELPER_POINT);
 				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, HELPER_POINT.x, HELPER_POINT.y, totalLayoutCount, HELPER_VECTOR);
 
 				averageItemsPerGroup /= groupCount;
@@ -1469,6 +1586,8 @@ package feathers.controls.supportClasses
 				this._minimumItemCount = Math.ceil(HELPER_POINT.y / this._typicalItemHeight) + 1;
 			}
 			var currentIndex:int = 0;
+			var unrenderedHeadersLastIndex:int = this._unrenderedHeaders.length;
+			var unrenderedFootersLastIndex:int = this._unrenderedFooters.length;
 			for(i = 0; i < groupCount; i++)
 			{
 				group = this._dataProvider.getItemAt(i);
@@ -1489,14 +1608,15 @@ package feathers.controls.supportClasses
 							headerOrFooterRenderer.groupIndex = i;
 							this._activeHeaderRenderers.push(headerOrFooterRenderer);
 							this._inactiveHeaderRenderers.splice(this._inactiveHeaderRenderers.indexOf(headerOrFooterRenderer), 1);
-							var displayRenderer:DisplayObject = DisplayObject(headerOrFooterRenderer);
-							displayRenderer.visible = true;
-							this._layoutItems[currentIndex] = displayRenderer;
+							headerOrFooterRenderer.visible = true;
+							this._layoutItems[currentIndex] = DisplayObject(headerOrFooterRenderer);
 						}
 						else
 						{
-							this._unrenderedHeaders.push(i);
-							this._unrenderedHeaders.push(currentIndex);
+							this._unrenderedHeaders[unrenderedHeadersLastIndex] = i;
+							unrenderedHeadersLastIndex++;
+							this._unrenderedHeaders[unrenderedHeadersLastIndex] = currentIndex;
+							unrenderedHeadersLastIndex++;
 						}
 					}
 					currentIndex++;
@@ -1551,19 +1671,21 @@ package feathers.controls.supportClasses
 							headerOrFooterRenderer.layoutIndex = currentIndex;
 							this._activeFooterRenderers.push(headerOrFooterRenderer);
 							this._inactiveFooterRenderers.splice(this._inactiveFooterRenderers.indexOf(headerOrFooterRenderer), 1);
-							displayRenderer = DisplayObject(headerOrFooterRenderer);
-							displayRenderer.visible = true;
-							this._layoutItems[currentIndex] = displayRenderer;
+							headerOrFooterRenderer.visible = true;
+							this._layoutItems[currentIndex] = DisplayObject(headerOrFooterRenderer);
 						}
 						else
 						{
-							this._unrenderedFooters.push(i);
-							this._unrenderedFooters.push(currentIndex);
+							this._unrenderedFooters[unrenderedFootersLastIndex] = i;
+							unrenderedFootersLastIndex++;
+							this._unrenderedFooters[unrenderedFootersLastIndex] = currentIndex;
+							unrenderedFootersLastIndex++;
 						}
 					}
 					currentIndex++;
 				}
 			}
+			HELPER_VECTOR.length = 0;
 		}
 
 		private function findRendererForItem(item:Object, groupIndex:int, itemIndex:int, layoutIndex:int,
@@ -1578,9 +1700,8 @@ package feathers.controls.supportClasses
 				itemRenderer.layoutIndex = layoutIndex;
 				activeRenderers.push(itemRenderer);
 				inactiveRenderers.splice(inactiveRenderers.indexOf(itemRenderer), 1);
-				var displayRenderer:DisplayObject = DisplayObject(itemRenderer);
-				displayRenderer.visible = true;
-				this._layoutItems[layoutIndex] = displayRenderer;
+				itemRenderer.visible = true;
+				this._layoutItems[layoutIndex] = DisplayObject(itemRenderer);
 			}
 			else
 			{
@@ -1750,7 +1871,8 @@ package feathers.controls.supportClasses
 			for(var i:int = 0; i < keepCount; i++)
 			{
 				var itemRenderer:IGroupedListItemRenderer = this._inactiveItemRenderers.shift();
-				DisplayObject(itemRenderer).visible = false;
+				itemRenderer.data = null;
+				itemRenderer.visible = false;
 				this._activeItemRenderers.push(itemRenderer);
 			}
 			var rendererCount:int = this._inactiveItemRenderers.length;
@@ -1766,7 +1888,8 @@ package feathers.controls.supportClasses
 				for(i = 0; i < keepCount; i++)
 				{
 					itemRenderer = this._inactiveFirstItemRenderers.shift();
-					DisplayObject(itemRenderer).visible = false;
+					itemRenderer.data = null;
+					itemRenderer.visible = false;
 					this._activeFirstItemRenderers.push(itemRenderer);
 				}
 				rendererCount = this._inactiveFirstItemRenderers.length;
@@ -1783,7 +1906,8 @@ package feathers.controls.supportClasses
 				for(i = 0; i < keepCount; i++)
 				{
 					itemRenderer = this._inactiveLastItemRenderers.shift();
-					DisplayObject(itemRenderer).visible = false;
+					itemRenderer.data = null;
+					itemRenderer.visible = false;
 					this._activeLastItemRenderers.push(itemRenderer);
 				}
 				rendererCount = this._inactiveLastItemRenderers.length;
@@ -1800,7 +1924,8 @@ package feathers.controls.supportClasses
 				for(i = 0; i < keepCount; i++)
 				{
 					itemRenderer = this._inactiveSingleItemRenderers.shift();
-					DisplayObject(itemRenderer).visible = false;
+					itemRenderer.data = null;
+					itemRenderer.visible = false;
 					this._activeSingleItemRenderers.push(itemRenderer);
 				}
 				rendererCount = this._inactiveSingleItemRenderers.length;
@@ -1815,7 +1940,8 @@ package feathers.controls.supportClasses
 			for(i = 0; i < keepCount; i++)
 			{
 				var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this._inactiveHeaderRenderers.shift();
-				DisplayObject(headerOrFooterRenderer).visible = false;
+				headerOrFooterRenderer.visible = false;
+				headerOrFooterRenderer.data = null;
 				this._activeHeaderRenderers.push(headerOrFooterRenderer);
 			}
 			rendererCount = this._inactiveHeaderRenderers.length;
@@ -1829,7 +1955,8 @@ package feathers.controls.supportClasses
 			for(i = 0; i < keepCount; i++)
 			{
 				headerOrFooterRenderer = this._inactiveFooterRenderers.shift();
-				DisplayObject(headerOrFooterRenderer).visible = false;
+				headerOrFooterRenderer.visible = false;
+				headerOrFooterRenderer.data = null;
 				this._activeFooterRenderers.push(headerOrFooterRenderer);
 			}
 			rendererCount = this._inactiveFooterRenderers.length;
@@ -1867,20 +1994,19 @@ package feathers.controls.supportClasses
 			{
 				renderer = inactiveRenderers.shift();
 			}
-			const displayRenderer:DisplayObject = DisplayObject(renderer);
 			renderer.data = item;
 			renderer.groupIndex = groupIndex;
 			renderer.itemIndex = itemIndex;
 			renderer.layoutIndex = layoutIndex;
 			renderer.owner = this._owner;
-			displayRenderer.visible = true;
+			renderer.visible = true;
 
 			if(!isTemporary)
 			{
 				rendererMap[item] = renderer;
 				activeRenderers.push(renderer);
-				displayRenderer.addEventListener(Event.CHANGE, renderer_changeHandler);
-				displayRenderer.addEventListener(FeathersEventType.RESIZE, itemRenderer_resizeHandler);
+				renderer.addEventListener(Event.CHANGE, renderer_changeHandler);
+				renderer.addEventListener(FeathersEventType.RESIZE, itemRenderer_resizeHandler);
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, renderer);
 			}
 
@@ -1994,6 +2120,78 @@ package feathers.controls.supportClasses
 			this.removeChild(DisplayObject(renderer), true);
 		}
 
+		private function groupToHeaderDisplayIndex(groupIndex:int):int
+		{
+			var group:Object = this._dataProvider.getItemAt(groupIndex);
+			var header:Object = this._owner.groupToHeaderData(group);
+			if(!header)
+			{
+				return -1;
+			}
+			var displayIndex:int = 0;
+			const groupCount:int = this._dataProvider.getLength();
+			for(var i:int = 0; i < groupCount; i++)
+			{
+				group = this._dataProvider.getItemAt(i);
+				header = this._owner.groupToHeaderData(group);
+				if(header)
+				{
+					if(groupIndex == i)
+					{
+						return displayIndex;
+					}
+					displayIndex++;
+				}
+				var groupLength:int = this._dataProvider.getLength(i);
+				for(var j:int = 0; j < groupLength; j++)
+				{
+					displayIndex++;
+				}
+				var footer:Object = this._owner.groupToFooterData(group);
+				if(footer)
+				{
+					displayIndex++;
+				}
+			}
+			return -1;
+		}
+
+		private function groupToFooterDisplayIndex(groupIndex:int):int
+		{
+			var group:Object = this._dataProvider.getItemAt(groupIndex);
+			var footer:Object = this._owner.groupToFooterData(group);
+			if(!footer)
+			{
+				return -1;
+			}
+			var displayIndex:int = 0;
+			const groupCount:int = this._dataProvider.getLength();
+			for(var i:int = 0; i < groupCount; i++)
+			{
+				group = this._dataProvider.getItemAt(i);
+				var header:Object = this._owner.groupToHeaderData(group);
+				if(header)
+				{
+					displayIndex++;
+				}
+				var groupLength:int = this._dataProvider.getLength(i);
+				for(var j:int = 0; j < groupLength; j++)
+				{
+					displayIndex++;
+				}
+				footer = this._owner.groupToFooterData(group);
+				if(footer)
+				{
+					if(groupIndex == i)
+					{
+						return displayIndex;
+					}
+					displayIndex++;
+				}
+			}
+			return -1;
+		}
+
 		private function locationToDisplayIndex(groupIndex:int, itemIndex:int):int
 		{
 			var displayIndex:int = 0;
@@ -2029,7 +2227,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		private function owner_scrollHandler(event:Event):void
+		private function owner_scrollStartHandler(event:Event):void
 		{
 			this._isScrolling = true;
 		}
@@ -2037,29 +2235,152 @@ package feathers.controls.supportClasses
 		private function dataProvider_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.invalidateParent();
+		}
+
+		private function dataProvider_addItemHandler(event:Event, indices:Array):void
+		{
+			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			const groupIndex:int = indices[0] as int;
+			if(indices.length > 1) //adding an item
+			{
+				const itemIndex:int = indices[1] as int;
+				const itemDisplayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+				layout.addToVariableVirtualCacheAtIndex(itemDisplayIndex);
+			}
+			else //adding a whole group
+			{
+				const headerDisplayIndex:int = this.groupToHeaderDisplayIndex(groupIndex);
+				if(headerDisplayIndex >= 0)
+				{
+					layout.addToVariableVirtualCacheAtIndex(headerDisplayIndex);
+				}
+				var groupLength:int = this._dataProvider.getLength(groupIndex);
+				if(groupLength > 0)
+				{
+					var displayIndex:int = headerDisplayIndex;
+					if(displayIndex < 0)
+					{
+						displayIndex = this.locationToDisplayIndex(groupIndex, 0);
+					}
+					groupLength += displayIndex;
+					for(var i:int = displayIndex; i < groupLength; i++)
+					{
+						layout.addToVariableVirtualCacheAtIndex(displayIndex);
+					}
+				}
+				const footerDisplayIndex:int = this.groupToFooterDisplayIndex(groupIndex);
+				if(footerDisplayIndex >= 0)
+				{
+					layout.addToVariableVirtualCacheAtIndex(footerDisplayIndex);
+				}
+			}
+		}
+
+		private function dataProvider_removeItemHandler(event:Event, indices:Array):void
+		{
+			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			const groupIndex:int = indices[0] as int;
+			if(indices.length > 1) //removing an item
+			{
+				const itemIndex:int = indices[1] as int;
+				const displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+				layout.removeFromVariableVirtualCacheAtIndex(displayIndex);
+			}
+			else //removing a whole group
+			{
+				//TODO: figure out the length of the previous group so that we
+				//don't need to reset the whole cache
+				layout.resetVariableVirtualCache();
+			}
+		}
+
+		private function dataProvider_replaceItemHandler(event:Event, indices:Array):void
+		{
+			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			const groupIndex:int = indices[0] as int;
+			if(indices.length > 1) //replacing an item
+			{
+				const itemIndex:int = indices[1] as int;
+				const displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+				layout.resetVariableVirtualCacheAtIndex(displayIndex);
+			}
+			else //replacing a whole group
+			{
+				//TODO: figure out the length of the previous group so that we
+				//don't need to reset the whole cache
+				layout.resetVariableVirtualCache();
+			}
+		}
+
+		private function dataProvider_resetHandler(event:Event):void
+		{
+			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			layout.resetVariableVirtualCache();
 		}
 
 		private function dataProvider_updateItemHandler(event:Event, indices:Array):void
 		{
-			const groupIndex:int = indices[0];
-			const itemIndex:int = indices[1];
-			const item:Object = this._dataProvider.getItemAt(groupIndex, itemIndex);
-			var renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
-			if(!renderer)
+			const groupIndex:int = indices[0] as int;
+			if(indices.length > 1) //updating a whole group
 			{
-				renderer = IGroupedListItemRenderer(this._firstItemRendererMap[item]);
+				const itemIndex:int = indices[1] as int;
+				const item:Object = this._dataProvider.getItemAt(groupIndex, itemIndex);
+				var renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
 				if(!renderer)
 				{
-					renderer = IGroupedListItemRenderer(this._lastItemRendererMap[item]);
+					if(this._firstItemRendererMap)
+					{
+						renderer = IGroupedListItemRenderer(this._firstItemRendererMap[item]);
+					}
 					if(!renderer)
 					{
-						return;
+						if(this._lastItemRendererMap)
+						{
+							renderer = IGroupedListItemRenderer(this._lastItemRendererMap[item]);
+						}
+						if(!renderer)
+						{
+							if(this._singleItemRendererMap)
+							{
+								renderer = IGroupedListItemRenderer(this._singleItemRendererMap[item]);
+							}
+							if(!renderer)
+							{
+								return;
+							}
+						}
 					}
 				}
+				renderer.data = null;
+				renderer.data = item;
 			}
-			renderer.data = null;
-			renderer.data = item;
+			else //updating a whole group
+			{
+				const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+				if(!layout || !layout.hasVariableItemDimensions)
+				{
+					return;
+				}
+				//TODO: figure out the length of the previous group so that we
+				//don't need to reset the whole cache
+				layout.resetVariableVirtualCache();
+			}
 		}
 
 		private function layout_changeHandler(event:Event):void
@@ -2068,8 +2389,8 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.invalidateParent();
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private function itemRenderer_resizeHandler(event:Event):void
@@ -2085,8 +2406,8 @@ package feathers.controls.supportClasses
 			}
 			const renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.currentTarget);
 			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.invalidateParent();
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private function headerOrFooterRenderer_resizeHandler(event:Event):void
@@ -2102,7 +2423,8 @@ package feathers.controls.supportClasses
 			}
 			const renderer:IGroupedListHeaderOrFooterRenderer = IGroupedListHeaderOrFooterRenderer(event.currentTarget);
 			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private function renderer_changeHandler(event:Event):void
@@ -2136,45 +2458,25 @@ package feathers.controls.supportClasses
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				return;
-			}
 			if(this.touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this.touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
+				var touch:Touch = event.getTouch(this, TouchPhase.ENDED, this.touchPointID);
 				if(!touch)
 				{
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this.touchPointID = -1;
-				}
+				this.touchPointID = -1;
 			}
 			else
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this.touchPointID = touch.id;
-						this._isScrolling = false;
-						break;
-					}
+					return;
 				}
+				this.touchPointID = touch.id;
+				this._isScrolling = false;
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 	}
 }

@@ -10,13 +10,17 @@ package feathers.controls.popups
 	import feathers.core.IFeathersControl;
 	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
+	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
+	import flash.geom.Point;
 	import flash.ui.Keyboard;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
+	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	import starling.events.ResizeEvent;
@@ -39,7 +43,7 @@ package feathers.controls.popups
 		/**
 		 * @private
 		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
+		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * Constructor.
@@ -102,7 +106,11 @@ package feathers.controls.popups
 			this.layout();
 			Starling.current.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, int.MAX_VALUE, true);
+
+			//using priority here is a hack so that objects higher up in the
+			//display list have a chance to cancel the event first.
+			var priority:int = -getDisplayObjectDepthFromStage(this.content);
+			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, priority, true);
 		}
 
 		/**
@@ -116,7 +124,7 @@ package feathers.controls.popups
 			}
 			Starling.current.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 			if(this.content is IFeathersControl)
 			{
 				this.content.removeEventListener(FeathersEventType.RESIZE, content_resizeHandler);
@@ -178,16 +186,20 @@ package feathers.controls.popups
 		/**
 		 * @private
 		 */
-		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		protected function nativeStage_keyDownHandler(event:KeyboardEvent):void
 		{
+			if(event.isDefaultPrevented())
+			{
+				//someone else already handled this one
+				return;
+			}
 			if(event.keyCode != Keyboard.BACK && event.keyCode != Keyboard.ESCAPE)
 			{
 				return;
 			}
 			//don't let the OS handle the event
 			event.preventDefault();
-			//don't let other event handlers handle the event
-			event.stopImmediatePropagation();
+
 			this.close();
 		}
 
@@ -204,32 +216,30 @@ package feathers.controls.popups
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			if(event.interactsWith(this.content))
+			if(!PopUpManager.isTopLevelPopUp(this.content))
 			{
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(Starling.current.stage, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				return;
-			}
+			const stage:Stage = Starling.current.stage;
 			if(this.touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this.touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
+				var touch:Touch = event.getTouch(stage, TouchPhase.ENDED, this.touchPointID);
 				if(!touch)
 				{
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
-				if(touch.phase == TouchPhase.ENDED)
+				touch.getLocation(stage, HELPER_POINT);
+				var hitTestResult:DisplayObject = stage.hitTest(HELPER_POINT, true);
+				var isInBounds:Boolean = false;
+				if(this.content is DisplayObjectContainer)
+				{
+					isInBounds = DisplayObjectContainer(this.content).contains(hitTestResult);
+				}
+				else
+				{
+					isInBounds = this.content == hitTestResult;
+				}
+				if(!isInBounds)
 				{
 					this.touchPointID = -1;
 					this.close();
@@ -237,16 +247,28 @@ package feathers.controls.popups
 			}
 			else
 			{
-				for each(touch in touches)
+				touch = event.getTouch(stage, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this.touchPointID = touch.id;
-						break;
-					}
+					return;
 				}
+				touch.getLocation(stage, HELPER_POINT);
+				hitTestResult = stage.hitTest(HELPER_POINT, true);
+				isInBounds = false;
+				if(this.content is DisplayObjectContainer)
+				{
+					isInBounds = DisplayObjectContainer(this.content).contains(hitTestResult);
+				}
+				else
+				{
+					isInBounds = this.content == hitTestResult;
+				}
+				if(isInBounds)
+				{
+					return;
+				}
+				this.touchPointID = touch.id;
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 

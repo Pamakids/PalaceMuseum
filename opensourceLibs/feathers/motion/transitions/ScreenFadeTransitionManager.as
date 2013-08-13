@@ -57,6 +57,8 @@ package feathers.motion.transitions
 		
 		/**
 		 * The duration of the transition, measured in seconds.
+		 *
+		 * @default 0.25
 		 */
 		public var duration:Number = 0.25;
 
@@ -64,13 +66,25 @@ package feathers.motion.transitions
 		 * A delay before the transition starts, measured in seconds. This may
 		 * be required on low-end systems that will slow down for a short time
 		 * after heavy texture uploads.
+		 *
+		 * @default 0.1
 		 */
 		public var delay:Number = 0.1;
 		
 		/**
 		 * The easing function to use.
+		 *
+		 * @default starling.animation.Transitions.EASE_OUT
 		 */
 		public var ease:Object = Transitions.EASE_OUT;
+
+		/**
+		 * Determines if the next transition should be skipped. After the
+		 * transition, this value returns to <code>false</code>.
+		 *
+		 * @default false
+		 */
+		public var skipNextTransition:Boolean = false;
 		
 		/**
 		 * The function passed to the <code>transition</code> property of the
@@ -82,12 +96,28 @@ package feathers.motion.transitions
 			{
 				throw new ArgumentError("Cannot transition if both old screen and new screen are null.");
 			}
-			
+
 			if(this._activeTransition)
 			{
 				this._savedOtherTarget = null;
 				this._activeTransition.advanceTime(this._activeTransition.totalTime);
 				this._activeTransition = null;
+			}
+
+			if(this.skipNextTransition)
+			{
+				this.skipNextTransition = false;
+				this._savedCompleteHandler = null;
+				if(newScreen)
+				{
+					newScreen.x = 0;
+					newScreen.alpha = 1;
+				}
+				if(onComplete != null)
+				{
+					onComplete();
+				}
+				return;
 			}
 			
 			this._savedCompleteHandler = onComplete;

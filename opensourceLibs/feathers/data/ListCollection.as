@@ -129,6 +129,11 @@ package feathers.data
 			{
 				return;
 			}
+			if(!value)
+			{
+				this.removeAll();
+				return;
+			}
 			this._data = value;
 			//we'll automatically detect an array, vector, or xmllist for convenience
 			if(this._data is Array && !(this._dataDescriptor is ArrayListCollectionDataDescriptor))
@@ -257,6 +262,16 @@ package feathers.data
 				this.removeItemAt(index);
 			}
 		}
+
+		/**
+		 * Removes all items from the collection.
+		 */
+		public function removeAll():void
+		{
+			this._dataDescriptor.removeAll(this._data);
+			this.dispatchEventWith(Event.CHANGE);
+			this.dispatchEventWith(CollectionEventType.RESET, false);
+		}
 		
 		/**
 		 * Replaces the item at the specified index with a new item.
@@ -267,13 +282,50 @@ package feathers.data
 			this.dispatchEventWith(Event.CHANGE);
 			this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, index);
 		}
-		
+
+		/**
+		 * Adds an item to the end of the collection.
+		 */
+		public function addItem(item:Object):void
+		{
+			this.addItemAt(item, this.length);
+		}
+
 		/**
 		 * Adds an item to the end of the collection.
 		 */
 		public function push(item:Object):void
 		{
 			this.addItemAt(item, this.length);
+		}
+
+		/**
+		 * Adds all items from another collection.
+		 */
+		public function addAll(collection:ListCollection):void
+		{
+			const otherCollectionLength:int = collection.length;
+			for(var i:int = 0; i < otherCollectionLength; i++)
+			{
+				var item:Object = collection.getItemAt(i);
+				this.addItem(item);
+			}
+		}
+
+		/**
+		 * Adds all items from another collection, placing the items at a
+		 * specific index in this collection.
+		 */
+		public function addAllAt(collection:ListCollection, index:int):void
+		{
+			const otherCollectionLength:int = collection.length;
+			var currentIndex:int = index;
+			for(var i:int = 0; i < otherCollectionLength; i++)
+			{
+				var item:Object = collection.getItemAt(i);
+				this.addItemAt(item, currentIndex);
+				currentIndex++;
+			}
 		}
 		
 		/**
@@ -298,6 +350,14 @@ package feathers.data
 		public function shift():Object
 		{
 			return this.removeItemAt(0);
+		}
+
+		/**
+		 * Determines if the specified item is in the collection.
+		 */
+		public function contains(item:Object):Boolean
+		{
+			return this.getItemIndex(item) >= 0;
 		}
 	}
 }

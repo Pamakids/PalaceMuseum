@@ -25,6 +25,9 @@ package feathers.controls.supportClasses
 		function get maxVisibleHeight():Number;
 		function set maxVisibleHeight(value:Number):void;
 
+		function get contentX():Number;
+		function get contentY():Number;
+
 		function get horizontalScrollPosition():Number;
 		function set horizontalScrollPosition(value:Number):void;
 		function get verticalScrollPosition():Number;

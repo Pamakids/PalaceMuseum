@@ -7,10 +7,13 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.supportClasses
 {
+	import feathers.controls.LayoutGroup;
+	import feathers.controls.Scroller;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
+	import feathers.layout.ILayoutDisplayObject;
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
@@ -19,22 +22,15 @@ package feathers.controls.supportClasses
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.EventDispatcher;
 
 	/**
 	 * @private
 	 * Used internally by ScrollContainer. Not meant to be used on its own.
 	 */
-	public final class LayoutViewPort extends FeathersControl implements IViewPort
+	public final class LayoutViewPort extends LayoutGroup implements IViewPort
 	{
-		private static const HELPER_POINT:Point = new Point();
-		private static const HELPER_BOUNDS:ViewPortBounds = new ViewPortBounds();
-		private static const HELPER_LAYOUT_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
-
 		public function LayoutViewPort()
 		{
-			this.addEventListener(Event.ADDED, addedHandler);
-			this.addEventListener(Event.REMOVED, removedHandler);
 		}
 
 		private var _minVisibleWidth:Number = 0;
@@ -155,14 +151,28 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
+		private var _contentX:Number = 0;
+
+		public function get contentX():Number
+		{
+			return this._contentX;
+		}
+
+		private var _contentY:Number = 0;
+
+		public function get contentY():Number
+		{
+			return this._contentY;
+		}
+
 		public function get horizontalScrollStep():Number
 		{
-			return this._visibleWidth / 10;
+			return Math.min(this.actualWidth, this.actualHeight) / 10;
 		}
 
 		public function get verticalScrollStep():Number
 		{
-			return this._visibleHeight / 10;
+			return Math.min(this.actualWidth, this.actualHeight) / 10;
 		}
 
 		private var _horizontalScrollPosition:Number = 0;
@@ -174,7 +184,12 @@ package feathers.controls.supportClasses
 
 		public function set horizontalScrollPosition(value:Number):void
 		{
+			if(this._horizontalScrollPosition == value)
+			{
+				return;
+			}
 			this._horizontalScrollPosition = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
 		private var _verticalScrollPosition:Number = 0;
@@ -186,154 +201,114 @@ package feathers.controls.supportClasses
 
 		public function set verticalScrollPosition(value:Number):void
 		{
-			this._verticalScrollPosition = value;
-		}
-
-		private var _ignoreChildResizing:Boolean = false;
-
-		private var items:Vector.<DisplayObject> = new <DisplayObject>[];
-
-		private var _layout:ILayout;
-
-		public function get layout():ILayout
-		{
-			return this._layout;
-		}
-
-		public function set layout(value:ILayout):void
-		{
-			if(this._layout == value)
+			if(this._verticalScrollPosition == value)
 			{
 				return;
 			}
-			if(this._layout)
-			{
-				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_changeHandler);
-			}
-			this._layout = value;
-			if(this._layout)
-			{
-				if(this._layout is IVirtualLayout)
-				{
-					IVirtualLayout(this._layout).useVirtualLayout = false;
-				}
-				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_changeHandler);
-				//if we don't have a layout, nothing will need to be redrawn
-				this.invalidate(INVALIDATION_FLAG_DATA);
-			}
-		}
-
-		override public function addChildAt(child:DisplayObject, index:int):DisplayObject
-		{
-			if(child is IFeathersControl)
-			{
-				child.addEventListener(FeathersEventType.RESIZE, child_resizeHandler);
-			}
-			return super.addChildAt(child, index);
-		}
-
-		override public function removeChildAt(index:int, dispose:Boolean = false):DisplayObject
-		{
-			const child:DisplayObject = super.removeChildAt(index, dispose);
-			if(child is IFeathersControl)
-			{
-				child.removeEventListener(FeathersEventType.RESIZE, child_resizeHandler);
-			}
-			return child;
+			this._verticalScrollPosition = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
 		override public function dispose():void
 		{
-			if(this._layout)
-			{
-				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_changeHandler);
-			}
+			this.layout = null;
 			super.dispose();
 		}
 
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 
-			if(sizeInvalid || dataInvalid)
+			super.draw();
+
+			if(scrollInvalid || sizeInvalid || layoutInvalid)
 			{
-				const itemCount:int = this.items.length;
-				for(var i:int = 0; i < itemCount; i++)
-				{
-					var control:IFeathersControl = this.items[i] as IFeathersControl;
-					if(control)
-					{
-						control.validate();
-					}
-				}
-
-				HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
-				HELPER_BOUNDS.explicitWidth = this._visibleWidth;
-				HELPER_BOUNDS.explicitHeight = this._visibleHeight;
-				HELPER_BOUNDS.minWidth = this._minVisibleWidth;
-				HELPER_BOUNDS.minHeight = this._minVisibleHeight;
-				HELPER_BOUNDS.maxWidth = this._maxVisibleWidth;
-				HELPER_BOUNDS.maxHeight = this._maxVisibleHeight;
 				if(this._layout)
 				{
-					this._ignoreChildResizing = true;
-					this._layout.layout(this.items, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
-					this._ignoreChildResizing = false;
-					this.setSizeInternal(HELPER_LAYOUT_RESULT.contentWidth, HELPER_LAYOUT_RESULT.contentHeight, false);
+					this._contentX = this._layoutResult.contentX;
+					this._contentY = this._layoutResult.contentY;
 				}
-				else
+			}
+		}
+
+		override protected function refreshViewPortBounds():void
+		{
+			this.viewPortBounds.x = 0;
+			this.viewPortBounds.y = 0;
+			this.viewPortBounds.scrollX = this._horizontalScrollPosition;
+			this.viewPortBounds.scrollY = this._verticalScrollPosition;
+			this.viewPortBounds.explicitWidth = this._visibleWidth;
+			this.viewPortBounds.explicitHeight = this._visibleHeight;
+			this.viewPortBounds.minWidth = this._minVisibleWidth;
+			this.viewPortBounds.minHeight = this._minVisibleHeight;
+			this.viewPortBounds.maxWidth = this._maxVisibleWidth;
+			this.viewPortBounds.maxHeight = this._maxVisibleHeight;
+		}
+
+		override protected function handleManualLayout():Boolean
+		{
+			var minX:Number = 0;
+			var minY:Number = 0;
+			var maxX:Number = isNaN(this.viewPortBounds.explicitWidth) ? 0 : this.viewPortBounds.explicitWidth;
+			var maxY:Number = isNaN(this.viewPortBounds.explicitHeight) ? 0 : this.viewPortBounds.explicitHeight;
+			this._ignoreChildChanges = true;
+			const itemCount:int = this.items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:DisplayObject = this.items[i];
+				if(item is IFeathersControl)
 				{
-					var maxX:Number = isNaN(HELPER_BOUNDS.explicitWidth) ? 0 : HELPER_BOUNDS.explicitWidth;
-					var maxY:Number = isNaN(HELPER_BOUNDS.explicitHeight) ? 0 : HELPER_BOUNDS.explicitHeight;
-					for each(var item:DisplayObject in this.items)
-					{
-						maxX = Math.max(maxX, item.x + item.width);
-						maxY = Math.max(maxY, item.y + item.height);
-					}
-					HELPER_POINT.x = Math.max(Math.min(maxX, this._maxVisibleWidth), this._minVisibleWidth);
-					HELPER_POINT.y = Math.max(Math.min(maxY, this._maxVisibleHeight), this._minVisibleHeight);
-					this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
+					IFeathersControl(item).validate();
+				}
+				var itemX:Number = item.x;
+				var itemY:Number = item.y;
+				var itemMaxX:Number = itemX + item.width;
+				var itemMaxY:Number = itemY + item.height;
+				if(!isNaN(itemX) && itemX < minX)
+				{
+					minX = itemX;
+				}
+				if(!isNaN(itemY) && itemY < minY)
+				{
+					minY = itemY;
+				}
+				if(!isNaN(itemMaxX) && itemMaxX > maxX)
+				{
+					maxX = itemMaxX;
+				}
+				if(!isNaN(itemMaxY) && itemMaxY > maxY)
+				{
+					maxY = itemMaxY;
 				}
 			}
-		}
-
-		private function layout_changeHandler(event:Event):void
-		{
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-
-		private function child_resizeHandler(event:Event):void
-		{
-			if(this._ignoreChildResizing)
+			this._contentX = minX;
+			this._contentY = minY;
+			var minWidth:Number = this.viewPortBounds.minWidth;
+			var maxWidth:Number = this.viewPortBounds.maxWidth;
+			var minHeight:Number = this.viewPortBounds.minHeight;
+			var maxHeight:Number = this.viewPortBounds.maxHeight;
+			var calculatedWidth:Number = maxX;
+			if(calculatedWidth < minWidth)
 			{
-				return;
+				calculatedWidth = minWidth;
 			}
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-
-		private function addedHandler(event:Event):void
-		{
-			const item:DisplayObject = DisplayObject(event.target);
-			if(item.parent != this)
+			else if(calculatedWidth > maxWidth)
 			{
-				return;
+				calculatedWidth = maxWidth;
 			}
-			const index:int = this.getChildIndex(item);
-			this.items.splice(index, 0, item);
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-
-		private function removedHandler(event:Event):void
-		{
-			const item:DisplayObject = DisplayObject(event.target);
-			if(item.parent != this)
+			var calculatedHeight:Number = maxY;
+			if(calculatedHeight < minHeight)
 			{
-				return;
+				calculatedHeight = minHeight;
 			}
-			const index:int = this.items.indexOf(item);
-			this.items.splice(index, 1);
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			else if(calculatedHeight > maxHeight)
+			{
+				calculatedHeight = maxHeight;
+			}
+			this._ignoreChildChanges = false;
+			return this.setSizeInternal(calculatedWidth, calculatedHeight, false)
 		}
 	}
 }

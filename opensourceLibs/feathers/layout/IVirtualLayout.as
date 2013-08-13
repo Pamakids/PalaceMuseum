@@ -18,8 +18,9 @@ package feathers.layout
 	public interface IVirtualLayout extends ILayout
 	{
 		/**
-		 * Determines if virtual layout can be used. Some components don't
-		 * support virtual layouts. In those cases, the virtual layout options
+		 * Determines if virtual layout should be used. Some components don't
+		 * support virtual layouts, and they will always change this property to
+		 * <code>false</code>. In those cases, the virtual layout options
 		 * will be ignored.
 		 */
 		function get useVirtualLayout():Boolean;
@@ -30,8 +31,17 @@ package feathers.layout
 		function set useVirtualLayout(value:Boolean):void;
 
 		/**
-		 * The width, in pixels, of a "typical" item that is used to virtually
+		 * Used internally by a component, such as <code>List</code>, to provide
+		 * the width, in pixels, of a "typical" item that is used to virtually
 		 * fill in blanks for the layout.
+		 *
+		 * <p>This property is meant to be set by the <code>List</code> or other
+		 * component that uses the virtual layout. If you're simply creating
+		 * a layout for a <code>List</code> or another component, do not use
+		 * this property. It is meant for developers creating custom components
+		 * only.</p>
+		 *
+		 * @see feathers.controls.List#typicalItem
 		 */
 		function get typicalItemWidth():Number;
 
@@ -41,8 +51,17 @@ package feathers.layout
 		function set typicalItemWidth(value:Number):void;
 
 		/**
-		 * The height, in pixels, of a "typical" item that is used to virtually
+		 * Used internally by a component, such as <code>List</code>, to provide
+		 * the height, in pixels, of a "typical" item that is used to virtually
 		 * fill in blanks for the layout.
+		 *
+		 * <p>This property is meant to be set by the <code>List</code> or other
+		 * component that uses the virtual layout. If you're simply creating
+		 * a layout for a <code>List</code> or another component, do not use
+		 * this property. It is meant for developers creating custom components
+		 * only.</p>
+		 *
+		 * @see feathers.controls.List#typicalItem
 		 */
 		function get typicalItemHeight():Number;
 
@@ -52,15 +71,33 @@ package feathers.layout
 		function set typicalItemHeight(value:Number):void;
 
 		/**
-		 * Using the typical item bounds and suggested bounds, returns a set of
-		 * calculated dimensions for the view port.
+		 * Used internally by a component, such as <code>List</code>, to measure
+		 * the view port based on the typical item dimensions or cached
+		 * dimensions, if available.
+		 *
+		 * <p>This function is meant to be called by the <code>List</code> or
+		 * other component that uses the virtual layout. If you're simply
+		 * creating a layout for a <code>List</code> or another component, do
+		 * not call this function. It is meant for developers creating custom
+		 * components only.</p>
+		 *
+		 * @see #typicalItemWidth
+		 * @see #typicalItemHeight
 		 */
 		function measureViewPort(itemCount:int, viewPortBounds:ViewPortBounds = null, result:Point = null):Point;
 
 		/**
-		 * Determines which indices are visible with the specified view port
+		 * Used internally by a component, such as <code>List</code>, to
+		 * determines which indices are visible with the specified view port
 		 * bounds and scroll position. Indices that aren't returned are
-		 * typically not displayed and can be replaced virtually.
+		 * typically not displayed and can be replaced virtually. Uses the
+		 * typical items dimensions, or cached dimensions, if available.
+		 *
+		 * <p>This function is meant to be called by the <code>List</code> or
+		 * other component that uses the virtual layout. If you're simply
+		 * creating a layout for a <code>List</code> or another component, do
+		 * not call this function. It is meant for developers creating custom
+		 * components only.</p>
 		 */
 		function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>;
 	}

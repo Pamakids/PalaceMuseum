@@ -27,6 +27,21 @@ package feathers.controls
 	 * A line of tabs (vertical or horizontal), where one may be selected at a
 	 * time.
 	 *
+	 * <p>The following example sets the data provider, selects the second tab,
+	 * and listens for when the selection changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var tabs:TabBar = new TabBar();
+	 * tabs.dataProvider = new ListCollection(
+	 * [
+	 *     { label: "One" },
+	 *     { label: "Two" },
+	 *     { label: "Three" },
+	 * ]);
+	 * tabs.selectedIndex = 1;
+	 * tabs.addEventListener( Event.CHANGE, tabs_changeHandler );
+	 * this.addChild( tabs );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/tab-bar
 	 */
 	public class TabBar extends FeathersControl
@@ -60,16 +75,22 @@ package feathers.controls
 
 		/**
 		 * The tabs are displayed in order from left to right.
+		 *
+		 * @see #direction
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
 		 * The tabs are displayed in order from top to bottom.
+		 *
+		 * @see #direction
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the tabs.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_TAB:String = "feathers-tab-bar-tab";
 
@@ -89,17 +110,44 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the tabs.
+		 * The value added to the <code>nameList</code> of the tabs. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the tab name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_TAB</code>.
+		 *
+		 * <p>To customize the tab name without subclassing, see
+		 * <code>customTabName</code>.</p>
+		 *
+		 * @see #customTabName
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var tabName:String = DEFAULT_CHILD_NAME_TAB;
 
 		/**
-		 * The value added to the <code>nameList</code> of the first tab.
+		 * The value added to the <code>nameList</code> of the first tab. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the first tab name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_TAB</code>.
+		 *
+		 * <p>To customize the first tab name without subclassing, see
+		 * <code>customFirstTabName</code>.</p>
+		 *
+		 * @see #customFirstTabName
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var firstTabName:String = DEFAULT_CHILD_NAME_TAB;
 
 		/**
-		 * The value added to the <code>nameList</code> of the last tab.
+		 * The value added to the <code>nameList</code> of the last tab. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the last tab name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_TAB</code>.
+		 *
+		 * <p>To customize the last tab name without subclassing, see
+		 * <code>customLastTabName</code>.</p>
+		 *
+		 * @see #customLastTabName
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var lastTabName:String = DEFAULT_CHILD_NAME_TAB;
 
@@ -144,7 +192,35 @@ package feathers.controls
 		protected var _dataProvider:ListCollection;
 
 		/**
-		 * The collection of data to be displayed with tabs.
+		 * The collection of data to be displayed with tabs. The default
+		 * <em>tab initializer</em> interprets this data to customize the tabs
+		 * with various fields available to buttons, including the following:
+		 *
+		 * <ul>
+		 *     <li>label</li>
+		 *     <li>defaultIcon</li>
+		 *     <li>upIcon</li>
+		 *     <li>downIcon</li>
+		 *     <li>hoverIcon</li>
+		 *     <li>disabledIcon</li>
+		 *     <li>defaultSelectedIcon</li>
+		 *     <li>selectedUpIcon</li>
+		 *     <li>selectedDownIcon</li>
+		 *     <li>selectedHoverIcon</li>
+		 *     <li>selectedDisabledIcon</li>
+		 * </ul>
+		 *
+		 * <p>The following example passes in a data provider:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.dataProvider = new ListCollection(
+		 * [
+		 *     { label: "General", defaultIcon: new Image( generalTexture ) },
+		 *     { label: "Security", defaultIcon: new Image( securityTexture ) },
+		 *     { label: "Advanced", defaultIcon: new Image( advancedTexture ) },
+		 * ]);</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #tabInitializer
 		 */
@@ -191,6 +267,14 @@ package feathers.controls
 		/**
 		 * The tab bar layout is either vertical or horizontal.
 		 *
+		 * <p>In the following example, the tab bar's direction is set to
+		 * vertical:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.direction = TabBar.DIRECTION_VERTICAL;</listing>
+		 *
+		 * @default TabBar.DIRECTION_HORIZONTAL
+		 *
 		 * @see #DIRECTION_HORIZONTAL
 		 * @see #DIRECTION_VERTICAL
 		 */
@@ -219,6 +303,13 @@ package feathers.controls
 
 		/**
 		 * Space, in pixels, between tabs.
+		 *
+		 * <p>In the following example, the tab bar's gap is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.gap = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get gap():Number
 		{
@@ -244,11 +335,30 @@ package feathers.controls
 		protected var _tabFactory:Function = defaultTabFactory;
 
 		/**
-		 * Creates a new tab.
+		 * Creates a new tab. A tab must be an instance of <code>Button</code>.
+		 * This factory can be used to change properties on the tabs when they
+		 * are first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on a tab.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
 		 * <pre>function():Button</pre>
+		 *
+		 * <p>In the following example, a custom tab factory is passed to the
+		 * tab bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.tabFactory = function():Button
+		 * {
+		 *     var tab:Button = new Button();
+		 *     tab.defaultSkin = new Image( upTexture );
+		 *     tab.defaultSelectedSkin = new Image( selectedTexture );
+		 *     tab.downSkin = new Image( downTexture );
+		 *     return tab;
+		 * };</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.controls.Button
 		 * @see #firstTabFactory
@@ -278,12 +388,32 @@ package feathers.controls
 		protected var _firstTabFactory:Function;
 
 		/**
-		 * Creates a new first tab. If the firstTabFactory is null, then the
-		 * TabBar will use the tabFactory.
+		 * Creates a new first tab. If the <code>firstTabFactory</code> is
+		 * <code>null</code>, then the tab bar will use the <code>tabFactory</code>.
+		 * The first tab must be an instance of <code>Button</code>. This
+		 * factory can be used to change properties on the first tab when it
+		 * is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the first tab.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
 		 * <pre>function():Button</pre>
+		 *
+		 * <p>In the following example, a custom first tab factory is passed to the
+		 * tab bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.firstTabFactory = function():Button
+		 * {
+		 *     var tab:Button = new Button();
+		 *     tab.defaultSkin = new Image( upTexture );
+		 *     tab.defaultSelectedSkin = new Image( selectedTexture );
+		 *     tab.downSkin = new Image( downTexture );
+		 *     return tab;
+		 * };</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.controls.Button
 		 * @see #tabFactory
@@ -313,12 +443,32 @@ package feathers.controls
 		protected var _lastTabFactory:Function;
 
 		/**
-		 * Creates a new last tab. If the lastTabFactory is null, then the
-		 * TabBar will use the tabFactory.
+		 * Creates a new last tab. If the <code>lastTabFactory</code> is
+		 * <code>null</code>, then the tab bar will use the <code>tabFactory</code>.
+		 * The last tab must be an instance of <code>Button</code>. This
+		 * factory can be used to change properties on the last tab when it
+		 * is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the last tab.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
 		 * <pre>function():Button</pre>
+		 *
+		 * <p>In the following example, a custom last tab factory is passed to the
+		 * tab bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.lastTabFactory = function():Button
+		 * {
+		 *     var tab:Button = new Button();
+		 *     tab.defaultSkin = new Image( upTexture );
+		 *     tab.defaultSelectedSkin = new Image( selectedTexture );
+		 *     tab.downSkin = new Image( downTexture );
+		 *     return tab;
+		 * };</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.controls.Button
 		 * @see #tabFactory
@@ -348,15 +498,25 @@ package feathers.controls
 		protected var _tabInitializer:Function = defaultTabInitializer;
 
 		/**
-		 * Modifies a tab, perhaps by changing its label and icons, based on the
-		 * item from the data provider that the tab is meant to represent. The
-		 * default tabInitializer function can set the tab's label and icons if
-		 * <code>label</code> and/or any of the <code>Button</code> icon fields
-		 * (<code>defaultIcon</code>, <code>upIcon</code>, etc.) are present in
-		 * the item.
+		 * Modifies the properties of an individual tab, using an item from the
+		 * data provider. The default initializer will set the tab's label and
+		 * icons. A custom tab initializer can be provided to update additional
+		 * properties or to use different field names in the data provider.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 * <pre>function( tab:Button, item:Object ):void</pre>
+		 *
+		 * <p>In the following example, a custom tab initializer is passed to the
+		 * tab bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.tabInitializer = function( tab:Button, item:Object ):void
+		 * {
+		 *     tab.label = item.text;
+		 *     tab.defaultIcon = item.icon;
+		 * };</listing>
+		 *
+		 * @see #dataProvider
 		 */
 		public function get tabInitializer():Function
 		{
@@ -389,6 +549,27 @@ package feathers.controls
 		/**
 		 * The index of the currently selected tab. Returns -1 if no tab is
 		 * selected.
+		 *
+		 * <p>In the following example, the tab bar's selected index is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.selectedIndex = 2;</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected index:</p>
+		 *
+		 * <listing version="3.0">
+		 * function tabs_changeHandler( event:Event ):void
+		 * {
+		 *     var tabs:TabBar = TabBar( event.currentTarget );
+		 *     var index:int = tabs.selectedIndex;
+		 *
+		 * }
+		 * tabs.addEventListener( Event.CHANGE, tabs_changeHandler );</listing>
+		 * 
+		 * @default -1
+		 * 
+		 * @see #selectedItem
 		 */
 		public function get selectedIndex():int
 		{
@@ -420,6 +601,27 @@ package feathers.controls
 		/**
 		 * The currently selected item from the data provider. Returns
 		 * <code>null</code> if no item is selected.
+		 *
+		 * <p>In the following example, the tab bar's selected item is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.selectedItem = tabs.dataProvider.getItemAt(2);</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected item:</p>
+		 *
+		 * <listing version="3.0">
+		 * function tabs_changeHandler( event:Event ):void
+		 * {
+		 *     var tabs:TabBar = TabBar( event.currentTarget );
+		 *     var item:Object = tabs.selectedItem;
+		 *
+		 * }
+		 * tabs.addEventListener( Event.CHANGE, tabs_changeHandler );</listing>
+		 * 
+		 * @default null
+		 * 
+		 * @see #selectedIndex
 		 */
 		public function get selectedItem():Object
 		{
@@ -449,7 +651,23 @@ package feathers.controls
 		 * A name to add to all tabs in this tab bar. Typically used by a theme
 		 * to provide different skins to different tab bars.
 		 *
+		 * <p>In the following example, a custom tab name is provided to the tab
+		 * bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.customTabName = "my-custom-tab";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customTabInitializer, "my-custom-tab");</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_NAME_TAB
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 */
 		public function get customTabName():String
 		{
@@ -485,7 +703,22 @@ package feathers.controls
 		 * A name to add to the first tab in this tab bar. Typically used by a
 		 * theme to provide different skins to the first tab.
 		 *
+		 * <p>In the following example, a custom first tab name is provided to the tab
+		 * bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.customFirstTabName = "my-custom-first-tab";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customFirstTabInitializer, "my-custom-first-tab");</listing>
+		 *
+		 * @default null
+		 *
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 */
 		public function get customFirstTabName():String
 		{
@@ -519,7 +752,22 @@ package feathers.controls
 		 * A name to add to the last tab in this tab bar. Typically used by a
 		 * theme to provide different skins to the last tab.
 		 *
+		 * <p>In the following example, a custom tab name is provided to the tab
+		 * bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.customLastTabName = "my-custom-last-tab";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customLastTabInitializer, "my-custom-last-tab");</listing>
+		 *
+		 * @default null
+		 *
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 */
 		public function get customLastTabName():String
 		{
@@ -553,8 +801,10 @@ package feathers.controls
 		 * A set of key/value pairs to be passed down to all of the tab bar's
 		 * tabs. These values are shared by each tabs, so values that cannot be
 		 * shared (such as display objects that need to be added to the display
-		 * list) should be passed to tabs in another way (such as with an
-		 * <code>DisplayListWatcher</code>).
+		 * list) should be passed to tabs using the <code>tabFactory</code> or
+		 * in a theme. The buttons in a tab bar are instances of
+		 * <code>feathers.controls.Button</code> that are created by
+		 * <code>tabFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -563,8 +813,19 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>Setting properties in a <code>tabFactory</code> function instead
+		 * of using <code>tabProperties</code> will result in better
+		 * performance.</p>
+		 *
+		 * <p>In the following example, the tab bar's tab properties are updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.tabProperties.iconPosition = Button.ICON_POSITION_RIGHT;</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #tabFactory
 		 * @see feathers.controls.Button
-		 * @see feathers.core.DisplayListWatcher
 		 */
 		public function get tabProperties():Object
 		{
@@ -607,6 +868,15 @@ package feathers.controls
 				this._tabProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			this.dataProvider = null;
+			super.dispose();
 		}
 
 		/**
@@ -949,7 +1219,20 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -1021,6 +1304,9 @@ package feathers.controls
 					tab.y = 0;
 					position += tab.width + this._gap;
 				}
+
+				//final validation to avoid juggler next frame issues
+				tab.validate();
 			}
 		}
 
