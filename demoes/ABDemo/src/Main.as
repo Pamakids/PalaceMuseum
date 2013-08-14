@@ -12,7 +12,6 @@ package
 	import nape.phys.Body;
 	import nape.phys.BodyType;
 	import nape.phys.Material;
-	import nape.shape.Circle;
 	import nape.shape.Polygon;
 	import nape.space.Space;
 
@@ -30,7 +29,8 @@ package
 
 		private var space:Space;
 		private var crtArrow:Body;
-		private var dpt:Point=new Point(400,300);
+		private var centerPt:Point=new Point(200,500);
+		private var radius:Number=100;
 		private var cpt:Point;
 		private var isMoving:Boolean;
 
@@ -47,56 +47,123 @@ package
 
 			space=new Space(new Vec2(0,600));
 
-			//下
-			var fl:Body=new Body(BodyType.STATIC,new Vec2(0,700));
-			fl.shapes.add(new Polygon(Polygon.rect(0,0,1000,100)));
-			fl.space=space;
-
-			//上
-//			var fl1:Body=new Body(BodyType.STATIC,new Vec2(0,-100));
-//			fl1.shapes.add(new Polygon(Polygon.rect(0,0,1000,100)));
-//			fl1.space=space;
-
-			//左
-//			var fl2:Body=new Body(BodyType.STATIC,new Vec2(-100,-100));
-//			fl2.shapes.add(new Polygon(Polygon.rect(0,0,100,800)));
-//			fl2.space=space;
-
-			//右
-//			var fl3:Body=new Body(BodyType.STATIC,new Vec2(1000,-100));
-//			fl3.shapes.add(new Polygon(Polygon.rect(0,0,100,800)));
-//			fl3.space=space;
-
 			arrowType=new CbType();
 			targetType=new CbType();
+			wallType=new CbType();
 
+			addWalls();
+			addBow();
 			addTarget();
 			addListeners();
 
 			addEventListener(Event.ENTER_FRAME,loop);
 		}
 
+		private function addWalls():void
+		{
+			//下
+			var fl:Body=new Body(BodyType.STATIC,new Vec2(0,700));
+			fl.cbTypes.add(wallType);
+			fl.shapes.add(new Polygon(Polygon.rect(0,0,1000,100),Material.sand()));
+			fl.space=space;
+
+			//上
+			//			var fl1:Body=new Body(BodyType.STATIC,new Vec2(0,-100));
+			//			fl1.shapes.add(new Polygon(Polygon.rect(0,0,1000,100)));
+			//			fl1.space=space;
+
+			//左
+			//			var fl2:Body=new Body(BodyType.STATIC,new Vec2(-100,-100));
+			//			fl2.shapes.add(new Polygon(Polygon.rect(0,0,100,800)));
+			//			fl2.space=space;
+
+//			右
+			var fl3:Body=new Body(BodyType.STATIC,new Vec2(1000,-5000));
+			fl3.cbTypes.add(wallType);
+			fl3.shapes.add(new Polygon(Polygon.rect(0,0,100,6000)));
+			fl3.space=space;
+		}
+
+		private function addBow():void
+		{
+			bow=new Bow();
+			addChild(bow);
+			bow.x=centerPt.x;
+			bow.y=centerPt.y;
+		}
+
 		private function addListeners():void
 		{
-			var arrowListener:InteractionListener=new InteractionListener(
+			var targetListener:InteractionListener=new InteractionListener(
 				CbEvent.BEGIN,
 				InteractionType.COLLISION,
 				arrowType,
 				targetType,
 				onHitTarget
 				);
+			space.listeners.add(targetListener);
+
+			var wallListener:InteractionListener=new InteractionListener(
+				CbEvent.BEGIN,
+				InteractionType.COLLISION,
+				arrowType,
+				wallType,
+				onHitWall
+				);
+			space.listeners.add(wallListener);
+
+			var arrowListener:InteractionListener=new InteractionListener(
+				CbEvent.BEGIN,
+				InteractionType.COLLISION,
+				arrowType,
+				arrowType,
+				onHitArrow
+				);
 			space.listeners.add(arrowListener);
 		}
 
-		private function onHitTarget(cb:InteractionCallback):void {
+		private function onHitArrow(cb:InteractionCallback):void
+		{
+			var body1:Body=cb.int1.castBody;
+			var body2:Body=cb.int2.castBody;
 
-			var anchor : Vec2
-			var head:Vec2=new Vec2(47,0);
+			body1.userData.graphic.removeParticle();
+			body2.userData.graphic.removeParticle();
+
+			var i1:int=arrowArr.indexOf(body1);
+			var i2:int=arrowArr.indexOf(body2);
+			if(i1<0&&i2<0)
+				return;
+
+			arrowArr.splice(Math.max(i1,i2),1);
+			arrowArr.splice(Math.min(i1,i2),1);
+
+		}
+
+		private function onHitWall(cb:InteractionCallback):void
+		{
 			var _arrow:Body;
 
 			var body1:Body=cb.int1.castBody;
 			var body2:Body=cb.int2.castBody;
 
+			if(body1.cbTypes.has(arrowType))
+				_arrow=body1;
+			else
+				_arrow=body2;
+
+			_arrow.userData.graphic.removeParticle();
+			arrowArr.splice(arrowArr.indexOf(_arrow),1);
+		}
+
+		private function onHitTarget(cb:InteractionCallback):void {
+
+			var anchor : Vec2
+			var head:Vec2=new Vec2(VO.ARROW_HEAD,0);
+			var _arrow:Body;
+
+			var body1:Body=cb.int1.castBody;
+			var body2:Body=cb.int2.castBody;
 
 			if(body1.cbTypes.has(arrowType)){
 				_arrow=body1;
@@ -104,25 +171,35 @@ package
 			else{
 				_arrow=body2;
 				anchor=body2.localPointToWorld(head);}
-			//anchor节点相对于body1和body2本地系统的坐标
-			var anchor1 : Vec2 = body1.worldPointToLocal(anchor);
-			var anchor2 : Vec2 = body2.worldPointToLocal(anchor);
-			//创建weldJoint关节
-			var weldJoint:WeldJoint = new WeldJoint(
-				body1, 
-				body2, 
-				anchor1, 
-				anchor2,
-				-_arrow.rotation//表示两个刚体的相对角度，默认值也是0
-				);
-			weldJoint.space=space;
 
-			arrowArr.splice(arrowArr.indexOf(_arrow),1);
+			_arrow.userData.graphic.removeParticle();
+
+			var index:int=arrowArr.indexOf(_arrow);
+			if(index<0)
+				return;
+
+			if(anchor.x<=target.position.x+10&&anchor.x>=target.position.x-10&&Math.abs(_arrow.rotation)<Math.PI*.5)
+			{
+				//anchor节点相对于body1和body2本地系统的坐标
+				var anchor1 : Vec2 = body1.worldPointToLocal(anchor);
+				var anchor2 : Vec2 = body2.worldPointToLocal(anchor);
+				//创建weldJoint关节
+				var weldJoint:WeldJoint = new WeldJoint(
+					body1, 
+					body2, 
+					anchor1, 
+					anchor2,
+					-_arrow.rotation//表示两个刚体的相对角度，默认值也是0
+					);
+				weldJoint.space=space;
+			}
+
+			arrowArr.splice(index,1);
 		}
 
 		private function addTarget():void
 		{
-			target=new Body(BodyType.DYNAMIC,new Vec2(700,620));
+			target=new Body(BodyType.DYNAMIC,new Vec2(900,620));
 
 			target.cbTypes.add(targetType);
 			target.shapes.add(new Polygon(Polygon.rect(0,-75,3,150),Material.wood()));
@@ -143,17 +220,19 @@ package
 			var arrow:Body=new Body(BodyType.DYNAMIC);
 			arrow.cbTypes.add(arrowType);
 			var vertices:Vector.<Vec2>=new Vector.<Vec2>();
-			vertices.push(new Vec2(-110,0));
-			vertices.push(new Vec2(0,-4));
-			vertices.push(new Vec2(47,0));
-			vertices.push(new Vec2(0,4));
+			var mid:Number=VO.ARROW_TAIL+(VO.ARROW_HEAD-VO.ARROW_TAIL)*14/20
+			vertices.push(new Vec2(VO.ARROW_HEAD,0));
+			vertices.push(new Vec2(mid,-2));
+			vertices.push(new Vec2(VO.ARROW_TAIL,0));
+			vertices.push(new Vec2(mid,2));
 
-			arrow.shapes.add(new Polygon(vertices,Material.steel()));
+			trace(vertices);
+
+			arrow.shapes.add(new Polygon(vertices,Material.wood()));
 			arrow.space=space;
 			arrow.userData.graphic=new Arrow();
 			arrow.userData.graphicUpdate=updateGrap;
 			arrow.userData.type="arrow";
-			arrow.userData.isFlying=false;
 
 			addChild(arrow.userData.graphic);
 
@@ -186,7 +265,7 @@ package
 				case TouchPhase.ENDED:
 				{
 					isMoving=false;
-					if(crtArrow&&dpt){
+					if(crtArrow){
 						var pulse:Vec2=calPulse();
 						release(pulse);
 					}
@@ -202,23 +281,42 @@ package
 
 		private function checkPOS():void
 		{
-			crtArrow.rotation=Math.PI+Math.atan2(cpt.y-dpt.y,cpt.x-dpt.x);
-			crtArrow.position.x=cpt.x;
-			crtArrow.position.y=cpt.y;
+			//抵消重力
+			crtArrow.applyImpulse(new Vec2(0,-10*crtArrow.mass));
+
+			var angle:Number=Math.PI+Math.atan2(cpt.y-centerPt.y,cpt.x-centerPt.x);
+			crtArrow.rotation=angle;
+
+			var distance:Number=Point.distance(cpt,centerPt)-20;
+
+			var strength:Number=Math.max(20,Math.min(distance,100));
+
+			var dx:Number=centerPt.x-Math.cos(angle)*strength;
+			var dy:Number=centerPt.y-Math.sin(angle)*strength;
+
+			crtArrow.position.x=dx;
+			crtArrow.position.y=dy;
+
+			bow.rotation=angle;
+			bow.drag(strength);
 		}
 
+		//射箭
 		private function release(_pulse:Vec2):void
 		{
-			crtArrow.applyImpulse(_pulse,crtArrow.localPointToWorld(new Vec2(-110,0)),true);
-			crtArrow.isBullet=true;
+			var pt:Vec2=crtArrow.localPointToWorld(new Vec2(VO.ARROW_TAIL,0))
+			crtArrow.applyImpulse(_pulse,pt);
+			crtArrow.userData.graphic.addParticle();
 			arrowArr.push(crtArrow);
+			crtArrow=null;
+			bow.clear();
 		}
 
 		private function calPulse():Vec2
 		{
-			var multi:Number=3.8;
-			var pos:Vec2=crtArrow.localPointToWorld(new Vec2(-110,0));
-			var vec:Vec2=new Vec2((dpt.x-pos.x)*crtArrow.mass*multi,(dpt.y-pos.y+10)*crtArrow.mass*multi);
+			var multi:Number=10;
+			var pos:Vec2=crtArrow.localPointToWorld(new Vec2(VO.ARROW_TAIL,0));
+			var vec:Vec2=new Vec2((centerPt.x-pos.x)*crtArrow.mass*multi,(centerPt.y-pos.y)*crtArrow.mass*multi);
 			return vec;
 		}
 
@@ -228,10 +326,12 @@ package
 
 			for each (var arrow:Body in arrowArr) 
 			{
-				fixPostrue(arrow);
+				var flyingAngle:Number=Math.atan2(arrow.velocity.y,arrow.velocity.x);
+				arrow.rotation=flyingAngle;
+//				fixPostrue(arrow);
 			}
 
-			if(dpt&&cpt&&isMoving&&crtArrow)
+			if(cpt&&isMoving&&crtArrow)
 				checkPOS();
 
 			for (var i:int = 0; i < space.liveBodies.length; i++) {
@@ -239,10 +339,17 @@ package
 
 				if (body.userData.graphicUpdate) 
 					body.userData.graphicUpdate(body);
+
+				if(body.cbTypes.has(arrowType)){
+					if(Normalize2(body.velocity)<1)
+						if(body!=crtArrow){
+							//移除静止刚体
+						}
+				}
 			}
 		}
 
-		private var dragConstant:Number=0.00005;
+		private var dragConstant:Number=0.0005;
 
 		private var target:Body;
 
@@ -250,25 +357,23 @@ package
 
 		private var targetType:CbType;
 
+		private var wallType:CbType;
+
+		private var bow:Bow;
+
 		private function fixPostrue(arrow:Body):void
 		{
 			var flightSpeed:Number=Normalize2(arrow.velocity);
-
 			var bodyAngle:Number=-arrow.rotation;
-
-//			trace(bodyAngle%Math.PI)
-
 			var pointingDirection:Vec2=new Vec2(Math.cos(bodyAngle),-Math.sin(bodyAngle));
 
 			var flyingAngle:Number=Math.atan2(arrow.velocity.y,arrow.velocity.x);
+			arrow.rotation=flyingAngle;
+
 			var flightDirection:Vec2=new Vec2(Math.cos(flyingAngle),Math.sin(flyingAngle));
-
-//			trace(pointingDirection,flightDirection);
-
 			var dot:Number=b2Dot(flightDirection,pointingDirection);
-
 			var dragForceMagnitude:Number=(1-Math.abs(dot))*flightSpeed*flightSpeed*dragConstant*arrow.mass;
-			var arrowTailPosition:Vec2=arrow.localPointToWorld(new Vec2(-110,0));
+			var arrowTailPosition:Vec2=arrow.localPointToWorld(new Vec2(VO.ARROW_TAIL,0));
 
 			arrow.applyImpulse(new Vec2(dragForceMagnitude*-flightDirection.x,dragForceMagnitude*-flightDirection.y),arrowTailPosition);
 		}
@@ -278,16 +383,6 @@ package
 		}
 		private function Normalize2(b:Vec2):Number {
 			return Math.sqrt(b.x * b.x + b.y * b.y);
-		}
-
-		private function addBall():void
-		{
-			var ball:Body=new Body(BodyType.DYNAMIC,new Vec2(Math.random()*700,-10));
-			ball.shapes.add(new Circle(45,null,new Material(1.2,1,1,1,200)));
-			ball.space=space;
-			ball.userData.graphic=new CrimsonBird();
-			ball.userData.graphicUpdate=updateGrap;
-			addChild(ball.userData.graphic);
 		}
 
 		private function updateGrap(b:Body):void{
