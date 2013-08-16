@@ -15,10 +15,10 @@ package starling.extensions.s3d
 	{
 		private static var instance:Library = new Library();
 		public var xml:XML;
-		
+
 		private var textureDic:Object = { };
 		public var texturePath:String;
-		
+
 		public function Library() 
 		{
 			if ( instance ) throw Error("Library Class is Singleton.");
@@ -26,9 +26,10 @@ package starling.extensions.s3d
 		public static function getIntance():Library {
 			return instance;
 		}
-		
+
 		public function initLibrary( xmlFile:String ):void {
 			var file:File = File.applicationDirectory.resolvePath(xmlFile);
+			trace(file)
 			if (file.exists) {
 				var data:ByteArray = new ByteArray();
 				var fs:FileStream = new FileStream();
@@ -37,14 +38,14 @@ package starling.extensions.s3d
 				fs.close();
 				data.position = 0;
 				xml = new XML(data.readUTFBytes(data.bytesAvailable));
-				
+
 				try {
 					xml.directory.(@scale == Starling.contentScaleFactor).name();
 					texturePath = xml.directory.(@scale == Starling.contentScaleFactor).@path;
 				}catch (e:Error) {
 					texturePath = xml.directory[0].@path;
 				}
-				
+
 			}else {
 				throw Error(xmlFile+" not Found.");
 			}
@@ -80,12 +81,14 @@ package starling.extensions.s3d
 				}
 			}
 		}
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
 	}
 
 }
+
+
