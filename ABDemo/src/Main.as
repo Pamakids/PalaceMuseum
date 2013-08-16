@@ -29,7 +29,7 @@ package
 
 		private var space:Space;
 		private var crtArrow:Body;
-		private var centerPt:Point=new Point(200,500);
+		private var centerPt:Point=new Point(200,500);   
 		private var radius:Number=100;
 		private var cpt:Point;
 		private var isMoving:Boolean;
@@ -130,14 +130,16 @@ package
 			body1.userData.graphic.removeParticle();
 			body2.userData.graphic.removeParticle();
 
-			var i1:int=arrowArr.indexOf(body1);
-			var i2:int=arrowArr.indexOf(body2);
-			if(i1<0&&i2<0)
-				return;
+//			var i1:int=arrowArr.indexOf(body1);
+//			var i2:int=arrowArr.indexOf(body2);
+//			if(i1<0&&i2<0)
+//				return;
+//
+//			arrowArr.splice(Math.max(i1,i2),1);
+//			arrowArr.splice(Math.min(i1,i2),1);
 
-			arrowArr.splice(Math.max(i1,i2),1);
-			arrowArr.splice(Math.min(i1,i2),1);
-
+			body1.userData.isFlying=false;
+			body2.userData.isFlying=false;
 		}
 
 		private function onHitWall(cb:InteractionCallback):void
@@ -153,7 +155,8 @@ package
 				_arrow=body2;
 
 			_arrow.userData.graphic.removeParticle();
-			arrowArr.splice(arrowArr.indexOf(_arrow),1);
+			_arrow.userData.isFlying=false;
+//			arrowArr.splice(arrowArr.indexOf(_arrow),1);
 		}
 
 		private function onHitTarget(cb:InteractionCallback):void {
@@ -174,11 +177,16 @@ package
 
 			_arrow.userData.graphic.removeParticle();
 
-			var index:int=arrowArr.indexOf(_arrow);
-			if(index<0)
+//			var index:int=arrowArr.indexOf(_arrow);
+//			if(index<0)
+//				return;
+
+			if(!_arrow.userData.isFlying)
 				return;
 
-			if(anchor.x<=target.position.x+10&&anchor.x>=target.position.x-10&&Math.abs(_arrow.rotation)<Math.PI*.5)
+			var angle:Number=Math.atan2(_arrow.velocity.y,_arrow.velocity.x);
+
+			if(anchor.x<=target.position.x+10&&anchor.x>=target.position.x-10&&Math.abs(angle)<Math.PI*.5)
 			{
 				//anchor节点相对于body1和body2本地系统的坐标
 				var anchor1 : Vec2 = body1.worldPointToLocal(anchor);
@@ -189,12 +197,12 @@ package
 					body2, 
 					anchor1, 
 					anchor2,
-					-_arrow.rotation//表示两个刚体的相对角度，默认值也是0
+					-angle//表示两个刚体的相对角度，默认值也是0
 					);
 				weldJoint.space=space;
 			}
 
-			arrowArr.splice(index,1);
+			_arrow.userData.isFlying=false;
 		}
 
 		private function addTarget():void
@@ -223,23 +231,23 @@ package
 			var mid:Number=VO.ARROW_TAIL+(VO.ARROW_HEAD-VO.ARROW_TAIL)*14/20
 			vertices.push(new Vec2(VO.ARROW_HEAD,0));
 			vertices.push(new Vec2(mid,-2));
-			vertices.push(new Vec2(VO.ARROW_TAIL,0));
+			vertices.push(new Vec2(VO.ARROW_TAIL,-2));
+			vertices.push(new Vec2(VO.ARROW_TAIL,2));
 			vertices.push(new Vec2(mid,2));
-
-			trace(vertices);
 
 			arrow.shapes.add(new Polygon(vertices,Material.wood()));
 			arrow.space=space;
 			arrow.userData.graphic=new Arrow();
 			arrow.userData.graphicUpdate=updateGrap;
 			arrow.userData.type="arrow";
+			arrow.userData.isFlying=false;
 
 			addChild(arrow.userData.graphic);
 
 			crtArrow=arrow;
 		}
 
-		private var arrowArr:Vector.<Body>=new Vector.<Body>();
+//		private var arrowArr:Vector.<Body>=new Vector.<Body>();
 
 		private function onTouch(e:TouchEvent):void{
 			var tc:Touch=e.getTouch(stage);
@@ -307,7 +315,8 @@ package
 			var pt:Vec2=crtArrow.localPointToWorld(new Vec2(VO.ARROW_TAIL,0))
 			crtArrow.applyImpulse(_pulse,pt);
 			crtArrow.userData.graphic.addParticle();
-			arrowArr.push(crtArrow);
+			crtArrow.userData.isFlying=true;
+//			arrowArr.push(crtArrow);
 			crtArrow=null;
 			bow.clear();
 		}
@@ -324,12 +333,12 @@ package
 		{
 			space.step(1/60);
 
-			for each (var arrow:Body in arrowArr) 
-			{
-				var flyingAngle:Number=Math.atan2(arrow.velocity.y,arrow.velocity.x);
-				arrow.rotation=flyingAngle;
+//			for each (var arrow:Body in arrowArr) 
+//			{
+//				var flyingAngle:Number=Math.atan2(arrow.velocity.y,arrow.velocity.x);
+//				arrow.rotation=flyingAngle;
 //				fixPostrue(arrow);
-			}
+//			}
 
 			if(cpt&&isMoving&&crtArrow)
 				checkPOS();
@@ -337,15 +346,16 @@ package
 			for (var i:int = 0; i < space.liveBodies.length; i++) {
 				var body:Body = space.liveBodies.at(i);
 
+//				if(body.cbTypes.has(arrowType))
+				if(body.userData.isFlying)
+					fixPostrue(body);
+//					if(Normalize2(body.velocity)<1)
+//						if(body!=crtArrow){
+//							//移除静止刚体
+//						}
+
 				if (body.userData.graphicUpdate) 
 					body.userData.graphicUpdate(body);
-
-				if(body.cbTypes.has(arrowType)){
-					if(Normalize2(body.velocity)<1)
-						if(body!=crtArrow){
-							//移除静止刚体
-						}
-				}
 			}
 		}
 
