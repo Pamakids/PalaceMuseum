@@ -5,45 +5,41 @@ package modules.module1
 	import com.greensock.plugins.ShakeEffect;
 	import com.greensock.plugins.TweenPlugin;
 	import com.pamakids.manager.LoadManager;
-	import com.pamakids.palace.base.PalaceScean;
+	import com.pamakids.palace.base.PalaceScene;
 	import com.pamakids.palace.utils.SPUtils;
-	
-	import dragonBones.core.dragonBones_internal;
-	
+
 	import flash.display.Bitmap;
 	import flash.events.IOErrorEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
-	import starling.core.Starling;
-	import starling.display.DisplayObject;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	
-	public class Scean11 extends PalaceScean
+
+	public class Scene11 extends PalaceScene
 	{
 		private var bg_width:Number;
 		private var mg_width:Number;
 		private var fg_width:Number;
-		
+
 		private var bg:Sprite;
 		private var mg:Sprite;
 		private var fg:Sprite;
-		
+
 		private var crtTarget:Sprite;
-		
+
 		private var dpt:Point;
 		private var windowIndex:uint;
 		private var windowXPosArr:Array=[415,630,1040,1250];
 		private var windowY:int=250;
 		private var windowArr:Vector.<Sprite>=new Vector.<Sprite>();
-		
+
 		private var windowStrArr:Array=["hint3.png","hint2.png","hint2.png","hint3.png"];
-		
-		private var hotzone1:Rectangle=new Rectangle(48,214,140,134);//窗-左
+
+		private var hotzone1:Rectangle=new Rectangle(48,209,140,134);//窗-左
 		private var hotzone2:Rectangle=new Rectangle(746,177,158,168);//门-中
 		private var hotzone3:Rectangle=new Rectangle(1481,216,128,128);//窗-右
 		private var crtWinSelected:Boolean=false;
@@ -58,63 +54,63 @@ package modules.module1
 		private var king:Sprite;
 
 		private var okEff:Sprite;
-		
-		public function Scean11()
+
+		public function Scene11()
 		{
 			windowIndex=Math.random()>.5?0:3;
 			TweenPlugin.activate([ShakeEffect]);
-			
+
 			bg=new Sprite();
 			bg.x=512;
 			addChild(bg);
-			
+
 			mg=new Sprite();
 			mg.x=512;
 			mg.y=12;
 			addChild(mg);
-			
+
 			fg=new Sprite();
 			fg.x=512;
 			addChild(fg);
-			
+
 			LoadManager.instance.loadImage("/assets/module1/background.jpg",onBGLoaded);
 			LoadManager.instance.loadImage("/assets/module1/middleground.png",onMGLoaded);
 			LoadManager.instance.loadImage("/assets/module1/frontground.png",onFGLoaded);
 		}
-		
+
 		protected function onError(event:IOErrorEvent):void
 		{
 			trace("error")
 		}
-		
-		protected function onBGLoaded(b:Object):void
+
+		protected function onBGLoaded(b:Bitmap):void
 		{
-			bg.addChild(Image.fromBitmap(b as Bitmap));
+			bg.addChild(Image.fromBitmap(b));
 			bg_width=bg.width;
 			trace(bg_width)
 			bg.pivotX=bg_width>>1;
 		}
-		
-		protected function onMGLoaded(b:Object):void
+
+		protected function onMGLoaded(b:Bitmap):void
 		{
-			mg.addChild(Image.fromBitmap(b as Bitmap));
+			mg.addChild(Image.fromBitmap(b));
 			mg_width=mg.width;
 			mg.pivotX=mg_width>>1;
 		}
-		
-		protected function onFGLoaded(b:Object):void
+
+		protected function onFGLoaded(b:Bitmap):void
 		{
-			fg.addChild(Image.fromBitmap(b as Bitmap));
+			fg.addChild(Image.fromBitmap(b));
 			fg_width=fg.width;
 			fg.x=(1024-fg_width)/2;
 			fg.y=768-fg.height;
-			
+
 			addEventListener(TouchEvent.TOUCH, onTouch);
 			fg.addEventListener(TouchEvent.TOUCH, onFGTouch);
 			addWindows();
 			addKing();
 		}
-		
+
 		private function addKing():void
 		{
 			king=new Sprite();
@@ -124,16 +120,16 @@ package modules.module1
 			king.x=512;
 			king.y=768;
 			king.addEventListener(TouchEvent.TOUCH,onKingTouch);
-			
-			showHint(512,600,"hint0.png",3,this);
+
+			showHint(50,50,"hint0.png",3,king);
 		}
-		
+
 		private function onKingTouch(event:TouchEvent):void
 		{
 			var tc:Touch=event.getTouch(stage);
 			if(!tc)return;
 			var pt:Point=tc.getLocation(stage);
-			
+
 			switch(tc.phase)
 			{
 				case TouchPhase.BEGAN:
@@ -141,28 +137,28 @@ package modules.module1
 					dpt=pt;
 					break;
 				}
-					
+
 				case TouchPhase.ENDED:
 				{
 					if(dpt&&Point.distance(dpt,pt)<1)
-						showHint(512,600,"hint0.png",3,this);
+						showHint(50,50,"hint0.png",3,king);
 					dpt=null;
 					break;
 				}
-					
+
 				default:
 				{
 					break;
 				}
 			}
 		}
-		
+
 		private function onFGTouch(event:TouchEvent):void
 		{
 			var tc:Touch=event.getTouch(stage);
 			if(!tc)return;
 			var pt:Point=tc.getLocation(stage);
-			
+
 			switch(tc.phase)
 			{
 				case TouchPhase.BEGAN:
@@ -170,7 +166,7 @@ package modules.module1
 					dpt=pt;
 					break;
 				}
-					
+
 				case TouchPhase.ENDED:
 				{
 					if(dpt&&Point.distance(dpt,pt)<1)
@@ -178,14 +174,14 @@ package modules.module1
 					dpt=null;
 					break;
 				}
-					
+
 				default:
 				{
 					break;
 				}
 			}
 		}
-		
+
 		private function showShadow():void{
 			if(!isShadowShow)
 				TweenLite.to(w0s,1,{alpha:1,onComplete:function():void{
@@ -199,11 +195,11 @@ package modules.module1
 					effComplete=true;
 				}});
 		}
-		
+
 		private function checkFG(pt:Point):void
 		{
 			var lp:Point=fg.globalToLocal(pt);
-			
+
 			if(hotzone1.containsPoint(lp)){
 				if(!effComplete)
 					return;
@@ -220,7 +216,7 @@ package modules.module1
 				showHint(hotzone3.x+hotzone3.width/2,hotzone3.y+hotzone3.height/2,"hint4.png",3,fg);
 			}
 		}
-		
+
 		private function addWindows():void
 		{
 			w0l=new Sprite();
@@ -229,14 +225,14 @@ package modules.module1
 			fg.addChild(w0l);
 			w0l.alpha=0;
 			w0l.addChild(getImage("window0-light.png"));
-			
+
 			w0s=new Sprite();
 			w0s.x=hotzone1.x;
 			w0s.y=hotzone1.y;
 			fg.addChild(w0s);
 			w0s.alpha=0;
 			w0s.addChild(getImage("window0-shadow.png"));
-			
+
 			for (var i:int = 0; i < 4; i++) 
 			{
 				var w:Sprite=new Sprite();
@@ -246,18 +242,18 @@ package modules.module1
 				w.x=windowXPosArr[i];
 				w.y=windowY;
 				SPUtils.registSPCenter(w,5);
-				
+
 				w.addEventListener(TouchEvent.TOUCH,onWindowTouch);
 				windowArr.push(w);
 			}
 		}
-		
+
 		private function onWindowTouch(event:TouchEvent):void
 		{
 			var tc:Touch=event.getTouch(stage);
 			if(!tc)return;
 			var pt:Point=tc.getLocation(stage);
-			
+
 			switch(tc.phase)
 			{
 				case TouchPhase.BEGAN:
@@ -267,7 +263,7 @@ package modules.module1
 					dpt=pt;
 					break;
 				}
-					
+
 				case TouchPhase.ENDED:
 				{
 					if(dpt&&crtTarget&&Point.distance(dpt,pt)<1)
@@ -276,22 +272,22 @@ package modules.module1
 					dpt=null;
 					break;
 				}
-					
+
 				default:
 				{
 					break;
 				}
 			}
 		}
-		
+
 		private function shake(sp:Sprite):void{
 			if(crtWinSelected)
 				return;
-			
+
 			sp.touchable=false;
 			if(sp.x==windowXPosArr[windowIndex]){
 				crtWinSelected=true;
-				
+
 				okEff=new Sprite();
 				okEff.addChild(getImage("ok-effect.png"));
 				SPUtils.registSPCenter(okEff,5);
@@ -302,23 +298,23 @@ package modules.module1
 				var targetPt:Point=fg.localToGlobal(new Point(sp.x,0));
 				TweenLite.to(okEff,2,{alpha:1});
 				TweenLite.to(this,2,{scaleX:1.2,scaleY:1.2,x:(512-targetPt.x),
-					onComplete:function():void{
-						TweenLite.to(king,1,{alpha:0});
-						TweenLite.delayedCall(2,resetView);
-					}});
+						onComplete:function():void{
+							TweenLite.to(king,1,{alpha:0});
+							TweenLite.delayedCall(2,resetView);
+						}});
 			}
 			else{
-			TweenMax.to(sp, 1, {shake: {rotation: .05, numShakes: 4},onComplete:function():void{
-				sp.touchable=true;
-				showWindowHint(sp);
-			}});
+				TweenMax.to(sp, 1, {shake: {rotation: .05, numShakes: 4},onComplete:function():void{
+					sp.touchable=true;
+					showWindowHint(sp);
+				}});
 			}
 		}
-		
+
 		private function resetView():void{
 			TweenLite.to(this,2,{scaleX:1,scaleY:1,x:0,onComplete:addEunuch});
 		}
-		
+
 		private function addEunuch():void{
 			TweenLite.to(okEff,1,{alpha:0,onComplete:function():void{
 				var eunuch:Sprite=new Sprite();
@@ -326,27 +322,27 @@ package modules.module1
 				SPUtils.registSPCenter(eunuch,5);
 				addChild(eunuch);
 				eunuch.x=1150;
-				eunuch.y=500;
-				
-				TweenLite.to(eunuch,1,{x:850});
-				
+				eunuch.y=530;
+
+				TweenLite.to(eunuch,1,{x:800});
+
 			}});
 		}
-		
+
 		//显示提示气泡
 		private function showWindowHint(sp:Sprite):void
 		{
 			var index:int=windowXPosArr.indexOf(sp.x);
 			showHint(sp.x,sp.y,windowStrArr[index],1,fg);
 		}
-		
+
 		private function showHint(_x:Number,_y:Number,_src:String,reg:int,_parent:Sprite):void
 		{
 			if(crtWinSelected)
 				return;
-			
+
 			var _img:Image=getImage(_src);
-			
+
 //			var hint:Sprite=new Sprite();
 //			hint.addChild(img);
 //			SPUtils.registSPCenter(hint,reg);
@@ -362,7 +358,7 @@ package modules.module1
 			_parent.addChild(hint);
 			hint.show();
 		}
-		
+
 		private function onTouch(event:TouchEvent):void
 		{
 			event.stopImmediatePropagation();
@@ -377,10 +373,11 @@ package modules.module1
 					dx=(1024-fg_width-fg.x)*2;
 				else if(tx>0)
 					dx=(0-fg.x)*2;
-				
+
 				bg.x+=dx/5;
 				mg.x+=dx/3;
 				fg.x+=dx/2;
+				king.x-=dx/8;
 			}
 		}
 	}
