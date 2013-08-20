@@ -6,7 +6,6 @@ package modules.module1
 
 	import starling.display.Image;
 	import starling.display.Sprite;
-	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -20,12 +19,11 @@ package modules.module1
 
 		private function onTouch(event:TouchEvent):void
 		{
-			var tc:Touch=event.getTouch(stage);
-			if(!tc)return;
-			var pt:Point=tc.getLocation(stage);
-
-			if(tc.phase==TouchPhase.ENDED&&tc&&isShow)
+			var tc:Touch=event.getTouch(stage,TouchPhase.ENDED);
+			if(tc&&isShow){
+				event.stopImmediatePropagation();
 				hide();
+			}
 		}
 
 		private var _img:Image;

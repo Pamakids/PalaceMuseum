@@ -2,18 +2,21 @@ package modules
 {
 	import com.pamakids.palace.base.PalaceModule;
 	import com.pamakids.palace.base.PalaceScene;
-	import com.pamakids.manager.LoadManager;
+	import com.pamakids.palace.utils.StringUtils;
 
-	import flash.display.Bitmap;
-	import flash.utils.getQualifiedClassName;
+	import flash.filesystem.File;
 
 	import modules.module1.Scene11;
+	import modules.module1.Scene12;
+	import modules.module1.Scene13;
 
-	import starling.textures.Texture;
+	import starling.events.Event;
 	import starling.textures.TextureAtlas;
+	import starling.utils.AssetManager;
 
 	public class Module1 extends PalaceModule
 	{
+		private var sceneArr:Array=[Scene12];
 
 		private var xml:XML;
 
@@ -22,32 +25,49 @@ package modules
 		private var texturePath:String;
 
 		private var xmlPath:String;
+		private var crtScene:PalaceScene;
+		private var sceneIndex:int;
+
 		public function Module1()
 		{
-			var clsName:String=getQualifiedClassName(this).toLocaleLowerCase();
-			clsName=clsName.substring(clsName.lastIndexOf(':') + 1);
-			var path:String="/assets/"+clsName+"/"+clsName;
-
-			texturePath = path+".png";
-			xmlPath = path+".xml";
-
-			LoadManager.instance.loadText(xmlPath,onXmlLoaded);
-
-
+			addEventListener("gotoNext",nextScene);
+			loadScene(0);
 		}
 
-		private function onXmlLoaded(b:String):void
+		private function nextScene(e:Event):void
 		{
-			xml=new XML(b);
-			LoadManager.instance.loadImage(texturePath,onTextrueLoaded);
+			sceneIndex++;
+			loadScene(sceneIndex);
 		}
 
-		private function onTextrueLoaded(b:Bitmap):void
-		{
-			ta=new TextureAtlas(Texture.fromBitmap(b),xml);
-			var scean:PalaceScene=new Scene11();
-			scean.ta=ta;
-			addChild(scean);
+		private function loadScene(index):void{
+
+			if(index<=sceneArr.length-1){
+				var scene:Class=sceneArr[index] as Class;
+
+				var sceneName:String=StringUtils.getClassName(scene);
+
+				var assets:AssetManager=new AssetManager();
+				var file:File=File.applicationDirectory.resolvePath("assets/"+moduleName+"/"+sceneName);
+				assets.enqueue(file);
+				assets.loadQueue(function(ratio:Number):void
+				{
+//					trace("Loading assets, progress:", ratio);
+					if (ratio == 1.0){
+						if(crtScene){
+							removeChild(crtScene);
+							crtScene.dispose();
+						}
+						crtScene=new scene();
+						crtScene.assets=assets;
+						addChild(crtScene);
+						crtScene.init();
+					}
+				});
+			}else{
+//				removeChild(crtScene);
+//				crtScene.dispose();
+			}
 		}
 	}
 }

@@ -3,14 +3,12 @@ package modules.module1
 	import com.greensock.TweenLite;
 
 	import starling.display.Sprite;
-	import starling.text.TextField;
-	import starling.utils.Color;
 
 	public class Block extends Sprite
 	{
-		public static const GAP:uint=100;
+		public static const GAP:uint=158;
 		private var _index:uint;
-		private var _text:String;
+		public var text:String;
 		public var size:int;
 		private var _matched:Boolean;
 		private var ready:Boolean;
@@ -25,23 +23,6 @@ package modules.module1
 			_matched = value;
 		}
 
-
-		public function get text():String
-		{
-			return _text;
-		}
-
-		public function set text(value:String):void
-		{
-			_text = value;
-
-			var tf:TextField=new TextField(GAP,GAP,_text);
-			tf.color=Color.WHITE;
-			tf.fontSize=40;
-			addChild(tf);
-		}
-
-
 		public function get index():uint
 		{
 			return _index;
@@ -49,7 +30,6 @@ package modules.module1
 
 		public function set index(value:uint):void
 		{
-			trace(value);
 			var _x:int=value%size*GAP;
 			var _y:int=int(value/size)*GAP;
 
