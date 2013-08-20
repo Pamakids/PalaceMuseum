@@ -24,6 +24,11 @@
  */
 package themes.MetalWorksMobileTheme.source.feathers.themes
 {
+	import flash.display.BitmapData;
+	import flash.geom.Rectangle;
+	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
+	
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
@@ -71,12 +76,9 @@ package themes.MetalWorksMobileTheme.source.feathers.themes
 	import feathers.system.DeviceCapabilities;
 	import feathers.textures.Scale3Textures;
 	import feathers.textures.Scale9Textures;
-
-	import flash.display.BitmapData;
-	import flash.geom.Rectangle;
-	import flash.text.TextFormat;
-	import flash.text.TextFormatAlign;
-
+	
+	import myController.Alert;
+	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
@@ -493,8 +495,23 @@ package themes.MetalWorksMobileTheme.source.feathers.themes
 			this.setInitializerForClass(GroupedList, insetGroupedListInitializer, GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
 			this.setInitializerForClass(Panel, panelInitializer);
 			this.setInitializerForClass(ScrollContainer, scrollContainerToolbarInitializer, ScrollContainer.ALTERNATE_NAME_TOOLBAR);
+			
+			this.setInitializerForClass(Alert, AlertInitializer);
+			this.setInitializerForClass(ButtonGroup, AlertButtonGroupInitializer, Alert.DEFAULT_CHILD_NAME_BUTTONGROUP);
 		}
 
+		protected function AlertInitializer(alert:Alert):void
+		{
+			alert.defaultSkin = new Image(this.headerBackgroundSkinTexture);
+			alert.width = 500;
+			alert.padding = 40;
+		}
+		protected function AlertButtonGroupInitializer(group:ButtonGroup):void
+		{
+			group.gap = 50;
+			group.width = 300;
+		}
+		
 		protected function pageIndicatorNormalSymbolFactory():DisplayObject
 		{
 			const symbol:ImageLoader = new ImageLoader();
