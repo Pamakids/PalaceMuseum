@@ -5,12 +5,13 @@ package
 	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayoutData;
 	
+	import myController.Alert;
+	
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
 	import themes.AeonDesktopTheme.source.feathers.themes.AeonDesktopTheme;
 	import themes.MetalWorksMobileTheme.source.feathers.themes.MetalWorksMobileTheme;
-	import themes.MinimalMobileTheme.source.feathers.themes.MinimalMobileTheme;
 	
 	public class Main extends Sprite
 	{
@@ -31,8 +32,43 @@ package
 			
 			initSprite();
 			//初始化主题
-			setThemes();
-			initBtns();
+//			setThemes();
+			new MetalWorksMobileTheme();
+//			initBtns();
+			testAlert();
+		}
+		
+		private var alert:Alert;
+		
+		private function testAlert():void
+		{
+			var buttons:ButtonGroup = new ButtonGroup();
+			var datas:Array = [
+				{label:"show", triggered:onTriggeredHandler},
+				{label:"hide", triggered:onTriggeredHandler}
+			];
+			buttons.dataProvider = new ListCollection(datas);
+			buttons.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			addChild(buttons);
+		}
+		
+		private function onTriggeredHandler(e:Event):void
+		{
+			var button:Button = e.currentTarget as Button;
+			switch(button.label)
+			{
+				case "show":
+					if(alert)	return;
+					alert = new Alert("showAlert");
+					alert.x = 100;
+					alert.y = 400;
+					addChild(alert);
+					break;
+				case "hide":
+					if(!alert)	return;
+					alert.dispose();
+					break;
+			}
 		}
 		
 		private function initSprite():void
@@ -60,6 +96,7 @@ package
 			buttonGroupLayoutData.horizontalCenter = 0;
 			buttonGroupLayoutData.verticalCenter = 0;
 			_buttonGroup.layoutData = buttonGroupLayoutData;
+			_buttonGroup.direction = ButtonGroup.DIRECTION_HORIZONTAL;
 			addChild( _buttonGroup );
 		}
 		
