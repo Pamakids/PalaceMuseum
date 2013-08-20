@@ -12,11 +12,11 @@ package com.pamakids.palace.base
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
-	public class PalaceScean extends Sprite
+	public class PalaceScene extends Sprite
 	{
 		public var ta:TextureAtlas;
 
-		public function PalaceScean()
+		public function PalaceScene()
 		{
 		}
 

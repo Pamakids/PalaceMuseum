@@ -1,13 +1,13 @@
 package modules
 {
 	import com.pamakids.palace.base.PalaceModule;
-	import com.pamakids.palace.base.PalaceScean;
+	import com.pamakids.palace.base.PalaceScene;
 	import com.pamakids.manager.LoadManager;
 
 	import flash.display.Bitmap;
 	import flash.utils.getQualifiedClassName;
 
-	import modules.module1.Scean11;
+	import modules.module1.Scene11;
 
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
@@ -45,7 +45,7 @@ package modules
 		private function onTextrueLoaded(b:Bitmap):void
 		{
 			ta=new TextureAtlas(Texture.fromBitmap(b),xml);
-			var scean:PalaceScean=new Scean11();
+			var scean:PalaceScene=new Scene11();
 			scean.ta=ta;
 			addChild(scean);
 		}
