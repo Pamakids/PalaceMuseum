@@ -1,18 +1,16 @@
 package
 {
-	import flash.filesystem.File;
-
-	import modules.Module1;
-	import modules.module1.scene2.ClothPuzzle;
-
 	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.utils.AssetManager;
+
+	import views.Module1;
+	import views.components.Prompt;
 
 	public class Main extends Sprite
 	{
 		public function Main()
 		{
+			Prompt.parent=this;
 			addEventListener(Event.ADDED_TO_STAGE, inits);
 		}
 
@@ -27,10 +25,20 @@ package
 //			am.enqueue(file);
 //			am.loadQueue(function(ratio:Number):void
 //			{
+//				Prompt.addAssetManager(am);
 //				trace(ratio);
 //				if (ratio == 1)
 //				{
-//					addChild(new ClothPuzzle(am));
+//					stage.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent):void
+//					{
+//						var t:Touch=e.getTouch(stage);
+//						if (t && t.phase == TouchPhase.BEGAN)
+//						{
+//							Prompt.show(1024 / 2, 768 / 2, 'hint-bg-2.png', 'hint-ok-常服.png');
+//							trace('show');
+//						}
+//					});
+////					addChild(new ClothPuzzle(am));
 //				}
 //			});
 		}

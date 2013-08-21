@@ -3,6 +3,7 @@ package
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
+	import flash.geom.Rectangle;
 
 	import starling.core.Starling;
 
@@ -16,7 +17,7 @@ package
 
 			Starling.multitouchEnabled=true;
 
-			var main:Starling=new Starling(Main, stage);
+			var main:Starling=new Starling(Main, stage, new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight));
 			main.start();
 			main.showStats=true;
 		}
