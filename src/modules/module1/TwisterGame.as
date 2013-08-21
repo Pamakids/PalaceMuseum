@@ -7,7 +7,6 @@ package modules.module1
 	import flash.geom.Rectangle;
 
 	import starling.core.Starling;
-	import starling.display.Shape;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -18,10 +17,9 @@ package modules.module1
 	{
 		public var size:uint=3;
 
-		private var dataArr:Array=["苟","日","新","日","日","新","又","日","新"];
+		private var dataArr:Array=["新","日","苟","新","日","日","新","日","又"];
 
 		private var blockArr:Vector.<Block>;
-//		private var twistingBlockArr:Vector.<Block>;//长度4
 
 		private var twisterAreaArr:Vector.<Rectangle>;//旋转热区
 		private var indexArr:Vector.<int>;
@@ -56,31 +54,22 @@ package modules.module1
 
 			blockArr=new Vector.<Block>(size*size);
 
-//			twistingBlockArr=new Vector.<Block>(4);
 			indexArr=new Vector.<int>(4);
 
 			twisterAreaArr=new Vector.<Rectangle>(areaNum);
 
-			var sp:Shape=new Shape();
-			sp.graphics.beginFill(0x66ccff);
-			sp.graphics.drawRect(0,0,1024,768);
-			sp.graphics.endFill();
-			addChild(sp);
-
 			blockHolder=new Sprite();
 			addChild(blockHolder);
 
-			blockHolder.pivotX=size*Block.GAP/2;
-			blockHolder.pivotY=size*Block.GAP/2;
-
-			blockHolder.x=512;
-			blockHolder.y=768/2;
+			this.pivotX=areaSize*Block.GAP/2;
+			this.pivotY=areaSize*Block.GAP/2;
 
 			for (var i:int = 0; i < dataArr.length; i++) 
 			{
 				var block:Block=new Block();
-				block.text=i.toString();
-//					dataArr[i];
+				var txt:String=dataArr[i];
+				block.text=txt;
+				block.addChild(getImage(txt+".png"));
 
 				block.size=size;
 				block.index=i;
@@ -101,18 +90,17 @@ package modules.module1
 				var startIndex:int=int(i/areaSize)*size+i%areaSize;
 				var block:Block=blockArr[startIndex];
 				var pt:Point=blockHolder.localToGlobal(new Point(block.x,block.y));
-				var rect:Rectangle=new Rectangle(pt.x,pt.y,size*Block.GAP*2,size*Block.GAP*2);
-				twisterAreaArr.push(rect);
+				var rect:Rectangle=new Rectangle(pt.x-Block.GAP/2,pt.y-Block.GAP/2,Block.GAP*2,Block.GAP*2);
+				twisterAreaArr[i]=rect;
 			}
 		}
 
 		private function onTouch(event:TouchEvent):void
 		{
-			if(twisting&&!readyToGo)
+			if(twisting||!readyToGo||isOver)
 				return;
 			event.stopImmediatePropagation();
 			//得到触碰并且正在移动的点（1个或多个）
-			var touchesBegin:Vector.<Touch> = event.getTouches(stage, TouchPhase.BEGAN);
 			var touches:Vector.<Touch> = event.getTouches(stage, TouchPhase.MOVED);
 			var touchesEnd:Vector.<Touch> = event.getTouches(stage, TouchPhase.ENDED);
 
@@ -120,25 +108,24 @@ package modules.module1
 				downPointA=downPointB=null;
 			}
 
-			if (touchesBegin.length == 2){
-				var touchABegin:Touch = touchesBegin[0];
-				var touchBBegin:Touch = touchesBegin[1];
-
-				var pa:Point  = touchABegin.getLocation(stage);
-				var pb:Point  = touchBBegin.getLocation(stage);
-				if(checkTwisterArea(pa,pb)){
-					downPointA=pa;
-					downPointB=pb;
-				}
-			}
-
 			if (touches.length == 2)
 			{
-				if(!downPointA)
-					return;
 				//得到两个点的引用
 				var touchA:Touch = touches[0];
 				var touchB:Touch = touches[1];
+
+				if(!downPointA){
+					var pa:Point  = touchA.getLocation(stage);
+					var pb:Point  = touchB.getLocation(stage);
+					if(checkTwisterArea(pa,pb)){
+						downPointA=pa;
+						downPointB=pb;
+					}
+				}
+
+				if(!downPointA)
+					return;
+
 				//A点的当前和上一个坐标
 				var currentPosA:Point  = touchA.getLocation(stage);
 				var previousPosA:Point = touchA.getPreviousLocation(stage);
@@ -159,11 +146,8 @@ package modules.module1
 				var deltaAngle:Number = currentAngle - previousAngle;
 
 				deltaAngle=deltaAngle%(Math.PI/4);
-				if(Math.abs(deltaAngle)>Math.PI/5)
-				{
-					trace(deltaAngle);
+				if(Math.abs(deltaAngle)>Math.PI/18)
 					twist(deltaAngle<0);
-				}
 			}
 		}
 
@@ -179,25 +163,13 @@ package modules.module1
 			else
 				indexArr.push(indexArr.shift());
 
+			//调整索引
 			blockArr[startIndex].index=indexArr[0];
 			blockArr[startIndex+1].index=indexArr[1];
 			blockArr[startIndex+size+1].index=indexArr[2];
 			blockArr[startIndex+size].index=indexArr[3];
 
-//			var _block:Block=blockArr[startIndex];
-//			if(clockwise){
-//				blockArr[startIndex]=blockArr[startIndex+size];
-//				blockArr[startIndex+size]=blockArr[startIndex+size+1];
-//				blockArr[startIndex+size+1]=blockArr[startIndex+1];
-//				blockArr[startIndex+1]=_block;
-//			}else{
-//				blockArr[startIndex]=blockArr[startIndex+1];
-//				blockArr[startIndex+1]=blockArr[startIndex+size+1];
-//				blockArr[startIndex+size+1]=blockArr[startIndex+size];
-//				blockArr[startIndex+size]=_block;
-//			}
-
-			var length:int=blockArr.length
+			var length:int=blockArr.length;
 			var arr:Vector.<Block>=new Vector.<Block>(length);
 
 			for (var j:int = 0; j < length; j++) 
@@ -208,27 +180,22 @@ package modules.module1
 
 			blockArr=arr;
 
-//			for (var i:int = 0; i < twistingBlockArr.length; i++) 
-//			{
-//				twistingBlockArr[i].index=indexArr[i];
-//			}
-
-			var str:String=""
-			for (var i:int = 0; i < blockArr.length; i++) 
-			{
-				str+=blockArr[i].index.toString();
-			}
-			trace(str);
-
-//			trace(twistingBlockArr[0].index,twistingBlockArr[1].index,twistingBlockArr[2].index,twistingBlockArr[3].index);
-
 			if(!auto)
-				TweenLite.delayedCall(1.1,function():void{
+				TweenLite.delayedCall(.6,function():void{
 					twisting=false;
-					if(checkAllMathed){
-
+					if(checkAllMathed()){
+						gameOver();
 					}
 				});
+		}
+
+		private function gameOver():void
+		{
+			isOver=true;
+			TweenLite.delayedCall(2,function():void{
+				dispatchEvent(new Event("gameover",true));
+			});
+
 		}
 
 		private function checkAllMathed():Boolean{
@@ -247,22 +214,12 @@ package modules.module1
 			return sum==length;
 		}
 
-		private function sortNumbers(_a:Block, _b:Block):Number
-		{
-			if (_a.index < _b.index)
-				return -1;
-			else if (_a.index > _b.index)
-				return 1;
-			else
-				return 0;
-		}
-
-		private function checkTwisterArea(downPointA:Point, downPointB:Point):Boolean
+		private function checkTwisterArea(pa:Point, pb:Point):Boolean
 		{
 			for (var i:int = 0; i < twisterAreaArr.length; i++) 
 			{
 				var rect:Rectangle=twisterAreaArr[i];
-//				if(rect.containsPoint(downPointA)&&rect.containsPoint(downPointB))
+				if(rect.containsPoint(pa)&&rect.containsPoint(pb))
 				{
 					startIndex=int(i/areaSize)*size+i%areaSize;
 					setTwisterData(startIndex);
@@ -274,22 +231,17 @@ package modules.module1
 
 		private function setTwisterData(_startIndex:int):void
 		{
-			trace("index",_startIndex)
 			indexArr[0]=blockArr[_startIndex].index;
 			indexArr[1]=blockArr[_startIndex+1].index;
 			indexArr[2]=blockArr[_startIndex+size+1].index;
 			indexArr[3]=blockArr[_startIndex+size].index;
-
-//			twistingBlockArr[0]=blockArr[_startIndex];
-//			twistingBlockArr[1]=blockArr[_startIndex+1];
-//			twistingBlockArr[2]=blockArr[_startIndex+size+1];
-//			twistingBlockArr[3]=blockArr[_startIndex+size];
 		}
 
 		private var step:int=10;
 		private var readyToGo:Boolean;
-
 		private var startIndex:int;
+		private var isOver:Boolean;
+
 		private function shuffle():void
 		{
 //			readyToGo=true;
