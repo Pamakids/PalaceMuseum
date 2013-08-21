@@ -2,6 +2,7 @@ package modules.module1.scene2
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
+	import com.pamakids.palace.base.PalaceScene;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -15,7 +16,7 @@ package modules.module1.scene2
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
-	[Event(name="allMatched", type="flash.events.Event")]
+	[Event(name="allMatched", type="starling.events.Event")]
 	public class ClothPuzzle extends Sprite
 	{
 		private var am:AssetManager;
@@ -32,6 +33,10 @@ package modules.module1.scene2
 		private var initPositionDic:Dictionary;
 		private var rightPositionDic:Dictionary;
 
+		override public function dispose():void{
+			am=null;
+			super.dispose();
+		}
 		private function generateRandomPositions(points:Array):Array
 		{
 			var randomPoints:Array=[];
@@ -51,7 +56,7 @@ package modules.module1.scene2
 			arr.unshift(points[0]);
 			randomPoints[1]=arr[r];
 			arr.splice(arr.indexOf(randomPoints[1]), 1);
-			while (!randomPoints[3])
+			while (randomPoints&&!randomPoints[3])
 			{
 				var leftPoint:Point;
 				for each (leftPoint in points)
@@ -259,3 +264,5 @@ package modules.module1.scene2
 		}
 	}
 }
+
+

@@ -16,7 +16,7 @@ package modules
 
 	public class Module1 extends PalaceModule
 	{
-		private var sceneArr:Array=[Scene12];
+		private var sceneArr:Array=[Scene12,Scene13];
 
 		private var xml:XML;
 
