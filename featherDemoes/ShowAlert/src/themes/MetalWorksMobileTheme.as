@@ -264,8 +264,13 @@ package themes
 		protected var calloutLeftArrowSkinTexture:Texture;
 		protected var verticalScrollBarThumbSkinTextures:Scale3Textures;
 		protected var horizontalScrollBarThumbSkinTextures:Scale3Textures;
+<<<<<<< HEAD
 		protected var alertDefaultTextFormat:TextFormat;
 		protected var alertDefaultSkinTexture:Texture;
+=======
+		protected var alertDefaultTitleTextFormat:TextFormat;
+		protected var alertDefaultContentTextFormat:TextFormat;
+>>>>>>> temp
 		
 		override public function dispose():void
 		{
@@ -343,7 +348,12 @@ package themes
 			this.largeLightTextFormat = new TextFormat(regularFontNames, 28 * this.scale, LIGHT_TEXT_COLOR);
 			this.largeDisabledTextFormat = new TextFormat(regularFontNames, 28 * this.scale, DISABLED_TEXT_COLOR);
 
+<<<<<<< HEAD
 			this.alertDefaultTextFormat = new TextFormat(regularFontNames, 36 * this.scale, LIST_BACKGROUND_COLOR);
+=======
+			this.alertDefaultTitleTextFormat = new TextFormat(regularFontNames, 36 * this.scale, 0xffffff, null, null, null, null, null, TextFormatAlign.CENTER);
+			this.alertDefaultContentTextFormat = new TextFormat(regularFontNames, 28 * this.scale, 0xffffff, null, null, null, null, null, TextFormatAlign.CENTER);
+>>>>>>> temp
 			
 			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
@@ -437,8 +447,11 @@ package themes
 
 			StandardIcons.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
 			
+<<<<<<< HEAD
 			alertDefaultSkinTexture = this.atlas.getTexture("list-item-up-skin");
 
+=======
+>>>>>>> temp
 			if(this.root.stage)
 			{
 				this.initializeRoot();
@@ -502,6 +515,7 @@ package themes
 			this.setInitializerForClass(Panel, panelInitializer);
 			this.setInitializerForClass(ScrollContainer, scrollContainerToolbarInitializer, ScrollContainer.ALTERNATE_NAME_TOOLBAR);
 			//-----------------------------------------------------------------
+<<<<<<< HEAD
 			this.setInitializerForClass(Label, alertLabelInitializer, Alert.DEFAULT_CHILD_NAME_LABEL);
 			this.setInitializerForClass(Alert, AlertInitializer);
 			this.setInitializerForClass(ButtonGroup, AlertButtonGroupInitializer, Alert.DEFAULT_CHILD_NAME_BUTTONGROUP);
@@ -531,10 +545,32 @@ package themes
 			label.textRendererProperties.textFormat = this.alertDefaultTextFormat;
 			label.textRendererProperties.embedFonts = true;
 			label.textRendererProperties.wordWrap = true;
+=======
+			this.setInitializerForClass(Label, alertContentLabelInitializer, Alert.DEFAULT_CHILD_CONTENT_LABEL);
+			this.setInitializerForClass(Label, alertTitleLabelInitializer, Alert.DEFAULT_CHILD_TITLE_LABEL);
+			this.setInitializerForClass(Alert, AlertInitializer);
+			this.setInitializerForClass(ButtonGroup, AlertButtonGroupInitializer, Alert.DEFAULT_CHILD_NAME_BUTTONGROUP);
+		}
+		
+		private function alertContentLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.alertDefaultContentTextFormat;
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.wordWrap = true;
+//			label.textRendererProperties.border = true;
+		}
+		private function alertTitleLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.alertDefaultTitleTextFormat;
+			label.textRendererProperties.embedFonts = true;
+			label.textRendererProperties.wordWrap = false;
+//			label.textRendererProperties.border = true;
+>>>>>>> temp
 		}
 		
 		protected function AlertInitializer(alert:Alert):void
 		{
+<<<<<<< HEAD
 			alert.maxWidth = 500;
 			alert.defaultSkin = this.alertDefaultSkinTexture;
 		}
@@ -542,6 +578,22 @@ package themes
 		{
 			group.maxWidth = 300;
 			group.gap = 18 * this.scale;
+=======
+			alert.width = 480 * scale;
+			alert.height = 320 * scale;
+			alert.padding = 30 * scale;
+			var quad:Quad = new Quad(alert.width, alert.height, 0x593593);
+			alert.defaultSkin = quad;
+			quad = new Quad(340 * scale, 60 * scale, 0x333333);
+			alert.titleSkin = quad;
+			quad = new Quad(340 * scale, 100 * scale, 0x656565);
+			alert.contentSkin = quad;
+		}
+		protected function AlertButtonGroupInitializer(group:ButtonGroup):void
+		{
+			group.height = 80;
+			group.gap = 20;
+>>>>>>> temp
 		}
 		
 		protected function pageIndicatorNormalSymbolFactory():DisplayObject
@@ -743,8 +795,13 @@ package themes
 			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
 			skinSelector.displayObjectProperties =
 			{
+<<<<<<< HEAD
 				width: 76 * this.scale,
 				height: 76 * this.scale,
+=======
+				width: 60 * this.scale,
+				height: 60 * this.scale,
+>>>>>>> temp
 				textureScale: this.scale
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
