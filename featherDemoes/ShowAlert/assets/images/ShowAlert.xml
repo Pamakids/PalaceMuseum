@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:c41ad301c3b3496c8d93701736b4a0ab:1/1$ -->
+<TextureAtlas imagePath="ShowAlert.png">
+    <SubTexture name="hide_down" x="2" y="246" width="204" height="58" frameX="0" frameY="-2" frameWidth="204" frameHeight="60"/>
+    <SubTexture name="hide_up" x="2" y="64" width="204" height="60"/>
+    <SubTexture name="screen_background" x="2" y="186" width="204" height="58"/>
+    <SubTexture name="show_down" x="2" y="2" width="204" height="60"/>
+    <SubTexture name="show_up" x="2" y="126" width="204" height="58"/>
+</TextureAtlas>
