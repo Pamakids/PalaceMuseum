@@ -46,6 +46,7 @@ package screens
 			
 		}
 		
+<<<<<<< HEAD
 		private function onTriggered(e:Event):void
 		{
 			_alert = Alert.getInstance();
@@ -56,6 +57,20 @@ package screens
 						_alert.showAlert("An alert has started!", "ok", [okFunc, cancleFunc], []);
 					else
 						_alert.showAlert("Witch one?", "ok_cancle", [okFunc, cancleFunc], [])
+=======
+		private var _i:int = 0;
+		private function onTriggered(e:Event):void
+		{
+			_alert = Alert.getInstance();
+			_i = 1-_i;
+			switch(e.currentTarget)
+			{
+				case _showBtn:
+					if(_i==0)
+						_alert.showAlert("An alert has started!","Title", "ok", [okFunc, cancleFunc], []);
+					else
+						_alert.showAlert("Witch one?","Title", "ok_cancle", [okFunc, cancleFunc], [])
+>>>>>>> temp
 					addChild( _alert );
 					this.invalidate(INVALIDATION_FLAG_STYLES);
 					break;
@@ -84,6 +99,10 @@ package screens
 				if(this.contains(_alert))
 				{
 					_alert.y = 300;
+<<<<<<< HEAD
+=======
+					_alert.x = 768 - _alert.width >> 1;
+>>>>>>> temp
 				}
 			}
 		}
