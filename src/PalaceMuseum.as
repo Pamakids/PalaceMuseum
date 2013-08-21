@@ -11,12 +11,12 @@ package
 	{
 		public function PalaceMuseum()
 		{
-			stage.align = StageAlign.TOP_LEFT;
-			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align=StageAlign.TOP_LEFT;
+			stage.scaleMode=StageScaleMode.NO_SCALE;
 
-			Starling.multitouchEnabled = true;
+			Starling.multitouchEnabled=true;
 
-			var main:Starling=new Starling(Main,stage);
+			var main:Starling=new Starling(Main, stage);
 			main.start();
 			main.showStats=true;
 		}

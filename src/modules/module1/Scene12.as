@@ -5,14 +5,18 @@ package modules.module1
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.setTimeout;
 
 	import feathers.controls.List;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.layout.VerticalLayout;
 
+	import modules.module1.scene2.ClothPuzzle;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -166,13 +170,13 @@ package modules.module1
 			var str:String=clothArr[missionIndex];
 			lionHint.img=getImage("hint-bg-0");
 			lionHint.label=getImage("hint-ok-"+str);
+			missionIndex++;
 			lionHint.callback=nextMission;
 			lionHint.show();
 		}
 
 		private function nextMission():void
 		{
-			missionIndex++;
 			if(missionIndex<clothArr.length){
 				var str:String=clothArr[missionIndex];
 				lionHint.img=getImage("hint-bg-2");
@@ -181,10 +185,18 @@ package modules.module1
 				hatLocked=false;
 				clothLocked=false;
 			}else{
+				opened=false;
 				lionHint.img=getImage("hint-bg-0");
 				lionHint.label=getImage("hint-end");
 				lionHint.show();
+
+				setTimeout(nextScene,3000);
 			}
+		}
+
+		private function nextScene():void
+		{
+			dispatchEvent(new Event("gotoNext",true));
 		}
 
 		private var hatPosition:Point=new Point(444.5,168);
@@ -221,7 +233,7 @@ package modules.module1
 			lionHint=new Hint();
 			addChild(lionHint);
 			lionHint.registration=1;
-			lionHint.x=79;
+			lionHint.x=90;
 			lionHint.y=560;
 			lionHint.visible=false;
 
@@ -257,11 +269,19 @@ package modules.module1
 
 		private function addLion():void
 		{
-			var lion:Sprite=new Sprite();
+			lion=new Sprite();
 			lion.addChild(getImage("lion"));
 			addChild(lion);
 			lion.x=lionDX;
 			lion.y=540;
+			lion.addEventListener(TouchEvent.TOUCH,onLionTouch);
+		}
+
+		private function onLionTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(stage,TouchPhase.ENDED);
+			if(tc)
+				lionHint.show();
 		}
 
 		private static var clothArr:Array=["常服","朝服","行服","雨服","龙袍"];
@@ -279,7 +299,9 @@ package modules.module1
 		private var lionHint:Hint;
 		private var hatHint:Hint;
 		private var clothHint:Hint;
-		private var missionIndex:int=-1;
+		private var missionIndex:int=0;
+
+		private var lion:Sprite;
 
 		private function addShelf():void
 		{
@@ -386,14 +408,34 @@ package modules.module1
 
 		private function onClickBox(e:TouchEvent):void
 		{
-			var tc:Touch=e.getTouch(stage,TouchPhase.ENDED);
+			var tc:Touch=e.getTouch(stage,TouchPhase.BEGAN);
 			if(tc){
-//				if(quizSolved)
-				opened=!opened;
-//				else
-//					showQuiz();
+				box.removeEventListener(TouchEvent.TOUCH,onClickBox);
+				lionHint.label=getImage("hint-quizstart");
+				lionHint.show();
+				var quiz:ClothPuzzle=new ClothPuzzle(assets);
+				quiz.y=(768-quiz.height)/2;
+				addChild(quiz);
+				setChildIndex(lion,numChildren-1);
+				setChildIndex(lionHint,numChildren-1);
+				quiz.addEventListener("allMatched",onQuizDone);
+
 			}
 //			box.removeEventListener(TouchEvent.TOUCH,onClickBox);
+		}
+
+		private function onQuizDone(e:Event):void
+		{
+			var quiz:ClothPuzzle=e.currentTarget as ClothPuzzle;
+			TweenLite.to(quiz,.5,{scaleX:.1,scaleY:.1,x:boxHolder.x,y:boxHolder.y,
+					onComplete:function():void{
+						quiz.parent.removeChild(quiz);
+						lionHint.label=getImage("hint-gamestart");
+						lionHint.callback=nextMission;
+						lionHint.show();
+						opened=true;
+					}
+				});
 		}
 
 		private function showQuiz():void
@@ -425,7 +467,7 @@ package modules.module1
 
 		private function onClothTouch(event:TouchEvent):void
 		{
-			if(tweening||dragging)
+			if(tweening||dragging||!opened)
 				return;
 			var tc:Touch=event.getTouch(stage)
 			if(!tc)
