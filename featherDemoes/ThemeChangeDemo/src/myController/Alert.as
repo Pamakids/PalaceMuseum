@@ -38,6 +38,7 @@ package myController
 		 */	
 		public function Alert(view_:Object,type_:String="ok",returnFunctionArr_:Array=null,returnDataArr_:Array=null)
 		{
+			super();
 			this._viewData = view_;
 			this._type = type_;
 			this._callBackFuncs = returnFunctionArr_;
@@ -145,9 +146,9 @@ package myController
 			}
 			_buttonGroup.dataProvider = new ListCollection(datas);
 			_buttonGroup.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			_buttonGroup.nameList.add( DEFAULT_CHILD_NAME_BUTTONGROUP );
+//			_buttonGroup.name = Alert.DEFAULT_CHILD_NAME_BUTTONGROUP;
 			addChild(_buttonGroup);
-			
-			_buttonGroup.name = Alert.DEFAULT_CHILD_NAME_BUTTONGROUP;
 		}
 		private function onTriggered(e:Event):void
 		{
