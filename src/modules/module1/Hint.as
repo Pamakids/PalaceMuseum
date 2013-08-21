@@ -2,8 +2,6 @@ package modules.module1
 {
 	import com.greensock.TweenLite;
 
-	import flash.geom.Point;
-
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Touch;
@@ -51,6 +49,30 @@ package modules.module1
 			this.pivotY=(_img.height>>1)*(2-int((registration-1)/3));
 		}
 
+		private var _label:Image;
+
+		public function get label():Image
+		{
+			return _label;
+		}
+
+		public function set label(value:Image):void
+		{
+			if(!_label){
+				_label = value;
+				addChild(_label);
+			}else if(_label!=value){
+				removeChild(_label);
+				_label.dispose();
+				_label = value;
+				addChild(_label);
+			}
+			_label.pivotX=_label.width>>1;
+			_label.pivotY=_label.height>>1;
+			_label.x=_img.width/2;
+			_label.y=_img.height/2;
+		}
+
 		public function show():void{
 			isShow=false;
 			this.visible=true;
@@ -70,8 +92,14 @@ package modules.module1
 			TweenLite.to(this,.5,{alpha:0,onComplete:function():void{
 				isShow=false;
 				this.visible=false;
+				if(callback!=null){
+					callback();
+					callback=null;
+				}
 			}});
 		}
+
+		public var callback:Function;
 	}
 }
 
