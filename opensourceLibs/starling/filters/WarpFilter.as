@@ -27,7 +27,7 @@ package starling.filters
 	import flash.display3D.Context3DProgramType;
 	import flash.display3D.Program3D;
 	import starling.textures.Texture;
-	
+
 	/**
 	 * Warps a display object with bezier curves (4 anchor points on left edge of image, 4 anchor points on right edge of image)
 	 * @author Devon O.
@@ -35,8 +35,7 @@ package starling.filters
 
 	public class WarpFilter extends FragmentFilter
 	{
-		private static const FRAGMENT_SHADER:String =
-	<![CDATA[
+		private static const FRAGMENT_SHADER:String=<![CDATA[
 		mov ft0.xy, v0.xy
 		mov ft1.x, fc2.x
 		sub ft1.x, ft1.x, ft0.y
@@ -76,28 +75,30 @@ package starling.filters
 		mul ft5.w, ft6.x, ft6.y
 		mov oc, ft5
 	]]>
-		
-		
-		private var left:Vector.<Number>		= new <Number>[0.0, 0.0, 0.0, 0.0];
-		private var right:Vector.<Number>		= new <Number>[1.0, 1.0, 1.0, 1.0];
-		private var data:Vector.<Number>		= new <Number>[1.0, 2.0, 3.0, 0.0];
-		
+
+
+		private var left:Vector.<Number>=new <Number>[0.0, 0.0, 0.0, 0.0];
+		private var right:Vector.<Number>=new <Number>[1.0, 1.0, 1.0, 1.0];
+		private var data:Vector.<Number>=new <Number>[1.0, 2.0, 3.0, 0.0];
+
 		private var mShaderProgram:Program3D;
-		
+
 		public function WarpFilter()
-		{}
-        
+		{
+		}
+
 		public override function dispose():void
 		{
-			if (mShaderProgram) mShaderProgram.dispose();
+			if (mShaderProgram)
+				mShaderProgram.dispose();
 			super.dispose();
 		}
-        
+
 		protected override function createPrograms():void
 		{
-			mShaderProgram = assembleAgal(FRAGMENT_SHADER);
+			mShaderProgram=assembleAgal(FRAGMENT_SHADER);
 		}
-        
+
 		protected override function activate(pass:int, context:Context3D, texture:Texture):void
 		{
 			// already set by super class:
@@ -106,44 +107,100 @@ package starling.filters
 			// vertex attribute 0:   vertex position (FLOAT_2)
 			// vertex attribute 1:   texture coordinates (FLOAT_2)
 			// texture 0:            input texture
-            
-			context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, left,  1);
+
+			context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, left, 1);
 			context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 1, right, 1);
-			context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 2, data,  1);
+			context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 2, data, 1);
 			context.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
 			context.setProgram(mShaderProgram);
 		}
-		
-		override protected function deactivate(pass:int, context:Context3D, texture:Texture):void 
+
+		override protected function deactivate(pass:int, context:Context3D, texture:Texture):void
 		{
 			context.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ZERO);
 		}
-		
+
 		// Left
-		public function get l1():Number { return left[0]; }
-		public function set l1(value:Number):void { left[0] = value; }
-		
-		public function get l2():Number { return left[1]; }
-		public function set l2(value:Number):void { left[1] = value; }
-		
-		public function get l3():Number { return left[2]; }
-		public function set l3(value:Number):void { left[2] = value; }
-		
-		public function get l4():Number { return left[3]; }
-		public function set l4(value:Number):void { left[3] = value; }
-		
+		public function get l1():Number
+		{
+			return left[0];
+		}
+
+		public function set l1(value:Number):void
+		{
+			left[0]=value;
+		}
+
+		public function get l2():Number
+		{
+			return left[1];
+		}
+
+		public function set l2(value:Number):void
+		{
+			left[1]=value;
+		}
+
+		public function get l3():Number
+		{
+			return left[2];
+		}
+
+		public function set l3(value:Number):void
+		{
+			left[2]=value;
+		}
+
+		public function get l4():Number
+		{
+			return left[3];
+		}
+
+		public function set l4(value:Number):void
+		{
+			left[3]=value;
+		}
+
 		// Right
-		public function get r1():Number { return right[0]; }
-		public function set r1(value:Number):void { right[0] = value; }
-		
-		public function get r2():Number { return right[1]; }
-		public function set r2(value:Number):void { right[1] = value; }
-		
-		public function get r3():Number { return right[2]; }
-		public function set r3(value:Number):void { right[2] = value; }
-		
-		public function get r4():Number { return right[3]; }
-		public function set r4(value:Number):void { right[3] = value; }
-		
+		public function get r1():Number
+		{
+			return right[0];
+		}
+
+		public function set r1(value:Number):void
+		{
+			right[0]=value;
+		}
+
+		public function get r2():Number
+		{
+			return right[1];
+		}
+
+		public function set r2(value:Number):void
+		{
+			right[1]=value;
+		}
+
+		public function get r3():Number
+		{
+			return right[2];
+		}
+
+		public function set r3(value:Number):void
+		{
+			right[2]=value;
+		}
+
+		public function get r4():Number
+		{
+			return right[3];
+		}
+
+		public function set r4(value:Number):void
+		{
+			right[3]=value;
+		}
+
 	}
 }
