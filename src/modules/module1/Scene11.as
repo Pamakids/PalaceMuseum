@@ -4,17 +4,15 @@ package modules.module1
 	import com.greensock.TweenMax;
 	import com.greensock.plugins.ShakeEffect;
 	import com.greensock.plugins.TweenPlugin;
-	import com.pamakids.manager.LoadManager;
 	import com.pamakids.palace.base.PalaceScene;
 	import com.pamakids.palace.utils.SPUtils;
 
-	import flash.display.Bitmap;
-	import flash.events.IOErrorEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -57,6 +55,9 @@ package modules.module1
 
 		public function Scene11()
 		{
+		}
+
+		override public function init():void{
 			windowIndex=Math.random()>.5?0:3;
 			TweenPlugin.activate([ShakeEffect]);
 
@@ -64,43 +65,29 @@ package modules.module1
 			bg.x=512;
 			addChild(bg);
 
+			bg.addChild(getImage("background11"));
+			bg_width=bg.width;
+			bg.pivotX=bg_width>>1;
+
 			mg=new Sprite();
 			mg.x=512;
 			mg.y=12;
 			addChild(mg);
 
+			mg.addChild(getImage("middleground11"));
+			mg_width=mg.width;
+			mg.pivotX=mg_width>>1;
+
 			fg=new Sprite();
 			fg.x=512;
 			addChild(fg);
 
-			LoadManager.instance.loadImage("/assets/module1/background.jpg",onBGLoaded);
-			LoadManager.instance.loadImage("/assets/module1/middleground.png",onMGLoaded);
-			LoadManager.instance.loadImage("/assets/module1/frontground.png",onFGLoaded);
+			onFGLoaded();
 		}
 
-		protected function onError(event:IOErrorEvent):void
+		protected function onFGLoaded():void
 		{
-			trace("error")
-		}
-
-		protected function onBGLoaded(b:Bitmap):void
-		{
-			bg.addChild(Image.fromBitmap(b));
-			bg_width=bg.width;
-			trace(bg_width)
-			bg.pivotX=bg_width>>1;
-		}
-
-		protected function onMGLoaded(b:Bitmap):void
-		{
-			mg.addChild(Image.fromBitmap(b));
-			mg_width=mg.width;
-			mg.pivotX=mg_width>>1;
-		}
-
-		protected function onFGLoaded(b:Bitmap):void
-		{
-			fg.addChild(Image.fromBitmap(b));
+			fg.addChild(getImage("frontground11"));
 			fg_width=fg.width;
 			fg.x=(1024-fg_width)/2;
 			fg.y=768-fg.height;
@@ -114,7 +101,7 @@ package modules.module1
 		private function addKing():void
 		{
 			king=new Sprite();
-			king.addChild(getImage("king.png"));
+			king.addChild(getImage("king11.png"));
 			SPUtils.registSPCenter(king,2);
 			addChild(king);
 			king.x=512;
@@ -140,7 +127,7 @@ package modules.module1
 
 				case TouchPhase.ENDED:
 				{
-					if(dpt&&Point.distance(dpt,pt)<1)
+					if(dpt&&Point.distance(dpt,pt)<10)
 						showHint(50,50,"hint0.png",3,king);
 					dpt=null;
 					break;
@@ -169,7 +156,7 @@ package modules.module1
 
 				case TouchPhase.ENDED:
 				{
-					if(dpt&&Point.distance(dpt,pt)<1)
+					if(dpt&&Point.distance(dpt,pt)<10)
 						checkFG(pt);
 					dpt=null;
 					break;
@@ -266,7 +253,7 @@ package modules.module1
 
 				case TouchPhase.ENDED:
 				{
-					if(dpt&&crtTarget&&Point.distance(dpt,pt)<1)
+					if(dpt&&crtTarget&&Point.distance(dpt,pt)<10)
 						shake(crtTarget);
 					crtTarget=null;
 					dpt=null;
@@ -296,8 +283,12 @@ package modules.module1
 				fg.addChild(okEff);
 				okEff.alpha=0;
 				var targetPt:Point=fg.localToGlobal(new Point(sp.x,0));
+				var minPt:Point=fg.localToGlobal(new Point(0,0));
 				TweenLite.to(okEff,2,{alpha:1});
-				TweenLite.to(this,2,{scaleX:1.2,scaleY:1.2,x:(512-targetPt.x),
+//				var tx:Number=512-targetPt.x;
+//				trace(this.x)
+//				trace(targetPt.x)
+				TweenLite.to(this,2,{scaleX:1.2,scaleY:1.2,
 						onComplete:function():void{
 							TweenLite.to(king,1,{alpha:0});
 							TweenLite.delayedCall(2,resetView);
@@ -318,7 +309,7 @@ package modules.module1
 		private function addEunuch():void{
 			TweenLite.to(okEff,1,{alpha:0,onComplete:function():void{
 				var eunuch:Sprite=new Sprite();
-				eunuch.addChild(getImage("eunuch.png"));
+				eunuch.addChild(getImage("eunuch11.png"));
 				SPUtils.registSPCenter(eunuch,5);
 				addChild(eunuch);
 				eunuch.x=1150;
@@ -326,7 +317,16 @@ package modules.module1
 
 				TweenLite.to(eunuch,1,{x:800});
 
+				eunuch.addEventListener(TouchEvent.TOUCH,nextScene);
 			}});
+		}
+
+		private function nextScene(e:TouchEvent):void
+		{
+			e.stopImmediatePropagation();
+			var tc:Touch=e.getTouch(stage,TouchPhase.ENDED);
+			if(tc)
+				dispatchEvent(new Event("gotoNext",true));
 		}
 
 		//显示提示气泡
