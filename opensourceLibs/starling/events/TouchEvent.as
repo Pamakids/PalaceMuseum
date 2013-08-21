@@ -158,7 +158,7 @@ package starling.events
         /** @private
          *  Dispatches the event along a custom bubble chain. During the lifetime of the event,
          *  each object is visited only once. */
-        internal function dispatch(chain:Vector.<EventDispatcher>):void
+        starling_internal function dispatch(chain:Vector.<EventDispatcher>):void
         {
             if (chain && chain.length)
             {

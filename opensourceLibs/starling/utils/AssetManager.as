@@ -519,7 +519,7 @@ package starling.utils
                         log("Adding bitmap font '" + name + "'");
                         
                         var fontTexture:Texture = getTexture(name);
-                        TextField.registerBitmapFont(new BitmapFont(fontTexture, xml), name);
+                        TextField.registerBitmapFont(new BitmapFont(fontTexture, xml));
                         removeTexture(name, false);
                     }
                     else
