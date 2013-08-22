@@ -38,7 +38,7 @@ package views.module1
 		private var windowY:int=250;
 		private var windowArr:Vector.<Sprite>=new Vector.<Sprite>();
 
-		private var windowStrArr:Array=["hint3.png", "hint2.png", "hint2.png", "hint3.png"];
+		private var windowStrArr:Array=["hint3", "hint2", "hint2", "hint3"];
 
 		private var hotzone1:Rectangle=new Rectangle(48, 209, 140, 134); //窗-左
 		private var hotzone2:Rectangle=new Rectangle(746, 177, 158, 168); //门-中
@@ -55,6 +55,8 @@ package views.module1
 		private var king:Sprite;
 
 		private var okEff:Sprite;
+
+		private var eunuch:Sprite;
 
 		public function Scene11()
 		{
@@ -105,14 +107,14 @@ package views.module1
 		private function addKing():void
 		{
 			king=new Sprite();
-			king.addChild(getImage("king11.png"));
+			king.addChild(getImage("king11"));
 			SPUtils.registSPCenter(king, 2);
 			addChild(king);
 			king.x=512;
 			king.y=768;
 			king.addEventListener(TouchEvent.TOUCH, onKingTouch);
 
-			showHint(50, 50, "hint0.png", 3, king);
+			showHint(50, 50, "hint0", 3, king);
 		}
 
 		private function onKingTouch(event:TouchEvent):void
@@ -133,7 +135,7 @@ package views.module1
 				case TouchPhase.ENDED:
 				{
 					if (dpt && Point.distance(dpt, pt) < 10)
-						showHint(50, 50, "hint0.png", 3, king);
+						showHint(50, 50, "hint0", 3, king);
 					dpt=null;
 					break;
 				}
@@ -180,7 +182,7 @@ package views.module1
 			if (!isShadowShow)
 				TweenLite.to(w0s, 1, {alpha: 1, onComplete: function():void
 				{
-					showHint(hotzone1.x + hotzone1.width / 2, hotzone1.y + hotzone1.height / 2, "hint1.png", 1, fg);
+					showHint(hotzone1.x + hotzone1.width / 2, hotzone1.y + hotzone1.height / 2, "hint1", 1, fg);
 					isShadowShow=true;
 					effComplete=true;
 				}});
@@ -208,11 +210,11 @@ package views.module1
 			}
 			else if (hotzone2.containsPoint(lp))
 			{
-				showHint(hotzone2.x + hotzone2.width / 2, hotzone2.y + hotzone2.height / 2, "hint2.png", 1, fg);
+				showHint(hotzone2.x + hotzone2.width / 2, hotzone2.y + hotzone2.height / 2, "hint2", 1, fg);
 			}
 			else if (hotzone3.containsPoint(lp))
 			{
-				showHint(hotzone3.x + hotzone3.width / 2, hotzone3.y + hotzone3.height / 2, "hint4.png", 3, fg);
+				showHint(hotzone3.x + hotzone3.width / 2, hotzone3.y + hotzone3.height / 2, "hint4", 3, fg);
 			}
 		}
 
@@ -223,19 +225,19 @@ package views.module1
 			w0l.y=hotzone1.y;
 			fg.addChild(w0l);
 			w0l.alpha=0;
-			w0l.addChild(getImage("window0-light.png"));
+			w0l.addChild(getImage("window0-light"));
 
 			w0s=new Sprite();
 			w0s.x=hotzone1.x;
 			w0s.y=hotzone1.y;
 			fg.addChild(w0s);
 			w0s.alpha=0;
-			w0s.addChild(getImage("window0-shadow.png"));
+			w0s.addChild(getImage("window0-shadow"));
 
 			for (var i:int=0; i < 4; i++)
 			{
 				var w:Sprite=new Sprite();
-				var path:String="window" + (i + 1).toString() + ".png";
+				var path:String="window" + (i + 1).toString() + "";
 				w.addChild(getImage(path));
 				fg.addChild(w);
 				w.x=windowXPosArr[i];
@@ -291,7 +293,7 @@ package views.module1
 				crtWinSelected=true;
 
 				okEff=new Sprite();
-				okEff.addChild(getImage("ok-effect.png"));
+				okEff.addChild(getImage("ok-effect"));
 				SPUtils.registSPCenter(okEff, 5);
 				okEff.x=sp.x;
 				okEff.y=sp.y;
@@ -328,8 +330,8 @@ package views.module1
 		{
 			TweenLite.to(okEff, 1, {alpha: 0, onComplete: function():void
 			{
-				var eunuch:Sprite=new Sprite();
-				eunuch.addChild(getImage("eunuch11.png"));
+				eunuch=new Sprite();
+				eunuch.addChild(getImage("eunuch11"));
 				SPUtils.registSPCenter(eunuch, 5);
 				addChild(eunuch);
 				eunuch.x=1150;
@@ -346,7 +348,10 @@ package views.module1
 			e.stopImmediatePropagation();
 			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
 			if (tc)
+			{
+				eunuch.removeEventListener(TouchEvent.TOUCH, nextScene);
 				dispatchEvent(new Event("gotoNext", true));
+			}
 		}
 
 		//显示提示气泡
@@ -361,6 +366,7 @@ package views.module1
 			if (crtWinSelected)
 				return;
 
+			Prompt.hideAll();
 			Prompt.show(_x, _y, _src, '', reg, 2, _parent);
 
 //			var _img:Image=getImage(_src);

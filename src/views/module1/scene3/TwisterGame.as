@@ -1,17 +1,19 @@
 package views.module1.scene3
 {
 	import com.greensock.TweenLite;
-	import views.components.base.PalaceScene;
+	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import starling.core.Starling;
+	import starling.display.Shape;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+
+	import views.components.base.PalaceScene;
 	import views.module1.scene2.Block;
 
 	public class TwisterGame extends PalaceScene
@@ -40,14 +42,14 @@ package views.module1.scene3
 		{
 			addEventListener(Event.ADDED_TO_STAGE,inits);
 
-			var mStarling:Starling = Starling.current;
-			//开启触碰模拟器，便于PC测试
-			mStarling.simulateMultitouch = true;
+//			var mStarling:Starling = Starling.current;
+//			mStarling.simulateMultitouch = true;
 		}	
 
 		private function inits(e:Event):void
 		{
 			removeEventListener(Event.ADDED_TO_STAGE,inits);
+			scale=DPIUtil.getDPIScale();
 			addEventListener(TouchEvent.TOUCH,onTouch);
 
 			areaSize=size-1;
@@ -58,6 +60,9 @@ package views.module1.scene3
 			indexArr=new Vector.<int>(4);
 
 			twisterAreaArr=new Vector.<Rectangle>(areaNum);
+
+			shape=new Shape();
+			addChild(shape);
 
 			blockHolder=new Sprite();
 			addChild(blockHolder);
@@ -70,7 +75,7 @@ package views.module1.scene3
 				var block:Block=new Block();
 				var txt:String=dataArr[i];
 				block.text=txt;
-				block.addChild(getImage(txt+".png"));
+				block.addChild(getImage(txt+""));
 
 				block.size=size;
 				block.index=i;
@@ -81,7 +86,7 @@ package views.module1.scene3
 
 			initTwisterAreas();
 
-			shuffle();
+			TweenLite.delayedCall(3,shuffle);
 		}
 
 		private function initTwisterAreas():void
@@ -91,7 +96,7 @@ package views.module1.scene3
 				var startIndex:int=int(i/areaSize)*size+i%areaSize;
 				var block:Block=blockArr[startIndex];
 				var pt:Point=blockHolder.localToGlobal(new Point(block.x,block.y));
-				var rect:Rectangle=new Rectangle(pt.x-Block.GAP/2,pt.y-Block.GAP/2,Block.GAP*2,Block.GAP*2);
+				var rect:Rectangle=new Rectangle(pt.x/scale-Block.GAP/2,pt.y/scale-Block.GAP/2,Block.GAP*2,Block.GAP*2);
 				twisterAreaArr[i]=rect;
 			}
 		}
@@ -126,6 +131,7 @@ package views.module1.scene3
 
 				if(!downPointA)
 					return;
+
 
 				//A点的当前和上一个坐标
 				var currentPosA:Point  = touchA.getLocation(stage);
@@ -184,6 +190,7 @@ package views.module1.scene3
 			if(!auto)
 				TweenLite.delayedCall(.6,function():void{
 					twisting=false;
+					shape.graphics.clear();
 					if(checkAllMathed()){
 						gameOver();
 					}
@@ -215,11 +222,14 @@ package views.module1.scene3
 			return sum==length;
 		}
 
-		private function checkTwisterArea(pa:Point, pb:Point):Boolean
+		private function checkTwisterArea(_pa:Point, _pb:Point):Boolean
 		{
 			for (var i:int = 0; i < twisterAreaArr.length; i++) 
 			{
 				var rect:Rectangle=twisterAreaArr[i];
+				var pa:Point=new Point(_pa.x/scale,_pa.y/scale);
+				var pb:Point=new Point(_pb.x/scale,_pb.y/scale);
+
 				if(rect.containsPoint(pa)&&rect.containsPoint(pb))
 				{
 					startIndex=int(i/areaSize)*size+i%areaSize;
@@ -232,6 +242,11 @@ package views.module1.scene3
 
 		private function setTwisterData(_startIndex:int):void
 		{
+			shape.graphics.clear();
+			shape.graphics.lineStyle(3,0x66ccff);
+			shape.graphics.drawRoundRect(blockArr[_startIndex].x-Block.GAP/2-2,blockArr[_startIndex].y-Block.GAP/2-2,
+				Block.GAP*2+2,Block.GAP*2+2,10);
+
 			indexArr[0]=blockArr[_startIndex].index;
 			indexArr[1]=blockArr[_startIndex+1].index;
 			indexArr[2]=blockArr[_startIndex+size+1].index;
@@ -242,6 +257,9 @@ package views.module1.scene3
 		private var readyToGo:Boolean;
 		private var startIndex:int;
 		private var isOver:Boolean;
+		private var scale:Number;
+
+		private var shape:Shape;
 
 		private function shuffle():void
 		{
@@ -255,6 +273,7 @@ package views.module1.scene3
 				TweenLite.delayedCall(.6,shuffle);
 				step--;
 			}else{
+				shape.graphics.clear();
 				readyToGo=true;
 			}
 		}
