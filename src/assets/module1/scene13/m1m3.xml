@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:3cacd498ec4a76f4111b8c569cc98c03:1/1$ -->
+<TextureAtlas imagePath="m1m3.png">
+    <SubTexture name="book" x="1" y="763" width="91" height="93"/>
+    <SubTexture name="card-clock" x="1679" y="430" width="316" height="405"/>
+    <SubTexture name="card-plaque" x="1436" y="1" width="316" height="405"/>
+    <SubTexture name="clock-big" x="1" y="1" width="535" height="761"/>
+    <SubTexture name="clock-sign" x="93" y="849" width="21" height="58"/>
+    <SubTexture name="clock" x="537" y="662" width="111" height="240"/>
+    <SubTexture name="eunuch13" x="1753" y="1" width="244" height="428" frameX="0" frameY="-2" frameWidth="244" frameHeight="430"/>
+    <SubTexture name="halo" x="537" y="1" width="898" height="660"/>
+    <SubTexture name="hour" x="18" y="857" width="10" height="34" frameX="0" frameY="-2" frameWidth="10" frameHeight="38"/>
+    <SubTexture name="king13" x="1436" y="407" width="242" height="506" frameX="0" frameY="-2" frameWidth="244" frameHeight="508"/>
+    <SubTexture name="min" x="1" y="857" width="16" height="51"/>
+    <SubTexture name="plaque" x="93" y="763" width="290" height="85"/>
+    <SubTexture name="又" x="649" y="662" width="158" height="158"/>
+    <SubTexture name="新" x="965" y="662" width="150" height="158" frameX="-4" frameY="0" frameWidth="158" frameHeight="158"/>
+    <SubTexture name="日" x="1116" y="662" width="154" height="154" frameX="-4" frameY="0" frameWidth="158" frameHeight="158"/>
+    <SubTexture name="苟" x="808" y="662" width="156" height="158" frameX="-2" frameY="0" frameWidth="158" frameHeight="158"/>
+</TextureAtlas>
