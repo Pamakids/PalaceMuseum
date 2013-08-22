@@ -29,6 +29,7 @@ package
 			Starling.handleLostContext = true;
 			Starling.multitouchEnabled = true;
 			this._starling = new Starling(Main, this.stage);
+			this._starling.showStats = true;
 			this._starling.enableErrorChecking = true;
 			this._starling.start();
 			
