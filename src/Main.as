@@ -1,5 +1,12 @@
 package
 {
+	import com.pamakids.utils.DPIUtil;
+
+	import feathers.core.PopUpManager;
+
+	import starling.core.Starling;
+	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 
@@ -8,6 +15,8 @@ package
 
 	public class Main extends Sprite
 	{
+		private var scale:Number;
+
 		public function Main()
 		{
 			Prompt.parent=this;
@@ -17,6 +26,20 @@ package
 		private function inits(e:Event):void
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, inits);
+
+			var mStarling:Starling=Starling.current;
+			mStarling.antiAliasing=16;
+
+			scale=DPIUtil.getDPIScale();
+			this.scaleX=this.scaleY=scale;
+
+			PopUpManager.root=this;
+			PopUpManager.overlayFactory=function defaultOverlayFactory():DisplayObject
+			{
+				const quad:Quad=new Quad(1024, 768, 0x000000);
+				quad.alpha=.4;
+				return quad;
+			}
 
 			var module:Sprite=new Module1();
 			addChild(module);
@@ -34,7 +57,7 @@ package
 //						var t:Touch=e.getTouch(stage);
 //						if (t && t.phase == TouchPhase.BEGAN)
 //						{
-//							Prompt.show(1024 / 2, 768 / 2, 'hint-bg-2.png', 'hint-ok-常服.png');
+//							Prompt.show(1024 / 2, 768 / 2, 'hint-bg-2', 'hint-ok-常服');
 //							trace('show');
 //						}
 //					});

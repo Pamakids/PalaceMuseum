@@ -113,12 +113,12 @@ package views.module1.scene2
 			for (var key:String in clothPoints)
 			{
 				var p:Point=clothPoints[key];
-				var i:Image=new Image(am.getTexture('quiz-matchsign.png'));
+				var i:Image=new Image(am.getTexture('quiz-matchsign'));
 				i.alpha=0;
 				i.x=p.x;
 				i.y=p.y;
 				addChild(i);
-				var ci:Image=new Image(am.getTexture('quiz-' + key + '.png'));
+				var ci:Image=new Image(am.getTexture('quiz-' + key + ''));
 				clothXOffset=(i.width - ci.width) / 2;
 				clothYOffset=(i.height - ci.height) / 2;
 				itemHeight=ci.height;

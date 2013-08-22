@@ -91,7 +91,7 @@ package views.module1.scene2
 			TweenLite.to(this, .5, {scaleX: 1, scaleY: 1, alpha: 1, onComplete: function():void
 			{
 				isShow=true;
-				TweenLite.delayedCall(2, hide);
+				TweenLite.delayedCall(delay, hide);
 			}});
 		}
 
@@ -112,6 +112,7 @@ package views.module1.scene2
 		}
 
 		public var callback:Function;
+		public var delay:Number=3;
 	}
 }
 

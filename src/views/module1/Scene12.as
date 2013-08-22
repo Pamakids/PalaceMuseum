@@ -181,9 +181,11 @@ package views.module1
 		private function completeMission():void
 		{
 			var str:String=clothArr[missionIndex];
-			lionHint.img=getImage("hint-bg-0");
+			lionHint.img=getImage("hint-bg-2");
 			lionHint.label=getImage("hint-ok-" + str);
 			missionIndex++;
+			hatLocked=false;
+			clothLocked=false;
 			lionHint.callback=nextMission;
 			lionHint.show();
 		}
@@ -193,11 +195,9 @@ package views.module1
 			if (missionIndex < clothArr.length)
 			{
 				var str:String=clothArr[missionIndex];
-				lionHint.img=getImage("hint-bg-2");
+				lionHint.img=getImage("hint-bg-0");
 				lionHint.label=getImage("hint-find-" + str);
 				lionHint.show();
-				hatLocked=false;
-				clothLocked=false;
 			}
 			else
 			{
@@ -231,10 +231,10 @@ package views.module1
 			boxHolder.x=686;
 			boxHolder.y=572;
 
-			box=getImage("box.png");
+			box=getImage("box");
 			box.addEventListener(TouchEvent.TOUCH, onClickBox);
 			boxCover=new Sprite();
-			boxCover.addChild(getImage("boxcover.png"));
+			boxCover.addChild(getImage("boxcover"));
 			boxCover.pivotX=boxCover.width >> 1;
 			boxCover.x=box.width / 2;
 			boxCover.y=-4;
@@ -449,7 +449,7 @@ package views.module1
 		private function onQuizDone(e:Event):void
 		{
 			var quiz:ClothPuzzle=e.currentTarget as ClothPuzzle;
-			TweenLite.to(quiz, .5, {scaleX: .1, scaleY: .1, x: boxHolder.x, y: boxHolder.y, onComplete: function():void
+			TweenLite.to(quiz, .5, {scaleX: .2, scaleY: .2, x: boxHolder.x + 140, y: boxHolder.y, onComplete: function():void
 			{
 				quiz.parent.removeChild(quiz);
 				lionHint.label=getImage("hint-gamestart");
@@ -467,7 +467,7 @@ package views.module1
 		private function addKing():void
 		{
 			kingHolder=new Sprite();
-			kingHolder.addChild(getImage("king12.png"));
+			kingHolder.addChild(getImage("king12"));
 			addChild(kingHolder);
 			kingHolder.x=268;
 			kingHolder.y=38;
