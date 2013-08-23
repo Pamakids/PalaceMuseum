@@ -15,6 +15,7 @@ package views.module1
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.AssetManager;
 
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
@@ -58,8 +59,9 @@ package views.module1
 
 		private var eunuch:Sprite;
 
-		public function Scene11()
+		public function Scene11(am:AssetManager)
 		{
+			super(am);
 		}
 
 		override public function init():void
@@ -361,13 +363,16 @@ package views.module1
 			showHint(sp.x, sp.y, windowStrArr[index], 1, fg);
 		}
 
+		private var p:Prompt;
+
 		private function showHint(_x:Number, _y:Number, _src:String, reg:int, _parent:Sprite):void
 		{
 			if (crtWinSelected)
 				return;
 
-			Prompt.hideAll();
-			Prompt.show(_x, _y, _src, '', reg, 2, _parent);
+			if (p)
+				p.playHide();
+			p=Prompt.show(_x, _y, _src, '', reg, 2, null, _parent);
 
 //			var _img:Image=getImage(_src);
 //

@@ -1,7 +1,6 @@
 package views.module1
 {
 	import com.greensock.TweenLite;
-	import views.components.base.PalaceScene;
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
@@ -13,17 +12,19 @@ package views.module1
 	import feathers.data.ListCollection;
 	import feathers.layout.VerticalLayout;
 
-	import views.module1.scene2.ClothPuzzle;
-
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import views.module1.scene2.Hint;
+	import starling.utils.AssetManager;
+
+	import views.components.base.PalaceScene;
 	import views.module1.scene2.BoxCellRenderer;
 	import views.module1.scene2.Cloth;
+	import views.module1.scene2.ClothPuzzle;
+	import views.module1.scene2.Hint;
 
 	public class Scene12 extends PalaceScene
 	{
@@ -60,8 +61,9 @@ package views.module1
 		private var quizSolved:Boolean;
 		private var index:int=0;
 
-		public function Scene12()
+		public function Scene12(am:AssetManager)
 		{
+			super(am);
 		}
 
 		override public function init():void

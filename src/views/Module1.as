@@ -1,7 +1,5 @@
 package views
 {
-	import views.components.base.PalaceModule;
-	import views.components.base.PalaceScene;
 	import com.pamakids.palace.utils.StringUtils;
 
 	import flash.filesystem.File;
@@ -10,10 +8,9 @@ package views
 	import starling.textures.TextureAtlas;
 	import starling.utils.AssetManager;
 
-	import views.components.Prompt;
+	import views.components.base.PalaceModule;
+	import views.components.base.PalaceScene;
 	import views.module1.Scene11;
-	import views.module1.Scene12;
-	import views.module1.Scene13;
 
 	public class Module1 extends PalaceModule
 	{
@@ -63,11 +60,8 @@ package views
 							removeChild(crtScene);
 							crtScene.dispose();
 						}
-						crtScene=new scene();
-						crtScene.assets=assets;
-						Prompt.addAssetManager(assets);
+						crtScene=new scene(assets);
 						addChild(crtScene);
-						crtScene.init();
 					}
 				});
 			}

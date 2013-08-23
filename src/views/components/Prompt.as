@@ -3,8 +3,6 @@ package views.components
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.greensock.easing.Elastic;
-	import com.greensock.plugins.TransformAroundCenterPlugin;
-	import com.greensock.plugins.TweenPlugin;
 
 	import flash.utils.Dictionary;
 
@@ -23,9 +21,11 @@ package views.components
 		public static var parent:Sprite;
 		public static var promptDic:Dictionary=new Dictionary();
 
+		public var callback:Function;
+
 		public static function addAssetManager(am:AssetManager):void
 		{
-			if (assetManagers.indexOf(am) == -1)
+			if (am && assetManagers.indexOf(am) == -1)
 				assetManagers.push(am);
 		}
 
@@ -35,12 +35,11 @@ package views.components
 				assetManagers.splice(assetManagers.indexOf(am), 1);
 		}
 
-		private var id:String;
+		public var id:String;
 
 		public function Prompt(bg:String, content:String, algin:int=5)
 		{
 			super();
-			this.id=content ? content : bg;
 			var bgImage:Image=getImage(bg);
 			addChild(bgImage);
 			this.pivotX=(bgImage.width >> 1) * ((algin - 1) % 3);
@@ -74,13 +73,24 @@ package views.components
 
 		public function playHide():void
 		{
+			if (!this.parent)
+				return;
+			TweenLite.killDelayedCallsTo(playHide);
+			TweenLite.killTweensOf(this);
 			TweenLite.to(this, 0.5, hideEffect);
-			TweenLite.delayedCall(0.5, function(p:Prompt):void
-			{
+			TweenLite.killDelayedCallsTo(clearHandler);
+			TweenLite.delayedCall(0.5, clearHandler, [this]);
+		}
+
+		private function clearHandler(p:Prompt):void
+		{
+			if (p.parent)
 				p.parent.removeChild(p);
-				delete promptDic[id];
-				trace('hided');
-			}, [this]);
+			delete promptDic[id];
+			if (callback != null)
+				callback();
+			callback=null;
+			trace('hided');
 		}
 
 		/**
@@ -95,17 +105,22 @@ package views.components
 		 * @return
 		 *
 		 */
-		public static function show(x:Number, y:Number, background:String, content:String='', position:int=5, hideAfter:Number=2, parentSprite:Sprite=null):Prompt
+		public static function show(x:Number, y:Number, background:String, content:String='', position:int=5, hideAfter:Number=2, callback:Function=null, parentSprite:Sprite=null):Prompt
 		{
-			var prompt:Prompt=promptDic[content ? content : background];
+			var id:String=content ? content : background;
+			var prompt:Prompt=promptDic[id + x + y];
+			if (prompt)
+				trace(id + x + y, prompt.x);
 			if (prompt && prompt.x == x && prompt.y == y)
 				return null;
 			prompt=new Prompt(background, content, position);
+			prompt.callback=callback;
 			prompt.x=x;
 			prompt.y=y;
+			prompt.id=id + x + y;
 			var p:Sprite=parentSprite ? parentSprite : parent;
 			p.addChild(prompt);
-			promptDic[content ? content : background]=prompt;
+			promptDic[id + x + y]=prompt;
 			prompt.playShow(hideAfter);
 			return prompt;
 		}
