@@ -1,6 +1,5 @@
 package
 {
-	import com.greensock.TweenLite;
 	import com.pamakids.manager.LoadManager;
 	import com.pamakids.utils.DPIUtil;
 
@@ -8,7 +7,6 @@ package
 
 	import feathers.core.PopUpManager;
 
-	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -36,11 +34,8 @@ package
 //			testFlipAnimation();
 //			return;
 			removeEventListener(Event.ADDED_TO_STAGE, inits);
-
-			var mStarling:Starling=Starling.current;
-			mStarling.antiAliasing=16;
-
 			scale=DPIUtil.getDPIScale();
+
 			this.scaleX=this.scaleY=scale;
 
 			PopUpManager.root=this;
