@@ -8,6 +8,7 @@ package views.module1
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.setTimeout;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -339,7 +340,12 @@ package views.module1
 
 				TweenLite.to(eunuch, 1, {x: 800});
 
-				eunuch.addEventListener(TouchEvent.TOUCH, nextScene);
+//				eunuch.addEventListener(TouchEvent.TOUCH, nextScene);
+
+				setTimeout(function():void
+				{
+					dispatchEvent(new Event("gotoNext", true));
+				}, 5000);
 			}});
 		}
 
@@ -366,7 +372,7 @@ package views.module1
 			if (crtWinSelected)
 				return;
 
-			Prompt.hideAll();
+//			Prompt.hideAll();
 			Prompt.show(_x, _y, _src, '', reg, 2, _parent);
 
 //			var _img:Image=getImage(_src);
@@ -389,6 +395,8 @@ package views.module1
 
 		private function onTouch(event:TouchEvent):void
 		{
+			if (crtWinSelected)
+				return;
 			event.stopImmediatePropagation();
 			var touches:Vector.<Touch>=event.getTouches(stage, TouchPhase.MOVED);
 			//如果只有一个点在移动，是单点触碰

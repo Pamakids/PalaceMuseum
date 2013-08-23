@@ -17,7 +17,7 @@ package views
 
 	public class Module1 extends PalaceModule
 	{
-		private var sceneArr:Array=[Scene11];
+		private var sceneArr:Array=[Scene11, Scene12, Scene12];
 
 		private var xml:XML;
 
@@ -55,7 +55,7 @@ package views
 				assets.enqueue(file);
 				assets.loadQueue(function(ratio:Number):void
 				{
-//					trace("Loading assets, progress:", ratio);
+					trace("Loading assets, progress:", ratio);
 					if (ratio == 1.0)
 					{
 						if (crtScene)
