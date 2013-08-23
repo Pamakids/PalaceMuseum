@@ -9,6 +9,7 @@ package views.components.base
 {
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
@@ -16,11 +17,19 @@ package views.components.base
 
 	public class PalaceScene extends Sprite
 	{
-		public var assets:AssetManager;
+		protected var assets:AssetManager;
 
-		public function PalaceScene()
+		public function PalaceScene(am:AssetManager=null)
 		{
 			Prompt.parent=this;
+			Prompt.addAssetManager(am);
+			this.assets=am;
+			addEventListener(Event.ADDED_TO_STAGE, onStage);
+		}
+
+		private function onStage(e:Event):void
+		{
+			init();
 		}
 
 		public function init():void

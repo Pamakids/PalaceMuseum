@@ -1,6 +1,7 @@
 package views.module1.scene3
 {
 	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
@@ -12,6 +13,7 @@ package views.module1.scene3
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceScene;
 	import views.module1.scene2.Block;
@@ -20,11 +22,11 @@ package views.module1.scene3
 	{
 		public var size:uint=3;
 
-		private var dataArr:Array=["新","日","苟","新","日","日","新","日","又"];
+		private var dataArr:Array=["新", "日", "苟", "新", "日", "日", "新", "日", "又"];
 
 		private var blockArr:Vector.<Block>;
 
-		private var twisterAreaArr:Vector.<Rectangle>;//旋转热区
+		private var twisterAreaArr:Vector.<Rectangle>; //旋转热区
 		private var indexArr:Vector.<int>;
 
 		private var twisting:Boolean;
@@ -38,24 +40,22 @@ package views.module1.scene3
 
 		private var areaNum:int;
 
-		public function TwisterGame()
+		public function TwisterGame(am:AssetManager)
 		{
-			addEventListener(Event.ADDED_TO_STAGE,inits);
-
+			super(am);
 //			var mStarling:Starling = Starling.current;
 //			mStarling.simulateMultitouch = true;
-		}	
+		}
 
-		private function inits(e:Event):void
+		override public function init():void
 		{
-			removeEventListener(Event.ADDED_TO_STAGE,inits);
 			scale=DPIUtil.getDPIScale();
-			addEventListener(TouchEvent.TOUCH,onTouch);
+			addEventListener(TouchEvent.TOUCH, onTouch);
 
-			areaSize=size-1;
-			areaNum=areaSize*areaSize;
+			areaSize=size - 1;
+			areaNum=areaSize * areaSize;
 
-			blockArr=new Vector.<Block>(size*size);
+			blockArr=new Vector.<Block>(size * size);
 
 			indexArr=new Vector.<int>(4);
 
@@ -67,15 +67,15 @@ package views.module1.scene3
 			blockHolder=new Sprite();
 			addChild(blockHolder);
 
-			this.pivotX=areaSize*Block.GAP/2;
-			this.pivotY=areaSize*Block.GAP/2;
+			this.pivotX=areaSize * Block.GAP / 2;
+			this.pivotY=areaSize * Block.GAP / 2;
 
-			for (var i:int = 0; i < dataArr.length; i++) 
+			for (var i:int=0; i < dataArr.length; i++)
 			{
 				var block:Block=new Block();
 				var txt:String=dataArr[i];
 				block.text=txt;
-				block.addChild(getImage(txt+""));
+				block.addChild(getImage(txt + ""));
 
 				block.size=size;
 				block.index=i;
@@ -86,100 +86,104 @@ package views.module1.scene3
 
 			initTwisterAreas();
 
-			TweenLite.delayedCall(3,shuffle);
+			TweenLite.delayedCall(3, shuffle);
 		}
 
 		private function initTwisterAreas():void
 		{
-			for (var i:int = 0; i < areaNum; i++) 
+			for (var i:int=0; i < areaNum; i++)
 			{
-				var startIndex:int=int(i/areaSize)*size+i%areaSize;
+				var startIndex:int=int(i / areaSize) * size + i % areaSize;
 				var block:Block=blockArr[startIndex];
-				var pt:Point=blockHolder.localToGlobal(new Point(block.x,block.y));
-				var rect:Rectangle=new Rectangle(pt.x/scale-Block.GAP/2,pt.y/scale-Block.GAP/2,Block.GAP*2,Block.GAP*2);
+				var pt:Point=blockHolder.localToGlobal(new Point(block.x, block.y));
+				var rect:Rectangle=new Rectangle(pt.x / scale - Block.GAP / 2, pt.y / scale - Block.GAP / 2, Block.GAP * 2, Block.GAP * 2);
 				twisterAreaArr[i]=rect;
 			}
 		}
 
 		private function onTouch(event:TouchEvent):void
 		{
-			if(twisting||!readyToGo||isOver)
+			if (twisting || !readyToGo || isOver)
 				return;
 			event.stopImmediatePropagation();
 			//得到触碰并且正在移动的点（1个或多个）
-			var touches:Vector.<Touch> = event.getTouches(stage, TouchPhase.MOVED);
-			var touchesEnd:Vector.<Touch> = event.getTouches(stage, TouchPhase.ENDED);
+			var touches:Vector.<Touch>=event.getTouches(stage, TouchPhase.MOVED);
+			var touchesEnd:Vector.<Touch>=event.getTouches(stage, TouchPhase.ENDED);
 
-			if(touchesEnd.length>0){
+			if (touchesEnd.length > 0)
+			{
 				downPointA=downPointB=null;
 			}
 
-			if (touches.length == 2)
+			if (touches.length == 2)
 			{
 				//得到两个点的引用
-				var touchA:Touch = touches[0];
-				var touchB:Touch = touches[1];
+				var touchA:Touch=touches[0];
+				var touchB:Touch=touches[1];
 
-				if(!downPointA){
-					var pa:Point  = touchA.getLocation(stage);
-					var pb:Point  = touchB.getLocation(stage);
-					if(checkTwisterArea(pa,pb)){
+				if (!downPointA)
+				{
+					var pa:Point=touchA.getLocation(stage);
+					var pb:Point=touchB.getLocation(stage);
+					if (checkTwisterArea(pa, pb))
+					{
 						downPointA=pa;
 						downPointB=pb;
 					}
 				}
 
-				if(!downPointA)
+				if (!downPointA)
 					return;
 
 
 				//A点的当前和上一个坐标
-				var currentPosA:Point  = touchA.getLocation(stage);
-				var previousPosA:Point = touchA.getPreviousLocation(stage);
+				var currentPosA:Point=touchA.getLocation(stage);
+				var previousPosA:Point=touchA.getPreviousLocation(stage);
 				//B点的当前和上一个坐标
-				var currentPosB:Point  = touchB.getLocation(stage);
-				var previousPosB:Point = touchB.getPreviousLocation(stage);
+				var currentPosB:Point=touchB.getLocation(stage);
+				var previousPosB:Point=touchB.getPreviousLocation(stage);
 				//计算两个点之间的距离
-				var currentVector:Point  = currentPosA.subtract(currentPosB);
+				var currentVector:Point=currentPosA.subtract(currentPosB);
 //				var previousVector:Point = previousPosA.subtract(previousPosB);
-				var previousVector:Point = downPointA.subtract(downPointB);
+				var previousVector:Point=downPointA.subtract(downPointB);
 				//计算上一个弧度和当前触碰点弧度，算出弧度差值
-				var currentAngle:Number  = Math.atan2(currentVector.y, currentVector.x);
-				var previousAngle:Number = Math.atan2(previousVector.y, previousVector.x);
-				if(currentAngle<-Math.PI/2&&previousAngle>Math.PI/2)
-					currentAngle=Math.PI*2-currentAngle;
-				else if(previousAngle<-Math.PI/2&&currentAngle>Math.PI/2)
-					previousAngle=Math.PI*2-previousAngle;
-				var deltaAngle:Number = currentAngle - previousAngle;
+				var currentAngle:Number=Math.atan2(currentVector.y, currentVector.x);
+				var previousAngle:Number=Math.atan2(previousVector.y, previousVector.x);
+				if (currentAngle < -Math.PI / 2 && previousAngle > Math.PI / 2)
+					currentAngle=Math.PI * 2 - currentAngle;
+				else if (previousAngle < -Math.PI / 2 && currentAngle > Math.PI / 2)
+					previousAngle=Math.PI * 2 - previousAngle;
+				var deltaAngle:Number=currentAngle - previousAngle;
 
-				deltaAngle=deltaAngle%(Math.PI/4);
-				if(Math.abs(deltaAngle)>Math.PI/18)
-					twist(deltaAngle<0);
+				deltaAngle=deltaAngle % (Math.PI / 4);
+				if (Math.abs(deltaAngle) > Math.PI / 18)
+					twist(deltaAngle < 0);
 			}
 		}
 
-		private function twist(clockwise:Boolean,auto:Boolean=false):void
+		private function twist(clockwise:Boolean, auto:Boolean=false):void
 		{
-			if(!auto){
+			if (!auto)
+			{
 				downPointA=downPointB=null;
 				twisting=true;
 			}
 
-			if(clockwise)
+			if (clockwise)
 				indexArr.unshift(indexArr.pop());
 			else
 				indexArr.push(indexArr.shift());
 
 			//调整索引
 			blockArr[startIndex].index=indexArr[0];
-			blockArr[startIndex+1].index=indexArr[1];
-			blockArr[startIndex+size+1].index=indexArr[2];
-			blockArr[startIndex+size].index=indexArr[3];
+			blockArr[startIndex + 1].index=indexArr[1];
+			blockArr[startIndex + size + 1].index=indexArr[2];
+			blockArr[startIndex + size].index=indexArr[3];
 
 			var length:int=blockArr.length;
 			var arr:Vector.<Block>=new Vector.<Block>(length);
 
-			for (var j:int = 0; j < length; j++) 
+			for (var j:int=0; j < length; j++)
 			{
 				var block:Block=blockArr[j];
 				arr[block.index]=block;
@@ -187,11 +191,13 @@ package views.module1.scene3
 
 			blockArr=arr;
 
-			if(!auto)
-				TweenLite.delayedCall(.6,function():void{
+			if (!auto)
+				TweenLite.delayedCall(.6, function():void
+				{
 					twisting=false;
 					shape.graphics.clear();
-					if(checkAllMathed()){
+					if (checkAllMathed())
+					{
 						gameOver();
 					}
 				});
@@ -200,39 +206,49 @@ package views.module1.scene3
 		private function gameOver():void
 		{
 			isOver=true;
-			TweenLite.delayedCall(2,function():void{
-				dispatchEvent(new Event("gameover",true));
+			for each (var block:Block in blockArr)
+			{
+				TweenMax.to(block, .5, {shake: {rotation: .05, numShakes: 4}});
+			}
+
+			TweenLite.delayedCall(2, function():void
+			{
+				dispatchEvent(new Event("gameover", true));
 			});
 
 		}
 
-		private function checkAllMathed():Boolean{
+		private function checkAllMathed():Boolean
+		{
 			var sum:int=0;
 			var length:int=blockArr.length;
-			for (var i:int = 0; i < length; i++) 
+			for (var i:int=0; i < length; i++)
 			{
 				var block:Block=blockArr[i];
-				if(block.text==dataArr[i]){
+				if (block.text == dataArr[i])
+				{
 					sum++;
 					block.matched=true;
-				}else{
+				}
+				else
+				{
 					block.matched=false;
 				}
 			}
-			return sum==length;
+			return sum == length;
 		}
 
 		private function checkTwisterArea(_pa:Point, _pb:Point):Boolean
 		{
-			for (var i:int = 0; i < twisterAreaArr.length; i++) 
+			for (var i:int=0; i < twisterAreaArr.length; i++)
 			{
 				var rect:Rectangle=twisterAreaArr[i];
-				var pa:Point=new Point(_pa.x/scale,_pa.y/scale);
-				var pb:Point=new Point(_pb.x/scale,_pb.y/scale);
+				var pa:Point=new Point(_pa.x / scale, _pa.y / scale);
+				var pb:Point=new Point(_pb.x / scale, _pb.y / scale);
 
-				if(rect.containsPoint(pa)&&rect.containsPoint(pb))
+				if (rect.containsPoint(pa) && rect.containsPoint(pb))
 				{
-					startIndex=int(i/areaSize)*size+i%areaSize;
+					startIndex=int(i / areaSize) * size + i % areaSize;
 					setTwisterData(startIndex);
 					return true;
 				}
@@ -243,14 +259,13 @@ package views.module1.scene3
 		private function setTwisterData(_startIndex:int):void
 		{
 			shape.graphics.clear();
-			shape.graphics.lineStyle(3,0x66ccff);
-			shape.graphics.drawRoundRect(blockArr[_startIndex].x-Block.GAP/2-2,blockArr[_startIndex].y-Block.GAP/2-2,
-				Block.GAP*2+2,Block.GAP*2+2,10);
+			shape.graphics.lineStyle(3, 0x66ccff);
+			shape.graphics.drawRoundRect(blockArr[_startIndex].x - Block.GAP / 2 - 2, blockArr[_startIndex].y - Block.GAP / 2 - 2, Block.GAP * 2 + 2, Block.GAP * 2 + 2, 10);
 
 			indexArr[0]=blockArr[_startIndex].index;
-			indexArr[1]=blockArr[_startIndex+1].index;
-			indexArr[2]=blockArr[_startIndex+size+1].index;
-			indexArr[3]=blockArr[_startIndex+size].index;
+			indexArr[1]=blockArr[_startIndex + 1].index;
+			indexArr[2]=blockArr[_startIndex + size + 1].index;
+			indexArr[3]=blockArr[_startIndex + size].index;
 		}
 
 		private var step:int=10;
@@ -265,14 +280,17 @@ package views.module1.scene3
 		{
 //			readyToGo=true;
 //			return;
-			if(step>0){
-				var index:int=Math.random()*areaNum;
-				startIndex=int(index/areaSize)*size+index%areaSize;
+			if (step > 0)
+			{
+				var index:int=Math.random() * areaNum;
+				startIndex=int(index / areaSize) * size + index % areaSize;
 				setTwisterData(startIndex);
-				twist(Math.random()>.5,true);
-				TweenLite.delayedCall(.6,shuffle);
+				twist(Math.random() > .5, true);
+				TweenLite.delayedCall(.6, shuffle);
 				step--;
-			}else{
+			}
+			else
+			{
 				shape.graphics.clear();
 				readyToGo=true;
 			}

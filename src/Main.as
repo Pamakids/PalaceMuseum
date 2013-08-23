@@ -2,6 +2,8 @@ package
 {
 	import com.pamakids.utils.DPIUtil;
 
+	import flash.geom.Rectangle;
+
 	import feathers.core.PopUpManager;
 
 	import starling.core.Starling;
@@ -26,11 +28,8 @@ package
 		private function inits(e:Event):void
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, inits);
-
-			var mStarling:Starling=Starling.current;
-			mStarling.antiAliasing=16;
-
 			scale=DPIUtil.getDPIScale();
+
 			this.scaleX=this.scaleY=scale;
 
 			PopUpManager.root=this;

@@ -100,16 +100,16 @@ package views.module1.scene2
 			clothPoints['地']=points[3];
 
 			correctCircleDic=new Dictionary();
-			var clothDic:Dictionary=new Dictionary();
+			clothDic=new Dictionary();
 			currentPositionDic=new Dictionary();
 
-			var randomPoints:Array;
+
 			while (!randomPoints)
 			{
 				randomPoints=generateRandomPositions(points);
 			}
 
-			var ia:Dictionary=new Dictionary();
+			ia=new Dictionary();
 			for (var key:String in clothPoints)
 			{
 				var p:Point=clothPoints[key];
@@ -135,6 +135,12 @@ package views.module1.scene2
 				correctCircleDic[ci]=i;
 				ia[ci]=pi;
 			}
+
+//			trace(width, height);
+		}
+
+		public function activate():void
+		{
 			TweenLite.delayedCall(0.8, function():void
 			{
 				for each (var cloth:Image in clothDic)
@@ -149,12 +155,17 @@ package views.module1.scene2
 
 			addEventListener(TouchEvent.TOUCH, touchHandler);
 
-			trace(width, height);
 		}
 
 		private var dragingCloth:Image;
 		private var otherCloth:Image;
 		private var downPoint:Point;
+
+		private var ia:Dictionary;
+
+		private var clothDic:Dictionary;
+
+		private var randomPoints:Array;
 
 		private function touchHandler(event:TouchEvent):void
 		{
@@ -237,7 +248,7 @@ package views.module1.scene2
 										}
 										if (allMatched)
 										{
-											trace('all matched');
+//											trace('all matched');
 											TweenLite.to(matchedGlow, 0.8, {alpha: 1, onComplete: function():void
 											{
 												dispatchEvent(new Event('allMatched'));
