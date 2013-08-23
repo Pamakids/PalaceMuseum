@@ -8,6 +8,9 @@ package views.components
 
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
@@ -51,6 +54,18 @@ package views.components
 				contentImage.x=(bgImage.width - contentImage.width) / 2;
 				contentImage.y=(bgImage.height - contentImage.height) / 2;
 			}
+
+			addEventListener(TouchEvent.TOUCH, onTouch);
+		}
+
+		private function onTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
+			if (tc)
+			{
+				removeEventListener(TouchEvent.TOUCH, onTouch);
+				playHide();
+			}
 		}
 
 		private function get hideEffect():Object
@@ -65,6 +80,10 @@ package views.components
 
 		public function playShow(hideAfter:Number):void
 		{
+			TweenLite.killDelayedCallsTo(playHide);
+			TweenLite.killTweensOf(this);
+			TweenLite.killDelayedCallsTo(clearHandler);
+
 			scaleX=scaleY=.1;
 			TweenLite.to(this, 0.5, showEffect);
 			if (hideAfter)
@@ -86,11 +105,10 @@ package views.components
 		{
 			if (p.parent)
 				p.parent.removeChild(p);
-			delete promptDic[id];
-			if (callback != null)
-				callback();
-			callback=null;
-			trace('hided');
+			delete promptDic[p.id];
+			if (p.callback != null)
+				p.callback();
+			p.callback=null;
 		}
 
 		/**
@@ -105,14 +123,18 @@ package views.components
 		 * @return
 		 *
 		 */
-		public static function show(x:Number, y:Number, background:String, content:String='', position:int=5, hideAfter:Number=2, callback:Function=null, parentSprite:Sprite=null):Prompt
+		public static function show(x:Number, y:Number, background:String, content:String='', position:int=5, hideAfter:Number=3, callback:Function=null, parentSprite:Sprite=null, forceShow:Boolean=false):Prompt
 		{
 			var id:String=content ? content : background;
 			var prompt:Prompt=promptDic[id + x + y];
-			if (prompt)
-				trace(id + x + y, prompt.x);
-			if (prompt && prompt.x == x && prompt.y == y)
+//			if (prompt)
+//				trace(id + x + y, prompt.x);
+			if (prompt && (prompt.x == x && prompt.y == y))
+			{
+				if (forceShow)
+					prompt.playShow(hideAfter);
 				return null;
+			}
 			prompt=new Prompt(background, content, position);
 			prompt.callback=callback;
 			prompt.x=x;

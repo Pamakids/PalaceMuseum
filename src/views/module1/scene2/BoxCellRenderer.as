@@ -17,15 +17,14 @@ package views.module1.scene2
 
 		override public function set defaultIcon(value:DisplayObject):void
 		{
-			if(value)
+			if (value)
 				value.scaleX=value.scaleY=.5;
 			super.defaultIcon=value;
-			if(defaultIcon)
-				trace(defaultIcon.alpha)
 		}
 
-		public function setIconVisible(value:Boolean):void{
-			TweenLite.to(defaultIcon,.5,{alpha:(value?1:0)});
+		public function setIconVisible(value:Boolean):void
+		{
+			TweenLite.to(defaultIcon, .5, {alpha: (value ? 1 : 0)});
 		}
 	}
 }

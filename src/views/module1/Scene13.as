@@ -9,6 +9,7 @@ package views.module1
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.AssetManager;
 
 	import views.components.CollectionCard;
 	import views.components.base.PalaceScene;
@@ -30,9 +31,9 @@ package views.module1
 		private var clock:Clock;
 		private var clockMatched:Boolean;
 
-		public function Scene13()
+		public function Scene13(am:AssetManager)
 		{
-
+			super(am);
 		}
 
 		override public function init():void
@@ -186,8 +187,7 @@ package views.module1
 
 			PopUpManager.addPopUp(gameHolder, true, false);
 
-			game=new TwisterGame();
-			game.assets=assets;
+			game=new TwisterGame(assets);
 			game.addEventListener("gameover", gameOver);
 			gameHolder.addChild(game);
 		}
