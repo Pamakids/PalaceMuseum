@@ -17,7 +17,7 @@ package views.components.base
 
 	public class PalaceScene extends Sprite
 	{
-		private var assets:AssetManager;
+		protected var assets:AssetManager;
 
 		public function PalaceScene(am:AssetManager=null)
 		{
