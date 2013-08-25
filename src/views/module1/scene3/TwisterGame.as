@@ -3,10 +3,13 @@ package views.module1.scene3
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.pamakids.utils.DPIUtil;
-
+	
+	import feathers.core.PopUpManager;
+	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
+	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -14,7 +17,7 @@ package views.module1.scene3
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.base.PalaceScene;
 	import views.module1.scene2.Block;
 
@@ -49,6 +52,9 @@ package views.module1.scene3
 
 		override public function init():void
 		{
+			if(inited)
+				return;
+			inited=true;
 			scale=DPIUtil.getDPIScale();
 			addEventListener(TouchEvent.TOUCH, onTouch);
 
@@ -83,11 +89,22 @@ package views.module1.scene3
 
 				blockArr[i]=block;
 			}
-
+			
 			initTwisterAreas();
 
 			TweenLite.delayedCall(3, shuffle);
 		}
+		
+		private function onCloseTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(stage,TouchPhase.ENDED);
+			if(!tc)
+				return;
+			PopUpManager.removePopUp(this.parent);
+		}
+		
+		[Embed(source="/assets/module1/scene13/clock/clock-close.png")]
+		private var clock_close:Class;
 
 		private function initTwisterAreas():void
 		{
@@ -271,10 +288,13 @@ package views.module1.scene3
 		private var step:int=10;
 		private var readyToGo:Boolean;
 		private var startIndex:int;
-		private var isOver:Boolean;
+		public var isOver:Boolean;
 		private var scale:Number;
 
 		private var shape:Shape;
+
+		private var close:Image;
+		private var inited:Boolean;
 
 		private function shuffle():void
 		{
@@ -293,7 +313,27 @@ package views.module1.scene3
 			{
 				shape.graphics.clear();
 				readyToGo=true;
+				isOver=false;
+				
+				if(!close){
+					close=Image.fromBitmap(new clock_close());
+					close.x=492;
+					close.y=-181;
+					addChild(close);
+					close.addEventListener(TouchEvent.TOUCH,onCloseTouch);
+				}
+				else{
+					close.visible=true;
+				}
+				
 			}
+		}
+		
+		public function reset():void
+		{
+			close.visible=false;
+			step=10;
+			shuffle();
 		}
 	}
 }
