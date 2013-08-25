@@ -30,7 +30,6 @@ package
 
 		private function inits(e:Event):void
 		{
-//			trace(width, height);
 //			testFlipAnimation();
 //			return;
 			removeEventListener(Event.ADDED_TO_STAGE, inits);

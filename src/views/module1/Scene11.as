@@ -302,12 +302,13 @@ package views.module1
 				okEff.y=sp.y;
 				fg.addChild(okEff);
 				okEff.alpha=0;
-				var targetPt:Point=fg.localToGlobal(new Point(sp.x, 0));
-				var minPt:Point=fg.localToGlobal(new Point(0, 0));
 				TweenLite.to(okEff, 2, {alpha: 1});
-//				var tx:Number=512-targetPt.x;
-//				trace(this.x)
-//				trace(targetPt.x)
+				var tx:Number;
+				if (sp.x > width / 2)
+					tx=1024 - bg.width;
+				else
+					tx=0;
+				TweenLite.to(fg, 2, {x: tx});
 				TweenLite.to(this, 2, {scaleX: 1.2, scaleY: 1.2, onComplete: function():void
 				{
 					TweenLite.to(king, 1, {alpha: 0});
