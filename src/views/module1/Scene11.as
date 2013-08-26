@@ -5,11 +5,11 @@ package views.module1
 	import com.greensock.plugins.ShakeEffect;
 	import com.greensock.plugins.TweenPlugin;
 	import com.pamakids.palace.utils.SPUtils;
-
+	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -17,7 +17,7 @@ package views.module1
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 	import views.module1.scene2.Hint;
@@ -129,17 +129,10 @@ package views.module1
 
 			switch (tc.phase)
 			{
-				case TouchPhase.BEGAN:
-				{
-					dpt=pt;
-					break;
-				}
-
 				case TouchPhase.ENDED:
 				{
 					if (dpt && Point.distance(dpt, pt) < 10)
 						showHint(50, 50, "hint0", 3, king);
-					dpt=null;
 					break;
 				}
 
@@ -159,17 +152,10 @@ package views.module1
 
 			switch (tc.phase)
 			{
-				case TouchPhase.BEGAN:
-				{
-					dpt=pt;
-					break;
-				}
-
 				case TouchPhase.ENDED:
 				{
 					if (dpt && Point.distance(dpt, pt) < 10)
 						checkFG(pt);
-					dpt=null;
 					break;
 				}
 
@@ -258,7 +244,6 @@ package views.module1
 			if (!tc)
 				return;
 			var pt:Point=tc.getLocation(stage);
-//			trace('window touch', pt);
 
 			switch (tc.phase)
 			{
@@ -266,7 +251,6 @@ package views.module1
 				{
 					var img:Image=event.target as Image;
 					crtTarget=img.parent as Sprite;
-					dpt=pt;
 					break;
 				}
 				case TouchPhase.ENDED:
@@ -274,7 +258,6 @@ package views.module1
 					if (dpt && crtTarget && Point.distance(dpt, pt) < 10)
 						shake(crtTarget);
 					crtTarget=null;
-					dpt=null;
 					break;
 				}
 
@@ -302,12 +285,13 @@ package views.module1
 				okEff.y=sp.y;
 				fg.addChild(okEff);
 				okEff.alpha=0;
-				var targetPt:Point=fg.localToGlobal(new Point(sp.x, 0));
-				var minPt:Point=fg.localToGlobal(new Point(0, 0));
 				TweenLite.to(okEff, 2, {alpha: 1});
-//				var tx:Number=512-targetPt.x;
-//				trace(this.x)
-//				trace(targetPt.x)
+				var tx:Number;
+				if (sp.x > width / 2)
+					tx=1024 - bg.width;
+				else
+					tx=0;
+				TweenLite.to(fg, 2, {x: tx});
 				TweenLite.to(this, 2, {scaleX: 1.2, scaleY: 1.2, onComplete: function():void
 				{
 					TweenLite.to(king, 1, {alpha: 0});
@@ -401,23 +385,47 @@ package views.module1
 		{
 			if (crtWinSelected)
 				return;
-			event.stopImmediatePropagation();
-			var touches:Vector.<Touch>=event.getTouches(stage, TouchPhase.MOVED);
-			//如果只有一个点在移动，是单点触碰
-			if (touches.length == 1)
+			
+			var tc:Touch=event.getTouch(stage);
+			if (!tc)
+				return;
+			var pt:Point=tc.getLocation(stage);
+			
+			switch(tc.phase)
 			{
-				var delta:Point=touches[0].getMovement(stage);
-				var dx:Number=delta.x;
-				var tx:Number=fg.x + dx / 2;
-				if (tx < (1024 - fg_width))
-					dx=(1024 - fg_width - fg.x) * 2;
-				else if (tx > 0)
-					dx=(0 - fg.x) * 2;
-
-				bg.x+=dx / 5;
-				mg.x+=dx / 3;
-				fg.x+=dx / 2;
-				king.x-=dx / 8;
+				case TouchPhase.BEGAN:
+				{
+					dpt=pt;
+					break;
+				}
+					
+				case TouchPhase.MOVED:
+				{
+					var delta:Point=tc.getMovement(stage);
+					var dx:Number=delta.x;
+					var tx:Number=fg.x + dx / 2;
+					if (tx < (1024 - fg_width))
+						dx=(1024 - fg_width - fg.x) * 2;
+					else if (tx > 0)
+						dx=(0 - fg.x) * 2;
+					
+					bg.x+=dx / 5;
+					mg.x+=dx / 3;
+					fg.x+=dx / 2;
+					king.x-=dx / 8;
+					break;
+				}
+					
+				case TouchPhase.BEGAN:
+				{
+					dpt=null;
+					break;
+				}
+					
+				default:
+				{
+					break;
+				}
 			}
 		}
 	}

@@ -14,6 +14,7 @@ package views.module1
 	import views.components.CollectionCard;
 	import views.components.base.PalaceScene;
 	import views.module1.scene3.Clock;
+	import views.module1.scene3.Clock2;
 	import views.module1.scene3.TwisterGame;
 
 	public class Scene13 extends PalaceScene
@@ -23,12 +24,11 @@ package views.module1
 		private var gameHolder:Sprite;
 
 		private var game:TwisterGame;
-		private var playing:Boolean;
 		private var halo:Sprite;
 		private var cardShow:Boolean;
 		private var gamePlayed:Boolean;
 
-		private var clock:Clock;
+		private var clock:Clock2;
 		private var clockMatched:Boolean;
 
 		public function Scene13(am:AssetManager)
@@ -105,8 +105,6 @@ package views.module1
 
 		private function onClockTouch(event:TouchEvent):void
 		{
-			if (playing)
-				return;
 			var tc:Touch=event.getTouch(stage, TouchPhase.ENDED);
 			if (tc)
 				initClock();
@@ -118,33 +116,35 @@ package views.module1
 			{
 				if (!clock)
 				{
-					clock=new Clock(this.assets);
-					PopUpManager.addPopUp(clock);
-					clock.x=512;
-					clock.y=768 / 2;
+					clock=new Clock2();
 					clock.addEventListener("clockMatch", clockMatch);
 				}
-				else
-				{
-					clock.visible=true;
-					clock.reset();
-					setChildIndex(clock, numChildren - 1);
-				}
 			}
-			else
-			{
-				addCard("card-clock");
-			}
+//			clock.scaleX=clock.scaleY=1;
+			clock.x=50;
+			clock.y=25;
+			clock.reset();
+			PopUpManager.addPopUp(clock, true, false);
 		}
 
 		private function clockMatch(e:Event):void
 		{
-			clockMatched=true;
-			TweenLite.to(clock, .5, {scaleX: .1, scaleY: .1,
-					onComplete: function():void {
-						PopUpManager.removePopUp(clock);
-						addCard("card-clock");
-					}});
+			if (!clockMatched)
+			{
+				clockMatched=true;
+				TweenLite.to(clock, .5, {scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete: function():void
+				{
+					PopUpManager.removePopUp(clock);
+					addCard("card-clock");
+				}});
+			}
+			else
+			{
+				TweenLite.to(clock, .5, {scaleX: .1, scaleY: .1, onComplete: function():void
+				{
+					PopUpManager.removePopUp(clock);
+				}});
+			}
 
 		}
 
@@ -159,8 +159,6 @@ package views.module1
 
 		private function onPlaqueTouch(e:TouchEvent):void
 		{
-			if (playing)
-				return;
 			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
 			if (tc)
 				initGame();
@@ -168,46 +166,52 @@ package views.module1
 
 		private function initGame():void
 		{
-			if (gamePlayed)
+			if (!gameHolder)
 			{
-				addCard("card-plaque")
-				return;
+				gameHolder=new Sprite();
+				gameHolder.x=512;
+				gameHolder.y=768 / 2;
+
+				var gameBG:Sprite=new Sprite();
+				gameBG.addChild(getImage("gamebg13"));
+				gameBG.pivotX=gameBG.width >> 1;
+				gameBG.pivotY=gameBG.height >> 1;
+				gameHolder.addChild(gameBG);
+
+				game=new TwisterGame(assets);
+				game.addEventListener("gameover", gameOver);
+				gameHolder.addChild(game);
 			}
-			playing=true;
-
-			gameHolder=new Sprite();
-			gameHolder.x=512;
-			gameHolder.y=768 / 2;
-
-			var gameBG:Sprite=new Sprite();
-			gameBG.addChild(getImage("gamebg13"));
-			gameBG.pivotX=gameBG.width >> 1;
-			gameBG.pivotY=gameBG.height >> 1;
-			gameHolder.addChild(gameBG);
+			else
+			{
+				gameHolder.scaleX=gameHolder.scaleY=1;
+				if (game.isOver)
+				{
+					game.reset();
+				}
+			}
 
 			PopUpManager.addPopUp(gameHolder, true, false);
-
-			game=new TwisterGame(assets);
-			game.addEventListener("gameover", gameOver);
-			gameHolder.addChild(game);
 		}
 
 		private function gameOver(e:Event):void
 		{
-			gamePlayed=true;
-			game.removeEventListener("gameover", gameOver);
-			TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
+			if (!gamePlayed)
 			{
-				PopUpManager.removePopUp(gameHolder);
-				game.removeChildren();
-				gameHolder.removeChildren();
-				game=null;
-//				game.dispose();
-				gameHolder.dispose();
-				playing=false;
-
-				addCard("card-plaque")
-			}});
+				TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
+				{
+					PopUpManager.removePopUp(gameHolder);
+					addCard("card-plaque")
+				}});
+			}
+			else
+			{
+				TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
+				{
+					PopUpManager.removePopUp(gameHolder);
+				}});
+			}
+			gamePlayed=true;
 		}
 
 		private function addCard(src:String):void
@@ -220,11 +224,11 @@ package views.module1
 
 			halo.scaleX=halo.scaleY=.5;
 			halo.rotation=0;
-			TweenLite.to(halo, 2.5, {scaleX: 1, scaleY: 1, rotation: Math.PI,
-					onComplete: function():void {
-						halo.visible=false;
-						cardShow=false;
-					}});
+			TweenLite.to(halo, 2.5, {scaleX: 1, scaleY: 1, rotation: Math.PI, onComplete: function():void
+			{
+				halo.visible=false;
+				cardShow=false;
+			}});
 
 			var card:CollectionCard=new CollectionCard();
 			card.addChild(getImage(src));
