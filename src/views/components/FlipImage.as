@@ -7,12 +7,27 @@ package views.components
 	{
 
 		private var horizontal:Boolean;
+		/**
+		 * 从小到大，从左往右
+		 */
 		private var minToMax:Boolean;
+		/**
+		 * 翻滚时从-1到1是否相连
+		 */
+		private var coherent:Boolean;
 
-		public function FlipImage(texture:Texture, horizontal:Boolean=false, minToMax:Boolean=false)
+		/**
+		 * 折叠图片
+		 * @param texture 图片材质
+		 * @param horizontal 是否水平翻转
+		 * @param minToMax 是否从往右或从右往左
+		 * @coherent 翻滚时从-1到1是否相连
+		 */
+		public function FlipImage(texture:Texture, horizontal:Boolean=false, minToMax:Boolean=false, coherent:Boolean=false)
 		{
 			this.horizontal=horizontal;
 			this.minToMax=minToMax;
+			this.coherent=coherent;
 			super(texture);
 		}
 
@@ -81,10 +96,31 @@ package views.components
 				else
 				{
 					//0 右上角 2 右下角 1 左上角 3 左下角
-					mVertexData.setPosition(0, w, 0);
-					mVertexData.setPosition(1, 0, 0);
-					mVertexData.setPosition(2, w + topOffset * (1 - fpl), h * fpl);
-					mVertexData.setPosition(3, -topOffset * (1 - fpl), h * fpl);
+					if (minToMax)
+					{
+//						if (!coherent)
+//						{
+//						y=-h;
+						mVertexData.setPosition(0, w, 0);
+						mVertexData.setPosition(1, 0, 0);
+						mVertexData.setPosition(2, w + topOffset * (1 - fpl), h * fpl);
+						mVertexData.setPosition(3, -topOffset * (1 - fpl), h * fpl);
+//						}
+//						else
+//						{
+//							mVertexData.setPosition(0, w, 0);
+//							mVertexData.setPosition(1, 0, 0);
+//							mVertexData.setPosition(2, w + topOffset * (1 - fpl), -h * (1 - fpl));
+//							mVertexData.setPosition(3, -topOffset * (1 - fpl), -h * (1 - fpl));
+//						}
+					}
+					else
+					{
+						mVertexData.setPosition(2, w, 0);
+						mVertexData.setPosition(3, 0, 0);
+						mVertexData.setPosition(0, w + topOffset * (1 - fpl), h * fpl);
+						mVertexData.setPosition(1, -topOffset * (1 - fpl), h * fpl);
+					}
 				}
 			}
 		}

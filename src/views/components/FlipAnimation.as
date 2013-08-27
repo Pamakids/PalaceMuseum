@@ -14,6 +14,7 @@ package views.components
 
 	import views.components.base.Container;
 
+	[Event(name="completed", type="starling.events.Event")]
 	/**
 	 * 折叠动画
 	 * @author mani
@@ -74,17 +75,29 @@ package views.components
 
 		private function flipImage():void
 		{
-			TweenLite.to(this, duration, {temp: minToMax ? -1 : 1, ease: Cubic.easeOut, onComplete: function():void
+			var toy:Number=0;
+			if (!horizontal)
 			{
-				temp=0;
+				if (flipingImage && flipingImage.y > height - interval)
+					toy=height - contentHeight;
+			}
+			TweenLite.to(this, duration, {y: toy, temp: minToMax ? -1 : 1, ease: Cubic.easeOut, onComplete: function():void
+			{
+				temp=1;
 				trace(animationIndex, flipingImage.y);
 				animationIndex++;
 				if (animationIndex != textures.length)
 					flipImage();
+				else
+					dispatchEvent(new Event('completed'));
 			}, onUpdate: function():void
 			{
 				flipingImage=getImage();
 				flipingImage.location=temp;
+				if (temp > 0)
+					flipingImage.y=animationIndex * interval - interval;
+				else
+					flipingImage.y=animationIndex * interval;
 				var percnet:Number=Math.abs(temp);
 				if (percnet < 1)
 				{
@@ -108,7 +121,7 @@ package views.components
 			var fi:FlipImage=imageDic[animationIndex] as FlipImage;
 			if (!fi)
 			{
-				fi=new FlipImage(textures[animationIndex], horizontal, minToMax);
+				fi=new FlipImage(textures[animationIndex], horizontal, minToMax, true);
 				if (!horizontal)
 				{
 					fi.y=animationIndex * interval;
