@@ -53,7 +53,7 @@ package views.module1
 					list.clipRect.height=37;
 				boxHolder.setChildIndex(list, 1);
 				TweenLite.to(list, 1, {y: (value ? -536 : 4)});
-				TweenLite.to(list.clipRect, 1, {height: (value ? 567 : 2), onComplete: (value ?
+				TweenLite.to(list.clipRect, 1, {height: (value ? 567 : 30), onComplete: (value ?
 							function():void {
 
 							} :
@@ -498,13 +498,29 @@ package views.module1
 				case TouchPhase.BEGAN:
 				{
 					var renderer:BoxCellRenderer=e.target as BoxCellRenderer;
-					if (renderer && (kingCloth.renderer != renderer && kingCloth.renderer != renderer))
+
+					if (renderer)
 					{
-						if ((hatLocked && hatArr.indexOf(renderer.label) >= 0) ||
-							(clothLocked && clothArr.indexOf(renderer.label) >= 0))
-							return;
-						draggingCloth.renderer=renderer
-						dpt=pt;
+						var isKingCloth:Boolean
+						if (!kingCloth.renderer)
+							isKingCloth=false;
+						else
+							isKingCloth=kingCloth.renderer.label == renderer.label;
+
+						var isKingHat:Boolean;
+						if (!kingHat.renderer)
+							isKingHat=false;
+						else
+							isKingHat=kingHat.renderer.label == renderer.label;
+
+						if (!isKingCloth && !isKingHat)
+						{
+							if ((hatLocked && hatArr.indexOf(renderer.label) >= 0) ||
+								(clothLocked && clothArr.indexOf(renderer.label) >= 0))
+								return;
+							draggingCloth.renderer=renderer
+							dpt=pt;
+						}
 					}
 					else
 						dpt=null;
