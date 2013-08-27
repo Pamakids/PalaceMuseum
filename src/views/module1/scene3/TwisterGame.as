@@ -19,7 +19,6 @@ package views.module1.scene3
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceScene;
-	import views.module1.scene2.Block;
 
 	public class TwisterGame extends PalaceScene
 	{
