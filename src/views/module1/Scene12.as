@@ -150,7 +150,7 @@ package views.module1
 									if (!clothLocked)
 										showClothHint("hint-" + kingCloth.type);
 									else if (hatLocked)
-										completeMission();
+										TweenLite.delayedCall(2, completeMission);
 									break;
 								}
 
@@ -167,7 +167,7 @@ package views.module1
 									if (!hatLocked)
 										showHatHint("hint-" + kingHat.type);
 									else if (clothLocked)
-										completeMission();
+										TweenLite.delayedCall(2, completeMission);
 									break;
 								}
 
@@ -226,7 +226,9 @@ package views.module1
 		private function endMission():void
 		{
 			opened=false;
-			showLionHint("hint-bg-2", "hint-end", nextScene);
+			TweenLite.delayedCall(2, function():void {
+				showLionHint("hint-bg-2", "hint-end", nextScene);
+			});
 
 //			lionHint.img=getImage("hint-bg-0");
 //			lionHint.delay=3;
@@ -419,6 +421,7 @@ package views.module1
 		private var hatLockMark:Image;
 
 		private var clothLockMark:Image;
+		private var scrolling:Boolean;
 
 		private function addShelf():void
 		{
@@ -497,18 +500,19 @@ package views.module1
 					else
 						dpt=null;
 					draggingCloth.visible=false;
+					scrolling=false;
 					break;
 				}
 
 				case TouchPhase.MOVED:
 				{
-					if (dragging)
+					if (dragging || scrolling)
 						return;
 					if (dpt)
 					{
 						var dx:Number=dpt.x - pt.x;
 						var dy:Number=dpt.y - pt.y;
-						if (dx > 20 * scale && Math.abs(dy) < 20 * scale && draggingCloth.renderer)
+						if (Math.abs(dx) >= 10 * scale && Math.abs(dy) < 30 * scale && draggingCloth.renderer)
 						{
 							dragging=true;
 							list.stopScrolling();
@@ -518,6 +522,10 @@ package views.module1
 							draggingCloth.scaleX=draggingCloth.scaleY=1;
 							draggingCloth.alpha=1;
 							draggingCloth.renderer.setIconVisible(false);
+						}
+						else if (Math.abs(dy) >= 30 * scale)
+						{
+							scrolling=true;
 						}
 					}
 					break;
@@ -555,7 +563,10 @@ package views.module1
 				TweenLite.to(quiz, 1, {scaleX: 1, scaleY: 1, x: ex, y: ey,
 						onComplete: function():void
 						{
-							showLionHint("hint-bg-2", "hint-quizstart");
+							TweenLite.delayedCall(2,
+								function():void {
+									showLionHint("hint-bg-2", "hint-quizstart");
+								});
 							quiz.addEventListener("allMatched", onQuizDone);
 							quiz.activate();
 						}});
@@ -569,11 +580,14 @@ package views.module1
 			{
 				quiz.parent.removeChild(quiz);
 
-				showLionHint("hint-bg-2", "hint-gamestart", nextMission);
 //				lionHint.label=getImage("hint-gamestart");
 //				lionHint.callback=nextMission;
 //				lionHint.show();
 				opened=true;
+
+				TweenLite.delayedCall(2, function():void {
+					showLionHint("hint-bg-2", "hint-gamestart", nextMission);
+				});
 			}});
 		}
 
