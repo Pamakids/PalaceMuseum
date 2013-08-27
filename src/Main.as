@@ -9,17 +9,21 @@ package
 
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
-	import starling.display.Sprite;
 	import starling.events.Event;
 
 	import views.Module1;
 	import views.components.FlipAnimation;
 	import views.components.Prompt;
 	import views.components.base.Container;
+	import views.components.base.PalaceModule;
 
 	public class Main extends Container
 	{
 		private var scale:Number;
+		private var moduleArr:Array=[Module1]
+
+		private var moduleIndex:int;
+		private var crtModule:PalaceModule;
 
 		public function Main()
 		{
@@ -43,10 +47,38 @@ package
 				const quad:Quad=new Quad(1024, 768, 0x000000);
 				quad.alpha=.4;
 				return quad;
-			}
+			};
 
-			var module:Sprite=new Module1();
-			addChild(module);
+
+			addEventListener("gotoNextModule", nextModule);
+			moduleIndex=0;
+			loadModule(moduleIndex);
+
+		}
+
+		private function nextModule():void
+		{
+			moduleIndex++;
+			loadModule(moduleIndex);
+		}
+
+		private function loadModule(index:int):void
+		{
+			if (crtModule)
+			{
+				removeChild(crtModule);
+				crtModule.dispose();
+			}
+			if (index < moduleArr.length)
+			{
+				var module:Class=moduleArr[index] as Class;
+				crtModule=new module();
+				addChild(crtModule);
+			}
+			else
+			{
+				trace("nextModule")
+			}
 		}
 
 		private function testFlipAnimation():void

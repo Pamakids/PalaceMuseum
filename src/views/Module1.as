@@ -18,7 +18,7 @@ package views
 
 	public class Module1 extends PalaceModule
 	{
-		private var sceneArr:Array=[Scene13];
+		private var sceneArr:Array=[Scene11, Scene12, Scene13];
 
 		private var xml:XML;
 
@@ -43,7 +43,8 @@ package views
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 
 			addEventListener("gotoNext", nextScene);
-			loadScene(0);
+			sceneIndex=0;
+			loadScene(sceneIndex);
 		}
 
 		private function onEnterFrame(e:Event):void
@@ -64,7 +65,7 @@ package views
 		private var load:Sprite;
 		private var isLoading:Boolean;
 
-		private function loadScene(index):void
+		private function loadScene(index:int):void
 		{
 			if (crtScene)
 			{
@@ -94,8 +95,7 @@ package views
 			}
 			else
 			{
-//				removeChild(crtScene);
-//				crtScene.dispose();
+				dispatchEvent(new Event("gotoNextModule", true));
 			}
 		}
 	}

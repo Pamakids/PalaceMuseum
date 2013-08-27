@@ -51,7 +51,7 @@ package views.module1.scene3
 			flace.y=374;
 			addChild(flace);
 
-			var close:Image=getImage("clock-close");
+			close=getImage("clock-close");
 			close.x=830;
 			addChild(close);
 			close.addEventListener(TouchEvent.TOUCH, onCloseTouch);
@@ -64,6 +64,8 @@ package views.module1.scene3
 
 		private function onCloseTouch(e:TouchEvent):void
 		{
+			if (ended)
+				return;
 			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
 			if (!tc)
 				return;
@@ -98,7 +100,7 @@ package views.module1.scene3
 								for (var i:int=0; i < laceArr.length; i++)
 								{
 									var img:Image=laceArr[i] as Image;
-									img.x+=delta / 5;
+									img.x+=delta / 3;
 									if (img.x < -LACE_WIDTH)
 										img.x=3 * LACE_WIDTH + img.x;
 								}
@@ -106,7 +108,7 @@ package views.module1.scene3
 								for (var j:int=0; j < wordArr.length; j++)
 								{
 									var img1:Image=wordArr[j] as Image;
-									img1.x+=delta / 5;
+									img1.x+=delta / 2;
 									if (img1.x < -WORD_WIDTH)
 										img1.x=2 * WORD_WIDTH + img1.x;
 								}
@@ -155,7 +157,7 @@ package views.module1.scene3
 				hour.rotation=Math.PI / 180 * (1800 / 12);
 				ended=true;
 
-				TweenLite.to(clock, 1, {scaleX: 1.2, scaleY: 1.2, onComplete: function():void
+				TweenLite.to(clock, 1, {scaleX: 1.5, scaleY: 1.5, onComplete: function():void
 				{
 					TweenLite.to(clock, 1, {scaleX: 1, scaleY: 1});
 				}});
@@ -199,6 +201,8 @@ package views.module1.scene3
 
 		private const LACE_WIDTH:int=72;
 		private const WORD_WIDTH:int=484;
+
+		private var close:Image;
 
 		private function addClock():void
 		{
