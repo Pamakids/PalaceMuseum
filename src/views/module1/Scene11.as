@@ -363,7 +363,6 @@ package views.module1
 		{
 			if (crtWinSelected)
 				return;
-
 			var tc:Touch=event.getTouch(stage);
 			if (!tc)
 				return;
@@ -386,20 +385,17 @@ package views.module1
 						dx=(1024 - fg_width - fg.x) * 2;
 					else if (tx > 0)
 						dx=(0 - fg.x) * 2;
-
 					bg.x+=dx / 5;
 					mg.x+=dx / 3;
 					fg.x+=dx / 2;
 					king.x-=dx / 8;
 					break;
 				}
-
-				case TouchPhase.BEGAN:
+				case TouchPhase.ENDED:
 				{
 					dpt=null;
 					break;
 				}
-
 				default:
 				{
 					break;
