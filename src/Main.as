@@ -5,13 +5,17 @@ package
 
 	import flash.display.Bitmap;
 
+	import controls.MainCtrl;
+
 	import feathers.core.PopUpManager;
 
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
+	import starling.display.Sprite;
 	import starling.events.Event;
 
 	import views.Module1;
+	import views.Module2;
 	import views.components.FlipAnimation;
 	import views.components.Prompt;
 	import views.components.base.Container;
@@ -20,13 +24,14 @@ package
 	public class Main extends Container
 	{
 		private var scale:Number;
-		private var moduleArr:Array=[Module1]
+		private var moduleArr:Array=[Module2]
 
 		private var moduleIndex:int;
 		private var crtModule:PalaceModule;
 
 		public function Main()
 		{
+			MainCtrl.instance.main=this;
 			Prompt.parent=this;
 			addEventListener(Event.ADDED_TO_STAGE, inits);
 			super(1024, 768);
@@ -49,11 +54,23 @@ package
 				return quad;
 			};
 
+			initLayers();
 
 			addEventListener("gotoNextModule", nextModule);
 			moduleIndex=0;
 			loadModule(moduleIndex);
 
+		}
+
+		private var UILayer:Sprite;
+		private var contentLayer:Sprite;
+
+		private function initLayers():void
+		{
+			contentLayer=new Sprite();
+			addChild(contentLayer);
+			UILayer=new Sprite();
+			addChild(UILayer);
 		}
 
 		private function nextModule():void
@@ -66,19 +83,26 @@ package
 		{
 			if (crtModule)
 			{
-				removeChild(crtModule);
-				crtModule.dispose();
+//				contentLayer.removeChild(crtModule);
+//				crtModule.dispose();
 			}
 			if (index < moduleArr.length)
 			{
+				playCutscene();
 				var module:Class=moduleArr[index] as Class;
 				crtModule=new module();
-				addChild(crtModule);
+				contentLayer.addChild(crtModule);
 			}
 			else
 			{
 				trace("nextModule")
 			}
+		}
+
+		private function playCutscene():void
+		{
+			// TODO Auto Generated method stub
+
 		}
 
 		private function testFlipAnimation():void

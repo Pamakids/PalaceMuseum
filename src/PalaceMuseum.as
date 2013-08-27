@@ -22,6 +22,7 @@ package
 			stage.scaleMode=StageScaleMode.NO_SCALE;
 
 			Starling.multitouchEnabled=true;
+			Starling.handleLostContext=true;
 
 			var main:Starling=new Starling(Main, stage);
 			main.start();
