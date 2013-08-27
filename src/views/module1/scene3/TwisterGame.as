@@ -97,6 +97,8 @@ package views.module1.scene3
 
 		private function onCloseTouch(e:TouchEvent):void
 		{
+			if (isOver)
+				return;
 			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
 			if (!tc)
 				return;
@@ -119,7 +121,6 @@ package views.module1.scene3
 		{
 			if (twisting || !readyToGo || isOver)
 				return;
-			event.stopImmediatePropagation();
 			//得到触碰并且正在移动的点（1个或多个）
 			var touches:Vector.<Touch>=event.getTouches(stage, TouchPhase.MOVED);
 			var touchesEnd:Vector.<Touch>=event.getTouches(stage, TouchPhase.ENDED);
@@ -129,7 +130,7 @@ package views.module1.scene3
 				downPointA=downPointB=null;
 			}
 
-			if (touches.length == 2)
+			if (touches.length > 1)
 			{
 				//得到两个点的引用
 				var touchA:Touch=touches[0];
@@ -222,7 +223,7 @@ package views.module1.scene3
 			isOver=true;
 			for each (var block:Block in blockArr)
 			{
-				TweenMax.to(block, .5, {shake: {rotation: .05, numShakes: 4}});
+				TweenMax.to(block, 1, {shake: {rotation: .2, numShakes: 4}});
 			}
 
 			TweenLite.delayedCall(2, function():void

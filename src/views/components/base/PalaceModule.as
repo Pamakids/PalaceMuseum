@@ -32,7 +32,7 @@ package views.components.base
 
 		override public function dispose():void
 		{
-			if (autoDispose)
+			if (autoDispose && assetManager)
 				assetManager.dispose();
 			assetManager=null;
 			super.dispose();

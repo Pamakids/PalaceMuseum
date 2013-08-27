@@ -139,7 +139,7 @@ package views.module1
 			}
 			else
 			{
-				TweenLite.to(clock, .5, {scaleX: .1, scaleY: .1, onComplete: function():void
+				TweenLite.to(clock, .5, {scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete: function():void
 				{
 					PopUpManager.removePopUp(clock);
 				}});
