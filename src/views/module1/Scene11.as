@@ -5,11 +5,11 @@ package views.module1
 	import com.greensock.plugins.ShakeEffect;
 	import com.greensock.plugins.TweenPlugin;
 	import com.pamakids.palace.utils.SPUtils;
-	
+
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
-	
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -17,7 +17,7 @@ package views.module1
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 	import views.module1.scene2.Hint;
@@ -117,53 +117,31 @@ package views.module1
 			king.y=768;
 			king.addEventListener(TouchEvent.TOUCH, onKingTouch);
 
-			showHint(50, 50, "hint0", 3, king);
+			TweenLite.delayedCall(1.5, function():void {
+				showHint(50, 50, "hint0", 3, king);
+			});
 		}
 
 		private function onKingTouch(event:TouchEvent):void
 		{
-			var tc:Touch=event.getTouch(stage);
+			var tc:Touch=event.getTouch(stage, TouchPhase.ENDED);
 			if (!tc)
 				return;
 			var pt:Point=tc.getLocation(stage);
 
-			switch (tc.phase)
-			{
-				case TouchPhase.ENDED:
-				{
-					if (dpt && Point.distance(dpt, pt) < 10)
-						showHint(50, 50, "hint0", 3, king);
-					break;
-				}
-
-				default:
-				{
-					break;
-				}
-			}
+			if (dpt && Point.distance(dpt, pt) < 15)
+				showHint(50, 50, "hint0", 3, king);
 		}
 
 		private function onFGTouch(event:TouchEvent):void
 		{
-			var tc:Touch=event.getTouch(stage);
+			var tc:Touch=event.getTouch(stage, TouchPhase.ENDED);
 			if (!tc)
 				return;
 			var pt:Point=tc.getLocation(stage);
 
-			switch (tc.phase)
-			{
-				case TouchPhase.ENDED:
-				{
-					if (dpt && Point.distance(dpt, pt) < 10)
-						checkFG(pt);
-					break;
-				}
-
-				default:
-				{
-					break;
-				}
-			}
+			if (dpt && Point.distance(dpt, pt) < 15)
+				checkFG(pt);
 		}
 
 		private function showShadow():void
@@ -255,7 +233,7 @@ package views.module1
 				}
 				case TouchPhase.ENDED:
 				{
-					if (dpt && crtTarget && Point.distance(dpt, pt) < 10)
+					if (dpt && crtTarget && Point.distance(dpt, pt) < 15)
 						shake(crtTarget);
 					crtTarget=null;
 					break;
@@ -291,11 +269,17 @@ package views.module1
 					tx=1024 - bg.width;
 				else
 					tx=0;
+
+				var dx:Number=(tx - fg.x) * 2;
+
+				TweenLite.to(bg, 2, {x: bg.x + dx / 5});
+				TweenLite.to(mg, 2, {x: mg.x + dx / 3});
 				TweenLite.to(fg, 2, {x: tx});
+
 				TweenLite.to(this, 2, {scaleX: 1.2, scaleY: 1.2, onComplete: function():void
 				{
 					TweenLite.to(king, 1, {alpha: 0});
-					TweenLite.delayedCall(2, resetView);
+					TweenLite.delayedCall(1.5, resetView);
 				}});
 			}
 			else
@@ -335,16 +319,16 @@ package views.module1
 			}});
 		}
 
-		private function nextScene(e:TouchEvent):void
-		{
-			e.stopImmediatePropagation();
-			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
-			if (tc)
-			{
-				eunuch.removeEventListener(TouchEvent.TOUCH, nextScene);
-				dispatchEvent(new Event("gotoNext", true));
-			}
-		}
+//		private function nextScene(e:TouchEvent):void
+//		{
+//			e.stopImmediatePropagation();
+//			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
+//			if (tc)
+//			{
+//				eunuch.removeEventListener(TouchEvent.TOUCH, nextScene);
+//				dispatchEvent(new Event("gotoNext", true));
+//			}
+//		}
 
 		//显示提示气泡
 		private function showWindowHint(sp:Sprite):void
@@ -385,20 +369,19 @@ package views.module1
 		{
 			if (crtWinSelected)
 				return;
-			
 			var tc:Touch=event.getTouch(stage);
 			if (!tc)
 				return;
 			var pt:Point=tc.getLocation(stage);
-			
-			switch(tc.phase)
+
+			switch (tc.phase)
 			{
 				case TouchPhase.BEGAN:
 				{
 					dpt=pt;
 					break;
 				}
-					
+
 				case TouchPhase.MOVED:
 				{
 					var delta:Point=tc.getMovement(stage);
@@ -408,20 +391,17 @@ package views.module1
 						dx=(1024 - fg_width - fg.x) * 2;
 					else if (tx > 0)
 						dx=(0 - fg.x) * 2;
-					
 					bg.x+=dx / 5;
 					mg.x+=dx / 3;
 					fg.x+=dx / 2;
 					king.x-=dx / 8;
 					break;
 				}
-					
-				case TouchPhase.BEGAN:
+				case TouchPhase.ENDED:
 				{
 					dpt=null;
 					break;
 				}
-					
 				default:
 				{
 					break;
