@@ -6,7 +6,6 @@ package views.module1
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.utils.setTimeout;
 
 	import feathers.controls.List;
 	import feathers.controls.renderers.IListItemRenderer;
@@ -511,7 +510,7 @@ package views.module1
 					{
 						var dx:Number=dpt.x - pt.x;
 						var dy:Number=dpt.y - pt.y;
-						if (dx > 20 * scale && Math.abs(dy) < 20 * scale && draggingCloth.renderer)
+						if (dx > 10 * scale && Math.abs(dy) < 20 * scale && draggingCloth.renderer)
 						{
 							dragging=true;
 							list.stopScrolling();
