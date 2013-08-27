@@ -421,6 +421,7 @@ package views.module1
 		private var hatLockMark:Image;
 
 		private var clothLockMark:Image;
+		private var scrolling:Boolean;
 
 		private function addShelf():void
 		{
@@ -499,18 +500,19 @@ package views.module1
 					else
 						dpt=null;
 					draggingCloth.visible=false;
+					scrolling=false;
 					break;
 				}
 
 				case TouchPhase.MOVED:
 				{
-					if (dragging)
+					if (dragging || scrolling)
 						return;
 					if (dpt)
 					{
 						var dx:Number=dpt.x - pt.x;
 						var dy:Number=dpt.y - pt.y;
-						if (dx > 10 * scale && Math.abs(dy) < 20 * scale && draggingCloth.renderer)
+						if (Math.abs(dx) >= 10 * scale && Math.abs(dy) < 30 * scale && draggingCloth.renderer)
 						{
 							dragging=true;
 							list.stopScrolling();
@@ -520,6 +522,10 @@ package views.module1
 							draggingCloth.scaleX=draggingCloth.scaleY=1;
 							draggingCloth.alpha=1;
 							draggingCloth.renderer.setIconVisible(false);
+						}
+						else if (Math.abs(dy) >= 30 * scale)
+						{
+							scrolling=true;
 						}
 					}
 					break;

@@ -269,11 +269,17 @@ package views.module1
 					tx=1024 - bg.width;
 				else
 					tx=0;
+
+				var dx:Number=(tx - fg.x) * 2;
+
+				TweenLite.to(bg, 2, {x: bg.x + dx / 5});
+				TweenLite.to(mg, 2, {x: mg.x + dx / 3});
 				TweenLite.to(fg, 2, {x: tx});
+
 				TweenLite.to(this, 2, {scaleX: 1.2, scaleY: 1.2, onComplete: function():void
 				{
 					TweenLite.to(king, 1, {alpha: 0});
-					TweenLite.delayedCall(2, resetView);
+					TweenLite.delayedCall(1.5, resetView);
 				}});
 			}
 			else

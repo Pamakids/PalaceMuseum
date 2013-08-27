@@ -47,8 +47,8 @@ package views.module1.scene3
 			addWheel();
 
 			var flace:Image=getImage("clock-frontlace");
-			flace.x=234;
-			flace.y=396;
+			flace.x=189;
+			flace.y=374;
 			addChild(flace);
 
 			var close:Image=getImage("clock-close");
@@ -99,16 +99,16 @@ package views.module1.scene3
 								{
 									var img:Image=laceArr[i] as Image;
 									img.x+=delta / 5;
-									if (img.x < -65)
-										img.x=3 * 65 + img.x;
+									if (img.x < -LACE_WIDTH)
+										img.x=3 * LACE_WIDTH + img.x;
 								}
 
 								for (var j:int=0; j < wordArr.length; j++)
 								{
 									var img1:Image=wordArr[j] as Image;
 									img1.x+=delta / 5;
-									if (img1.x < -370)
-										img1.x=2 * 370 + img1.x;
+									if (img1.x < -WORD_WIDTH)
+										img1.x=2 * WORD_WIDTH + img1.x;
 								}
 							}
 						}
@@ -129,7 +129,7 @@ package views.module1.scene3
 			}
 		}
 
-		private var hotarea:Rectangle=new Rectangle(230, 315, 555, 277);
+		private var hotarea:Rectangle=new Rectangle(283, 318, 435, 188);
 		private var _crtTime:int;
 		private var isDown:Boolean;
 		private var ended:Boolean;
@@ -166,41 +166,19 @@ package views.module1.scene3
 			}
 		}
 
-		private function onEnterFrame(e:Event):void
-		{
-			min.rotation+=.01;
-			hour.rotation+=.001;
-
-			for (var i:int=0; i < laceArr.length; i++)
-			{
-				var img:Image=laceArr[i] as Image;
-				img.x-=.3;
-				if (img.x < -65)
-					img.x=2 * 65;
-			}
-
-			for (var j:int=0; j < wordArr.length; j++)
-			{
-				var img1:Image=wordArr[j] as Image;
-				img1.x-=.3;
-				if (img1.x < -370)
-					img1.x=370;
-			}
-		}
-
 		private function addWheel():void
 		{
 			var wheel:Sprite=new Sprite();
-			wheel.x=459;
-			wheel.y=343;
+			wheel.x=438;
+			wheel.y=315;
 			addChild(wheel);
-			wheel.clipRect=new Rectangle(0, 0, 122, 166);
+			wheel.clipRect=new Rectangle(2, 0, 129, 182);
 
 			for (var i:int=0; i < 6; i++)
 			{
 				var lace:Image=getImage("clock-lace");
-				lace.x=i % 3 * 65;
-				lace.y=i < 3 ? 0 : 127;
+				lace.x=i % 3 * LACE_WIDTH;
+				lace.y=i < 3 ? 0 : 143;
 				wheel.addChild(lace);
 				laceArr.push(lace);
 			}
@@ -208,8 +186,8 @@ package views.module1.scene3
 			for (var j:int=0; j < 2; j++)
 			{
 				var word:Image=getImage("clock-word");
-				word.x=j * 370;
-				word.y=33;
+				word.x=j * WORD_WIDTH;
+				word.y=37;
 				wheel.addChild(word);
 				wordArr.push(word);
 			}
@@ -218,6 +196,9 @@ package views.module1.scene3
 			wheel.addChild(mask);
 
 		}
+
+		private const LACE_WIDTH:int=72;
+		private const WORD_WIDTH:int=484;
 
 		private function addClock():void
 		{
