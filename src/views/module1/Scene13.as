@@ -14,7 +14,7 @@ package views.module1
 	import views.components.CollectionCard;
 	import views.components.base.PalaceScene;
 	import views.module1.scene3.Clock;
-	import views.module1.scene3.Clock2;
+	import views.module1.scene3.Clock;
 	import views.module1.scene3.TwisterGame;
 
 	public class Scene13 extends PalaceScene
@@ -28,7 +28,7 @@ package views.module1
 		private var cardShow:Boolean;
 		private var gamePlayed:Boolean;
 
-		private var clock:Clock2;
+		private var clock:views.module1.scene3.Clock;
 		private var clockMatched:Boolean;
 
 		public function Scene13(am:AssetManager)
@@ -116,11 +116,11 @@ package views.module1
 			{
 				if (!clock)
 				{
-					clock=new Clock2();
+					clock=new views.module1.scene3.Clock(assets);
 					clock.addEventListener("clockMatch", clockMatch);
 				}
 			}
-//			clock.scaleX=clock.scaleY=1;
+			clock.scaleX=clock.scaleY=1;
 			clock.x=50;
 			clock.y=25;
 			clock.reset();

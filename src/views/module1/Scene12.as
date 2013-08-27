@@ -6,6 +6,7 @@ package views.module1
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.setTimeout;
 
 	import feathers.controls.List;
 	import feathers.controls.renderers.IListItemRenderer;
@@ -150,7 +151,7 @@ package views.module1
 									if (!clothLocked)
 										showClothHint("hint-" + kingCloth.type);
 									else if (hatLocked)
-										completeMission();
+										TweenLite.delayedCall(2, completeMission);
 									break;
 								}
 
@@ -167,7 +168,7 @@ package views.module1
 									if (!hatLocked)
 										showHatHint("hint-" + kingHat.type);
 									else if (clothLocked)
-										completeMission();
+										TweenLite.delayedCall(2, completeMission);
 									break;
 								}
 
@@ -226,7 +227,9 @@ package views.module1
 		private function endMission():void
 		{
 			opened=false;
-			showLionHint("hint-bg-2", "hint-end", nextScene);
+			TweenLite.delayedCall(2, function():void {
+				showLionHint("hint-bg-2", "hint-end", nextScene);
+			});
 
 //			lionHint.img=getImage("hint-bg-0");
 //			lionHint.delay=3;
@@ -555,7 +558,10 @@ package views.module1
 				TweenLite.to(quiz, 1, {scaleX: 1, scaleY: 1, x: ex, y: ey,
 						onComplete: function():void
 						{
-							showLionHint("hint-bg-2", "hint-quizstart");
+							TweenLite.delayedCall(2,
+								function():void {
+									showLionHint("hint-bg-2", "hint-quizstart");
+								});
 							quiz.addEventListener("allMatched", onQuizDone);
 							quiz.activate();
 						}});
@@ -569,11 +575,14 @@ package views.module1
 			{
 				quiz.parent.removeChild(quiz);
 
-				showLionHint("hint-bg-2", "hint-gamestart", nextMission);
 //				lionHint.label=getImage("hint-gamestart");
 //				lionHint.callback=nextMission;
 //				lionHint.show();
 				opened=true;
+
+				TweenLite.delayedCall(2, function():void {
+					showLionHint("hint-bg-2", "hint-gamestart", nextMission);
+				});
 			}});
 		}
 
