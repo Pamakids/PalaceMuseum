@@ -117,7 +117,8 @@ package views.module1
 			king.y=768;
 			king.addEventListener(TouchEvent.TOUCH, onKingTouch);
 
-			TweenLite.delayedCall(1.5, function():void {
+			TweenLite.delayedCall(1.5, function():void
+			{
 				showHint(50, 50, "hint0", 3, king);
 			});
 		}
