@@ -49,9 +49,18 @@ package views.module1
 			if (_opened != value)
 			{
 				_opened=value
-				boxHolder.setChildIndex(list, value ? 1 : 0);
+				if (value)
+					list.clipRect.height=37;
+				boxHolder.setChildIndex(list, 1);
 				TweenLite.to(list, 1, {y: (value ? -536 : 4)});
-				TweenLite.to(list.clipRect, 1, {height: (value ? 567 : 0)});
+				TweenLite.to(list.clipRect, 1, {height: (value ? 567 : 2), onComplete: (value ?
+							function():void {
+
+							} :
+							function():void {
+								list.visible=false;
+								boxHolder.setChildIndex(list, 0);
+							})});
 				TweenLite.to(boxCover, 1, {y: (value ? -544 : -4)});
 			}
 		}

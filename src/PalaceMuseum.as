@@ -1,5 +1,7 @@
 package
 {
+	import com.greensock.plugins.ShakeEffect;
+	import com.greensock.plugins.TweenPlugin;
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.display.Sprite;
@@ -13,6 +15,8 @@ package
 	{
 		public function PalaceMuseum()
 		{
+			TweenPlugin.activate([ShakeEffect]);
+
 			var scale:Number=DPIUtil.getDPIScale();
 			stage.align=StageAlign.TOP_LEFT;
 			stage.scaleMode=StageScaleMode.NO_SCALE;

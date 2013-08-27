@@ -68,7 +68,6 @@ package views.module1
 		override public function init():void
 		{
 			windowIndex=Math.random() > .5 ? 0 : 3;
-			TweenPlugin.activate([ShakeEffect]);
 
 			bg=new Sprite();
 			bg.x=512;
