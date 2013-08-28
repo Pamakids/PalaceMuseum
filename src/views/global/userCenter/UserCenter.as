@@ -139,12 +139,17 @@ package views.global.userCenter
 				{name:COLLECTION, x:708, y:11, defaultSkin: new Image(this.assetManager.getTexture(COLLECTION+"_up")), defaultSelectedSkin:new Image(this.assetManager.getTexture(COLLECTION+"_down")), selected: changeScreen}
 			]);
 			this.addChild( _buttons );
+			_buttons.addEventListener(Event.CHANGE, onChange);
 			
 			_backButton = new Button();
 			_backButton.defaultSkin =  new Image(this.assetManager.getTexture("backButton_up"));
 			_backButton.defaultSkin =  new Image(this.assetManager.getTexture("backButton_up"));
 			addChild(_backButton);
 			_backButton.addEventListener(Event.TRIGGERED, onTriggered);
+		}
+		
+		private function onChange(e:Event):void
+		{
 		}
 		
 		private function onTriggered(e:Event):void
