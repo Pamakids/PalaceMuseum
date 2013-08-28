@@ -2,8 +2,6 @@ package views.module1
 {
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
-	import com.greensock.plugins.ShakeEffect;
-	import com.greensock.plugins.TweenPlugin;
 	import com.pamakids.palace.utils.SPUtils;
 
 	import flash.geom.Point;
@@ -20,7 +18,6 @@ package views.module1
 
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
-	import views.module1.scene2.Hint;
 
 	public class Scene11 extends PalaceScene
 	{
@@ -46,8 +43,6 @@ package views.module1
 		private var hotzone2:Rectangle=new Rectangle(746, 177, 158, 168); //门-中
 		private var hotzone3:Rectangle=new Rectangle(1481, 216, 128, 128); //窗-右
 		private var crtWinSelected:Boolean=false;
-
-		private var hint:Hint;
 
 		private var w0l:Sprite;
 		private var w0s:Sprite;
