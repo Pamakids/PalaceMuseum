@@ -2,24 +2,25 @@ package
 {
 	import com.pamakids.manager.LoadManager;
 	import com.pamakids.utils.DPIUtil;
-
+	
 	import flash.display.Bitmap;
-
+	
 	import controls.MainCtrl;
-
+	
 	import feathers.core.PopUpManager;
-
+	
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
-
+	
 	import views.Module1;
 	import views.Module2;
 	import views.components.FlipAnimation;
 	import views.components.Prompt;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
+	import views.global.userCenter.UserCenterManager;
 
 	public class Main extends Container
 	{
@@ -39,6 +40,8 @@ package
 
 		private function inits(e:Event):void
 		{
+			testUserCenter();
+			return;
 //			testFlipAnimation();
 //			return;
 			removeEventListener(Event.ADDED_TO_STAGE, inits);
@@ -109,7 +112,7 @@ package
 		{
 			LoadManager.instance.loadImage('assets/global/mapBG.jpg', function(b:Bitmap):void
 			{
-				var f:FlipAnimation=new FlipAnimation(b, 6, 6);
+				var f:FlipAnimation=new FlipAnimation(b, 6, 6, true);
 				f.width=width;
 				f.height=height;
 				addChild(f);
@@ -140,6 +143,13 @@ package
 //					//					addChild(new ClothPuzzle(am));
 //				}
 //			});
+		}
+		
+		
+		private function testUserCenter():void
+		{
+			UserCenterManager.userCenterContainer = this;
+			UserCenterManager.showUserCenter();
 		}
 	}
 }
