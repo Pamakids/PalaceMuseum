@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:901c0ac2b331bffd6e9643bc0abb3ab2$ -->
+<TextureAtlas imagePath="m2s2.png">
+    <SubTexture name="menu-1-block" x="742" y="92" width="183" height="64"/>
+    <SubTexture name="menu-1" x="557" y="134" width="183" height="64" frameX="-9" frameY="-9" frameWidth="201" frameHeight="82"/>
+    <SubTexture name="menu-2-block" x="760" y="2" width="183" height="64"/>
+    <SubTexture name="menu-2" x="575" y="2" width="183" height="64" frameX="-9" frameY="-9" frameWidth="201" frameHeight="82"/>
+    <SubTexture name="menu-3-block" x="557" y="68" width="183" height="64"/>
+    <SubTexture name="menu-3" x="372" y="140" width="183" height="64" frameX="-9" frameY="-9" frameWidth="201" frameHeight="82"/>
+    <SubTexture name="menu-4-block" x="372" y="74" width="183" height="64"/>
+    <SubTexture name="menu-4" x="390" y="2" width="183" height="64" frameX="-9" frameY="-9" frameWidth="201" frameHeight="82"/>
+    <SubTexture name="menu-5-block" x="205" y="2" width="183" height="64"/>
+    <SubTexture name="menu-5" x="187" y="152" width="183" height="64" frameX="-9" frameY="-9" frameWidth="201" frameHeight="82"/>
+    <SubTexture name="menu-6-block" x="187" y="86" width="183" height="64"/>
+    <SubTexture name="menu-6" x="2" y="152" width="183" height="64" frameX="-9" frameY="-9" frameWidth="201" frameHeight="82"/>
+    <SubTexture name="menu-box" x="2" y="86" width="183" height="64"/>
+    <SubTexture name="menu-check" x="2" y="2" width="201" height="82"/>
+    <SubTexture name="menu-hard-down" x="809" y="158" width="65" height="49"/>
+    <SubTexture name="menu-hard" x="876" y="158" width="57" height="41" frameX="-4" frameY="-4" frameWidth="65" frameHeight="49"/>
+    <SubTexture name="menu-line-check" x="742" y="68" width="263" height="22"/>
+    <SubTexture name="menu-line" x="205" y="68" width="245" height="4" frameX="-9" frameY="-9" frameWidth="263" frameHeight="22"/>
+    <SubTexture name="menu-simple-down" x="742" y="158" width="65" height="49"/>
+    <SubTexture name="menu-simple" x="945" y="2" width="57" height="41" frameX="-4" frameY="-4" frameWidth="65" frameHeight="49"/>
+</TextureAtlas>

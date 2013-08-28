@@ -18,7 +18,7 @@ package views
 
 	public class Module2 extends PalaceModule
 	{
-		private var sceneArr:Array=[Scene21];
+		private var sceneArr:Array=[Scene22];
 
 		private var xml:XML;
 
