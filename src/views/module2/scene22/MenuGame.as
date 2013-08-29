@@ -1,12 +1,19 @@
 package views.module2.scene22
 {
+	import com.greensock.TweenLite;
 	import com.pamakids.palace.utils.SPUtils;
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.events.AccelerometerEvent;
+	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.sensors.Accelerometer;
+	import flash.utils.Timer;
+
+	import feathers.controls.Label;
+
+	import models.SOService;
 
 	import nape.callbacks.CbType;
 	import nape.geom.Vec2;
@@ -23,6 +30,7 @@ package views.module2.scene22
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceScene;
@@ -42,10 +50,11 @@ package views.module2.scene22
 
 		private var space:Space;
 
-		private var menuArr:Array=["1", "2", "3", "4", "5", "6"];
+		private var originalMenuArr:Array=["1", "2", "3", "4", "5", "6"];
+		private var menuArr:Array=[];
 
 		private var hotareaArr:Array=[];
-		private var checkArr:Array=[];
+		private var checkArr:Vector.<MenuCheckBar>=new Vector.<MenuCheckBar>();
 
 		private var acc:Accelerometer;
 
@@ -54,39 +63,114 @@ package views.module2.scene22
 			super(am);
 
 			scale=DPIUtil.getDPIScale();
-			addBG();
+			addChild(getImage("bg-menu"));
+			addSelectors();
+
+			initGame(0);
+		}
+
+		private function addSelectors():void
+		{
+			// TODO Auto Generated method stub
+		}
+
+		private function initGame(level:int):void
+		{
+			shuffleData(level);
+			addBars();
 			addWorld();
 
 			acc=new Accelerometer();
 			acc.addEventListener(AccelerometerEvent.UPDATE, onUpdate);
 			addEventListener(Event.ENTER_FRAME, loop);
 			addEventListener(TouchEvent.TOUCH, onTouch);
+
+			lbl=new TextField(200, 100, "00 : 00");
+			lbl.fontSize=24;
+			lbl.color=0xffffff;
+			addChild(lbl);
+			lbl.x=850;
+			lbl.y=20;
+			time=new Timer(10);
+			time.addEventListener(TimerEvent.TIMER, onTimer);
+			time.start();
 		}
 
-		private function addBG():void
+		protected function onTimer(event:TimerEvent):void
 		{
-			addChild(getImage("bg-menu"));
-			return;
+			var crttime:int=time.currentCount;
+			var sectime:int=crttime / 100;
+
+			var mm:int=(crttime % 100);
+			var min:int=sectime % 3600 / 60;
+			var sec:int=sectime % 60;
+			var hour:int=sectime / 3600;
+
+			var mmStr:String=mm.toString();
+			var minStr:String=min.toString();
+			var secStr:String=sec.toString();
+			var hourStr:String=hour.toString();
+
+			if (mm < 10)
+				mmStr="0" + mmStr;
+			if (min < 10)
+				minStr="0" + minStr;
+			if (sec < 10)
+				secStr="0" + secStr;
+
+			var txt:String=hour == 0 ? (minStr + " : " + secStr) : "59 : 59";
+			txt+=" : " + mmStr;
+			lbl.text=txt;
+		}
+
+		private function addBars():void
+		{
 			for (var i:int=0; i < menuArr.length; i++)
 			{
-				var menuCheck:MenuCheckBar=new MenuCheckBar();
-				var check1:Image=getImage("menu-check");
-				menuCheck.addChild(check1);
+				addOneBar(i)
+				addOneArea(i);
+			}
+		}
 
-				var lineCheck:Image=getImage("menu-line-check");
-				lineCheck.x=check1.width;
-				menuCheck.addChild(lineCheck);
+		private function addOneArea(i:int):void
+		{
+			var length:int=menuArr.length;
+			var cx:Number=playAreaEdgeRight - blockW;
+			var cy:Number=playAreaCenterY - (length / 2 - i) * GAP;
+			hotareaArr.push(new Rectangle(cx, cy, blockW, blockH));
+		}
 
-				var check2:Image=getImage("menu-check");
-				check2.x=lineCheck.x + check1.x;
-				menuCheck.addChild(check2);
+		private var playAreaCenterY:Number=300;
+		private var playAreaEdgeLeft:Number=200;
+		private var playAreaEdgeRight:Number=800;
+		private var GAP:Number=boxH;
 
-				addChild(menuCheck);
+		private function addOneBar(i:int):void
+		{
+			var length:int=menuArr.length;
+			var cx:Number=playAreaEdgeLeft;
+			var cy:Number=playAreaCenterY - (length / 2 - i) * GAP;
 
-				checkArr.push(menuCheck);
+			var menuCheck:MenuCheckBar=new MenuCheckBar();
+			addChild(menuCheck);
+			checkArr.push(menuCheck);
+			var menuBar:Image=getImage("menu-" + menuArr[i]);
+			addChild(menuBar);
+		}
 
-				var menuBar:Image=getImage("menu-" + menuArr[i]);
-				addChild(menuBar);
+		private function shuffleData(level:int):void
+		{
+			var length:int=originalMenuArr.length;
+			for (var i:int=0; i < 20; i++)
+			{
+				var str:String=originalMenuArr.splice(Math.random() * length, 1)[0];
+				originalMenuArr.push(str);
+			}
+
+			var menuLenth:int=4 + level * 2;
+			for (var j:int=0; j < menuLenth; j++)
+			{
+				menuArr.push(originalMenuArr[j]);
 			}
 		}
 
@@ -98,6 +182,7 @@ package views.module2.scene22
 			var posArr:Array=[new Rectangle(-wallW, -wallW, 1224, wallW), new Rectangle(-wallW, 768, 1224, wallW),
 				new Rectangle(-wallW, 0, wallW, 768), new Rectangle(1024, 0, wallW, 768)];
 
+			//addwall
 			for (var i:int=0; i < 4; i++)
 			{
 				var rect:Rectangle=posArr[i];
@@ -106,7 +191,8 @@ package views.module2.scene22
 				wall.space=space;
 			}
 
-			for (var j:int=0; j < 6; j++)
+			//addblocks
+			for (var j:int=0; j < menuArr.length; j++)
 			{
 				var block:Body=new Body(BodyType.DYNAMIC, new Vec2(100 + Math.random() * 800, 200));
 
@@ -121,8 +207,8 @@ package views.module2.scene22
 				block.userData.graphic=blockGraphic;
 				block.userData.graphicUpdate=updateGrap;
 				block.userData.matched=false;
-				block.userData.inBox=false;
 				block.userData.dragging=false;
+				block.userData.boxindex=-1;
 
 				addChild(block.userData.graphic);
 
@@ -172,25 +258,9 @@ package views.module2.scene22
 
 				case TouchPhase.ENDED:
 				{
-//					if (!checkPOS(pt))
-					//					{
-					//						draggingBlock.userData.matched=false;
-					//						draggingBlock.userData.inBox=false;
-					//					}
-					//					else
-					//					{
-					//						draggingBlock.userData.dragging=false;
-					//						draggingBlock=null;
-					//					}
-
 					if (draggingBlock)
-					{
-						draggingBlock.userData.matched=false;
-						draggingBlock.userData.inBox=false;
-						draggingBlock.userData.dragging=false;
-						draggingBlock.space=space;
-						draggingBlock=null;
-					}
+						checkPOS(pt);
+					draggingBlock=null;
 					break;
 				}
 
@@ -202,8 +272,103 @@ package views.module2.scene22
 
 		}
 
+		private function checkPOS(pt:Point):void
+		{
+			draggingBlock.userData.dragging=false;
+			var crtindex:int=-1;
+			var rect:Rectangle;
+			var delayFunction:Function;
+			for (var i:int=0; i < hotareaArr.length; i++)
+			{
+				rect=hotareaArr[i];
+				if (rect.containsPoint(pt))
+				{
+					crtindex=i;
+					break;
+				}
+			}
+			var blockGraphic:MenuBlock=draggingBlock.userData.graphic;
+			if (crtindex < 0)
+			{
+				draggingBlock.space=space;
+			}
+			else
+			{
+				for each (var _block:Body in blockArr)
+				{
+					if (_block.userData.boxindex == crtindex && draggingBlock != _block)
+					{
+						_block.space=space;
+						_block.userData.boxindex=-1;
+					}
+				}
+				draggingBlock.userData.boxindex=crtindex;
+				if (blockGraphic.index == crtindex)
+				{
+					draggingBlock.userData.matched=true;
+					var checkLight:MenuCheckBar=checkArr[crtindex];
+					hotareaArr[crtindex]=new Rectangle(-1000, -1000, 0, 0);
+					checkCount++;
+
+					var endFunction:Function;
+
+					if (checkCount == hotareaArr.length)
+						endFunction=gameOver;
+
+					delayFunction=function():void {
+						TweenLite.to(checkLight.clipRect, .5, {x: 0});
+						if (endFunction)
+							endFunction();
+					}
+				}
+				else
+				{
+					blockGraphic.addEventListener(TouchEvent.TOUCH, onBlockTouch);
+					delayFunction=null;
+				}
+				TweenLite.to(draggingBlock.position, .5, {x: rect.x + rect.width / 2, y: rect.y + rect.height / 2,
+						onComplete: delayFunction});
+			}
+
+		}
+
+		private function gameOver():void
+		{
+			initGameResult(time.currentCount);
+			time.reset();
+		}
+
+		private function initGameResult(_count:int):void
+		{
+			trace("gameover")
+			var menugameresult:int=SOService.instance.getSO(gameResult) as int;
+
+			if (_count < menugameresult)
+				SOService.instance.setSO(gameResult, _count);
+		}
+
+		private static const gameResult:String="menugameresult";
+
+		private function onBlockTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(stage, TouchPhase.BEGAN);
+			if (!tc)
+				return;
+			var block:MenuBlock=e.currentTarget as MenuBlock;
+			if (block)
+			{
+				block.removeEventListener(TouchEvent.TOUCH, onBlockTouch);
+				draggingBlock=blockArr[block.index];
+			}
+		}
+
 		private var blockType:CbType=new CbType();
 		private var draggingBlock:Body;
+
+		private var lbl:TextField;
+
+		private var time:Timer;
+		private var checkCount:int=0;
 
 		private function loop(e:Event):void
 		{
