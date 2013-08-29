@@ -11,6 +11,7 @@ package views.global.userCenter
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 	
+	import views.components.SoftPageAnimation;
 	import views.global.userCenter.achievement.AchievementScreen;
 	import views.global.userCenter.collection.CollectionScreen;
 	import views.global.userCenter.handbook.HandbookScreen;
@@ -162,5 +163,11 @@ package views.global.userCenter
 			super.dispose();
 		}
 		
+		
+		//Animation-------------------------------------------------------------------------------------------\
+		/**
+		 * 翻页特效动画
+		 */		
+		private var softBookAnimation:SoftPageAnimation;
 	}
 }
