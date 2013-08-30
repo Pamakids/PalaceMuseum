@@ -66,10 +66,9 @@ package views.module2
 			king.y=768;
 			TweenLite.to(king, 1, {x: 714, y: 519, onComplete:
 					function():void {
+						addEventListener(TouchEvent.TOUCH, onTouch);
 						chef.addEventListener(TouchEvent.TOUCH, onChefTouch);
 					}});
-
-			addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 
 		private function onTouch(e:TouchEvent):void
@@ -77,10 +76,12 @@ package views.module2
 			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
 			if (tc)
 			{
-				removeEventListener(TouchEvent.TOUCH, onTouch);
 				var pt:Point=tc.getLocation(this);
 				if (hotarea.containsPoint(pt))
+				{
+					removeEventListener(TouchEvent.TOUCH, onTouch);
 					openBook();
+				}
 			}
 		}
 
@@ -131,7 +132,7 @@ package views.module2
 
 		private function onChefTouch(e:TouchEvent):void
 		{
-			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
+			var tc:Touch=e.getTouch(stage, TouchPhase.BEGAN);
 			if (tc)
 			{
 				if (!chefTurn)

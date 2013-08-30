@@ -94,6 +94,7 @@ package views
 			}
 			else
 			{
+				loadScene(0);
 				dispatchEvent(new Event("gotoNextModule", true));
 			}
 		}
