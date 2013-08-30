@@ -2,24 +2,27 @@ package
 {
 	import com.pamakids.manager.LoadManager;
 	import com.pamakids.utils.DPIUtil;
-	
+
 	import flash.display.Bitmap;
-	
+	import flash.system.Capabilities;
+	import flash.ui.Keyboard;
+
 	import controls.MainCtrl;
-	
+
 	import feathers.core.PopUpManager;
-	
+
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	
-	import views.Module1;
+	import starling.events.KeyboardEvent;
+
 	import views.Module2;
 	import views.components.FlipAnimation;
 	import views.components.Prompt;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
+	import views.global.Map;
 	import views.global.userCenter.UserCenterManager;
 
 	public class Main extends Container
@@ -29,40 +32,55 @@ package
 
 		private var moduleIndex:int;
 		private var crtModule:PalaceModule;
+		private var testingModule:Sprite;
+		private var testingModuleClass:Class=Map;
 
 		public function Main()
 		{
 			MainCtrl.instance.main=this;
 			Prompt.parent=this;
-			addEventListener(Event.ADDED_TO_STAGE, inits);
 			super(1024, 768);
 		}
 
-		private function inits(e:Event):void
+		override protected function init():void
 		{
-			testUserCenter();
-			return;
-//			testFlipAnimation();
-//			return;
-			removeEventListener(Event.ADDED_TO_STAGE, inits);
-			scale=DPIUtil.getDPIScale();
-
-			this.scaleX=this.scaleY=scale;
-
-			PopUpManager.root=this;
-			PopUpManager.overlayFactory=function defaultOverlayFactory():DisplayObject
+			if (Capabilities.isDebugger)
 			{
-				const quad:Quad=new Quad(1024, 768, 0x000000);
-				quad.alpha=.4;
-				return quad;
-			};
+				stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void
+				{
+					if (e.keyCode == Keyboard.ENTER)
+					{
+						if (testingModule)
+						{
+							removeChild(testingModule);
+							testingModule=null;
+						}
+						else
+						{
+							testingModule=new testingModuleClass(width, height);
+							addChild(testingModule);
+						}
+					}
+				});
+				return;
+			}
+			else
+			{
+				this.scaleX=this.scaleY=scale;
+				PopUpManager.root=this;
+				PopUpManager.overlayFactory=function defaultOverlayFactory():DisplayObject
+				{
+					const quad:Quad=new Quad(1024, 768, 0x000000);
+					quad.alpha=.4;
+					return quad;
+				};
 
-			initLayers();
+				initLayers();
 
-			addEventListener("gotoNextModule", nextModule);
-			moduleIndex=0;
-			loadModule(moduleIndex);
-
+				addEventListener("gotoNextModule", nextModule);
+				moduleIndex=0;
+				loadModule(moduleIndex);
+			}
 		}
 
 		private var UILayer:Sprite;
@@ -110,14 +128,8 @@ package
 
 		private function testFlipAnimation():void
 		{
-			LoadManager.instance.loadImage('assets/global/mapBG.jpg', function(b:Bitmap):void
-			{
-				var f:FlipAnimation=new FlipAnimation(b, 6, 6, true);
-				f.width=width;
-				f.height=height;
-				addChild(f);
-//				TweenLite.to(f, 3, {y: -100});
-			});
+			testingModule=new Map(width, height);
+			addChild(testingModule);
 		}
 
 		private function testClothPuzzleAndPrompt():void
@@ -144,11 +156,11 @@ package
 //				}
 //			});
 		}
-		
-		
+
+
 		private function testUserCenter():void
 		{
-			UserCenterManager.userCenterContainer = this;
+			UserCenterManager.userCenterContainer=this;
 			UserCenterManager.showUserCenter();
 		}
 	}

@@ -1,14 +1,40 @@
 package views.components.base
 {
+	import com.pamakids.utils.DPIUtil;
+
 	import starling.display.Sprite;
+	import starling.events.Event;
 
 	public class Container extends Sprite
 	{
+		protected var scale:Number;
+
 		public function Container(width:Number=0, height:Number=0)
 		{
 			super();
 			this.width=width;
 			this.height=height;
+			scale=DPIUtil.getDPIScale();
+			addEventListener(Event.ADDED_TO_STAGE, onStage);
+		}
+
+		private function onStage(e:Event):void
+		{
+			addEventListener(Event.REMOVED_FROM_STAGE, onRemoved);
+			init();
+		}
+
+		protected var autoDisposed:Boolean=true;
+
+		private function onRemoved(e:Event):void
+		{
+			if (autoDisposed)
+				dispose();
+		}
+
+		protected function init():void
+		{
+
 		}
 
 		private var _width:Number;

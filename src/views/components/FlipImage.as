@@ -59,10 +59,20 @@ package views.components
 				if (horizontal)
 				{
 					//0 右上角 2 右下角 1 左上角 3 左下角
-					mVertexData.setPosition(0, w, 0);
-					mVertexData.setPosition(2, w, h);
-					mVertexData.setPosition(1, w + w * fpl, -topOffset * (1 - fpl));
-					mVertexData.setPosition(3, w + w * fpl, h + topOffset * (1 - fpl));
+					if (minToMax)
+					{
+						mVertexData.setPosition(1, w, 0);
+						mVertexData.setPosition(3, w, h);
+						mVertexData.setPosition(0, w - w * fpl, -topOffset * (1 - fpl));
+						mVertexData.setPosition(2, w - w * fpl, h + topOffset * (1 - fpl));
+					}
+					else
+					{
+						mVertexData.setPosition(0, w, 0);
+						mVertexData.setPosition(2, w, h);
+						mVertexData.setPosition(1, w - w * fpl, -topOffset * (1 - fpl));
+						mVertexData.setPosition(3, w - w * fpl, h + topOffset * (1 - fpl));
+					}
 				}
 				else
 				{
@@ -88,10 +98,20 @@ package views.components
 				if (horizontal)
 				{
 					//0 右上角 2 右下角 1 左上角 3 左下角
-					mVertexData.setPosition(1, w, 0);
-					mVertexData.setPosition(3, w, h);
-					mVertexData.setPosition(0, w - w * fpl, -topOffset * (1 - fpl));
-					mVertexData.setPosition(2, w - w * fpl, h + topOffset * (1 - fpl));
+					if (minToMax)
+					{
+						mVertexData.setPosition(0, 0, 0);
+						mVertexData.setPosition(2, 0, h);
+						mVertexData.setPosition(1, w * fpl, -topOffset * (1 - fpl));
+						mVertexData.setPosition(3, w * fpl, h + topOffset * (1 - fpl));
+					}
+					else
+					{
+						mVertexData.setPosition(1, w, 0);
+						mVertexData.setPosition(3, w, h);
+						mVertexData.setPosition(0, w - w * fpl, -topOffset * (1 - fpl));
+						mVertexData.setPosition(2, w - w * fpl, h + topOffset * (1 - fpl));
+					}
 				}
 				else
 				{

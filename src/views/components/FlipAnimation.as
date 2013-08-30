@@ -9,6 +9,7 @@ package views.components
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 
+	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 
@@ -31,6 +32,8 @@ package views.components
 		private var duration:Number;
 		private var slices:int;
 
+		private var result:Image;
+
 		/**
 		 * @param bitmap 折叠素材
 		 * @param slices 切片数量
@@ -45,6 +48,7 @@ package views.components
 			this.slices=slices;
 			this.horizontal=horizontal;
 			this.minToMax=minToMax;
+			result=new Image(Texture.fromBitmap(bitmap));
 			contentWidth=bitmap.width;
 			contentHeight=bitmap.height;
 			interval=horizontal ? contentWidth / slices : contentHeight / slices;
@@ -59,15 +63,34 @@ package views.components
 				newBD=new BitmapData(w, h);
 				newBD.copyPixels(bd, new Rectangle(horizontal ? i * w : 0, horizontal ? 0 : i * h, w, h), new Point());
 				textures[i]=Texture.fromBitmapData(newBD);
+				newBD.dispose();
 			}
-			addEventListener(Event.ADDED_TO_STAGE, onStage);
+			bd.dispose();
+		}
+
+		override public function dispose():void
+		{
+			TweenLite.killTweensOf(this);
+			super.dispose();
+			for each (var t:Texture in textures)
+			{
+				t.dispose();
+			}
+			while (numChildren)
+			{
+				removeChildAt(0, true);
+			}
+			if (result && result.parent)
+			{
+				removeChild(result, true);
+			}
+			textures=null;
 		}
 
 		private var needUpdate:Boolean=true;
 
-		private function onStage():void
+		override protected function init():void
 		{
-//			animationIndex=1;
 			flipImage();
 		}
 
@@ -75,37 +98,68 @@ package views.components
 
 		private function flipImage():void
 		{
-			var toy:Number=0;
+			var toy:Number=y;
+			var tox:Number=x;
 			if (!horizontal)
 			{
-				if (flipingImage && flipingImage.y > height - interval)
+				if (flipingImage && flipingImage.y > height - interval * 2)
 					toy=height - contentHeight;
 			}
-			TweenLite.to(this, duration, {y: toy, temp: minToMax ? -1 : 1, ease: Cubic.easeOut, onComplete: function():void
+			else if (flipingImage && flipingImage.x > width - interval * 2)
 			{
-				temp=1;
+				tox=width - contentHeight;
+			}
+			TweenLite.to(this, duration, {y: toy, x: tox, temp: minToMax ? -1 : 1, ease: Cubic.easeOut, onComplete: function():void
+			{
+				temp=minToMax ? 1 : -1;
 				trace(animationIndex, flipingImage.y);
 				animationIndex++;
 				if (animationIndex != textures.length)
+				{
 					flipImage();
+				}
 				else
+				{
+					while (numChildren)
+					{
+						removeChildAt(0, true);
+					}
+					if (!horizontal)
+					{
+						height=contentHeight;
+						result.x=width / 2 - contentWidth / 2;
+					}
+					else
+					{
+						width=contentWidth;
+						result.y=height / 2 - contentHeight / 2;
+					}
+					addChild(result);
 					dispatchEvent(new Event('completed'));
+				}
 			}, onUpdate: function():void
 			{
 				flipingImage=getImage();
 				flipingImage.location=temp;
 				if (temp > 0)
-					flipingImage.y=animationIndex * interval - interval;
+				{
+					if (!horizontal)
+						flipingImage.y=animationIndex * interval - interval;
+					else
+						flipingImage.x=animationIndex * interval - interval;
+				}
 				else
-					flipingImage.y=animationIndex * interval;
+				{
+					if (!horizontal)
+						flipingImage.y=animationIndex * interval;
+					else
+						flipingImage.x=animationIndex * interval;
+				}
 				var percnet:Number=Math.abs(temp);
 				if (percnet < 1)
 				{
 					if (getChildIndex(preImage) != -1)
-					{
-						removeChild(preImage);
-						preImage.dispose();
-					}
+						removeChild(preImage, true);
 					addChild(flipingImage);
 				}
 				preImage=flipingImage;
@@ -129,6 +183,8 @@ package views.components
 				}
 				else
 				{
+					fi.y=height / 2 - contentHeight / 2;
+					fi.x=animationIndex * interval;
 				}
 //				imageDic[animationIndex]=fi;
 			}

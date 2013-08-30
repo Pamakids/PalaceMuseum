@@ -10,19 +10,19 @@ package views.components.base
 	import com.pamakids.palace.utils.StringUtils;
 
 	import starling.display.Image;
-	import starling.display.Sprite;
 	import starling.utils.AssetManager;
 
-	public class PalaceModule extends Sprite
+	public class PalaceModule extends Container
 	{
 		public var moduleName:String;
 		protected var assetManager:AssetManager;
 		protected var autoDispose:Boolean=true;
 
-		public function PalaceModule(am:AssetManager=null)
+		public function PalaceModule(am:AssetManager=null, width:Number=0, height:Number=0)
 		{
 			moduleName=StringUtils.getClassName(this);
 			assetManager=am;
+			super(width, height);
 		}
 
 		protected function getImage(name:String):Image
@@ -32,6 +32,7 @@ package views.components.base
 
 		override public function dispose():void
 		{
+			super.dispose();
 			if (autoDispose && assetManager)
 				assetManager.dispose();
 			assetManager=null;

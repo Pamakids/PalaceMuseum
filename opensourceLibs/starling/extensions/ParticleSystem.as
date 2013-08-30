@@ -65,9 +65,7 @@ package starling.extensions
 		protected var mBlendFactorSource:String;
 		protected var mBlendFactorDestination:String;
 
-		public function ParticleSystem(texture:Texture, emissionRate:Number,
-			initialCapacity:int=128, maxCapacity:int=8192,
-			blendFactorSource:String=null, blendFactorDest:String=null)
+		public function ParticleSystem(texture:Texture, emissionRate:Number, initialCapacity:int=128, maxCapacity:int=8192, blendFactorSource:String=null, blendFactorDest:String=null)
 		{
 			if (texture == null)
 				throw new ArgumentError("texture must not be null");
@@ -84,15 +82,13 @@ package starling.extensions
 			mMaxCapacity=Math.min(8192, maxCapacity);
 
 			mBlendFactorDestination=blendFactorDest || Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA;
-			mBlendFactorSource=blendFactorSource ||
-				(mPremultipliedAlpha ? Context3DBlendFactor.ONE : Context3DBlendFactor.SOURCE_ALPHA);
+			mBlendFactorSource=blendFactorSource || (mPremultipliedAlpha ? Context3DBlendFactor.ONE : Context3DBlendFactor.SOURCE_ALPHA);
 
 			createProgram();
 			raiseCapacity(initialCapacity);
 
 			// handle a lost device context
-			Starling.current.stage3D.addEventListener(Event.CONTEXT3D_CREATE,
-				onContextCreated, false, 0, true);
+			Starling.current.stage3D.addEventListener(Event.CONTEXT3D_CREATE, onContextCreated, false, 0, true);
 		}
 
 		public override function dispose():void
@@ -181,7 +177,7 @@ package starling.extensions
 				mIndexBuffer.dispose();
 
 			mVertexBuffer=context.createVertexBuffer(newCapacity * 4, VertexData.ELEMENTS_PER_VERTEX);
-			mVertexBuffer.uploadFromByteArray(mVertexData.rawData, 0, 0, newCapacity * 4);
+			mVertexBuffer.uploadFromVector(mVertexData.rawData, 0, newCapacity * 4);
 
 			mIndexBuffer=context.createIndexBuffer(newCapacity * 6);
 			mIndexBuffer.uploadFromVector(mIndices, 0, newCapacity * 6);
@@ -211,8 +207,7 @@ package starling.extensions
 
 		/** Returns an empty rectangle at the particle system's position. Calculating the
 		 *  actual bounds would be too expensive. */
-		public override function getBounds(targetSpace:DisplayObject,
-			resultRect:Rectangle=null):Rectangle
+		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
 			if (resultRect == null)
 				resultRect=new Rectangle();
@@ -367,7 +362,7 @@ package starling.extensions
 			if (context == null)
 				throw new MissingContextError();
 
-			mVertexBuffer.uploadFromByteArray(mVertexData.rawData, 0, 0, mNumParticles * 4);
+			mVertexBuffer.uploadFromVector(mVertexData.rawData, 0, mNumParticles * 4);
 			mIndexBuffer.uploadFromVector(mIndices, 0, mNumParticles * 6);
 
 			context.setBlendFactors(mBlendFactorSource, mBlendFactorDestination);
@@ -377,7 +372,7 @@ package starling.extensions
 			context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, support.mvpMatrix3D, true);
 			context.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, sRenderAlpha, 1);
 			context.setVertexBufferAt(0, mVertexBuffer, VertexData.POSITION_OFFSET, Context3DVertexBufferFormat.FLOAT_2);
-			context.setVertexBufferAt(1, mVertexBuffer, VertexData.COLOR_OFFSET, Context3DVertexBufferFormat.BYTES_4);
+			context.setVertexBufferAt(1, mVertexBuffer, VertexData.COLOR_OFFSET, Context3DVertexBufferFormat.FLOAT_4);
 			context.setVertexBufferAt(2, mVertexBuffer, VertexData.TEXCOORD_OFFSET, Context3DVertexBufferFormat.FLOAT_2);
 
 			context.drawTriangles(mIndexBuffer, 0, mNumParticles * 2);
@@ -427,13 +422,11 @@ package starling.extensions
 				else if (textureFormat == "compressedAlpha")
 					textureOptions+=", dxt5";
 
-				var vertexProgramCode:String=
-					"m44 op, va0, vc0 \n" + // 4x4 matrix transform to output clipspace
+				var vertexProgramCode:String="m44 op, va0, vc0 \n" + // 4x4 matrix transform to output clipspace
 					"mul v0, va1, vc4 \n" + // multiply color with alpha and pass to fragment program
 					"mov v1, va2      \n"; // pass texture coordinates to fragment program
 
-				var fragmentProgramCode:String=
-					"tex ft1, v1, fs0 <" + textureOptions + "> \n" + // sample texture 0
+				var fragmentProgramCode:String="tex ft1, v1, fs0 <" + textureOptions + "> \n" + // sample texture 0
 					"mul oc, ft1, v0"; // multiply color with texel color
 
 				var vertexProgramAssembler:AGALMiniAssembler=new AGALMiniAssembler();
@@ -442,8 +435,7 @@ package starling.extensions
 				var fragmentProgramAssembler:AGALMiniAssembler=new AGALMiniAssembler();
 				fragmentProgramAssembler.assemble(Context3DProgramType.FRAGMENT, fragmentProgramCode);
 
-				Starling.current.registerProgram(programName,
-					vertexProgramAssembler.agalcode, fragmentProgramAssembler.agalcode);
+				Starling.current.registerProgram(programName, vertexProgramAssembler.agalcode, fragmentProgramAssembler.agalcode);
 
 				mProgram=Starling.current.getProgram(programName);
 			}
