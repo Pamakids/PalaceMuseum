@@ -9,6 +9,7 @@ package views.global.userCenter
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 	
 	import views.components.SoftPageAnimation;
@@ -46,6 +47,7 @@ package views.global.userCenter
 		 */
 		private var backgroundImage:Image;
 		private var bookBackground:Image;
+		private var contentBackground:Image;
 		
 		public function UserCenter()
 		{
@@ -102,7 +104,7 @@ package views.global.userCenter
 			_tabBar.direction = TabBar.DIRECTION_HORIZONTAL;
 			_tabBar.selectedIndex = 2;
 			this.addChild( _tabBar );
-			_tabBar.x = 67;
+			_tabBar.x = 60;
 			_tabBar.y = 11;
 			_tabBar.addEventListener( Event.CHANGE, tabs_changeHandler );
 		}
@@ -155,14 +157,34 @@ package views.global.userCenter
 		public function showIndex(index:int = -1):void
 		{
 			handbookContent = index;
-			//...
-			//...
+			
+			testAnimations();
 		}
+		
+		private function testAnimations():void
+		{
+			//测试动画
+			var textures:Vector.<Texture> = new Vector.<Texture>();
+			for(var i:int = 0;i<4;i++)
+			{
+				(i%2==0)?textures.push(assets.getTexture("page_left")):textures.push(assets.getTexture("page_right"));
+			}
+			var animation:SoftPageAnimation = new SoftPageAnimation(940, 696, textures);
+			this.addChild( animation );
+			animation.x = 533;
+			animation.y = 72;
+		}
+		
 		override public function dispose():void
 		{
 			super.dispose();
 		}
 		
+		internal function setSize(width:Number, height:Number):void
+		{
+			this.width = width;
+			this.height = height;
+		}
 		
 		//Animation-------------------------------------------------------------------------------------------\
 		/**

@@ -1,25 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:901c0ac2b331bffd6e9643bc0abb3ab2$ -->
+<!-- $TexturePacker:SmartUpdate:80715b655273ad32fcfc39d5fee84642$ -->
 <TextureAtlas imagePath="m2s2.png">
-    <SubTexture name="menu-1-block" x="742" y="92" width="183" height="64"/>
-    <SubTexture name="menu-1" x="557" y="134" width="183" height="64" frameX="-9" frameY="-9" frameWidth="201" frameHeight="82"/>
-    <SubTexture name="menu-2-block" x="760" y="2" width="183" height="64"/>
-    <SubTexture name="menu-2" x="575" y="2" width="183" height="64" frameX="-9" frameY="-9" frameWidth="201" frameHeight="82"/>
-    <SubTexture name="menu-3-block" x="557" y="68" width="183" height="64"/>
-    <SubTexture name="menu-3" x="372" y="140" width="183" height="64" frameX="-9" frameY="-9" frameWidth="201" frameHeight="82"/>
-    <SubTexture name="menu-4-block" x="372" y="74" width="183" height="64"/>
-    <SubTexture name="menu-4" x="390" y="2" width="183" height="64" frameX="-9" frameY="-9" frameWidth="201" frameHeight="82"/>
-    <SubTexture name="menu-5-block" x="205" y="2" width="183" height="64"/>
-    <SubTexture name="menu-5" x="187" y="152" width="183" height="64" frameX="-9" frameY="-9" frameWidth="201" frameHeight="82"/>
-    <SubTexture name="menu-6-block" x="187" y="86" width="183" height="64"/>
-    <SubTexture name="menu-6" x="2" y="152" width="183" height="64" frameX="-9" frameY="-9" frameWidth="201" frameHeight="82"/>
-    <SubTexture name="menu-box" x="2" y="86" width="183" height="64"/>
-    <SubTexture name="menu-check" x="2" y="2" width="201" height="82"/>
-    <SubTexture name="menu-hard-down" x="809" y="158" width="65" height="49"/>
-    <SubTexture name="menu-hard" x="876" y="158" width="57" height="41" frameX="-4" frameY="-4" frameWidth="65" frameHeight="49"/>
-    <SubTexture name="menu-line-check" x="742" y="68" width="263" height="22"/>
-    <SubTexture name="menu-line" x="205" y="68" width="245" height="4" frameX="-9" frameY="-9" frameWidth="263" frameHeight="22"/>
-    <SubTexture name="menu-simple-down" x="742" y="158" width="65" height="49"/>
-    <SubTexture name="menu-simple" x="945" y="2" width="57" height="41" frameX="-4" frameY="-4" frameWidth="65" frameHeight="49"/>
+    <SubTexture name="game-record" x="2" y="188" width="201" height="201"/>
+    <SubTexture name="hint-1" x="376" y="988" width="146" height="18"/>
+    <SubTexture name="hint-2" x="767" y="751" width="126" height="42"/>
+    <SubTexture name="hint-bg" x="2" y="889" width="161" height="129"/>
+    <SubTexture name="menu-1-bar" x="524" y="839" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-1-block" x="2" y="806" width="196" height="81"/>
+    <SubTexture name="menu-10-bar" x="200" y="746" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-10-block" x="767" y="668" width="196" height="81"/>
+    <SubTexture name="menu-11-bar" x="200" y="653" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-11-block" x="965" y="605" width="196" height="81"/>
+    <SubTexture name="menu-12-bar" x="200" y="560" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-12-block" x="2" y="723" width="196" height="81"/>
+    <SubTexture name="menu-2-bar" x="200" y="467" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-2-block" x="767" y="585" width="196" height="81"/>
+    <SubTexture name="menu-3-bar" x="205" y="374" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-3-block" x="965" y="522" width="196" height="81"/>
+    <SubTexture name="menu-4-bar" x="205" y="281" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-4-block" x="2" y="640" width="196" height="81"/>
+    <SubTexture name="menu-5-bar" x="205" y="188" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-5-block" x="767" y="502" width="196" height="81"/>
+    <SubTexture name="menu-6-bar" x="569" y="95" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-6-block" x="2" y="557" width="196" height="81"/>
+    <SubTexture name="menu-7-bar" x="2" y="95" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-7-block" x="2" y="474" width="196" height="81"/>
+    <SubTexture name="menu-8-bar" x="569" y="2" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-8-block" x="772" y="419" width="196" height="81"/>
+    <SubTexture name="menu-9-bar" x="2" y="2" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-9-block" x="2" y="391" width="196" height="81"/>
+    <SubTexture name="menu-check" x="524" y="932" width="565" height="83" frameX="-2" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-hard-down" x="772" y="188" width="220" height="115"/>
+    <SubTexture name="menu-hard" x="986" y="413" width="210" height="107" frameX="0" frameY="-6" frameWidth="220" frameHeight="115"/>
+    <SubTexture name="menu-rope" x="1136" y="2" width="6" height="28"/>
+    <SubTexture name="menu-simple-down" x="772" y="305" width="212" height="112"/>
+    <SubTexture name="menu-simple" x="994" y="188" width="202" height="112" frameX="-8" frameY="0" frameWidth="212" frameHeight="112"/>
+    <SubTexture name="menu-start-down" x="200" y="839" width="174" height="171"/>
+    <SubTexture name="menu-start" x="376" y="839" width="146" height="147" frameX="-11" frameY="-8" frameWidth="174" frameHeight="171"/>
+    <SubTexture name="menu-timebar" x="994" y="302" width="202" height="109"/>
 </TextureAtlas>

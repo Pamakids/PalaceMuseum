@@ -13,10 +13,10 @@ package views.components
 	public class SoftPageImage extends Image
 	{
 		//四个点确定一个能动的页面
-		private var _dragPoint:Point;
-		private var _dragPointCopy:Point;
-		private var _edgePoint:Point;
-		private var _edgePointCopy:Point;
+		private var _dragPoint:Point = new Point();
+		private var _dragPointCopy:Point = new Point();
+		private var _edgePoint:Point = new Point();
+		private var _edgePointCopy:Point = new Point();
 		
 		/**
 		 * @param texture
@@ -46,10 +46,16 @@ package views.components
 			onVertexDataChanged();
 		}
 		
-		/**设置顶点位置：软皮模式*/
-		public function setLocationSoft(quadBatch:QuadBatch, progress:Number, defaultDirection:Boolean = false):void
+		public function setLocationSoft(quadBatch:QuadBatch, progress:Number, leftToRight:Boolean):void
 		{
-			
+			if(leftToRight)
+			{
+				
+			}
+			else
+			{
+				
+			}
 		}
 	}
 }

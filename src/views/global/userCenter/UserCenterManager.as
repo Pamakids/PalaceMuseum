@@ -7,6 +7,8 @@ package views.global.userCenter
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
+	
+	import views.components.SoftPageAnimation;
 
 	/**
 	 * 用户中心管理类
@@ -112,6 +114,11 @@ package views.global.userCenter
 			if(_userCenterContainer && _userCenterContainer == value)
 				return;
 			_userCenterContainer = value;
+		}
+		
+		public static function setUserCenterSize(width:Number, height:Number):void
+		{
+			_userCenter.setSize(width, height);
 		}
 	}
 }

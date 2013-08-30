@@ -16,10 +16,12 @@ package
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
-
+	import starling.textures.Texture;
+	import views.Module1;
 	import views.Module2;
 	import views.components.FlipAnimation;
 	import views.components.Prompt;
+	import views.components.SoftPageAnimation;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
 	import views.global.Map;

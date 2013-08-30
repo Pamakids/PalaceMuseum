@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:ba7bac3964a91483ab81a54c3aaece12:1/1$ -->
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:fbd8cb7db8385113a7ed1deff20f638a$ -->
 <TextureAtlas imagePath="assets.png">
     <SubTexture name="achievement_down" x="2" y="1614" width="155" height="111" frameX="-4" frameY="-11" frameWidth="165" frameHeight="123"/>
     <SubTexture name="achievement_up" x="2" y="1501" width="155" height="111" frameX="-4" frameY="-11" frameWidth="165" frameHeight="123"/>
