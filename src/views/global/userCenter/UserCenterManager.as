@@ -29,7 +29,11 @@ package views.global.userCenter
 //			return _instance;
 //		}
 		
-		internal static var assetsManager:AssetManager;
+		private static var _assetsManager:AssetManager;
+		public static function get assetsManager():AssetManager
+		{
+			return _assetsManager;
+		}
 		public function UserCenterManager(myClass:MyClass)
 		{
 		}
@@ -89,9 +93,9 @@ package views.global.userCenter
 		
 		private static function loadFunc():void
 		{
-			assetsManager = new AssetManager();
-			assetsManager.enqueue(File.applicationDirectory.resolvePath("assets/global/userCenter"));
-			assetsManager.loadQueue(function(ratio:Number):void{
+			_assetsManager = new AssetManager();
+			_assetsManager.enqueue(File.applicationDirectory.resolvePath("assets/global/userCenter"));
+			_assetsManager.loadQueue(function(ratio:Number):void{
 				//trace("Loading assets, progress:", ratio);
 				if (ratio == 1.0)
 				{

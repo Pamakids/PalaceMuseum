@@ -46,6 +46,8 @@ package
 
 		override protected function init():void
 		{
+			testUserCenter();
+			return;
 			if (Capabilities.isDebugger)
 			{
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void
