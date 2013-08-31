@@ -61,7 +61,7 @@ package views.global.userCenter
 		private function init():void
 		{
 			this.assets = UserCenterManager.assetsManager;
-			this.screenNames = [MAP, USERINFO, HANDBOOK, COLLECTION, ACHIEVEMENT];
+			this.screenNames = [MAP, USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION];
 			
 			initBackgroud();
 			initTabBar();

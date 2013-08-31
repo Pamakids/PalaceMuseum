@@ -37,8 +37,9 @@ package views.global
 
 		override public function dispose():void
 		{
+			if(stage)
+				stage.removeEventListener(TouchEvent.TOUCH, touchHandler);
 			super.dispose();
-			stage.removeEventListener(TouchEvent.TOUCH, touchHandler);
 			trace('disposed');
 		}
 
