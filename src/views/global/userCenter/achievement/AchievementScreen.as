@@ -15,12 +15,10 @@ package views.global.userCenter.achievement
 		
 		override protected function draw():void
 		{
-			super.draw();
 		}
 		
 		override protected function initialize():void
 		{
-			super.initialize();
 		}
 		
 		override public function dispose():void

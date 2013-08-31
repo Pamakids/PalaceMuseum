@@ -61,13 +61,13 @@ package views.global.userCenter
 		private function init():void
 		{
 			this.assets = UserCenterManager.assetsManager;
-			this.screenNames = [MAP, ACHIEVEMENT, COLLECTION, HANDBOOK, USERINFO];
+			this.screenNames = [MAP, USERINFO, HANDBOOK, COLLECTION, ACHIEVEMENT];
 			
 			initBackgroud();
-			initContainer();
 			initTabBar();
-			initPageBackground();
 			initBackButton();
+			initContainer();
+			initPageBackground();
 			initNavigator();
 		}
 		
@@ -75,11 +75,9 @@ package views.global.userCenter
 		{
 			this.pageLeftImage = new Image(assets.getTexture("page_left"));
 			this.pageRightImage = new Image(assets.getTexture("page_right"));
-			this.addChild(pageLeftImage);
-			this.addChild(pageRightImage);
-			this.pageLeftImage.y = this.pageRightImage.y = 72;
-			this.pageLeftImage.x = 42;
-			pageRightImage.x = this.pageLeftImage.width + this.pageLeftImage.x;
+			this._container.addChild(pageLeftImage);
+			this._container.addChild(pageRightImage);
+			pageRightImage.x = this.pageLeftImage.width;
 		}
 		private function initBackgroud():void
 		{
@@ -139,7 +137,9 @@ package views.global.userCenter
 			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen, {}, {}));
 			_navigator.addScreen(ACHIEVEMENT, new ScreenNavigatorItem(AchievementScreen, {}, {}));
 			_navigator.addScreen(COLLECTION, new ScreenNavigatorItem(CollectionScreen, {}, {}));
-			this.addChild( _navigator );
+			this._container.addChild( _navigator );
+			
+			_navigator.showScreen(HANDBOOK);
 		}
 		private function initContainer():void
 		{
@@ -167,6 +167,7 @@ package views.global.userCenter
 			_navigator.showScreen(screenNames[_currentIndex]);
 		}
 		
+		//用于指定显示速成手册内的内容指引
 		private var handbookContent:int = -1;
 		public function showIndex(index:int = -1):void
 		{
@@ -175,6 +176,7 @@ package views.global.userCenter
 //			testAnimations();
 		}
 		
+		/**动画测试方法*/		
 		private function testAnimations():void
 		{
 			//测试动画
