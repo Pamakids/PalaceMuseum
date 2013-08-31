@@ -48,6 +48,8 @@ package views.global.userCenter
 		private var backgroundImage:Image;
 		private var bookBackground:Image;
 		private var contentBackground:Image;
+		private var pageRightImage:Image;
+		private var pageLeftImage:Image;
 		
 		public function UserCenter()
 		{
@@ -64,8 +66,20 @@ package views.global.userCenter
 			initBackgroud();
 			initContainer();
 			initTabBar();
+			initPageBackground();
 			initBackButton();
 			initNavigator();
+		}
+		
+		private function initPageBackground():void
+		{
+			this.pageLeftImage = new Image(assets.getTexture("page_left"));
+			this.pageRightImage = new Image(assets.getTexture("page_right"));
+			this.addChild(pageLeftImage);
+			this.addChild(pageRightImage);
+			this.pageLeftImage.y = this.pageRightImage.y = 72;
+			this.pageLeftImage.x = 42;
+			pageRightImage.x = this.pageLeftImage.width + this.pageLeftImage.x;
 		}
 		private function initBackgroud():void
 		{
@@ -158,7 +172,7 @@ package views.global.userCenter
 		{
 			handbookContent = index;
 			
-			testAnimations();
+//			testAnimations();
 		}
 		
 		private function testAnimations():void
@@ -191,5 +205,6 @@ package views.global.userCenter
 		 * 翻页特效动画
 		 */		
 		private var softBookAnimation:SoftPageAnimation;
+		
 	}
 }
