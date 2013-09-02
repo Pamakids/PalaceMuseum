@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:ed94ea3dcabb33129c5a1f4f095fc4cb$ -->
+<TextureAtlas imagePath="m2s3.png">
+    <SubTexture name="dish-hand" x="387" y="533" width="108" height="211"/>
+    <SubTexture name="dish-jar" x="2" y="726" width="235" height="245"/>
+    <SubTexture name="dish-king" x="239" y="746" width="218" height="265"/>
+    <SubTexture name="dish-pin-poison" x="2" y="140" width="63" height="171"/>
+    <SubTexture name="dish-pin" x="430" y="2" width="63" height="171"/>
+    <SubTexture name="dish1" x="2" y="533" width="190" height="189"/>
+    <SubTexture name="dish2" x="180" y="349" width="247" height="182" frameX="0" frameY="-5" frameWidth="247" frameHeight="194"/>
+    <SubTexture name="dish3" x="203" y="2" width="225" height="162"/>
+    <SubTexture name="dish4" x="2" y="333" width="176" height="177"/>
+    <SubTexture name="dish5" x="194" y="533" width="191" height="191"/>
+    <SubTexture name="dish6" x="2" y="2" width="199" height="136"/>
+    <SubTexture name="dish7" x="67" y="166" width="200" height="165"/>
+    <SubTexture name="dish8" x="269" y="175" width="209" height="172"/>
+</TextureAtlas>

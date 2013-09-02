@@ -29,13 +29,12 @@ package
 
 	public class Main extends Container
 	{
-		private var scale:Number;
 		private var moduleArr:Array=[Module2]
 
 		private var moduleIndex:int;
 		private var crtModule:PalaceModule;
 		private var testingModule:Sprite;
-		private var testingModuleClass:Class=Map;
+		private var testingModuleClass:Class;
 
 		public function Main()
 		{
@@ -46,7 +45,7 @@ package
 
 		override protected function init():void
 		{
-			if (Capabilities.isDebugger)
+			if (Capabilities.isDebugger && testingModuleClass)
 			{
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void
 				{
