@@ -28,9 +28,9 @@ package
 
 		override protected function init():void
 		{
-//			testUserCenter();
-//			Map.show();
-//			return;
+			//			testUserCenter();
+			//			Map.show();
+			//			return;
 			if (Capabilities.isDebugger && testingModuleClass)
 			{
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void

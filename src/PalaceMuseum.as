@@ -3,11 +3,11 @@ package
 	import com.greensock.plugins.ShakeEffect;
 	import com.greensock.plugins.TweenPlugin;
 	import com.pamakids.utils.DPIUtil;
-	
+
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
-	
+
 	import starling.core.Starling;
 
 	[SWF(width="1024", height="768", frameRate="60", backgroundColor="0x333333")]
@@ -28,7 +28,7 @@ package
 			main.start();
 			main.showStats=true;
 			main.antiAliasing=16;
-			
+
 		}
 	}
 }
