@@ -49,6 +49,8 @@ package views.components
 			this.horizontal=horizontal;
 			this.minToMax=minToMax;
 			result=new Image(Texture.fromBitmap(bitmap));
+			result.visible=false;
+			addChild(result);
 			contentWidth=bitmap.width;
 			contentHeight=bitmap.height;
 			interval=horizontal ? contentWidth / slices : contentHeight / slices;
@@ -84,6 +86,7 @@ package views.components
 			{
 				removeChild(result, true);
 			}
+			result=null;
 			textures=null;
 		}
 
@@ -120,10 +123,6 @@ package views.components
 				}
 				else
 				{
-					while (numChildren)
-					{
-						removeChildAt(0, true);
-					}
 					if (!horizontal)
 					{
 						height=contentHeight;
@@ -134,7 +133,11 @@ package views.components
 						width=contentWidth;
 						result.y=height / 2 - contentHeight / 2;
 					}
-					addChild(result);
+					while (numChildren != 1)
+					{
+						removeChildAt(1, true);
+					}
+					result.visible=true;
 					dispatchEvent(new Event('completed'));
 				}
 			}, onUpdate: function():void
