@@ -48,6 +48,8 @@ package views.global.userCenter
 		private var backgroundImage:Image;
 		private var bookBackground:Image;
 		private var contentBackground:Image;
+		private var pageRightImage:Image;
+		private var pageLeftImage:Image;
 		
 		public function UserCenter()
 		{
@@ -59,13 +61,23 @@ package views.global.userCenter
 		private function init():void
 		{
 			this.assets = UserCenterManager.assetsManager;
-			this.screenNames = [MAP, ACHIEVEMENT, COLLECTION, HANDBOOK, USERINFO];
+			this.screenNames = [MAP, USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION];
 			
 			initBackgroud();
-			initContainer();
 			initTabBar();
 			initBackButton();
+			initContainer();
+			initPageBackground();
 			initNavigator();
+		}
+		
+		private function initPageBackground():void
+		{
+			this.pageLeftImage = new Image(assets.getTexture("page_left"));
+			this.pageRightImage = new Image(assets.getTexture("page_right"));
+			this._container.addChild(pageLeftImage);
+			this._container.addChild(pageRightImage);
+			pageRightImage.x = this.pageLeftImage.width;
 		}
 		private function initBackgroud():void
 		{
@@ -125,7 +137,9 @@ package views.global.userCenter
 			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen, {}, {}));
 			_navigator.addScreen(ACHIEVEMENT, new ScreenNavigatorItem(AchievementScreen, {}, {}));
 			_navigator.addScreen(COLLECTION, new ScreenNavigatorItem(CollectionScreen, {}, {}));
-			this.addChild( _navigator );
+			this._container.addChild( _navigator );
+			
+			_navigator.showScreen(HANDBOOK);
 		}
 		private function initContainer():void
 		{
@@ -153,14 +167,16 @@ package views.global.userCenter
 			_navigator.showScreen(screenNames[_currentIndex]);
 		}
 		
+		//用于指定显示速成手册内的内容指引
 		private var handbookContent:int = -1;
 		public function showIndex(index:int = -1):void
 		{
 			handbookContent = index;
 			
-			testAnimations();
+//			testAnimations();
 		}
 		
+		/**动画测试方法*/		
 		private function testAnimations():void
 		{
 			//测试动画
@@ -191,5 +207,6 @@ package views.global.userCenter
 		 * 翻页特效动画
 		 */		
 		private var softBookAnimation:SoftPageAnimation;
+		
 	}
 }
