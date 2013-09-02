@@ -79,7 +79,11 @@ package views.global.userCenter.map
 				var point:Point=this.globalToLocal(new Point(0, 0));
 				TweenLite.to(cache, 0.5, {x: point.x + 12, y: point.y, scaleX: 1, scaleY: 1, ease: Cubic.easeOut, onComplete: function():void
 				{
-					Map.show();
+					this.visible=false;
+					Map.show(function():void
+					{
+						visible=true;
+					});
 //						showMap();
 					cache.visible=false;
 				}});

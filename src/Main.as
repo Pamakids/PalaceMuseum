@@ -23,6 +23,7 @@ package
 		{
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
+			MC.instance.init(this);
 		}
 
 		override protected function init():void
@@ -52,7 +53,7 @@ package
 			}
 			else
 			{
-				MC.instance.init(this);
+				MC.instance.moduleIndex=0;
 			}
 		}
 

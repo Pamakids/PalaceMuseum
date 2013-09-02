@@ -13,6 +13,8 @@ package controllers
 	import views.components.Prompt;
 	import views.components.base.PalaceModule;
 	import views.global.Map;
+	import views.global.TopBar;
+	import views.global.userCenter.UserCenterManager;
 
 	/**
 	 * 主业务控制器
@@ -45,6 +47,8 @@ package controllers
 			Prompt.parent=main;
 			Map.parent=main;
 			PopUpManager.root=main;
+			TopBar.parent=main;
+			UserCenterManager.userCenterContainer=main;
 			PopUpManager.overlayFactory=function defaultOverlayFactory():DisplayObject
 			{
 				const quad:Quad=new Quad(1024, 768, 0x000000);
@@ -53,8 +57,6 @@ package controllers
 			};
 
 			initLayers();
-
-			moduleIndex=0;
 		}
 
 		public function get moduleIndex():int

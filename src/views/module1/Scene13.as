@@ -35,7 +35,7 @@ package views.module1
 			super(am);
 		}
 
-		override public function init():void
+		override protected function init():void
 		{
 			bg=new Sprite();
 			bg.x=512;

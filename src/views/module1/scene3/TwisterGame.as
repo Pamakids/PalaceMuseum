@@ -49,7 +49,7 @@ package views.module1.scene3
 //			mStarling.simulateMultitouch = true;
 		}
 
-		override public function init():void
+		override protected function init():void
 		{
 			if (inited)
 				return;

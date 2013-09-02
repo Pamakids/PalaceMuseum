@@ -88,10 +88,13 @@ package views.global
 		{
 			trace('close');
 			this.removeFromParent(true);
+			if (!callback)
+				return;
 			if (callback.length)
 				callback(1);
 			else
 				callback();
+			callback=null;
 		}
 
 		private function bgLoadedHandler(b:Bitmap):void
@@ -113,7 +116,6 @@ package views.global
 
 		private function flipedHandler(e:Event):void
 		{
-			stage.addEventListener(TouchEvent.TOUCH, touchHandler);
 			var kingPoint:Point=points[MC.instance.moduleIndex];
 			if (king)
 			{
@@ -128,21 +130,29 @@ package views.global
 				TweenLite.to(flipAnimation, 0.5, {y: toy, ease: Cubic.easeOut, onComplete: function():void
 				{
 					var top:Point=points[to];
-					TweenLite.to(king, 1, {x: top.x, y: top.y, ease: Cubic.easeOut, onComplete: function():void
+					TweenLite.to(king, 1.8, {x: top.x, y: top.y, ease: Cubic.easeOut, onComplete: function():void
 					{
 						map.removeFromParent(true);
+						if (callback && callback.length)
+							callback(1);
+						else
+							callback();
 						callback=null;
 					}});
 				}});
 			}
 			else
 			{
+				stage.addEventListener(TouchEvent.TOUCH, touchHandler);
 				TweenLite.to(flipAnimation, 8, {y: 0});
 			}
+			if (!callback)
+				return;
 			if (callback.length)
 				callback(0);
 			else
 				callback();
+			callback=null;
 		}
 
 		private var downPoint:Point;

@@ -60,7 +60,7 @@ package views.module1
 			super(am);
 		}
 
-		override public function init():void
+		override protected function init():void
 		{
 			windowIndex=Math.random() > .5 ? 0 : 3;
 
