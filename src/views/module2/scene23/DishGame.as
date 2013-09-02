@@ -403,7 +403,7 @@ package views.module2.scene23
 		public function set life(value:int):void
 		{
 			_life=value;
-			if (_life < 0)
+			if (_life == 0)
 				gotoGameOver();
 			else
 				lifeTF.text=_life.toString();
@@ -411,8 +411,7 @@ package views.module2.scene23
 
 		private function gotoGameOver():void
 		{
-			// TODO Auto Generated method stub
-
+			dispatchEvent(new Event("gameOver"));
 		}
 
 		private var _score:int;

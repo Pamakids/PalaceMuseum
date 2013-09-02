@@ -4,6 +4,8 @@ package views
 
 	import flash.filesystem.File;
 
+	import controllers.MC;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -81,7 +83,7 @@ package views
 				isLoading=true;
 				var assets:AssetManager=new AssetManager();
 				var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
-				assets.enqueue(file);
+				assets.enqueue(file, "assets/common/hint-bg.png");
 				assets.loadQueue(function(ratio:Number):void
 				{
 					if (ratio == 1.0)
@@ -94,9 +96,7 @@ package views
 			}
 			else
 			{
-				loadScene(0);
-				return;
-				dispatchEvent(new Event("gotoNextModule", true));
+				MC.instance.nextModule();
 			}
 		}
 	}

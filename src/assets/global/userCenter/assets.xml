@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:fbd8cb7db8385113a7ed1deff20f638a$ -->
+<!-- $TexturePacker:SmartUpdate:40a018bcc30439974aa47adf3ad8da50$ -->
 <TextureAtlas imagePath="assets.png">
-    <SubTexture name="achievement_down" x="2" y="1614" width="155" height="111" frameX="-4" frameY="-11" frameWidth="165" frameHeight="123"/>
-    <SubTexture name="achievement_up" x="2" y="1501" width="155" height="111" frameX="-4" frameY="-11" frameWidth="165" frameHeight="123"/>
+    <SubTexture name="achievement_card_finish" x="1306" y="1098" width="276" height="278"/>
+    <SubTexture name="achievement_card_unfinish" x="1028" y="1098" width="276" height="278"/>
+    <SubTexture name="achievement_down" x="1001" y="1908" width="155" height="111" frameX="-4" frameY="-11" frameWidth="165" frameHeight="123"/>
+    <SubTexture name="achievement_up" x="844" y="1908" width="155" height="111" frameX="-4" frameY="-11" frameWidth="165" frameHeight="123"/>
     <SubTexture name="book_background" x="2" y="772" width="1024" height="727"/>
-    <SubTexture name="button_close" x="1942" y="686" width="80" height="81"/>
-    <SubTexture name="collection_down" x="309" y="1604" width="148" height="95" frameX="-7" frameY="-12" frameWidth="164" frameHeight="123"/>
-    <SubTexture name="collection_up" x="159" y="1604" width="148" height="95" frameX="-7" frameY="-12" frameWidth="164" frameHeight="123"/>
-    <SubTexture name="content_left" x="1028" y="700" width="419" height="524" frameX="-34" frameY="-65" frameWidth="491" frameHeight="696"/>
-    <SubTexture name="content_right" x="1521" y="686" width="419" height="530" frameX="-8" frameY="-62" frameWidth="455" frameHeight="696"/>
-    <SubTexture name="handbook_down" x="2" y="1840" width="153" height="111" frameX="0" frameY="-10" frameWidth="159" frameHeight="123"/>
-    <SubTexture name="handbook_up" x="2" y="1727" width="153" height="111" frameX="0" frameY="-10" frameWidth="159" frameHeight="123"/>
+    <SubTexture name="button_close" x="1938" y="2" width="80" height="81"/>
+    <SubTexture name="button_map" x="1028" y="2" width="908" height="396"/>
+    <SubTexture name="collection_card_finish" x="1162" y="1491" width="316" height="405"/>
+    <SubTexture name="collection_card_unfinish" x="844" y="1501" width="316" height="405"/>
+    <SubTexture name="collection_down" x="1775" y="1084" width="148" height="95" frameX="-7" frameY="-12" frameWidth="164" frameHeight="123"/>
+    <SubTexture name="collection_up" x="1625" y="1084" width="148" height="95" frameX="-7" frameY="-12" frameWidth="164" frameHeight="123"/>
+    <SubTexture name="content_left" x="423" y="1501" width="419" height="524" frameX="-34" frameY="-65" frameWidth="491" frameHeight="696"/>
+    <SubTexture name="content_right" x="2" y="1501" width="419" height="530" frameX="-8" frameY="-62" frameWidth="455" frameHeight="696"/>
+    <SubTexture name="handbook_down" x="1028" y="1378" width="153" height="111" frameX="0" frameY="-10" frameWidth="159" frameHeight="123"/>
+    <SubTexture name="handbook_up" x="1158" y="1908" width="153" height="111" frameX="0" frameY="-10" frameWidth="159" frameHeight="123"/>
     <SubTexture name="main_background" x="2" y="2" width="1024" height="768"/>
-    <SubTexture name="map_down" x="159" y="1501" width="154" height="101" frameX="-8" frameY="-3" frameWidth="164" frameHeight="123"/>
-    <SubTexture name="map_up" x="157" y="1937" width="154" height="101" frameX="-8" frameY="-3" frameWidth="164" frameHeight="123"/>
-    <SubTexture name="page_left" x="1028" y="2" width="491" height="696"/>
-    <SubTexture name="page_right" x="1521" y="2" width="455" height="682" frameX="0" frameY="-14" frameWidth="455" frameHeight="696"/>
-    <SubTexture name="userinfo_down" x="157" y="1832" width="151" height="103" frameX="-1" frameY="-3" frameWidth="153" frameHeight="123"/>
-    <SubTexture name="userinfo_up" x="157" y="1727" width="151" height="103" frameX="-1" frameY="-3" frameWidth="153" frameHeight="123"/>
+    <SubTexture name="map_down" x="1469" y="1898" width="154" height="101" frameX="-8" frameY="-3" frameWidth="164" frameHeight="123"/>
+    <SubTexture name="map_up" x="1313" y="1898" width="154" height="101" frameX="-8" frameY="-3" frameWidth="164" frameHeight="123"/>
+    <SubTexture name="page_left" x="1028" y="400" width="491" height="696"/>
+    <SubTexture name="page_right" x="1521" y="400" width="455" height="682" frameX="0" frameY="-14" frameWidth="455" frameHeight="696"/>
+    <SubTexture name="userinfo_down" x="1336" y="1378" width="151" height="103" frameX="-1" frameY="-3" frameWidth="153" frameHeight="123"/>
+    <SubTexture name="userinfo_up" x="1183" y="1378" width="151" height="103" frameX="-1" frameY="-3" frameWidth="153" frameHeight="123"/>
 </TextureAtlas>

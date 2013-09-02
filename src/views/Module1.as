@@ -1,8 +1,11 @@
 package views
 {
+	import com.greensock.TweenLite;
 	import com.pamakids.palace.utils.StringUtils;
 
 	import flash.filesystem.File;
+
+	import controllers.MC;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -90,12 +93,18 @@ package views
 						isLoading=false;
 						crtScene=new scene(assets);
 						addChild(crtScene);
+
+//						TweenLite.delayedCall(3, function():void
+//						{
+//							MC.instance.nextModule();
+//						});
 					}
 				});
 			}
 			else
 			{
-				dispatchEvent(new Event("gotoNextModule", true));
+				MC.instance.nextModule();
+//				dispatchEvent(new Event("gotoNextModule", true));
 			}
 		}
 	}
