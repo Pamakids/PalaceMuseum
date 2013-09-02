@@ -39,7 +39,7 @@ package controllers
 		private var currentModule:PalaceModule;
 
 		private var main:Main;
-		private var modules:Array=[Module1, Module2]
+		private var modules:Array=[Module2]
 
 		public function init(main:Main):void
 		{
