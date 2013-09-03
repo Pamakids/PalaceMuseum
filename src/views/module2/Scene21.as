@@ -1,7 +1,7 @@
 package views.module2
 {
 	import com.greensock.TweenLite;
-	import com.greensock.easing.Cubic;
+	import com.greensock.easing.Elastic;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -107,7 +107,7 @@ package views.module2
 			{
 				close.removeEventListener(TouchEvent.TOUCH, onClose);
 				close.visible=false;
-				TweenLite.to(book, 0.8, {x: 408, y: 363, scaleX: .07, scaleY: .07, ease: Cubic.easeOut, onComplete: function():void
+				TweenLite.to(book, 1, {x: 408, y: 363, scaleX: .07, scaleY: .07, ease: Elastic.easeOut, onComplete: function():void
 				{
 					PopUpManager.removePopUp(book);
 					TweenLite.delayedCall(1, nextScene);
