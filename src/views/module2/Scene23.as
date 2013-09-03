@@ -12,6 +12,7 @@ package views.module2
 
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
+	import views.global.TopBar;
 	import views.module2.scene23.DishGame;
 
 	public class Scene23 extends PalaceScene
@@ -135,11 +136,9 @@ package views.module2
 
 		private function startChat():void
 		{
-			trace(chatIndex)
 			if (chatIndex >= 6)
 				return;
 			var chat:String=chatArr[chatIndex];
-			trace(chat)
 			var dx:Number;
 			var dy:Number;
 			if (chat.indexOf("king") >= 0)
@@ -152,8 +151,7 @@ package views.module2
 				dx=200;
 				dy=450;
 			}
-			trace(dx, dy)
-			Prompt.show(dx, dy, "hint-bg", chat, 1, 4, nextChat);
+			Prompt.show(dx, dy, "hint-bg", chat, 1, 4, nextChat, this);
 		}
 
 		private function nextChat():void
@@ -169,7 +167,7 @@ package views.module2
 			}
 			else if (chatIndex == 6)
 			{
-				sceneOver();
+				TweenLite.delayedCall(2, sceneOver);
 			}
 			else
 				startChat();
@@ -199,6 +197,7 @@ package views.module2
 
 		private function onGamePlayed(e:Event):void
 		{
+			TopBar.show();
 			game.removeEventListener("gameOver", onGamePlayed)
 			game.removeEventListener("gameRestart", onGameRestart)
 			game.removeChildren();
@@ -223,16 +222,17 @@ package views.module2
 
 		private function onGameRestart(e:Event):void
 		{
-			game.removeEventListener("gameOver", onGamePlayed)
-			game.removeEventListener("gameRestart", onGameRestart)
+			game.removeEventListener("gameOver", onGamePlayed);
+			game.removeEventListener("gameRestart", onGameRestart);
 			game.removeChildren();
 			removeChild(game);
 			game=null;
 
 			game=new DishGame(assets);
 			addChild(game);
-			game.addEventListener("gameOver", onGamePlayed)
-			game.addEventListener("gameRestart", onGameRestart)
+			game.addEventListener("gameOver", onGamePlayed);
+			game.addEventListener("gameRestart", onGameRestart);
+			game.startGame();
 		}
 	}
 }
