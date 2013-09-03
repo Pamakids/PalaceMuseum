@@ -1,12 +1,15 @@
 package views.module2.scene23
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.palace.utils.SPUtils;
+	import com.greensock.TweenMax;
+	import com.greensock.easing.Quad;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
+
+	import models.SOService;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -17,7 +20,9 @@ package views.module2.scene23
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
+	import views.components.ElasticButton;
 	import views.components.base.PalaceScene;
+	import views.global.TopBar;
 
 	public class DishGame extends PalaceScene
 	{
@@ -62,61 +67,129 @@ package views.module2.scene23
 		}
 
 		private var startSP:Sprite=new Sprite();
+		;
 		private var gameSP:Sprite=new Sprite();
 		private var endSP:Sprite=new Sprite();
 
 		public function DishGame(am:AssetManager=null)
 		{
 			super(am);
+			addChild(getImage("gamebg"))
 
+			addChild(startSP);
+			var hint:Image=getImage("dish-hint")
+			hint.x=46;
+			hint.y=51;
+			startSP.addChild(hint);
+
+			startBtn=new ElasticButton(getImage("game-start"));
+			startBtn.shadow=getImage("game-start-down")
+			startSP.addChild(startBtn);
+			startBtn.x=856;
+			startBtn.y=665;
+			startBtn.addEventListener(ElasticButton.CLICK, onStart);
+
+			closeBtn=new ElasticButton(getImage("button_close"));
+			addChild(closeBtn);
+			closeBtn.x=950;
+			closeBtn.y=60;
+			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
+			closeBtn.visible=closeBtn.touchable=false;
+		}
+
+		override protected function onStage(e:Event):void
+		{
+			super.onStage(e);
+			TopBar.hide();
+		}
+
+		private function onStart(e:Event):void
+		{
+			startBtn.touchable=false;
 			startGame();
 		}
 
-		private function startGame():void
+		public function startGame():void
 		{
+			startBtn.removeEventListener(ElasticButton.CLICK, onStart);
+			removeChild(startSP);
 			addChild(gameSP);
 			initBG();
 			initAreas();
 			initDishes();
 			initPin();
-			initScore();
-			initTime();
+			initInfo();
 
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 
+		private function initInfo():void
+		{
+			infoHolder=new Sprite();
+			gameSP.addChild(infoHolder);
+			infoHolder.touchable=false;
+
+			infoHolder.addChild(getImage("scorebg"));
+			infoHolder.addChild(getImage("lifeboard"));
+			var scoreboard:Image=getImage("scoreboard");
+			scoreboard.x=1024 - scoreboard.width;
+			infoHolder.addChild(scoreboard);
+
+			var timebg:Image=getImage("progressbg");
+			timeprogress=new Sprite();
+			timeprogress.addChild(getImage("progress"));
+			timebg.x=timeprogress.x=246;
+			timebg.y=timeprogress.y=9;
+			infoHolder.addChild(timebg);
+			infoHolder.addChild(timeprogress);
+			timeprogress.clipRect=new Rectangle(30, 0, 470, 51);
+
+			initScore();
+			initTime();
+		}
+
+		private var totalTime:int=900;
+
+		private var lifeIconArr:Array=[];
+
 		private function initScore():void
 		{
-			lifeTF=new TextField(100, 50, "3");
-			lifeTF.fontSize=24;
-			lifeTF.color=0xffff00;
-			gameSP.addChild(lifeTF);
-			lifeTF.touchable=false;
-			lifeTF.x=900;
-			lifeTF.y=300;
+			for (var i:int=0; i < 3; i++)
+			{
+				var lifeIcon:Image=getImage("lifeicon");
+				lifeIcon.x=24 + 54 * i;
+				lifeIcon.y=11;
+				lifeIconArr.push(lifeIcon);
+				infoHolder.addChild(lifeIcon);
+			}
 
-			scoreTF=new TextField(100, 50, "0");
+			scoreTF=new TextField(100, 40, "");
 			scoreTF.fontSize=24;
-			scoreTF.color=0xffff00;
-			gameSP.addChild(scoreTF);
-			scoreTF.x=900;
-			scoreTF.y=370;
-			lifeTF.touchable=false;
+			scoreTF.color=0xb83d00;
+			infoHolder.addChild(scoreTF);
+			scoreTF.x=885;
+			scoreTF.y=20;
 			life=3;
 			score=0;
 		}
 
 		private function initTime():void
 		{
-			var time:Timer=new Timer(10);
-			time.addEventListener(TimerEvent.TIMER, onTimer);
-			time.start();
+			timer=new Timer(100);
+			timer.addEventListener(TimerEvent.TIMER, onTimer);
+			timer.start();
 		}
 
 		protected function onTimer(event:TimerEvent):void
 		{
-
+			totalTime--;
+			if (totalTime > 0)
+				timeprogress.clipRect.width=totalTime / 900 * 470;
+			else
+			{
+				gameOverHandler();
+			}
 		}
 
 		private function initPin():void
@@ -134,7 +207,7 @@ package views.module2.scene23
 			pin.pivotY=27;
 			gameSP.addChild(pin);
 			pin.x=40;
-			pin.y=65;
+			pin.y=110;
 			pin.addEventListener(TouchEvent.TOUCH, onPinTouch);
 		}
 
@@ -233,87 +306,91 @@ package views.module2.scene23
 
 		private function onDishTouch(e:TouchEvent):void
 		{
-			var tc:Touch=e.getTouch(stage);
+			if (gameOver)
+				return;
+			var dish:Dish=e.currentTarget as Dish;
+
+			if (!dish)
+				return;
+
+			var tc:Touch=e.getTouch(dish);
 			if (!tc)
 				return;
 
 			var pt:Point=tc.getLocation(this);
 
-			var dish:Dish=e.currentTarget as Dish;
-			if (dish)
+			switch (tc.phase)
 			{
-				switch (tc.phase)
+				case TouchPhase.BEGAN:
 				{
-					case TouchPhase.BEGAN:
+					if (!dish.isFlying)
 					{
-						if (!dish.isFlying)
-						{
-							TweenLite.killTweensOf(dish);
-							dishHolder.setChildIndex(dish, dishHolder.numChildren - 1);
-							crtDish=dish;
-						}
-						break;
+						TweenLite.killTweensOf(dish);
+						dishHolder.setChildIndex(dish, dishHolder.numChildren - 1);
+						crtDish=dish;
 					}
+					break;
+				}
 
-					case TouchPhase.MOVED:
+				case TouchPhase.MOVED:
+				{
+					if (crtDish)
 					{
-						if (crtDish)
-						{
-							var move:Point=tc.getMovement(crtDish);
-							speedX=move.x;
-							speedY=move.y;
-							crtDish.x=pt.x;
-							crtDish.y=pt.y;
-						}
-						break;
+						var move:Point=tc.getMovement(crtDish);
+						speedX=move.x;
+						speedY=move.y;
+						crtDish.x=pt.x;
+						crtDish.y=pt.y;
 					}
+					break;
+				}
 
-					case TouchPhase.ENDED:
+				case TouchPhase.ENDED:
+				{
+					if (crtDish)
 					{
-						if (crtDish)
+						if (checkArea(crtDish))
 						{
-							if (checkArea(crtDish))
+							crtDish.removeEventListener(TouchEvent.TOUCH, onDishTouch);
+						}
+						else
+						{
+							var speed:Number=Math.sqrt(speedX * speedX + speedY * speedY);
+							if (speed > 10)
 							{
+								crtDish.isFlying=true;
+								var angle:Number=Math.atan2(speedY, speedX);
+								if (speed > 30)
+									speed=30;
+								crtDish.speedX=Math.cos(angle) * speed;
+								crtDish.speedY=Math.sin(angle) * speed;
 								crtDish.removeEventListener(TouchEvent.TOUCH, onDishTouch);
 							}
 							else
 							{
-								var speed:Number=Math.sqrt(speedX * speedX + speedY * speedY);
-								if (speed > 10)
-								{
-									crtDish.isFlying=true;
-									var angle:Number=Math.atan2(speedY, speedX);
-									if (speed > 30)
-										speed=30;
-									crtDish.speedX=Math.cos(angle) * speed;
-									crtDish.speedY=Math.sin(angle) * speed;
-									crtDish.removeEventListener(TouchEvent.TOUCH, onDishTouch);
-								}
-								else
-								{
-									crtDish.tweenMove();
-								}
+								crtDish.tweenMove();
 							}
 						}
-
-						//reset
-						speedX=0;
-						speedY=0;
-						crtDish=null;
-						break;
 					}
 
-					default:
-					{
-						break;
-					}
+					//reset
+					speedX=0;
+					speedY=0;
+					crtDish=null;
+					break;
+				}
+
+				default:
+				{
+					break;
 				}
 			}
-
 		}
 
 		private function onEnterFrame(e:Event):void
 		{
+			if (gameOver)
+				return;
 			var crtIndex:int=-1;
 			if (pinMove)
 			{
@@ -349,10 +426,10 @@ package views.module2.scene23
 
 		private function onPinTouch(e:TouchEvent):void
 		{
-			var tc:Touch=e.getTouch(stage);
-			if (!tc)
+			var tc:Touch=e.getTouch(pin);
+			if (!tc || gameOver)
 				return;
-
+			e.stopImmediatePropagation();
 			var pt:Point=tc.getLocation(this);
 
 			switch (tc.phase)
@@ -379,7 +456,7 @@ package views.module2.scene23
 				{
 					if (pinMove)
 					{
-						TweenLite.to(pin, .3, {x: 40, y: 65, rotation: 0});
+						TweenLite.to(pin, .3, {x: 40, y: 110, rotation: 0});
 					}
 					pinMove=false;
 					poisonTest=false;
@@ -403,15 +480,144 @@ package views.module2.scene23
 		public function set life(value:int):void
 		{
 			_life=value;
-			if (_life == 0)
-				gotoGameOver();
-			else
-				lifeTF.text=_life.toString();
+			if (value < lifeIconArr.length)
+			{
+				var img:Image=lifeIconArr[value] as Image;
+
+				var newImg:Image=getImage("lifeicon-lost");
+				newImg.x=img.x;
+				newImg.y=img.y;
+
+				if (value == 0)
+					gameOver=true;
+
+				TweenMax.to(img, 1, {shake: {rotation: .2, numShakes: 4}});
+				TweenLite.delayedCall(.21, function():void {
+					infoHolder.removeChild(img);
+					lifeIconArr[value]=newImg;
+					infoHolder.addChild(newImg);
+				})
+			}
 		}
 
-		private function gotoGameOver():void
+		private var gameOver:Boolean;
+
+		private function gameOverHandler():void
+		{
+			gameOver=true;
+			timer.stop();
+
+			TweenLite.delayedCall(.5, initResult);
+		}
+
+		private static const gameResult:String="dishgameresult";
+
+		private function initResult():void
+		{
+			addChild(endSP);
+			endSP.x=-1024;
+//			score=10000;
+//			life=3;
+			var isRecord:Boolean=false;
+			if (life > 0 && score > 0)
+			{
+				var win:Image=getImage("win-panel");
+				endSP.addChild(win);
+				win.x=222;
+				win.y=30;
+
+				for (var i:int=0; i < life; i++)
+				{
+					var star1:Image=getImage("star-red");
+					star1.x=412 + i * 76;
+					star1.y=214;
+					endSP.addChild(star1);
+				}
+
+				for (var j:int=life; j < 3; j++)
+				{
+					var star2:Image=getImage("star-grey");
+					star2.x=412 + j * 76;
+					star2.y=214;
+					endSP.addChild(star2);
+				}
+
+				var dishgameresult:int=SOService.instance.getSO(gameResult) as int;
+
+				var scoreTXT:TextField=new TextField(300, 80, "");
+				scoreTXT.fontSize=48;
+				scoreTXT.color=0xb83d00;
+				scoreTXT.x=420;
+				scoreTXT.y=280;
+				endSP.addChild(scoreTXT);
+
+				var recordTXT:TextField=new TextField(100, 40, "");
+				recordTXT.fontSize=24;
+				recordTXT.color=0xb83d00;
+				recordTXT.x=520;
+				recordTXT.y=370;
+				endSP.addChild(recordTXT);
+
+				if (!dishgameresult || dishgameresult < score)
+				{
+					scoreTXT.text=recordTXT.text=score.toString();
+					isRecord=true;
+					SOService.instance.setSO(gameResult, score);
+				}
+				else
+				{
+					scoreTXT.text=score.toString();
+					recordTXT.text=dishgameresult.toString();
+				}
+			}
+			else
+			{
+				var lose:Image=getImage("lose-panel");
+				endSP.addChild(lose);
+				lose.x=(1024 - lose.width) / 2;
+				lose.y=0;
+			}
+
+			rsBtn=new ElasticButton(getImage("restart"));
+			rsBtn.shadow=getImage("restart-light");
+			rsBtn.x=512;
+			rsBtn.y=512;
+			endSP.addChild(rsBtn);
+
+			TweenLite.to(gameSP, .5, {x: 1024});
+
+			TweenLite.to(endSP, .5, {x: 0, onComplete: function():void {
+				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
+				closeBtn.visible=closeBtn.touchable=true;
+				if (isRecord)
+					showRecord();
+			}});
+		}
+
+		private function showRecord():void
+		{
+			var recordIcon:Image=getImage("record");
+			endSP.addChild(recordIcon);
+			recordIcon.x=636;
+			recordIcon.y=327;
+			recordIcon.scaleX=recordIcon.scaleY=3;
+			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut});
+		}
+
+		private function onCloseTouch(e:Event):void
+		{
+			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseTouch);
+			closeGame();
+		}
+
+		private function closeGame():void
 		{
 			dispatchEvent(new Event("gameOver"));
+		}
+
+		private function restartGame(e:Event=null):void
+		{
+			dispatchEvent(new Event("gameRestart"));
 		}
 
 		private var _score:int;
@@ -438,8 +644,8 @@ package views.module2.scene23
 			var dy:Number;
 			if (kingArea.containsPoint(pt))
 			{
-				dx=kingArea.x + kingArea.width / 2;
-				dy=kingArea.y + kingArea.height / 2 + 50;
+				dx=kingArea.x + kingArea.width / 2 + 5;
+				dy=kingArea.y + kingArea.height / 2 + 40;
 				isClassed=true;
 
 				if (_dish.tested && !_dish.isPoison)
@@ -469,6 +675,13 @@ package views.module2.scene23
 				_dish.isFlying=false;
 				dishArr[index]=null;
 				TweenLite.to(_dish, .3, {x: dx, y: dy, scaleX: .2, scaleY: .2, onComplete: function():void {
+					if (gameOver) {
+						dishHolder.removeChild(_dish);
+						_dish.dispose();
+						_dish=null;
+						gameOverHandler();
+						return;
+					}
 					dataArr.push(crtdataArr[index]);
 					setOneData(index);
 					addOneDish(index, true);
@@ -483,6 +696,13 @@ package views.module2.scene23
 				_dish.isFlying=false;
 				dishArr[index]=null;
 				TweenLite.to(_dish, .3, {scaleX: .2, scaleY: .2, onComplete: function():void {
+					if (gameOver) {
+						dishHolder.removeChild(_dish);
+						_dish.dispose();
+						_dish=null;
+						gameOverHandler();
+						return;
+					}
 					dataArr.push(crtdataArr[index]);
 					setOneData(index);
 					addOneDish(index, true);
@@ -498,18 +718,16 @@ package views.module2.scene23
 
 		private function initBG():void
 		{
-			gameSP.addChild(getImage("gamebg"))
-
 			var table:Image=getImage("dish-table");
-			table.y=(768 - table.height) / 2;
+			table.y=132;
 			gameSP.addChild(table);
 
 			var king:Image=getImage("dish-king");
 			king.x=1024 - king.width;
-			king.y=0;
+			king.y=62;
 			gameSP.addChild(king);
 
-			kingArea=new Rectangle(king.x, 0, king.width, king.height);
+			kingArea=new Rectangle(king.x, king.y, king.width, king.height);
 
 			var jar:Image=getImage("dish-jar");
 			jar.x=1024 - jar.width;
@@ -539,17 +757,33 @@ package views.module2.scene23
 		private var downY:Number=768;
 		private var downDY:Number=557;
 
-		private var lifeTF:TextField;
 		private var scoreTF:TextField;
+
+		private var startBtn:ElasticButton;
+
+		private var closeBtn:ElasticButton;
+
+		private var infoHolder:Sprite;
+
+		private var timeprogress:Sprite;
+
+		private var timer:Timer;
+		private var rsBtn:ElasticButton;
 
 		private function initAreas():void
 		{
 			for (var i:int=0; i < dishNum; i++)
 			{
-				var pt:Point=new Point(165 + 243 * (i % 3), 260 + 260 * int(i / 3));
+				var pt:Point=new Point(140 + 243 * (i % 3), 280 + 260 * int(i / 3));
 				posArr[i]=pt;
 				areaArr[i]=new Rectangle(pt.x - dishW / 2 - 68, pt.y - dishH / 2 - 127, dishW, dishH);
 			}
 		}
+
+		override public function dispose():void
+		{
+			this.assets=null;
+		}
+
 	}
 }
