@@ -149,7 +149,9 @@ package views.module2.scene23
 			initTime();
 		}
 
-		private var totalTime:int=900;
+		private var maxtime:int=30;
+		private var hz:int=60;
+		private var totalTime:int=maxtime * hz;
 
 		private var lifeIconArr:Array=[];
 
@@ -176,7 +178,7 @@ package views.module2.scene23
 
 		private function initTime():void
 		{
-			timer=new Timer(100);
+			timer=new Timer(1000 / hz);
 			timer.addEventListener(TimerEvent.TIMER, onTimer);
 			timer.start();
 		}
@@ -185,7 +187,7 @@ package views.module2.scene23
 		{
 			totalTime--;
 			if (totalTime > 0)
-				timeprogress.clipRect.width=totalTime / 900 * 470;
+				timeprogress.clipRect.width=totalTime / (maxtime * hz) * 470;
 			else
 			{
 				gameOverHandler();
@@ -203,11 +205,11 @@ package views.module2.scene23
 
 			poisonTest=false;
 
-			pin.pivotX=32;
-			pin.pivotY=27;
+			pin.pivotX=pinNormal.width >> 1;
+			pin.pivotY=pinNormal.height >> 1;
 			gameSP.addChild(pin);
 			pin.x=40;
-			pin.y=110;
+			pin.y=200;
 			pin.addEventListener(TouchEvent.TOUCH, onPinTouch);
 		}
 
@@ -456,7 +458,7 @@ package views.module2.scene23
 				{
 					if (pinMove)
 					{
-						TweenLite.to(pin, .3, {x: 40, y: 110, rotation: 0});
+						TweenLite.to(pin, .3, {x: 40, y: 200, rotation: 0});
 					}
 					pinMove=false;
 					poisonTest=false;
@@ -644,8 +646,8 @@ package views.module2.scene23
 			var dy:Number;
 			if (kingArea.containsPoint(pt))
 			{
-				dx=kingArea.x + kingArea.width / 2 + 5;
-				dy=kingArea.y + kingArea.height / 2 + 40;
+				dx=kingArea.x + kingArea.width / 2 - 10;
+				dy=kingArea.y + kingArea.height / 2 + 60;
 				isClassed=true;
 
 				if (_dish.tested && !_dish.isPoison)
@@ -776,7 +778,7 @@ package views.module2.scene23
 			{
 				var pt:Point=new Point(140 + 243 * (i % 3), 280 + 260 * int(i / 3));
 				posArr[i]=pt;
-				areaArr[i]=new Rectangle(pt.x - dishW / 2 - 68, pt.y - dishH / 2 - 127, dishW, dishH);
+				areaArr[i]=new Rectangle(pt.x - dishW / 2 - 50, pt.y - dishH / 2 - 100, dishW + 50, dishH + 100);
 			}
 		}
 
