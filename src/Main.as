@@ -53,7 +53,8 @@ package
 			}
 			else
 			{
-				MC.instance.moduleIndex=0;
+				Map.show();
+//				MC.instance.moduleIndex=0;
 			}
 		}
 

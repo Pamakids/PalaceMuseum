@@ -17,6 +17,7 @@ package views.global.userCenter.map
 	import starling.textures.Texture;
 
 	import views.global.Map;
+	import views.global.userCenter.UserCenterManager;
 
 	/**
 	 * 用户中心map场景
@@ -77,12 +78,14 @@ package views.global.userCenter.map
 				cache.visible=true;
 
 				var point:Point=this.globalToLocal(new Point(0, 0));
-				TweenLite.to(cache, 0.5, {x: point.x + 12, y: point.y, scaleX: 1, scaleY: 1, ease: Cubic.easeOut, onComplete: function():void
+				TweenLite.to(cache, 0.5, {x: point.x + 12, y: -cache.height + point.y - 88, scaleX: 1, scaleY: 1, ease: Cubic.easeOut, onComplete: function():void
 				{
-					this.visible=false;
-					Map.show(function():void
+					Map.show(function(status:int):void
 					{
-						visible=true;
+						if (status == 1)
+							mapButton.visible=true;
+						else if (status == 2)
+							UserCenterManager.closeUserCenter();
 					});
 //						showMap();
 					cache.visible=false;

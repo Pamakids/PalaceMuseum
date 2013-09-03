@@ -4,6 +4,8 @@ package controllers
 
 	import feathers.core.PopUpManager;
 
+	import models.SOService;
+
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -39,7 +41,7 @@ package controllers
 		private var currentModule:PalaceModule;
 
 		private var main:Main;
-		private var modules:Array=[Module2]
+		private var modules:Array=[Module1, Module2]
 
 		public function init(main:Main):void
 		{
@@ -70,6 +72,7 @@ package controllers
 				currentModule.visible=false;
 			if (value != _moduleIndex)
 			{
+				DC.instance.completeModule();
 				Map.show(function(status:int):void
 				{
 					if (!status)
@@ -84,6 +87,12 @@ package controllers
 				_moduleIndex=value;
 				showModule();
 			}
+		}
+
+		public function gotoModule(index:int):void
+		{
+			_moduleIndex=index;
+			showModule();
 		}
 
 		private function showModule():void

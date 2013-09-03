@@ -50,22 +50,26 @@ package views.components
 			this.minToMax=minToMax;
 			result=new Image(Texture.fromBitmap(bitmap));
 			result.visible=false;
-			addChild(result);
 			contentWidth=bitmap.width;
 			contentHeight=bitmap.height;
 			interval=horizontal ? contentWidth / slices : contentHeight / slices;
-			textures=new Vector.<Texture>(slices);
+			textures=new Vector.<Texture>;
 			var bd:BitmapData=bitmap.bitmapData;
 			var newBD:BitmapData;
 			var w:int=horizontal ? bd.width / slices : bd.width;
 			var h:int=horizontal ? bd.height : bd.height / slices;
-			trace(w, h);
 			for (var i:int; i < slices; i++)
 			{
 				newBD=new BitmapData(w, h);
 				newBD.copyPixels(bd, new Rectangle(horizontal ? i * w : 0, horizontal ? 0 : i * h, w, h), new Point());
 				textures[i]=Texture.fromBitmapData(newBD);
 				newBD.dispose();
+			}
+			if (!horizontal)
+			{
+				width=contentWidth;
+				scaleX=scaleY=.8;
+				x=width * (1 - scaleX) / 2;
 			}
 			bd.dispose();
 		}
@@ -105,8 +109,15 @@ package views.components
 			var tox:Number=x;
 			if (!horizontal)
 			{
-				if (flipingImage && flipingImage.y > height - interval * 2)
-					toy=height - contentHeight;
+				if (flipingImage && flipingImage.y > height - interval * 2 && y == 0)
+				{
+					toy=(height - contentHeight) * scaleX;
+					TweenLite.to(this, 0.8, {delay: 0.3, y: toy, ease: Cubic.easeOut, onComplete: function():void
+					{
+						flipImage();
+					}});
+					return;
+				}
 			}
 			else if (flipingImage && flipingImage.x > width - interval * 2)
 			{
@@ -133,12 +144,14 @@ package views.components
 						width=contentWidth;
 						result.y=height / 2 - contentHeight / 2;
 					}
-					while (numChildren != 1)
-					{
-						removeChildAt(1, true);
-					}
+					addChild(result);
+					removeSlices();
+					flipingImage=null;
 					result.visible=true;
-					dispatchEvent(new Event('completed'));
+					TweenLite.delayedCall(0.5, function():void
+					{
+						dispatchEvent(new Event('completed'));
+					});
 				}
 			}, onUpdate: function():void
 			{
@@ -169,6 +182,27 @@ package views.components
 //				if (contentHeight > height)
 //					y=temp * (animationIndex / textures.length) * (contentHeight - height);
 			}});
+		}
+
+		private function removeSlices():void
+		{
+			for each (var im:Image in imageDic)
+			{
+				removeChild(im);
+			}
+		}
+
+		public function playAnimation():void
+		{
+			while (numChildren)
+			{
+				removeChildAt(0);
+			}
+			TweenLite.killTweensOf(this);
+			y=0;
+			animationIndex=0;
+			temp=0;
+			flipImage();
 		}
 
 		private var imageDic:Dictionary=new Dictionary();
