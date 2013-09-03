@@ -173,7 +173,7 @@ package views.global.userCenter
 		{
 			handbookContent = index;
 			
-//			testAnimations();
+			testAnimations();
 		}
 		
 		/**动画测试方法*/		
@@ -181,13 +181,14 @@ package views.global.userCenter
 		{
 			//测试动画
 			var textures:Vector.<Texture> = new Vector.<Texture>();
-			for(var i:int = 0;i<4;i++)
+			for(var i:int = 0;i<8;i++)
 			{
-				(i%2==0)?textures.push(assets.getTexture("page_left")):textures.push(assets.getTexture("page_right"));
+//				(i%2==0)?textures.push(assets.getTexture("page_left")):textures.push(assets.getTexture("page_right"));
+				(i%2==0)?textures.push(assets.getTexture("1")):textures.push(assets.getTexture("2"));
 			}
-			var animation:SoftPageAnimation = new SoftPageAnimation(940, 696, textures);
+			var animation:SoftPageAnimation = new SoftPageAnimation(940, 696, textures, 0, false, 1, false, false);
 			this.addChild( animation );
-			animation.x = 533;
+			animation.x = 53;
 			animation.y = 72;
 		}
 		

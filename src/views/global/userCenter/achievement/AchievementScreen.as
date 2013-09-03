@@ -68,7 +68,6 @@ package views.global.userCenter.achievement
 		private var cache:Texture;
 		private function onChange():void
 		{
-			trace(typeof(list.selectedItem));
 			cache = datas[list.selectedIndex].thumbnail;
 			showImage();
 		}

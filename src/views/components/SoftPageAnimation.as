@@ -1,5 +1,8 @@
 package views.components
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Cubic;
+	
 	import flash.geom.Point;
 	
 	import starling.display.Image;
@@ -22,13 +25,14 @@ package views.components
 		/**
 		 * @param width			书本宽
 		 * @param height		书本高
-		 * @param textures 		纹理集[	[left,right], [left,right]...	]
+		 * @param textures 		纹理集
+		 * @param currentPage	默认显示页（除去封面与封底，剩余纹理每两个纹理为一页）
+		 * @param dragable		可拖拽
+		 * @param duration		时间，若dragable为true，则该时间为拖拽结束页面缓动归为的时间
 		 * @param coverTexture	有封面
 		 * @param reverTexture	有封底
-		 * @param currentPage	默认显示页
-		 * @param dragable		可拖拽
 		 */		
-		public function SoftPageAnimation(width:Number, height:Number, textures:Vector.<Texture>, cover:Boolean=false, backcover:Boolean=false, currentPage:int=0, dragable:Boolean=false)
+		public function SoftPageAnimation(width:Number, height:Number, textures:Vector.<Texture>, currentPage:int=0, dragable:Boolean=false, duration:Number = 1, cover:Boolean=false, backcover:Boolean=false)
 		{
 			this._bookWidth = width;
 			this._bookHeight = height;
@@ -36,27 +40,23 @@ package views.components
 			this._currentPage = currentPage;
 			this._cover = cover;
 			this._backcover = backcover;
+			this.duration = duration;
 			this.setTextures(textures);
-			
 			initialize();
 		}
 		
-//initialize---------------------------------------------------------------------------------
 		
 		private function initialize():void
 		{
 			_quadBatch = new QuadBatch();
 			this.addChild(_quadBatch);
-			
-			var i:int = _currentPage*2;
-			createFixedPage(this._textures[i], this._textures[i+1]);
-			
+			createFixedPage(this._textures[_currentPage*2], this._textures[_currentPage*2+1]);
 			this.addEventListener(TouchEvent.TOUCH,onTouchHandler);
+			initialized = true;
 		}
 		
-//control-------------------------------------------------------------------------------------
 		/**
-		 * 当dragable为true时，该时间将失效
+		 * 当dragable为true时，该时间将作为拖拽结束后到翻页完成（或回归）的时间长度
 		 */		
 		public var duration:Number = 1;
 		/**
@@ -72,13 +72,21 @@ package views.components
 		 */		
 		private var _totalPage:int;
 		/**
-		 * 翻页进程，区间[-1, 1]
+		 * 翻页进程0-1
 		 */		
 		private var _progress:Number;
-		/**
-		 * 翻页目标进程（-1or1）
-		 */		
-		private var _targetProgress:int;
+		public function set progress(value:Number):void
+		{
+			if(_progress == value)
+				return;
+			
+			_progress = value;
+			createViewByProgress();
+		}
+		public function get progress():Number
+		{
+			return _progress;
+		}
 		
 		/**批处理显示*/
 		private var _quadBatch:QuadBatch;
@@ -111,7 +119,9 @@ package views.components
 			
 			if(currentPage >= 0)
 				_currentPage = currentPage;
-			_needUpdate = true;
+			
+			if(initialized)
+				createFixedPage(_textures[_currentPage*2], _textures[_currentPage*2+1]);
 		}
 		
 		/**
@@ -120,43 +130,75 @@ package views.components
 		 * @param deleteCount
 		 * @param items
 		 */		
-		public function spliceTextures(startIndex:Number, deleteCount:Number, ...items):void{}
+		public function spliceTextures(startIndex:Number, deleteCount:Number=0, currentPage:int=-1, ...items):void
+		{
+			for (var i:int = items.length-1; i>=0; i++)
+			{
+				if(!(items[i] is Texture))
+					items.splice(i,1);
+			}
+			this._textures.splice(startIndex, deleteCount, items);
+			
+			if(currentPage >= 0)
+				_currentPage = currentPage;
+			createFixedPage(_textures[_currentPage*2], _textures[_currentPage*2+1]);
+			
+		}
 		/**
 		 * 自动翻页方法，上翻一页
 		 */		
-		public function pageUp():void
+		private function pageUp():void
 		{
-			if(_currentPage <= 0)
-				return;
-			
-			//缓动更改progress的值并更新渲染
-			
-			trace("pageUp");
+			active = false;
+			_currentPage -= 1;
 		}
 		/**
 		 * 自动翻页方法，下翻一页
 		 */		
-		public function pageDown():void
+		private function pageDown():void
 		{
-			if(_currentPage >= _totalPage)
-				return;
-			
-			//缓动更改progress的值并更新渲染
-			
-			trace("pageDown");
+			active = false;
+			_currentPage += 1;
 		}
-		public function turnToPage(index:int):void{}
+		/**
+		 * 跳转至指定页面
+		 */		
+		public function turnToPage(index:int):void
+		{
+			if( _currentPage == index || index > _totalPage || index < 0)
+				return;
+			_leftToRight = (_currentPage - index) < 0;
+			progress = 0;
+			_currentPage = index;
+			easeFunc(duration, 1, Cubic.easeIn, function():void{
+				createFixedPage(_textures[_currentPage*2], _textures[_currentPage*2+1]);
+				active = false;
+			});
+		}
 		
-		override public function dispose():void{}
+		override public function dispose():void
+		{
+			if(_cacheImage)
+				_cacheImage.dispose();
+			if(_softImage)
+				_softImage.dispose();
+			if(_quadBatch)
+				_quadBatch.dispose()
+			if(_textures)
+				_textures = null;
+			super.dispose();
+		}
 		
-//logical-------------------------------------------------------------------------------------
-			
 		private const MIN_TOUCH_MOVE_LENGTH:Number = 100;
 		private var _needUpdate:Boolean;
 		private var _beginPointX:Number;
 		private var _leftToRight:Boolean;
+		
+		private var promptValue:Number = 0.2;
 		private function onTouchHandler(e:TouchEvent):void
 		{
+			if(active)
+				return;
 			var touch:Touch = e.getTouch(this);
 			if(touch)
 			{
@@ -165,54 +207,72 @@ package views.components
 				{
 					case TouchPhase.BEGAN:
 						this._beginPointX = point.x;		//记录起始X坐标,设定左右翻页
-						_leftToRight = this._beginPointX < 0;
-						
-						if(this._dragable)
-						{
-							//可拖拽的情况下，需要预先掀起一角以给显示可拖拽
-							_progress = (_leftToRight)?-0.95:0.95;
-							createViewByProgress();
-						}
+						_leftToRight = this._beginPointX - _bookWidth/2 < 0;
+						progress = promptValue;
 						break;
 					case TouchPhase.MOVED:
 						if(this._dragable)
 						{
-							//计算progress的值
-							_progress = (point.x<0)?point.x/_leftTexture.frame.width:point.x/_rightTexture.frame.width;
-							if(_progress<-1)
-								_progress = -1;
-							if(_progress > 1)
-								_progress = 1;
-							
-							trace(_progress);
-							createViewByProgress();
+							if(_leftToRight)
+								progress = Math.max(Math.min(1, (point.x - this._beginPointX) / DRAG_LENGTH), 0);
+							else
+								progress = Math.max(Math.min(1, (this._beginPointX - point.x) / DRAG_LENGTH), 0);
+						}
+						else
+						{
+							progress = promptValue;
 						}
 						break;
 					case TouchPhase.ENDED:
 						if(this._dragable)
 						{
 							//根据当前的progress值来计算是否达到了翻页的要求，并依此来缓动更改progress的值至targetProgress
+							if(progress > 0.8)		//翻书完成
+								easeFunc(duration, 1, Cubic.easeIn, (_leftToRight)?pageUp:pageDown);
+							else				//书本返回
+								easeFunc(duration, 0, Cubic.easeIn);
 						}
 						else
 						{
 							//记录结束点X坐标，若满足翻页条件，则自动翻页
 							var length:Number = point.x - _beginPointX;
+							
 							if(_leftToRight && length > MIN_TOUCH_MOVE_LENGTH )		//前翻一页
-								pageUp();
+								easeFunc(duration, 1, Cubic.easeOut, pageUp);
 							if( (!_leftToRight) && (length < -MIN_TOUCH_MOVE_LENGTH) ) 		//后翻一页
-								pageDown();
+								easeFunc(duration, 1, Cubic.easeOut, pageDown);
+							if( Math.abs(length) < MIN_TOUCH_MOVE_LENGTH )			//翻页取消
+								easeFunc(duration, 0, Cubic.easeOut);
 						}
 						break;
 				}
 			}
-			else
-			{
-				_needUpdate = false;
-			}
 		}
 		
-		private var _leftTexture:Texture;
-		private var _rightTexture:Texture;
+		/**
+		 * 缓动更改progress至目标值
+		 */		
+		private function easeFunc( duration:Number, progressTarget:Number, ease:Function=null, onComplete:Function=null ):void
+		{
+			if(active)
+				return;
+			active = true;
+			var obj:Object = {
+				progress: progressTarget
+			};
+			if(ease)
+				obj.ease = ease;
+			if(onComplete)
+				obj.onComplete = onComplete;
+			else
+				obj.onComplete = function():void
+				{
+					active = false;
+				};
+			TweenLite.to(this, duration, obj);
+		}
+		
+		private const DRAG_LENGTH:Number = 500;		//拖动距离，用来计算progress
 		/**
 		 * 绘制左右不变纹理
 		 * @param leftTexture
@@ -222,20 +282,18 @@ package views.components
 		{
 			if(leftTexture)
 			{
-				_leftTexture = leftTexture;
 				(!_cacheImage)?_cacheImage = new Image(leftTexture):_cacheImage.texture = leftTexture;
-				_cacheImage.x = -_cacheImage.width;
-				_cacheImage.width = leftTexture.frame.width;
-				_cacheImage.height = leftTexture.frame.height;
+				_cacheImage.x = 0;
+				_cacheImage.width = this._bookWidth / 2;
+				_cacheImage.height = this._bookHeight;
 				_quadBatch.addImage( _cacheImage );
 			}
 			if(rightTexture)
 			{
-				_rightTexture = rightTexture;
 				(!_cacheImage)?_cacheImage = new Image(rightTexture):_cacheImage.texture = rightTexture;
-				_cacheImage.x = 0;
-				_cacheImage.width = rightTexture.frame.width;
-				_cacheImage.height = rightTexture.frame.height;
+				_cacheImage.x = this._bookWidth/2;
+				_cacheImage.width = this._bookWidth/2;
+				_cacheImage.height = this._bookHeight;
 				_quadBatch.addImage( _cacheImage );
 			}
 		}
@@ -245,17 +303,26 @@ package views.components
 		 */		
 		private function createSoftPage(texture:Texture, another:Texture):void
 		{
-			(!_softImage)?_softImage = new SoftPageImage(texture):_softImage.texture = texture;
+			if(!_softImage)
+			{
+				_softImage = new SoftPageImage(texture, _bookWidth, _bookHeight);
+			}else
+			{
+				_softImage.texture = texture;
+			}
 			_softImage.anotherTexture = another;
 			_softImage.readjustSize();
-			_softImage.setLocationSoft(_quadBatch, _progress, _leftToRight);
+			_softImage.setLocation(_quadBatch, progress, _leftToRight);
 		}
 		
+		
+		private var active:Boolean = false;
+		private var initialized:Boolean = false;
 		private function createViewByProgress():void
 		{
-			if(_currentPage == 0 && _leftToRight)
+			if(_currentPage <= 0 && _leftToRight)
 				return;
-			if(_currentPage == _totalPage)
+			if(_currentPage >= _totalPage && !_leftToRight)
 				return;
 			//几个纹理索引
 			var leftIndex:int, rightIndex:int, textureIndex:int, anotherIndex:int;
