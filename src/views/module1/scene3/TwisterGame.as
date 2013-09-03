@@ -49,6 +49,11 @@ package views.module1.scene3
 //			mStarling.simulateMultitouch = true;
 		}
 
+		override public function dispose():void
+		{
+			this.assets=null;
+		}
+
 		override protected function init():void
 		{
 			if (inited)
