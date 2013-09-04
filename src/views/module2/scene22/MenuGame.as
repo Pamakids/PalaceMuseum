@@ -33,9 +33,9 @@ package views.module2.scene22
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
-	import views.components.base.PalaceScene;
+	import views.components.base.PalaceGame;
 
-	public class MenuGame extends PalaceScene
+	public class MenuGame extends PalaceGame
 	{
 		//菜单栏
 		public static var barW:int=567;
@@ -579,11 +579,6 @@ package views.module2.scene22
 			var txt:String=hour == 0 ? (minStr + ":" + secStr) : "59:59";
 			txt+=":" + mmStr;
 			return txt;
-		}
-
-		override public function dispose():void
-		{
-			this.assets=null;
 		}
 
 		private function showRecord():void
