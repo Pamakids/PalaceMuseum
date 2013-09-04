@@ -63,7 +63,7 @@ package views.global.userCenter
 			this.assets = UserCenterManager.assetsManager;
 			this.screenNames = [MAP, USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION];
 			
-			initBackgroud();
+//			initBackgroud();
 			initTabBar();
 			initBackButton();
 			initContainer();
@@ -137,7 +137,7 @@ package views.global.userCenter
 		{
 			_navigator = new ScreenNavigator();
 			_navigator.addScreen(MAP, new ScreenNavigatorItem(MapScreen, {}, {}));
-			_navigator.addScreen(HANDBOOK, new ScreenNavigatorItem(HandbookScreen, {}, {}));
+			_navigator.addScreen(HANDBOOK, new ScreenNavigatorItem(HandbookScreen, {}, {width: 940, height: 696}));
 			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen, {}, {}));
 			_navigator.addScreen(ACHIEVEMENT, new ScreenNavigatorItem(AchievementScreen, {}, {}));
 			_navigator.addScreen(COLLECTION, new ScreenNavigatorItem(CollectionScreen, {}, {}));
@@ -179,7 +179,7 @@ package views.global.userCenter
 		public function showIndex(index:int = -1):void
 		{
 			handbookContent = index;
-			
+//			testAnimations();
 		}
 
 		/**动画测试方法*/
@@ -190,9 +190,10 @@ package views.global.userCenter
 			for(var i:int = 0;i<8;i++)
 			{
 //				(i%2==0)?textures.push(assets.getTexture("page_left")):textures.push(assets.getTexture("page_right"));
-				(i%2==0)?textures.push(assets.getTexture("1")):textures.push(assets.getTexture("2"));
+//				(i%2==0)?textures.push(assets.getTexture("1")):textures.push(assets.getTexture("2"));
+				(i%2==0)?textures.push(assets.getTexture("page_1")):textures.push(assets.getTexture("page_2"));
 			}
-			var animation:SoftPageAnimation = new SoftPageAnimation(940, 696, textures, 0, false, 1, false, false);
+			var animation:SoftPageAnimation = new SoftPageAnimation(940, 696, textures, 0, true, 0.5, true, true);
 			this.addChild( animation );
 			animation.x = 53;
 			animation.y = 72;
@@ -200,6 +201,8 @@ package views.global.userCenter
 
 		override public function dispose():void
 		{
+			
+			
 			super.dispose();
 		}
 

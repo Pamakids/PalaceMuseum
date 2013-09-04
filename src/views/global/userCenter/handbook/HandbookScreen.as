@@ -1,12 +1,13 @@
 package views.global.userCenter.handbook
 {
 	import feathers.controls.Screen;
-	import feathers.events.FeathersEventType;
 	
 	import starling.display.Image;
-	import starling.events.Event;
+	import starling.display.Sprite;
+	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	
+	import views.components.SoftPageAnimation;
 	import views.global.userCenter.UserCenterManager;
 
 	/**
@@ -16,47 +17,79 @@ package views.global.userCenter.handbook
 	 */	
 	public class HandbookScreen extends Screen
 	{
-		private var leftTexture:Texture;
-		private var rightTexture:Texture;
-		private var left:Image;
-		private var right:Image;
-		
 		public function HandbookScreen()
 		{
 			super();
 		}
 		
-		private function initializeHandler(e:Event):void
-		{
-		}
-		
 		override protected function initialize():void
 		{
-			this.touchable = false;
-			leftTexture = UserCenterManager.assetsManager.getTexture("content_left");
-			rightTexture = UserCenterManager.assetsManager.getTexture("content_right");
-			left = new Image(leftTexture);
-			this.addChild(left);
-			right = new Image(rightTexture);
-			this.addChild(right);
+			initUserInfo();
+			initAnimation();
 		}
 		
-		override protected function draw():void
+		/**
+		 * 获取用户数据
+		 */		
+		private function initUserInfo():void
 		{
-			right.x = leftTexture.frame.width;
 		}
+		private var userinfo:Object;
 		
 		override public function dispose():void
 		{
-			if(left)
-				left.dispose();
-			if(right)
-				right.dispose();
-			if(leftTexture)
-				leftTexture.dispose();
-			if(rightTexture)
-				rightTexture.dispose();
 			super.dispose();
+		}
+		
+		
+//Animation--------------------------------------------------------------------------------
+		private var container:Sprite;
+		private var vecTexture:Vector.<Texture>;
+		private var animation:SoftPageAnimation;
+		private function initAnimation():void
+		{
+			initTextures();
+			animation = new SoftPageAnimation(width, height, vecTexture, 0, true, 0.5);
+			this.addChild(animation);
+		}
+		
+		private function initTextures():void
+		{
+			var leftBack:Image = new Image(UserCenterManager.assetsManager.getTexture("page_left"));
+			var rightBack:Image = new Image(UserCenterManager.assetsManager.getTexture("page_right"));
+			var leftImage:Image = new Image(UserCenterManager.assetsManager.getTexture("content_left"));
+			var rightImage:Image = new Image(UserCenterManager.assetsManager.getTexture("content_right"));
+			vecTexture = new Vector.<Texture>();
+			
+			for(var i:int = 0;i<6;i++)
+			{
+				vecTexture.push( UserCenterManager.assetsManager.getTexture("page_"+(i+1).toString()) );
+//				switch(i%2)
+//				{
+//					case 0:
+//						vecTexture.push( UserCenterManager.assetsManager.getTexture("page_left") );
+//						break;
+//					case 1:
+//						vecTexture.push( UserCenterManager.assetsManager.getTexture("page_right") );
+//						break;
+//				}
+			}
+//			for(var i:int = 0;i<4;i++)
+//			{
+//				var render:RenderTexture = new RenderTexture(width/2, height, true);
+//				if(i%2 == 0)		//左
+//				{
+//					render.draw(leftBack);
+//					render.draw(leftImage);
+//				}
+//				else		//右
+//				{
+//					render.draw(rightBack);
+//					render.draw(rightImage);
+//				}
+//				vecTexture.push( render );
+//			}
+			
 		}
 	}
 }

@@ -34,6 +34,15 @@ package views.components
 		 */		
 		public function SoftPageAnimation(width:Number, height:Number, textures:Vector.<Texture>, currentPage:int=0, dragable:Boolean=false, duration:Number = 1, cover:Boolean=false, backcover:Boolean=false)
 		{
+//			for(var i:int = textures.length-1;i>=0;i--)
+//			{
+//				var img:Image = new Image(textures[i]);
+//				img.scaleX = img.scaleY = 0.4;
+//				img.x = i * 200;
+//				this.addChild( img );
+//			}
+//			return;
+			
 			this._bookWidth = width;
 			this._bookHeight = height;
 			this._dragable = dragable;
@@ -52,7 +61,6 @@ package views.components
 			this.addChild(_quadBatch);
 			createFixedPage(this._textures[_currentPage*2], this._textures[_currentPage*2+1]);
 			this.addEventListener(TouchEvent.TOUCH,onTouchHandler);
-			initialized = true;
 		}
 		
 		/**
@@ -107,6 +115,7 @@ package views.components
 		 */		
 		public function setTextures(value:Vector.<Texture>, currentPage:int=-1):void
 		{
+			trace("setTextures");
 			if(_textures && _textures == value)
 				return;
 			_textures = value;
@@ -117,10 +126,7 @@ package views.components
 			
 			_totalPage = Math.ceil( _textures.length >> 1 ) - 1;
 			
-			if(currentPage >= 0)
-				_currentPage = currentPage;
-			
-			if(initialized)
+			if(currentPage >= 0 && _currentPage != currentPage)
 				createFixedPage(_textures[_currentPage*2], _textures[_currentPage*2+1]);
 		}
 		
@@ -140,7 +146,7 @@ package views.components
 			this._textures.splice(startIndex, deleteCount, items);
 			
 			if(currentPage >= 0)
-				_currentPage = currentPage;
+				this._currentPage = currentPage;
 			createFixedPage(_textures[_currentPage*2], _textures[_currentPage*2+1]);
 			
 		}
@@ -151,6 +157,8 @@ package views.components
 		{
 			active = false;
 			_currentPage -= 1;
+			if(_cover)
+				createFixedPage(_textures[_currentPage*2], _textures[_currentPage*2+1]);
 		}
 		/**
 		 * 自动翻页方法，下翻一页
@@ -159,6 +167,8 @@ package views.components
 		{
 			active = false;
 			_currentPage += 1;
+			if(_backcover)
+				createFixedPage(_textures[_currentPage*2], _textures[_currentPage*2+1]);
 		}
 		/**
 		 * 跳转至指定页面
@@ -208,9 +218,13 @@ package views.components
 					case TouchPhase.BEGAN:
 						this._beginPointX = point.x;		//记录起始X坐标,设定左右翻页
 						_leftToRight = this._beginPointX - _bookWidth/2 < 0;
+						if( (_currentPage <= 0 && _leftToRight) || (_currentPage >= _totalPage && !_leftToRight) )
+							return;
 						progress = promptValue;
 						break;
 					case TouchPhase.MOVED:
+						if( (_currentPage <= 0 && _leftToRight) || (_currentPage >= _totalPage && !_leftToRight) )
+							return;
 						if(this._dragable)
 						{
 							if(_leftToRight)
@@ -224,6 +238,8 @@ package views.components
 						}
 						break;
 					case TouchPhase.ENDED:
+						if( (_currentPage <= 0 && _leftToRight) || (_currentPage >= _totalPage && !_leftToRight) )
+							return;
 						if(this._dragable)
 						{
 							//根据当前的progress值来计算是否达到了翻页的要求，并依此来缓动更改progress的值至targetProgress
@@ -254,8 +270,6 @@ package views.components
 		 */		
 		private function easeFunc( duration:Number, progressTarget:Number, ease:Function=null, onComplete:Function=null ):void
 		{
-			if(active)
-				return;
 			active = true;
 			var obj:Object = {
 				progress: progressTarget
@@ -280,6 +294,7 @@ package views.components
 		 */		
 		private function createFixedPage(leftTexture:Texture, rightTexture:Texture):void
 		{
+			trace(_textures.indexOf(leftTexture), _textures.indexOf(rightTexture));
 			if(leftTexture)
 			{
 				(!_cacheImage)?_cacheImage = new Image(leftTexture):_cacheImage.texture = leftTexture;
@@ -317,7 +332,6 @@ package views.components
 		
 		
 		private var active:Boolean = false;
-		private var initialized:Boolean = false;
 		private function createViewByProgress():void
 		{
 			if(_currentPage <= 0 && _leftToRight)
@@ -343,6 +357,7 @@ package views.components
 			//清理纹理
 			_quadBatch.reset();
 			//渲染左侧与右侧固定纹理
+			trace(leftIndex, rightIndex);
 			createFixedPage(_textures[leftIndex], _textures[rightIndex]);
 			//使用quadBatch根据各点位置及左右翻页渲染flipImage纹理
 			createSoftPage(_textures[textureIndex],  _textures[anotherIndex]);
