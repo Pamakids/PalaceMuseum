@@ -21,10 +21,10 @@ package views.module2.scene23
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
-	import views.components.base.PalaceScene;
+	import views.components.base.PalaceGame;
 	import views.global.TopBar;
 
-	public class DishGame extends PalaceScene
+	public class DishGame extends PalaceGame
 	{
 		private var dishNum:int=6;
 
@@ -781,11 +781,5 @@ package views.module2.scene23
 				areaArr[i]=new Rectangle(pt.x - dishW / 2 - 50, pt.y - dishH / 2 - 100, dishW + 50, dishH + 100);
 			}
 		}
-
-		override public function dispose():void
-		{
-			this.assets=null;
-		}
-
 	}
 }
