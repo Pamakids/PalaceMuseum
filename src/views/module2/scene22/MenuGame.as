@@ -32,6 +32,7 @@ package views.module2.scene22
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
+	import views.components.ElasticButton;
 	import views.components.base.PalaceScene;
 
 	public class MenuGame extends PalaceScene
@@ -69,6 +70,14 @@ package views.module2.scene22
 
 			scale=DPIUtil.getDPIScale();
 			addChild(getImage("bg-menu"));
+
+			closeBtn=new ElasticButton(getImage("button_close"));
+			addChild(closeBtn);
+			closeBtn.x=950;
+			closeBtn.y=60;
+			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
+			closeBtn.visible=closeBtn.touchable=false;
+
 			addStart();
 		}
 
@@ -99,29 +108,19 @@ package views.module2.scene22
 			startSP.addChild(hbHolder);
 			hbHolder.addEventListener(TouchEvent.TOUCH, onHBTouch);
 
-			var startBtnHolder:Sprite=new Sprite();
-			startBtn=getImage("menu-start");
-			startBtnD=getImage("menu-start-down");
-			startBtnD.visible=false;
-			startBtnHolder.addChild(startBtn);
-			startBtnHolder.addChild(startBtnD);
-			startBtnHolder.x=804;
-			startBtnHolder.y=581;
-			startSP.addChild(startBtnHolder);
-			startBtnHolder.addEventListener(TouchEvent.TOUCH, onStartTouch);
+			startBtn=new ElasticButton(getImage("menu-start"));
+			startBtn.shadow=getImage("menu-start-down");
+			startBtn.x=891;
+			startBtn.y=666;
+			startSP.addChild(startBtn);
+			startBtn.addEventListener(ElasticButton.CLICK, onStartTouch);
 
 			gamelevel=0;
 		}
 
-		private function onStartTouch(e:TouchEvent):void
+		private function onStartTouch(e:Event):void
 		{
-			var tc:Touch=e.getTouch(stage, TouchPhase.BEGAN)
-			if (!tc)
-				return;
-			var sp:Sprite=e.currentTarget as Sprite;
-			sp.addEventListener(TouchEvent.TOUCH, onStartTouch);
-			startBtnD.visible=true;
-			startBtn.visible=false;
+			startBtn.addEventListener(TouchEvent.TOUCH, onStartTouch);
 			startSP.touchable=false;
 			TweenLite.delayedCall(1, function():void {
 				TweenLite.to(startSP, 1, {y: -768,
@@ -524,23 +523,36 @@ package views.module2.scene22
 			recordTF.y=400;
 			endSP.addChild(recordTF);
 
+			var rsBtn:ElasticButton=new ElasticButton(getImage("restart"));
+			rsBtn.shadow=getImage("restart-light");
+			rsBtn.x=380;
+			rsBtn.y=520;
+			endSP.addChild(rsBtn);
+
 			TweenLite.to(endSP, 1, {y: 28, onComplete: function():void {
+
+				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
 				if (delayFunction)
 					delayFunction();
 				else
-					endSP.addEventListener(TouchEvent.TOUCH, onEndTouch);
+					closeBtn.visible=closeBtn.touchable=true;
 			}});
 		}
 
-		private function onEndTouch(e:TouchEvent):void
+		private function onCloseTouch(e:Event):void
 		{
-			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
-			if (tc)
-			{
-				endSP.removeEventListener(TouchEvent.TOUCH, onEndTouch);
-//				dispatchEvent(new Event("gameRestart"));
-				dispatchEvent(new Event("gameOver"));
-			}
+			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseTouch);
+			closeGame();
+		}
+
+		private function closeGame():void
+		{
+			dispatchEvent(new Event("gameOver"));
+		}
+
+		private function restartGame(e:Event=null):void
+		{
+			dispatchEvent(new Event("gameRestart"));
 		}
 
 		private function getStringFormTime(_count:int):String
@@ -569,6 +581,11 @@ package views.module2.scene22
 			return txt;
 		}
 
+		override public function dispose():void
+		{
+			this.assets=null;
+		}
+
 		private function showRecord():void
 		{
 			var recordIcon:Image=getImage("game-record");
@@ -578,7 +595,7 @@ package views.module2.scene22
 			recordIcon.scaleX=recordIcon.scaleY=3;
 			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut,
 					onComplete: function():void {
-						endSP.addEventListener(TouchEvent.TOUCH, onEndTouch);
+						closeBtn.visible=closeBtn.touchable=true;
 					}});
 		}
 
@@ -621,11 +638,10 @@ package views.module2.scene22
 
 		private var hBtnD:Image;
 
-		private var startBtn:Image;
-
-		private var startBtnD:Image;
+		private var startBtn:ElasticButton;
 
 		private var timeHolder:Sprite;
+		private var closeBtn:ElasticButton;
 
 		public function get gamelevel():int
 		{

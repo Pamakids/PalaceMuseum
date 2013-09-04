@@ -53,14 +53,14 @@ package views.module1
 					list.clipRect.height=37;
 				boxHolder.setChildIndex(list, 1);
 				TweenLite.to(list, 1, {y: (value ? -536 : 4)});
-				TweenLite.to(list.clipRect, 1, {height: (value ? 567 : 30), onComplete: (value ?
-							function():void {
+				TweenLite.to(list.clipRect, 1, {height: (value ? 567 : 30), onComplete: (value ? function():void
+				{
 
-							} :
-							function():void {
-								list.visible=false;
-								boxHolder.setChildIndex(list, 0);
-							})});
+				} : function():void
+				{
+					list.visible=false;
+					boxHolder.setChildIndex(list, 0);
+				})});
 				TweenLite.to(boxCover, 1, {y: (value ? -544 : -4)});
 			}
 		}
@@ -75,7 +75,7 @@ package views.module1
 			super(am);
 		}
 
-		override public function init():void
+		override protected function init():void
 		{
 			bg=new Sprite();
 			addChild(bg);
@@ -235,7 +235,8 @@ package views.module1
 		private function endMission():void
 		{
 			opened=false;
-			TweenLite.delayedCall(2, function():void {
+			TweenLite.delayedCall(2, function():void
+			{
 				showLionHint("hint-bg-2", "hint-end", nextScene);
 			});
 
@@ -272,13 +273,10 @@ package views.module1
 		{
 			TweenLite.to(hatLockMark, .5, {alpha: 0});
 			TweenLite.to(clothLockMark, .5, {alpha: 0});
-			TweenLite.to(lion, 1, {x: lionX,
-					onComplete: function():void
-					{
-						dispatchEvent(new Event("gotoNext", true));
-					}
-				}
-				);
+			TweenLite.to(lion, 1, {x: lionX, onComplete: function():void
+			{
+				dispatchEvent(new Event("gotoNext", true));
+			}});
 		}
 
 		private var hatPosition:Point=new Point(444.5, 168);
@@ -395,11 +393,11 @@ package views.module1
 			lion.rotation=-Math.PI / 4;
 
 
-			TweenLite.to(lion, 1, {x: lionDX, y: 540, rotation: 0, ease: Elastic.easeOut,
-					onComplete: function():void {
-						showLionHint("hint-bg-2", "hint-start");
-						lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
-					}});
+			TweenLite.to(lion, 1, {x: lionDX, y: 540, rotation: 0, ease: Elastic.easeOut, onComplete: function():void
+			{
+				showLionHint("hint-bg-2", "hint-start");
+				lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
+			}});
 		}
 
 		private function onLionTouch(e:TouchEvent):void
@@ -515,8 +513,7 @@ package views.module1
 
 						if (!isKingCloth && !isKingHat)
 						{
-							if ((hatLocked && hatArr.indexOf(renderer.label) >= 0) ||
-								(clothLocked && clothArr.indexOf(renderer.label) >= 0))
+							if ((hatLocked && hatArr.indexOf(renderer.label) >= 0) || (clothLocked && clothArr.indexOf(renderer.label) >= 0))
 								return;
 							draggingCloth.renderer=renderer
 							dpt=pt;
@@ -585,16 +582,15 @@ package views.module1
 				quiz.y=sy;
 				quiz.scaleX=quiz.scaleY=.2;
 
-				TweenLite.to(quiz, 1, {scaleX: 1, scaleY: 1, x: ex, y: ey,
-						onComplete: function():void
-						{
-							TweenLite.delayedCall(2,
-								function():void {
-									showLionHint("hint-bg-2", "hint-quizstart");
-								});
-							quiz.addEventListener("allMatched", onQuizDone);
-							quiz.activate();
-						}});
+				TweenLite.to(quiz, 1, {scaleX: 1, scaleY: 1, x: ex, y: ey, onComplete: function():void
+				{
+					TweenLite.delayedCall(2, function():void
+					{
+						showLionHint("hint-bg-2", "hint-quizstart");
+					});
+					quiz.addEventListener("allMatched", onQuizDone);
+					quiz.activate();
+				}});
 			}
 		}
 
@@ -610,7 +606,8 @@ package views.module1
 //				lionHint.show();
 				opened=true;
 
-				TweenLite.delayedCall(2, function():void {
+				TweenLite.delayedCall(2, function():void
+				{
 					showLionHint("hint-bg-2", "hint-gamestart", nextMission);
 				});
 			}});

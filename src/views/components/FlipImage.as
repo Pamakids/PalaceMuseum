@@ -115,16 +115,16 @@ package views.components
 				}
 				else
 				{
-					//0 右上角 2 右下角 1 左上角 3 左下角
+					//0 左上角 2 右下角 1 右上角 3 左下角
 					if (minToMax)
 					{
 //						if (!coherent)
 //						{
 //						y=-h;
-						mVertexData.setPosition(0, w, 0);
-						mVertexData.setPosition(1, 0, 0);
-						mVertexData.setPosition(2, w + topOffset * (1 - fpl), h * fpl);
-						mVertexData.setPosition(3, -topOffset * (1 - fpl), h * fpl);
+						mVertexData.setPosition(1, w, 0);
+						mVertexData.setPosition(0, 0, 0);
+						mVertexData.setPosition(3, w + topOffset * (1 - fpl), h * fpl);
+						mVertexData.setPosition(2, -topOffset * (1 - fpl), h * fpl);
 //						}
 //						else
 //						{

@@ -1,6 +1,7 @@
 package views.module2
 {
 	import com.greensock.TweenLite;
+	import com.greensock.easing.Elastic;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -64,11 +65,11 @@ package views.module2
 			addChild(king);
 			king.x=714;
 			king.y=768;
-			TweenLite.to(king, 1, {x: 714, y: 519, onComplete:
-					function():void {
-						addEventListener(TouchEvent.TOUCH, onTouch);
-						chef.addEventListener(TouchEvent.TOUCH, onChefTouch);
-					}});
+			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void
+			{
+				addEventListener(TouchEvent.TOUCH, onTouch);
+				chef.addEventListener(TouchEvent.TOUCH, onChefTouch);
+			}});
 		}
 
 		private function onTouch(e:TouchEvent):void
@@ -106,18 +107,18 @@ package views.module2
 			{
 				close.removeEventListener(TouchEvent.TOUCH, onClose);
 				close.visible=false;
-				TweenLite.to(book, 1, {x: 408, y: 363, scaleX: .07, scaleY: .07,
-						onComplete: function():void {
-							PopUpManager.removePopUp(book);
-							TweenLite.delayedCall(1, nextScene);
-						}
-					});
+				TweenLite.to(book, 1, {x: 408, y: 363, scaleX: .07, scaleY: .07, ease: Elastic.easeOut, onComplete: function():void
+				{
+					PopUpManager.removePopUp(book);
+					TweenLite.delayedCall(1, nextScene);
+				}});
 			}
 		}
 
 		private function nextScene():void
 		{
-			TweenLite.to(king, 1, {x: 1044, onComplete: function():void {
+			TweenLite.to(king, 1, {x: 1044, onComplete: function():void
+			{
 				dispatchEvent(new Event("gotoNext", true));
 			}});
 		}
@@ -138,7 +139,8 @@ package views.module2
 				if (!chefTurn)
 				{
 					chefTurn=true;
-					TweenLite.delayedCall(5, function():void {
+					TweenLite.delayedCall(5, function():void
+					{
 						chefTurn=false;
 					});
 				}

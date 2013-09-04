@@ -18,7 +18,7 @@ package views.components.base
 			addEventListener(Event.ADDED_TO_STAGE, onStage);
 		}
 
-		private function onStage(e:Event):void
+		protected function onStage(e:Event):void
 		{
 			addEventListener(Event.REMOVED_FROM_STAGE, onRemoved);
 			init();

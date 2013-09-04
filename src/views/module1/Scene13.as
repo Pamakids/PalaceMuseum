@@ -25,17 +25,47 @@ package views.module1
 		private var game:TwisterGame;
 		private var halo:Sprite;
 		private var cardShow:Boolean;
-		private var gamePlayed:Boolean;
+		private var _gamePlayed:Boolean;
+
+		public function get gamePlayed():Boolean
+		{
+			return _gamePlayed;
+		}
+
+		public function set gamePlayed(value:Boolean):void
+		{
+			_gamePlayed=value;
+			if (_gamePlayed)
+				TweenLite.delayedCall(5, nextScene);
+		}
+
+		private function nextScene():void
+		{
+			dispatchEvent(new Event("gotoNext", true));
+		}
 
 		private var clock:Clock;
-		private var clockMatched:Boolean;
+		private var _clockMatched:Boolean;
+
+		public function get clockMatched():Boolean
+		{
+			return _clockMatched;
+		}
+
+		public function set clockMatched(value:Boolean):void
+		{
+			_clockMatched=value;
+			if (_clockMatched)
+				TweenLite.delayedCall(5, nextScene);
+		}
+
 
 		public function Scene13(am:AssetManager)
 		{
 			super(am);
 		}
 
-		override public function init():void
+		override protected function init():void
 		{
 			bg=new Sprite();
 			bg.x=512;
@@ -144,6 +174,7 @@ package views.module1
 					PopUpManager.removePopUp(clock);
 				}});
 			}
+
 
 		}
 

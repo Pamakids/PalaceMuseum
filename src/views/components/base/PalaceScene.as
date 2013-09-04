@@ -14,8 +14,9 @@ package views.components.base
 	import starling.utils.AssetManager;
 
 	import views.components.Prompt;
+	import views.global.TopBar;
 
-	public class PalaceScene extends Sprite
+	public class PalaceScene extends Container
 	{
 		protected var assets:AssetManager;
 
@@ -24,17 +25,16 @@ package views.components.base
 			Prompt.parent=this;
 			Prompt.addAssetManager(am);
 			this.assets=am;
-			addEventListener(Event.ADDED_TO_STAGE, onStage);
 		}
 
-		private function onStage(e:Event):void
+		override protected function onStage(e:Event):void
 		{
-			init();
+			super.onStage(e);
+			TopBar.show();
 		}
 
-		public function init():void
+		override protected function init():void
 		{
-
 		}
 
 		override public function dispose():void
@@ -46,6 +46,7 @@ package views.components.base
 				Prompt.removeAssetManager(assets);
 			}
 			super.dispose();
+			TopBar.hide();
 		}
 
 		protected function getImage(name:String):Image

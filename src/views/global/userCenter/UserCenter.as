@@ -18,12 +18,12 @@ package views.global.userCenter
 	import views.global.userCenter.handbook.HandbookScreen;
 	import views.global.userCenter.map.MapScreen;
 	import views.global.userCenter.userInfo.UserInfoScreen;
-	
+
 	public class UserCenter extends Sprite
 	{
 		[Embed(source="/assets/module1/loading.png")]
 		private var loading:Class
-		
+
 		/**
 		 * 场景
 		 */		
@@ -41,7 +41,7 @@ package views.global.userCenter
 		private var _container:Sprite;
 		private var _backButton:Button;
 		private var _tabBar:TabBar;
-		
+
 		/**
 		 * 背景
 		 */
@@ -50,13 +50,13 @@ package views.global.userCenter
 		private var contentBackground:Image;
 		private var pageRightImage:Image;
 		private var pageLeftImage:Image;
-		
+
 		public function UserCenter()
 		{
 			init();
 		}
 		private var assets:AssetManager;
-		
+
 		//initialize--------------------------------------------------------------------------------------
 		private function init():void
 		{
@@ -70,15 +70,16 @@ package views.global.userCenter
 			initPageBackground();
 			initNavigator();
 		}
-		
+
 		private function initPageBackground():void
 		{
-			this.pageLeftImage = new Image(assets.getTexture("page_left"));
-			this.pageRightImage = new Image(assets.getTexture("page_right"));
+			this.pageLeftImage=new Image(assets.getTexture("page_left"));
+			this.pageRightImage=new Image(assets.getTexture("page_right"));
 			this._container.addChild(pageLeftImage);
 			this._container.addChild(pageRightImage);
-			pageRightImage.x = this.pageLeftImage.width;
+			pageRightImage.x=this.pageLeftImage.width;
 		}
+
 		private function initBackgroud():void
 		{
 			this.backgroundImage = new Image(assets.getTexture("main_background"));
@@ -88,6 +89,7 @@ package views.global.userCenter
 			this.bookBackground.y = 41;
 			this.backgroundImage.touchable = this.bookBackground.touchable = false;
 		}
+
 		private function initTabBar():void
 		{
 			_tabBar = new TabBar();
@@ -120,15 +122,17 @@ package views.global.userCenter
 			_tabBar.y = 11;
 			_tabBar.addEventListener( Event.CHANGE, tabs_changeHandler );
 		}
+
 		private function initBackButton():void
 		{
 			_backButton = new Button();
 			_backButton.defaultSkin =  new Image(assets.getTexture("button_close"));
 			addChild(_backButton);
-			_backButton.x = 940;
-			_backButton.y = 15;
+			_backButton.x = 924;
+			_backButton.y = 20;
 			_backButton.addEventListener(Event.TRIGGERED, onTriggered);
 		}
+
 		private function initNavigator():void
 		{
 			_navigator = new ScreenNavigator();
@@ -141,6 +145,7 @@ package views.global.userCenter
 			
 			_navigator.showScreen(HANDBOOK);
 		}
+
 		private function initContainer():void
 		{
 			_container = new Sprite();
@@ -148,11 +153,12 @@ package views.global.userCenter
 			_container.x = 42;
 			_container.y = 72;
 		}
-		
+
 		private function tabs_changeHandler(e:Event):void
 		{
-			currentIndex = _tabBar.selectedIndex;
+			_navigator.showScreen(screenNames[_tabBar.selectedIndex]);
 		}
+
 		private function onTriggered(e:Event):void
 		{
 			//关闭用户中心
@@ -167,16 +173,16 @@ package views.global.userCenter
 			_navigator.showScreen(screenNames[_currentIndex]);
 		}
 		
+
 		//用于指定显示速成手册内的内容指引
 		private var handbookContent:int = -1;
 		public function showIndex(index:int = -1):void
 		{
 			handbookContent = index;
 			
-			testAnimations();
 		}
-		
-		/**动画测试方法*/		
+
+		/**动画测试方法*/
 		private function testAnimations():void
 		{
 			//测试动画
@@ -191,18 +197,18 @@ package views.global.userCenter
 			animation.x = 53;
 			animation.y = 72;
 		}
-		
+
 		override public function dispose():void
 		{
 			super.dispose();
 		}
-		
+
 		internal function setSize(width:Number, height:Number):void
 		{
 			this.width = width;
 			this.height = height;
 		}
-		
+
 		//Animation-------------------------------------------------------------------------------------------\
 		/**
 		 * 翻页特效动画
