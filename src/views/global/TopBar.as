@@ -43,7 +43,8 @@ package views.global
 				bar=new TopBar();
 				bar.x=10;
 				bar.y=10;
-				parent.addChild(bar);
+				if (parent)
+					parent.addChild(bar);
 			}
 //			var p:Sprite=parent ? parent : TopBar.parent;
 //			p.addChild(bar);

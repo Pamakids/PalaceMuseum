@@ -84,7 +84,7 @@ package views
 				var assets:AssetManager=new AssetManager();
 				var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
 				assets.enqueue(file, "assets/common/hint-bg.png", "assets/common/button_close.png",
-					"assets/common/game-start-down.png", "assets/common/game-start.png");
+					"assets/common/game-start-down.png", "assets/common/game-start.png", "assets/common/gamebg.jpg");
 				assets.loadQueue(function(ratio:Number):void
 				{
 					if (ratio == 1.0)
