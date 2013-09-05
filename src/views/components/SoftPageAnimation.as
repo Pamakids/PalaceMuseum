@@ -34,15 +34,6 @@ package views.components
 		 */		
 		public function SoftPageAnimation(width:Number, height:Number, textures:Vector.<Texture>, currentPage:int=0, dragable:Boolean=false, duration:Number = 1, cover:Boolean=false, backcover:Boolean=false)
 		{
-//			for(var i:int = textures.length-1;i>=0;i--)
-//			{
-//				var img:Image = new Image(textures[i]);
-//				img.scaleX = img.scaleY = 0.4;
-//				img.x = i * 200;
-//				this.addChild( img );
-//			}
-//			return;
-			
 			this._bookWidth = width;
 			this._bookHeight = height;
 			this._dragable = dragable;
@@ -115,10 +106,11 @@ package views.components
 		 */		
 		public function setTextures(value:Vector.<Texture>, currentPage:int=-1):void
 		{
-			trace("setTextures");
 			if(_textures && _textures == value)
 				return;
 			_textures = value;
+			_cacheImage = new Image(_textures[0]);
+			_softImage = new SoftPageImage(_textures[0], _bookWidth, _bookHeight);
 			if(_cover)
 				_textures.unshift( null );
 			if(_backcover)
@@ -294,10 +286,9 @@ package views.components
 		 */		
 		private function createFixedPage(leftTexture:Texture, rightTexture:Texture):void
 		{
-			trace(_textures.indexOf(leftTexture), _textures.indexOf(rightTexture));
 			if(leftTexture)
 			{
-				(!_cacheImage)?_cacheImage = new Image(leftTexture):_cacheImage.texture = leftTexture;
+				_cacheImage.texture = leftTexture;
 				_cacheImage.x = 0;
 				_cacheImage.width = this._bookWidth / 2;
 				_cacheImage.height = this._bookHeight;
@@ -305,31 +296,13 @@ package views.components
 			}
 			if(rightTexture)
 			{
-				(!_cacheImage)?_cacheImage = new Image(rightTexture):_cacheImage.texture = rightTexture;
+				_cacheImage.texture = rightTexture;
 				_cacheImage.x = this._bookWidth/2;
 				_cacheImage.width = this._bookWidth/2;
 				_cacheImage.height = this._bookHeight;
 				_quadBatch.addImage( _cacheImage );
 			}
 		}
-		
-		/**
-		 * 绘制软页
-		 */		
-		private function createSoftPage(texture:Texture, another:Texture):void
-		{
-			if(!_softImage)
-			{
-				_softImage = new SoftPageImage(texture, _bookWidth, _bookHeight);
-			}else
-			{
-				_softImage.texture = texture;
-			}
-			_softImage.anotherTexture = another;
-			_softImage.readjustSize();
-			_softImage.setLocation(_quadBatch, progress, _leftToRight);
-		}
-		
 		
 		private var active:Boolean = false;
 		private function createViewByProgress():void
@@ -338,6 +311,8 @@ package views.components
 				return;
 			if(_currentPage >= _totalPage && !_leftToRight)
 				return;
+			//清理纹理
+			_quadBatch.reset();
 			//几个纹理索引
 			var leftIndex:int, rightIndex:int, textureIndex:int, anotherIndex:int;
 			if(_leftToRight)
@@ -354,13 +329,14 @@ package views.components
 				textureIndex = leftIndex+1;
 				anotherIndex = leftIndex+2;
 			}
-			//清理纹理
-			_quadBatch.reset();
 			//渲染左侧与右侧固定纹理
 			trace(leftIndex, rightIndex);
 			createFixedPage(_textures[leftIndex], _textures[rightIndex]);
-			//使用quadBatch根据各点位置及左右翻页渲染flipImage纹理
-			createSoftPage(_textures[textureIndex],  _textures[anotherIndex]);
+			//绘制软页
+			_softImage.texture = _textures[textureIndex];
+			_softImage.anotherTexture = _textures[anotherIndex];
+			_softImage.readjustSize();
+			_softImage.setLocation(_quadBatch, progress, _leftToRight);
 		}
 	}
 }
