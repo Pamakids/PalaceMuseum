@@ -16,14 +16,6 @@ package views.components
 		//确定书打开后的高度及宽度
 		private var bookWidth:Number = 800;
 		private var bookHeight:Number = 480;
-		
-//		private var LEFT_UP_POINT:Point;
-//		private var LEFT_BOTTOM_POINT:Point;
-//		private var RIGHT_UP_POINT:Point;
-//		private var RIGHT_BOTTOM_POINT:Point;
-//		private var MID_UP_POINT:Point;
-//		private var MID_BOTTOM_POINT:Point;
-		
 		//拖动点
 		private var _dragPoint:Point = new Point();
 		//拖动衍生第四个点
@@ -38,7 +30,7 @@ package views.components
 		/**
 		 * @param texture
 		 */		
-		public function SoftPageImage(texture:Texture, bookWidth, bookHeight)
+		public function SoftPageImage(texture:Texture, bookWidth:Number, bookHeight:Number)
 		{
 			super(texture);
 			this.bookWidth = bookWidth;
@@ -65,6 +57,16 @@ package views.components
 			onVertexDataChanged();
 		}
 		
+		override public function dispose():void
+		{
+			_dragPoint = _dragPointCopy = _edgePointCopy = _edgePoint = null;
+			
+			if(anotherTexture)
+				anotherTexture.dispose();
+			anotherTexture = null;
+			
+			super.dispose();
+		}
 		
 		/**
 		 * 
@@ -253,11 +255,5 @@ package views.components
 			}
 			
 		}
-		
-		private function createNewImage():void
-		{
-		}
-		
-		private var angle:Number;
 	}
 }

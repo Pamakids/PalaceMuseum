@@ -1,14 +1,12 @@
 package views.global.userCenter
 {
 	import flash.filesystem.File;
-
+	
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
-	import views.components.SoftPageAnimation;
 
 	/**
 	 * 用户中心管理类

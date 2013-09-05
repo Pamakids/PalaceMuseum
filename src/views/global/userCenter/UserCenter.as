@@ -63,7 +63,7 @@ package views.global.userCenter
 			this.assets = UserCenterManager.assetsManager;
 			this.screenNames = [MAP, USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION];
 			
-//			initBackgroud();
+			initBackgroud();
 			initTabBar();
 			initBackButton();
 			initContainer();
@@ -137,7 +137,7 @@ package views.global.userCenter
 		{
 			_navigator = new ScreenNavigator();
 			_navigator.addScreen(MAP, new ScreenNavigatorItem(MapScreen, {}, {}));
-			_navigator.addScreen(HANDBOOK, new ScreenNavigatorItem(HandbookScreen, {}, {width: 940, height: 696}));
+			_navigator.addScreen(HANDBOOK, new ScreenNavigatorItem(HandbookScreen, {}, {width: 946, height: 696}));
 			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen, {}, {}));
 			_navigator.addScreen(ACHIEVEMENT, new ScreenNavigatorItem(AchievementScreen, {}, {}));
 			_navigator.addScreen(COLLECTION, new ScreenNavigatorItem(CollectionScreen, {}, {}));
@@ -193,7 +193,7 @@ package views.global.userCenter
 //				(i%2==0)?textures.push(assets.getTexture("1")):textures.push(assets.getTexture("2"));
 				(i%2==0)?textures.push(assets.getTexture("page_1")):textures.push(assets.getTexture("page_2"));
 			}
-			var animation:SoftPageAnimation = new SoftPageAnimation(940, 696, textures, 0, true, 0.5, true, true);
+			var animation:SoftPageAnimation = new SoftPageAnimation(946, 696, textures, 0, true, 0.5, true, true);
 			this.addChild( animation );
 			animation.x = 53;
 			animation.y = 72;
@@ -212,7 +212,6 @@ package views.global.userCenter
 			this.height = height;
 		}
 
-		//Animation-------------------------------------------------------------------------------------------\
 		/**
 		 * 翻页特效动画
 		 */		
