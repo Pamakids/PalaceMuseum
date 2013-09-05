@@ -3,7 +3,7 @@ package views.components
 	import flash.geom.Point;
 	
 	import starling.display.Image;
-	import starling.display.QuadBatch;
+	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	import starling.utils.deg2rad;
 
@@ -73,7 +73,7 @@ package views.components
 		 * @param leftToRight
 		 * 
 		 */		
-		public function setLocation(quadBatch:QuadBatch, progress:Number, leftToRight:Boolean):void
+		public function setLocation(render:RenderTexture, progress:Number, leftToRight:Boolean):void
 		{
 			var radius:Number;
 			var angle:Number;		//拖拽点相对于圆心的旋转角度
@@ -145,11 +145,10 @@ package views.components
 				}
 			}
 			
-//			trace(_dragPoint , _edgePoint , _edgePointCopy , _dragPointCopy);
-			createView(quadBatch, leftToRight);
+			createView(render, leftToRight);
 		}
 		
-		private function createView(quadBatch:QuadBatch, leftToRight:Boolean):void
+		private function createView(render:RenderTexture, leftToRight:Boolean):void
 		{
 			if(leftToRight)
 			{
@@ -161,7 +160,7 @@ package views.components
 					mVertexData.setTexCoords(2, 0, _edgePointCopy.y/bookHeight);
 					mVertexData.setPosition(3, bookWidth/2, _edgePointCopy.y);
 					mVertexData.setTexCoords(3, 1, _edgePointCopy.y/bookHeight);
-					quadBatch.addImage(this);
+					render.draw( this );
 					readjustSize();
 					mVertexData.setPosition(0, 0, _edgePointCopy.y);
 					mVertexData.setTexCoords(0, 0, _edgePointCopy.y/bookHeight);
@@ -170,7 +169,7 @@ package views.components
 					mVertexData.setPosition(2, _edgePoint.x, bookHeight);
 					mVertexData.setTexCoords(2, _edgePoint.x*2/bookWidth , 1);
 					mVertexData.setPosition(3, bookWidth/2, bookHeight);
-					quadBatch.addImage(this);
+					render.draw( this );
 					readjustSize();
 					texture = anotherTexture;
 					mVertexData.setPosition(0, 0, _edgePointCopy.y);
@@ -180,7 +179,7 @@ package views.components
 					mVertexData.setPosition(2, _edgePoint.x, _edgePoint.y);
 					mVertexData.setTexCoords(2, 1-_edgePoint.x*2/bookWidth, 1);
 					mVertexData.setPosition(3, _dragPoint.x, _dragPoint.y);
-					quadBatch.addImage(this);
+					render.draw( this );
 				}else if(currentPointCount == 4)
 				{
 					mVertexData.setPosition(0, _edgePointCopy.x, 0);
@@ -189,7 +188,7 @@ package views.components
 					mVertexData.setPosition(2, _edgePoint.x, bookHeight);
 					mVertexData.setTexCoords(2, _edgePoint.x*2/bookWidth, 1);
 					mVertexData.setPosition(3, bookWidth/2, bookHeight);
-					quadBatch.addImage(this);
+					render.draw( this );
 					readjustSize();
 					texture = anotherTexture;
 					mVertexData.setPosition(0, _edgePointCopy.x, 0);
@@ -198,7 +197,7 @@ package views.components
 					mVertexData.setPosition(2, _edgePoint.x, bookHeight);
 					mVertexData.setTexCoords(2, 1-_edgePoint.x*2/bookWidth, 1);
 					mVertexData.setPosition(3, _dragPoint.x, _dragPoint.y);
-					quadBatch.addImage(this);
+					render.draw( this );
 				}
 			}
 			else
@@ -211,7 +210,7 @@ package views.components
 					mVertexData.setTexCoords(2, 0, _edgePointCopy.y/bookHeight);
 					mVertexData.setPosition(3, bookWidth, _edgePointCopy.y);
 					mVertexData.setTexCoords(3, 1, _edgePointCopy.y/bookHeight);
-					quadBatch.addImage(this);
+					render.draw( this );
 					readjustSize();
 					mVertexData.setPosition(0, bookWidth/2, _edgePointCopy.y);
 					mVertexData.setTexCoords(0, 0, _edgePointCopy.y/bookHeight);
@@ -220,7 +219,7 @@ package views.components
 					mVertexData.setPosition(2, bookWidth/2, bookHeight);
 					mVertexData.setPosition(3, _edgePoint.x, bookHeight);
 					mVertexData.setTexCoords(3, (_edgePoint.x - bookWidth/2)*2/bookWidth, 1);
-					quadBatch.addImage(this);
+					render.draw( this );
 					readjustSize();
 					texture = anotherTexture;
 					mVertexData.setPosition(0, bookWidth, _edgePointCopy.y);
@@ -230,7 +229,7 @@ package views.components
 					mVertexData.setPosition(2, _dragPoint.x, _dragPoint.y);
 					mVertexData.setPosition(3, _edgePoint.x, bookHeight);
 					mVertexData.setTexCoords(3, 1 - (_edgePoint.x - bookWidth/2)*2/bookWidth, 1);
-					quadBatch.addImage(this);
+					render.draw( this );
 				}
 				else if(currentPointCount == 4)
 				{
@@ -240,7 +239,7 @@ package views.components
 					mVertexData.setPosition(2, bookWidth/2, bookHeight);
 					mVertexData.setPosition(3, _edgePoint.x, bookHeight);
 					mVertexData.setTexCoords(3, (_edgePoint.x - bookWidth/2)*2/bookWidth, 1);
-					quadBatch.addImage(this);
+					render.draw( this );
 					readjustSize();
 					texture = anotherTexture;
 					mVertexData.setPosition(0, _dragPointCopy.x, _dragPointCopy.y);
@@ -249,7 +248,7 @@ package views.components
 					mVertexData.setPosition(2, _dragPoint.x, _dragPoint.y);
 					mVertexData.setPosition(3, _edgePoint.x, bookHeight);
 					mVertexData.setTexCoords(3, 1-(_edgePoint.x - bookWidth/2)*2/bookWidth, 1);
-					quadBatch.addImage(this);
+					render.draw( this );
 				}
 			}
 			

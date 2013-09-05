@@ -6,11 +6,11 @@ package views.components
 	import flash.geom.Point;
 	
 	import starling.display.Image;
-	import starling.display.QuadBatch;
 	import starling.display.Sprite;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	
 	/**
@@ -45,11 +45,13 @@ package views.components
 			initialize();
 		}
 		
-		
 		private function initialize():void
 		{
-			_quadBatch = new QuadBatch();
-			this.addChild(_quadBatch);
+			var d:int = 100;
+			_render = new RenderTexture(_bookWidth, _bookHeight+d);
+			_mainImage = new Image( _render);
+			this.addChild( _mainImage );
+			
 			createFixedPage(this._textures[_currentPage*2], this._textures[_currentPage*2+1]);
 			this.addEventListener(TouchEvent.TOUCH,onTouchHandler);
 		}
@@ -88,8 +90,9 @@ package views.components
 		}
 		
 		/**批处理显示*/
-		private var _quadBatch:QuadBatch;
 		private var _textures:Vector.<Texture>;
+		private var _render:RenderTexture;
+		private var _mainImage:Image;
 		private var _cacheImage:Image;
 		private var _softImage:SoftPageImage;
 		
@@ -184,8 +187,6 @@ package views.components
 				_cacheImage.dispose();
 			if(_softImage)
 				_softImage.dispose();
-			if(_quadBatch)
-				_quadBatch.dispose()
 			if(_textures)
 				_textures = null;
 			super.dispose();
@@ -292,7 +293,7 @@ package views.components
 				_cacheImage.x = 0;
 				_cacheImage.width = this._bookWidth / 2;
 				_cacheImage.height = this._bookHeight;
-				_quadBatch.addImage( _cacheImage );
+				_render.draw( _cacheImage );
 			}
 			if(rightTexture)
 			{
@@ -300,7 +301,7 @@ package views.components
 				_cacheImage.x = this._bookWidth/2;
 				_cacheImage.width = this._bookWidth/2;
 				_cacheImage.height = this._bookHeight;
-				_quadBatch.addImage( _cacheImage );
+				_render.draw( _cacheImage );
 			}
 		}
 		
@@ -312,7 +313,7 @@ package views.components
 			if(_currentPage >= _totalPage && !_leftToRight)
 				return;
 			//清理纹理
-			_quadBatch.reset();
+			_render.clear();
 			//几个纹理索引
 			var leftIndex:int, rightIndex:int, textureIndex:int, anotherIndex:int;
 			if(_leftToRight)
@@ -336,7 +337,7 @@ package views.components
 			_softImage.texture = _textures[textureIndex];
 			_softImage.anotherTexture = _textures[anotherIndex];
 			_softImage.readjustSize();
-			_softImage.setLocation(_quadBatch, progress, _leftToRight);
+			_softImage.setLocation(_render, progress, _leftToRight);
 		}
 	}
 }
