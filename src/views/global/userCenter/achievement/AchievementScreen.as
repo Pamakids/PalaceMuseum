@@ -18,9 +18,10 @@ package views.global.userCenter.achievement
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 	
+	import views.global.userCenter.IUserCenterScreen;
 	import views.global.userCenter.UserCenterManager;
 	
-	public class AchievementScreen extends Screen
+	public class AchievementScreen extends Screen implements IUserCenterScreen
 	{
 		public function AchievementScreen()
 		{
@@ -141,6 +142,16 @@ package views.global.userCenter.achievement
 		override public function dispose():void
 		{
 			super.dispose();
+		}
+		
+		private var screenTexture:Vector.<Texture>;
+		public function getScreenTexture():Vector.<Texture>
+		{
+			if(!screenTexture)
+			{
+				screenTexture = new Vector.<Texture>(2);
+			}
+			return screenTexture;
 		}
 	}
 }

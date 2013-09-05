@@ -1,6 +1,7 @@
 package views.global.userCenter.collection
 {
 	import flash.geom.Point;
+	import flash.geom.Vector3D;
 	
 	import feathers.controls.List;
 	import feathers.controls.Screen;
@@ -18,9 +19,10 @@ package views.global.userCenter.collection
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 	
+	import views.global.userCenter.IUserCenterScreen;
 	import views.global.userCenter.UserCenterManager;
 	
-	public class CollectionScreen extends Screen
+	public class CollectionScreen extends Screen implements IUserCenterScreen
 	{
 		public function CollectionScreen()
 		{
@@ -141,6 +143,16 @@ package views.global.userCenter.collection
 		override public function dispose():void
 		{
 			super.dispose();
+		}
+		
+		private var screenTexture:Vector.<Texture>;
+		public function getScreenTexture():Vector.<Texture>
+		{
+			if(!screenTexture)
+			{
+				screenTexture = new Vector.<Texture>(2);
+			}
+			return screenTexture;
 		}
 	}
 }

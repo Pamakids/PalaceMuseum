@@ -2,7 +2,11 @@ package views.global.userCenter.userInfo
 {
 	import feathers.controls.Screen;
 	
-	public class UserInfoScreen extends Screen
+	import starling.textures.Texture;
+	
+	import views.global.userCenter.IUserCenterScreen;
+	
+	public class UserInfoScreen extends Screen implements IUserCenterScreen
 	{
 		public function UserInfoScreen()
 		{
@@ -22,6 +26,16 @@ package views.global.userCenter.userInfo
 		override public function dispose():void
 		{
 			super.dispose();
+		}
+		
+		private var screenTexture:Vector.<Texture>;
+		public function getScreenTexture():Vector.<Texture>
+		{
+			if(!screenTexture)
+			{
+				screenTexture = new Vector.<Texture>(2);
+			}
+			return screenTexture;
 		}
 	}
 }

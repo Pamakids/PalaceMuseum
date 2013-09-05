@@ -23,7 +23,7 @@ package views.global.userCenter
 	{
 		[Embed(source="/assets/module1/loading.png")]
 		private var loading:Class
-
+		
 		/**
 		 * 场景
 		 */		
@@ -69,8 +69,9 @@ package views.global.userCenter
 			initContainer();
 			initPageBackground();
 			initNavigator();
+			initAnimation();
 		}
-
+		
 		private function initPageBackground():void
 		{
 			this.pageLeftImage=new Image(assets.getTexture("page_left"));
@@ -179,26 +180,8 @@ package views.global.userCenter
 		public function showIndex(index:int = -1):void
 		{
 			handbookContent = index;
-//			testAnimations();
 		}
-
-		/**动画测试方法*/
-		private function testAnimations():void
-		{
-			//测试动画
-			var textures:Vector.<Texture> = new Vector.<Texture>();
-			for(var i:int = 0;i<8;i++)
-			{
-//				(i%2==0)?textures.push(assets.getTexture("page_left")):textures.push(assets.getTexture("page_right"));
-//				(i%2==0)?textures.push(assets.getTexture("1")):textures.push(assets.getTexture("2"));
-				(i%2==0)?textures.push(assets.getTexture("page_1")):textures.push(assets.getTexture("page_2"));
-			}
-			var animation:SoftPageAnimation = new SoftPageAnimation(946, 696, textures, 0, true, 0.5, true, true);
-			this.addChild( animation );
-			animation.x = 53;
-			animation.y = 72;
-		}
-
+		
 		override public function dispose():void
 		{
 			
@@ -216,6 +199,12 @@ package views.global.userCenter
 		 * 翻页特效动画
 		 */		
 		private var softBookAnimation:SoftPageAnimation;
-		
+		private var textures:Vector.<Texture>;
+		private function initAnimation():void
+		{
+			textures = new Vector.<Texture>(10);
+			
+			var ts:Vector.<Texture> = (_navigator.activeScreen as IUserCenterScreen).getScreenTexture();
+		}
 	}
 }

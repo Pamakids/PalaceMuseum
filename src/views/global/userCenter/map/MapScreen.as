@@ -3,20 +3,21 @@ package views.global.userCenter.map
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.pamakids.manager.LoadManager;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	import feathers.controls.Button;
 	import feathers.controls.Screen;
-
+	
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
-
+	
 	import views.global.Map;
+	import views.global.userCenter.IUserCenterScreen;
 	import views.global.userCenter.UserCenterManager;
 
 	/**
@@ -24,7 +25,7 @@ package views.global.userCenter.map
 	 * @author Administrator
 	 *
 	 */
-	public class MapScreen extends Screen
+	public class MapScreen extends Screen implements IUserCenterScreen
 	{
 		private var mapButton:Button;
 		private var mapTexture:Texture;
@@ -115,6 +116,16 @@ package views.global.userCenter.map
 			if (mapTexture)
 				mapTexture.dispose();
 			super.dispose();
+		}
+		
+		private var screenTexture:Vector.<Texture>;
+		public function getScreenTexture():Vector.<Texture>
+		{
+			if(!screenTexture)
+			{
+				screenTexture = new Vector.<Texture>(2);
+			}
+			return screenTexture;
 		}
 	}
 }

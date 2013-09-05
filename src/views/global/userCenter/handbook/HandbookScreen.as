@@ -9,14 +9,14 @@ package views.global.userCenter.handbook
 	import starling.textures.Texture;
 	
 	import views.components.SoftPageAnimation;
+	import views.global.userCenter.IUserCenterScreen;
 	import views.global.userCenter.UserCenterManager;
 
 	/**
 	 * 用户中心速成手册场景
 	 * @author Administrator
-	 * 
 	 */	
-	public class HandbookScreen extends Screen
+	public class HandbookScreen extends Screen implements IUserCenterScreen
 	{
 		public function HandbookScreen()
 		{
