@@ -4,8 +4,8 @@ package views.module3
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceScene;
-	import views.module2.scene23.DishGame;
 	import views.module3.scene32.JigsawGame;
+	import views.module3.scene32.Telescope;
 
 	public class Scene32 extends PalaceScene
 	{
@@ -15,7 +15,15 @@ package views.module3
 		{
 			super(am);
 
-			initGame();
+			initTelescope();
+
+//			initGame();
+		}
+
+		private function initTelescope():void
+		{
+			var tele:Telescope=new Telescope(assets)
+			addChild(tele);
 		}
 
 		private function initGame():void

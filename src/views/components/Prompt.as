@@ -6,11 +6,15 @@ package views.components
 
 	import flash.utils.Dictionary;
 
+	import feathers.controls.Label;
+	import feathers.controls.TextArea;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
@@ -50,12 +54,27 @@ package views.components
 			if (content)
 			{
 				var contentImage:Image=getImage(content);
-				addChild(contentImage);
-				contentImage.x=(bgImage.width - contentImage.width) / 2;
-				contentImage.y=(bgImage.height - contentImage.height) / 2;
+				if (!contentImage)
+				{
+					var ta:TextField=initLable(content);
+				}
+				else
+				{
+					addChild(contentImage);
+					contentImage.x=(bgImage.width - contentImage.width) / 2;
+					contentImage.y=(bgImage.height - contentImage.height) / 2;
+				}
 			}
 
 			addEventListener(TouchEvent.TOUCH, onTouch);
+		}
+
+		private function initLable(content:String):TextField
+		{
+			var length:int=content.length;
+			var ta:TextField=new TextField(200, 100, content);
+			ta.fontName="";
+			return ta;
 		}
 
 		private function onTouch(e:TouchEvent):void
