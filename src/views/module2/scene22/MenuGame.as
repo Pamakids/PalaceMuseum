@@ -69,7 +69,7 @@ package views.module2.scene22
 			super(am);
 
 			scale=DPIUtil.getDPIScale();
-			addChild(getImage("bg-menu"));
+			addChild(getImage("gamebg"));
 
 			closeBtn=new ElasticButton(getImage("button_close"));
 			addChild(closeBtn);
@@ -120,7 +120,7 @@ package views.module2.scene22
 
 		private function onStartTouch(e:Event):void
 		{
-			startBtn.addEventListener(TouchEvent.TOUCH, onStartTouch);
+			startBtn.removeEventListener(TouchEvent.TOUCH, onStartTouch);
 			startSP.touchable=false;
 			TweenLite.delayedCall(1, function():void {
 				TweenLite.to(startSP, 1, {y: -768,
