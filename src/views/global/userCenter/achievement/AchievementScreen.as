@@ -153,6 +153,11 @@ package views.global.userCenter.achievement
 			}
 			return screenTexture;
 		}
+		private var texturesInitialized:Boolean = false;
+		public function testTextureInitialized():Boolean
+		{
+			return texturesInitialized;
+		}
 	}
 }
 

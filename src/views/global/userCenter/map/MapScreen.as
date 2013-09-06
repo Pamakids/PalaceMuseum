@@ -23,7 +23,6 @@ package views.global.userCenter.map
 	/**
 	 * 用户中心map场景
 	 * @author Administrator
-	 *
 	 */
 	public class MapScreen extends Screen implements IUserCenterScreen
 	{
@@ -39,7 +38,6 @@ package views.global.userCenter.map
 		override protected function initialize():void
 		{
 			mapButton=new Button();
-
 			LoadManager.instance.loadImage('assets/global/mapBG.jpg', bgLoadedHandler);
 		}
 
@@ -88,29 +86,20 @@ package views.global.userCenter.map
 						else if (status == 2)
 							UserCenterManager.closeUserCenter();
 					});
-//						showMap();
 					cache.visible=false;
 				}});
 			}
 			else
 			{
 				Map.show();
-//				showMap();
 			}
 		}
 
-//		
-//		private function showMap():void
-//		{
-//			stage.addChild(map);
-//		}
 
 		override public function dispose():void
 		{
 			if (mapButton)
 				mapButton.dispose();
-//			if(map)
-//				map.dispose();
 			if (cache)
 				cache.dispose();
 			if (mapTexture)
@@ -126,6 +115,11 @@ package views.global.userCenter.map
 				screenTexture = new Vector.<Texture>(2);
 			}
 			return screenTexture;
+		}
+		private var texturesInitialized:Boolean = false;
+		public function testTextureInitialized():Boolean
+		{
+			return texturesInitialized;
 		}
 	}
 }

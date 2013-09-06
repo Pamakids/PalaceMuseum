@@ -154,5 +154,10 @@ package views.global.userCenter.collection
 			}
 			return screenTexture;
 		}
+		private var texturesInitialized:Boolean = false;
+		public function testTextureInitialized():Boolean
+		{
+			return texturesInitialized;
+		}
 	}
 }

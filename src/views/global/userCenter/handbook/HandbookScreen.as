@@ -1,6 +1,7 @@
 package views.global.userCenter.handbook
 {
 	import feathers.controls.Screen;
+	import feathers.events.FeathersEventType;
 	
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -21,7 +22,15 @@ package views.global.userCenter.handbook
 		public function HandbookScreen()
 		{
 			super();
+			
+//			addEventListener(FeathersEventType.INITIALIZE, onInitialize);
 		}
+		
+//		private function onInitialize(e:FeathersEventType):void
+//		{
+//			creatScreenTexture();
+//		}
+		
 		
 		override protected function initialize():void
 		{
@@ -62,18 +71,18 @@ package views.global.userCenter.handbook
 		}
 		
 		
-//Animation--------------------------------------------------------------------------------
 		private var vecTexture:Vector.<Texture>;
 		private var animation:SoftPageAnimation;
 		private function initAnimation():void
 		{
 			initTextures();
-			animation = new SoftPageAnimation(width, height, vecTexture, 0, false, 0.5);
+			animation = new SoftPageAnimation(width, height, vecTexture, 0, true, 0.5);
 			this.addChild(animation);
 			
 			animation.addEventListener(SoftPageAnimation.PAGE_UP, turnPage);
 			animation.addEventListener(SoftPageAnimation.PAGE_DOWN, turnPage);
 		}
+		
 		
 		private function turnPage(e:Event):void
 		{
@@ -90,6 +99,8 @@ package views.global.userCenter.handbook
 			vecTexture = new Vector.<Texture>();
 			for(var i:int = 0;i<6;i++)
 			{
+//				vecTexture.push( UserCenterManager.assetsManager.getTexture("page_"+(i+1).toString()) );
+//				continue;
 				var render:RenderTexture = new RenderTexture(width/2, height, true);
 				if(i%2 == 0)		//左
 				{
@@ -113,19 +124,31 @@ package views.global.userCenter.handbook
 		{
 			if(!screenTextures)
 			{
-				screenTextures = new Vector.<Texture>(2);
-				var render:RenderTexture = new RenderTexture(width/2, height);
-				render.draw( leftContainer );
-				render.draw( new Image( UserCenterManager.assetsManager.getTexture("content_left") ) );
-				screenTextures[0] = render;
-				render = new RenderTexture(width/2, height);
-				render.draw( rightContainer );
-				render.draw( new Image( UserCenterManager.assetsManager.getTexture("content_right") ) );
-				screenTextures[1] = render;
+				creatScreenTexture();
 			}
 			return screenTextures;
 		}
 		private var screenTextures:Vector.<Texture>;
+		private var texturesInitialized:Boolean = false;
+		public function testTextureInitialized():Boolean
+		{
+			return texturesInitialized;
+		}
+		
+		private function creatScreenTexture():void
+		{
+			screenTextures = new Vector.<Texture>(2);
+			var render:RenderTexture = new RenderTexture(width/2, height);
+			render.draw( leftContainer );
+			render.draw( new Image( UserCenterManager.assetsManager.getTexture("content_left") ) );
+			screenTextures[0] = render;
+			render = new RenderTexture(width/2, height);
+			render.draw( rightContainer );
+			render.draw( new Image( UserCenterManager.assetsManager.getTexture("content_right") ) );
+			screenTextures[1] = render;
+			
+			texturesInitialized = true;
+		}
 
 	}
 }

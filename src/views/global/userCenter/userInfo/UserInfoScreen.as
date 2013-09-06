@@ -37,5 +37,10 @@ package views.global.userCenter.userInfo
 			}
 			return screenTexture;
 		}
+		private var texturesInitialized:Boolean = false;
+		public function testTextureInitialized():Boolean
+		{
+			return texturesInitialized;
+		}
 	}
 }

@@ -11,7 +11,6 @@ package views.global.userCenter
 	/**
 	 * 用户中心管理类
 	 * @author Administrator
-	 *
 	 */
 	public class UserCenterManager
 	{
@@ -20,12 +19,6 @@ package views.global.userCenter
 
 		private static var loaded:Boolean=false;
 		private static var _instance:UserCenterManager;
-//		private static function getInstance():UserCenterManager
-//		{
-//			if(!_instance)
-//				_instance = new UserCenterManager(new MyClass());
-//			return _instance;
-//		}
 
 		private static var _assetsManager:AssetManager;
 
@@ -103,7 +96,6 @@ package views.global.userCenter
 			_assetsManager.enqueue(File.applicationDirectory.resolvePath("assets/global/userCenter"));
 			_assetsManager.loadQueue(function(ratio:Number):void
 			{
-				//trace("Loading assets, progress:", ratio);
 				if (ratio == 1.0)
 				{
 					removeLoadImage();

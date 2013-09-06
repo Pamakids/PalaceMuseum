@@ -57,7 +57,7 @@ package views.global.userCenter
 		}
 		private var assets:AssetManager;
 
-		//initialize--------------------------------------------------------------------------------------
+//initialize--------------------------------------------------------------------------------------
 		private function init():void
 		{
 			this.assets = UserCenterManager.assetsManager;
@@ -137,13 +137,37 @@ package views.global.userCenter
 		private function initNavigator():void
 		{
 			_navigator = new ScreenNavigator();
-			_navigator.addScreen(MAP, new ScreenNavigatorItem(MapScreen, {}, {}));
-			_navigator.addScreen(HANDBOOK, new ScreenNavigatorItem(HandbookScreen, {}, {width: 946, height: 696}));
-			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen, {}, {}));
-			_navigator.addScreen(ACHIEVEMENT, new ScreenNavigatorItem(AchievementScreen, {}, {}));
-			_navigator.addScreen(COLLECTION, new ScreenNavigatorItem(CollectionScreen, {}, {}));
+			_navigator.addScreen(MAP, new ScreenNavigatorItem(MapScreen, 
+				{
+				},
+				{
+					width: 946, height: 696
+				}));
+			_navigator.addScreen(HANDBOOK, new ScreenNavigatorItem(HandbookScreen, 
+				{
+				}, 
+				{
+					width: 946, height: 696
+				}));
+			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen, 
+				{
+				}, 
+				{
+					width: 946, height: 696
+				}));
+			_navigator.addScreen(ACHIEVEMENT, new ScreenNavigatorItem(AchievementScreen, 
+				{
+				}, 
+				{
+					width: 946, height: 696
+				}));
+			_navigator.addScreen(COLLECTION, new ScreenNavigatorItem(CollectionScreen, 
+				{
+				}, 
+				{
+					width: 946, height: 696
+				}));
 			this._container.addChild( _navigator );
-			
 			_navigator.showScreen(HANDBOOK);
 		}
 
@@ -155,9 +179,62 @@ package views.global.userCenter
 			_container.y = 72;
 		}
 
+		/**
+		 * 翻页特效动画
+		 */		
+		private var softBookAnimation:SoftPageAnimation;
+		private var textures:Vector.<Texture>;
+		private function initAnimation():void
+		{
+			textures = new Vector.<Texture>(10);
+			trace(_navigator.activeScreen);
+			var ts:Vector.<Texture> = (_navigator.activeScreen as IUserCenterScreen).getScreenTexture();
+			var i:int = _tabBar.selectedIndex;
+			textures[i*2] = ts[0];
+			textures[i*2+1] = ts[1];
+			
+			softBookAnimation = new SoftPageAnimation(946, 696, textures, i, false);
+			softBookAnimation.buttonCallBackMode = true;
+			softBookAnimation.addEventListener(SoftPageAnimation.ANIMATION_COMPLETED, animationCompleted);
+		}
+		
+		
+//logical----------------------------------------------------------------------------
+		
+		private function animationCompleted():void
+		{
+			softBookAnimation.removeFromParent();
+		}
+		
 		private function tabs_changeHandler(e:Event):void
 		{
-			_navigator.showScreen(screenNames[_tabBar.selectedIndex]);
+			var i:int = _tabBar.selectedIndex;
+			//检测是否有所需纹理
+			if(textures[i*2] && textures[i*2+1])
+			{
+				//播放缓动动画，动画完成后动画清除，showScreen
+				this._container.addChild( softBookAnimation );
+				softBookAnimation.turnToPage( i );
+				_navigator.showScreen(screenNames[i]);
+			}
+			else
+			{
+				if((_tabBar.selectedItem as IUserCenterScreen).testTextureInitialized())
+				{
+					var ts:Vector.<Texture> = (_navigator.activeScreen as IUserCenterScreen).getScreenTexture();
+					textures[i*2] = ts[0];
+					textures[i*2+1] = ts[1];
+					
+					//播放缓动动画，动画完成后动画清除，showScreen
+					this._container.addChild( softBookAnimation );
+					softBookAnimation.turnToPage( i );
+					_navigator.showScreen(screenNames[i]);
+				}
+				else		//纹理未准备完成，跳过动画播放部分，直接显示页面
+				{
+					_navigator.showScreen(screenNames[i]);
+				}
+			}
 		}
 
 		private function onTriggered(e:Event):void
@@ -173,7 +250,6 @@ package views.global.userCenter
 			_currentIndex = value;
 			_navigator.showScreen(screenNames[_currentIndex]);
 		}
-		
 
 		//用于指定显示速成手册内的内容指引
 		private var handbookContent:int = -1;
@@ -195,16 +271,5 @@ package views.global.userCenter
 			this.height = height;
 		}
 
-		/**
-		 * 翻页特效动画
-		 */		
-		private var softBookAnimation:SoftPageAnimation;
-		private var textures:Vector.<Texture>;
-		private function initAnimation():void
-		{
-			textures = new Vector.<Texture>(10);
-			
-			var ts:Vector.<Texture> = (_navigator.activeScreen as IUserCenterScreen).getScreenTexture();
-		}
 	}
 }

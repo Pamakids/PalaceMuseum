@@ -23,6 +23,7 @@ package views.components
 	{
 		public static const PAGE_UP:String = "page_up";
 		public static const PAGE_DOWN:String = "page_down";
+		public static const ANIMATION_COMPLETED:String = "animation_completed";
 		
 		
 		private var _bookWidth:Number;
@@ -60,8 +61,8 @@ package views.components
 			_mainImage.touchable = false;
 			_mainImage.y = _bookHeight - _maxHeight;
 			
-			_cacheImage = new Image((!_cover)?_textures[0]:_textures[1]);
-			_softImage = new SoftPageImage((!_cover)?_textures[0]:_textures[1], _bookWidth, _bookHeight);
+			_cacheImage = new Image((!_cover)?_textures[_currentPage*2]:_textures[_currentPage*2+1]);
+			_softImage = new SoftPageImage((!_cover)?_textures[_currentPage*2]:_textures[_currentPage*2+1], _bookWidth, _bookHeight);
 			_cacheImage.y = _softImage.y = _maxHeight - _bookHeight;
 			_cacheImage.touchable = _softImage.touchable = false;
 			
@@ -123,7 +124,6 @@ package views.components
 		private var _cover:Boolean;
 		private var _backcover:Boolean;
 		
-//public--------------------------------------------------------------------------------------
 		
 		/**
 		 * 重置书页纹理集合
@@ -172,7 +172,10 @@ package views.components
 			active = false;
 			_currentPage-=1;
 			createViewByProgress();
-			dispatchEvent(new Event(PAGE_UP));
+			if(_buttonCallBackMode)
+				dispatchEvent(new Event(ANIMATION_COMPLETED));
+			else
+				dispatchEvent(new Event(PAGE_UP));
 		}
 		/**
 		 * 自动翻页方法，下翻一页
@@ -182,22 +185,44 @@ package views.components
 			active = false;
 			_currentPage += 1;
 			createViewByProgress();
-			dispatchEvent(new Event(PAGE_DOWN));
+			if(_buttonCallBackMode)
+				dispatchEvent(new Event(ANIMATION_COMPLETED));
+			else
+				dispatchEvent(new Event(PAGE_DOWN));
 		}
 		/**
-		 * 跳转至指定页面
+		 * 跳转至指定页面.使用此方法需将buttonCallBackMode设为true
 		 */		
-		public function turnToPage(index:int):void
+		public function turnToPage(target:int):void
 		{
-			if( _currentPage == index || index > _totalPage || index < 0)
+			trace(_currentPage, target);
+			if(active)
 				return;
-			_leftToRight = (_currentPage - index) < 0;
-			progress = 0;
-			_currentPage = index;
-			easeFunc(duration, 1, Cubic.easeIn, function():void{
-				createFixedPage(_textures[_currentPage*2], _textures[_currentPage*2+1]);
-				active = false;
+			if( _currentPage == target || target > _totalPage || target < 0)
+				return;
+			_startPage = _currentPage;
+			_leftToRight = (_currentPage > target);
+			_currentPage = (_leftToRight)?target+1:target-1;
+			progress = 0.01;
+			easeFunc(duration, 1, null, function():void{
+				(_leftToRight)?pageUp():pageDown();
 			});
+		}
+		private var _startPage:int;
+		private var _buttonCallBackMode:Boolean = false;
+		public function set buttonCallBackMode(value:Boolean):void
+		{
+			if(_buttonCallBackMode == value)
+				return;
+			_buttonCallBackMode = value;
+			if(_buttonCallBackMode)
+			{
+				this.removeEventListener(TouchEvent.TOUCH,onTouchHandler);
+			}
+			else
+			{
+				this.addEventListener(TouchEvent.TOUCH,onTouchHandler);
+			}
 		}
 		
 		override public function dispose():void
@@ -287,9 +312,9 @@ package views.components
 							var length:Number = point.x - _beginPointX;
 							
 							if(_leftToRight && length > MIN_TOUCH_MOVE_LENGTH )		//前翻一页
-								easeFunc(duration, 1, Cubic.easeOut, pageUp);
+								easeFunc(duration, 1, /*Cubic.easeOut*/null, pageUp);
 							if( (!_leftToRight) && (length < -MIN_TOUCH_MOVE_LENGTH) ) 		//后翻一页
-								easeFunc(duration, 1, Cubic.easeOut, pageDown);
+								easeFunc(duration, 1, /*Cubic.easeOut*/null, pageDown);
 							if( Math.abs(length) < MIN_TOUCH_MOVE_LENGTH )			//翻页取消
 								easeFunc(duration, 0, Cubic.easeOut);
 						}
@@ -366,24 +391,44 @@ package views.components
 			var l:int, r:int, index:int, another:int;
 			if(_progress == 0 || _progress == 1)			//不需更新软页，只更新固定页，以_currentPage为参考
 			{
+				trace("progress: "+ _progress);
 				l = _currentPage*2;
 				r = _currentPage*2+1;
 				createFixedPage(_textures[l], _textures[r]);
 			}
 			else
 			{
-				if(_leftToRight)
+				if(_buttonCallBackMode)
 				{
-					l = (_currentPage-1)*2;
-					r = l+3;
-					index = l+2;
-					another = l+1;
-				}else
+					if(_leftToRight)
+					{
+						l = (_currentPage-1)*2;
+						r = _startPage*2+1;
+						index = r - 1;
+						another = l + 1;
+					}else
+					{
+						l = _startPage*2;
+						r = (_currentPage+1)*2 + 1;
+						index = l + 1;
+						another = r - 1;
+					}
+				}
+				else
 				{
-					l = _currentPage*2;
-					r = l+3;
-					index = l+1;
-					another = l+2;
+					if(_leftToRight)
+					{
+						l = (_currentPage-1)*2;
+						r = l+3;
+						index = l+2;
+						another = l+1;
+					}else
+					{
+						l = _currentPage*2;
+						r = l+3;
+						index = l+1;
+						another = l+2;
+					}
 				}
 				createFixedPage(_textures[l], _textures[r]);
 				createSoftPage(_textures[index], _textures[another]);
