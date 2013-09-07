@@ -18,9 +18,10 @@ package views.global.userCenter.collection
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 	
+	import views.global.userCenter.IUserCenterScreen;
 	import views.global.userCenter.UserCenterManager;
 	
-	public class CollectionScreen extends Screen
+	public class CollectionScreen extends Screen implements IUserCenterScreen
 	{
 		public function CollectionScreen()
 		{
@@ -55,13 +56,12 @@ package views.global.userCenter.collection
 			{
 				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
 				renderer.iconSourceField = "thumbnail";
-				renderer.scaleX = renderer.scaleY = 0.35;
 				return renderer;
 			};
 			list.layout = layout;
 			this.addChild( list );
-			list.width = 940;
-			list.height = 696;
+			list.width = height;
+			list.height = height;
 			list.addEventListener(Event.CHANGE, onChange);
 		}
 		
@@ -141,6 +141,21 @@ package views.global.userCenter.collection
 		override public function dispose():void
 		{
 			super.dispose();
+		}
+		
+		private var screenTexture:Vector.<Texture>;
+		public function getScreenTexture():Vector.<Texture>
+		{
+			if(!screenTexture)
+			{
+				screenTexture = new Vector.<Texture>(2);
+			}
+			return screenTexture;
+		}
+		private var texturesInitialized:Boolean = false;
+		public function testTextureInitialized():Boolean
+		{
+			return texturesInitialized;
 		}
 	}
 }
