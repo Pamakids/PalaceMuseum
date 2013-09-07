@@ -93,6 +93,10 @@ package views.components
 		{
 			return _currentPage;
 		}
+		public function set currentPage(value:int):void
+		{
+			_currentPage = value;
+		}
 		/**
 		 * 页总数
 		 */		

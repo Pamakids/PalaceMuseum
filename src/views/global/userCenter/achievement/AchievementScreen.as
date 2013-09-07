@@ -40,8 +40,8 @@ package views.global.userCenter.achievement
 		{
 			layout = new TiledRowsLayout();
 			layout.paddingTop = 80;
-			layout.paddingLeft = 25;
-			layout.horizontalGap = 45;
+			layout.paddingLeft = 5;
+			layout.horizontalGap = 10;
 			layout.verticalGap = 50;
 			layout.useVirtualLayout = true;
 			layout.verticalAlign = TiledRowsLayout.VERTICAL_ALIGN_TOP;
@@ -56,13 +56,12 @@ package views.global.userCenter.achievement
 			{
 				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
 				renderer.iconSourceField = "thumbnail";
-				renderer.scaleX = renderer.scaleY = 0.35;
 				return renderer;
 			};
 			list.layout = layout;
 			this.addChild( list );
-			list.width = 940;
-			list.height = 696;
+			list.width = width;
+			list.height = height;
 			list.addEventListener(Event.CHANGE, onChange);
 		}
 		

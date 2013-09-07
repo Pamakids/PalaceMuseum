@@ -1,7 +1,6 @@
 package views.global.userCenter.collection
 {
 	import flash.geom.Point;
-	import flash.geom.Vector3D;
 	
 	import feathers.controls.List;
 	import feathers.controls.Screen;
@@ -57,13 +56,12 @@ package views.global.userCenter.collection
 			{
 				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
 				renderer.iconSourceField = "thumbnail";
-				renderer.scaleX = renderer.scaleY = 0.35;
 				return renderer;
 			};
 			list.layout = layout;
 			this.addChild( list );
-			list.width = 940;
-			list.height = 696;
+			list.width = height;
+			list.height = height;
 			list.addEventListener(Event.CHANGE, onChange);
 		}
 		

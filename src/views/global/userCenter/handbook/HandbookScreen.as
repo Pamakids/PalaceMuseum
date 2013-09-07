@@ -1,7 +1,6 @@
 package views.global.userCenter.handbook
 {
 	import feathers.controls.Screen;
-	import feathers.events.FeathersEventType;
 	
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -22,15 +21,7 @@ package views.global.userCenter.handbook
 		public function HandbookScreen()
 		{
 			super();
-			
-//			addEventListener(FeathersEventType.INITIALIZE, onInitialize);
 		}
-		
-//		private function onInitialize(e:FeathersEventType):void
-//		{
-//			creatScreenTexture();
-//		}
-		
 		
 		override protected function initialize():void
 		{
@@ -41,9 +32,9 @@ package views.global.userCenter.handbook
 			leftContainer.width = rightContainer.width = rightContainer.x = leftBack.width = rightBack.width = width/2;
 			leftContainer.addChild( leftBack );
 			rightContainer.addChild( rightBack );
-			
 			initUserInfo();
 			initAnimation();
+			initScreenTexture();
 		}
 		
 		/**
@@ -76,7 +67,7 @@ package views.global.userCenter.handbook
 		private function initAnimation():void
 		{
 			initTextures();
-			animation = new SoftPageAnimation(width, height, vecTexture, 0, true, 0.5);
+			animation = new SoftPageAnimation(width, height, vecTexture, 0, false, 0.5);
 			this.addChild(animation);
 			
 			animation.addEventListener(SoftPageAnimation.PAGE_UP, turnPage);
@@ -122,10 +113,8 @@ package views.global.userCenter.handbook
 		 */		
 		public function getScreenTexture():Vector.<Texture>
 		{
-			if(!screenTextures)
-			{
-				creatScreenTexture();
-			}
+			if(!texturesInitialized)
+				initScreenTexture();
 			return screenTextures;
 		}
 		private var screenTextures:Vector.<Texture>;
@@ -135,18 +124,13 @@ package views.global.userCenter.handbook
 			return texturesInitialized;
 		}
 		
-		private function creatScreenTexture():void
+		private function initScreenTexture():void
 		{
+			if(texturesInitialized)
+				return;
 			screenTextures = new Vector.<Texture>(2);
-			var render:RenderTexture = new RenderTexture(width/2, height);
-			render.draw( leftContainer );
-			render.draw( new Image( UserCenterManager.assetsManager.getTexture("content_left") ) );
-			screenTextures[0] = render;
-			render = new RenderTexture(width/2, height);
-			render.draw( rightContainer );
-			render.draw( new Image( UserCenterManager.assetsManager.getTexture("content_right") ) );
-			screenTextures[1] = render;
-			
+			screenTextures[0] = vecTexture[0];
+			screenTextures[1] = vecTexture[1];
 			texturesInitialized = true;
 		}
 
