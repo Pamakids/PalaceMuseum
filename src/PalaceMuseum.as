@@ -8,9 +8,11 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 
+	import controllers.MC;
+
 	import starling.core.Starling;
 
-	[SWF(width="1024", height="768", frameRate="60", backgroundColor="0x333333")]
+	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x333333")]
 	public class PalaceMuseum extends Sprite
 	{
 		public function PalaceMuseum()
@@ -22,13 +24,13 @@ package
 			stage.scaleMode=StageScaleMode.NO_SCALE;
 
 			Starling.multitouchEnabled=true;
-			Starling.handleLostContext=true;
-
+			Starling.handleLostContext=false;
 			var main:Starling=new Starling(Main, stage);
 			main.start();
 			main.showStats=true;
 			main.antiAliasing=16;
 
+			MC.instance.stage=stage;
 		}
 	}
 }

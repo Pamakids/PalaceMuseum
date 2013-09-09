@@ -2,6 +2,10 @@ package controllers
 {
 	import com.pamakids.utils.Singleton;
 
+	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
+	import flash.display.Stage;
+
 	import feathers.core.PopUpManager;
 
 	import models.SOService;
@@ -41,7 +45,9 @@ package controllers
 		private var currentModule:PalaceModule;
 
 		private var main:Main;
-		private var modules:Array=[Module1, Module2]
+		private var modules:Array=[Module1, Module2];
+
+		public var stage:Stage;
 
 		public function init(main:Main):void
 		{
@@ -51,7 +57,7 @@ package controllers
 			PopUpManager.root=main;
 			TopBar.parent=main;
 			UserCenterManager.userCenterContainer=main;
-			PopUpManager.overlayFactory=function defaultOverlayFactory():DisplayObject
+			PopUpManager.overlayFactory=function defaultOverlayFactory():starling.display.DisplayObject
 			{
 				const quad:Quad=new Quad(1024, 768, 0x000000);
 				quad.alpha=.4;
@@ -59,6 +65,16 @@ package controllers
 			};
 
 			initLayers();
+		}
+
+		public function addChild(displayObject:flash.display.DisplayObject):void
+		{
+			stage.addChild(displayObject);
+		}
+
+		public function removeChild(displayObject:flash.display.DisplayObject):void
+		{
+			stage.removeChild(displayObject);
 		}
 
 		public function get moduleIndex():int
