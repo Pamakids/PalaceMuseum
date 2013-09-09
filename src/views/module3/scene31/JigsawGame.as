@@ -1,4 +1,4 @@
-package views.module3.scene32
+package views.module3.scene31
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Bounce;
@@ -28,7 +28,7 @@ package views.module3.scene32
 
 	public class JigsawGame extends PalaceGame
 	{
-		[Embed(source="/assets/module3/scene32/map.jpg")]
+		[Embed(source="/assets/module3/scene31/map.jpg")]
 		private var img:Class;
 
 		private var startSP:Sprite=new Sprite();
@@ -126,13 +126,14 @@ package views.module3.scene32
 			addChild(startSP);
 			var gameHint:Image=getImage("jigsaw-name");
 			gameHint.x=160;
+			gameHint.y=100;
 			startSP.addChild(gameHint);
 
 			var sbHolder:Sprite=new Sprite();
 			sBtn=getImage("menu-simple");
 			sBtnD=getImage("menu-simple-down");
-			sbHolder.x=49;
-			sbHolder.y=514;
+			sbHolder.x=400;
+			sbHolder.y=400;
 			sbHolder.addChild(sBtn);
 			sbHolder.addChild(sBtnD);
 			startSP.addChild(sbHolder);
@@ -141,8 +142,8 @@ package views.module3.scene32
 			var hbHolder:Sprite=new Sprite();
 			hBtn=getImage("menu-hard");
 			hBtnD=getImage("menu-hard-down");
-			hbHolder.x=67;
-			hbHolder.y=618;
+			hbHolder.x=415;
+			hbHolder.y=505;
 			hbHolder.addChild(hBtn);
 			hbHolder.addChild(hBtnD);
 			startSP.addChild(hbHolder);
