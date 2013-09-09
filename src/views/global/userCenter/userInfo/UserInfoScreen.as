@@ -38,6 +38,8 @@ package views.global.userCenter.userInfo
 		
 		override public function dispose():void
 		{
+//			if(screenTexture)
+//				screenTexture = null;
 			super.dispose();
 		}
 		

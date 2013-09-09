@@ -2,10 +2,7 @@ package views.global.userCenter.map
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	import com.pamakids.manager.LoadManager;
 	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
@@ -13,7 +10,6 @@ package views.global.userCenter.map
 	import feathers.controls.Screen;
 	
 	import starling.display.Image;
-	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
@@ -32,9 +28,6 @@ package views.global.userCenter.map
 		private var mapTexture:Texture;
 		private var cache:Image;
 		
-		private var containerL:Sprite;
-		private var containerR:Sprite;
-		
 		public function MapScreen()
 		{
 			super();
@@ -42,7 +35,11 @@ package views.global.userCenter.map
 
 		override protected function initialize():void
 		{
-			LoadManager.instance.loadImage('assets/global/mapBG.jpg', bgLoadedHandler);
+			initContainer();
+			initMapButtonTexture();
+			initMapButton();
+			initCacheImage();
+			initScreenTextures();
 		}
 		
 		private function initContainer():void
@@ -56,15 +53,6 @@ package views.global.userCenter.map
 		
 		public var viewWidth:Number;
 		public var viewHeight:Number;
-		
-		private function bgLoadedHandler(bitmap:Bitmap):void
-		{
-			initContainer();
-			initMapButtonTexture(bitmap);
-			initMapButton();
-			initCacheImage();
-			initScreenTextures();
-		}
 		
 		private function initCacheImage():void
 		{
@@ -87,12 +75,10 @@ package views.global.userCenter.map
 			mapButton.addEventListener(Event.TRIGGERED, onTriggered);
 		}
 		
-		private function initMapButtonTexture(bitmap:Bitmap):void
+		private function initMapButtonTexture():void
 		{
-			var bd:BitmapData=bitmap.bitmapData;
-			var newBD:BitmapData=new BitmapData(bd.width, bd.height / 4);
-			newBD.copyPixels(bd, new Rectangle(0, 0, bd.width, bd.height / 4), new Point());
-			mapTexture=Texture.fromBitmapData(newBD);
+			var texture:Texture = UserCenterManager.assetsManager.getTexture("mapBG");
+			mapTexture = Texture.fromTexture( texture, new Rectangle(0, 0, texture.width, texture.height/4));
 		}
 		
 		private function onTriggered():void
@@ -128,6 +114,8 @@ package views.global.userCenter.map
 
 		override public function dispose():void
 		{
+//			if(screenTexture)
+//				screenTexture = null;
 			if (mapButton)
 				mapButton.dispose();
 			if (cache)

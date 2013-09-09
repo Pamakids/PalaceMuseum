@@ -1,5 +1,7 @@
 package views.global.userCenter
 {
+	import flash.utils.Dictionary;
+	
 	import feathers.controls.Button;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
@@ -27,11 +29,11 @@ package views.global.userCenter
 		/**
 		 * 场景
 		 */		
-		private static const MAP:String = "map";
-		private static const ACHIEVEMENT:String = "achievement";
-		private static const COLLECTION:String = "collection";
-		private static const HANDBOOK:String = "handbook";
-		private static const USERINFO:String = "userinfo";
+		public static const MAP:String = "map";
+		public static const ACHIEVEMENT:String = "achievement";
+		public static const COLLECTION:String = "collection";
+		public static const HANDBOOK:String = "handbook";
+		public static const USERINFO:String = "userinfo";
 		private var screenNames:Array;
 		
 		private const contentWidth:Number = 968;
@@ -61,17 +63,21 @@ package views.global.userCenter
 		private var assets:AssetManager;
 
 //initialize--------------------------------------------------------------------------------------
+		
+		private var datas:Dictionary;
+		
 		private function init():void
 		{
 			this.assets = UserCenterManager.assetsManager;
 			this.screenNames = [MAP, USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION];
 			this.textures = new Vector.<Texture>(10);
+			this.datas = new Dictionary(true);
 			
 			initBackgroud();
 			initTabBar();
 			initBackButton();
 			initContainer();
-			initPageBackground();
+//			initPageBackground();
 			initNavigator();
 		}
 		
@@ -164,13 +170,15 @@ package views.global.userCenter
 				{
 				}, 
 				{
-					width: contentWidth, height: contentHeight
+					width: contentWidth, height: contentHeight,
+					viewWidth: contentWidth, viewHeight: contentHeight
 				}));
 			_navigator.addScreen(COLLECTION, new ScreenNavigatorItem(CollectionScreen, 
 				{
 				}, 
 				{
-					width: contentWidth, height: contentHeight
+					width: contentWidth, height: contentHeight,
+					viewWidth: contentWidth, viewHeight: contentHeight
 				}));
 			this._container.addChild( _navigator );
 			_navigator.showScreen(HANDBOOK);
@@ -200,8 +208,6 @@ package views.global.userCenter
 			softBookAnimation.buttonCallBackMode = true;
 			softBookAnimation.addEventListener(SoftPageAnimation.ANIMATION_COMPLETED, animationCompleted);
 			this._container.addChild( softBookAnimation );
-//			softBookAnimation.visible = false;
-			
 		}
 		
 //logical----------------------------------------------------------------------------
