@@ -14,13 +14,12 @@ package views
 
 	import views.components.base.PalaceModule;
 	import views.components.base.PalaceScene;
-	import views.module2.Scene21;
-	import views.module2.Scene22;
-	import views.module2.Scene23;
+	import views.module3.Scene31;
+	import views.module3.Scene32;
 
-	public class Module2 extends PalaceModule
+	public class Module3 extends PalaceModule
 	{
-		private var sceneArr:Array=[Scene21, Scene22, Scene23];
+		private var sceneArr:Array=[Scene32];
 
 		private var xml:XML;
 
@@ -32,7 +31,7 @@ package views
 		private var crtScene:PalaceScene;
 		private var sceneIndex:int;
 
-		public function Module2(am:AssetManager=null)
+		public function Module3(am:AssetManager=null)
 		{
 			load=new Sprite();
 			addChild(load);

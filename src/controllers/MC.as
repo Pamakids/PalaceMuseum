@@ -3,12 +3,9 @@ package controllers
 	import com.pamakids.utils.Singleton;
 
 	import flash.display.DisplayObject;
-	import flash.display.MovieClip;
 	import flash.display.Stage;
 
 	import feathers.core.PopUpManager;
-
-	import models.SOService;
 
 	import starling.display.DisplayObject;
 	import starling.display.Quad;

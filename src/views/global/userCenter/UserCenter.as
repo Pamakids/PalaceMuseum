@@ -23,7 +23,7 @@ package views.global.userCenter
 	{
 		[Embed(source="/assets/module1/loading.png")]
 		private var loading:Class
-
+		
 		/**
 		 * 场景
 		 */		
@@ -33,6 +33,9 @@ package views.global.userCenter
 		private static const HANDBOOK:String = "handbook";
 		private static const USERINFO:String = "userinfo";
 		private var screenNames:Array;
+		
+		private const contentWidth:Number = 968;
+		private const contentHeight:Number = 664;
 		
 		/**
 		 * 导航
@@ -57,11 +60,12 @@ package views.global.userCenter
 		}
 		private var assets:AssetManager;
 
-		//initialize--------------------------------------------------------------------------------------
+//initialize--------------------------------------------------------------------------------------
 		private function init():void
 		{
 			this.assets = UserCenterManager.assetsManager;
 			this.screenNames = [MAP, USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION];
+			this.textures = new Vector.<Texture>(10);
 			
 			initBackgroud();
 			initTabBar();
@@ -70,7 +74,7 @@ package views.global.userCenter
 			initPageBackground();
 			initNavigator();
 		}
-
+		
 		private function initPageBackground():void
 		{
 			this.pageLeftImage=new Image(assets.getTexture("page_left"));
@@ -86,7 +90,7 @@ package views.global.userCenter
 			this.addChild( this.backgroundImage );
 			this.bookBackground = new Image(assets.getTexture("book_background"));
 			this.addChild( this.bookBackground );
-			this.bookBackground.y = 41;
+			this.bookBackground.y = 74;
 			this.backgroundImage.touchable = this.bookBackground.touchable = false;
 		}
 
@@ -118,8 +122,9 @@ package views.global.userCenter
 			_tabBar.direction = TabBar.DIRECTION_HORIZONTAL;
 			_tabBar.selectedIndex = 2;
 			this.addChild( _tabBar );
-			_tabBar.x = 60;
-			_tabBar.y = 11;
+			_tabBar.gap = 10;
+			_tabBar.x = 50;
+			_tabBar.y = 30;
 			_tabBar.addEventListener( Event.CHANGE, tabs_changeHandler );
 		}
 
@@ -129,20 +134,45 @@ package views.global.userCenter
 			_backButton.defaultSkin =  new Image(assets.getTexture("button_close"));
 			addChild(_backButton);
 			_backButton.x = 924;
-			_backButton.y = 20;
+			_backButton.y = 10;
 			_backButton.addEventListener(Event.TRIGGERED, onTriggered);
 		}
 
 		private function initNavigator():void
 		{
 			_navigator = new ScreenNavigator();
-			_navigator.addScreen(MAP, new ScreenNavigatorItem(MapScreen, {}, {}));
-			_navigator.addScreen(HANDBOOK, new ScreenNavigatorItem(HandbookScreen, {}, {}));
-			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen, {}, {}));
-			_navigator.addScreen(ACHIEVEMENT, new ScreenNavigatorItem(AchievementScreen, {}, {}));
-			_navigator.addScreen(COLLECTION, new ScreenNavigatorItem(CollectionScreen, {}, {}));
+			_navigator.addScreen(MAP, new ScreenNavigatorItem(MapScreen, 
+				{
+				},
+				{
+					width: contentWidth, height: contentHeight,
+					viewWidth: contentWidth, viewHeight: contentHeight
+				}));
+			_navigator.addScreen(HANDBOOK, new ScreenNavigatorItem(HandbookScreen, 
+				{
+				}, 
+				{
+					width: contentWidth, height: contentHeight
+				}));
+			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen, 
+				{
+				}, 
+				{
+					width: contentWidth, height: contentHeight
+				}));
+			_navigator.addScreen(ACHIEVEMENT, new ScreenNavigatorItem(AchievementScreen, 
+				{
+				}, 
+				{
+					width: contentWidth, height: contentHeight
+				}));
+			_navigator.addScreen(COLLECTION, new ScreenNavigatorItem(CollectionScreen, 
+				{
+				}, 
+				{
+					width: contentWidth, height: contentHeight
+				}));
 			this._container.addChild( _navigator );
-			
 			_navigator.showScreen(HANDBOOK);
 		}
 
@@ -150,13 +180,84 @@ package views.global.userCenter
 		{
 			_container = new Sprite();
 			this.addChild( _container );
-			_container.x = 42;
-			_container.y = 72;
+			_container.x = 28;
+			_container.y = 89;
 		}
 
+		/**
+		 * 翻页特效动画
+		 */		
+		private var softBookAnimation:SoftPageAnimation;
+		private var textures:Vector.<Texture>;
+		private function initAnimation():void
+		{
+			var i:int = _tabBar.selectedIndex;
+			var ts:Vector.<Texture> = (_navigator.activeScreen as IUserCenterScreen).getScreenTexture();
+			textures[i*2] = ts[0];
+			textures[i*2+1] = ts[1];
+			
+			softBookAnimation = new SoftPageAnimation(968, 664, textures, i, false);
+			softBookAnimation.buttonCallBackMode = true;
+			softBookAnimation.addEventListener(SoftPageAnimation.ANIMATION_COMPLETED, animationCompleted);
+			this._container.addChild( softBookAnimation );
+//			softBookAnimation.visible = false;
+			
+		}
+		
+//logical----------------------------------------------------------------------------
+		
+		private function animationCompleted():void
+		{
+			softBookAnimation.visible = false;
+		}
+		
+		private var original:int = 2;
 		private function tabs_changeHandler(e:Event):void
 		{
-			_navigator.showScreen(screenNames[_tabBar.selectedIndex]);
+			//获取原本页的纹理
+			var ts:Vector.<Texture>;
+			if(!(textures[original*2] && textures[original*2+1]) && (_navigator.activeScreen as IUserCenterScreen).testTextureInitialized())
+			{
+				ts = (_navigator.activeScreen as IUserCenterScreen).getScreenTexture();
+				textures[original*2] = ts[0];
+				textures[original*2+1] = ts[1];
+				
+				if(!softBookAnimation)
+					initAnimation();
+			}
+			
+			var i:int = _tabBar.selectedIndex;
+			_navigator.showScreen(screenNames[i]);
+			trace(i, original);
+			
+			//检测是否有所需纹理
+			if(textures[i*2] && textures[i*2+1] && textures[original*2] && textures[original*2+1])
+			{
+				//播放缓动动画，动画完成后动画清除，showScreen
+				softBookAnimation.visible = true;
+				softBookAnimation.turnToPage( i );
+			}
+			else
+			{
+				trace(_navigator.activeScreen);
+				if((_navigator.activeScreen as IUserCenterScreen).testTextureInitialized())
+				{
+					ts = (_navigator.activeScreen as IUserCenterScreen).getScreenTexture();
+					textures[i*2] = ts[0];
+					textures[i*2+1] = ts[1];
+					
+					//播放缓动动画，动画完成后动画清除，showScreen
+					softBookAnimation.visible = true;
+					softBookAnimation.turnToPage( i );
+				}
+				else		//纹理未准备完成，跳过动画播放部分，直接显示页面
+				{
+					softBookAnimation.visible = false;
+					softBookAnimation.currentPage = i;
+				}
+			}
+			
+			original = i;
 		}
 
 		private function onTriggered(e:Event):void
@@ -172,34 +273,18 @@ package views.global.userCenter
 			_currentIndex = value;
 			_navigator.showScreen(screenNames[_currentIndex]);
 		}
-		
 
 		//用于指定显示速成手册内的内容指引
 		private var handbookContent:int = -1;
 		public function showIndex(index:int = -1):void
 		{
 			handbookContent = index;
-			
 		}
-
-		/**动画测试方法*/
-		private function testAnimations():void
-		{
-			//测试动画
-			var textures:Vector.<Texture> = new Vector.<Texture>();
-			for(var i:int = 0;i<8;i++)
-			{
-//				(i%2==0)?textures.push(assets.getTexture("page_left")):textures.push(assets.getTexture("page_right"));
-				(i%2==0)?textures.push(assets.getTexture("1")):textures.push(assets.getTexture("2"));
-			}
-			var animation:SoftPageAnimation = new SoftPageAnimation(940, 696, textures, 0, false, 1, false, false);
-			this.addChild( animation );
-			animation.x = 53;
-			animation.y = 72;
-		}
-
+		
 		override public function dispose():void
 		{
+			
+			
 			super.dispose();
 		}
 
@@ -209,11 +294,5 @@ package views.global.userCenter
 			this.height = height;
 		}
 
-		//Animation-------------------------------------------------------------------------------------------\
-		/**
-		 * 翻页特效动画
-		 */		
-		private var softBookAnimation:SoftPageAnimation;
-		
 	}
 }

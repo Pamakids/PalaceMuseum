@@ -10,6 +10,7 @@ package
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
 
+	import views.Module3;
 	import views.components.base.Container;
 	import views.global.Map;
 	import views.global.userCenter.UserCenterManager;
@@ -28,9 +29,9 @@ package
 
 		override protected function init():void
 		{
-//						testUserCenter();
+						testUserCenter();
 			//			Map.show();
-//						return;
+						return;
 			if (Capabilities.isDebugger && testingModuleClass)
 			{
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void
@@ -53,8 +54,8 @@ package
 			}
 			else
 			{
-				Map.show();
-//				MC.instance.moduleIndex=0;
+//				Map.show();
+				MC.instance.moduleIndex=2;
 			}
 		}
 

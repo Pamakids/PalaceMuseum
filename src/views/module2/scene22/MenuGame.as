@@ -33,9 +33,9 @@ package views.module2.scene22
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
-	import views.components.base.PalaceScene;
+	import views.components.base.PalaceGame;
 
-	public class MenuGame extends PalaceScene
+	public class MenuGame extends PalaceGame
 	{
 		//菜单栏
 		public static var barW:int=567;
@@ -69,7 +69,7 @@ package views.module2.scene22
 			super(am);
 
 			scale=DPIUtil.getDPIScale();
-			addChild(getImage("bg-menu"));
+			addChild(getImage("gamebg"));
 
 			closeBtn=new ElasticButton(getImage("button_close"));
 			addChild(closeBtn);
@@ -120,7 +120,7 @@ package views.module2.scene22
 
 		private function onStartTouch(e:Event):void
 		{
-			startBtn.addEventListener(TouchEvent.TOUCH, onStartTouch);
+			startBtn.removeEventListener(TouchEvent.TOUCH, onStartTouch);
 			startSP.touchable=false;
 			TweenLite.delayedCall(1, function():void {
 				TweenLite.to(startSP, 1, {y: -768,
@@ -579,11 +579,6 @@ package views.module2.scene22
 			var txt:String=hour == 0 ? (minStr + ":" + secStr) : "59:59";
 			txt+=":" + mmStr;
 			return txt;
-		}
-
-		override public function dispose():void
-		{
-			this.assets=null;
 		}
 
 		private function showRecord():void
