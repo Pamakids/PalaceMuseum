@@ -1,4 +1,4 @@
-package views.module3.scene32
+package views.module3.scene31
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Bounce;
@@ -28,7 +28,7 @@ package views.module3.scene32
 
 	public class JigsawGame extends PalaceGame
 	{
-		[Embed(source="/assets/module3/scene32/map.jpg")]
+		[Embed(source="/assets/module3/scene31/map.jpg")]
 		private var img:Class;
 
 		private var startSP:Sprite=new Sprite();

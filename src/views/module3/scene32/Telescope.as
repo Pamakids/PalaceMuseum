@@ -40,18 +40,24 @@ package views.module3.scene32
 
 			addEventListener(TouchEvent.TOUCH, onTouch);
 
-			index=0;
-			var timer:Timer=new Timer(1000 / 60);
-			timer.addEventListener(TimerEvent.TIMER, onTimer);
-			timer.start();
+			var king:Image=getImage("tele-king");
+			king.x=742;
+			king.y=439;
+
+			addTele();
+
+		}
+
+		private function addTele():void
+		{
+			// TODO Auto Generated method stub
 
 		}
 
 		protected function onTimer(event:TimerEvent):void
 		{
-			index++;
 			view.scale=1 - index % 100 / 100;
-//			view.blur(int(index % 15))
+			view.blur(int(index % 15))
 		}
 
 		private function onTouch(e:TouchEvent):void
