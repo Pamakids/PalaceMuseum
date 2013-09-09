@@ -94,6 +94,8 @@ package views.module3.scene32
 
 		public function blur(value:Number):void
 		{
+//			trace(value)
+			value=Math.max(0, Math.min(value, 10))
 			if (!this.filter)
 			{
 				blurF=new BlurFilter(value, value);
@@ -101,6 +103,14 @@ package views.module3.scene32
 			}
 			else
 				blurF.blurX=blurF.blurY=value;
+		}
+
+		public function getBlur():Number
+		{
+			if (this.filter)
+				return blurF.blurX;
+			else
+				return 0;
 		}
 
 		public function ViewHolder()
