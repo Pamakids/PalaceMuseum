@@ -51,11 +51,22 @@ package views.global.userCenter.handbook
 		
 		override public function dispose():void
 		{
-			animation.removeEventListener(SoftPageAnimation.PAGE_UP, turnPage);
-			animation.removeEventListener(SoftPageAnimation.PAGE_DOWN, turnPage);
-			
 			if(animation)
+			{
+				animation.removeEventListener(SoftPageAnimation.PAGE_UP, turnPage);
+				animation.removeEventListener(SoftPageAnimation.PAGE_DOWN, turnPage);
 				animation.dispose();
+			}
+			if(leftBack)
+				leftBack.dispose();
+			if(leftContainer)
+				leftContainer.dispose();
+			if(rightBack)
+				rightBack.dispose();
+			if(rightContainer)
+				rightContainer.dispose();
+//			if(screenTextures)
+//				screenTextures = null;
 			if(vecTexture)
 				vecTexture = null;
 			super.dispose();
