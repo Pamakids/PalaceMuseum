@@ -1,5 +1,7 @@
 package views.global.userCenter
 {
+	import com.greensock.TweenLite;
+	
 	import flash.utils.Dictionary;
 	
 	import feathers.controls.Button;
@@ -218,8 +220,17 @@ package views.global.userCenter
 		}
 		
 		private var original:int = 2;
-		private function tabs_changeHandler(e:Event):void
+		private function tabs_changeHandler():void
 		{
+			if(softBookAnimation && softBookAnimation.active)		//动画播放中
+			{
+				_tabBar.selectedIndex = original;
+				return;
+			}
+			
+			if(softBookAnimation)
+				softBookAnimation.visible = true;
+			
 			//获取原本页的纹理
 			var ts:Vector.<Texture>;
 			if(!(textures[original*2] && textures[original*2+1]) && (_navigator.activeScreen as IUserCenterScreen).testTextureInitialized())
@@ -234,35 +245,33 @@ package views.global.userCenter
 			
 			var i:int = _tabBar.selectedIndex;
 			_navigator.showScreen(screenNames[i]);
-			trace(i, original);
+			
+			//纹理未准备好，延迟回调
+			if(!(textures[i*2] && textures[i*2+1]) && !(_navigator.activeScreen as IUserCenterScreen).testTextureInitialized())
+			{
+				TweenLite.delayedCall(1, tabs_changeHandler);
+				return;
+			}
+			
+			//目标页是否存在场景纹理
+			if(!(textures[i*2] && textures[i*2+1]) && (_navigator.activeScreen as IUserCenterScreen).testTextureInitialized())
+			{
+				ts = (_navigator.activeScreen as IUserCenterScreen).getScreenTexture();
+				textures[i*2] = ts[0];
+				textures[i*2+1] = ts[1];
+			}
 			
 			//检测是否有所需纹理
-			if(textures[i*2] && textures[i*2+1] && textures[original*2] && textures[original*2+1])
+			if(textures[i*2] && textures[i*2+1] && textures[original*2] && textures[original*2+1] && i!=original)
 			{
-				//播放缓动动画，动画完成后动画清除，showScreen
 				softBookAnimation.visible = true;
 				softBookAnimation.turnToPage( i );
 			}
 			else
 			{
-				trace(_navigator.activeScreen);
-				if((_navigator.activeScreen as IUserCenterScreen).testTextureInitialized())
-				{
-					ts = (_navigator.activeScreen as IUserCenterScreen).getScreenTexture();
-					textures[i*2] = ts[0];
-					textures[i*2+1] = ts[1];
-					
-					//播放缓动动画，动画完成后动画清除，showScreen
-					softBookAnimation.visible = true;
-					softBookAnimation.turnToPage( i );
-				}
-				else		//纹理未准备完成，跳过动画播放部分，直接显示页面
-				{
-					softBookAnimation.visible = false;
-					softBookAnimation.currentPage = i;
-				}
+				softBookAnimation.visible = false;
+				softBookAnimation.currentPage = i;
 			}
-			
 			original = i;
 		}
 
@@ -289,8 +298,40 @@ package views.global.userCenter
 		
 		override public function dispose():void
 		{
-			
-			
+			if(_tabBar)
+				_tabBar.dispose();
+			_tabBar = null;
+			if(assets)
+				assets = null;
+			if(backgroundImage)
+				backgroundImage.dispose();
+			backgroundImage = null;
+			if(bookBackground)
+				bookBackground.dispose();
+			bookBackground = null;
+			if(_navigator)
+				_navigator.dispose();
+			_navigator = null;
+			if(_backButton)
+				_backButton.dispose();
+			_backButton = null;
+			if(_container)
+				_container.dispose();
+			_container = null;
+			if(contentBackground)
+				contentBackground.dispose();
+			contentBackground = null;
+			if(pageLeftImage)
+				pageLeftImage.dispose();
+			pageLeftImage = null;
+			if(pageRightImage)
+				pageRightImage.dispose();
+			pageRightImage = null;
+			screenNames = null;
+			if(softBookAnimation)
+				softBookAnimation.dispose();
+			softBookAnimation=null;
+			textures = null;
 			super.dispose();
 		}
 
@@ -299,6 +340,6 @@ package views.global.userCenter
 			this.width = width;
 			this.height = height;
 		}
-
+		
 	}
 }

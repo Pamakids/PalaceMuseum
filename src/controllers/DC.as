@@ -39,8 +39,8 @@ package controllers
 		 * 用户中心相关数据变更
 		 * @param type
 		 * 			0	用户属性变化
-		 * 			1	成就
-		 * 			2	物品收集数据
+		 * 			1	成就解锁
+		 * 			2	物品收集
 		 * 			3	小游戏数据
 		 * @param value
 		 */		

@@ -173,7 +173,7 @@ package views.components
 		 */		
 		private function pageUp():void
 		{
-			active = false;
+			_active = false;
 			_currentPage-=1;
 			createViewByProgress();
 			if(_buttonCallBackMode)
@@ -186,7 +186,7 @@ package views.components
 		 */		
 		private function pageDown():void
 		{
-			active = false;
+			_active = false;
 			_currentPage += 1;
 			createViewByProgress();
 			if(_buttonCallBackMode)
@@ -199,8 +199,7 @@ package views.components
 		 */		
 		public function turnToPage(target:int):void
 		{
-			trace(_currentPage, target);
-			if(active)
+			if(_active)
 				return;
 			if( _currentPage == target || target > _totalPage || target < 0)
 				return;
@@ -269,7 +268,7 @@ package views.components
 		private var promptValue:Number = 0.2;
 		private function onTouchHandler(e:TouchEvent):void
 		{
-			if(active)
+			if(_active)
 				return;
 			var touch:Touch = e.getTouch(this);
 			if(touch)
@@ -332,7 +331,7 @@ package views.components
 		 */		
 		private function easeFunc( duration:Number, progressTarget:Number, ease:Function=null, onComplete:Function=null ):void
 		{
-			active = true;
+			_active = true;
 			var obj:Object = {
 				progress: progressTarget
 			};
@@ -343,7 +342,7 @@ package views.components
 			else
 				obj.onComplete = function():void
 				{
-					active = false;
+					_active = false;
 					createViewByProgress();
 				};
 			TweenLite.to(this, duration, obj);
@@ -352,7 +351,11 @@ package views.components
 		private const DRAG_LENGTH:Number = 500;		//拖动距离，用来计算progress
 		private var _maxHeight:Number;
 		/**动画进行中*/		
-		private var active:Boolean = false;
+		private var _active:Boolean = false;
+		public function get active():Boolean
+		{
+			return _active;
+		}
 		
 		/**
 		 * 绘制左右不变纹理
@@ -395,7 +398,6 @@ package views.components
 			var l:int, r:int, index:int, another:int;
 			if(_progress == 0 || _progress == 1)			//不需更新软页，只更新固定页，以_currentPage为参考
 			{
-				trace("progress: "+ _progress);
 				l = _currentPage*2;
 				r = _currentPage*2+1;
 				createFixedPage(_textures[l], _textures[r]);
