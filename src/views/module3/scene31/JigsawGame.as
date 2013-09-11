@@ -47,7 +47,7 @@ package views.module3.scene31
 			closeBtn.x=950;
 			closeBtn.y=60;
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
-			closeBtn.visible=closeBtn.touchable=false;
+//			closeBtn.visible=closeBtn.touchable=false;
 
 			addStart();
 

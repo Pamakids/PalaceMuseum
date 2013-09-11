@@ -10,6 +10,8 @@ package
 
 	import controllers.MC;
 
+	import models.FontVo;
+
 	import starling.core.Starling;
 
 	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x333333")]
@@ -18,6 +20,8 @@ package
 		public function PalaceMuseum()
 		{
 			TweenPlugin.activate([ShakeEffect]);
+
+			new FontVo().registerFont();
 
 			var scale:Number=DPIUtil.getDPIScale();
 			stage.align=StageAlign.TOP_LEFT;

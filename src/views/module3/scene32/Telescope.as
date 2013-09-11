@@ -12,11 +12,13 @@ package views.module3.scene32
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
 
 	public class Telescope extends PalaceGame
@@ -58,17 +60,39 @@ package views.module3.scene32
 
 			var acc:Accelerometer=new Accelerometer();
 			acc.addEventListener(AccelerometerEvent.UPDATE, onUpdate);
+
+			closeBtn=new ElasticButton(getImage("button_close"));
+			addChild(closeBtn);
+			closeBtn.x=950;
+			closeBtn.y=60;
+			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
+
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+
+		private function onEnterFrame(e:Event):void
+		{
+			view.pivotX-=speedX;
+			view.pivotY+=speedY;
+		}
+
+		private function onCloseTouch(e:Event):void
+		{
+			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseTouch);
+			dispatchEvent(new Event("gameOver"));
 		}
 
 		protected function onUpdate(e:AccelerometerEvent):void
 		{
 			var dx:Number=e.accelerationX;
-			if (Math.abs(dx) > .1)
-				view.pivotX-=dx * 100;
+			if (Math.abs(dx) < .1)
+				dx=0;
+			speedX=dx * 100;
 
 			var dy:Number=e.accelerationY;
-			if (Math.abs(dy) > .1)
-				view.pivotY+=dy * 100;
+			if (Math.abs(dy) < .1)
+				dy=0;
+			speedY=dy * 100;
 		}
 
 		private var centerPT:Point=new Point(329, 286);
@@ -116,6 +140,11 @@ package views.module3.scene32
 			var currentAngle:Number=Math.atan2(currentVector.y, currentVector.x);
 			var previousAngle:Number=Math.atan2(previousVector.y, previousVector.x);
 			var deltaAngle:Number=currentAngle - previousAngle;
+
+			if (Math.abs(deltaAngle) > Math.PI / 2)
+			{
+				deltaAngle=deltaAngle > 0 ? -(Math.PI * 2 - deltaAngle) : (Math.PI * 2 + deltaAngle);
+			}
 
 			if (target == ring2)
 				deltaAngle=deltaAngle;
@@ -182,6 +211,9 @@ package views.module3.scene32
 		private var ring1:Sprite;
 
 		private var ring2:Sprite;
+		private var closeBtn:ElasticButton;
+		private var speedX:Number=0;
+		private var speedY:Number=0;
 
 		private function onTeleTouch(e:TouchEvent):void
 		{
