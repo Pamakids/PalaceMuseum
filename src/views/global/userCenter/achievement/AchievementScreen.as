@@ -39,7 +39,6 @@ package views.global.userCenter.achievement
 			initLayout();
 			initList();
 			TweenLite.delayedCall(1, initScreenTextures);
-//			initScreenTextures();
 		}
 		
 		private function initPages():void
@@ -219,6 +218,10 @@ package views.global.userCenter.achievement
 		private var screenTexture:Vector.<Texture>;
 		public function getScreenTexture():Vector.<Texture>
 		{
+			if(!screenTexture)
+			{
+				initScreenTextures();
+			}
 			return screenTexture;
 		}
 		private var texturesInitialized:Boolean = false;
