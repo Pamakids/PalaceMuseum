@@ -48,8 +48,7 @@ package views.global.userCenter
 				if(!_userCenter)
 					initUserCenter();
 				_userCenterContainer.addChild(_userCenter);
-				_userCenter.showIndex((_index) ? _index : index);
-				_index=NaN;
+				_userCenter.showIndex(index);
 			}
 		}
 

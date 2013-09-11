@@ -83,14 +83,14 @@ package views.global.userCenter
 			initNavigator();
 		}
 		
-		private function initPageBackground():void
-		{
-			this.pageLeftImage=new Image(assets.getTexture("page_left"));
-			this.pageRightImage=new Image(assets.getTexture("page_right"));
-			this._container.addChild(pageLeftImage);
-			this._container.addChild(pageRightImage);
-			pageRightImage.x=this.pageLeftImage.width;
-		}
+//		private function initPageBackground():void
+//		{
+//			this.pageLeftImage=new Image(assets.getTexture("page_left"));
+//			this.pageRightImage=new Image(assets.getTexture("page_right"));
+//			this._container.addChild(pageLeftImage);
+//			this._container.addChild(pageRightImage);
+//			pageRightImage.x=this.pageLeftImage.width;
+//		}
 
 		private function initBackgroud():void
 		{
@@ -289,11 +289,18 @@ package views.global.userCenter
 			_navigator.showScreen(screenNames[_currentIndex]);
 		}
 
-		//用于指定显示速成手册内的内容指引
-		private var handbookContent:int = -1;
+		/**
+		 * 指定显示速成手册内页码
+		 * @param index
+		 */		
 		public function showIndex(index:int = -1):void
 		{
-			handbookContent = index;
+			if(index == -1)
+				return;
+			if(_navigator.activeScreen is HandbookScreen)
+			{
+				(_navigator.activeScreen as HandbookScreen).turnToPage( index );
+			}
 		}
 		
 		override public function dispose():void
@@ -301,8 +308,7 @@ package views.global.userCenter
 			if(_tabBar)
 				_tabBar.dispose();
 			_tabBar = null;
-			if(assets)
-				assets = null;
+			assets = null;
 			if(backgroundImage)
 				backgroundImage.dispose();
 			backgroundImage = null;

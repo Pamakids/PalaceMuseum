@@ -61,7 +61,7 @@ package
 		private function testUserCenter():void
 		{
 			UserCenterManager.userCenterContainer=this;
-			UserCenterManager.showUserCenter();
+			UserCenterManager.showUserCenter(1);
 		}
 	}
 }
