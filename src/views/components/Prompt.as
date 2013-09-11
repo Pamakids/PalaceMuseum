@@ -4,10 +4,13 @@ package views.components
 	import com.greensock.easing.Cubic;
 	import com.greensock.easing.Elastic;
 
+	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
 
 	import feathers.controls.Label;
 	import feathers.controls.TextArea;
+
+	import models.FontVo;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -56,7 +59,15 @@ package views.components
 				var contentImage:Image=getImage(content);
 				if (!contentImage)
 				{
-					var ta:TextField=initLable(content);
+					var label:Label=new Label();
+					label.width=bgImage.width - 10;
+					label.height=bgImage.height - 10;
+					label.textRendererProperties.textFormat=new TextFormat(FontVo.PALACE_FONT, 20, 0x561a1a);
+					label.textRendererProperties.embedFonts=true;
+					label.text=content;
+					addChild(label);
+					label.x=(bgImage.width - label.width) / 2;
+					label.y=(bgImage.height - label.height) / 2;
 				}
 				else
 				{
