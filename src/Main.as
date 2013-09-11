@@ -11,6 +11,7 @@ package
 	import starling.events.KeyboardEvent;
 	
 	import views.components.base.Container;
+	import views.global.Map;
 	import views.global.userCenter.UserCenterManager;
 
 	public class Main extends Container

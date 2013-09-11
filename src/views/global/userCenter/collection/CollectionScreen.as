@@ -220,6 +220,10 @@ package views.global.userCenter.collection
 		private var screenTexture:Vector.<Texture>;
 		public function getScreenTexture():Vector.<Texture>
 		{
+			if(!screenTexture)
+			{
+				initScreenTextures();
+			}
 			return screenTexture;
 		}
 		private var texturesInitialized:Boolean = false;
@@ -241,12 +245,6 @@ package views.global.userCenter.collection
 			screenTexture[0] = Texture.fromTexture( render, new Rectangle( 0, 0, viewWidth/2, viewHeight) );
 			screenTexture[1] = Texture.fromTexture( render, new Rectangle( viewWidth/2, 0, viewWidth/2, viewHeight) );
 			texturesInitialized = true;
-			
-//			var image1:Image = new Image( screenTexture[0] );
-//			var image2:Image = new Image( screenTexture[1] );
-//			stage.addChild( image1);
-//			stage.addChild(image2);
-//			image2.x = stage.stageWidth - image2.width;
 		}
 	}
 }
