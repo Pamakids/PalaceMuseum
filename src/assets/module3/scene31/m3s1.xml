@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:5b34f389ece86ad06949c85bdb70e2a2$ -->
+<TextureAtlas imagePath="m3s1.png">
+    <SubTexture name="book1" x="1604" y="481" width="105" height="108"/>
+    <SubTexture name="book10" x="1426" y="733" width="94" height="96"/>
+    <SubTexture name="book11" x="1426" y="910" width="90" height="106"/>
+    <SubTexture name="book2" x="1515" y="1104" width="79" height="84"/>
+    <SubTexture name="book3" x="1426" y="1018" width="89" height="84"/>
+    <SubTexture name="book4" x="1426" y="831" width="93" height="77"/>
+    <SubTexture name="book5" x="1659" y="2" width="71" height="93"/>
+    <SubTexture name="book6" x="1604" y="591" width="98" height="70"/>
+    <SubTexture name="book7" x="1565" y="663" width="95" height="108"/>
+    <SubTexture name="book8" x="1426" y="1104" width="87" height="97"/>
+    <SubTexture name="book9" x="1596" y="1085" width="80" height="78"/>
+    <SubTexture name="bookshelf-r" x="941" y="2" width="457" height="653"/>
+    <SubTexture name="bookshelf" x="482" y="2" width="457" height="653"/>
+    <SubTexture name="curtain-l" x="249" y="2" width="231" height="768"/>
+    <SubTexture name="curtain-r" x="2" y="2" width="245" height="768"/>
+    <SubTexture name="game-record" x="1522" y="773" width="201" height="201"/>
+    <SubTexture name="hint31-find" x="1426" y="653" width="137" height="78"/>
+    <SubTexture name="hint31-right" x="2" y="1185" width="146" height="18"/>
+    <SubTexture name="hint31-wrong" x="1400" y="592" width="137" height="59"/>
+    <SubTexture name="jigsaw-name" x="2" y="772" width="697" height="274"/>
+    <SubTexture name="map31" x="1426" y="2" width="231" height="477"/>
+    <SubTexture name="menu-end" x="702" y="657" width="722" height="547"/>
+    <SubTexture name="menu-hard-down" x="266" y="1048" width="220" height="115"/>
+    <SubTexture name="menu-hard" x="1518" y="976" width="210" height="107" frameX="0" frameY="-6" frameWidth="220" frameHeight="115"/>
+    <SubTexture name="menu-simple-down" x="488" y="1048" width="212" height="112"/>
+    <SubTexture name="menu-simple" x="482" y="657" width="202" height="112" frameX="-8" frameY="0" frameWidth="212" frameHeight="112"/>
+    <SubTexture name="menu-timebar" x="1400" y="481" width="202" height="109"/>
+    <SubTexture name="restart-light" x="2" y="1048" width="140" height="135"/>
+    <SubTexture name="restart" x="144" y="1048" width="120" height="121" frameX="-8" frameY="-6" frameWidth="140" frameHeight="135"/>
+</TextureAtlas>

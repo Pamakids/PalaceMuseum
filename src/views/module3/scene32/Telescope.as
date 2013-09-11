@@ -141,6 +141,11 @@ package views.module3.scene32
 			var previousAngle:Number=Math.atan2(previousVector.y, previousVector.x);
 			var deltaAngle:Number=currentAngle - previousAngle;
 
+			if (Math.abs(deltaAngle) > Math.PI / 2)
+			{
+				deltaAngle=deltaAngle > 0 ? -(Math.PI * 2 - deltaAngle) : (Math.PI * 2 + deltaAngle);
+			}
+
 			if (target == ring2)
 				deltaAngle=deltaAngle;
 			else

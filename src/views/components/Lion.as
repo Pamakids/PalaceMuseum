@@ -27,35 +27,51 @@ package views.components
 				if (!_src)
 				{
 					_src=value;
-					addChild(_src);
+					addChildAt(_src, 0);
 				}
 				else if (_src != value)
 				{
 					removeChild(_src);
 					_src.dispose();
 					_src=value;
-					addChild(_src)
+					addChildAt(_src, 0);
 				}
 			}
 			else
 			{
 				enableMovie=false;
-				removeChild(_src);
-				_src.dispose();
-				_src=null;
+				if (_src)
+				{
+					removeChild(_src);
+					_src.dispose();
+					_src=null;
+				}
 			}
 		}
 
 		public function say(content:String, bg:String="hint-bg", callback:Function=null):void
 		{
-			Prompt.show(hintX, hintY, "", content, 1, 3, callback, this);
-		}
+			var hintX:Number=_src.width - 40;
+			var hintY:Number=40;
 
-		private static var hintX:Number=0;
-		private static var hintY:Number=0;
+			if (prompt)
+			{
+				if (prompt.callback != null)
+					prompt.callback();
+				removeChild(prompt)
+				prompt=null;
+			}
+			prompt=new Prompt(bg, content, 1);
+			addChild(prompt);
+			prompt.x=hintX;
+			prompt.y=hintY;
+			prompt.callback=callback;
+			prompt.playShow(3);
+		}
 
 		private var _state:int;
 		private var enableMovie:Boolean;
+		private var prompt:Prompt;
 
 		public function get state():int
 		{
