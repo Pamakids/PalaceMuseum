@@ -1,19 +1,19 @@
 package views.global.userCenter
 {
 	import flash.filesystem.File;
-
+	import flash.utils.Dictionary;
+	
+	import models.SOService;
+	
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
-	import views.components.SoftPageAnimation;
-
 	/**
 	 * 用户中心管理类
 	 * @author Administrator
-	 *
 	 */
 	public class UserCenterManager
 	{
@@ -22,12 +22,6 @@ package views.global.userCenter
 
 		private static var loaded:Boolean=false;
 		private static var _instance:UserCenterManager;
-//		private static function getInstance():UserCenterManager
-//		{
-//			if(!_instance)
-//				_instance = new UserCenterManager(new MyClass());
-//			return _instance;
-//		}
 
 		private static var _assetsManager:AssetManager;
 
@@ -51,7 +45,7 @@ package views.global.userCenter
 			}
 			else
 			{
-				if (!_userCenter)
+				if(!_userCenter)
 					initUserCenter();
 				_userCenterContainer.addChild(_userCenter);
 				_userCenter.showIndex((_index) ? _index : index);
@@ -68,10 +62,12 @@ package views.global.userCenter
 
 
 		private static var _userCenter:UserCenter;
-
+		private static var _userDatas:Dictionary;
 		private static function initUserCenter():void
 		{
-			_userCenter=new UserCenter();
+			//获取用户相关数据
+			_userDatas = new Dictionary(true);
+			_userCenter = new UserCenter();
 		}
 
 		/**
@@ -103,9 +99,9 @@ package views.global.userCenter
 		{
 			_assetsManager=new AssetManager();
 			_assetsManager.enqueue(File.applicationDirectory.resolvePath("assets/global/userCenter"));
+			_assetsManager.enqueue("assets/global/mapBG.jpg");
 			_assetsManager.loadQueue(function(ratio:Number):void
 			{
-				//trace("Loading assets, progress:", ratio);
 				if (ratio == 1.0)
 				{
 					removeLoadImage();
@@ -134,9 +130,41 @@ package views.global.userCenter
 		{
 			_userCenter.setSize(width, height);
 		}
+		
+		/**
+		 * 获取用户中心Tab场景相关数据
+		 * @param screen
+		 * @return 
+		 */		
+		public static function getDatas(screen:String):Array
+		{
+			if(!_userDatas[screen] || testNeedUpdate(screen))
+				_userDatas[screen] = SOService.instance.getSO(screen);
+			if(!_userDatas[screen])
+			{
+				_userDatas[screen] = [];
+				SOService.instance.setSO( screen, _userDatas[screen] );
+			}
+			return _userDatas[screen];
+		}
+		
+		/**
+		 * 检测指定场景数据是否需重新获取
+		 * @param screen
+		 * @return 
+		 */		
+		private static var needUpdateScreens:Array = [];
+		private static function testNeedUpdate(screen:String):Boolean
+		{
+			return !(needUpdateScreens.indexOf(screen) == -1);
+		}
+		public static function setNeedUpdate(screen:String):void
+		{
+			if((needUpdateScreens.indexOf(screen) == -1))
+				needUpdateScreens.push( screen );
+		}
+		
 	}
 }
 
-class MyClass
-{
-}
+class MyClass{}

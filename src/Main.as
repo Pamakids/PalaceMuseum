@@ -2,15 +2,14 @@ package
 {
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
-
+	
 	import controllers.MC;
-
+	
 	import models.Const;
-
+	
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
-
-	import views.Module3;
+	
 	import views.components.base.Container;
 	import views.global.Map;
 	import views.global.userCenter.UserCenterManager;
@@ -18,7 +17,7 @@ package
 	public class Main extends Container
 	{
 		private var testingModule:Sprite;
-		private var testingModuleClass:Class;
+		private var testingModuleClass:Class=Map;
 
 		public function Main()
 		{
@@ -29,9 +28,9 @@ package
 
 		override protected function init():void
 		{
-			//			testUserCenter();
-			//			Map.show();
-			//			return;
+			testUserCenter();
+			//Map.show();
+			return;
 			if (Capabilities.isDebugger && testingModuleClass)
 			{
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void
