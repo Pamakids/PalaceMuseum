@@ -23,6 +23,7 @@ package views.global.userCenter.collection
 	import starling.textures.Texture;
 	
 	import views.global.userCenter.IUserCenterScreen;
+	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
 	
 	public class CollectionScreen extends Screen implements IUserCenterScreen
@@ -38,15 +39,14 @@ package views.global.userCenter.collection
 			initDatas();
 			initLayout();
 			initList();
-			TweenLite.delayedCall(1, initScreenTextures);
-//			initScreenTextures();
+//			TweenLite.delayedCall(1, initScreenTextures);
 		}
 		
 		private function initPages():void
 		{
-			var image:Image = new Image(UserCenterManager.assetsManager.getTexture("page_left"));
+			var image:Image = new Image(UserCenterManager.getTexture("page_left"));
 			this.addChild( image );
-			image = new Image(UserCenterManager.assetsManager.getTexture("page_right"));
+			image = new Image(UserCenterManager.getTexture("page_right"));
 			this.addChild( image );
 			image.x = this.viewWidth/2;
 		}
@@ -89,7 +89,7 @@ package views.global.userCenter.collection
 			var data:Object = datas[list.selectedIndex];
 			if(data.finished == 0)		//未收集到
 				return;
-			cache = UserCenterManager.assetsManager.getTexture("collection_card_big");
+			cache = UserCenterManager.getTexture("collection_card_big");
 			showImage();
 		}
 		
@@ -184,11 +184,11 @@ package views.global.userCenter.collection
 				obj.id = arr[i][0];
 				obj.finished = arr[i][1];
 				if(obj.finished == 0)
-					//					obj.thumbnail = UserCenterManager.assetsManager.getTexture("achievement_card_"+obj.id+"_unfinish");
-					obj.thumbnail = UserCenterManager.assetsManager.getTexture("collection_card_unfinish");
+					//					obj.thumbnail = UserCenterManager.getTexture("achievement_card_"+obj.id+"_unfinish");
+					obj.thumbnail = UserCenterManager.getTexture("collection_card_unfinish");
 				else
-					//					obj.thumbnail = UserCenterManager.assetsManager.getTexture("achievement_card_"+obj.id+"_finish");
-					obj.thumbnail = UserCenterManager.assetsManager.getTexture("collection_card_finish");
+					//					obj.thumbnail = UserCenterManager.getTexture("achievement_card_"+obj.id+"_finish");
+					obj.thumbnail = UserCenterManager.getTexture("collection_card_finish");
 				datas.unshift( obj );
 			}
 		}
@@ -217,19 +217,11 @@ package views.global.userCenter.collection
 			super.dispose();
 		}
 		
-		private var screenTexture:Vector.<Texture>;
 		public function getScreenTexture():Vector.<Texture>
 		{
-			if(!screenTexture)
-			{
+			if(!UserCenterManager.getScreenTexture(UserCenter.COLLECTION))
 				initScreenTextures();
-			}
-			return screenTexture;
-		}
-		private var texturesInitialized:Boolean = false;
-		public function testTextureInitialized():Boolean
-		{
-			return texturesInitialized;
+			return UserCenterManager.getScreenTexture(UserCenter.COLLECTION);
 		}
 		
 		public var viewWidth:Number;
@@ -237,14 +229,14 @@ package views.global.userCenter.collection
 		
 		private function initScreenTextures():void
 		{
-			if(texturesInitialized)
+			if(UserCenterManager.getScreenTexture(UserCenter.COLLECTION))
 				return;
-			screenTexture = new Vector.<Texture>(2);
 			var render:RenderTexture = new RenderTexture(viewWidth, viewHeight, true);
 			render.draw( this );
-			screenTexture[0] = Texture.fromTexture( render, new Rectangle( 0, 0, viewWidth/2, viewHeight) );
-			screenTexture[1] = Texture.fromTexture( render, new Rectangle( viewWidth/2, 0, viewWidth/2, viewHeight) );
-			texturesInitialized = true;
+			var ts:Vector.<Texture> = new Vector.<Texture>(2);
+			ts[0] = Texture.fromTexture( render, new Rectangle( 0, 0, viewWidth/2, viewHeight) );
+			ts[1] = Texture.fromTexture( render, new Rectangle( viewWidth/2, 0, viewWidth/2, viewHeight) );
+			UserCenterManager.setScreenTextures(UserCenter.COLLECTION, ts);
 		}
 	}
 }

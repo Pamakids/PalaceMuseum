@@ -8,6 +8,7 @@ package views.global.userCenter
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
@@ -24,11 +25,6 @@ package views.global.userCenter
 		private static var _instance:UserCenterManager;
 
 		private static var _assetsManager:AssetManager;
-
-		public static function get assetsManager():AssetManager
-		{
-			return _assetsManager;
-		}
 
 		public function UserCenterManager(myClass:MyClass)
 		{
@@ -48,8 +44,7 @@ package views.global.userCenter
 				if(!_userCenter)
 					initUserCenter();
 				_userCenterContainer.addChild(_userCenter);
-				_userCenter.showIndex((_index) ? _index : index);
-				_index=NaN;
+				_userCenter.showIndex(index);
 			}
 		}
 
@@ -164,6 +159,54 @@ package views.global.userCenter
 				needUpdateScreens.push( screen );
 		}
 		
+		
+		public static function getTexture(name:String):Texture
+		{
+			return _assetsManager.getTexture(name);
+		}
+		
+		private static var textures:Dictionary = new Dictionary();
+		public static function getScreenTexture(screen:String):Vector.<Texture>
+		{
+			if(textures[screen])
+				return textures[screen];
+			return null;
+		}
+		public static function setScreenTextures(screen:String, value:Object):void
+		{
+			textures[screen] = value;
+		}
+		
+		public static function getHandbookTextures():Vector.<Texture>
+		{
+			if(!textures["handbook_textures"])
+			{
+				var vecTexture:Vector.<Texture> = new Vector.<Texture>();
+				var leftImage:Image = new Image(_assetsManager.getTexture("page_left"));
+				var rightImage:Image = new Image(_assetsManager.getTexture("page_right"));
+				for(var i:int = 0;i<8;i++)
+				{
+					var render:RenderTexture = new RenderTexture(484, 664, true);
+					var image:Image = new Image(UserCenterManager.getTexture("content_page_"+String(i+1)));
+					image.width = 484;
+					image.height = 664;
+					
+					if(i%2 == 0)		//左
+					{
+						render.draw(leftImage);
+					}
+					else		//右
+					{
+						render.draw(rightImage);
+					}
+					render.draw( image )
+					vecTexture.push( render );
+				}
+				
+				textures["handbook_textures"] = vecTexture;
+			}
+			return textures["handbook_textures"];
+		}
 	}
 }
 
