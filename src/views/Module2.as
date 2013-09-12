@@ -29,7 +29,6 @@ package views
 		private var texturePath:String;
 
 		private var xmlPath:String;
-		private var crtScene:PalaceScene;
 		private var sceneIndex:int;
 
 		public function Module2(am:AssetManager=null)

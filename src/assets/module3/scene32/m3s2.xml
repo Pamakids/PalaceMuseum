@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:4638bd153e4cbf66bfee922f44bf4748$ -->
+<!-- $TexturePacker:SmartUpdate:c54db8722efeb178cdfa4243a7866e51$ -->
 <TextureAtlas imagePath="m3s2.png">
-    <SubTexture name="hint32" x="1061" y="728" width="137" height="58"/>
-    <SubTexture name="light-input" x="1061" y="992" width="474" height="17"/>
-    <SubTexture name="light-out" x="90" y="582" width="493" height="130"/>
-    <SubTexture name="light-prism" x="284" y="714" width="286" height="249"/>
-    <SubTexture name="light-sign" x="90" y="2" width="369" height="578"/>
-    <SubTexture name="prism32" x="1251" y="532" width="96" height="244"/>
-    <SubTexture name="tele-arm" x="1349" y="612" width="128" height="151"/>
-    <SubTexture name="tele-king" x="1535" y="2" width="261" height="329" frameX="-20" frameY="0" frameWidth="281" frameHeight="329"/>
-    <SubTexture name="tele-mask" x="585" y="546" width="474" height="474"/>
-    <SubTexture name="tele-ring-in" x="1005" y="2" width="528" height="528" frameX="0" frameY="0" frameWidth="544" frameHeight="544"/>
-    <SubTexture name="tele-ring-out" x="461" y="2" width="542" height="542" frameX="-2" frameY="-2" frameWidth="544" frameHeight="544"/>
-    <SubTexture name="tele1" x="1758" y="789" width="37" height="126" frameX="0" frameY="0" frameWidth="39" frameHeight="126"/>
-    <SubTexture name="tele2" x="1535" y="428" width="47" height="84"/>
-    <SubTexture name="tele3" x="1535" y="346" width="51" height="80" frameX="0" frameY="0" frameWidth="51" frameHeight="96"/>
-    <SubTexture name="tele32" x="2" y="725" width="280" height="294"/>
-    <SubTexture name="thermo-body" x="1237" y="789" width="110" height="194"/>
-    <SubTexture name="thermo-boiling" x="1061" y="789" width="174" height="201"/>
-    <SubTexture name="thermo-halo" x="1061" y="545" width="184" height="181"/>
-    <SubTexture name="thermo-ice" x="1349" y="532" width="199" height="78"/>
-    <SubTexture name="thermo-light" x="1535" y="333" width="244" height="11" frameX="-3" frameY="-1" frameWidth="250" frameHeight="15"/>
-    <SubTexture name="thermo-line" x="1005" y="532" width="244" height="11" frameX="-3" frameY="-1" frameWidth="250" frameHeight="15"/>
-    <SubTexture name="thermo-mercury" x="1781" y="333" width="6" height="454"/>
-    <SubTexture name="thermo-pan" x="1599" y="850" width="154" height="155" frameX="-11" frameY="-10" frameWidth="184" frameHeight="181"/>
-    <SubTexture name="thermo-snowman" x="1349" y="789" width="131" height="188" frameX="0" frameY="0" frameWidth="133" frameHeight="188"/>
-    <SubTexture name="thermo-tea" x="1482" y="789" width="115" height="160"/>
-    <SubTexture name="thermo" x="2" y="2" width="86" height="721"/>
-    <SubTexture name="thermometer32" x="1599" y="346" width="157" height="502"/>
+    <SubTexture name="hint32" x="1517" y="955" width="137" height="58"/>
+    <SubTexture name="light-input" x="2" y="2" width="1024" height="117"/>
+    <SubTexture name="light-mask" x="2" y="121" width="1024" height="82"/>
+    <SubTexture name="light-out" x="2" y="749" width="688" height="346"/>
+    <SubTexture name="light-prism" x="1703" y="582" width="194" height="169"/>
+    <SubTexture name="light-sign" x="1552" y="2" width="369" height="578"/>
+    <SubTexture name="prism32" x="955" y="735" width="96" height="244"/>
+    <SubTexture name="tele-arm" x="1656" y="927" width="128" height="151"/>
+    <SubTexture name="tele-king" x="692" y="735" width="261" height="329" frameX="-20" frameY="0" frameWidth="281" frameHeight="329"/>
+    <SubTexture name="tele-mask" x="1076" y="2" width="474" height="474"/>
+    <SubTexture name="tele-ring-in" x="546" y="205" width="528" height="528" frameX="0" frameY="0" frameWidth="544" frameHeight="544"/>
+    <SubTexture name="tele-ring-out" x="2" y="205" width="542" height="542" frameX="-2" frameY="-2" frameWidth="544" frameHeight="544"/>
+    <SubTexture name="tele1" x="1028" y="2" width="37" height="126" frameX="0" frameY="0" frameWidth="39" frameHeight="126"/>
+    <SubTexture name="tele2" x="1254" y="970" width="47" height="84"/>
+    <SubTexture name="tele3" x="955" y="981" width="51" height="80" frameX="0" frameY="0" frameWidth="51" frameHeight="96"/>
+    <SubTexture name="tele32" x="1076" y="478" width="280" height="294"/>
+    <SubTexture name="thermo-body" x="1229" y="774" width="110" height="194"/>
+    <SubTexture name="thermo-boiling" x="1053" y="774" width="174" height="201"/>
+    <SubTexture name="thermo-halo" x="1517" y="582" width="184" height="181"/>
+    <SubTexture name="thermo-ice" x="1053" y="977" width="199" height="78"/>
+    <SubTexture name="thermo-light" x="692" y="1079" width="244" height="11" frameX="-3" frameY="-1" frameWidth="250" frameHeight="15"/>
+    <SubTexture name="thermo-line" x="692" y="1066" width="244" height="11" frameX="-3" frameY="-1" frameWidth="250" frameHeight="15"/>
+    <SubTexture name="thermo-mercury" x="2011" y="2" width="6" height="454"/>
+    <SubTexture name="thermo-pan" x="1767" y="753" width="154" height="155" frameX="-11" frameY="-10" frameWidth="184" frameHeight="181"/>
+    <SubTexture name="thermo-snowman" x="1517" y="765" width="131" height="188" frameX="0" frameY="0" frameWidth="133" frameHeight="188"/>
+    <SubTexture name="thermo-tea" x="1650" y="765" width="115" height="160"/>
+    <SubTexture name="thermo" x="1923" y="2" width="86" height="721"/>
+    <SubTexture name="thermometer32" x="1358" y="478" width="157" height="502"/>
 </TextureAtlas>

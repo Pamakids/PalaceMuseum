@@ -4,6 +4,8 @@ package views.global
 
 	import flash.display.Bitmap;
 
+	import controllers.MC;
+
 	import feathers.controls.Button;
 
 	import starling.display.Image;
@@ -24,13 +26,16 @@ package views.global
 		{
 			var book:Button=new Button();
 			book.defaultIcon=new Image(Texture.fromBitmap(b));
-			book.addEventListener(Event.TRIGGERED, bookÇlickedHandler);
+			book.addEventListener(Event.TRIGGERED, bookClickedHandler);
 			addChild(book);
 		}
 
-		private function bookÇlickedHandler():void
+		private function bookClickedHandler():void
 		{
-			UserCenterManager.showUserCenter();
+			var index:int=-1;
+			if (MC.instance.crtModule && MC.instance.crtModule.crtScene)
+				index=MC.instance.crtModule.crtScene.crtKnowledgeIndex;
+			UserCenterManager.showUserCenter(index);
 		}
 
 		public static var parent:Sprite;
