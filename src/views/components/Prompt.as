@@ -9,6 +9,7 @@ package views.components
 
 	import feathers.controls.Label;
 	import feathers.controls.TextArea;
+	import feathers.text.BitmapFontTextFormat;
 
 	import models.FontVo;
 
@@ -60,11 +61,11 @@ package views.components
 				if (!contentImage)
 				{
 					var label:Label=new Label();
-					label.width=bgImage.width - 10;
-					label.height=bgImage.height - 10;
-					label.textRendererProperties.textFormat=new TextFormat(FontVo.PALACE_FONT, 20, 0x561a1a);
+					label.textRendererProperties.textFormat=new BitmapFontTextFormat(FontVo.PALACE_FONT, 20, 0x561a1a);
+					label.textRendererProperties.textFormat.wordWrap;
 					label.textRendererProperties.embedFonts=true;
 					label.text=content;
+					label.validate();
 					addChild(label);
 					label.x=(bgImage.width - label.width) / 2;
 					label.y=(bgImage.height - label.height) / 2;

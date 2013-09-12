@@ -19,6 +19,7 @@ package views.components.base
 	public class PalaceScene extends Container
 	{
 		protected var assets:AssetManager;
+		public var crtKnowledgeIndex:int=-1;
 
 		public function PalaceScene(am:AssetManager=null)
 		{
