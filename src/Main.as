@@ -2,14 +2,15 @@ package
 {
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
-	
+
 	import controllers.MC;
-	
+
 	import models.Const;
-	
+	import models.FontVo;
+
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
-	
+
 	import views.components.base.Container;
 	import views.global.Map;
 	import views.global.userCenter.UserCenterManager;
@@ -17,10 +18,12 @@ package
 	public class Main extends Container
 	{
 		private var testingModule:Sprite;
-		private var testingModuleClass:Class=Map;
+		private var testingModuleClass:Class;
 
 		public function Main()
 		{
+			new FontVo().registerFont();
+
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
@@ -28,9 +31,9 @@ package
 
 		override protected function init():void
 		{
-			testUserCenter();
+//			testUserCenter();
 			//Map.show();
-			return;
+//			return;
 			if (Capabilities.isDebugger && testingModuleClass)
 			{
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void
