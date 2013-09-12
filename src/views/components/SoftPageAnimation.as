@@ -134,7 +134,7 @@ package views.components
 		 * @param value
 		 * @param _currentPage
 		 */		
-		public function setTextures(value:Vector.<Texture>, currentPage:int=-1):void
+		private function setTextures(value:Vector.<Texture>, currentPage:int=-1):void
 		{
 			if(_textures && _textures == value)
 				return;
@@ -148,6 +148,12 @@ package views.components
 				this._currentPage = currentPage;
 		}
 		
+		public function reSetTextures(value:Vector.<Texture>, currentPage:int = -1):void
+		{
+			setTextures(value, currentPage);
+			createFixedPage(_textures[_currentPage*2], _textures[_currentPage*2+1]);
+		}
+		
 		/**
 		 * 临时插入或修改纹理序列的方法
 		 * @param startIndex
@@ -156,14 +162,26 @@ package views.components
 		 */		
 		public function spliceTextures(startIndex:Number, deleteCount:Number=0, currentPage:int=-1, ...items):void
 		{
-			for (var i:int = items.length-1; i>=0; i++)
+			for (var i:int = items.length-1; i>=0; i--)
 			{
 				if(!(items[i] is Texture))
 					items.splice(i,1);
 			}
-			this._textures.splice(startIndex, deleteCount, items);
 			
-			if(_currentPage >= 0)
+			//拼接纹理集
+			var temp1:Vector.<Texture> = _textures.slice(0, startIndex);
+			var temp2:Vector.<Texture> = _textures.slice(startIndex+deleteCount);
+			for(i = 0;i<items.length;i++)
+			{
+				temp1[startIndex+i] = items[i];
+			}
+			for(i=0;i<temp2.length;i++)
+			{
+				temp1[startIndex+deleteCount+i] = temp2[i];
+			}
+			_textures = temp1;
+			
+			if(currentPage >= 0)
 				this._currentPage = currentPage;
 			createFixedPage(_textures[_currentPage*2], _textures[_currentPage*2+1]);
 		}
