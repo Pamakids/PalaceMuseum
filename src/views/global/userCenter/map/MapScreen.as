@@ -16,6 +16,7 @@ package views.global.userCenter.map
 	
 	import views.global.Map;
 	import views.global.userCenter.IUserCenterScreen;
+	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
 
 	/**
@@ -36,17 +37,16 @@ package views.global.userCenter.map
 		override protected function initialize():void
 		{
 			initContainer();
-			initMapButtonTexture();
 			initMapButton();
 			initCacheImage();
-			initScreenTextures();
+//			initScreenTextures();
 		}
 		
 		private function initContainer():void
 		{
-			var image:Image = new Image(UserCenterManager.assetsManager.getTexture("page_left"));
+			var image:Image = new Image(UserCenterManager.getTexture("page_left"));
 			this.addChild( image );
-			image = new Image(UserCenterManager.assetsManager.getTexture("page_right"));
+			image = new Image(UserCenterManager.getTexture("page_right"));
 			this.addChild( image );
 			image.x = this.viewWidth/2;
 		}
@@ -66,6 +66,9 @@ package views.global.userCenter.map
 		
 		private function initMapButton():void
 		{
+			var texture:Texture = UserCenterManager.getTexture("mapBG");
+			mapTexture = Texture.fromTexture( texture, new Rectangle(0, 0, texture.width, texture.height/4));
+			
 			mapButton=new Button();
 			mapButton.defaultSkin=new Image(mapTexture);
 			mapButton.x=70;
@@ -75,11 +78,6 @@ package views.global.userCenter.map
 			mapButton.addEventListener(Event.TRIGGERED, onTriggered);
 		}
 		
-		private function initMapButtonTexture():void
-		{
-			var texture:Texture = UserCenterManager.assetsManager.getTexture("mapBG");
-			mapTexture = Texture.fromTexture( texture, new Rectangle(0, 0, texture.width, texture.height/4));
-		}
 		
 		private function onTriggered():void
 		{
@@ -114,8 +112,6 @@ package views.global.userCenter.map
 
 		override public function dispose():void
 		{
-//			if(screenTexture)
-//				screenTexture = null;
 			if (mapButton)
 				mapButton.dispose();
 			if (cache)
@@ -125,27 +121,25 @@ package views.global.userCenter.map
 			super.dispose();
 		}
 		
-		private var screenTexture:Vector.<Texture>;
 		public function getScreenTexture():Vector.<Texture>
 		{
-			return screenTexture;
-		}
-		private var texturesInitialized:Boolean = false;
-		public function testTextureInitialized():Boolean
-		{
-			return texturesInitialized;
+			if(UserCenterManager.getScreenTexture(UserCenter.MAP)==null)
+				initScreenTextures();
+			return UserCenterManager.getScreenTexture(UserCenter.MAP);
 		}
 		
 		private function initScreenTextures():void
 		{
-			if(texturesInitialized)
-				return;
-			screenTexture = new Vector.<Texture>(2);
-			var render:RenderTexture = new RenderTexture(viewWidth, viewHeight, true);
-			render.draw( this );
-			screenTexture[0] = Texture.fromTexture( render, new Rectangle( 0, 0, viewWidth/2, viewHeight) );
-			screenTexture[1] = Texture.fromTexture( render, new Rectangle( viewWidth/2, 0, viewWidth/2, viewHeight) );
-			texturesInitialized = true;
+			var sts:Vector.<Texture> = UserCenterManager.getScreenTexture(UserCenter.MAP);
+			if(!sts)
+			{
+				var render:RenderTexture = new RenderTexture(viewWidth, viewHeight, true);
+				render.draw( this );
+				sts = new Vector.<Texture>(2);
+				sts[0] = Texture.fromTexture( render, new Rectangle( 0, 0, viewWidth/2, viewHeight) );
+				sts[1] = Texture.fromTexture( render, new Rectangle( viewWidth/2, 0, viewWidth/2, viewHeight) );
+				UserCenterManager.setScreenTextures(UserCenter.MAP, sts);
+			}
 		}
 	}
 }
