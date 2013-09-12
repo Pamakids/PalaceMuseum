@@ -14,14 +14,12 @@ package
 
 	import starling.core.Starling;
 
-	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x333333")]
+	[SWF(width="1024", height="768", frameRate="60", backgroundColor="0x333333")]
 	public class PalaceMuseum extends Sprite
 	{
 		public function PalaceMuseum()
 		{
 			TweenPlugin.activate([ShakeEffect]);
-
-			new FontVo().registerFont();
 
 			var scale:Number=DPIUtil.getDPIScale();
 			stage.align=StageAlign.TOP_LEFT;

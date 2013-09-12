@@ -13,6 +13,7 @@ package controllers
 
 	import views.Module1;
 	import views.Module2;
+	import views.Module3;
 	import views.components.Prompt;
 	import views.components.base.PalaceModule;
 	import views.global.Map;
@@ -38,11 +39,11 @@ package controllers
 
 		private var _moduleIndex:int;
 		private var contentLayer:Sprite;
-		private var crtModule:PalaceModule;
+		public var crtModule:PalaceModule;
 		private var currentModule:PalaceModule;
 
 		private var main:Main;
-		private var modules:Array=[Module1, Module2];
+		private var modules:Array=[Module1, Module2, Module3];
 
 		public var stage:Stage;
 
@@ -83,19 +84,19 @@ package controllers
 		{
 			if (currentModule)
 				currentModule.visible=false;
-			if (value != _moduleIndex)
-			{
-				DC.instance.completeModule();
-				Map.show(function(status:int):void
-				{
-					if (!status)
-					{
-						_moduleIndex=value;
-						showModule();
-					}
-				}, _moduleIndex, value);
-			}
-			else
+//			if (value != _moduleIndex)
+//			{
+//				DC.instance.completeModule();
+//				Map.show(function(status:int):void
+//				{
+//					if (!status)
+//					{
+//						_moduleIndex=value;
+//						showModule();
+//					}
+//				}, _moduleIndex, value);
+//			}
+//			else
 			{
 				_moduleIndex=value;
 				showModule();

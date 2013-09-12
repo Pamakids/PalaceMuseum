@@ -17,6 +17,7 @@ package views.components.base
 		public var moduleName:String;
 		protected var assetManager:AssetManager;
 		protected var autoDispose:Boolean=true;
+		public var crtScene:PalaceScene;
 
 		public function PalaceModule(am:AssetManager=null, width:Number=0, height:Number=0)
 		{

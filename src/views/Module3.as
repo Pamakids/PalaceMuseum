@@ -19,7 +19,7 @@ package views
 
 	public class Module3 extends PalaceModule
 	{
-		private var sceneArr:Array=[Scene31];
+		private var sceneArr:Array=[Scene32];
 
 		private var xml:XML;
 
@@ -28,7 +28,6 @@ package views
 		private var texturePath:String;
 
 		private var xmlPath:String;
-		private var crtScene:PalaceScene;
 		private var sceneIndex:int;
 
 		public function Module3(am:AssetManager=null)

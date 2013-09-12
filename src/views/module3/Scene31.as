@@ -207,8 +207,8 @@ package views.module3
 			bigBook=new Sprite();
 			bigBook.addChild(getImage("book-big"));
 			var close:ElasticButton=new ElasticButton(getImage("button_close"));
-			close.x=850;
-			close.y=50;
+			close.x=840;
+			close.y=55;
 			bigBook.addChild(close);
 			bigBook.x=46;
 			bigBook.y=2;
