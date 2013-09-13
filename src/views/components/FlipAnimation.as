@@ -2,17 +2,17 @@ package views.components
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-
+	
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
-
+	
 	import views.components.base.Container;
 
 	[Event(name="completed", type="starling.events.Event")]
@@ -156,6 +156,16 @@ package views.components
 			}, onUpdate: function():void
 			{
 				flipingImage=getImage();
+				
+				//根据temp值替换纹理材质
+				if(backcover)
+				{
+					if(temp > 0)		//反面
+						flipingImage.texture = backcover;
+					else
+						flipingImage.texture = textures[animationIndex];
+				}
+					
 				flipingImage.location=temp;
 				if (temp > 0)
 				{
@@ -231,5 +241,7 @@ package views.components
 		private var animationIndex:int;
 		public var temp:Number=0;
 		private var flipingImage:FlipImage;
+		
+		public var backcover:Texture;
 	}
 }

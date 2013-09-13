@@ -44,11 +44,9 @@ package views.global.userCenter.map
 		
 		private function initContainer():void
 		{
-			var image:Image = new Image(UserCenterManager.getTexture("page_left"));
+			var image:Image = new Image(UserCenterManager.getTexture("background_map"));
 			this.addChild( image );
-			image = new Image(UserCenterManager.getTexture("page_right"));
-			this.addChild( image );
-			image.x = this.viewWidth/2;
+			image.touchable = false;
 		}
 		
 		public var viewWidth:Number;
