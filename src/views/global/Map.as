@@ -3,19 +3,19 @@ package views.global
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.pamakids.manager.LoadManager;
-
+	
 	import flash.display.Bitmap;
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	import controllers.MC;
-
+	
 	import feathers.controls.Button;
-
+	
 	import models.Const;
 	import models.SOService;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -23,9 +23,10 @@ package views.global
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.FlipAnimation;
 	import views.components.base.PalaceModule;
+	import views.global.userCenter.UserCenterManager;
 
 	public class Map extends PalaceModule
 	{
@@ -129,7 +130,8 @@ package views.global
 
 		private function bgLoadedHandler(b:Bitmap):void
 		{
-			flipAnimation=new FlipAnimation(b, 4, 2);
+			flipAnimation=new FlipAnimation(b, 4, 5);
+			flipAnimation.backcover = UserCenterManager.getTexture("page_left");
 			flipAnimation.addEventListener('completed', flipedHandler);
 			flipAnimation.width=width;
 			flipAnimation.height=height;
