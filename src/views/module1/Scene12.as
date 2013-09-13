@@ -73,6 +73,7 @@ package views.module1
 		public function Scene12(am:AssetManager)
 		{
 			super(am);
+			crtKnowledgeIndex=1;
 		}
 
 		override protected function init():void
@@ -565,8 +566,8 @@ package views.module1
 			var tc:Touch=e.getTouch(stage, TouchPhase.BEGAN);
 			if (tc)
 			{
+				crtKnowledgeIndex=2;
 				box.removeEventListener(TouchEvent.TOUCH, onClickBox);
-
 				var quiz:ClothPuzzle=new ClothPuzzle(assets);
 
 				var sx:Number=boxHolder.x + 50;
@@ -605,7 +606,7 @@ package views.module1
 //				lionHint.callback=nextMission;
 //				lionHint.show();
 				opened=true;
-
+				crtKnowledgeIndex=3;
 				TweenLite.delayedCall(2, function():void
 				{
 					showLionHint("hint-bg-2", "hint-gamestart", nextMission);
