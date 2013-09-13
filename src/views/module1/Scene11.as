@@ -3,11 +3,11 @@ package views.module1
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.pamakids.palace.utils.SPUtils;
-
+	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -15,7 +15,7 @@ package views.module1
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 
@@ -394,6 +394,9 @@ package views.module1
 				}
 				case TouchPhase.ENDED:
 				{
+//					var point:Point = tc.getLocation(this);
+//					Prompt.show(point.x, point.y, "hint3", "位图字体位图字体", 5);
+					
 					dpt=null;
 					break;
 				}

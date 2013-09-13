@@ -3,16 +3,18 @@ package views.components
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.greensock.easing.Elastic;
-
+	
 	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
-
+	
 	import feathers.controls.Label;
 	import feathers.controls.TextArea;
+	import feathers.controls.text.TextFieldTextRenderer;
+	import feathers.core.FeathersControl;
 	import feathers.text.BitmapFontTextFormat;
-
+	
 	import models.FontVo;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Touch;
@@ -60,15 +62,22 @@ package views.components
 				var contentImage:Image=getImage(content);
 				if (!contentImage)
 				{
-					var label:Label=new Label();
-					label.textRendererProperties.textFormat=new BitmapFontTextFormat(FontVo.PALACE_FONT, 20, 0x561a1a);
-					label.textRendererProperties.textFormat.wordWrap;
-					label.textRendererProperties.embedFonts=true;
-					label.text=content;
-					label.validate();
-					addChild(label);
-					label.x=(bgImage.width - label.width) / 2;
-					label.y=(bgImage.height - label.height) / 2;
+					var t:TextField = new TextField(bgImage.width, bgImage.height, content, FontVo.PALACE_FONT, 26, 0x561a1a, true);
+					t.x = bgImage.x;
+					t.y = bgImage.y;
+					addChild( t );
+					t.touchable = false;
+					t.hAlign = "center";
+//---------------------------------------------------------------------------------------
+//					var label:Label=new Label();
+//					label.textRendererProperties.textFormat=new BitmapFontTextFormat(FontVo.PALACE_FONT, 20, 0x561a1a);
+//					label.textRendererProperties.textFormat.wordWrap;
+//					label.textRendererProperties.embedFonts=true;
+//					label.text=content;
+//					label.validate();
+//					addChild(label);
+//					label.x=(bgImage.width - label.width) / 2;
+//					label.y=(bgImage.height - label.height) / 2;
 				}
 				else
 				{
@@ -195,10 +204,10 @@ package views.components
 			for each (var am:AssetManager in assetManagers)
 			{
 				texture=am.getTexture(name);
-				if (texture)
-					break;
+				if(texture)
+					return new Image(texture);
 			}
-			return new Image(texture);
+			return null;
 		}
 	}
 }
