@@ -67,7 +67,7 @@ package views.module3.scene32
 			closeBtn.y=60;
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
 
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+//			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 
 		private function onEnterFrame(e:Event):void
@@ -118,17 +118,46 @@ package views.module3.scene32
 
 		private function onRing2Touch(e:TouchEvent):void
 		{
-			var tc:Touch=e.getTouch(ring2, TouchPhase.MOVED);
-			if (tc)
+			var tc:Touch=e.getTouch(ring2);
+			if (!tc)
+				return;
+			var currentPosA:Point=tc.getLocation(this);
+			switch (tc.phase)
 			{
-				var currentPosA:Point=tc.getLocation(this);
-				if (Point.distance(currentPosA, centerPT) < 220)
-					rotateRing(tc, ring1);
-				else
+				case TouchPhase.BEGAN:
 				{
-					rotateRing(tc, ring2);
+					if (Point.distance(currentPosA, centerPT) < 210)
+						actionIndex=0; //move
+					else
+						actionIndex=1; //rotate
+					break;
+				}
+
+				case TouchPhase.MOVED:
+				{
+					if (actionIndex == 0)
+						moveView(tc.getMovement(this));
+					else if (actionIndex == 1)
+						rotateRing(tc, ring2);
+					break;
+				}
+				case TouchPhase.ENDED:
+				{
+					actionIndex=-1
+					break;
+				}
+
+				default:
+				{
+					break;
 				}
 			}
+		}
+
+		private function moveView(pt:Point):void
+		{
+			view.pivotX-=pt.x;
+			view.pivotY-=pt.y;
 		}
 
 		private function rotateRing(tc:Touch, target:Sprite):void
@@ -159,10 +188,10 @@ package views.module3.scene32
 		private function updataBlur():void
 		{
 			var ty:Number=Math.abs(tele3.y / maxY);
-			var rt1:Number=Math.abs(ring1.rotation) * 2 / Math.PI;
+//			var rt1:Number=Math.abs(ring1.rotation) * 2 / Math.PI;
 			var rt2:Number=Math.abs(ring2.rotation) * 2 / Math.PI;
 
-			var blur:Number=Math.abs(ty - rt1 * rt2) * 10;
+			var blur:Number=Math.abs(ty - rt2) * 10;
 			view.blur(blur);
 		}
 
@@ -214,6 +243,8 @@ package views.module3.scene32
 		private var closeBtn:ElasticButton;
 		private var speedX:Number=0;
 		private var speedY:Number=0;
+
+		private var actionIndex:int=-1;
 
 		private function onTeleTouch(e:TouchEvent):void
 		{
