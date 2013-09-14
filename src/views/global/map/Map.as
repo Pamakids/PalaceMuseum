@@ -77,6 +77,7 @@ package views.global.map
 				trace(ratio);
 				if (ratio == 1)
 				{
+					baseData = assetManager.getObject("mapData");
 					king=getImage('king');
 					king.pivotX=king.width / 2;
 					king.pivotY=king.height / 2;
@@ -88,8 +89,6 @@ package views.global.map
 		
 		private function initCloseButton():void
 		{
-			var obj:Object = assetManager.getObject("mapData");
-			trace(obj);
 			var b:Button=new Button();
 			b.defaultSkin=getImage('button_close');
 			addChild(b);
