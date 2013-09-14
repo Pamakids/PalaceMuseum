@@ -14,7 +14,7 @@ package views.global.userCenter.map
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	
-	import views.global.Map;
+	import views.global.map.Map;
 	import views.global.userCenter.IUserCenterScreen;
 	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;

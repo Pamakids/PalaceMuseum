@@ -1,5 +1,6 @@
-package views.global
+package views.global.map
 {
+	import com.adobe.serialization.json.JSON;
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.pamakids.manager.LoadManager;
@@ -28,8 +29,29 @@ package views.global
 	import views.components.base.PalaceModule;
 	import views.global.userCenter.UserCenterManager;
 
+	
+	
+	
 	public class Map extends PalaceModule
 	{
+		/*
+		 * 需求：
+		 * 1. 打开地图时需要了解地图打开的通道：剧情打开 or 手册中打开
+		 * 2. 在剧情过场中打开地图
+		 * 		隐藏标签，
+		 * 		显示小皇帝头像及其所在位置，
+		 * 		有寻路功能
+		 * 		只在第一次打开地图时有翻页动画，其他时间翻页动画省略
+		 * 3. 在手册中打开地图时
+		 * 		小皇帝头像隐藏
+		 * 		无寻路动画
+		 * 		有翻页动画
+		 * 		有已解锁的标签
+		 */
+		
+		private var viewContainer:Sprite;
+		private var baseData:Object;
+		
 		private var flipAnimation:FlipAnimation;
 		/**
 		 * 地图上不同模块或场景对应的区域
@@ -38,6 +60,7 @@ package views.global
 
 		public function Map(from:int=0, to:int=0)
 		{
+			this.viewContainer = new Sprite();
 			this.from=from;
 			this.to=to;
 			areas=[new Rectangle(333, 476, 64, 36), new Rectangle(314, 516, 104, 38)];
@@ -48,26 +71,27 @@ package views.global
 //			if (to || from)
 //				assetManager.enqueue(f);
 //			else
-			assetManager.enqueue('assets/common/button_close.png', f);
+			assetManager.enqueue('assets/common/button_close.png', f, "json/mapData.json");
 			assetManager.loadQueue(function(ratio:Number):void
 			{
 				trace(ratio);
 				if (ratio == 1)
 				{
+					baseData = assetManager.getObject("mapData");
 					king=getImage('king');
 					king.pivotX=king.width / 2;
 					king.pivotY=king.height / 2;
 					initCloseButton();
 				}
 			});
+			
 		}
-
+		
 		private function initCloseButton():void
 		{
 			var b:Button=new Button();
 			b.defaultSkin=getImage('button_close');
 			addChild(b);
-			b.validate();
 			b.addEventListener(Event.TRIGGERED, closeTriggeredHandler);
 			b.x=width - b.width - 10;
 			b.y=10;
@@ -302,3 +326,4 @@ package views.global
 		}
 	}
 }
+
