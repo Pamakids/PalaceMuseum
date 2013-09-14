@@ -16,7 +16,7 @@ package controllers
 	import views.Module3;
 	import views.components.Prompt;
 	import views.components.base.PalaceModule;
-	import views.global.Map;
+	import views.global.map.Map;
 	import views.global.TopBar;
 	import views.global.userCenter.UserCenterManager;
 
