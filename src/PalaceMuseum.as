@@ -10,8 +10,6 @@ package
 
 	import controllers.MC;
 
-	import models.FontVo;
-
 	import starling.core.Starling;
 
 	[SWF(width="1024", height="768", frameRate="60", backgroundColor="0x333333")]

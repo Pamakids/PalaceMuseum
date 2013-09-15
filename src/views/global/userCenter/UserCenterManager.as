@@ -2,9 +2,9 @@ package views.global.userCenter
 {
 	import flash.filesystem.File;
 	import flash.utils.Dictionary;
-	
+
 	import models.SOService;
-	
+
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
@@ -41,7 +41,7 @@ package views.global.userCenter
 			}
 			else
 			{
-				if(!_userCenter)
+				if (!_userCenter)
 					initUserCenter();
 				_userCenterContainer.addChild(_userCenter);
 				_userCenter.showIndex(index);
@@ -51,18 +51,20 @@ package views.global.userCenter
 		/**关闭方法*/
 		public static function closeUserCenter():void
 		{
-			_userCenter.removeFromParent(true);
+			if (_userCenter)
+				_userCenter.removeFromParent(true);
 			_userCenter=null;
 		}
 
 
 		private static var _userCenter:UserCenter;
 		private static var _userDatas:Dictionary;
+
 		private static function initUserCenter():void
 		{
 			//获取用户相关数据
-			_userDatas = new Dictionary(true);
-			_userCenter = new UserCenter();
+			_userDatas=new Dictionary(true);
+			_userCenter=new UserCenter();
 		}
 
 		/**
@@ -125,89 +127,95 @@ package views.global.userCenter
 		{
 			_userCenter.setSize(width, height);
 		}
-		
+
 		/**
 		 * 获取用户中心Tab场景相关数据
 		 * @param screen
-		 * @return 
-		 */		
+		 * @return
+		 */
 		public static function getDatas(screen:String):Array
 		{
-			if(!_userDatas[screen] || testNeedUpdate(screen))
-				_userDatas[screen] = SOService.instance.getSO(screen);
-			if(!_userDatas[screen])
+			if (!_userDatas[screen] || testNeedUpdate(screen))
+				_userDatas[screen]=SOService.instance.getSO(screen);
+			if (!_userDatas[screen])
 			{
-				_userDatas[screen] = [];
-				SOService.instance.setSO( screen, _userDatas[screen] );
+				_userDatas[screen]=[];
+				SOService.instance.setSO(screen, _userDatas[screen]);
 			}
 			return _userDatas[screen];
 		}
-		
+
 		/**
 		 * 检测指定场景数据是否需重新获取
 		 * @param screen
-		 * @return 
-		 */		
-		private static var needUpdateScreens:Array = [];
+		 * @return
+		 */
+		private static var needUpdateScreens:Array=[];
+
 		private static function testNeedUpdate(screen:String):Boolean
 		{
 			return !(needUpdateScreens.indexOf(screen) == -1);
 		}
+
 		public static function setNeedUpdate(screen:String):void
 		{
-			if((needUpdateScreens.indexOf(screen) == -1))
-				needUpdateScreens.push( screen );
+			if ((needUpdateScreens.indexOf(screen) == -1))
+				needUpdateScreens.push(screen);
 		}
-		
-		
+
+
 		public static function getTexture(name:String):Texture
 		{
 			return _assetsManager.getTexture(name);
 		}
-		
-		private static var textures:Dictionary = new Dictionary();
+
+		private static var textures:Dictionary=new Dictionary();
+
 		public static function getScreenTexture(screen:String):Vector.<Texture>
 		{
-			if(textures[screen])
+			if (textures[screen])
 				return textures[screen];
 			return null;
 		}
+
 		public static function setScreenTextures(screen:String, value:Object):void
 		{
-			textures[screen] = value;
+			textures[screen]=value;
 		}
-		
+
 		public static function getHandbookTextures():Vector.<Texture>
 		{
-			if(!textures["handbook_textures"])
+			if (!textures["handbook_textures"])
 			{
-				var vecTexture:Vector.<Texture> = new Vector.<Texture>();
-				var leftImage:Image = new Image(_assetsManager.getTexture("page_left"));
-				var rightImage:Image = new Image(_assetsManager.getTexture("page_right"));
-				for(var i:int = 0;i<8;i++)
+				var vecTexture:Vector.<Texture>=new Vector.<Texture>();
+				var leftImage:Image=new Image(_assetsManager.getTexture("page_left"));
+				var rightImage:Image=new Image(_assetsManager.getTexture("page_right"));
+				for (var i:int=0; i < 8; i++)
 				{
-					var render:RenderTexture = new RenderTexture(484, 664, true);
-					var image:Image = new Image(UserCenterManager.getTexture("content_page_"+String(i+1)));
-					image.width = 484;
-					image.height = 664;
-					
-					if(i%2 == 0)		//左
+					var render:RenderTexture=new RenderTexture(484, 664, true);
+					var image:Image=new Image(UserCenterManager.getTexture("content_page_" + String(i + 1)));
+					image.width=484;
+					image.height=664;
+
+					if (i % 2 == 0) //左
 					{
 						render.draw(leftImage);
 					}
-					else		//右
+					else //右
 					{
 						render.draw(rightImage);
 					}
-					render.draw( image )
-					vecTexture.push( render );
+					render.draw(image)
+					vecTexture.push(render);
 				}
-				
-				textures["handbook_textures"] = vecTexture;
+
+				textures["handbook_textures"]=vecTexture;
 			}
 			return textures["handbook_textures"];
 		}
 	}
 }
 
-class MyClass{}
+class MyClass
+{
+}

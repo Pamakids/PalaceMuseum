@@ -2,17 +2,17 @@ package views.components
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	
+
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
-	
+
 	import views.components.base.Container;
 
 	[Event(name="completed", type="starling.events.Event")]
@@ -65,13 +65,18 @@ package views.components
 				textures[i]=Texture.fromBitmapData(newBD);
 				newBD.dispose();
 			}
+			doScale();
+			bd.dispose();
+		}
+
+		private function doScale():void
+		{
 			if (!horizontal)
 			{
 				width=contentWidth;
 				scaleX=scaleY=.8;
 				x=width * (1 - scaleX) / 2;
 			}
-			bd.dispose();
 		}
 
 		override public function dispose():void
@@ -134,38 +139,21 @@ package views.components
 				}
 				else
 				{
-					if (!horizontal)
-					{
-						height=contentHeight;
-						result.x=width / 2 - contentWidth / 2;
-					}
-					else
-					{
-						width=contentWidth;
-						result.y=height / 2 - contentHeight / 2;
-					}
-					addChild(result);
-					removeSlices();
-					flipingImage=null;
-					result.visible=true;
-					TweenLite.delayedCall(0.5, function():void
-					{
-						dispatchEvent(new Event('completed'));
-					});
+					animationPlayed();
 				}
 			}, onUpdate: function():void
 			{
 				flipingImage=getImage();
-				
+
 				//根据temp值替换纹理材质
-				if(backcover)
+				if (backcover)
 				{
-					if(temp > 0)		//反面
-						flipingImage.texture = backcover;
+					if (temp > 0) //反面
+						flipingImage.texture=backcover;
 					else
-						flipingImage.texture = textures[animationIndex];
+						flipingImage.texture=textures[animationIndex];
 				}
-					
+
 				flipingImage.location=temp;
 				if (temp > 0)
 				{
@@ -194,6 +182,28 @@ package views.components
 			}});
 		}
 
+		public function animationPlayed():void
+		{
+			if (!horizontal)
+			{
+				height=contentHeight;
+				result.x=width / 2 - contentWidth / 2;
+			}
+			else
+			{
+				width=contentWidth;
+				result.y=height / 2 - contentHeight / 2;
+			}
+			addChild(result);
+			removeSlices();
+			flipingImage=null;
+			result.visible=true;
+			TweenLite.delayedCall(0.5, function():void
+			{
+				dispatchEvent(new Event('completed'));
+			});
+		}
+
 		private function removeSlices():void
 		{
 			for each (var im:Image in imageDic)
@@ -212,6 +222,7 @@ package views.components
 			y=0;
 			animationIndex=0;
 			temp=0;
+			doScale();
 			flipImage();
 		}
 
@@ -241,7 +252,7 @@ package views.components
 		private var animationIndex:int;
 		public var temp:Number=0;
 		private var flipingImage:FlipImage;
-		
+
 		public var backcover:Texture;
 	}
 }

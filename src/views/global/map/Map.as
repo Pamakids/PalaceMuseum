@@ -1,22 +1,19 @@
 package views.global.map
 {
-	import com.adobe.serialization.json.JSON;
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.pamakids.manager.LoadManager;
-	
+
 	import flash.display.Bitmap;
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
+
 	import controllers.MC;
-	
-	import feathers.controls.Button;
-	
+
 	import models.Const;
 	import models.SOService;
-	
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -24,14 +21,33 @@ package views.global.map
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-	
+
+	import views.components.ElasticButton;
 	import views.components.FlipAnimation;
 	import views.components.base.PalaceModule;
-	import views.global.userCenter.UserCenterManager;
 
-	
-	
-	
+	/**
+	 * 热点数据格式用map.json的应该就能满足所有需求
+	 * "hotspots": [
+		{
+		  "id": "1", 				//用以记录什么热区被点击，数据分析用
+		  "rect":[333,476,64,36],	//热区的矩形区域，皇帝头像默认居其中
+		  "tip":"这里是乾清宫",		//点击热区后出现的提示文字
+		  "goto":[0,0]  			//点击热区跳转，数组[0]为模块索引MC.instance.moduleIndex，数组[1]为场景索引
+		},
+		{
+		  "id": "2",
+		  "rect":[314,516,104,38],
+		  "tip":"这里是乾清宫2",
+		  "goto":[1,0]
+		}
+	  ],
+	  "path": { 					//路径集合需要包含所有最远点通行的路径，可能几条路径即可涵盖所有点到点，类似地铁路线
+		"p1":[[1,2], [3,4], [5, 6]],//地图上的行动路径，不同最远两点间需要经过的点的集合，所有点是热区矩形的中心
+		"p2":[[2,3], [3,4], [7,8]]  //移动时：1.先判断路径里是否存在两个点;2.如果只有一条路径存在，则直接使用该路径，如果两条路径都存在，则自动选择最近路线
+	  }
+	 * @author mani
+	 */
 	public class Map extends PalaceModule
 	{
 		/*
@@ -48,53 +64,72 @@ package views.global.map
 		 * 		有翻页动画
 		 * 		有已解锁的标签
 		 */
-		
+
 		private var viewContainer:Sprite;
-		private var baseData:Object;
-		
+		private var mapData:Object;
+
 		private var flipAnimation:FlipAnimation;
 		/**
 		 * 地图上不同模块或场景对应的区域
 		 */
-		private var areas:Array;
+		private var hotspots:Array;
 
 		public function Map(from:int=0, to:int=0)
 		{
-			this.viewContainer = new Sprite();
+			this.viewContainer=new Sprite();
 			this.from=from;
 			this.to=to;
-			areas=[new Rectangle(333, 476, 64, 36), new Rectangle(314, 516, 104, 38)];
-			points=[new Point(365, 495), new Point(365, 535)];
+//			hotspots=[new Rectangle(333, 476, 64, 36), new Rectangle(314, 516, 104, 38)];
+//			points=[new Point(365, 495), new Point(365, 535)];
 			super(new AssetManager(), Const.WIDTH, Const.HEIGHT);
-			LoadManager.instance.loadImage('assets/global/mapBG.jpg', bgLoadedHandler);
 			var f:File=File.applicationDirectory.resolvePath('assets/global/map');
-//			if (to || from)
-//				assetManager.enqueue(f);
-//			else
-			assetManager.enqueue('assets/common/button_close.png', f, "json/mapData.json");
+			assetManager.enqueue('assets/common/button_close.png', f, "json/map.json", "assets/global/userCenter/page_left.png");
 			assetManager.loadQueue(function(ratio:Number):void
 			{
 				trace(ratio);
 				if (ratio == 1)
 				{
-					baseData = assetManager.getObject("mapData");
+					LoadManager.instance.loadImage('assets/global/mapBG.jpg', bgLoadedHandler);
+					mapData=assetManager.getObject("map");
+					parseData();
 					king=getImage('king');
 					king.pivotX=king.width / 2;
 					king.pivotY=king.height / 2;
 					initCloseButton();
 				}
 			});
-			
 		}
-		
+
+		private function parseData():void
+		{
+			hotspots=[];
+			points=[];
+			var hp:Array=mapData.hotspots;
+			for each (var hotspot:Object in hp)
+			{
+				var rect:Rectangle=getRectFromArray(hotspot.rect as Array);
+				hotspots.push(rect);
+				points.push(getCenterFromRect(rect));
+			}
+		}
+
+		private function getCenterFromRect(rect:Rectangle):Point
+		{
+			return new Point(rect.x + rect.width / 2, rect.y + rect.height / 2);
+		}
+
+		private function getRectFromArray(arr:Array):Rectangle
+		{
+			return new Rectangle(arr[0], arr[1], arr[2], arr[3]);
+		}
+
 		private function initCloseButton():void
 		{
-			var b:Button=new Button();
-			b.defaultSkin=getImage('button_close');
+			var b:ElasticButton=new ElasticButton(getImage('button_close'));
 			addChild(b);
-			b.addEventListener(Event.TRIGGERED, closeTriggeredHandler);
-			b.x=width - b.width - 10;
-			b.y=10;
+			b.addEventListener(ElasticButton.CLICK, closeTriggeredHandler);
+			b.x=width - b.width / 2 - 10;
+			b.y=b.height / 2 + 10;
 			closeButton=b;
 			closeButton.visible=false;
 		}
@@ -120,7 +155,7 @@ package views.global.map
 			Map.callback=callback;
 			if (map)
 			{
-				map.show(ec);
+				map.show(ec, !(from && to));
 				parent.setChildIndex(map, parent.numChildren - 1);
 			}
 			else
@@ -154,8 +189,8 @@ package views.global.map
 
 		private function bgLoadedHandler(b:Bitmap):void
 		{
-			flipAnimation=new FlipAnimation(b, 4, 5);
-			flipAnimation.backcover = UserCenterManager.getTexture("page_left");
+			flipAnimation=new FlipAnimation(b, 4, 3);
+			flipAnimation.backcover=assetManager.getTexture('page_left');
 			flipAnimation.addEventListener('completed', flipedHandler);
 			flipAnimation.width=width;
 			flipAnimation.height=height;
@@ -230,7 +265,7 @@ package views.global.map
 		private var downY:Number;
 		private var king:Image;
 		private var changing:Boolean;
-		private var closeButton:Button;
+		private var closeButton:ElasticButton;
 
 		private function touchHandler(e:TouchEvent):void
 		{
@@ -262,21 +297,18 @@ package views.global.map
 					{
 						upPoint=flipAnimation.globalToLocal(upPoint);
 						trace('up point:', upPoint);
-						for (var i:int; i < areas.length; i++)
+						for (var i:int; i < hotspots.length; i++)
 						{
-							var r:Rectangle=areas[i];
+							var r:Rectangle=hotspots[i];
 							if (r.contains(upPoint.x, upPoint.y))
 							{
 								if (changing)
 									return;
-//								&& MC.instance.moduleIndex == i
 								if (!SOService.instance.isModuleCompleted(from))
 								{
 									changing=true;
 									from=i;
 									showKing();
-//									TweenPlugin.activate([TransformAroundCenterPlugin]);
-//									king.scaleX=king.scaleY=1.5;
 									king.alpha=0;
 									TweenLite.to(king, 0.8, {alpha: 1, onComplete: function():void
 									{
@@ -298,31 +330,27 @@ package views.global.map
 						}
 					}
 					break;
-//					if (flipAnimation.y > 0)
-//					{
-//						toy=0;
-//						TweenLite.to(flipAnimation, 0.3, {y: toy, ease: Cubic.easeOut});
-//					}
-//					else if (flipAnimation.y < height - flipAnimation.height)
-//					{
-//						toy=height - flipAnimation.height;
-//						TweenLite.to(flipAnimation, 0.3, {y: toy, ease: Cubic.easeOut});
-//					}
-//					break;
 			}
 		}
 
 		private var enableClose:Boolean;
 
-		public function show(ec:Boolean):void
+		/**
+		 * 地图初始化后再次显示地图
+		 * @param ec EnableClose显示关闭按钮
+		 * @param ea EnableAnimation播放动画
+		 */
+		public function show(ec:Boolean, ea:Boolean):void
 		{
 			visible=true;
 			enableClose=ec;
-//			closeButton.visible=ec;
 			TweenLite.killTweensOf(flipAnimation);
 			flipAnimation.y=0;
 			flipAnimation.height=height;
-			flipAnimation.playAnimation();
+			if (ea)
+				flipAnimation.playAnimation();
+			else
+				flipAnimation.animationPlayed();
 		}
 	}
 }
