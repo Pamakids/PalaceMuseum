@@ -89,6 +89,14 @@ package views.module3
 			teleGame=null;
 
 			telePlayed=true;
+
+			checkProcess();
+		}
+
+		private function checkProcess():void
+		{
+			if (telePlayed && prismPlayed && thermoPlayed)
+				dispatchEvent(new Event("gotoNext", true));
 		}
 
 		private function initPrism():void
