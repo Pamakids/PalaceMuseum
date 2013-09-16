@@ -4,14 +4,7 @@ package views.components
 	import com.greensock.easing.Cubic;
 	import com.greensock.easing.Elastic;
 	
-	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
-	
-	import feathers.controls.Label;
-	import feathers.controls.TextArea;
-	import feathers.controls.text.TextFieldTextRenderer;
-	import feathers.core.FeathersControl;
-	import feathers.text.BitmapFontTextFormat;
 	
 	import models.FontVo;
 	
@@ -50,6 +43,7 @@ package views.components
 
 		public var id:String;
 
+		private var label:TextField;
 		public function Prompt(bg:String, content:String, algin:int=5)
 		{
 			super();
@@ -62,12 +56,12 @@ package views.components
 				var contentImage:Image=getImage(content);
 				if (!contentImage)
 				{
-					var t:TextField = new TextField(bgImage.width, bgImage.height, content, FontVo.PALACE_FONT, 26, 0x561a1a, true);
-					t.x = bgImage.x;
-					t.y = bgImage.y;
-					addChild( t );
-					t.touchable = false;
-					t.hAlign = "center";
+					label = new TextField(bgImage.width, bgImage.height, content, FontVo.PALACE_FONT, 20, 0x561a1a, true);
+					label.x = bgImage.x;
+					label.y = bgImage.y;
+					addChild( label );
+					label.touchable = false;
+					label.hAlign = "center";
 //---------------------------------------------------------------------------------------
 //					var label:Label=new Label();
 //					label.textRendererProperties.textFormat=new BitmapFontTextFormat(FontVo.PALACE_FONT, 20, 0x561a1a);
@@ -175,6 +169,8 @@ package views.components
 					prompt.playShow(hideAfter);
 				return null;
 			}
+			if(!background || background.length==0)
+				background = "hint-bg";
 			prompt=new Prompt(background, content, position);
 			prompt.callback=callback;
 			prompt.x=x;
@@ -208,6 +204,15 @@ package views.components
 					return new Image(texture);
 			}
 			return null;
+		}
+		
+		public function reset(x:Number, y:Number, content:String='',hideAfter:Number = 3, callback:Function=null):void
+		{
+			this.x = x;
+			this.y = y;
+			this.label.text = content;
+			this.callback = callback;
+			this.playShow(hideAfter);
 		}
 	}
 }
