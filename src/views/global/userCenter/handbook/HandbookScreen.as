@@ -4,7 +4,6 @@ package views.global.userCenter.handbook
 	
 	import feathers.controls.Screen;
 	
-	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
@@ -29,9 +28,6 @@ package views.global.userCenter.handbook
 		
 		override protected function initialize():void
 		{
-			leftBack = new Image(UserCenterManager.getTexture("page_left"));
-			rightBack = new Image(UserCenterManager.getTexture("page_right"));
-			leftBack.width = rightBack.width = width/2;
 			initUserInfo();
 			initAnimation();
 		}
@@ -43,8 +39,6 @@ package views.global.userCenter.handbook
 		{
 		}
 		private var userinfo:Object;
-		private var leftBack:Image;
-		private var rightBack:Image;
 		
 		override public function dispose():void
 		{
@@ -54,10 +48,6 @@ package views.global.userCenter.handbook
 				animation.removeEventListener(SoftPageAnimation.PAGE_DOWN, turnPage);
 				animation.dispose();
 			}
-			if(leftBack)
-				leftBack.dispose();
-			if(rightBack)
-				rightBack.dispose();
 			super.dispose();
 		}
 		
@@ -75,28 +65,46 @@ package views.global.userCenter.handbook
 		
 		private function turnPage(e:Event):void
 		{
-//			trace(animation.currentPage);
 		}
 		
-		private var vecTextures:Vector.<Texture> = UserCenterManager.getHandbookTextures();
+		private const vecTextures:Vector.<Texture> = UserCenterManager.getHandbookTextures();
 		
 		/**
 		 * 获取该场景纹理
 		 */		
 		public function getScreenTexture():Vector.<Texture>
 		{
-			initScreenTexture();
-			return UserCenterManager.getScreenTexture(UserCenter.HANDBOOK);
+			var ts:Vector.<Texture>;
+			if(animation)
+				ts = UserCenterManager.getHandbookTextures().slice(animation.currentPage*2, (animation.currentPage+1)*2);
+			else
+				ts = UserCenterManager.getHandbookTextures().slice(0,2);
+			return ts;
+//			initScreenTexture();
+//			return UserCenterManager.getScreenTexture(UserCenter.HANDBOOK);
 		}
 		
 		private function initScreenTexture():void
 		{
-			var render:RenderTexture = new RenderTexture(viewWidth, viewHeight, true);
-			render.draw( this );
+//			var render:RenderTexture = new RenderTexture(viewWidth, viewHeight, true);
+//			render.draw( this );
 			var ts:Vector.<Texture> = new Vector.<Texture>(2);
-			ts[0] = Texture.fromTexture( render, new Rectangle( 0, 0, viewWidth/2, viewHeight) );
-			ts[1] = Texture.fromTexture( render, new Rectangle( viewWidth/2, 0, viewWidth/2, viewHeight) );
-			UserCenterManager.setScreenTextures(UserCenter.HANDBOOK, ts);
+//			ts[0] = Texture.fromTexture( render, new Rectangle( 0, 0, viewWidth/2, viewHeight) );
+//			ts[1] = Texture.fromTexture( render, new Rectangle( viewWidth/2, 0, viewWidth/2, viewHeight) );
+//			var textL:Texture;
+//			var textR:Texture;
+			if(animation)
+			{
+				ts[0] = vecTextures[this.animation.currentPage*2];
+				ts[1] = vecTextures[this.animation.currentPage*2+1];
+			}else
+			{
+				ts[0] = vecTextures[0];
+				ts[1] = vecTextures[1];
+			}
+//			ts[0] = Texture.fromTexture(textL, new Rectangle(0, 0, textL.width, textL.height));
+//			ts[1] = Texture.fromTexture(textR, new Rectangle(0, 0, textR.width, textR.height));
+//			UserCenterManager.setScreenTextures(UserCenter.HANDBOOK, ts);
 		}
 		
 		public var viewWidth:Number;

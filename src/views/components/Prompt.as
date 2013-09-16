@@ -206,13 +206,5 @@ package views.components
 			return null;
 		}
 		
-		public function reset(x:Number, y:Number, content:String='',hideAfter:Number = 3, callback:Function=null):void
-		{
-			this.x = x;
-			this.y = y;
-			this.label.text = content;
-			this.callback = callback;
-			this.playShow(hideAfter);
-		}
 	}
 }
