@@ -23,8 +23,6 @@ package
 
 		public function Main()
 		{
-			new FontVo().registerFont();
-
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
