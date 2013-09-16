@@ -214,12 +214,19 @@ package views.global.userCenter
 			if(original == target)	return;
 			//起始页纹理
 			var ts1:Vector.<Texture> = (_navigator.activeScreen as IUserCenterScreen).getScreenTexture();
+			//目标页
 			var ts2:Vector.<Texture>;
+			if(target == 2)
+				ts2 = UserCenterManager.getHandbookTextures().slice(0,2);
+			else
+				ts2 = UserCenterManager.getScreenTexture( screenNames[target] );
+			
 			var ts:Vector.<Texture>;
 			var start:int;
 			var end:int;
 			
-			if(!UserCenterManager.getScreenTexture( screenNames[target] ) || target == 2)
+			if(!ts2)
+//			if(!UserCenterManager.getScreenTexture( screenNames[target] ) || target == 2)
 			{
 				softBookAnimation.visible = true;
 				_navigator.showScreen(screenNames[target]);
@@ -248,7 +255,6 @@ package views.global.userCenter
 			}
 			else
 			{
-				ts2 = UserCenterManager.getScreenTexture( screenNames[target] );		//目标页纹理
 				ts = new Vector.<Texture>(4);
 				if(original > target)
 				{

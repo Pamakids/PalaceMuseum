@@ -287,8 +287,7 @@ package views.global.map
 					downY=flipAnimation.y;
 					break;
 				case TouchPhase.MOVED:
-					if(!downPoint)
-						return;
+					if(!downPoint)	return;
 					toy=p.y - downPoint.y;
 					var yv:Number=downY + toy / scale;
 					if (yv > 0)
@@ -298,6 +297,7 @@ package views.global.map
 					flipAnimation.y=yv;
 					break;
 				case TouchPhase.ENDED:
+					if(!downPoint)	return;
 					var upPoint:Point=new Point(t.globalX, t.globalY);
 					var distance:Number=Point.distance(downPoint, upPoint) / scale;
 					if (distance < 10)
