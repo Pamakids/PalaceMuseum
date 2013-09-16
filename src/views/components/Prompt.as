@@ -3,18 +3,11 @@ package views.components
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.greensock.easing.Elastic;
-	
-	import flash.text.TextFormat;
+
 	import flash.utils.Dictionary;
-	
-	import feathers.controls.Label;
-	import feathers.controls.TextArea;
-	import feathers.controls.text.TextFieldTextRenderer;
-	import feathers.core.FeathersControl;
-	import feathers.text.BitmapFontTextFormat;
-	
+
 	import models.FontVo;
-	
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Touch;
@@ -50,7 +43,7 @@ package views.components
 
 		public var id:String;
 
-		public function Prompt(bg:String, content:String, algin:int=5)
+		public function Prompt(bg:String, content:String, algin:int=5, fontSize=26)
 		{
 			super();
 			var bgImage:Image=getImage(bg);
@@ -62,12 +55,12 @@ package views.components
 				var contentImage:Image=getImage(content);
 				if (!contentImage)
 				{
-					var t:TextField = new TextField(bgImage.width, bgImage.height, content, FontVo.PALACE_FONT, 26, 0x561a1a, true);
-					t.x = bgImage.x;
-					t.y = bgImage.y;
-					addChild( t );
-					t.touchable = false;
-					t.hAlign = "center";
+					var t:TextField=new TextField(bgImage.width, bgImage.height, content, FontVo.PALACE_FONT, fontSize, 0x561a1a, true);
+					t.x=bgImage.x;
+					t.y=bgImage.y;
+					addChild(t);
+					t.touchable=false;
+					t.hAlign="center";
 //---------------------------------------------------------------------------------------
 //					var label:Label=new Label();
 //					label.textRendererProperties.textFormat=new BitmapFontTextFormat(FontVo.PALACE_FONT, 20, 0x561a1a);
@@ -163,7 +156,7 @@ package views.components
 		 * @return
 		 *
 		 */
-		public static function show(x:Number, y:Number, background:String, content:String='', position:int=5, hideAfter:Number=3, callback:Function=null, parentSprite:Sprite=null, forceShow:Boolean=false):Prompt
+		public static function show(x:Number, y:Number, background:String, content:String='', position:int=5, hideAfter:Number=3, callback:Function=null, parentSprite:Sprite=null, forceShow:Boolean=false, fontSize:int=26):Prompt
 		{
 			var id:String=content ? content : background;
 			var prompt:Prompt=promptDic[id + x + y];
@@ -175,7 +168,7 @@ package views.components
 					prompt.playShow(hideAfter);
 				return null;
 			}
-			prompt=new Prompt(background, content, position);
+			prompt=new Prompt(background, content, position, fontSize);
 			prompt.callback=callback;
 			prompt.x=x;
 			prompt.y=y;
@@ -204,7 +197,7 @@ package views.components
 			for each (var am:AssetManager in assetManagers)
 			{
 				texture=am.getTexture(name);
-				if(texture)
+				if (texture)
 					return new Image(texture);
 			}
 			return null;

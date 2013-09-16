@@ -193,10 +193,9 @@ package views.module3
 			}
 			else
 			{
-				var pt:Point=new Point(book.x + book.width / 2, book.y + book.height / 2);
 				var pr:Sprite=book.parent as Sprite;
-				var ptg:Point=pr.localToGlobal(pt);
-				Prompt.show(ptg.x, ptg.y, "hint-bg", "hint31-wrong", 1);
+				var pt:Point=new Point(book.x + book.width / 2 + pr.x, book.y + book.height / 2);
+				Prompt.show(pt.x, pt.y, "hint-bg", "hint31-wrong", 1);
 			}
 			book.removeEventListener(TouchEvent.TOUCH, onBookTouch);
 			probability+=.2;
