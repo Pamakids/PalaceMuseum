@@ -62,6 +62,11 @@ package views.module1.scene3
 //			pivotY=bg.height / 2;
 		}
 
+		override public function dispose():void
+		{
+			assets=null;
+		}
+
 		private function onCloseTouch(e:TouchEvent):void
 		{
 			if (ended)

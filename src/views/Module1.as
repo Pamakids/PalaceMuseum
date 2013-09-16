@@ -1,6 +1,5 @@
 package views
 {
-	import com.greensock.TweenLite;
 	import com.pamakids.palace.utils.StringUtils;
 
 	import flash.filesystem.File;
@@ -14,7 +13,6 @@ package views
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceModule;
-	import views.components.base.PalaceScene;
 	import views.module1.Scene11;
 	import views.module1.Scene12;
 	import views.module1.Scene13;

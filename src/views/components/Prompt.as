@@ -3,11 +3,11 @@ package views.components
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.greensock.easing.Elastic;
-	
+
 	import flash.utils.Dictionary;
-	
+
 	import models.FontVo;
-	
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Touch;
@@ -44,6 +44,7 @@ package views.components
 		public var id:String;
 
 		private var label:TextField;
+
 		public function Prompt(bg:String, content:String, algin:int=5)
 		{
 			super();
@@ -56,12 +57,12 @@ package views.components
 				var contentImage:Image=getImage(content);
 				if (!contentImage)
 				{
-					label = new TextField(bgImage.width, bgImage.height, content, FontVo.PALACE_FONT, 20, 0x561a1a, true);
-					label.x = bgImage.x;
-					label.y = bgImage.y;
-					addChild( label );
-					label.touchable = false;
-					label.hAlign = "center";
+					label=new TextField(bgImage.width, bgImage.height, content, FontVo.PALACE_FONT, 16, 0x561a1a, true);
+					label.x=bgImage.x;
+					label.y=bgImage.y;
+					addChild(label);
+					label.touchable=false;
+					label.hAlign="center";
 //---------------------------------------------------------------------------------------
 //					var label:Label=new Label();
 //					label.textRendererProperties.textFormat=new BitmapFontTextFormat(FontVo.PALACE_FONT, 20, 0x561a1a);
@@ -169,8 +170,8 @@ package views.components
 					prompt.playShow(hideAfter);
 				return null;
 			}
-			if(!background || background.length==0)
-				background = "hint-bg";
+			if (!background || background.length == 0)
+				background="hint-bg";
 			prompt=new Prompt(background, content, position);
 			prompt.callback=callback;
 			prompt.x=x;
@@ -200,11 +201,11 @@ package views.components
 			for each (var am:AssetManager in assetManagers)
 			{
 				texture=am.getTexture(name);
-				if(texture)
+				if (texture)
 					return new Image(texture);
 			}
 			return null;
 		}
-		
+
 	}
 }

@@ -3,17 +3,17 @@ package views.global.map
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.pamakids.manager.LoadManager;
-	
+
 	import flash.display.Bitmap;
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
+
 	import controllers.MC;
-	
+
 	import models.Const;
 	import models.SOService;
-	
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -21,7 +21,7 @@ package views.global.map
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.ElasticButton;
 	import views.components.FlipAnimation;
 	import views.components.Prompt;
@@ -96,7 +96,6 @@ package views.global.map
 					king=getImage('king');
 					king.pivotX=king.width / 2;
 					king.pivotY=king.height / 2;
-					initCloseButton();
 					Prompt.addAssetManager(assetManager);
 				}
 			});
@@ -181,6 +180,7 @@ package views.global.map
 //			this.removeFromParent(true);
 			stage.removeEventListener(TouchEvent.TOUCH, touchHandler);
 			visible=false;
+			closeButton.visible=false;
 			changing=false;
 			if (!callback)
 				return;
@@ -199,6 +199,8 @@ package views.global.map
 			flipAnimation.width=width;
 			flipAnimation.height=height;
 			addChild(flipAnimation);
+
+			initCloseButton();
 		}
 
 		override public function dispose():void
@@ -211,13 +213,13 @@ package views.global.map
 
 		private function showKing():void
 		{
-			positionKing(from);
+//			positionKing(from);
 			flipAnimation.addChild(king);
 		}
 
-		private function positionKing(index:int):void
+		private function positionKing(kingPoint:Point):void
 		{
-			var kingPoint:Point=points[index];
+//			var kingPoint:Point=points[index];
 			king.x=kingPoint.x;
 			king.y=kingPoint.y;
 		}
@@ -287,7 +289,8 @@ package views.global.map
 					downY=flipAnimation.y;
 					break;
 				case TouchPhase.MOVED:
-					if(!downPoint)	return;
+					if (!downPoint)
+						return;
 					toy=p.y - downPoint.y;
 					var yv:Number=downY + toy / scale;
 					if (yv > 0)
@@ -297,11 +300,14 @@ package views.global.map
 					flipAnimation.y=yv;
 					break;
 				case TouchPhase.ENDED:
-					if(!downPoint)	return;
+					if (!downPoint)
+						return;
 					var upPoint:Point=new Point(t.globalX, t.globalY);
 					var distance:Number=Point.distance(downPoint, upPoint) / scale;
 					if (distance < 10)
 					{
+						if (changing)
+							return;
 						upPoint=flipAnimation.globalToLocal(upPoint);
 						trace('up point:', upPoint);
 						for (var i:int; i < hotspots.length; i++)
@@ -309,16 +315,18 @@ package views.global.map
 							var r:Rectangle=hotspots[i];
 							if (r.contains(upPoint.x, upPoint.y))
 							{
-								if (changing)
-									return;
-								item = mapData.hotspots[i];
-								var moduleIndex:int = item.goTo[0];
-								showHint(r.right, r.top, item.tip, 1, flipAnimation, function():void{
-									if(moduleIndex == -1)	return;
+								item=mapData.hotspots[i];
+								trace('Contains:', item);
+								var moduleIndex:int=item.goTo[0];
+								showHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, function():void
+								{
+									if (moduleIndex == -1)
+										return;
 									if (!SOService.instance.isModuleCompleted(from))
 									{
 										changing=true;
 										from=moduleIndex;
+										positionKing(getCenterFromRect(r));
 										showKing();
 										king.alpha=0;
 										TweenLite.to(king, 0.8, {alpha: 1, onComplete: function():void
@@ -345,16 +353,16 @@ package views.global.map
 			}
 		}
 
-		
+
 		private var p:Prompt;
-		
+
 		private function showHint(_x:Number, _y:Number, _content:String, reg:int, _parent:Sprite, callbakc:Function=null):void
 		{
 			if (p)
 				p.playHide();
 			p=Prompt.show(_x, _y, "hint-bg", _content, reg, 2, callbakc, _parent);
 		}
-		
+
 		private var enableClose:Boolean;
 
 		/**
