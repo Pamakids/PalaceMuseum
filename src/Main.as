@@ -23,8 +23,6 @@ package
 
 		public function Main()
 		{
-			new FontVo().registerFont();
-
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
@@ -88,7 +86,7 @@ package
 //			label.x = 500;
 //			label.y = 300;
 
-			var t:TextField=new TextField(300, 200, "位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体", FontVo.PALACE_FONT, 26, 0xffffff);
+			var t:TextField=new TextField(300, 200, "位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体", FontVo.PALACE_FONT, 18, 0xffffff);
 			t.hAlign="left";
 			this.addChild(t);
 		}

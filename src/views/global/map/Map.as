@@ -3,17 +3,17 @@ package views.global.map
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.pamakids.manager.LoadManager;
-
+	
 	import flash.display.Bitmap;
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	import controllers.MC;
-
+	
 	import models.Const;
 	import models.SOService;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -21,9 +21,10 @@ package views.global.map
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.ElasticButton;
 	import views.components.FlipAnimation;
+	import views.components.Prompt;
 	import views.components.base.PalaceModule;
 
 	/**
@@ -83,7 +84,7 @@ package views.global.map
 //			points=[new Point(365, 495), new Point(365, 535)];
 			super(new AssetManager(), Const.WIDTH, Const.HEIGHT);
 			var f:File=File.applicationDirectory.resolvePath('assets/global/map');
-			assetManager.enqueue('assets/common/button_close.png', f, "json/map.json", "assets/global/userCenter/page_left.png");
+			assetManager.enqueue('assets/common/button_close.png', f, "json/map.json", "assets/global/userCenter/page_left.png", "assets/common/hint-bg.png");
 			assetManager.loadQueue(function(ratio:Number):void
 			{
 				trace(ratio);
@@ -96,6 +97,7 @@ package views.global.map
 					king.pivotX=king.width / 2;
 					king.pivotY=king.height / 2;
 					initCloseButton();
+					Prompt.addAssetManager(assetManager);
 				}
 			});
 		}
@@ -104,6 +106,7 @@ package views.global.map
 		{
 			hotspots=[];
 			points=[];
+			labels=[];
 			var hp:Array=mapData.hotspots;
 			for each (var hotspot:Object in hp)
 			{
@@ -140,6 +143,7 @@ package views.global.map
 		public var from:int;
 		public var to:int;
 		public var points:Array;
+		private var labels:Array;
 
 		/**
 		 * 显示地图
@@ -270,6 +274,7 @@ package views.global.map
 		private function touchHandler(e:TouchEvent):void
 		{
 			var t:Touch=e.getTouch(stage);
+			var item:Object;
 			if (!t)
 				return;
 			var p:Point=new Point(t.globalX, t.globalY);
@@ -282,6 +287,8 @@ package views.global.map
 					downY=flipAnimation.y;
 					break;
 				case TouchPhase.MOVED:
+					if(!downPoint)
+						return;
 					toy=p.y - downPoint.y;
 					var yv:Number=downY + toy / scale;
 					if (yv > 0)
@@ -304,27 +311,32 @@ package views.global.map
 							{
 								if (changing)
 									return;
-								if (!SOService.instance.isModuleCompleted(from))
-								{
-									changing=true;
-									from=i;
-									showKing();
-									king.alpha=0;
-									TweenLite.to(king, 0.8, {alpha: 1, onComplete: function():void
+								item = mapData.hotspots[i];
+								var moduleIndex:int = item.goTo[0];
+								showHint(r.right, r.top, item.tip, 1, flipAnimation, function():void{
+									if(moduleIndex == -1)	return;
+									if (!SOService.instance.isModuleCompleted(from))
 									{
-										TweenLite.delayedCall(0.8, function():void
+										changing=true;
+										from=moduleIndex;
+										showKing();
+										king.alpha=0;
+										TweenLite.to(king, 0.8, {alpha: 1, onComplete: function():void
 										{
-											clear(2);
-											MC.instance.gotoModule(i);
-										});
-									}});
-								}
-								else if (i != from)
-								{
-									changing=true;
-									to=i;
-									moveKing(2);
-								}
+											TweenLite.delayedCall(0.8, function():void
+											{
+												clear(2);
+												MC.instance.gotoModule(moduleIndex);
+											});
+										}});
+									}
+									else if (moduleIndex != from)
+									{
+										changing=true;
+										to=moduleIndex;
+										moveKing(2);
+									}
+								});
 								break;
 							}
 						}
@@ -333,6 +345,16 @@ package views.global.map
 			}
 		}
 
+		
+		private var p:Prompt;
+		
+		private function showHint(_x:Number, _y:Number, _content:String, reg:int, _parent:Sprite, callbakc:Function=null):void
+		{
+			if (p)
+				p.playHide();
+			p=Prompt.show(_x, _y, "hint-bg", _content, reg, 2, callbakc, _parent);
+		}
+		
 		private var enableClose:Boolean;
 
 		/**
