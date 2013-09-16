@@ -41,6 +41,7 @@ package views.components
 
 		private function onTouch(e:TouchEvent):void
 		{
+			e.stopImmediatePropagation();
 			var tc:Touch=e.getTouch(this);
 			if (!tc)
 				return;

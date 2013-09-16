@@ -46,6 +46,7 @@ package views.module3
 		public function Scene32(am:AssetManager=null)
 		{
 			super(am);
+			crtKnowledgeIndex=6;
 			addChild(getImage("bg32"));
 
 			for (var i:int=0; i < itemNameArr.length; i++)

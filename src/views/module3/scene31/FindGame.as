@@ -18,27 +18,45 @@ package views.module3.scene31
 
 	public class FindGame extends PalaceGame
 	{
+		private var scrArr:Array=["drum", "flute", "crickets"];
+
 		public function FindGame(am:AssetManager=null)
 		{
 			super(am);
 
+			addChild(getImage("gamebg"));
+			var art:Image=getImage("find-bg");
+			art.x=10;
+			art.y=105;
+			addChild(art);
+
+			for (var i:int=0; i < scrArr.length; i++)
+			{
+				var img:Image=getImage(scrArr[i] + "-shadow");
+				img.x=destPosArr[i].x;
+				img.y=destPosArr[i].y;
+				addChild(img);
+				shadowArr.push(img);
+			}
+
 			drum=getImage("drum");
-			drum.x=0;
-			drum.y=0;
-			drum.scaleX=drum.scaleY=1;
+			drum.x=originPosArr[0].x;
+			drum.y=originPosArr[0].y;
+			drum.scaleX=drum.scaleY=36 / drum.width;
 			drum.visible=false;
 			addChild(drum);
 
 			flute=getImage("flute");
-			flute.x=0;
-			flute.y=0;
-			flute.scaleX=flute.scaleY=1;
+			flute.x=originPosArr[1].x;
+			flute.y=originPosArr[1].y;
+			flute.scaleX=flute.scaleY=40 / flute.width;
 			flute.visible=false;
 			addChild(flute);
 
-			bug=getImage("bug");
-			bug.x=0;
-			bug.y=0;
+			bug=getImage("crickets");
+			bug.x=originPosArr[2].x;
+			bug.y=originPosArr[2].y;
+			bug.scaleX=bug.scaleY=55 / 102;
 			addChild(bug);
 			bug.addEventListener(TouchEvent.TOUCH, onBugTouch);
 
@@ -48,7 +66,6 @@ package views.module3.scene31
 			addChild(closeBtn);
 			closeBtn.x=950;
 			closeBtn.y=60;
-			closeBtn.visible=closeBtn.touchable=false;
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
 		}
 
@@ -58,7 +75,7 @@ package views.module3.scene31
 			if (tc)
 			{
 				bug.removeEventListener(TouchEvent.TOUCH, onBugTouch);
-				playBug(new Point());
+				playBug(destPosArr[2]);
 			}
 		}
 
@@ -76,24 +93,35 @@ package views.module3.scene31
 			var pt:Point=tc.getLocation(this);
 			if (rattleDrumArea.containsPoint(pt))
 			{
-				playEff(drum, new Point(), .5);
+				playEff(drum, destPosArr[0]);
 				rattleDrumArea=new Rectangle(-1000, -1000, 0, 0)
 			}
 			else if (fluteArea.containsPoint(pt))
 			{
-				playEff(flute, new Point(), .5);
+				playEff(flute, destPosArr[1]);
 				fluteArea=new Rectangle(-1000, -1000, 0, 0);
 			}
 		}
 
-		private var rattleDrumArea:Rectangle=new Rectangle();
-		private var fluteArea:Rectangle=new Rectangle();
+		private var rattleDrumArea:Rectangle=new Rectangle(308, 208, 36, 95);
+		private var fluteArea:Rectangle=new Rectangle(652, 478, 35, 40);
+		private var originPosArr:Array=[new Point(326, 291), new Point(652, 478), new Point(844, 507)];
+		private var destPosArr:Array=[new Point(133, 23), new Point(35, 9), new Point(251, 16)];
+		private var shadowArr:Array=[];
 
-		private function playEff(img:Image, destPos:Point, destScale:Number):void
+		private function playEff(img:Image, destPos:Point):void
 		{
+			this.setChildIndex(img, this.numChildren - 1);
 			img.visible=true;
 			TweenLite.to(img, .5, {scaleX: 1, scaleY: 1});
 			TweenLite.delayedCall(1, function():void {
+
+				var index:int=destPosArr.indexOf(destPos);
+				var shadow:Image=shadowArr[index] as Image;
+				TweenLite.to(shadow, 1, {alpha: 0});
+
+				var destScale:Number=shadow.width / img.width;
+
 				TweenLite.to(img, .5, {scaleX: destScale, scaleY: destScale,
 						x: destPos.x, y: destPos.y, onComplete: checkResult});
 			});
@@ -101,11 +129,20 @@ package views.module3.scene31
 
 		private function playBug(destPos:Point):void
 		{
-			TweenLite.to(bug, .5, {x: 1024, y: 1, ease: Elastic.easeOut});
-			TweenLite.delayedCall(1, function():void {
+			this.setChildIndex(bug, this.numChildren - 1);
+			var dy:Number=bug.y - 100;
+			TweenLite.to(bug, 1.5, {x: 1024, y: dy, ease: Elastic.easeIn});
+			TweenLite.delayedCall(2, function():void {
 				bug.x=-100;
 				bug.y=-100;
-				TweenLite.to(bug, .5, {x: destPos.x, y: destPos.y, onComplete: checkResult});
+				bug.scaleX=bug.scaleY=1;
+				var index:int=destPosArr.indexOf(destPos);
+				var img:Image=shadowArr[index] as Image;
+				TweenLite.to(img, 1, {alpha: 0});
+				var destScale:Number=img.width / bug.width;
+				TweenLite.to(bug, .5, {x: destPos.x - 5, y: destPos.y - 5, scaleX: destScale, scaleY: destScale,
+						onComplete: checkResult});
+
 			});
 		}
 
@@ -116,8 +153,6 @@ package views.module3.scene31
 		private function checkResult():void
 		{
 			checkCount++;
-			if (checkCount >= 3)
-				closeBtn.visible=closeBtn.touchable=false;
 		}
 
 		private var checkCount:int=0;

@@ -12,6 +12,7 @@ package
 	import starling.events.KeyboardEvent;
 	import starling.text.TextField;
 
+	import views.Module3;
 	import views.components.base.Container;
 	import views.global.map.Map;
 	import views.global.userCenter.UserCenterManager;

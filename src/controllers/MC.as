@@ -39,8 +39,7 @@ package controllers
 
 		private var _moduleIndex:int;
 		private var contentLayer:Sprite;
-		public var crtModule:PalaceModule;
-		private var currentModule:PalaceModule;
+		public var currentModule:PalaceModule;
 
 		private var main:Main;
 		private var modules:Array=[Module1, Module3, Module2];
@@ -109,10 +108,18 @@ package controllers
 			showModule();
 		}
 
-		private function showModule():void
+		public function clearCrtModule():void
 		{
 			if (currentModule)
+			{
 				currentModule.removeFromParent(true);
+				currentModule=null;
+			}
+		}
+
+		private function showModule():void
+		{
+			clearCrtModule();
 			currentModule=new modules[moduleIndex];
 			contentLayer.addChild(currentModule);
 			trace('load new module');

@@ -19,6 +19,7 @@ package views.module3
 	import views.components.Lion;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
+	import views.module3.scene31.FindGame;
 	import views.module3.scene31.JigsawGame;
 
 	public class Scene31 extends PalaceScene
@@ -31,7 +32,7 @@ package views.module3
 		public function Scene31(am:AssetManager=null)
 		{
 			super(am);
-
+			crtKnowledgeIndex=5;
 			addChild(getImage("bg31"));
 
 			addShelfs();
@@ -42,10 +43,10 @@ package views.module3
 			addChild(table);
 			table.touchable=false;
 
-			map=getImage("map31");
-			map.y=291;
-			addChild(map);
-			map.addEventListener(TouchEvent.TOUCH, onMapTouch);
+			can=getImage("can31");
+			can.y=291;
+			addChild(can);
+			can.addEventListener(TouchEvent.TOUCH, onCanTouch);
 
 			var curtainL:Image=getImage("curtain-l");
 			addChild(curtainL);
@@ -55,7 +56,23 @@ package views.module3
 			addChild(curtainR);
 			curtainR.touchable=false;
 
+			map=getImage("map31");
+			map.x=444;
+			map.y=596;
+			addChild(map);
+			map.addEventListener(TouchEvent.TOUCH, onMapTouch);
+
 			playLion();
+		}
+
+		private function onCanTouch(e:TouchEvent):void
+		{
+			if (!ready)
+				return;
+			var tc:Touch=e.getTouch(can, TouchPhase.ENDED);
+			if (tc)
+				if (canArea.containsPoint(tc.getLocation(this)))
+					initFindGame();
 		}
 
 		private function playLion():void
@@ -85,10 +102,9 @@ package views.module3
 				return;
 			var tc:Touch=e.getTouch(map, TouchPhase.ENDED);
 			if (tc)
-				if (mapArea.containsPoint(tc.getLocation(this)))
-					initGame();
+				initGame();
 		}
-		private var mapArea:Rectangle=new Rectangle(55, 423, 105, 331);
+		private var canArea:Rectangle=new Rectangle(55, 423, 105, 331);
 
 		private var dataArrR:Array=[7, 3, 8, 1, 2, 5, 9, 10, 4, 6, 11];
 		private var posArrR:Array=[new Point(99, 48), new Point(243, 72), new Point(107, 194), new Point(242, 184), new Point(373, 207),
@@ -165,6 +181,10 @@ package views.module3
 		private var bookFinded:Boolean;
 
 		private var bigBook:Sprite;
+		private var finded:Boolean;
+		private var findGame:FindGame;
+
+		private var can:Image;
 
 		private function onBookTouch(e:TouchEvent):void
 		{
@@ -223,7 +243,7 @@ package views.module3
 
 		private function sceneOver():void
 		{
-			if (gamePlayed && bookFinded)
+			if (gamePlayed && bookFinded && finded)
 				dispatchEvent(new Event("gotoNext", true));
 		}
 
@@ -243,6 +263,23 @@ package views.module3
 			removeChild(mapGame);
 			mapGame=null;
 			gamePlayed=true;
+			sceneOver();
+		}
+
+		private function initFindGame():void
+		{
+			findGame=new FindGame(assets);
+			findGame.addEventListener("gameOver", onFindGamePlayed)
+			addChild(findGame);
+		}
+
+		private function onFindGamePlayed(e:Event):void
+		{
+			findGame.removeEventListener("gameOver", onFindGamePlayed)
+			findGame.removeChildren();
+			removeChild(mapGame);
+			findGame=null;
+			finded=true;
 			sceneOver();
 		}
 

@@ -43,7 +43,7 @@ package views.components
 
 		public var id:String;
 
-		public function Prompt(bg:String, content:String, algin:int=5, fontSize=26)
+		public function Prompt(bg:String, content:String, algin:int=5, fontSize=20)
 		{
 			super();
 			var bgImage:Image=getImage(bg);
@@ -156,7 +156,7 @@ package views.components
 		 * @return
 		 *
 		 */
-		public static function show(x:Number, y:Number, background:String, content:String='', position:int=5, hideAfter:Number=3, callback:Function=null, parentSprite:Sprite=null, forceShow:Boolean=false, fontSize:int=26):Prompt
+		public static function show(x:Number, y:Number, background:String, content:String='', position:int=5, hideAfter:Number=3, callback:Function=null, parentSprite:Sprite=null, forceShow:Boolean=false, fontSize:int=20):Prompt
 		{
 			var id:String=content ? content : background;
 			var prompt:Prompt=promptDic[id + x + y];

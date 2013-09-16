@@ -29,6 +29,7 @@ package views.module2
 		public function Scene22(am:AssetManager=null)
 		{
 			super(am);
+			crtKnowledgeIndex=8;
 			scale=DPIUtil.getDPIScale();
 
 			addChild(getImage("bg-22"));
