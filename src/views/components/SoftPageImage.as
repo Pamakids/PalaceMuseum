@@ -60,11 +60,7 @@ package views.components
 		override public function dispose():void
 		{
 			_dragPoint = _dragPointCopy = _edgePointCopy = _edgePoint = null;
-			
-			if(anotherTexture)
-				anotherTexture.dispose();
 			anotherTexture = null;
-			
 			super.dispose();
 		}
 		
