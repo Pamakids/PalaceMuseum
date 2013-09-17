@@ -124,6 +124,7 @@ package views.module3.scene31
 		private function addStart():void
 		{
 			addChild(startSP);
+			setChildIndex(closeBtn, numChildren - 1);
 			var gameHint:Image=getImage("jigsaw-name");
 			gameHint.x=160;
 			gameHint.y=100;
@@ -430,6 +431,7 @@ package views.module3.scene31
 		private function initResult(_count:int):void
 		{
 			addChild(endSP);
+			setChildIndex(closeBtn, numChildren - 1);
 			endSP.x=148;
 			endSP.y=-547;
 
@@ -492,6 +494,7 @@ package views.module3.scene31
 		private function initGameBG():void
 		{
 			addChild(gameSP);
+			setChildIndex(closeBtn, numChildren - 1);
 			bgHolder=new Sprite();
 			gameSP.addChild(bgHolder);
 			okHolder=new Sprite();

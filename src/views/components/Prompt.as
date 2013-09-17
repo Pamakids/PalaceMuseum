@@ -8,6 +8,7 @@ package views.components
 
 	import models.FontVo;
 
+	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Touch;
@@ -49,9 +50,7 @@ package views.components
 		{
 			super();
 			var bgImage:Image=getImage(bg);
-			addChild(bgImage);
-			this.pivotX=(bgImage.width >> 1) * ((algin - 1) % 3);
-			this.pivotY=(bgImage.height >> 1) * (2 - int((algin - 1) / 3));
+
 			if (content)
 			{
 				var contentImage:Image=getImage(content);
@@ -82,7 +81,29 @@ package views.components
 				}
 			}
 
+			addChildAt(bgImage, 0);
+
+			this.pivotX=(bgImage.width >> 1) * ((algin - 1) % 3);
+			this.pivotY=(bgImage.height >> 1) * (2 - int((algin - 1) / 3));
+
 			addEventListener(TouchEvent.TOUCH, onTouch);
+		}
+
+		private static function checkLength(length:int):String
+		{
+			if (length < 20)
+				return "";
+			else if (length > 40)
+				return "-large"
+			return "-mid";
+		}
+
+		public static function showTXT(_x:Number, _y:Number, _content:String, _size:int=20, callBack:Function=null, _parent:Sprite=null):Prompt
+		{
+			var bgSize:String=checkLength(_content.length)
+			var bg:String="hint-bg" + bgSize;
+			var delay:int=3 + Math.max(bgSize.length / 2 - 1, 0);
+			return show(_x, _y, bg, _content, 1, delay, callBack, _parent, false, _size);
 		}
 
 		private function initLable(content:String):TextField
