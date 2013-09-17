@@ -33,8 +33,8 @@ package views.global
 		private function bookClickedHandler():void
 		{
 			var index:int=-1;
-			if (MC.instance.crtModule && MC.instance.crtModule.crtScene)
-				index=MC.instance.crtModule.crtScene.crtKnowledgeIndex;
+			if (MC.instance.currentModule && MC.instance.currentModule.crtScene)
+				index=MC.instance.currentModule.crtScene.crtKnowledgeIndex;
 			UserCenterManager.showUserCenter(index);
 		}
 

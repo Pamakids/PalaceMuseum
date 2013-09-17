@@ -113,9 +113,9 @@ package views.global.userCenter
 			_tabBar.direction = TabBar.DIRECTION_HORIZONTAL;
 			_tabBar.selectedIndex = 2;
 			this.addChild( _tabBar );
-			_tabBar.gap = 10;
-			_tabBar.x = 50;
-			_tabBar.y = 30;
+			_tabBar.gap = 2;
+			_tabBar.x = 45;
+			_tabBar.y = 36;
 			_tabBar.addEventListener( Event.CHANGE, tabs_changeHandler );
 		}
 

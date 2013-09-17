@@ -21,16 +21,15 @@ package views.global.userCenter.userInfo
 		
 		override protected function initialize():void
 		{
-			initPages();
-			initScreenTextures();
+			initBackgroundImage();
 		}
 		
-		private function initPages():void
+		
+		private function initBackgroundImage():void
 		{
 			var image:Image = new Image( UserCenterManager.getTexture("page_left"));
 			this.addChild( image );
 			image.touchable = false;
-			
 			image = new Image( UserCenterManager.getTexture("page_right"));
 			this.addChild( image );
 			image.x = width/2;
@@ -39,8 +38,6 @@ package views.global.userCenter.userInfo
 		
 		override public function dispose():void
 		{
-//			if(screenTexture)
-//				screenTexture = null;
 			super.dispose();
 		}
 		

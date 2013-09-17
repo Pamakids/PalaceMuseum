@@ -39,8 +39,7 @@ package controllers
 
 		private var _moduleIndex:int;
 		private var contentLayer:Sprite;
-		public var crtModule:PalaceModule;
-		private var currentModule:PalaceModule;
+		public var currentModule:PalaceModule;
 
 		private var main:Main;
 		private var modules:Array=[Module1, Module2, Module3];
