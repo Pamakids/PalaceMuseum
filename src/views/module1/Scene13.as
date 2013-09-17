@@ -35,8 +35,8 @@ package views.module1
 		public function set gamePlayed(value:Boolean):void
 		{
 			_gamePlayed=value;
-			if (_gamePlayed)
-				TweenLite.delayedCall(5, nextScene);
+			if (_gamePlayed && _clockMatched)
+				TweenLite.delayedCall(7, nextScene);
 		}
 
 		private function nextScene():void
@@ -56,8 +56,8 @@ package views.module1
 		public function set clockMatched(value:Boolean):void
 		{
 			_clockMatched=value;
-			if (_clockMatched)
-				TweenLite.delayedCall(5, nextScene);
+			if (_gamePlayed && _clockMatched)
+				TweenLite.delayedCall(7, nextScene);
 		}
 
 
@@ -162,9 +162,9 @@ package views.module1
 		{
 			if (!clockMatched)
 			{
-				clockMatched=true;
 				TweenLite.to(clock, .5, {scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete: function():void
 				{
+					clockMatched=true;
 					PopUpManager.removePopUp(clock);
 					addCard("card-clock");
 				}});
@@ -232,6 +232,7 @@ package views.module1
 			{
 				TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
 				{
+					gamePlayed=true;
 					PopUpManager.removePopUp(gameHolder);
 					addCard("card-plaque")
 				}});
@@ -243,7 +244,6 @@ package views.module1
 					PopUpManager.removePopUp(gameHolder);
 				}});
 			}
-			gamePlayed=true;
 		}
 
 		private function addCard(src:String):void

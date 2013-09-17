@@ -98,7 +98,8 @@ package views.module3
 		{
 			if (p)
 				p.playHide();
-			p=Prompt.show(_x, _y, "hint-bg-big", content, 1, 5, null, this, false, 18);
+			p=Prompt.showTXT(_x, _y, content, 18, null, this);
+//			p=Prompt.show(_x, _y, "hint-bg-big", content, 1, 5, null, this, false, 18);
 		}
 
 		private function onTeleTouch(e:TouchEvent):void

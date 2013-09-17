@@ -41,7 +41,7 @@ package controllers
 		private var contentLayer:Sprite;
 		public var currentModule:PalaceModule;
 
-		private var main:Main;
+		public var main:Main;
 		private var modules:Array=[Module1, Module3, Module2];
 
 		public var stage:Stage;
