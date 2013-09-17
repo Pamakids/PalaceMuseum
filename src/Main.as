@@ -10,9 +10,13 @@ package
 
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.text.TextField;
+	import starling.utils.AssetManager;
 
-	import views.Module3;
+	import views.components.Prompt;
 	import views.components.base.Container;
 	import views.global.map.Map;
 	import views.global.userCenter.UserCenterManager;
@@ -27,6 +31,8 @@ package
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
+			var label:TextField=new TextField(1, 1, '0', FontVo.PALACE_FONT, 16, 0x561a1a, true);
+			addChild(label);
 		}
 
 		override protected function init():void
@@ -34,6 +40,7 @@ package
 //			testFont();
 //			testUserCenter();
 //			Map.show();
+			//以免第一次初始化提示的时候卡顿
 //			return;
 			if (Capabilities.isDebugger && testingModuleClass)
 			{
@@ -51,6 +58,23 @@ package
 							testingModule=new testingModuleClass();
 							addChild(testingModule);
 						}
+					}
+				});
+				stage.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent):void
+				{
+					var t:Touch=e.getTouch(stage, TouchPhase.ENDED);
+					if (t)
+					{
+						var am:AssetManager=new AssetManager();
+						am.enqueue('assets/common/hint-bg.png');
+						am.loadQueue(function(ratio:Number):void
+						{
+							if (ratio == 1)
+							{
+								Prompt.addAssetManager(am);
+								Prompt.show(100, 100, '', 'test');
+							}
+						});
 					}
 				});
 				return;
@@ -87,7 +111,7 @@ package
 //			label.x = 500;
 //			label.y = 300;
 
-			var t:TextField=new TextField(300, 200, "位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体", FontVo.PALACE_FONT, 26, 0xffffff);
+			var t:TextField=new TextField(300, 200, "位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体位图字体", FontVo.PALACE_FONT, 18, 0xffffff);
 			t.hAlign="left";
 			this.addChild(t);
 		}

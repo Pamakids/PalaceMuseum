@@ -43,6 +43,8 @@ package views.components
 
 		public var id:String;
 
+		private var label:TextField;
+
 		public function Prompt(bg:String, content:String, algin:int=5, fontSize=20)
 		{
 			super();
@@ -168,6 +170,8 @@ package views.components
 					prompt.playShow(hideAfter);
 				return null;
 			}
+			if (!background || background.length == 0)
+				background="hint-bg";
 			prompt=new Prompt(background, content, position, fontSize);
 			prompt.callback=callback;
 			prompt.x=x;
@@ -202,5 +206,6 @@ package views.components
 			}
 			return null;
 		}
+
 	}
 }

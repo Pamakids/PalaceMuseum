@@ -1,20 +1,16 @@
 package views.global.userCenter.collection
 {
-	import com.greensock.TweenLite;
-	
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import feathers.controls.List;
 	import feathers.controls.Screen;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.core.PopUpManager;
 	import feathers.data.ListCollection;
 	import feathers.layout.TiledRowsLayout;
 	
 	import starling.display.Image;
-	import starling.display.Quad;
-	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -93,54 +89,28 @@ package views.global.userCenter.collection
 			showImage();
 		}
 		
+		private var image:Image;
 		private function showImage():void
 		{
-			(!image)?initImage():image.texture = cache;
+			(!image)?image = new Image( cache ):image.texture = cache;
 			image.readjustSize();
-			image.x = this.container.width - image.width >> 1;
-			image.y = this.container.height - image.height >> 1;
-			this.container.visible =true;
+			image.x = 1024 - image.width >> 1;
+			image.y = 768 - image.height >> 1;
+			if( !this.hasEventListener(TouchEvent.TOUCH) )
+				this.addEventListener(TouchEvent.TOUCH, hideImage);
+			PopUpManager.addPopUp( image, true, false);
 		}
 		
-		private var image:Image;
-		private function initImage():void
+		private function hideImage(e:TouchEvent):void
 		{
-			initContainer();
-			initMask();
-			image = new Image( cache );
-			this.container.addChild( image );
-		}
-		
-		private var container:Sprite;
-		private function initContainer():void
-		{
-			container = new Sprite();
-			this.addChild(container);
-			
-			var point:Point = globalToLocal(new Point());
-			container.x = point.x;
-			container.y = point.y;
-			
-			container.addEventListener(TouchEvent.TOUCH, hideContainer);
-		}
-		
-		private function hideContainer(e:TouchEvent):void
-		{
-			var touch:Touch = e.getTouch(container);
+			var touch:Touch = e.getTouch(stage);
 			if(touch)
 			{
-				if(touch.phase == TouchPhase.ENDED)
-					container.visible =false;
+				if(touch.phase == TouchPhase.ENDED && PopUpManager.isPopUp(image) )
+					PopUpManager.removePopUp( image );
 			}
 		}
 		
-		private var quad:Quad;
-		private function initMask():void
-		{
-			quad = new Quad(stage.stageWidth, stage.stageHeight, 0x000000, true);
-			quad.alpha = .4;
-			this.container.addChild( quad );
-		}
 		
 		private var finishCount:uint = 10;
 		private var unfinishCount:uint = 5;
@@ -197,9 +167,6 @@ package views.global.userCenter.collection
 		{
 			if(cache)
 				cache.dispose();
-			if(container)
-				container.dispose();
-			container = null;
 			datas = null;
 			if(image)
 				image.dispose();
@@ -209,9 +176,6 @@ package views.global.userCenter.collection
 			if(list)
 				list.removeFromParent(true)
 			list = null;
-			if(quad)
-				quad.dispose();
-			quad = null;
 //			if(screenTexture)
 //				screenTexture = null;
 			super.dispose();

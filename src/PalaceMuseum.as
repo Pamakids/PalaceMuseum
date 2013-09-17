@@ -7,6 +7,7 @@ package
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
+	import flash.system.Capabilities;
 
 	import controllers.MC;
 
@@ -27,7 +28,7 @@ package
 			Starling.handleLostContext=false;
 			var main:Starling=new Starling(Main, stage);
 			main.start();
-			main.showStats=true;
+			main.showStats=Capabilities.isDebugger;
 			main.antiAliasing=16;
 
 			MC.instance.stage=stage;

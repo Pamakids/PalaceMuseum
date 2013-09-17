@@ -2,9 +2,9 @@ package views.global.userCenter
 {
 	import flash.filesystem.File;
 	import flash.utils.Dictionary;
-
+	
 	import models.SOService;
-
+	
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
@@ -65,6 +65,11 @@ package views.global.userCenter
 			//获取用户相关数据
 			_userDatas=new Dictionary(true);
 			_userCenter=new UserCenter();
+		}
+		
+		public static function getCrtUserCenter():UserCenter
+		{
+			return _userCenter;
 		}
 
 		/**
@@ -180,6 +185,8 @@ package views.global.userCenter
 
 		public static function setScreenTextures(screen:String, value:Object):void
 		{
+			if(textures[screen] && textures[screen] == value)
+				return;
 			textures[screen]=value;
 		}
 
@@ -190,7 +197,7 @@ package views.global.userCenter
 				var vecTexture:Vector.<Texture>=new Vector.<Texture>();
 				var leftImage:Image=new Image(_assetsManager.getTexture("page_left"));
 				var rightImage:Image=new Image(_assetsManager.getTexture("page_right"));
-				for (var i:int=0; i < 8; i++)
+				for (var i:int=0; i < 18; i++)
 				{
 					var render:RenderTexture=new RenderTexture(484, 664, true);
 					var image:Image=new Image(UserCenterManager.getTexture("content_page_" + String(i + 1)));

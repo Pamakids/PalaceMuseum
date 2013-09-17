@@ -41,6 +41,7 @@ package views.module1
 
 		private function nextScene():void
 		{
+			trace('nextScene');
 			dispatchEvent(new Event("gotoNext", true));
 		}
 
@@ -252,13 +253,13 @@ package views.module1
 			cardShow=true;
 			setChildIndex(halo, numChildren - 1);
 			halo.visible=true;
-
 			halo.scaleX=halo.scaleY=.5;
 			halo.rotation=0;
 			TweenLite.to(halo, 2.5, {scaleX: 1, scaleY: 1, rotation: Math.PI, onComplete: function():void
 			{
 				halo.visible=false;
 				cardShow=false;
+				trace('haloed');
 			}});
 
 			var card:CollectionCard=new CollectionCard();
@@ -269,6 +270,7 @@ package views.module1
 			card.y=768 / 2;
 			card.show();
 			addChild(card);
+			trace('added card');
 		}
 	}
 }
