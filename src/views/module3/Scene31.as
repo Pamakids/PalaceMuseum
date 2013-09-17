@@ -3,7 +3,6 @@ package views.module3
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Elastic;
 
-	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 

@@ -16,6 +16,8 @@ package
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
+	import views.Module1;
+	import views.Module3;
 	import views.components.Prompt;
 	import views.components.base.Container;
 	import views.global.map.Map;
@@ -24,7 +26,7 @@ package
 	public class Main extends Container
 	{
 		private var testingModule:Sprite;
-		private var testingModuleClass:Class;
+		private var testingModuleClass:Class=Module3;
 
 		public function Main()
 		{
@@ -33,6 +35,13 @@ package
 			MC.instance.init(this);
 			var label:TextField=new TextField(1, 1, '0', FontVo.PALACE_FONT, 16, 0x561a1a, true);
 			addChild(label);
+
+			var am:AssetManager=new AssetManager();
+			am.enqueue("assets/common/hint-bg.png", "assets/common/hint-bg-large.png", "assets/common/hint-bg-mid.png");
+			am.loadQueue(function(ratio:Number):void {
+				if (ratio == 1.0)
+					Prompt.addAssetManager(am);
+			})
 		}
 
 		override protected function init():void
@@ -60,23 +69,23 @@ package
 						}
 					}
 				});
-				stage.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent):void
-				{
-					var t:Touch=e.getTouch(stage, TouchPhase.ENDED);
-					if (t)
-					{
-						var am:AssetManager=new AssetManager();
-						am.enqueue('assets/common/hint-bg.png');
-						am.loadQueue(function(ratio:Number):void
-						{
-							if (ratio == 1)
-							{
-								Prompt.addAssetManager(am);
-								Prompt.show(100, 100, '', 'test');
-							}
-						});
-					}
-				});
+//				stage.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent):void
+//				{
+//					var t:Touch=e.getTouch(stage, TouchPhase.ENDED);
+//					if (t)
+//					{
+//						var am:AssetManager=new AssetManager();
+//						am.enqueue('assets/common/hint-bg.png');
+//						am.loadQueue(function(ratio:Number):void
+//						{
+//							if (ratio == 1)
+//							{
+//								Prompt.addAssetManager(am);
+//								Prompt.show(100, 100, '', 'test');
+//							}
+//						});
+//					}
+//				});
 				return;
 			}
 			else

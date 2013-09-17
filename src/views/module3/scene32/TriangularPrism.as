@@ -154,9 +154,9 @@ package views.module3.scene32
 
 			crtAreaIndex=index / 2;
 
-			if (areaCount > 90 && crtAreaIndex >= 0)
+			if (areaCount > 15 && crtAreaIndex >= 0)
 			{
-				areaArr[crtAreaIndex].alpha+=.003;
+				areaArr[crtAreaIndex].alpha+=.008;
 			}
 		}
 
