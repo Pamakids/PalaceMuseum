@@ -1,6 +1,7 @@
 package views.global.map
 {
 	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 	import com.greensock.easing.Cubic;
 	import com.pamakids.manager.LoadManager;
 
@@ -25,6 +26,9 @@ package views.global.map
 
 	import views.components.ElasticButton;
 	import views.components.FlipAnimation;
+	import views.components.Lion;
+	import views.components.LionMC;
+	import views.components.LionPrompt;
 	import views.components.Prompt;
 	import views.components.base.PalaceModule;
 
@@ -206,6 +210,10 @@ package views.global.map
 				callback();
 			callback=null;
 			king.visible=false;
+			for (var key:* in showingHint)
+			{
+				delete showingHint[key];
+			}
 		}
 
 		private function bgLoadedHandler(b:Bitmap):void
@@ -254,6 +262,11 @@ package views.global.map
 				stage.addEventListener(TouchEvent.TOUCH, touchHandler);
 				TweenLite.to(flipAnimation, 8, {delay: 1, y: 0, ease: Cubic.easeOut});
 			}});
+			if (hasTask || mc.moduleIndex == -1)
+			{
+				var i:int=mc.moduleIndex == -1 ? 0 : mc.moduleIndex;
+				LionMC.instance.say(tasks[i]);
+			}
 			if (!callback)
 				return;
 			if (callback.length)
@@ -261,16 +274,6 @@ package views.global.map
 			else
 				callback();
 		}
-
-//		private function moveKing(status:int):void
-//		{
-//			var top:Point=points[to];
-//			TweenLite.to(king, 1.8, {x: top.x, y: top.y, ease: Cubic.easeOut, onComplete: function():void
-//			{
-//				clear(status);
-//				MC.instance.gotoModule(to);
-//			}});
-//		}
 
 		private var downPoint:Point;
 		private var downY:Number;
@@ -346,13 +349,18 @@ package views.global.map
 								}
 								else
 								{
+									if (showingHint[item.tip])
+										return;
+									if (moduleIndex != -1)
+										changing=true;
 									showHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, function():void
 									{
-										if (sos.isModuleCompleted(moduleIndex))
+										delete showingHint[item.tip];
+//										if (sos.isModuleCompleted(moduleIndex))
+										if (moduleIndex != -1)
 										{
-											if (mcModuleIndex != -1 && mcModuleIndex != moduleIndex)
-												return;
-											changing=true;
+//											if (mcModuleIndex != -1 && mcModuleIndex != moduleIndex)
+//												return;
 											if (king.visible)
 											{
 												TweenLite.to(king, 1.8, {x: top.x, y: top.y, ease: Cubic.easeOut, onComplete: function():void
@@ -392,11 +400,14 @@ package views.global.map
 
 		private var p:Prompt;
 
+		private var showingHint:Dictionary=new Dictionary();
+
 		private function showHint(_x:Number, _y:Number, _content:String, reg:int, _parent:Sprite, callbakc:Function=null):void
 		{
 			if (p)
 				p.playHide();
-			p=Prompt.show(_x, _y, "hint-bg", _content, reg, 2, callbakc, _parent);
+			p=Prompt.showTXT(_x, _y, _content, 18, callbakc, _parent);
+			showingHint[_content]=p;
 		}
 
 		private var enableClose:Boolean;
@@ -414,7 +425,7 @@ package views.global.map
 		 */
 		public function show(ec:Boolean, ea:Boolean):void
 		{
-			hasTask=ea;
+			hasTask=!ea;
 			visible=true;
 			enableClose=ec;
 			TweenLite.killTweensOf(flipAnimation);

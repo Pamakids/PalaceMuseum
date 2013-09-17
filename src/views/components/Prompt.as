@@ -56,22 +56,12 @@ package views.components
 				var contentImage:Image=getImage(content);
 				if (!contentImage)
 				{
-					var t:TextField=new TextField(bgImage.width, bgImage.height, content, FontVo.PALACE_FONT, fontSize, 0x561a1a, true);
-					t.x=bgImage.x;
-					t.y=bgImage.y;
+					var t:TextField=new TextField(bgImage.width - 30, bgImage.height - 10, content, FontVo.PALACE_FONT, fontSize, 0x561a1a, true);
+					t.x=bgImage.x + 15;
+					t.y=bgImage.y + 10;
 					addChild(t);
 					t.touchable=false;
 					t.hAlign="center";
-//---------------------------------------------------------------------------------------
-//					var label:Label=new Label();
-//					label.textRendererProperties.textFormat=new BitmapFontTextFormat(FontVo.PALACE_FONT, 20, 0x561a1a);
-//					label.textRendererProperties.textFormat.wordWrap;
-//					label.textRendererProperties.embedFonts=true;
-//					label.text=content;
-//					label.validate();
-//					addChild(label);
-//					label.x=(bgImage.width - label.width) / 2;
-//					label.y=(bgImage.height - label.height) / 2;
 				}
 				else
 				{

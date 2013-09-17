@@ -1,9 +1,8 @@
 package views.components
 {
-	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
+	import com.pamakids.utils.DPIUtil;
 
-	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -22,6 +21,7 @@ package views.components
 			MC.instance.stage.addChild(this);
 			lion.addEventListener(Event.FRAME_CONSTRUCTED, onMCPlaying);
 			mcWidth=lion.width * .5;
+			mcHeight=lion.height * .5;
 			trace(lion.width, lion.height)
 			this.visible=false;
 			lion.stop();
@@ -73,10 +73,18 @@ package views.components
 		private var callBack:Function;
 
 		private var tl:TweenMax;
+		private var mcHeight:Number;
 
-		public function say(_x:Number, _y:Number, content:String, fontSize:int=20, _callBack:Function=null):void
+		public function say(content:String, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20):void
 		{
 			visible=true;
+			if (!_x && !_y)
+			{
+				var s:Stage=MC.instance.stage;
+				var sc:Number=DPIUtil.getDPIScale();
+				_x=(s.fullScreenWidth / sc - mcWidth) / 2;
+				_y=(s.fullScreenHeight / sc - mcHeight) / 2;
+			}
 			x=_x < 512 ? -mcWidth * 2 : 1024 + mcWidth;
 			y=_y - 200;
 			callBack=_callBack;
@@ -87,9 +95,13 @@ package views.components
 				p.playHide();
 			}
 
-			tl=TweenMax.to(this, .5, {x: _x, y: _y, motionBlur: true, onComplete: function():void {
+			tl=TweenMax.to(this, .5, {x: _x, y: _y, motionBlur: true, onComplete: function():void
+			{
 				lion.gotoAndPlay(1);
-				p=Prompt.showTXT(x + mcWidth - 10, y + 10, content, fontSize, function():void {isSayingOver=true;}, MC.instance.main);
+				p=Prompt.showTXT(x + mcWidth - 10, y + 10, content, fontSize, function():void
+				{
+					isSayingOver=true;
+				}, MC.instance.main);
 			}});
 		}
 
