@@ -9,27 +9,17 @@ package views
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.textures.TextureAtlas;
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceModule;
-	import views.module3.Scene31;
-	import views.module3.Scene32;
+	import views.module4.Scene41;
 
-	public class Module3 extends PalaceModule
+	public class Module4 extends PalaceModule
 	{
-		private var sceneArr:Array=[Scene31, Scene32];
-
-		private var xml:XML;
-
-		private var ta:TextureAtlas;
-
-		private var texturePath:String;
-
-		private var xmlPath:String;
+		private var sceneArr:Array=[Scene41];
 		private var sceneIndex:int;
 
-		public function Module3(am:AssetManager=null)
+		public function Module4(am:AssetManager=null, width:Number=0, height:Number=0)
 		{
 			load=new Sprite();
 			addChild(load);
