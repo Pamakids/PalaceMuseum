@@ -8,7 +8,6 @@ package views.components
 
 	import models.FontVo;
 
-	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Touch;
