@@ -1,6 +1,7 @@
 package views.global.userCenter
 {
 	import flash.filesystem.File;
+	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 	
 	import models.SOService;
@@ -89,8 +90,9 @@ package views.global.userCenter
 			_loadImage.pivotX=_loadImage.width >> 1;
 			_loadImage.pivotY=_loadImage.height >> 1;
 			_userCenterContainer.addChild(_loadImage);
-			_loadImage.x=_userCenterContainer.width >> 1;
-			_loadImage.y=_userCenterContainer.height >> 1;
+			_loadImage.x=1024 - 100;
+			_loadImage.y=768 - 100;
+			_loadImage.scaleX=_loadImage.scaleY=.5;
 			_loadImage.addEventListener(Event.ENTER_FRAME, function(e:Event):void
 			{
 				_loadImage.rotation+=0.2;
@@ -195,6 +197,9 @@ package views.global.userCenter
 			if (!textures["handbook_textures"])
 			{
 				var vecTexture:Vector.<Texture>=new Vector.<Texture>();
+				var tx1:Texture = _assetsManager.getTexture("page_left");
+				var tx2:Texture = Texture.fromTexture(tx1, new Rectangle(0,0,tx1.width,tx1.height));
+				trace(tx1 == tx2);
 				var leftImage:Image=new Image(_assetsManager.getTexture("page_left"));
 				var rightImage:Image=new Image(_assetsManager.getTexture("page_right"));
 				for (var i:int=0; i < 18; i++)

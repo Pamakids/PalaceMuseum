@@ -226,7 +226,6 @@ package views.global.userCenter
 			var end:int;
 			
 			if(!ts2)
-//			if(!UserCenterManager.getScreenTexture( screenNames[target] ) || target == 2)
 			{
 				softBookAnimation.visible = true;
 				_navigator.showScreen(screenNames[target]);

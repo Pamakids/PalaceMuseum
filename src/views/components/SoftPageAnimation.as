@@ -143,7 +143,7 @@ package views.components
 				_textures.unshift( null );
 			if(_backcover)
 				_textures.push( null );
-			_totalPage = Math.ceil( _textures.length >> 1 ) - 1;
+			_totalPage = Math.ceil( _textures.length/2 ) - 1;
 			if(currentPage >= 0 && _currentPage != currentPage)
 				this._currentPage = currentPage;
 		}
