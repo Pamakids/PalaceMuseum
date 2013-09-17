@@ -8,6 +8,7 @@ package views.global.map
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 
 	import controllers.MC;
 
@@ -75,7 +76,7 @@ package views.global.map
 		 */
 		private var hotspots:Array;
 
-		public function Map(from:int=0, to:int=0)
+		public function Map(from:int=-1, to:int=-1)
 		{
 			this.viewContainer=new Sprite();
 			this.from=from;
@@ -84,8 +85,7 @@ package views.global.map
 //			points=[new Point(365, 495), new Point(365, 535)];
 			super(new AssetManager(), Const.WIDTH, Const.HEIGHT);
 			var f:File=File.applicationDirectory.resolvePath('assets/global/map');
-			assetManager.enqueue('assets/common/button_close.png', f, "json/map.json",
-				"assets/global/userCenter/page_left.png", "assets/common/hint-bg.png", "assets/common/hint-bg-mid.png");
+			assetManager.enqueue('assets/common/button_close.png', f, "json/map.json", "assets/global/userCenter/page_left.png", "assets/common/hint-bg.png");
 			assetManager.loadQueue(function(ratio:Number):void
 			{
 				trace(ratio);
@@ -97,23 +97,37 @@ package views.global.map
 					king=getImage('king');
 					king.pivotX=king.width / 2;
 					king.pivotY=king.height / 2;
-					initCloseButton();
+					king.visible=false;
 					Prompt.addAssetManager(assetManager);
 				}
 			});
+			sos=SOService.instance;
+			mc=MC.instance;
 		}
+
+		private var centerPoint:Dictionary;
+		private var tasks:Dictionary;
 
 		private function parseData():void
 		{
 			hotspots=[];
 			points=[];
 			labels=[];
+			centerPoint=new Dictionary();
+			tasks=new Dictionary();
 			var hp:Array=mapData.hotspots;
 			for each (var hotspot:Object in hp)
 			{
 				var rect:Rectangle=getRectFromArray(hotspot.rect as Array);
 				hotspots.push(rect);
-				points.push(getCenterFromRect(rect));
+				var p:Point=getCenterFromRect(rect);
+				points.push(p);
+				var gt:Array=hotspot['goto'];
+				if (gt)
+				{
+					centerPoint[gt[0]]=p;
+					tasks[gt[0]]=hotspot.task;
+				}
 			}
 		}
 
@@ -152,7 +166,7 @@ package views.global.map
 		 * @param from 	   当前模块
 		 * @param to   	   转向模块
 		 */
-		public static function show(callback:Function=null, from:int=0, to:int=0):void
+		public static function show(callback:Function=null, from:int=-1, to:int=-1):void
 		{
 			var ec:Boolean=true;
 			if (from || to || callback == null)
@@ -160,7 +174,7 @@ package views.global.map
 			Map.callback=callback;
 			if (map)
 			{
-				map.show(ec, !(from && to));
+				map.show(ec, !(from || to));
 				parent.setChildIndex(map, parent.numChildren - 1);
 			}
 			else
@@ -182,6 +196,7 @@ package views.global.map
 //			this.removeFromParent(true);
 			stage.removeEventListener(TouchEvent.TOUCH, touchHandler);
 			visible=false;
+			closeButton.visible=false;
 			changing=false;
 			if (!callback)
 				return;
@@ -190,6 +205,7 @@ package views.global.map
 			else
 				callback();
 			callback=null;
+			king.visible=false;
 		}
 
 		private function bgLoadedHandler(b:Bitmap):void
@@ -200,6 +216,10 @@ package views.global.map
 			flipAnimation.width=width;
 			flipAnimation.height=height;
 			addChild(flipAnimation);
+
+			flipAnimation.addChild(king);
+
+			initCloseButton();
 		}
 
 		override public function dispose():void
@@ -210,15 +230,14 @@ package views.global.map
 			trace('disposed');
 		}
 
-		private function showKing(index:int):void
+		private function positionKing(kingPoint:Point):void
 		{
-			positionKing(index);
-			flipAnimation.addChild(king);
-		}
-
-		private function positionKing(index:int):void
-		{
-			var kingPoint:Point=points[index];
+//			var kingPoint:Point=points[index];
+			if (!king.parent)
+				flipAnimation.addChild(king);
+			king.parent.setChildIndex(king, king.parent.numChildren - 1);
+			trace(king.parent.numChildren);
+			king.visible=true;
 			king.x=kingPoint.x;
 			king.y=kingPoint.y;
 		}
@@ -227,27 +246,14 @@ package views.global.map
 
 		private function flipedHandler(e:Event):void
 		{
-			var kingPoint:Point=points[MC.instance.moduleIndex];
-			if (king && SOService.instance.isModuleCompleted(from))
-				showKing(getPosIndexByModule(from));
-			if ((from || to) && !isTask)
+			if (king && centerPoint[from])
+				positionKing(centerPoint[from]);
+			TweenLite.to(flipAnimation, 1.5, {x: 0, scaleX: 1, scaleY: 1, onComplete: function():void
 			{
-				var map:Map=this;
-				var toy:Number=kingPoint.y > height / 2 ? height / 2 - kingPoint.y : 0;
-				TweenLite.to(flipAnimation, 0.5, {y: toy, ease: Cubic.easeOut, onComplete: function():void
-				{
-					moveKing(getPosIndexByModule(to));
-				}});
-			}
-			else
-			{
-				TweenLite.to(flipAnimation, 1.5, {x: 0, scaleX: 1, scaleY: 1, onComplete: function():void
-				{
-					closeButton.visible=enableClose;
-					stage.addEventListener(TouchEvent.TOUCH, touchHandler);
-					TweenLite.to(flipAnimation, 8, {delay: 1, y: 0, ease: Cubic.easeOut});
-				}});
-			}
+				closeButton.visible=enableClose;
+				stage.addEventListener(TouchEvent.TOUCH, touchHandler);
+				TweenLite.to(flipAnimation, 8, {delay: 1, y: 0, ease: Cubic.easeOut});
+			}});
 			if (!callback)
 				return;
 			if (callback.length)
@@ -256,20 +262,15 @@ package views.global.map
 				callback();
 		}
 
-		private function getPosIndexByModule(index:int):int
-		{
-			return indexArr[index];
-		}
-
-		private function moveKing(status:int):void
-		{
-			var top:Point=points[to];
-			TweenLite.to(king, 1.8, {x: top.x, y: top.y, ease: Cubic.easeOut, onComplete: function():void
-			{
-				clear(status);
-				MC.instance.gotoModule(to);
-			}});
-		}
+//		private function moveKing(status:int):void
+//		{
+//			var top:Point=points[to];
+//			TweenLite.to(king, 1.8, {x: top.x, y: top.y, ease: Cubic.easeOut, onComplete: function():void
+//			{
+//				clear(status);
+//				MC.instance.gotoModule(to);
+//			}});
+//		}
 
 		private var downPoint:Point;
 		private var downY:Number;
@@ -283,69 +284,97 @@ package views.global.map
 			var item:Object;
 			if (!t)
 				return;
-			var p:Point=t.getLocation(flipAnimation);
+			var p:Point=new Point(t.globalX, t.globalY);
+			var toy:Number;
 			switch (t.phase)
 			{
 				case TouchPhase.BEGAN:
 					TweenLite.killTweensOf(flipAnimation);
-					downPoint=p;
+					downPoint=new Point(t.globalX, t.globalY);
 					downY=flipAnimation.y;
 					break;
 				case TouchPhase.MOVED:
 					if (!downPoint)
 						return;
-					var v:Point=t.getMovement(flipAnimation);
-					flipAnimation.y+=v.y;
-
-					if (flipAnimation.y > 0)
-						flipAnimation.y=0;
-					else if (flipAnimation.y < height - flipAnimation.height)
-						flipAnimation.y=height - flipAnimation.height;
-
+					toy=p.y - downPoint.y;
+					var yv:Number=downY + toy / scale;
+					if (yv > 0)
+						yv=0;
+					else if (yv < height - flipAnimation.height)
+						yv=height - flipAnimation.height;
+					flipAnimation.y=yv;
 					break;
 				case TouchPhase.ENDED:
 					if (!downPoint)
 						return;
-					var upPoint:Point=p;
-					var distance:Number=Point.distance(flipAnimation.localToGlobal(downPoint), flipAnimation.localToGlobal(upPoint));
+					var upPoint:Point=new Point(t.globalX, t.globalY);
+					var distance:Number=Point.distance(downPoint, upPoint) / scale;
 					if (distance < 10)
 					{
-//						upPoint=flipAnimation.globalToLocal(upPoint);
+						if (changing)
+							return;
+						upPoint=flipAnimation.globalToLocal(upPoint);
 						trace('up point:', upPoint);
 						for (var i:int; i < hotspots.length; i++)
 						{
 							var r:Rectangle=hotspots[i];
 							if (r.contains(upPoint.x, upPoint.y))
 							{
-								if (changing)
-									return;
 								item=mapData.hotspots[i];
-								var moduleIndex:int=item.goTo[0];
-								showHint(r.x + r.width / 2, r.y + r.height / 2, item.tip, 1, flipAnimation, function():void {
-									if (moduleIndex == -1)return;
-									if (!SOService.instance.isModuleCompleted(from))
+								trace('Contains:', item);
+
+								var moduleIndex:int=item['goto'] ? item['goto'][0] : -1;
+								var mcModuleIndex:int=MC.instance.moduleIndex;
+								var top:Point=centerPoint[moduleIndex];
+								if (moduleIndex != -1 && mcModuleIndex == moduleIndex)
+								{
+									if (!hasTask)
 									{
-										changing=true;
-										from=moduleIndex;
-										showKing(i);
-										king.alpha=0;
-										MC.instance.clearCrtModule();
-										TweenLite.to(king, 0.8, {alpha: 1, onComplete: function():void
+										showKing(getCenterFromRect(r), function():void
 										{
-											TweenLite.delayedCall(0.8, function():void
-											{
-												clear(2);
-												MC.instance.gotoModule(moduleIndex);
-											});
+											clear(2);
+										});
+									}
+									else
+									{
+										TweenLite.to(king, 1.8, {x: top.x, y: top.y, ease: Cubic.easeOut, onComplete: function():void
+										{
+											clear(2);
+											MC.instance.gotoModule(moduleIndex);
 										}});
 									}
-									else if (moduleIndex != from)
+								}
+								else
+								{
+									showHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, function():void
 									{
-										changing=true;
-										to=moduleIndex;
-										moveKing(getPosIndexByModule(to));
-									}
-								});
+										if (sos.isModuleCompleted(moduleIndex))
+										{
+											if (mcModuleIndex != -1 && mcModuleIndex != moduleIndex)
+												return;
+											changing=true;
+											if (king.visible)
+											{
+												TweenLite.to(king, 1.8, {x: top.x, y: top.y, ease: Cubic.easeOut, onComplete: function():void
+												{
+													clear(2);
+													MC.instance.gotoModule(moduleIndex);
+												}});
+											}
+											else
+											{
+												showKing(getCenterFromRect(r), function():void
+												{
+													TweenLite.delayedCall(0.8, function():void
+													{
+														clear(2);
+														MC.instance.gotoModule(moduleIndex);
+													});
+												});
+											}
+										}
+									});
+								}
 								break;
 							}
 						}
@@ -354,7 +383,12 @@ package views.global.map
 			}
 		}
 
-		private var indexArr:Array=[12, 11, 6];
+		private function showKing(point:Point, callback:Function):void
+		{
+			positionKing(point);
+			king.alpha=0;
+			TweenLite.to(king, 0.8, {alpha: 1, onComplete: callback});
+		}
 
 		private var p:Prompt;
 
@@ -362,10 +396,16 @@ package views.global.map
 		{
 			if (p)
 				p.playHide();
-			p=Prompt.show(_x, _y, "hint-bg-mid", _content, reg, 2, callbakc, _parent, false, 18);
+			p=Prompt.show(_x, _y, "hint-bg", _content, reg, 2, callbakc, _parent);
 		}
 
 		private var enableClose:Boolean;
+		private var sos:SOService;
+		private var mc:MC;
+		/**
+		 * 是否有任务，不可跳过
+		 */
+		private var hasTask:Boolean;
 
 		/**
 		 * 地图初始化后再次显示地图
@@ -374,6 +414,7 @@ package views.global.map
 		 */
 		public function show(ec:Boolean, ea:Boolean):void
 		{
+			hasTask=ea;
 			visible=true;
 			enableClose=ec;
 			TweenLite.killTweensOf(flipAnimation);

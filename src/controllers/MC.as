@@ -37,7 +37,7 @@ package controllers
 			super();
 		}
 
-		private var _moduleIndex:int;
+		private var _moduleIndex:int=-1;
 		private var contentLayer:Sprite;
 		public var currentModule:PalaceModule;
 

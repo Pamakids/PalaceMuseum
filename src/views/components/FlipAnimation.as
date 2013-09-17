@@ -194,7 +194,7 @@ package views.components
 				width=contentWidth;
 				result.y=height / 2 - contentHeight / 2;
 			}
-			addChild(result);
+			addChildAt(result, 0);
 			removeSlices();
 			flipingImage=null;
 			result.visible=true;

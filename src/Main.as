@@ -33,6 +33,7 @@ package
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
+			//以免第一次初始化提示的时候卡顿
 			var label:TextField=new TextField(1, 1, '0', FontVo.PALACE_FONT, 16, 0x561a1a, true);
 			addChild(label);
 
@@ -49,9 +50,14 @@ package
 //			testFont();
 //			testUserCenter();
 //			Map.show();
-			//以免第一次初始化提示的时候卡顿
 //			return;
-			if (Capabilities.isDebugger && testingModuleClass)
+			debugInit();
+			Map.show();
+		}
+
+		private function debugInit():void
+		{
+			if (Capabilities.isDebugger)
 			{
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void
 				{
@@ -67,6 +73,10 @@ package
 							testingModule=new testingModuleClass();
 							addChild(testingModule);
 						}
+					}
+					else if (e.keyCode == Keyboard.RIGHT)
+					{
+						MC.instance.nextModule();
 					}
 				});
 //				stage.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent):void
@@ -87,11 +97,6 @@ package
 //					}
 //				});
 				return;
-			}
-			else
-			{
-				Map.show();
-//				MC.instance.moduleIndex=0;
 			}
 		}
 
