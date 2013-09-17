@@ -37,7 +37,7 @@ package models
 
 		public function isModuleCompleted(index:int):Boolean
 		{
-			return false;
+//			return false;
 			var arr:Array=getSO('completedModules') as Array;
 			return arr && arr.indexOf(index) != -1;
 		}

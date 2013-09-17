@@ -39,11 +39,10 @@ package controllers
 
 		private var _moduleIndex:int;
 		private var contentLayer:Sprite;
-		public var crtModule:PalaceModule;
-		private var currentModule:PalaceModule;
+		public var currentModule:PalaceModule;
 
 		private var main:Main;
-		private var modules:Array=[Module1, Module2, Module3];
+		private var modules:Array=[Module1, Module3, Module2];
 
 		public var stage:Stage;
 
@@ -84,19 +83,19 @@ package controllers
 		{
 			if (currentModule)
 				currentModule.visible=false;
-//			if (value != _moduleIndex)
-//			{
-//				DC.instance.completeModule();
-//				Map.show(function(status:int):void
-//				{
-//					if (!status)
-//					{
-//						_moduleIndex=value;
-//						showModule();
-//					}
-//				}, _moduleIndex, value);
-//			}
-//			else
+			if (value != _moduleIndex)
+			{
+				DC.instance.completeModule();
+				Map.show(function(status:int):void
+				{
+					if (!status)
+					{
+						_moduleIndex=value;
+						showModule();
+					}
+				}, _moduleIndex, value);
+			}
+			else
 			{
 				_moduleIndex=value;
 				showModule();
@@ -109,10 +108,18 @@ package controllers
 			showModule();
 		}
 
-		private function showModule():void
+		public function clearCrtModule():void
 		{
 			if (currentModule)
+			{
 				currentModule.removeFromParent(true);
+				currentModule=null;
+			}
+		}
+
+		private function showModule():void
+		{
+			clearCrtModule();
 			currentModule=new modules[moduleIndex];
 			contentLayer.addChild(currentModule);
 			trace('load new module');

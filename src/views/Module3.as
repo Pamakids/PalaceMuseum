@@ -13,13 +13,12 @@ package views
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceModule;
-	import views.components.base.PalaceScene;
 	import views.module3.Scene31;
 	import views.module3.Scene32;
 
 	public class Module3 extends PalaceModule
 	{
-		private var sceneArr:Array=[Scene32];
+		private var sceneArr:Array=[Scene31, Scene32];
 
 		private var xml:XML;
 
@@ -81,7 +80,8 @@ package views
 				isLoading=true;
 				var assets:AssetManager=new AssetManager();
 				var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
-				assets.enqueue(file, "assets/common/hint-bg.png", "assets/common/button_close.png", "assets/common/game-start-down.png",
+				assets.enqueue(file, "assets/common/hint-bg.png", "assets/common/hint-bg-big.png",
+					"assets/common/button_close.png", "assets/common/game-start-down.png",
 					"assets/common/game-start.png", "assets/common/gamebg.jpg", "assets/common/lion.png");
 				assets.loadQueue(function(ratio:Number):void
 				{
