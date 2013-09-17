@@ -9,6 +9,7 @@ package views.module3
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 	import views.module3.scene32.Telescope;
@@ -96,6 +97,7 @@ package views.module3
 
 		private function showHint(_x:Number, _y:Number, content:String):void
 		{
+//			LionMC.instance.say(_x, _y, content);
 			if (p)
 				p.playHide();
 			p=Prompt.showTXT(_x, _y, content, 18, null, this);
