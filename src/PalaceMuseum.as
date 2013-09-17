@@ -1,5 +1,6 @@
 package
 {
+	import com.greensock.plugins.MotionBlurPlugin;
 	import com.greensock.plugins.ShakeEffect;
 	import com.greensock.plugins.TweenPlugin;
 	import com.pamakids.utils.DPIUtil;
@@ -13,12 +14,13 @@ package
 
 	import starling.core.Starling;
 
-	[SWF(width="1024", height="768", frameRate="60", backgroundColor="0x333333")]
+	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x333333")]
 	public class PalaceMuseum extends Sprite
 	{
 		public function PalaceMuseum()
 		{
 			TweenPlugin.activate([ShakeEffect]);
+			TweenPlugin.activate([MotionBlurPlugin]);
 
 			var scale:Number=DPIUtil.getDPIScale();
 			stage.align=StageAlign.TOP_LEFT;
