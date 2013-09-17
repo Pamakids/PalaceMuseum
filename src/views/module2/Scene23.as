@@ -40,6 +40,7 @@ package views.module2
 		public function Scene23(am:AssetManager=null)
 		{
 			super(am);
+			crtKnowledgeIndex=9;
 			Prompt.addAssetManager(am);
 
 			addBG();

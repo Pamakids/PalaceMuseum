@@ -45,7 +45,7 @@ package views.components
 
 		private var label:TextField;
 
-		public function Prompt(bg:String, content:String, algin:int=5)
+		public function Prompt(bg:String, content:String, algin:int=5, fontSize=20)
 		{
 			super();
 			var bgImage:Image=getImage(bg);
@@ -57,12 +57,12 @@ package views.components
 				var contentImage:Image=getImage(content);
 				if (!contentImage)
 				{
-					label=new TextField(bgImage.width, bgImage.height, content, FontVo.PALACE_FONT, 16, 0x561a1a, true);
-					label.x=bgImage.x;
-					label.y=bgImage.y;
-					addChild(label);
-					label.touchable=false;
-					label.hAlign="center";
+					var t:TextField=new TextField(bgImage.width, bgImage.height, content, FontVo.PALACE_FONT, fontSize, 0x561a1a, true);
+					t.x=bgImage.x;
+					t.y=bgImage.y;
+					addChild(t);
+					t.touchable=false;
+					t.hAlign="center";
 //---------------------------------------------------------------------------------------
 //					var label:Label=new Label();
 //					label.textRendererProperties.textFormat=new BitmapFontTextFormat(FontVo.PALACE_FONT, 20, 0x561a1a);
@@ -158,7 +158,7 @@ package views.components
 		 * @return
 		 *
 		 */
-		public static function show(x:Number, y:Number, background:String, content:String='', position:int=5, hideAfter:Number=3, callback:Function=null, parentSprite:Sprite=null, forceShow:Boolean=false):Prompt
+		public static function show(x:Number, y:Number, background:String, content:String='', position:int=5, hideAfter:Number=3, callback:Function=null, parentSprite:Sprite=null, forceShow:Boolean=false, fontSize:int=20):Prompt
 		{
 			var id:String=content ? content : background;
 			var prompt:Prompt=promptDic[id + x + y];
@@ -172,7 +172,7 @@ package views.components
 			}
 			if (!background || background.length == 0)
 				background="hint-bg";
-			prompt=new Prompt(background, content, position);
+			prompt=new Prompt(background, content, position, fontSize);
 			prompt.callback=callback;
 			prompt.x=x;
 			prompt.y=y;

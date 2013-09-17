@@ -42,7 +42,7 @@ package views.module2
 		public function Scene21(am:AssetManager=null)
 		{
 			super(am);
-
+			crtKnowledgeIndex=7;
 			addChild(getImage("bg21"));
 
 			chefB=getImage("chef-back");
