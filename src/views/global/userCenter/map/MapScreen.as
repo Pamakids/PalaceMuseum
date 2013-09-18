@@ -2,18 +2,18 @@ package views.global.userCenter.map
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
+
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
+
 	import feathers.controls.Button;
 	import feathers.controls.Screen;
-	
+
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
-	
+
 	import views.global.map.Map;
 	import views.global.userCenter.IUserCenterScreen;
 	import views.global.userCenter.UserCenter;
@@ -28,7 +28,7 @@ package views.global.userCenter.map
 		private var mapButton:Button;
 		private var mapTexture:Texture;
 		private var cache:Image;
-		
+
 		public function MapScreen()
 		{
 			super();
@@ -41,17 +41,17 @@ package views.global.userCenter.map
 			initCacheImage();
 //			initScreenTextures();
 		}
-		
+
 		private function initContainer():void
 		{
-			var image:Image = new Image(UserCenterManager.getTexture("background_map"));
-			this.addChild( image );
-			image.touchable = false;
+			var image:Image=new Image(UserCenterManager.getTexture("background_map"));
+			this.addChild(image);
+			image.touchable=false;
 		}
-		
+
 		public var viewWidth:Number;
 		public var viewHeight:Number;
-		
+
 		private function initCacheImage():void
 		{
 			cache=new Image(mapTexture);
@@ -61,12 +61,12 @@ package views.global.userCenter.map
 			cache.x=mapButton.x;
 			cache.y=mapButton.y;
 		}
-		
+
 		private function initMapButton():void
 		{
-			var texture:Texture = UserCenterManager.getTexture("mapBG");
-			mapTexture = Texture.fromTexture( texture, new Rectangle(0, 0, texture.width, texture.height/4));
-			
+			var texture:Texture=UserCenterManager.getTexture("mapBG");
+			mapTexture=Texture.fromTexture(texture, new Rectangle(0, 0, texture.width, texture.height / 4));
+
 			mapButton=new Button();
 			mapButton.defaultSkin=new Image(mapTexture);
 			mapButton.x=70;
@@ -75,8 +75,8 @@ package views.global.userCenter.map
 			addChild(mapButton);
 			mapButton.addEventListener(Event.TRIGGERED, onTriggered);
 		}
-		
-		
+
+
 		private function onTriggered():void
 		{
 			mapButton.visible=false;
@@ -97,7 +97,7 @@ package views.global.userCenter.map
 							mapButton.visible=true;
 						else if (status == 2)
 							UserCenterManager.closeUserCenter();
-					});
+					}, -1, -1, true);
 					cache.visible=false;
 				}});
 			}
@@ -118,24 +118,24 @@ package views.global.userCenter.map
 				mapTexture.dispose();
 			super.dispose();
 		}
-		
+
 		public function getScreenTexture():Vector.<Texture>
 		{
-			if(UserCenterManager.getScreenTexture(UserCenter.MAP)==null)
+			if (UserCenterManager.getScreenTexture(UserCenter.MAP) == null)
 				initScreenTextures();
 			return UserCenterManager.getScreenTexture(UserCenter.MAP);
 		}
-		
+
 		private function initScreenTextures():void
 		{
-			var sts:Vector.<Texture> = UserCenterManager.getScreenTexture(UserCenter.MAP);
-			if(!sts)
+			var sts:Vector.<Texture>=UserCenterManager.getScreenTexture(UserCenter.MAP);
+			if (!sts)
 			{
-				var render:RenderTexture = new RenderTexture(viewWidth, viewHeight, true);
-				render.draw( this );
-				sts = new Vector.<Texture>(2);
-				sts[0] = Texture.fromTexture( render, new Rectangle( 0, 0, viewWidth/2, viewHeight) );
-				sts[1] = Texture.fromTexture( render, new Rectangle( viewWidth/2, 0, viewWidth/2, viewHeight) );
+				var render:RenderTexture=new RenderTexture(viewWidth, viewHeight, true);
+				render.draw(this);
+				sts=new Vector.<Texture>(2);
+				sts[0]=Texture.fromTexture(render, new Rectangle(0, 0, viewWidth / 2, viewHeight));
+				sts[1]=Texture.fromTexture(render, new Rectangle(viewWidth / 2, 0, viewWidth / 2, viewHeight));
 				UserCenterManager.setScreenTextures(UserCenter.MAP, sts);
 			}
 		}
