@@ -107,7 +107,6 @@ package views.global.userCenter.map
 			}
 		}
 
-
 		override public function dispose():void
 		{
 			if (mapButton)

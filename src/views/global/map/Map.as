@@ -178,7 +178,9 @@ package views.global.map
 			Map.callback=callback;
 			if (map)
 			{
-				map.show(ec, !(from != -1 || to != -1), fromCenter);
+				map.from=from;
+				map.to=to;
+				map.show(ec, !(from || to), fromCenter);
 				parent.setChildIndex(map, parent.numChildren - 1);
 			}
 			else
@@ -264,7 +266,8 @@ package views.global.map
 			}});
 			if (hasTask || mc.moduleIndex == -1)
 			{
-				var i:int=mc.moduleIndex == -1 ? 0 : mc.moduleIndex;
+				var i:int=to == -1 ? 0 : to;
+				trace('开始任务：' + tasks[i]);
 				LionMC.instance.say(tasks[i]);
 			}
 			if (!callback)
