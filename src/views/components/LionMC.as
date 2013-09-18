@@ -80,7 +80,7 @@ package views.components
 			visible=true;
 			if (!_x && !_y)
 			{
-				var s:Stage=MC.instance.stage;
+				var s:Stage=MC.instance.stage.stage;
 				var sc:Number=DPIUtil.getDPIScale();
 				_x=(s.fullScreenWidth / sc - mcWidth) / 2;
 				_y=(s.fullScreenHeight / sc - mcHeight) / 2;

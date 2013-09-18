@@ -3,7 +3,6 @@ package controllers
 	import com.pamakids.utils.Singleton;
 
 	import flash.display.DisplayObject;
-	import flash.display.Stage;
 
 	import feathers.core.PopUpManager;
 
@@ -16,8 +15,8 @@ package controllers
 	import views.Module3;
 	import views.components.Prompt;
 	import views.components.base.PalaceModule;
-	import views.global.map.Map;
 	import views.global.TopBar;
+	import views.global.map.Map;
 	import views.global.userCenter.UserCenterManager;
 
 	/**
@@ -44,7 +43,7 @@ package controllers
 		public var main:Main;
 		private var modules:Array=[Module1, Module3, Module2];
 
-		public var stage:Stage;
+		public var stage:PalaceMuseum;
 
 		public function init(main:Main):void
 		{
