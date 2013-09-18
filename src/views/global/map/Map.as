@@ -170,7 +170,7 @@ package views.global.map
 		 * @param from 	   当前模块
 		 * @param to   	   转向模块
 		 */
-		public static function show(callback:Function=null, from:int=-1, to:int=-1):void
+		public static function show(callback:Function=null, from:int=-1, to:int=-1, fromCenter:Boolean=false):void
 		{
 			var ec:Boolean=true;
 			if (from || to || callback == null)
@@ -178,7 +178,7 @@ package views.global.map
 			Map.callback=callback;
 			if (map)
 			{
-				map.show(ec, !(from || to));
+				map.show(ec, !(from || to), fromCenter);
 				parent.setChildIndex(map, parent.numChildren - 1);
 			}
 			else
@@ -423,9 +423,12 @@ package views.global.map
 		 * @param ec EnableClose显示关闭按钮
 		 * @param ea EnableAnimation播放动画
 		 */
-		public function show(ec:Boolean, ea:Boolean):void
+		public function show(ec:Boolean, ea:Boolean, fromCenter:Boolean):void
 		{
-			hasTask=!ea;
+			if (!fromCenter)
+				hasTask=!ea;
+			else
+				hasTask=false;
 			visible=true;
 			enableClose=ec;
 			TweenLite.killTweensOf(flipAnimation);
