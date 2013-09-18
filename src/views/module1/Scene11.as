@@ -62,6 +62,7 @@ package views.module1
 
 		override protected function init():void
 		{
+			crtKnowledgeIndex=1;
 			windowIndex=Math.random() > .5 ? 0 : 3;
 
 			bg=new Sprite();
