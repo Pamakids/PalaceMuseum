@@ -19,6 +19,7 @@ package
 	{
 		public function PalaceMuseum()
 		{
+			this.scaleX=this.scaleY=DPIUtil.getDPIScale();
 			TweenPlugin.activate([ShakeEffect]);
 			TweenPlugin.activate([MotionBlurPlugin]);
 
@@ -33,7 +34,7 @@ package
 			main.showStats=Capabilities.isDebugger;
 			main.antiAliasing=16;
 
-			MC.instance.stage=stage;
+			MC.instance.stage=this;
 		}
 	}
 }

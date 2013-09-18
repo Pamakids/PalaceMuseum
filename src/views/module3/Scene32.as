@@ -147,7 +147,7 @@ package views.module3
 		private function checkProcess():void
 		{
 			if (telePlayed && prismPlayed && thermoPlayed)
-				dispatchEvent(new Event("gotoNext", true));
+				sceneOver();
 		}
 
 		private function initPrism():void

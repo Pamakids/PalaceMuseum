@@ -36,13 +36,7 @@ package views.module1
 		{
 			_gamePlayed=value;
 			if (_gamePlayed && _clockMatched)
-				TweenLite.delayedCall(7, nextScene);
-		}
-
-		private function nextScene():void
-		{
-			trace('nextScene');
-			dispatchEvent(new Event("gotoNext", true));
+				sceneOver();
 		}
 
 		private var clock:Clock;
@@ -57,7 +51,7 @@ package views.module1
 		{
 			_clockMatched=value;
 			if (_gamePlayed && _clockMatched)
-				TweenLite.delayedCall(7, nextScene);
+				sceneOver();
 		}
 
 

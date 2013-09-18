@@ -3,11 +3,11 @@ package views.module1
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.pamakids.palace.utils.SPUtils;
-	
+
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
-	
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -15,7 +15,7 @@ package views.module1
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 
@@ -305,25 +305,10 @@ package views.module1
 
 				TweenLite.to(eunuch, 1, {x: 800});
 
-//				eunuch.addEventListener(TouchEvent.TOUCH, nextScene);
+				sceneOver();
 
-				setTimeout(function():void
-				{
-					dispatchEvent(new Event("gotoNext", true));
-				}, 5000);
 			}});
 		}
-
-//		private function nextScene(e:TouchEvent):void
-//		{
-//			e.stopImmediatePropagation();
-//			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
-//			if (tc)
-//			{
-//				eunuch.removeEventListener(TouchEvent.TOUCH, nextScene);
-//				dispatchEvent(new Event("gotoNext", true));
-//			}
-//		}
 
 		//显示提示气泡
 		private function showWindowHint(sp:Sprite):void
@@ -396,7 +381,7 @@ package views.module1
 				{
 //					var point:Point = tc.getLocation(this);
 //					Prompt.show(point.x, point.y, "hint3", "位图字体位图字体", 5);
-					
+
 					dpt=null;
 					break;
 				}

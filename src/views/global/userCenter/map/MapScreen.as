@@ -103,7 +103,7 @@ package views.global.userCenter.map
 			}
 			else
 			{
-				Map.show();
+				Map.show(null, -1, -1, true);
 			}
 		}
 

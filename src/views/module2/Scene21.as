@@ -110,17 +110,14 @@ package views.module2
 				TweenLite.to(book, 1, {x: 408, y: 363, scaleX: .07, scaleY: .07, ease: Elastic.easeOut, onComplete: function():void
 				{
 					PopUpManager.removePopUp(book);
-					TweenLite.delayedCall(1, nextScene);
+					TweenLite.delayedCall(1, endEff);
 				}});
 			}
 		}
 
-		private function nextScene():void
+		private function endEff():void
 		{
-			TweenLite.to(king, 1, {x: 1044, onComplete: function():void
-			{
-				dispatchEvent(new Event("gotoNext", true));
-			}});
+			TweenLite.to(king, 1, {x: 1044, onComplete: sceneOver});
 		}
 
 		private var hotarea:Rectangle=new Rectangle(280, 140, 210, 290);

@@ -274,10 +274,7 @@ package views.module1
 		{
 			TweenLite.to(hatLockMark, .5, {alpha: 0});
 			TweenLite.to(clothLockMark, .5, {alpha: 0});
-			TweenLite.to(lion, 1, {x: lionX, onComplete: function():void
-			{
-				dispatchEvent(new Event("gotoNext", true));
-			}});
+			TweenLite.to(lion, 1, {x: lionX, onComplete: sceneOver});
 		}
 
 		private var hatPosition:Point=new Point(444.5, 168);
