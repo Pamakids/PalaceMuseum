@@ -180,7 +180,7 @@ package views.components
 					prompt.playShow(hideAfter);
 				return null;
 			}
-			if (!background || background.length == 0)
+			if (!background)
 				background="hint-bg";
 			prompt=new Prompt(background, content, position, fontSize);
 			prompt.callback=callback;
