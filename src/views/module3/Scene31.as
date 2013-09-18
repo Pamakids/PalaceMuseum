@@ -188,7 +188,7 @@ package views.module3
 		private function onBookTouch(e:TouchEvent):void
 		{
 			e.stopImmediatePropagation();
-			if (!ready || !shelfOpen || bookFinded)
+			if (!ready || !shelfOpen)
 				return;
 			var book:Image=e.currentTarget as Image;
 			if (!book)
@@ -198,8 +198,9 @@ package views.module3
 				return;
 			if (!book.hitTest(tc.getLocation(book)))
 				return;
-			if (Math.random() < probability)
+			if ((Math.random() < probability && !bookFinded) || rightBook == book)
 			{
+				rightBook=book;
 				bookFinded=true;
 				showBigBook();
 				setChildIndex(lion, numChildren - 1);
@@ -216,9 +217,11 @@ package views.module3
 				var pt:Point=new Point(book.x + book.width / 2 + pr.x, book.y + book.height / 2);
 				Prompt.show(pt.x, pt.y, "hint-bg", "hint31-wrong", 1);
 			}
-			book.removeEventListener(TouchEvent.TOUCH, onBookTouch);
+
 			probability+=.2;
 		}
+
+		private var rightBook:Image;
 
 		private function showBigBook():void
 		{
@@ -236,14 +239,14 @@ package views.module3
 
 		private function onCloseBook(e:Event):void
 		{
-			sceneOver();
+			checkOver();
 			removeChild(bigBook);
 		}
 
-		private function sceneOver():void
+		private function checkOver():void
 		{
 			if (gamePlayed && bookFinded && finded)
-				dispatchEvent(new Event("gotoNext", true));
+				sceneOver();
 		}
 
 		private function initGame():void
@@ -262,7 +265,7 @@ package views.module3
 			removeChild(mapGame);
 			mapGame=null;
 			gamePlayed=true;
-			sceneOver();
+			checkOver();
 		}
 
 		private function initFindGame():void
@@ -279,7 +282,7 @@ package views.module3
 			removeChild(mapGame);
 			findGame=null;
 			finded=true;
-			sceneOver();
+			checkOver();
 		}
 
 		private function onGameRestart(e:Event):void

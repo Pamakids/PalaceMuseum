@@ -13,6 +13,7 @@ package views.components.base
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
+	import views.components.ElasticButton;
 	import views.components.Prompt;
 	import views.global.TopBar;
 
@@ -61,6 +62,26 @@ package views.components.base
 					return null;
 			}
 			return null;
+		}
+
+		protected var nextButton:ElasticButton;
+
+		protected function sceneOver():void
+		{
+			if (!nextButton)
+			{
+				nextButton=new ElasticButton(getImage("nextButton"));
+				addChild(nextButton);
+				nextButton.x=1024 - 100;
+				nextButton.y=768 - 100;
+				nextButton.addEventListener(ElasticButton.CLICK, nextScene);
+			}
+		}
+
+		protected function nextScene(e:Event=null):void
+		{
+			nextButton.removeEventListener(ElasticButton.CLICK, nextScene);
+			dispatchEvent(new Event("gotoNext", true));
 		}
 	}
 }

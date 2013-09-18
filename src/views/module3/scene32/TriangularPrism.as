@@ -1,3 +1,10 @@
+/**
+ *
+ * 三棱镜
+ * 九龙壁
+ *
+ * */
+
 package views.module3.scene32
 {
 	import com.greensock.TweenLite;
@@ -16,6 +23,7 @@ package views.module3.scene32
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.CollectionCard;
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
 
@@ -156,8 +164,39 @@ package views.module3.scene32
 
 			if (areaCount > 15 && crtAreaIndex >= 0)
 			{
-				areaArr[crtAreaIndex].alpha+=.008;
+				var ap:Number=areaArr[crtAreaIndex].alpha;
+				if (ap.toFixed(2) == "0.40")
+					count++;
+				areaArr[crtAreaIndex].alpha=ap + .01;
 			}
+		}
+
+		private function addCard(src:String):void
+		{
+			var halo:Sprite=new Sprite();
+			halo.addChild(getImage("halo"));
+			halo.pivotX=halo.width >> 1;
+			halo.pivotY=halo.height >> 1;
+			addChild(halo);
+			halo.x=512;
+			halo.y=768 / 2;
+			halo.visible=true;
+			halo.scaleX=halo.scaleY=.5;
+			halo.rotation=0;
+			TweenLite.to(halo, 2.5, {scaleX: 1, scaleY: 1, rotation: Math.PI, onComplete: function():void
+			{
+				removeChild(halo);
+			}});
+
+			var card:CollectionCard=new CollectionCard();
+			card.addChild(getImage(src));
+			card.pivotX=card.width >> 1;
+			card.pivotY=card.height >> 1;
+			card.x=512;
+			card.y=768 / 2;
+			card.show();
+			addChild(card);
+			trace('added card');
 		}
 
 		private var areaArr:Array=[];
@@ -300,6 +339,19 @@ package views.module3.scene32
 		private var crtRotation:Number=0;
 		private var _crtAreaIndex:int=0;
 		private var areaCount:int=0;
+		private var _count:int=0;
+
+		public function get count():int
+		{
+			return _count;
+		}
+
+		public function set count(value:int):void
+		{
+			_count=value;
+			if (_count == 9)
+				addCard("card-dragon")
+		}
 
 		public function get crtAreaIndex():int
 		{

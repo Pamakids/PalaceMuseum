@@ -73,7 +73,7 @@ package views.module1
 		public function Scene12(am:AssetManager)
 		{
 			super(am);
-			crtKnowledgeIndex=1;
+			crtKnowledgeIndex=2;
 		}
 
 		override protected function init():void
@@ -274,10 +274,7 @@ package views.module1
 		{
 			TweenLite.to(hatLockMark, .5, {alpha: 0});
 			TweenLite.to(clothLockMark, .5, {alpha: 0});
-			TweenLite.to(lion, 1, {x: lionX, onComplete: function():void
-			{
-				dispatchEvent(new Event("gotoNext", true));
-			}});
+			TweenLite.to(lion, 1, {x: lionX, onComplete: sceneOver});
 		}
 
 		private var hatPosition:Point=new Point(444.5, 168);
@@ -566,7 +563,6 @@ package views.module1
 			var tc:Touch=e.getTouch(stage, TouchPhase.BEGAN);
 			if (tc)
 			{
-				crtKnowledgeIndex=2;
 				box.removeEventListener(TouchEvent.TOUCH, onClickBox);
 				var quiz:ClothPuzzle=new ClothPuzzle(assets);
 

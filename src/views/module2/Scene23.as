@@ -168,15 +168,10 @@ package views.module2
 			}
 			else if (chatIndex == 6)
 			{
-				TweenLite.delayedCall(2, sceneOver);
+				sceneOver();
 			}
 			else
 				startChat();
-		}
-
-		private function sceneOver():void
-		{
-			dispatchEvent(new Event("gotoNext", true))
 		}
 
 		private function onPinTouch(e:TouchEvent):void

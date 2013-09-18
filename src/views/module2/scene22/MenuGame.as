@@ -673,7 +673,7 @@ package views.module2.scene22
 
 		private function loop(e:Event):void
 		{
-			space.step(1 / 60);
+			space.step(1 / 30);
 
 			for (var i:int=0; i < blockArr.length; i++)
 			{

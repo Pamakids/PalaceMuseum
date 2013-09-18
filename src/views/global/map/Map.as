@@ -178,7 +178,7 @@ package views.global.map
 			Map.callback=callback;
 			if (map)
 			{
-				map.show(ec, !(from || to), fromCenter);
+				map.show(ec, !(from != -1 || to != -1), fromCenter);
 				parent.setChildIndex(map, parent.numChildren - 1);
 			}
 			else
