@@ -97,11 +97,16 @@ package views.module2
 		private function onGamePlayed(e:Event):void
 		{
 			removeChild(game);
+			game=null;
+			removeEventListener(TouchEvent.TOUCH, onTouch);
+			sceneOver();
+		}
+
+		override protected function nextScene(e:Event=null):void
+		{
 			var scale:Number=1.2;
 			TweenLite.to(this, 3, {scaleX: scale, scaleY: scale, x: -1024 * (scale - 1),
-					onComplete: function():void {
-						dispatchEvent(new Event("gotoNext", true))
-					}});
+					onComplete: super.nextScene});
 		}
 	}
 }

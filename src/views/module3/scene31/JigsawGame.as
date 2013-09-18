@@ -333,7 +333,7 @@ package views.module3.scene31
 
 			timeHolder.addChild(lbl);
 			timeHolder.x=1024;
-			timeHolder.y=30;
+			timeHolder.y=100;
 
 			addChild(timeHolder);
 		}

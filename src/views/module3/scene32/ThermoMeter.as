@@ -137,6 +137,7 @@ package views.module3.scene32
 					var light:Sprite=lightArr[index];
 					TweenLite.to(light.clipRect, .5, {x: 0, onComplete: function():void {
 						temp=tempArr[index];
+						count++;
 					}});
 					return;
 				}
@@ -151,6 +152,7 @@ package views.module3.scene32
 			closeBtn.x=950;
 			closeBtn.y=60;
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
+			closeBtn.visible=closeBtn.touchable=false;
 		}
 
 		private function addThermo():void
@@ -231,6 +233,20 @@ package views.module3.scene32
 		private var _temp:Number=0;
 
 		private var itemHolder:Sprite;
+		private var _count:int=0;
+
+		public function get count():int
+		{
+			return _count;
+		}
+
+		public function set count(value:int):void
+		{
+			_count=value;
+			if (_count == tempArr.length)
+				closeBtn.visible=closeBtn.touchable=true;
+		}
+
 
 		public function get temp():Number
 		{

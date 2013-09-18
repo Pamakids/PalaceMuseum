@@ -7,12 +7,14 @@ package views.module3.scene31
 	import flash.geom.Rectangle;
 
 	import starling.display.Image;
+	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.CollectionCard;
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
 
@@ -103,9 +105,9 @@ package views.module3.scene31
 			}
 		}
 
-		private var rattleDrumArea:Rectangle=new Rectangle(308, 208, 36, 95);
-		private var fluteArea:Rectangle=new Rectangle(652, 478, 35, 40);
-		private var originPosArr:Array=[new Point(326, 291), new Point(652, 478), new Point(844, 507)];
+		private var rattleDrumArea:Rectangle=new Rectangle(300, 200, 45, 118);
+		private var fluteArea:Rectangle=new Rectangle(645, 500, 50, 45);
+		private var originPosArr:Array=[new Point(326, 291), new Point(652, 478), new Point(818, 538)];
 		private var destPosArr:Array=[new Point(133, 23), new Point(35, 9), new Point(251, 16)];
 		private var shadowArr:Array=[];
 
@@ -153,9 +155,40 @@ package views.module3.scene31
 		private function checkResult():void
 		{
 			checkCount++;
+			if (checkCount == 3)
+				addCard("card-bug");
+		}
+
+		private function addCard(src:String):void
+		{
+			halo=new Sprite();
+			halo.addChild(getImage("halo"));
+			halo.pivotX=halo.width >> 1;
+			halo.pivotY=halo.height >> 1;
+			addChild(halo);
+			halo.x=512;
+			halo.y=768 / 2;
+			halo.visible=true;
+			halo.scaleX=halo.scaleY=.5;
+			halo.rotation=0;
+			TweenLite.to(halo, 2.5, {scaleX: 1, scaleY: 1, rotation: Math.PI, onComplete: function():void
+			{
+				halo.visible=false;
+			}});
+
+			var card:CollectionCard=new CollectionCard();
+			card.addChild(getImage(src));
+			card.pivotX=card.width >> 1;
+			card.pivotY=card.height >> 1;
+			card.x=512;
+			card.y=768 / 2;
+			card.show();
+			addChild(card);
+			trace('added card');
 		}
 
 		private var checkCount:int=0;
 		private var closeBtn:ElasticButton;
+		private var halo:Sprite;
 	}
 }

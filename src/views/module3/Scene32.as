@@ -22,14 +22,11 @@ package views.module3
 		private var teleGame:Telescope;
 
 		private var prismGame:TriangularPrism;
-		private var telePlayed:Boolean;
-		private var prismPlayed:Boolean;
 
 		private var prism:Image;
 		private var thermo:Image;
 		private var tele:Image;
 		private var thermoGame:ThermoMeter;
-		private var thermoPlayed:Boolean;
 
 		private var hint0:String="纸中之王是从唐朝开始生产的宣纸，它不褪色，少虫蛀，寿命长。我国流传至今的古籍珍本、名家书画，大都用宣纸保存，依然如初。";
 		private var hint1:String="清朝皇帝多喜爱松花石砚，石头产自满族家乡松花江畔的长白山，颜色也和山中开放的黄绿色松花相似。";
@@ -138,16 +135,6 @@ package views.module3
 			teleGame.removeChildren();
 			removeChild(teleGame);
 			teleGame=null;
-
-			telePlayed=true;
-
-			checkProcess();
-		}
-
-		private function checkProcess():void
-		{
-			if (telePlayed && prismPlayed && thermoPlayed)
-				dispatchEvent(new Event("gotoNext", true));
 		}
 
 		private function initPrism():void
@@ -163,8 +150,6 @@ package views.module3
 			prismGame.removeChildren();
 			removeChild(prismGame);
 			prismGame=null;
-
-			prismPlayed=true;
 		}
 
 		private function initThermo():void
@@ -176,12 +161,11 @@ package views.module3
 
 		private function onThermoPlayed(e:Event):void
 		{
-			thermoGame.removeEventListener("gameOver", onPrismPlayed)
+			thermoGame.removeEventListener("gameOver", onThermoPlayed)
 			thermoGame.removeChildren();
 			removeChild(thermoGame);
 			thermoGame=null;
-
-			thermoPlayed=true;
+			sceneOver();
 		}
 	}
 }

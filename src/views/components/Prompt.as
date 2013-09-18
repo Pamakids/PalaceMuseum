@@ -45,10 +45,25 @@ package views.components
 
 		private var label:TextField;
 
-		public function Prompt(bg:String, content:String, algin:int=5, fontSize=20)
+		public function Prompt(bg:String, content:String, algin:int=5, fontSize=20, bgAlign:int=-1)
 		{
 			super();
 			var bgImage:Image=getImage(bg);
+
+			//t,f,1:左右翻转
+			//f,f,1:non
+			//f,t,1:平面翻转
+			//t,t,1:non
+			//t,f,-1:non
+			//f,f,-1:平面翻转
+			//f,t,-1:non
+			//t,t,-1:non
+			if (bgAlign == 3)
+			{
+				var flip:FlipImage=new FlipImage(bgImage.texture, true, false);
+				flip.location=1;
+
+			}
 
 			if (content)
 			{
@@ -70,8 +85,13 @@ package views.components
 				}
 			}
 
-			addChildAt(bgImage, 0);
-
+			if (bgAlign == 3)
+			{
+				addChildAt(flip, 0);
+				algin=bgAlign;
+			}
+			else
+				addChildAt(bgImage, 0);
 			this.pivotX=(bgImage.width >> 1) * ((algin - 1) % 3);
 			this.pivotY=(bgImage.height >> 1) * (2 - int((algin - 1) / 3));
 
@@ -87,12 +107,12 @@ package views.components
 			return "-mid";
 		}
 
-		public static function showTXT(_x:Number, _y:Number, _content:String, _size:int=20, callBack:Function=null, _parent:Sprite=null):Prompt
+		public static function showTXT(_x:Number, _y:Number, _content:String, _size:int=20, callBack:Function=null, _parent:Sprite=null, bgAlign:int=1):Prompt
 		{
 			var bgSize:String=checkLength(_content.length)
 			var bg:String="hint-bg" + bgSize;
 			var delay:int=3 + Math.max(bgSize.length / 2 - 1, 0);
-			return show(_x, _y, bg, _content, 1, delay, callBack, _parent, false, _size);
+			return show(_x, _y, bg, _content, 1, delay, callBack, _parent, false, _size, bgAlign);
 		}
 
 		private function initLable(content:String):TextField
@@ -168,7 +188,7 @@ package views.components
 		 * @return
 		 *
 		 */
-		public static function show(x:Number, y:Number, background:String, content:String='', position:int=5, hideAfter:Number=3, callback:Function=null, parentSprite:Sprite=null, forceShow:Boolean=false, fontSize:int=20):Prompt
+		public static function show(x:Number, y:Number, background:String, content:String='', position:int=5, hideAfter:Number=3, callback:Function=null, parentSprite:Sprite=null, forceShow:Boolean=false, fontSize:int=20, bgAlign:int=-1):Prompt
 		{
 			var id:String=content ? content : background;
 			var prompt:Prompt=promptDic[id + x + y];
@@ -182,7 +202,7 @@ package views.components
 			}
 			if (!background)
 				background="hint-bg";
-			prompt=new Prompt(background, content, position, fontSize);
+			prompt=new Prompt(background, content, position, fontSize, bgAlign);
 			prompt.callback=callback;
 			prompt.x=x;
 			prompt.y=y;

@@ -81,7 +81,7 @@ package views
 				isLoading=true;
 				var assets:AssetManager=new AssetManager();
 				var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
-				assets.enqueue(file);
+				assets.enqueue(file, "assets/common/nextButton.png");
 				assets.loadQueue(function(ratio:Number):void
 				{
 //					trace("Loading assets, progress:", ratio);

@@ -34,7 +34,7 @@ package views.global
 		{
 			var index:int=-1;
 			if (MC.instance.currentModule && MC.instance.currentModule.crtScene)
-				index=MC.instance.currentModule.crtScene.crtKnowledgeIndex;
+				index=MC.instance.currentModule.crtScene.crtKnowledgeIndex - 1;
 			UserCenterManager.showUserCenter(index);
 		}
 
