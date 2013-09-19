@@ -48,9 +48,9 @@ package
 		override protected function init():void
 		{
 //			testFont();
-//			testUserCenter();
+			testUserCenter();
 //			Map.show();
-//			return;
+			return;
 			debugInit();
 			Map.show();
 		}
