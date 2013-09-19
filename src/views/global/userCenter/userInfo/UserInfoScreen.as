@@ -11,13 +11,35 @@ package views.global.userCenter.userInfo
 	import views.global.userCenter.IUserCenterScreen;
 	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
-	
+	/**
+	 * 用户信息
+	 * @author Administrator
+	 */	
 	public class UserInfoScreen extends Screen implements IUserCenterScreen
 	{
 		public function UserInfoScreen()
 		{
 			super();
 		}
+		
+		/*
+		 * 1. 主界面
+		 * 		点击切换用户按钮 → 进入用户选择界面
+		 * 		点击游戏列表图标 → 打开游戏信息界面
+		 * 2. 用户选择界面 
+		 * 		选择编辑指定角色，进入角色编辑界面
+		 * 3. 角色编辑界面
+		 * 		变更用户头像
+		 * 		更改用户名称
+		 * 		修改出生日期
+		 * 		删除用户 → 弹出确认窗口
+		 * 		确定切换至指定用户
+		 * 4. 游戏信息界面、
+		 * 		进入游戏
+		 * 5. Alert界面
+		 * 		确定或取消删除角色的操作
+		 */		
+		
 		
 		override protected function initialize():void
 		{
