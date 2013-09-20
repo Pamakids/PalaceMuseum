@@ -7,6 +7,7 @@ package
 
 	import models.Const;
 	import models.FontVo;
+	import models.SOService;
 
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
@@ -18,6 +19,7 @@ package
 
 	import views.Module1;
 	import views.Module3;
+	import views.Module4;
 	import views.components.Prompt;
 	import views.components.base.Container;
 	import views.global.map.Map;
@@ -26,10 +28,11 @@ package
 	public class Main extends Container
 	{
 		private var testingModule:Sprite;
-		private var testingModuleClass:Class;
+		private var testingModuleClass:Class=Module4;
 
 		public function Main()
 		{
+//			SOService.instance.clear();
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
@@ -48,11 +51,11 @@ package
 		override protected function init():void
 		{
 //			testFont();
-			testUserCenter();
+//			testUserCenter();
 //			Map.show();
-			return;
+//			return;
 			debugInit();
-			Map.show();
+//			Map.show();
 		}
 
 		private function debugInit():void
