@@ -141,7 +141,6 @@ package views.global.userCenter
 				}));
 			_navigator.addScreen(HANDBOOK, new ScreenNavigatorItem(HandbookScreen, 
 				{
-//					screen_textures_changed: updateHandbookScreenTexture
 				}, 
 				{
 					width: contentWidth, height: contentHeight,
@@ -151,7 +150,8 @@ package views.global.userCenter
 				{
 				}, 
 				{
-					width: contentWidth, height: contentHeight
+					width: contentWidth, height: contentHeight,
+					viewWidth: contentWidth, viewHeight: contentHeight
 				}));
 			_navigator.addScreen(ACHIEVEMENT, new ScreenNavigatorItem(AchievementScreen, 
 				{
