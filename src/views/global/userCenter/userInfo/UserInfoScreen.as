@@ -40,7 +40,6 @@ package views.global.userCenter.userInfo
 		 * 		确定或取消删除角色的操作
 		 */		
 		
-		
 		override protected function initialize():void
 		{
 			initBackgroundImage();
@@ -70,15 +69,17 @@ package views.global.userCenter.userInfo
 			return UserCenterManager.getScreenTexture(UserCenter.USERINFO);
 		}
 		
+		public var viewWidth:Number;
+		public var viewHeight:Number;
 		private function initScreenTextures():void
 		{
 			if(UserCenterManager.getScreenTexture(UserCenter.USERINFO))
 				return;
-			var render:RenderTexture = new RenderTexture(width, height, true);
+			var render:RenderTexture = new RenderTexture(viewWidth, viewHeight, true);
 			render.draw( this );
 			var ts:Vector.<Texture> = new Vector.<Texture>(2);
-			ts[0] = Texture.fromTexture( render, new Rectangle( 0, 0, width/2, height) );
-			ts[1] = Texture.fromTexture( render, new Rectangle( width/2, 0, width/2, height) );
+			ts[0] = Texture.fromTexture( render, new Rectangle( 0, 0, viewWidth/2, viewHeight) );
+			ts[1] = Texture.fromTexture( render, new Rectangle( viewWidth/2, 0, viewWidth/2, viewHeight) );
 			UserCenterManager.setScreenTextures(UserCenter.USERINFO, ts);
 		}
 	}
