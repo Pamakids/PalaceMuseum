@@ -1,21 +1,20 @@
 package views.global.map
 {
 	import com.greensock.TweenLite;
-	import com.greensock.TweenMax;
 	import com.greensock.easing.Cubic;
 	import com.pamakids.manager.LoadManager;
-
+	
 	import flash.display.Bitmap;
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-
+	
 	import controllers.MC;
-
+	
 	import models.Const;
 	import models.SOService;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -23,12 +22,10 @@ package views.global.map
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.ElasticButton;
 	import views.components.FlipAnimation;
-	import views.components.Lion;
 	import views.components.LionMC;
-	import views.components.LionPrompt;
 	import views.components.Prompt;
 	import views.components.base.PalaceModule;
 

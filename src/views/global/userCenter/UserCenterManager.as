@@ -114,6 +114,7 @@ package views.global.userCenter
 				}
 			});
 		}
+		
 
 		private static function removeLoadImage():void
 		{
@@ -171,6 +172,10 @@ package views.global.userCenter
 		}
 
 
+		public static function getAssetsManager():AssetManager
+		{
+			return _assetsManager;
+		}
 		public static function getTexture(name:String):Texture
 		{
 			return _assetsManager.getTexture(name);
