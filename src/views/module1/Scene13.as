@@ -23,7 +23,6 @@ package views.module1
 		private var gameHolder:Sprite;
 
 		private var game:TwisterGame;
-		private var halo:Sprite;
 		private var cardShow:Boolean;
 		private var _gamePlayed:Boolean;
 
@@ -74,20 +73,7 @@ package views.module1
 			addKing();
 			addEunuch();
 			addClock();
-			addHalo();
 			addBook();
-		}
-
-		private function addHalo():void
-		{
-			halo=new Sprite();
-			halo.addChild(getImage("halo"));
-			halo.pivotX=halo.width >> 1;
-			halo.pivotY=halo.height >> 1;
-			addChild(halo);
-			halo.x=512;
-			halo.y=768 / 2;
-			halo.visible=false;
 		}
 
 		private function addPlaque():void
@@ -160,7 +146,8 @@ package views.module1
 				{
 					clockMatched=true;
 					PopUpManager.removePopUp(clock);
-					addCard("card-clock");
+//					addCard("card-clock");
+					showCard("card-clock");
 				}});
 			}
 			else
@@ -228,7 +215,8 @@ package views.module1
 				{
 					gamePlayed=true;
 					PopUpManager.removePopUp(gameHolder);
-					addCard("card-plaque")
+//					addCard("card-plaque")
+					showCard("card-plaque");
 				}});
 			}
 			else
@@ -244,6 +232,13 @@ package views.module1
 		{
 			if (cardShow)
 				return;
+			var halo:Sprite=new Sprite();
+			halo.addChild(getImage("halo"));
+			halo.pivotX=halo.width >> 1;
+			halo.pivotY=halo.height >> 1;
+			addChild(halo);
+			halo.x=512;
+			halo.y=768 / 2;
 			cardShow=true;
 			setChildIndex(halo, numChildren - 1);
 			halo.visible=true;
@@ -263,7 +258,7 @@ package views.module1
 			card.x=512;
 			card.y=768 / 2;
 			card.show();
-			addChild(card);
+			halo.addChild(card);
 			trace('added card');
 		}
 	}

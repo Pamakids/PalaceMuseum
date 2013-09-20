@@ -13,19 +13,15 @@ package views.components
 		public function show():void
 		{
 			this.scaleX=this.scaleY=.1;
-			TweenLite.to(this,.5,{scaleX:1,scaleY:1,
-					onComplete:function():void{
-						TweenLite.delayedCall(2,hide);
+			TweenLite.to(this, .5, {scaleX: 1, scaleY: 1,
+					onComplete: function():void {
+						TweenLite.delayedCall(2, hide);
 					}});
 		}
 
-		public function hide():void{
-			TweenLite.to(this,.5,{scaleX:.1,scaleY:.1,x:50,y:50,alpha:.3,
-					onComplete:function():void{
-						removeChildren();
-						visible=false;
-						dispose();
-					}});
+		public function hide():void
+		{
+			TweenLite.to(this, .5, {scaleX: .1, scaleY: .1, x: -462, y: -334, alpha: .3});
 		}
 	}
 }

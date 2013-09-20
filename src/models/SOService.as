@@ -51,5 +51,10 @@ package models
 				arr.push(mc.moduleIndex);
 			setSO('completedModules', arr);
 		}
+
+		public function clear():void
+		{
+			so.clear();
+		}
 	}
 }

@@ -142,11 +142,18 @@ package views.module3
 			prismGame=new TriangularPrism(assets);
 			addChild(prismGame);
 			prismGame.addEventListener("gameOver", onPrismPlayed)
+			prismGame.addEventListener("addCard", onPrismAddCard)
+		}
+
+		private function onPrismAddCard(e:Event):void
+		{
+			showCard("card-dragon");
 		}
 
 		private function onPrismPlayed(e:Event):void
 		{
 			prismGame.removeEventListener("gameOver", onPrismPlayed)
+			prismGame.removeEventListener("addCard", onPrismAddCard)
 			prismGame.removeChildren();
 			removeChild(prismGame);
 			prismGame=null;
