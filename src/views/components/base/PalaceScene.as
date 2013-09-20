@@ -7,12 +7,19 @@
 
 package views.components.base
 {
+	import com.greensock.TweenLite;
+
+	import feathers.core.PopUpManager;
+
+	import models.SOService;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
+	import views.components.CollectionCard;
 	import views.components.ElasticButton;
 	import views.components.Prompt;
 	import views.global.TopBar;
@@ -82,6 +89,42 @@ package views.components.base
 		{
 			nextButton.removeEventListener(ElasticButton.CLICK, nextScene);
 			dispatchEvent(new Event("gotoNext", true));
+		}
+
+		protected function showCard(_cardName:String):void
+		{
+			if (SOService.instance.getSO(_cardName + "collected"))
+				return;
+			SOService.instance.setSO(_cardName + "collected", true);
+
+			var cardShow:Sprite=new Sprite();
+			cardShow.x=512;
+			cardShow.y=768 / 2;
+			PopUpManager.addPopUp(cardShow, true, false);
+
+			var halo:Image=getImage("halo")
+			cardShow.addChild(halo);
+			halo.pivotX=halo.width >> 1;
+			halo.pivotY=halo.height >> 1;
+
+			halo.scaleX=halo.scaleY=.5;
+			halo.rotation=0;
+			TweenLite.to(halo, 2.5, {scaleX: 1, scaleY: 1, rotation: Math.PI, onComplete: function():void
+			{
+				halo.visible=false;
+				TweenLite.delayedCall(.5, function():void {
+					PopUpManager.removePopUp(cardShow);
+					cardShow.dispose()
+				});
+			}});
+
+			var card:CollectionCard=new CollectionCard();
+			card.addChild(getImage(_cardName));
+			card.pivotX=card.width >> 1;
+			card.pivotY=card.height >> 1;
+			card.show();
+			cardShow.addChild(card);
+
 		}
 	}
 }

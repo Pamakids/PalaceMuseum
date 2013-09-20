@@ -350,7 +350,8 @@ package views.module3.scene32
 		{
 			_count=value;
 			if (_count == 9)
-				addCard("card-dragon")
+				dispatchEvent(new Event("addCard"));
+//				addCard("card-dragon")
 		}
 
 		public function get crtAreaIndex():int

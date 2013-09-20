@@ -272,12 +272,19 @@ package views.module3
 		{
 			findGame=new FindGame(assets);
 			findGame.addEventListener("gameOver", onFindGamePlayed)
+			findGame.addEventListener("addCard", onFindGameAddCard)
 			addChild(findGame);
+		}
+
+		private function onFindGameAddCard(e:Event):void
+		{
+			showCard("card-bug");
 		}
 
 		private function onFindGamePlayed(e:Event):void
 		{
 			findGame.removeEventListener("gameOver", onFindGamePlayed)
+			findGame.removeEventListener("addCard", onFindGameAddCard)
 			findGame.removeChildren();
 			removeChild(mapGame);
 			findGame=null;

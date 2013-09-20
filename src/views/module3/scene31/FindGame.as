@@ -156,7 +156,8 @@ package views.module3.scene31
 		{
 			checkCount++;
 			if (checkCount == 3)
-				addCard("card-bug");
+				dispatchEvent(new Event("addCard"));
+//			addCard("card-bug");
 		}
 
 		private function addCard(src:String):void
