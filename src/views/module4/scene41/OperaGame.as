@@ -28,7 +28,20 @@ package views.module4.scene41
 		private var gameHolder:Sprite;
 		private var endHolder:Sprite;
 
-		private var gameLevel:int;
+		private var gameLevel:int=0; //0-西游,1-水浒
+
+		private var crtOperaName:String;
+		private var operaArr:Array=["xiyou", "san"];
+
+		private var crtB_HPosArr:Array; //头,身子 相对位置
+		private var xiyouB_PosArr:Array=[new Point(33, 107), new Point(26, 109),
+			new Point(-3, 98), new Point(-7, 88), new Point(21, 123), new Point(-3, 87)];
+		private var sanB_PosArr:Array=[new Point(), new Point(),
+			new Point(), new Point(), new Point(), new Point()];
+
+		private var crtMaskPosArr:Array;
+		private var xiyouMaskPosArr:Array=[new Point(30, 44), new Point(13, 55),
+			new Point(30, 37), new Point(7, 23), new Point(28, 69), new Point(16, 43)];
 
 		private function initStart():void
 		{
@@ -54,6 +67,10 @@ package views.module4.scene41
 			startHolder.dispose();
 			startHolder=null;
 
+			crtOperaName=operaArr[gameLevel];
+			crtB_HPosArr=this[crtOperaName + "B_PosArr"];
+			crtMaskPosArr=this[crtOperaName + "MaskPosArr"];
+
 			gameHolder=new Sprite();
 			addChild(gameHolder);
 			gameHolder.addChild(getImage("bg-opera"));
@@ -70,6 +87,7 @@ package views.module4.scene41
 				var rail:Image=getImage("railing" + (i + 1).toString());
 				gameHolder.addChild(rail);
 				rail.y=railYArr[i];
+				rail.touchable=false;
 			}
 
 			addBodys();
@@ -87,7 +105,7 @@ package views.module4.scene41
 				if (body)
 				{
 					body.shake();
-					ropeSP.graphics.moveTo(body.stagePt.x, 0);
+					ropeSP.graphics.moveTo(body.stagePt.x, -200);
 					ropeSP.graphics.lineTo(body.x, body.y);
 				}
 
@@ -98,10 +116,10 @@ package views.module4.scene41
 		private var railYArr:Array=[184, 421, 720];
 		private var spArr:Array=[];
 		private var bodyArr:Vector.<OperaBody>=new Vector.<OperaBody>(length);
-		private var typeArr:Array=["1", "1", "1", "1", "1", "1"];
+		private var typeArr:Array=["1", "2", "3", "4", "5", "6"];
 
-		private var bodyPosArr:Array=[new Point(100, 100), new Point(500, 100),
-			new Point(300, 300), new Point(700, 300), new Point(200, 500), new Point(600, 500)];
+		private var bodyPosArr:Array=[new Point(100, 155), new Point(500, 155),
+			new Point(300, 387), new Point(700, 387), new Point(200, 712), new Point(600, 712)];
 
 		private var ropeSP:Shape;
 
@@ -121,10 +139,12 @@ package views.module4.scene41
 			body.type=type;
 //				typeArr.splice(index, 1);
 //				onStageTypeArr.push(type);
-			body.body=getImage("body" + type);
+			body.body=getImage(crtOperaName + "body" + type);
 //				body.rope=getImage("rope" + type);
-			body.head=getImage("head" + type);
+			body.head=getImage(crtOperaName + "head" + type);
 			body.stagePt=bodyPosArr[index]
+			body.offsetsXY=crtB_HPosArr[index];
+			body.maskPos=crtMaskPosArr[index];
 			body.reset();
 			body.playEnter();
 			bodyArr[index]=body;
@@ -156,16 +176,16 @@ package views.module4.scene41
 			var type:String=typeArr[index];
 			mask.index=index;
 			mask.type=type;
-			var img:Image=getImage("mask" + type);
+			var img:Image=getImage(crtOperaName + "mask" + type);
 			mask.addChild(img);
 			gameHolder.addChild(mask);
 			mask.addEventListener(TouchEvent.TOUCH, onMaskTouch);
 
 			if (!isInit)
 			{
-				var dy:Number=mask.y;
-				mask.y=900;
-				TweenLite.to(mask, .5, {y: dy});
+				var dx:Number=mask.x;
+				mask.x=1100;
+				TweenLite.to(mask, .5, {x: dx});
 			}
 		}
 
@@ -184,7 +204,7 @@ package views.module4.scene41
 			{
 				case TouchPhase.BEGAN:
 				{
-
+					TweenLite.killTweensOf(mask);
 					break;
 				}
 
