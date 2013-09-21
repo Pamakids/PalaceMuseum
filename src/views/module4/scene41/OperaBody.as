@@ -5,9 +5,11 @@ package views.module4.scene41
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -19,6 +21,8 @@ package views.module4.scene41
 
 		public var enterPt:Point;
 		public var stagePt:Point;
+		public var offsetsXY:Point;
+		public var maskPos:Point;
 
 		public function OperaBody()
 		{
@@ -29,22 +33,17 @@ package views.module4.scene41
 		public var head:Image;
 		public var body:Image;
 
-//		public var rope:Image;
-
 		public function reset():void
 		{
-//			rope.pivotX=rope.width >> 1;
-//			rope.pivotY=rope.height;
-//			rope.y=-head.height >> 1;
-//			addChild(rope);
-
 			headHolder.pivotX=head.width >> 1;
 			headHolder.pivotY=head.height;
+
+			body.pivotX=headHolder.pivotX - offsetsXY.x;
+			body.pivotY=headHolder.pivotY - offsetsXY.y;
+
+			addChild(body);
 			addChild(headHolder);
 			headHolder.addChild(head);
-
-			body.pivotX=body.width >> 1;
-			addChild(body);
 
 			startShakeHead(Math.PI / 20, 5);
 			startShakeBody(Math.PI / 30, 5);
@@ -52,6 +51,17 @@ package views.module4.scene41
 			enterPt=new Point(stagePt.x, -300);
 			this.x=enterPt.x;
 			this.y=enterPt.y;
+
+			addEventListener(TouchEvent.TOUCH, onTouch);
+
+			if (type == "5")
+				addEventListener(KeyboardEvent.KEY_DOWN, onKey);
+		}
+
+		private function onKey(e:KeyboardEvent):void
+		{
+			if (e.keyCode == Keyboard.C)
+				trace(swingCount, swingReverse)
 		}
 
 		private var count:int=0;
@@ -79,8 +89,7 @@ package views.module4.scene41
 			headAngle=Math.max(0, headAngle - dh);
 			bodyAngle=Math.max(0, bodyAngle - db);
 
-//			return;
-			if (ready && !dragging)
+			if (ready && !dragging && swingAngle != 0)
 			{
 				if (swingCount <= 0)
 					swingReverse=false;
@@ -104,7 +113,7 @@ package views.module4.scene41
 
 		private function swing(value:Number, sec:Number):void
 		{
-			swingCount=value > 0 ? 22 : 7;
+			swingCount=value > 0 ? 29 : 0;
 			swingReverse=value > 0;
 			swingAngle=Math.abs(value);
 			ds=swingAngle / (sec * 30);
@@ -127,7 +136,6 @@ package views.module4.scene41
 		{
 			var dur:Number=playDur * (stagePt.y - enterPt.y) / 1024;
 			TweenLite.to(this, dur, {x: stagePt.x, y: stagePt.y, ease: Bounce.easeOut, onComplete: function():void {
-				addEventListener(TouchEvent.TOUCH, onTouch);
 				ready=true;
 			}});
 		}
@@ -144,7 +152,6 @@ package views.module4.scene41
 			var maxDX:Number=Math.min(Math.abs(dx), stagePt.y / 2);
 			var dy:Number=stagePt.y * stagePt.y - maxDX * maxDX;
 			var _rot:Number=Math.atan2(maxDX, stagePt.y);
-			trace(stagePt.y, maxDX, _rot)
 			var min:Number=Math.min(Math.PI / 12, Math.abs(_rot));
 
 			switch (tc.phase)
@@ -212,10 +219,8 @@ package views.module4.scene41
 			isMatched=true;
 			removeEventListener(TouchEvent.TOUCH, onTouch);
 			headHolder.addChild(mask);
-			mask.x=0;
-			mask.y=0;
-			mask.width=head.width;
-			mask.height=head.height;
+			mask.x=maskPos.x;
+			mask.y=maskPos.y;
 			startShakeHead(Math.PI / 18, 2);
 		}
 	}

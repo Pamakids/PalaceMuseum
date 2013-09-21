@@ -20,6 +20,7 @@ package views.module3
 	import views.components.base.PalaceScene;
 	import views.module3.scene31.FindGame;
 	import views.module3.scene31.JigsawGame;
+	import views.module3.scene31.ShelfBook;
 
 	public class Scene31 extends PalaceScene
 	{
@@ -115,15 +116,23 @@ package views.module3
 		private var innerX:Number=300;
 		private var rx:Number=1024 - 457;
 
+		private var nameArr:Array=["《蒙语入门》", "《学藏语》", "《资治通鉴》", "《三国志传》", "《四书》", "《五经》", "《全唐诗》"];
+
+		private var lIndexArr:Array=[7, 10];
+		private var rIndexArr:Array=[1, 3, 4, 7, 9, 10];
+
 		private function addShelfs():void
 		{
 			shelfL=new Sprite();
 			shelfL.addChild(getImage("bookshelf"));
 			for (var i:int=0; i < dataArrL.length; i++)
 			{
-				var book:Image=getImage("book" + dataArrL[i].toString());
+				var book:ShelfBook=new ShelfBook();
+				book.addChild(getImage("book" + dataArrL[i].toString()));
+
 				book.x=posArrL[i].x;
 				book.y=posArrL[i].y;
+				book.bookname=nameArr[int(Math.random() * nameArr.length)]
 				book.addEventListener(TouchEvent.TOUCH, onBookTouch);
 				shelfL.addChild(book);
 			}
@@ -135,14 +144,16 @@ package views.module3
 			shelfR.addChild(getImage("bookshelf-r"));
 			for (var j:int=0; j < dataArrR.length; j++)
 			{
-				var book1:Image=getImage("book" + dataArrR[j].toString());
+				var book1:ShelfBook=new ShelfBook();
+				book1.addChild(getImage("book" + dataArrR[j].toString()));
 				book1.x=posArrR[j].x;
 				book1.y=posArrR[j].y;
+				book1.bookname=nameArr[int(Math.random() * nameArr.length)]
 				book1.addEventListener(TouchEvent.TOUCH, onBookTouch);
 				shelfR.addChild(book1);
 			}
 			shelfR.x=rx + innerX;
-			addChild(shelfR)
+			addChild(shelfR);
 			shelfR.addEventListener(TouchEvent.TOUCH, onRShelfTouch);
 		}
 
@@ -164,7 +175,7 @@ package views.module3
 		{
 			shelfL.x=Math.max(0 - innerX, Math.min(shelfL.x + dx, 0));
 			shelfR.x=Math.max(rx, Math.min(shelfR.x - dx, rx + innerX));
-			shelfOpen=shelfL.x == 0;
+			shelfOpen=shelfL.x > -100;
 		}
 
 		private var probability:Number=0;
@@ -190,7 +201,7 @@ package views.module3
 			e.stopImmediatePropagation();
 			if (!ready || !shelfOpen)
 				return;
-			var book:Image=e.currentTarget as Image;
+			var book:ShelfBook=e.currentTarget as ShelfBook;
 			if (!book)
 				return;
 			var tc:Touch=e.getTouch(book, TouchPhase.ENDED);
@@ -198,30 +209,70 @@ package views.module3
 				return;
 			if (!book.hitTest(tc.getLocation(book)))
 				return;
-			if ((Math.random() < probability && !bookFinded) || rightBook == book)
+
+			var pr:Sprite=book.parent as Sprite;
+			var pt:Point=new Point(book.x + book.width / 2, book.y + book.height / 2);
+			var align:int=1;
+			if (checkAlign(book))
+				align=3;
+			if (book.clicked)
+				Prompt.showTXT(pt.x, pt.y, book.bookname, 24, null, pr, align)
+			else
 			{
-				rightBook=book;
-				bookFinded=true;
-				showBigBook();
-				setChildIndex(lion, numChildren - 1);
-				TweenLite.to(lion, .5, {x: 30, onComplete: function():void {
-					lion.say("hint31-right", "hint-bg", function():void {
-						TweenLite.to(lion, .5, {x: -140});
-					});
+				if ((Math.random() < probability && !bookFinded) || rightBook == book)
+				{
+					rightBook=book;
+					bookFinded=true;
+					showBigBook();
+					setChildIndex(lion, numChildren - 1);
+					TweenLite.killTweensOf(lion);
+					TweenLite.to(lion, .5, {x: 30, onComplete: function():void {
+						lion.say("hint31-right", "hint-bg", function():void {
+							TweenLite.to(lion, .5, {x: -140});
+						});
+					}
+						});
 				}
-					});
+				else
+				{
+					Prompt.showTXT(pt.x, pt.y, book.bookname, 24, null, pr, align)
+					probability+=.2;
+					book.clicked=true;
+//				Prompt.show(pt.x, pt.y, "hint-bg", "hint31-wrong", 1);
+				}
+			}
+		}
+
+		private function checkAlign(book:ShelfBook):Boolean
+		{
+			var pt:Point=new Point(book.x, book.y);
+			var index:int=findIndex(pt, posArrL);
+			if (index >= 0)
+			{
+				if (lIndexArr.indexOf(index) >= 0)
+					return true;
 			}
 			else
 			{
-				var pr:Sprite=book.parent as Sprite;
-				var pt:Point=new Point(book.x + book.width / 2 + pr.x, book.y + book.height / 2);
-				Prompt.show(pt.x, pt.y, "hint-bg", "hint31-wrong", 1);
+				index=findIndex(pt, posArrR);
+				if (index >= 0)
+					if (rIndexArr.indexOf(index) >= 0)
+						return true;
 			}
-
-			probability+=.2;
+			return false;
 		}
 
-		private var rightBook:Image;
+		private function findIndex(pt:Point, arr:Array):int
+		{
+			for each (var p:Point in arr)
+			{
+				if (p.x == pt.x && p.y == pt.y)
+					return arr.indexOf(p);
+			}
+			return -1;
+		}
+
+		private var rightBook:ShelfBook;
 
 		private function showBigBook():void
 		{
