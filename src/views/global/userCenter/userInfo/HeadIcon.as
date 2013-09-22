@@ -1,101 +1,107 @@
 package views.global.userCenter.userInfo
 {
-	import feathers.display.Scale9Image;
-	import feathers.textures.Scale9Textures;
-	
+	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import starling.textures.Texture;
+	
+	import views.global.userCenter.UserCenterManager;
 	
 	/**
-	 * 头像组件
+	 * 头像组件，例：
+	 * <listing version="3.0">
+	 * 
+	 * 		var head:HeadIcon = new HeadIcon("1");
+	 * 		head.touchable = true;
+	 * 		head.defaultSkin = new Image(texture);
+	 * 		head.addEventListener(HeadIcon.SECLECTED, func);
+	 * 		this.addChild( head );
+	 * 
+	 * </listing>
 	 * @author Administrator
 	 */	
 	public class HeadIcon extends Sprite
 	{
 		public static const SECLECTED:String = "head_seclected";
-		
-		public function HeadIcon(width:Number, height:Number)
-		{
-			this.width = width;
-			this.height = height;
-		}
 		/**
-		 * 组件中所含头像纹理的资源索引
+		 * @param index	头像资源索引
 		 */		
-		public var id:String;
+		public function HeadIcon(index:String)
+		{
+			this._index = index;
+			init();
+		}
+		
+		private function init():void
+		{
+			initIcon();
+		}
 		
 		private var _icon:Image;
-		private var _background:Scale9Image;
-		
-		public function set background(value:Scale9Textures):void
+		private function initIcon():void
 		{
-			if(_background && _background.textures == value)
+			_icon = new Image(UserCenterManager.getTexture("icon_userhead_" + _index));
+			this.addChild( _icon );
+			_icon.x = -_icon.width >> 1;
+			_icon.y = -_icon.height >> 1;
+		}
+		
+		private var _index:String;
+		private var _background:DisplayObject;
+		
+		public function set defaultSkin(value:DisplayObject):void
+		{
+			if(_background && _background == value)
 				return;
-			if(!_background)
-				_background = new Scale9Image(value);
-			else
-				_background.textures = value;
-			_background.width = this.width;
-			_background.height = this.height;
-		}
-		
-		public function set icon(texture:Texture):void
-		{
-			if(_icon && _icon.texture == texture)	return;
-			if(!_icon)
+			if(_background)
 			{
-				_icon = new Image(texture);
-				_icon.width = width;
-				_icon.height = height;
-				this.addChild( _icon );
-			}else
-			{
-				_icon.texture = texture;
+				this.removeChild( _background );
+				_background.dispose();
 			}
-		}
-		private var _width:Number;
-		override public function set width(value:Number):void
-		{
-			if(_icon)
-				_icon.width = value;
-			if(_background)
-				_background.width = value;
-			this._width = value;
-		}
-		private var _height:Number;
-		override public function set height(value:Number):void
-		{
-			if(_icon)
-				_icon.height = value;
-			if(_background)
-				_background.height = value;
-			this._height = value;
+			_background = value;
+			this.addChild( _background );
+			_background.x = -_background.width >> 1;
+			_background.y = -_background.height >> 1;
 		}
 		
-		private var _touchable:Boolean = false;
+		/**
+		 * @param index	头像资源索引
+		 */		
+		public function resetIcon(index:String):void
+		{
+			if(_index == index)
+				return;
+			_index = index;
+			_icon.texture = UserCenterManager.getTexture("icon_userhead_" + _index);
+		}
+		
+		/**
+		 * 默认值为false.
+		 * 设置为true，点击时会派发HeadIcon.SECLECTED事件，并将_index存入作为e.data中
+		 */		
 		override public function set touchable(value:Boolean):void
 		{
-			if(_touchable == value)
+			if(this._touchable == value)
 				return;
-			_touchable = value;
-			if(_touchable && !this.hasEventListener(TouchEvent.TOUCH))
+			this._touchable = value;
+			if(value && !this.hasEventListener(TouchEvent.TOUCH))
 				this.addEventListener(TouchEvent.TOUCH, onTouch);
-			else if(!_touchable && this.hasEventListener(TouchEvent.TOUCH))
+			else if(!value && this.hasEventListener(TouchEvent.TOUCH))
 				this.removeEventListener(TouchEvent.TOUCH, onTouch);
+		}
+		private var _touchable:Boolean =false;
+		override public function get touchable():Boolean
+		{
+			return _touchable;
 		}
 		
 		private function onTouch(e:TouchEvent):void
 		{
 			var t:Touch = e.getTouch(this);
-			if(t)
-			{
-				if(t.phase == TouchPhase.ENDED)
-					dispatchEventWith(SECLECTED, false, this.id);
-			}
+			if(t && t.phase == TouchPhase.ENDED)
+					dispatchEventWith(SECLECTED, false, this._index);
 		}
 		
 		override public function dispose():void
@@ -112,7 +118,7 @@ package views.global.userCenter.userInfo
 				_background.dispose();
 				_background = null;
 			}
-			if(this.hasEventListener(TouchEvent.TOUCH))
+			if(this.touchable)
 				this.removeEventListener(TouchEvent.TOUCH, onTouch);
 			super.dispose();
 		}

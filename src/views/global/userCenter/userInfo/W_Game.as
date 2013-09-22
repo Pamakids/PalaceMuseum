@@ -6,71 +6,46 @@ package views.global.userCenter.userInfo
 	import models.FontVo;
 	
 	import starling.display.Image;
+	import starling.events.Touch;
 	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.text.TextField;
+	import starling.textures.Texture;
 	
 	import views.global.userCenter.UserCenterManager;
 
 	/**
 	 * 游戏窗口
 	 * @author Administrator
-	 * 
 	 */	
 	public class W_Game extends FeathersControl
 	{
-		private static var INIT_COMPLETED:String = "init_completed";
-		
-		public function W_Game()
+		private static var DATA_CHANGED:String = "data_changed";
+		/**
+		 * @param value
+		 * { name: "游戏名称", iconIndex: "0", resultEasy: "00:00", resultHard: "00:00", numStars: 2 }
+		 */		
+		public function W_Game(value:Object)
 		{
-			super();
+			this._gameData = value;
 		}
 		
-		override protected function draw():void
+		public function updateView():void
 		{
-			const change_all:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const change_completed:Boolean = this.isInvalid(INIT_COMPLETED);
+			const count:int = _gameData.numStars;
+			const max:int = 3;
 			
-			var image:Image;
-			var i:int;
-			if(change_completed)
+			nameLabel.text = _gameData.name;
+			resultLabel.text = getResultContent();
+			icon.texture = UserCenterManager.getTexture("card_game_" + _gameData.iconIndex);
+			for(var i:int = 0;i<max;i++)
 			{
-				line.x = 363;
-				line.y = 125;
-				button_start.x = 452;
-				button_start.y = 303;
-				button_close.x = 286;
-				button_close.y = 382;
-				nameLabel.x = 345;
-				nameLabel.y = 66;
-				resultLabel.x = 345;
-				resultLabel.y = 120;
-				icon.x = 33;
-				icon.y = 58;
-				for(i = 0;i<3;i++)
-				{
-					image = stars[i];
-					image.x = 90 + i*(image.width+2);
-					image.y = 304;
-				}
-			}
-			if(change_all)
-			{
-				nameLabel.text = _data.name;
-				resultLabel.text = getResultContent();
-				icon.readjustSize();
-				icon.texture = UserCenterManager.getTexture(_data.icon);
-				for(i = 0;i<3;i++)
-				{
-					image = stars[i];
-					image.texture = UserCenterManager.getTexture((i<_data.numStars)?"star_big_red":"star_big_gray");
-				}
+				stars[i].texture = UserCenterManager.getTexture((i<count)?"icon_star_red":"icon_star_gray");
 			}
 		}
 		
 		private var nameLabel:TextField;			//菜名
 		private var resultLabel:TextField;			//成绩单
-		private var background:Image;				//背景图
-		private var line:Image;
 		private var icon:Image;						//游戏icon
 		private var button_start:Button;			//开始游戏按钮
 		private var button_close:Button;			//关闭按钮
@@ -78,69 +53,98 @@ package views.global.userCenter.userInfo
 		
 		override protected function initialize():void
 		{
-			initFixedView();
-			initOtherView();
-			invalidate(INIT_COMPLETED);
+			initBackImages();
+			initButtons();
+			initLabels();
+			initGameicon();
 		}
 		
-		private function initOtherView():void
+		private function initLabels():void
 		{
-			nameLabel = new TextField(230, 80, _data.name, FontVo.PALACE_FONT, 32, 0x932720 );
+			nameLabel = new TextField(230, 80, _gameData.name, FontVo.PALACE_FONT, 32, 0x932720 );
 			this.addChild( nameLabel );
+			nameLabel.x = 345;
+			nameLabel.y = 66;
 			nameLabel.touchable = false;
 			nameLabel.vAlign = "center";
 			nameLabel.hAlign = "center";
+//			nameLabel.border = true;
 			
-			resultLabel = new TextField(230, 300, getResultContent(), FontVo.PALACE_FONT, 18, 0x932720);
+			resultLabel = new TextField(230, 100, getResultContent(), FontVo.PALACE_FONT, 20, 0x932720);
 			this.addChild( resultLabel );
+			resultLabel.x = 345;
+			resultLabel.y = 180;
 			resultLabel.touchable = false;
-			resultLabel.vAlign = "center";
+			resultLabel.vAlign = "top";
 			resultLabel.hAlign = "left";
-			
-			icon = new Image(UserCenterManager.getTexture(""));
-			icon.touchable = false;
-			this.addChild( icon );
-			
-			stars = new Vector.<Image>(3);
-			var image:Image;
-			for(var i:int = 0;i<3;i++)
-			{
-				image = new Image(UserCenterManager.getTexture((i<_data.numStars)?"star_big_red":"star_big_gray"));
-				image.touchable = false;
-			}
-			
-		}
-		private function getResultContent():String
-		{
-			var str:String = "最好成绩\n简单模式： "+_data.resultEasy+"\n困难模式： "+_data.resultHard;
-			return str;
+//			resultLabel.border = true;
 		}
 		
-		private function initFixedView():void
+		private function initButtons():void
 		{
-			background = new Image(UserCenterManager.getTexture(""));
-			this.addChild( background );
-			background.touchable = false;
-			
-			line = new Image(UserCenterManager.getTexture(""));
-			this.addChild( line );
-			line.touchable = false;
-			
 			button_start = new Button();
-			button_start.defaultSkin = new Image(UserCenterManager.getTexture(""));
-			button_start.defaultSelectedSkin = new Image(UserCenterManager.getTexture(""));
-			this.addChild( button_start );
+			button_start.defaultSkin = new Image(UserCenterManager.getTexture("button_start_up"));
+			button_start.downSkin = new Image(UserCenterManager.getTexture("button_start_down"));
 			button_start.addEventListener(TouchEvent.TOUCH, startGame);
+			this.addChild( button_start );
+			button_start.x = 452;
+			button_start.y = 303;
 			
 			button_close = new Button();
 			button_close.defaultSkin = new Image(UserCenterManager.getTexture("button_close_small"));
-			this.addChild( button_close );
 			button_close.addEventListener(TouchEvent.TOUCH, closeWindow);
+			this.addChild( button_close );
+			button_close.x = 566;
+			button_close.y = 20;
+		}
+		
+		private function initBackImages():void
+		{
+			//背景
+			var image:Image = new Image(UserCenterManager.getTexture("background_win_0"));
+			this.addChild( image );
+			this.width = image.width;
+			this.height = image.height;
+			//线条
+			image = new Image(UserCenterManager.getTexture("line_other"));
+			this.addChild( image );
+			image.x = 363;
+			image.y = 125;
+			image.touchable = false;
+			
+			//星星
+			const max:int = 3;
+			const count:int = _gameData.numStars;
+			stars = new Vector.<Image>(max);
+			var texture:Texture = UserCenterManager.getTexture("icon_star_gray");
+			for(var i:int = 0;i<max;i++)
+			{
+				image = new Image(texture);
+				this.addChild(image);
+				image.x = 90 + i*(image.width+2);
+				image.y = 304;
+				image.touchable = false;
+				stars[i] = image;
+			}
+		}
+		
+		private function initGameicon():void
+		{
+			icon = new Image(UserCenterManager.getTexture("card_game_" + _gameData.iconIndex));
+			this.addChild( icon );
+			icon.x = 33;
+			icon.y = 58;
+			icon.touchable = false;
+		}
+		private function getResultContent():String
+		{
+			var str:String = "最好成绩\n简单模式： "+_gameData.resultEasy+"\n困难模式： "+_gameData.resultHard;
+			return str;
 		}
 		
 		override public function dispose():void
 		{
-			_data = null;
+			_gameData = null;
 			if(nameLabel)
 			{
 				nameLabel.removeFromParent(true);
@@ -150,16 +154,6 @@ package views.global.userCenter.userInfo
 			{
 				resultLabel.removeFromParent(true);
 				resultLabel = null;
-			}
-			if(background)
-			{
-				background.removeFromParent(true);
-				background = null;
-			}
-			if(line)
-			{
-				line.removeFromParent(true);
-				line = null;
 			}
 			if(icon)
 			{
@@ -196,28 +190,45 @@ package views.global.userCenter.userInfo
 			super.dispose();
 		}
 		
+		public var startGameHandler:Function;
 		private function startGame(e:TouchEvent):void
 		{
+			var touch:Touch = e.getTouch(this.button_start);
+			if(touch && touch.phase == TouchPhase.ENDED && startGameHandler)
+			{
+			}
 		}
+		
+		public var closeWinHandler:Function = defaultCloseHandler;
 		private function closeWindow(e:TouchEvent):void
 		{
+			var touch:Touch = e.getTouch(this.button_close);
+			if(touch && touch.phase == TouchPhase.ENDED)
+			{
+				closeWinHandler(this);
+			}
+		}
+		private function defaultCloseHandler(obj:Object):void
+		{
+			if(parent)
+				parent.removeChild( this );
+			this.dispose();
 		}
 		
 		/**
-		 * {
-		 * 		name
-		 * 		icon
-		 * 		resultEasy
-		 * 		resultHard
-		 * 		numStars
+		 * { name: "游戏名称", iconIndex: "0", resultEasy: "00:00", resultHard: "00:00", numStars: 2 }
 		 */		
-		private var _data:Object;
-		public function set data(value:Object):void
+		private var _gameData:Object;
+		/**
+		 * @param value
+		 * { name: "游戏名称", iconIndex: "0", resultEasy: "00:00", resultHard: "00:00", numStars: 2 }
+		 */		
+		public function resetData(value:Object):void
 		{
-			if(_data && _data == value)
+			if(_gameData && _gameData == value)
 				return;
-			_data = value;
-			invalidate(INVALIDATION_FLAG_DATA);
+			_gameData = value;
+			updateView();
 		}
 	}
 }
