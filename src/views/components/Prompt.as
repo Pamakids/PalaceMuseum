@@ -24,27 +24,59 @@ package views.components
 	public class Prompt extends Sprite
 	{
 		private static var assetManagers:Array=[];
+		/**
+		 *
+		 * @default
+		 */
 		public static var parent:Sprite;
+		/**
+		 *
+		 * @default
+		 */
 		public static var promptDic:Dictionary=new Dictionary();
 
+		/**
+		 *
+		 * @default
+		 */
 		public var callback:Function;
 
+		/**
+		 *
+		 * @param am
+		 */
 		public static function addAssetManager(am:AssetManager):void
 		{
 			if (am && assetManagers.indexOf(am) == -1)
 				assetManagers.push(am);
 		}
 
+		/**
+		 *
+		 * @param am
+		 */
 		public static function removeAssetManager(am:AssetManager):void
 		{
 			if (assetManagers.indexOf(am) != -1)
 				assetManagers.splice(assetManagers.indexOf(am), 1);
 		}
 
+		/**
+		 *
+		 * @default
+		 */
 		public var id:String;
 
 		private var label:TextField;
 
+		/**
+		 *
+		 * @param bg
+		 * @param content
+		 * @param algin
+		 * @param fontSize
+		 * @param bgAlign
+		 */
 		public function Prompt(bg:String, content:String, algin:int=5, fontSize=20, bgAlign:int=-1)
 		{
 			super();
@@ -58,21 +90,16 @@ package views.components
 			//f,f,-1:平面翻转
 			//f,t,-1:non
 			//t,t,-1:non
-			if (bgAlign == 3)
-			{
-				var flip:FlipImage=new FlipImage(bgImage.texture, true, false);
-				flip.location=1;
-
-			}
 
 			if (content)
 			{
 				var contentImage:Image=getImage(content);
 				if (!contentImage)
 				{
-					var t:TextField=new TextField(bgImage.width - 30, bgImage.height - 10, content, FontVo.PALACE_FONT, fontSize, 0x561a1a, true);
-					t.x=bgImage.x + 15;
-					t.y=bgImage.y + 10;
+					var isK:Boolean=bg.indexOf("-k") < 0;
+					var t:TextField=new TextField(isK ? bgImage.width - 30 : bgImage.width - 5, isK ? bgImage.height - 10 : bgImage.height - 20, content, FontVo.PALACE_FONT, fontSize, 0x561a1a, true);
+					t.x=bgImage.x + isK ? 15 : 3;
+					t.y=bgImage.y + isK ? 10 : 5;
 					addChild(t);
 					t.touchable=false;
 					t.hAlign="center";
@@ -85,9 +112,19 @@ package views.components
 				}
 			}
 
-			if (bgAlign == 3)
+			if (bgAlign > 0)
 			{
-				addChildAt(flip, 0);
+				if (bgAlign % 3 == 0)
+				{
+					//水平翻转
+					var flip:FlipImage=new FlipImage(bgImage.texture, true, false);
+					flip.location=1;
+					addChildAt(flip, 0);
+				}
+				else
+				{
+					addChildAt(bgImage, 0);
+				}
 				algin=bgAlign;
 			}
 			else
@@ -107,10 +144,22 @@ package views.components
 			return "-mid";
 		}
 
-		public static function showTXT(_x:Number, _y:Number, _content:String, _size:int=20, callBack:Function=null, _parent:Sprite=null, bgAlign:int=1):Prompt
+		/**
+		 *
+		 * @param _x
+		 * @param _y
+		 * @param _content
+		 * @param _size
+		 * @param callBack
+		 * @param _parent
+		 * @param bgAlign
+		 * @param isKnowledge 知识点背景
+		 * @return
+		 */
+		public static function showTXT(_x:Number, _y:Number, _content:String, _size:int=20, callBack:Function=null, _parent:Sprite=null, bgAlign:int=1, isKnowledge:Boolean=false):Prompt
 		{
 			var bgSize:String=checkLength(_content.length)
-			var bg:String="hint-bg" + bgSize;
+			var bg:String="hint-bg" + (isKnowledge ? "-k" : "") + bgSize;
 			var delay:int=3 + Math.max(bgSize.length / 2 - 1, 0);
 			return show(_x, _y, bg, _content, 1, delay, callBack, _parent, false, _size, bgAlign);
 		}
@@ -143,6 +192,10 @@ package views.components
 			return {scaleX: 1, scaleY: 1, ease: Elastic.easeOut};
 		}
 
+		/**
+		 *
+		 * @param hideAfter
+		 */
 		public function playShow(hideAfter:Number):void
 		{
 			TweenLite.killDelayedCallsTo(playHide);
@@ -155,6 +208,9 @@ package views.components
 				TweenLite.delayedCall(hideAfter, playHide);
 		}
 
+		/**
+		 *
+		 */
 		public function playHide():void
 		{
 			if (!this.parent)

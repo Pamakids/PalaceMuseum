@@ -3,26 +3,27 @@ package views.global.map
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.pamakids.manager.LoadManager;
-	
+
 	import flash.display.Bitmap;
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	
+
 	import controllers.MC;
-	
+
 	import models.Const;
 	import models.SOService;
-	
+
 	import starling.display.Image;
+	import starling.display.Shape;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.ElasticButton;
 	import views.components.FlipAnimation;
 	import views.components.LionMC;
@@ -86,7 +87,7 @@ package views.global.map
 //			points=[new Point(365, 495), new Point(365, 535)];
 			super(new AssetManager(), Const.WIDTH, Const.HEIGHT);
 			var f:File=File.applicationDirectory.resolvePath('assets/global/map');
-			assetManager.enqueue('assets/common/button_close.png', f, "json/map.json", "assets/global/userCenter/page_left.png", "assets/common/hint-bg.png");
+			assetManager.enqueue('assets/common/button_close.png', f, "json/map.json", "assets/global/userCenter/page_left.png");
 			assetManager.loadQueue(function(ratio:Number):void
 			{
 				trace(ratio);
@@ -99,7 +100,6 @@ package views.global.map
 					king.pivotX=king.width / 2;
 					king.pivotY=king.height / 2;
 					king.visible=false;
-					Prompt.addAssetManager(assetManager);
 				}
 			});
 			sos=SOService.instance;
@@ -266,6 +266,8 @@ package views.global.map
 				var i:int=to == -1 ? 0 : to;
 				trace('开始任务：' + tasks[i]);
 				LionMC.instance.say(tasks[i]);
+				if (!sos.isModuleCompleted(i))
+					showTaskHint(i);
 			}
 			if (!callback)
 				return;
@@ -274,6 +276,24 @@ package views.global.map
 			else
 				callback();
 		}
+
+		/**
+		 * 模块未完成,现实任务位置提示
+		 * 分睡觉,读书,上朝等
+		 * */
+		private function showTaskHint(i:int):void
+		{
+		}
+
+		private function clearTaskHint():void
+		{
+			for each (var i:Image in tashHintArr)
+			{
+				i.removeFromParent(true);
+			}
+		}
+
+		private var tashHintArr:Array=[];
 
 		private var downPoint:Point;
 		private var downY:Number;
@@ -323,6 +343,8 @@ package views.global.map
 							var r:Rectangle=hotspots[i];
 							if (r.contains(upPoint.x, upPoint.y))
 							{
+								drawRect(r);
+
 								item=mapData.hotspots[i];
 								trace('Contains:', item);
 
@@ -353,7 +375,7 @@ package views.global.map
 										return;
 									if (moduleIndex != -1)
 										changing=true;
-									showHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, function():void
+									showHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 900 ? 3 : 1, function():void
 									{
 										delete showingHint[item.tip];
 //										if (sos.isModuleCompleted(moduleIndex))
@@ -391,6 +413,22 @@ package views.global.map
 			}
 		}
 
+		private function drawRect(r:Rectangle):void
+		{
+			if (!rectHolder)
+			{
+				rectHolder=new Shape();
+				flipAnimation.addChild(rectHolder);
+				rectHolder.touchable=false;
+			}
+			TweenLite.killTweensOf(rectHolder);
+			rectHolder.alpha=1;
+			rectHolder.graphics.clear();
+			rectHolder.graphics.lineStyle(2, 0xccff66);
+			rectHolder.graphics.drawRoundRect(r.x, r.y, r.width, r.height, 10);
+			TweenLite.to(rectHolder, 5, {alpha: 0});
+		}
+
 		private function showKing(point:Point, callback:Function):void
 		{
 			positionKing(point);
@@ -402,11 +440,11 @@ package views.global.map
 
 		private var showingHint:Dictionary=new Dictionary();
 
-		private function showHint(_x:Number, _y:Number, _content:String, reg:int, _parent:Sprite, callbakc:Function=null):void
+		private function showHint(_x:Number, _y:Number, _content:String, reg:int, _parent:Sprite, bgAlign:int=1, callbakc:Function=null):void
 		{
 			if (p)
 				p.playHide();
-			p=Prompt.showTXT(_x, _y, _content, 18, callbakc, _parent);
+			p=Prompt.showTXT(_x, _y, _content, 18, callbakc, _parent, bgAlign, true);
 			showingHint[_content]=p;
 		}
 
@@ -417,6 +455,7 @@ package views.global.map
 		 * 是否有任务，不可跳过
 		 */
 		private var hasTask:Boolean;
+		private var rectHolder:Shape;
 
 		/**
 		 * 地图初始化后再次显示地图

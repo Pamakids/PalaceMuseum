@@ -6,11 +6,9 @@ package views.module1
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.utils.setTimeout;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
-	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -120,10 +118,10 @@ package views.module1
 
 		private function onKingTouch(event:TouchEvent):void
 		{
-			var tc:Touch=event.getTouch(stage, TouchPhase.ENDED);
+			var tc:Touch=event.getTouch(this, TouchPhase.ENDED);
 			if (!tc)
 				return;
-			var pt:Point=tc.getLocation(stage);
+			var pt:Point=tc.getLocation(this);
 
 			if (dpt && Point.distance(dpt, pt) < 15)
 				showHint(50, 50, "hint0", 3, king);
@@ -131,10 +129,10 @@ package views.module1
 
 		private function onFGTouch(event:TouchEvent):void
 		{
-			var tc:Touch=event.getTouch(stage, TouchPhase.ENDED);
+			var tc:Touch=event.getTouch(this, TouchPhase.ENDED);
 			if (!tc)
 				return;
-			var pt:Point=tc.getLocation(stage);
+			var pt:Point=tc.getLocation(this);
 
 			if (dpt && Point.distance(dpt, pt) < 15)
 				checkFG(pt);
@@ -214,10 +212,10 @@ package views.module1
 
 		private function onWindowTouch(event:TouchEvent):void
 		{
-			var tc:Touch=event.getTouch(stage);
+			var tc:Touch=event.getTouch(this);
 			if (!tc)
 				return;
-			var pt:Point=tc.getLocation(stage);
+			var pt:Point=tc.getLocation(this);
 
 			switch (tc.phase)
 			{
@@ -350,10 +348,10 @@ package views.module1
 		{
 			if (crtWinSelected)
 				return;
-			var tc:Touch=event.getTouch(stage);
+			var tc:Touch=event.getTouch(this);
 			if (!tc)
 				return;
-			var pt:Point=tc.getLocation(stage);
+			var pt:Point=tc.getLocation(this);
 
 			switch (tc.phase)
 			{
@@ -365,7 +363,7 @@ package views.module1
 
 				case TouchPhase.MOVED:
 				{
-					var delta:Point=tc.getMovement(stage);
+					var delta:Point=tc.getMovement(this);
 					var dx:Number=delta.x;
 					var tx:Number=fg.x + dx / 2;
 					if (tx < (1024 - fg_width))
