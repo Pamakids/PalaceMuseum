@@ -32,6 +32,12 @@ package views.components
 		{
 			initImages();
 			initLabels();
+			initScrolls();
+		}
+		
+		private function initScrolls():void
+		{
+			
 		}
 		
 		private function initLabels():void
