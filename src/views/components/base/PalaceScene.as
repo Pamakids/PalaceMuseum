@@ -50,10 +50,10 @@ package views.components.base
 		{
 			if (assets)
 			{
-				removeChildren();
-				assets.dispose();
-				Prompt.removeAssetManager(assets);
+//				assets.dispose();
+//				Prompt.removeAssetManager(assets);
 			}
+			removeChildren();
 			super.dispose();
 			TopBar.hide();
 		}

@@ -31,41 +31,20 @@ package views.module4
 			mc.x=300;
 			mc.y=384;
 
-			//			back=false;
 			Starling.juggler.add(mc);
-			//			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
-
-		private var _back:Boolean=false;
-
-		public function get back():Boolean
-		{
-			return _back;
-		}
-
-		public function set back(value:Boolean):void
-		{
-			_back=value;
-			if (mc)
-				mc.rotation=_back ? 0 : Math.PI / 2
-		}
-
 
 		private function onEnterFrame(e:Event):void
 		{
-			if (!back)
-				mc.x+=3;
-			else
-				mc.x-=3;
-			mc.y+=Math.random() * 2 - 1;
-			if (mc.y < 100)
-				mc.y=0;
-			else if (mc.y > 600)
-				mc.y=768;
-			if (mc.x > 800)
-				back=true;
-			else if (mc.x < 200)
-				back=false;
+			mc.x-=20;
+//			mc.y+=Math.random() * 2 - 1;
+//			if (mc.y < 100)
+//				mc.y=0;
+//			else if (mc.y > 600)
+//				mc.y=768;
+			if (mc.x < -100)
+				mc.x=1024;
 		}
 
 		private function initGame():void

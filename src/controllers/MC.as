@@ -111,7 +111,8 @@ package controllers
 		{
 			if (currentModule)
 			{
-				currentModule.removeFromParent(true);
+				currentModule.removeFromParent();
+				currentModule.dispose();
 				currentModule=null;
 			}
 		}
@@ -128,6 +129,8 @@ package controllers
 		{
 			if (moduleIndex < modules.length - 1)
 				moduleIndex++;
+			else
+				moduleIndex=0;
 		}
 
 		public function preModule():void

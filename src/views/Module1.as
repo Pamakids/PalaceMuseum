@@ -1,15 +1,7 @@
 package views
 {
-	import com.pamakids.palace.utils.StringUtils;
-
 	import flash.filesystem.File;
 
-	import controllers.MC;
-
-	import starling.display.Image;
-	import starling.display.Sprite;
-	import starling.events.Event;
-	import starling.textures.TextureAtlas;
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceModule;
@@ -19,90 +11,32 @@ package views
 
 	public class Module1 extends PalaceModule
 	{
-		private var sceneArr:Array=[Scene11, Scene12, Scene13];
-
-		private var xml:XML;
-
-		private var ta:TextureAtlas;
-
-		private var texturePath:String;
-
-		private var xmlPath:String;
-		private var sceneIndex:int;
-
 		public function Module1()
 		{
-			load=new Sprite();
-			addChild(load);
-			load.x=1024 - 100;
-			load.y=768 - 100;
-			load.scaleX=load.scaleY=.5;
-			load.addChild(Image.fromBitmap(new loading()));
-			load.pivotX=load.pivotY=50;
+			sceneArr=[Scene11, Scene12, Scene13];
 
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			Q1="故宫这么大，皇帝住在哪儿？"
+			A1="顺治和康熙帝住在乾清宫，之后的八个皇帝都住在养心殿。"
+			Q2="皇帝睡懒觉吗？"
+			A2="清朝的皇帝几乎每天5点左右起床。"
 
-			addEventListener("gotoNext", nextScene);
-			sceneIndex=0;
-			loadScene(sceneIndex);
-		}
+			addLoading();
+			addQAS();
 
-		private function onEnterFrame(e:Event):void
-		{
-			if (isLoading)
-				load.rotation+=.2;
-		}
-
-		private function nextScene(e:Event):void
-		{
-			sceneIndex++;
-			loadScene(sceneIndex);
-		}
-
-		[Embed(source="/assets/module1/loading.png")]
-		private var loading:Class
-
-		private var load:Sprite;
-		private var isLoading:Boolean;
-
-		private function loadScene(index:int):void
-		{
-			if (crtScene)
+			var assets:AssetManager=new AssetManager();
+			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName);
+			assets.enqueue(file, "assets/common/nextButton.png");
+			assets.loadQueue(function(ratio:Number):void
 			{
-				removeChild(crtScene);
-				crtScene.dispose();
-			}
-
-			if (index <= sceneArr.length - 1)
-			{
-				var scene:Class=sceneArr[index] as Class;
-				var sceneName:String=StringUtils.getClassName(scene);
-
-				isLoading=true;
-				var assets:AssetManager=new AssetManager();
-				var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
-				assets.enqueue(file, "assets/common/nextButton.png");
-				assets.loadQueue(function(ratio:Number):void
+				if (ratio == 1.0)
 				{
-//					trace("Loading assets, progress:", ratio);
-					if (ratio == 1.0)
-					{
-						isLoading=false;
-						crtScene=new scene(assets);
-						addChild(crtScene);
-
-//						TweenLite.delayedCall(3, function():void
-//						{
-//							MC.instance.nextModule();
-//						});
-					}
-				});
-			}
-			else
-			{
-				MC.instance.nextModule();
-//				dispatchEvent(new Event("gotoNextModule", true));
-			}
+					assetManager=assets;
+					isLoading=false;
+					sceneIndex=0;
+					loadScene(sceneIndex);
+					removeQAS();
+				}
+			});
 		}
 	}
 }
