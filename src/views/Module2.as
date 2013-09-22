@@ -1,103 +1,43 @@
 package views
 {
-	import com.pamakids.palace.utils.StringUtils;
-
 	import flash.filesystem.File;
 
-	import controllers.MC;
-
-	import starling.display.Image;
-	import starling.display.Sprite;
-	import starling.events.Event;
-	import starling.textures.TextureAtlas;
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceModule;
-	import views.components.base.PalaceScene;
 	import views.module2.Scene21;
 	import views.module2.Scene22;
 	import views.module2.Scene23;
 
 	public class Module2 extends PalaceModule
 	{
-		private var sceneArr:Array=[Scene21, Scene22, Scene23];
-
-		private var xml:XML;
-
-		private var ta:TextureAtlas;
-
-		private var texturePath:String;
-
-		private var xmlPath:String;
-		private var sceneIndex:int;
-
 		public function Module2(am:AssetManager=null)
 		{
-			load=new Sprite();
-			addChild(load);
-			load.x=1024 - 100;
-			load.y=768 - 100;
-			load.scaleX=load.scaleY=.5;
-			load.addChild(Image.fromBitmap(new loading()));
-			load.pivotX=load.pivotY=50;
+			sceneArr=[Scene21, Scene22, Scene23];
 
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			Q1="什么是“传膳”？"
+			A1="皇帝吃饭称为“传膳”或“用膳”，没有固定地点，就在休息、办公的地方放桌子、摆盘子。"
+			Q2="皇帝也是一日三餐吗？"
+			A2="清朝皇帝一天只吃两顿正餐，早饭在7点到9点之间，晚饭在下午1点到3点之间。"
 
-			addEventListener("gotoNext", nextScene);
-			sceneIndex=0;
-			loadScene(sceneIndex);
-		}
+			addLoading();
+			addQAS();
 
-		private function onEnterFrame(e:Event):void
-		{
-			if (isLoading)
-				load.rotation+=.2;
-		}
-
-		private function nextScene(e:Event):void
-		{
-			sceneIndex++;
-			loadScene(sceneIndex);
-		}
-
-		[Embed(source="/assets/module1/loading.png")]
-		private var loading:Class
-
-		private var load:Sprite;
-		private var isLoading:Boolean;
-
-		private function loadScene(index:int):void
-		{
-			if (crtScene)
+			var assets:AssetManager=new AssetManager();
+			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName);
+			assets.enqueue(file, "assets/common/hint-bg.png", "assets/common/button_close.png", "assets/common/nextButton.png",
+				"assets/common/game-start-down.png", "assets/common/game-start.png", "assets/common/gamebg.jpg");
+			assets.loadQueue(function(ratio:Number):void
 			{
-				removeChild(crtScene);
-				crtScene.dispose();
-			}
-
-			if (index <= sceneArr.length - 1)
-			{
-				var scene:Class=sceneArr[index] as Class;
-				var sceneName:String=StringUtils.getClassName(scene);
-
-				isLoading=true;
-				var assets:AssetManager=new AssetManager();
-				var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
-				assets.enqueue(file, "assets/common/hint-bg.png", "assets/common/button_close.png", "assets/common/nextButton.png",
-					"assets/common/game-start-down.png", "assets/common/game-start.png", "assets/common/gamebg.jpg");
-				assets.loadQueue(function(ratio:Number):void
+				if (ratio == 1.0)
 				{
-					if (ratio == 1.0)
-					{
-						isLoading=false;
-						crtScene=new scene(assets);
-						addChild(crtScene);
-					}
-				});
-			}
-			else
-			{
-				MC.instance.nextModule();
-			}
+					assetManager=assets;
+					isLoading=false;
+					sceneIndex=0;
+					loadScene(sceneIndex);
+					removeQAS();
+				}
+			});
 		}
 	}
 }

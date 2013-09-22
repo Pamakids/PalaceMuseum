@@ -41,7 +41,6 @@ package views.module2
 		{
 			super(am);
 			crtKnowledgeIndex=9;
-			Prompt.addAssetManager(am);
 
 			addBG();
 			addFood();

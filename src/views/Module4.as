@@ -1,14 +1,7 @@
 package views
 {
-	import com.pamakids.palace.utils.StringUtils;
-
 	import flash.filesystem.File;
 
-	import controllers.MC;
-
-	import starling.display.Image;
-	import starling.display.Sprite;
-	import starling.events.Event;
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceModule;
@@ -16,77 +9,34 @@ package views
 
 	public class Module4 extends PalaceModule
 	{
-		private var sceneArr:Array=[Scene41];
-		private var sceneIndex:int;
-
 		public function Module4(am:AssetManager=null, width:Number=0, height:Number=0)
 		{
-			load=new Sprite();
-			addChild(load);
-			load.x=1024 - 100;
-			load.y=768 - 100;
-			load.scaleX=load.scaleY=.5;
-			load.addChild(Image.fromBitmap(new loading()));
-			load.pivotX=load.pivotY=50;
+			sceneArr=[Scene41];
 
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			Q1="皇帝爱学习吗？"
+			A1="清朝皇帝喜爱学习－儒家经典、汉语诗文、满文、蒙文和骑马射箭，样样要精通。"
+			Q2="皇帝起床后第一件事做什么？"
+			A2="先给太后请安，之后的第一件事就是早读学习。"
 
-			addEventListener("gotoNext", nextScene);
-			sceneIndex=0;
-			loadScene(sceneIndex);
-		}
+			addLoading();
+			addQAS();
 
-		private function onEnterFrame(e:Event):void
-		{
-			if (isLoading)
-				load.rotation+=.2;
-		}
-
-		private function nextScene(e:Event):void
-		{
-			sceneIndex++;
-			loadScene(sceneIndex);
-		}
-
-		[Embed(source="/assets/module1/loading.png")]
-		private var loading:Class
-
-		private var load:Sprite;
-		private var isLoading:Boolean;
-
-		private function loadScene(index:int):void
-		{
-			if (crtScene)
+			var assets:AssetManager=new AssetManager();
+			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName);
+			assets.enqueue(file,
+				"assets/common/button_close.png", "assets/common/game-start-down.png", "assets/common/nextButton.png",
+				"assets/common/game-start.png", "assets/common/gamebg.jpg", "assets/common/lion.png");
+			assets.loadQueue(function(ratio:Number):void
 			{
-				removeChild(crtScene);
-				crtScene.dispose();
-			}
-
-			if (index <= sceneArr.length - 1)
-			{
-				var scene:Class=sceneArr[index] as Class;
-				var sceneName:String=StringUtils.getClassName(scene);
-
-				isLoading=true;
-				var assets:AssetManager=new AssetManager();
-				var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
-				assets.enqueue(file,
-					"assets/common/button_close.png", "assets/common/game-start-down.png", "assets/common/nextButton.png",
-					"assets/common/game-start.png", "assets/common/gamebg.jpg", "assets/common/lion.png");
-				assets.loadQueue(function(ratio:Number):void
+				if (ratio == 1.0)
 				{
-					if (ratio == 1.0)
-					{
-						isLoading=false;
-						crtScene=new scene(assets);
-						addChild(crtScene);
-					}
-				});
-			}
-			else
-			{
-				MC.instance.nextModule();
-			}
+					isLoading=false;
+					assetManager=assets;
+					sceneIndex=0;
+					loadScene(sceneIndex);
+					removeQAS();
+				}
+			});
 		}
 	}
 }

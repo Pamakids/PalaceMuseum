@@ -1,10 +1,13 @@
 package views.module3
 {
 	import com.greensock.TweenLite;
+	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Elastic;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+
+	import feathers.core.PopUpManager;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -216,7 +219,7 @@ package views.module3
 			if (checkAlign(book))
 				align=3;
 			if (book.clicked)
-				Prompt.showTXT(pt.x, pt.y, book.bookname, 24, null, pr, align)
+				Prompt.showTXT(pt.x, pt.y, book.bookname, 24, null, pr, align, true)
 			else
 			{
 				if ((Math.random() < probability && !bookFinded) || rightBook == book)
@@ -235,7 +238,7 @@ package views.module3
 				}
 				else
 				{
-					Prompt.showTXT(pt.x, pt.y, book.bookname, 24, null, pr, align)
+					Prompt.showTXT(pt.x, pt.y, book.bookname, 24, null, pr, align, true)
 					probability+=.2;
 					book.clicked=true;
 //				Prompt.show(pt.x, pt.y, "hint-bg", "hint31-wrong", 1);
@@ -276,22 +279,45 @@ package views.module3
 
 		private function showBigBook():void
 		{
-			bigBook=new Sprite();
-			bigBook.addChild(getImage("book-big"));
-			var close:ElasticButton=new ElasticButton(getImage("button_close"));
-			close.x=840;
-			close.y=55;
-			bigBook.addChild(close);
-			bigBook.x=46;
-			bigBook.y=2;
-			close.addEventListener(ElasticButton.CLICK, onCloseBook);
-			addChild(bigBook);
+			if (!bigBook)
+			{
+				bigBook=new Sprite();
+				var img:Image=getImage("book-big");
+				bigBook.addChild(img);
+				img.x=219;
+				img.y=138;
+				img.addEventListener(TouchEvent.TOUCH, onBigBookTouch);
+
+				bigBook.pivotX=512;
+				bigBook.pivotY=384;
+				bigBook.x=512;
+				bigBook.y=384;
+				var close:ElasticButton=new ElasticButton(getImage("button_close"));
+				bigBook.addChild(close);
+				close.x=840;
+				close.y=55;
+				close.addEventListener(ElasticButton.CLICK, onCloseBook);
+			}
+			bigBook.scaleX=.1;
+			bigBook.scaleY=.1;
+			PopUpManager.addPopUp(bigBook, true, false)
+			TweenLite.to(bigBook, 1, {scaleX: 1, scaleY: 1});
 		}
+
+		private function onBigBookTouch(e:TouchEvent):void
+		{
+			var img:Image=e.currentTarget as Image;
+			var tc:Touch=e.getTouch(img, TouchPhase.ENDED);
+			if (tc)
+				Prompt.showTXT(568, 480, bookTxt, 20, null, bigBook, 1, true);
+		}
+
+		private var bookTxt:String="清朝皇帝对大臣的指\n令和讲话称为“圣训”。\n后继位的皇帝每天早读\n时首先会读一段圣训，\n学习领会祖先的教导。";
 
 		private function onCloseBook(e:Event):void
 		{
 			checkOver();
-			removeChild(bigBook);
+			PopUpManager.removePopUp(bigBook);
 		}
 
 		private function checkOver():void

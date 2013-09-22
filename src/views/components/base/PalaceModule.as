@@ -7,10 +7,20 @@
 
 package views.components.base
 {
+	import com.greensock.TweenMax;
 	import com.pamakids.palace.utils.StringUtils;
 
+	import controllers.MC;
+
+	import models.FontVo;
+
 	import starling.display.Image;
+	import starling.display.Sprite;
+	import starling.events.Event;
+	import starling.text.TextField;
 	import starling.utils.AssetManager;
+
+	import views.components.Prompt;
 
 	public class PalaceModule extends Container
 	{
@@ -18,6 +28,10 @@ package views.components.base
 		protected var assetManager:AssetManager;
 		protected var autoDispose:Boolean=true;
 		public var crtScene:PalaceScene;
+		protected var tfHolder:Sprite;
+
+		[Embed(source="/assets/module1/loading.png")]
+		protected static var loading:Class
 
 		public function PalaceModule(am:AssetManager=null, width:Number=0, height:Number=0)
 		{
@@ -26,15 +40,114 @@ package views.components.base
 			super(width, height);
 		}
 
+		protected var load:Sprite;
+		protected var isLoading:Boolean;
+
+		protected var Q1:String=""
+		protected var A1:String=""
+		protected var Q2:String=""
+		protected var A2:String=""
+
+		protected function addQAS():void
+		{
+			tfHolder=new Sprite();
+			addChild(tfHolder);
+			tfHolder.touchable=false;
+			var tfQ1:TextField=new TextField(600, 100, Q1, FontVo.PALACE_FONT, 32, 0xffffff, true);
+			tfQ1.x=200;
+			tfQ1.y=100;
+			tfQ1.hAlign="left";
+			tfHolder.addChild(tfQ1);
+			var tfA1:TextField=new TextField(600, 100, A1, FontVo.PALACE_FONT, 28, 0xffffff, true);
+			tfA1.x=220;
+			tfA1.y=180;
+			tfA1.hAlign="left";
+			tfHolder.addChild(tfA1);
+			var tfQ2:TextField=new TextField(600, 100, Q2, FontVo.PALACE_FONT, 32, 0xffffff, true);
+			tfQ2.x=200;
+			tfQ2.y=300;
+			tfQ2.hAlign="left";
+			tfHolder.addChild(tfQ2);
+			var tfA2:TextField=new TextField(600, 100, A2, FontVo.PALACE_FONT, 28, 0xffffff, true);
+			tfA2.x=220;
+			tfA2.y=380;
+			tfA2.hAlign="left";
+			tfHolder.addChild(tfA2);
+
+			isLoading=true;
+		}
+
+		protected function removeQAS():void
+		{
+			tfHolder.removeFromParent(true);
+		}
+
+		protected function addLoading():void
+		{
+			load=new Sprite();
+			addChild(load);
+			load.x=1024 - 100;
+			load.y=768 - 100;
+			load.scaleX=load.scaleY=.5;
+			load.addChild(Image.fromBitmap(new loading()));
+			load.pivotX=load.pivotY=50;
+
+			isLoading=true;
+
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			addEventListener("gotoNext", nextScene);
+		}
+
 		protected function getImage(name:String):Image
 		{
 			return new Image(assetManager.getTexture(name));
 		}
 
+		protected function onEnterFrame(e:Event):void
+		{
+			if (isLoading)
+				load.rotation+=.2;
+		}
+
+		protected var sceneArr:Array=[];
+		protected var sceneIndex:int;
+
+		protected function nextScene(e:Event):void
+		{
+			sceneIndex++;
+			loadScene(sceneIndex);
+		}
+
+		protected function loadScene(index:int):void
+		{
+			if (crtScene)
+			{
+				removeChild(crtScene);
+				crtScene.dispose();
+			}
+
+			if (index <= sceneArr.length - 1)
+			{
+				var scene:Class=sceneArr[index] as Class;
+				var sceneName:String=StringUtils.getClassName(scene);
+
+				crtScene=new scene(assetManager);
+				addChild(crtScene);
+			}
+			else
+			{
+				MC.instance.nextModule();
+			}
+		}
+
 		override public function dispose():void
 		{
+			TweenMax.killAll();
 			if (autoDispose && assetManager)
+			{
 				assetManager.dispose();
+				Prompt.removeAssetManager(assetManager);
+			}
 			assetManager=null;
 			super.dispose();
 		}
