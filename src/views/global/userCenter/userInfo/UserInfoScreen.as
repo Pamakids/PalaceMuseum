@@ -1,16 +1,27 @@
 package views.global.userCenter.userInfo
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Cubic;
+	
 	import flash.geom.Rectangle;
 	
+	import feathers.controls.Button;
 	import feathers.controls.Screen;
+	import feathers.core.PopUpManager;
 	
+	import starling.display.DisplayObject;
 	import starling.display.Image;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	
+	import views.components.Prompt;
 	import views.global.userCenter.IUserCenterScreen;
 	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
+
 	/**
 	 * 用户信息
 	 * @author Administrator
@@ -19,41 +30,125 @@ package views.global.userCenter.userInfo
 	{
 		public function UserInfoScreen()
 		{
-			super();
 		}
-		
-		/*
-		 * 1. 主界面
-		 * 		点击切换用户按钮 → 进入用户选择界面
-		 * 		点击游戏列表图标 → 打开游戏信息界面
-		 * 2. 用户选择界面 
-		 * 		选择编辑指定角色，进入角色编辑界面
-		 * 3. 角色编辑界面
-		 * 		变更用户头像
-		 * 		更改用户名称
-		 * 		修改出生日期
-		 * 		删除用户 → 弹出确认窗口
-		 * 		确定切换至指定用户
-		 * 4. 游戏信息界面、
-		 * 		进入游戏
-		 * 5. Alert界面
-		 * 		确定或取消删除角色的操作
-		 */		
 		
 		override protected function initialize():void
 		{
 			initBackgroundImage();
+			initCrtUserView();
+			initButton();
+			initGameList();
 		}
 		
+		private var gameList:Vector.<ItemForGameList>;
+		private function initGameList():void
+		{
+			const count:int = 4;
+			gameList = new Vector.<ItemForGameList>(count);
+			var item:ItemForGameList;
+			for(var i:int = 0;i<count;i++)
+			{
+				item = new ItemForGameList({name:"拼图游戏", numStars: Math.floor(Math.random()*4), iconIndex:i, resultEasy: "00:00", resultHard: "00:00"}, show_W_game);
+				this.addChild( item );
+				item.x = 55 + (i%2) * 470;
+				item.y = 240 + int(i/2) * 200;
+				gameList[i] = item;
+			}
+		}
+		
+		private var w_game:W_Game;
+		private var w_editUser:W_EditUser;
+		private var w_chooseUser:W_ChooseUser;
+		
+		private function show_W_game(value:Object):void
+		{
+			(!w_game)?init_w_game(value):w_game.resetData(value);
+			showWinHandler(w_game);
+		}
+		
+		private function showWinHandler(win:DisplayObject):void
+		{
+			PopUpManager.addPopUp(win, true, false);
+			win.y = 768 - win.height >> 1;
+			win.x = 1024;
+			TweenLite.to(win, 0.3, {x: 1024 - win.width >> 1, ease: Cubic.easeIn});
+		}
+		
+		private function init_w_game(value:Object):void
+		{
+			w_game = new W_Game(value);
+			w_game.closeWinHandler = hideWinHandler;
+		}
+		private function hideWinHandler(win:DisplayObject):void
+		{
+			TweenLite.to(win, 0.3, {x: 1024, ease: Cubic.easeOut, onComplete:function():void{
+					PopUpManager.removePopUp(win);
+			}});
+		}
+		
+		/**
+		 * 切换角色按钮
+		 */		
+		private var button:Button;
+		private function initButton():void
+		{
+			button = new Button();
+			button.defaultSkin = new Image( UserCenterManager.getTexture("button_changeUser_up") );
+			button.downSkin = new Image( UserCenterManager.getTexture("button_changeUser_down") );
+			this.addChild( button );
+			button.x = 814;
+			button.y = 143;
+			button.addEventListener( TouchEvent.TOUCH, onTouch );
+		}
+		private function onTouch(e:TouchEvent):void
+		{
+			var touch:Touch = e.getTouch(button);
+			if(touch && touch.phase == TouchPhase.ENDED)
+			{
+				show_w_chooseUser();
+			}
+		}
+		
+		private function show_w_chooseUser():void
+		{
+			if(!w_chooseUser)
+			{
+				w_chooseUser = new W_ChooseUser();
+				w_chooseUser.closeWinHandler = hideWinHandler;
+			}
+			showWinHandler(w_chooseUser);
+		}
+		
+		private var crtUser:CurrentUser;
+		private function initCrtUserView():void
+		{
+			crtUser = new CurrentUser({ username: "我是小皇帝", iconIndex: 0, birthday: "2013-01-11"});
+			this.addChild( crtUser );
+			crtUser.x = 55;
+			crtUser.y = 42;
+		}
 		
 		private function initBackgroundImage():void
 		{
-			var image:Image = new Image( UserCenterManager.getTexture("page_left"));
+			var texture:Texture =  UserCenterManager.getTexture("page_left");
+			var image:Image = new Image( texture );
 			this.addChild( image );
 			image.touchable = false;
-			image = new Image( UserCenterManager.getTexture("page_right"));
-			this.addChild( image );
+			texture = UserCenterManager.getTexture("page_right")
+			image = new Image( texture );
 			image.x = width/2;
+			this.addChild( image );
+			image.touchable = false;
+			texture = UserCenterManager.getTexture("line_long");
+			image = new Image( texture );
+			image.x = 60;
+			image.y = 197;
+			this.addChild( image );
+			image.touchable = false;
+			image = new Image( texture );
+			image.x = 519;
+			image.y = 197;
+			this.addChild( image );
 			image.touchable = false;
 		}
 		
