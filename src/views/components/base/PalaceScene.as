@@ -8,6 +8,7 @@
 package views.components.base
 {
 	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 
 	import feathers.core.PopUpManager;
 
@@ -53,6 +54,12 @@ package views.components.base
 //				assets.dispose();
 //				Prompt.removeAssetManager(assets);
 			}
+
+			if (nextButton)
+			{
+				TweenLite.killDelayedCallsTo(nextButton);
+				TweenLite.killTweensOf(nextButton);
+			}
 			removeChildren();
 			super.dispose();
 			TopBar.hide();
@@ -82,7 +89,16 @@ package views.components.base
 				nextButton.x=1024 - 100;
 				nextButton.y=768 - 100;
 				nextButton.addEventListener(ElasticButton.CLICK, nextScene);
+				shakeNext();
 			}
+		}
+
+		private function shakeNext():void
+		{
+			TweenMax.to(nextButton, 1, {shake: {x: 5, numShakes: 4}, onComplete: function():void
+			{
+				TweenLite.delayedCall(5, shakeNext);
+			}});
 		}
 
 		protected function nextScene(e:Event=null):void
