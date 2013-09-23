@@ -117,6 +117,7 @@ package views.global.map
 			centerPoint=new Dictionary();
 			tasks=new Dictionary();
 			var hp:Array=mapData.hotspots;
+
 			for each (var hotspot:Object in hp)
 			{
 				var rect:Rectangle=getRectFromArray(hotspot.rect as Array);
@@ -129,8 +130,13 @@ package views.global.map
 					centerPoint[gt[0]]=p;
 					tasks[gt[0]]=hotspot.task;
 				}
+				var type:int=hotspot.type;
+				if (type)
+					typeArr[type - 1].push(p);
 			}
 		}
+
+		private var typeArr:Array=[[], [], [], [], []];
 
 		private function getCenterFromRect(rect:Rectangle):Point
 		{
@@ -169,6 +175,7 @@ package views.global.map
 		 */
 		public static function show(callback:Function=null, from:int=-1, to:int=-1, fromCenter:Boolean=false):void
 		{
+			showFromCenter=fromCenter;
 			var ec:Boolean=true;
 			if (from || to || callback == null)
 				ec=false;
@@ -187,6 +194,8 @@ package views.global.map
 				map=m;
 			}
 		}
+
+		private static var showFromCenter:Boolean;
 
 		private function closeTriggeredHandler():void
 		{
@@ -225,7 +234,6 @@ package views.global.map
 			addChild(flipAnimation);
 
 			flipAnimation.addChild(king);
-
 			initCloseButton();
 		}
 
@@ -269,6 +277,23 @@ package views.global.map
 				if (!sos.isModuleCompleted(i))
 					showTaskHint(i);
 			}
+
+			if (!typeHolder)
+			{
+				typeHolder=new Sprite();
+				flipAnimation.addChild(typeHolder);
+				typeHolder.touchable=false;
+				resetTypeHolder();
+			}
+
+			if (!lockHolder)
+			{
+				lockHolder=new Sprite();
+				flipAnimation.addChild(lockHolder);
+				lockHolder.touchable=false;
+				resetLockHolder();
+			}
+
 			if (!callback)
 				return;
 			if (callback.length)
@@ -457,6 +482,9 @@ package views.global.map
 		private var hasTask:Boolean;
 		private var rectHolder:Shape;
 
+		private var typeHolder:Sprite;
+		private var lockHolder:Sprite;
+
 		/**
 		 * 地图初始化后再次显示地图
 		 * @param ec EnableClose显示关闭按钮
@@ -477,6 +505,55 @@ package views.global.map
 				flipAnimation.playAnimation();
 			else
 				flipAnimation.animationPlayed();
+			if (typeHolder)
+				resetTypeHolder();
+			if (lockHolder)
+				resetLockHolder();
+		}
+
+		/**
+		 * 场景类型
+		 *
+		 * */
+		private function resetTypeHolder(index:int=0):void
+		{
+			typeHolder.visible=false;
+			if (index < 0)
+				return;
+			typeHolder.removeChildren();
+			var arr:Array=typeArr[index];
+			for each (var p:Point in arr)
+			{
+				var img:Image=getImage("map-type" + (index + 1).toString());
+				img.pivotX=img.width >> 1;
+				img.pivotY=img.height >> 1;
+				img.x=p.x;
+				img.y=p.y;
+				typeHolder.addChild(img);
+			}
+
+		}
+
+		/**
+		 * 场景解锁
+		 *
+		 * */
+		private function resetLockHolder():void
+		{
+			lockHolder.visible=true;
+			lockHolder.removeChildren();
+			for (var i:int=0; i < 4; i++)
+			{
+				if (sos.isModuleCompleted(i))
+				{
+					var img:Image=getImage("map-unlock" + (i + 1).toString());
+					img.pivotX=img.width >> 1;
+					img.pivotY=img.height >> 1;
+					img.x=centerPoint[i].x;
+					img.y=centerPoint[i].y;
+					lockHolder.addChild(img);
+				}
+			}
 		}
 	}
 }

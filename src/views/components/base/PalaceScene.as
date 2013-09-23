@@ -57,8 +57,8 @@ package views.components.base
 
 			if (nextButton)
 			{
-				TweenLite.killDelayedCallsTo(nextButton);
-				TweenLite.killTweensOf(nextButton);
+				TweenLite.killDelayedCallsTo(this);
+				TweenMax.killTweensOf(nextButton);
 			}
 			removeChildren();
 			super.dispose();

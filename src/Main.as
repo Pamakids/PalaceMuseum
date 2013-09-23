@@ -29,7 +29,7 @@ package
 	public class Main extends Container
 	{
 		private var testingModule:Sprite;
-		private var testingModuleClass:Class=Module1;
+		private var testingModuleClass:Class=Module4;
 
 		public function Main()
 		{

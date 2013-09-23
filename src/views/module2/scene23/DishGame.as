@@ -150,7 +150,7 @@ package views.module2.scene23
 		}
 
 		private var maxtime:int=30;
-		private var hz:int=60;
+		private var hz:int=30;
 		private var totalTime:int=maxtime * hz;
 
 		private var lifeIconArr:Array=[];

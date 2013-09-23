@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:106380b7e76cecad8ac8db4610c6eb73$ -->
+<TextureAtlas imagePath="map.png">
+    <SubTexture name="king" x="174" y="2" width="40" height="40"/>
+    <SubTexture name="map-type1" x="136" y="2" width="36" height="42"/>
+    <SubTexture name="map-type2" x="420" y="2" width="42" height="38"/>
+    <SubTexture name="map-type3" x="2" y="2" width="44" height="46"/>
+    <SubTexture name="map-type4" x="383" y="2" width="35" height="39"/>
+    <SubTexture name="map-type5" x="48" y="2" width="42" height="45"/>
+    <SubTexture name="map-unlock1" x="342" y="2" width="39" height="39"/>
+    <SubTexture name="map-unlock2" x="300" y="2" width="40" height="39"/>
+    <SubTexture name="map-unlock3" x="92" y="2" width="42" height="42"/>
+    <SubTexture name="map-unlock4" x="258" y="2" width="40" height="39"/>
+    <SubTexture name="map-unlock5" x="216" y="2" width="40" height="39"/>
+</TextureAtlas>

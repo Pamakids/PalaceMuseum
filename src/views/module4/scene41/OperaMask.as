@@ -18,7 +18,7 @@ package views.module4.scene41
 		public function set index(value:int):void
 		{
 			_index=value;
-			originPt=new Point(900, 50 + _index * 100);
+			originPt=new Point(971, 190 + _index * 90);
 			x=originPt.x;
 			y=originPt.y;
 		}

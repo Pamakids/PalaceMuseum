@@ -7,12 +7,15 @@ package views.module4.scene41
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 
+	import models.FontVo;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
 
 	public class OperaBody extends Sprite
 	{
@@ -32,6 +35,7 @@ package views.module4.scene41
 		private var headHolder:Sprite=new Sprite();
 		public var head:Image;
 		public var body:Image;
+		public var countBG:Image;
 
 		public function reset():void
 		{
@@ -53,15 +57,20 @@ package views.module4.scene41
 			this.y=enterPt.y;
 
 			addEventListener(TouchEvent.TOUCH, onTouch);
-
-			if (type == "5")
-				addEventListener(KeyboardEvent.KEY_DOWN, onKey);
 		}
 
-		private function onKey(e:KeyboardEvent):void
+		private function addCountDown():void
 		{
-			if (e.keyCode == Keyboard.C)
-				trace(swingCount, swingReverse)
+			countBG.x=25;
+			countBG.y=8;
+			addChild(countBG);
+			countBG.touchable=false;
+
+			countDownTxt=new TextField(countBG.width, countBG.height, "8", FontVo.PALACE_FONT, 24, 0x5d2025);
+			countDownTxt.x=countBG.x;
+			countDownTxt.y=countBG.y;
+			addChild(countDownTxt);
+			countBG.touchable=false;
 		}
 
 		private var count:int=0;
@@ -136,6 +145,7 @@ package views.module4.scene41
 		{
 			var dur:Number=playDur * (stagePt.y - enterPt.y) / 1024;
 			TweenLite.to(this, dur, {x: stagePt.x, y: stagePt.y, ease: Bounce.easeOut, onComplete: function():void {
+				addCountDown();
 				ready=true;
 			}});
 		}
@@ -164,7 +174,8 @@ package views.module4.scene41
 
 				case TouchPhase.MOVED:
 				{
-					angle=dx > 0 ? min : -min;
+					if (ready && dragging)
+						angle=dx > 0 ? min : -min;
 					break;
 				}
 
@@ -183,8 +194,6 @@ package views.module4.scene41
 					break;
 				}
 			}
-
-
 		}
 
 		public function playExit(callback:Function=null):void
@@ -194,10 +203,10 @@ package views.module4.scene41
 			TweenLite.to(this, dur, {x: enterPt.x, y: enterPt.y, ease: Bounce.easeIn, onComplete: callback});
 		}
 
-		private static var playDur:Number=3;
+		private static var playDur:Number=1.5;
 		public var isMatched:Boolean;
+		public var ready:Boolean;
 		private var downPt:Point;
-		private var ready:Boolean;
 		private var _angle:Number;
 
 		public function get angle():Number
@@ -219,9 +228,24 @@ package views.module4.scene41
 			isMatched=true;
 			removeEventListener(TouchEvent.TOUCH, onTouch);
 			headHolder.addChild(mask);
+			mask.scaleX=mask.scaleY=1;
+			mask.pivotX=mask.pivotY=0;
 			mask.x=maskPos.x;
 			mask.y=maskPos.y;
 			startShakeHead(Math.PI / 18, 2);
+		}
+
+		public var timeCount:int=240;
+
+		private var countDownTxt:TextField;
+
+		public function countDown():void
+		{
+			if (ready && countDownTxt && !isMatched)
+			{
+				timeCount--;
+				countDownTxt.text=Math.round(timeCount / 30).toString();
+			}
 		}
 	}
 }
