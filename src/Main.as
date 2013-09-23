@@ -53,10 +53,10 @@ package
 		override protected function init():void
 		{
 //			testFont();
-//			testUserCenter();
+			testUserCenter();
 //			Map.show();
-//			return;
-			debugInit();
+			return;
+//			debugInit();
 //			Map.show();
 		}
 
