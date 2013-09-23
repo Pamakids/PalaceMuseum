@@ -17,7 +17,6 @@ package views.global.userCenter.userInfo
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	
-	import views.components.Prompt;
 	import views.global.userCenter.IUserCenterScreen;
 	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
@@ -79,10 +78,12 @@ package views.global.userCenter.userInfo
 			w_game = new W_Game(value);
 			w_game.closeWinHandler = hideWinHandler;
 		}
-		private function hideWinHandler(win:DisplayObject):void
+		private function hideWinHandler(win:DisplayObject, onCompleted:Function=null, paras:Object=null):void
 		{
 			TweenLite.to(win, 0.3, {x: 1024, ease: Cubic.easeOut, onComplete:function():void{
 					PopUpManager.removePopUp(win);
+					if(onCompleted)
+						onCompleted(paras);
 			}});
 		}
 		
@@ -115,8 +116,25 @@ package views.global.userCenter.userInfo
 			{
 				w_chooseUser = new W_ChooseUser();
 				w_chooseUser.closeWinHandler = hideWinHandler;
+				w_chooseUser.editHandler = show_w_editUser;
 			}
 			showWinHandler(w_chooseUser);
+		}
+		
+		/**
+		 * 
+		 * @param data
+		 * 
+		 */		
+		private function show_w_editUser(userdata:Object):void
+		{
+			(!w_editUser)?init_w_editUser(userdata):w_editUser.resetData(userdata);
+			hideWinHandler(w_chooseUser, showWinHandler, w_editUser);
+		}
+		private function init_w_editUser(userdata:Object):void
+		{
+			w_editUser = new W_EditUser(userdata);
+			w_editUser.closeWinHandler = hideWinHandler;
 		}
 		
 		private var crtUser:CurrentUser;

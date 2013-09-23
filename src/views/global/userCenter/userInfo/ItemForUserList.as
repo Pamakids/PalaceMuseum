@@ -27,9 +27,12 @@ package views.global.userCenter.userInfo
 		private var textInput:TextInput;
 		
 		/**
-		 * @param data{ username: "name", iconIndex: 0, birthday: "2013-01-11"}
+		 * @param data
+		 * { username: "name", iconIndex: 0, birthday: "2013-01-11"}
 		 * @param touchable
+		 * 头像交互
 		 * @param editable
+		 * 用户名编辑
 		 */
 		public function ItemForUserList(data:Object, touchable:Boolean=false, editable:Boolean=false)
 		{
@@ -134,6 +137,12 @@ package views.global.userCenter.userInfo
 				textInput = null;
 			}
 			super.dispose();
+		}
+		
+		public function updateView():void
+		{
+			head.resetIcon(_data.iconIndex);
+			textInput.text = _data.username;
 		}
 	}
 }

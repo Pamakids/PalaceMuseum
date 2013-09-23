@@ -6,9 +6,8 @@ package views.global.userCenter.userInfo
 	import models.FontVo;
 	
 	import starling.display.Image;
-	import starling.events.Touch;
+	import starling.events.Event;
 	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	
@@ -85,14 +84,14 @@ package views.global.userCenter.userInfo
 			button_start = new Button();
 			button_start.defaultSkin = new Image(UserCenterManager.getTexture("button_start_up"));
 			button_start.downSkin = new Image(UserCenterManager.getTexture("button_start_down"));
-			button_start.addEventListener(TouchEvent.TOUCH, startGame);
+			button_start.addEventListener(Event.TRIGGERED, startGame);
 			this.addChild( button_start );
 			button_start.x = 452;
 			button_start.y = 303;
 			
 			button_close = new Button();
 			button_close.defaultSkin = new Image(UserCenterManager.getTexture("button_close_small"));
-			button_close.addEventListener(TouchEvent.TOUCH, closeWindow);
+			button_close.addEventListener(Event.TRIGGERED, closeWindow);
 			this.addChild( button_close );
 			button_close.x = 566;
 			button_close.y = 20;
@@ -191,22 +190,18 @@ package views.global.userCenter.userInfo
 		}
 		
 		public var startGameHandler:Function;
-		private function startGame(e:TouchEvent):void
+		private function startGame(e:Event):void
 		{
-			var touch:Touch = e.getTouch(this.button_start);
-			if(touch && touch.phase == TouchPhase.ENDED && startGameHandler)
+			if(startGameHandler)
 			{
+				
 			}
 		}
 		
 		public var closeWinHandler:Function = defaultCloseHandler;
-		private function closeWindow(e:TouchEvent):void
+		private function closeWindow(e:Event):void
 		{
-			var touch:Touch = e.getTouch(this.button_close);
-			if(touch && touch.phase == TouchPhase.ENDED)
-			{
-				closeWinHandler(this);
-			}
+			closeWinHandler(this);
 		}
 		private function defaultCloseHandler(obj:Object):void
 		{
