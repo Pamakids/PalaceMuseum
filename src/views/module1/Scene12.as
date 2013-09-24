@@ -235,6 +235,7 @@ package views.module1
 		//完成所有任务
 		private function endMission():void
 		{
+			showAchievement(2);
 			opened=false;
 			TweenLite.delayedCall(2, function():void
 			{

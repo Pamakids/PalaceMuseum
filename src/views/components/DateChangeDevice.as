@@ -3,12 +3,11 @@ package views.components
 	import flash.text.TextFormat;
 	
 	import feathers.controls.Label;
+	import feathers.core.FeathersControl;
 	
 	import models.FontVo;
 	
 	import starling.display.Image;
-	import starling.display.Sprite;
-	import starling.textures.Texture;
 	
 	import views.global.userCenter.UserCenterManager;
 
@@ -16,69 +15,48 @@ package views.components
 	 * 时间更改组件，时间单位最小至“天”
 	 * @author Administrator
 	 */	
-	public class DateChangeDevice extends Sprite
+	public class DateChangeDevice extends FeathersControl
 	{
-		public function DateChangeDevice(width:Number, height:Number)
+		public function DateChangeDevice()
 		{
-			init();
 		}
 		
-		private function init():void
-		{
-			initBackground();
-		}
-		
-		private function initBackground():void
+		override protected function initialize():void
 		{
 			initImages();
-			initLabels();
-			initScrolls();
+			initLists();
 		}
 		
-		private function initScrolls():void
+		private var loopnum:LoopNumList;
+		private function initLists():void
 		{
-			
-		}
-		
-		private function initLabels():void
-		{
-			var Y:int = 50;
-			var label:Label = labelFactory();
-			label.text = "生日";
-//			label.x = 0;
-//			label.y = Y;
-			this.addChild(label);
-			label.touchable =false;
-			
-			label = labelFactory();
-			label.text = "年";
-//			label.x = 0;
-//			label.y = Y;
-			this.addChild( label );
-			label.touchable = false;
-			
-			label = labelFactory();
-			label.text = "月";
-//			label.x = 0;
-//			label.y = Y;
-			this.addChild( label );
-			label.touchable = false;
-			
-			label = labelFactory();
-			label.text = "日";
-//			label.x = 0;
-//			label.y = Y;
-			this.addChild( label );
-			label.touchable = false;
-		}
+			loopnum = new LoopNumList(0, 50);
+			loopnum.resetViewSize(72,96);
+			this.addChild( loopnum );
+			loopnum.x = 62;
+		}		
 		
 		private function initImages():void
 		{
-			var texture:Texture = UserCenterManager.getTexture("");
-			backgroundY = new Image(texture);
-			texture = UserCenterManager.getTexture("");			//共用纹理
-			backgroundM = new Image(texture);
-			backgroundD = new Image(texture);
+			var image:Image = new Image(UserCenterManager.getTexture("background_date"));
+			this.addChild( image );
+			image.y = 35;
+			image.touchable = false;
+			
+			image = new Image(UserCenterManager.getTexture("background_date_year"));
+			this.addChild( image );
+			image.x = 60;
+			image.touchable = false;
+			
+			image = new Image(UserCenterManager.getTexture("background_date_day"));
+			this.addChild( image );
+			image.x = 174;
+			image.touchable = false;
+			
+			image = new Image(UserCenterManager.getTexture("background_date_day"));
+			this.addChild( image );
+			image.x = 266;
+			image.touchable = false;
 		}
 		
 		private function labelFactory():Label
@@ -114,7 +92,7 @@ package views.components
 			_maxDate = date;
 		}
 		
-		private var _minDate:Date = new Date(1930, 01, 01);
+		private var _minDate:Date = new Date(1960, 01, 01);
 		public function set minDate(date:Date):void
 		{
 			_minDate = date;
@@ -125,49 +103,5 @@ package views.components
 		{
 			super.dispose();
 		}
-		
-		//组件背板
-		private var backgroundY:Image;
-		private var backgroundM:Image;
-		private var backgroundD:Image;
-//		private var defaultSkin:DisplayObject;
-		
-//		/**
-//		 * 设置日期显示背景，日期背景若无纹理，则与月份共用
-//		 * @param textureY
-//		 * @param textureM
-//		 * @param textureD
-//		 * 
-//		 */	
-//		public function setTextures(textureY:Texture, textureM:Texture, textureD:Texture=null):void
-//		{
-//		}
-//		public function set defaultSkin(value:DisplayObject):void
-//		{
-//		}
-//		public function set gap(value:Number):void
-//		{
-//		}
-//		public function set padding(value:Number):void
-//		{
-//		}
-//		public function set paddingLeft(value:Number):void
-//		{
-//		}
-//		public function set paddingRight(value:Number):void
-//		{
-//		}
-//		public function set paddingTop(value:Number):void
-//		{
-//		}
-//		public function set paddingBottom(value:Number):void
-//		{
-//		}
-//		override public function set width(value:Number):void
-//		{
-//		}
-//		override public function set height(value:Number):void
-//		{
-//		}
 	}
 }

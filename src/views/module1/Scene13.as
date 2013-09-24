@@ -34,6 +34,8 @@ package views.module1
 		public function set gamePlayed(value:Boolean):void
 		{
 			_gamePlayed=value;
+			if (_clockMatched)
+				showAchievement(5);
 			if (_gamePlayed)
 				sceneOver();
 		}
@@ -49,6 +51,8 @@ package views.module1
 		public function set clockMatched(value:Boolean):void
 		{
 			_clockMatched=value;
+			if (_gamePlayed)
+				showAchievement(5);
 			if (_clockMatched)
 				sceneOver();
 		}
@@ -142,6 +146,7 @@ package views.module1
 		{
 			if (!clockMatched)
 			{
+				showAchievement(3);
 				TweenLite.to(clock, .5, {scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete: function():void
 				{
 					clockMatched=true;
@@ -210,6 +215,7 @@ package views.module1
 		{
 			if (!gamePlayed)
 			{
+				showAchievement(4);
 				TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
 				{
 					gamePlayed=true;

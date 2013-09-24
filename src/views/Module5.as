@@ -12,7 +12,7 @@ package views
 	{
 		public function Module5(am:AssetManager=null, width:Number=0, height:Number=0)
 		{
-			sceneArr=[Scene51, Scene52];
+			sceneArr=[Scene52];
 
 			Q1="皇帝爱学习吗？"
 			A1="清朝皇帝喜爱学习－儒家经典、汉语诗文、满文、蒙文和骑马射箭，样样要精通。"

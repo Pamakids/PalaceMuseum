@@ -2,6 +2,8 @@ package views.module5
 {
 	import com.greensock.TweenLite;
 
+	import controllers.MC;
+
 	import starling.display.Image;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -42,6 +44,8 @@ package views.module5
 		private var crtIndex:int;
 		private var indexArr:Array=[0, 1, 2, 3];
 
+		private var drawScene:palace_paper;
+
 		private function addOneMemorial():void
 		{
 			var index:int=Math.random() * indexArr.length;
@@ -71,8 +75,8 @@ package views.module5
 
 		private function initDraw():void
 		{
-			removeMemorial();
-//			callBack=removeMemorial;
+			drawScene=new palace_paper(crtIndex, removeMemorial);
+			MC.instance.stage.addChild(drawScene);
 		}
 
 		private function removeMemorial():void
@@ -85,8 +89,11 @@ package views.module5
 					crtMemorial.removeFromParent(true);
 					crtMemorial=null;
 					trace(indexArr.length)
-					if (indexArr.length == 2)
+					if (indexArr.length == 2) {
+						MC.instance.stage.stage.quality="high";
+						MC.instance.stage.removeChild(drawScene);
 						sceneOver();
+					}
 					else
 						addOneMemorial();
 				}});

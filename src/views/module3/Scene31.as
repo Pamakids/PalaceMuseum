@@ -224,6 +224,7 @@ package views.module3
 			{
 				if ((Math.random() < probability && !bookFinded) || rightBook == book)
 				{
+					showAchievement(6);
 					rightBook=book;
 					bookFinded=true;
 					showBigBook();
@@ -330,6 +331,14 @@ package views.module3
 		{
 			mapGame=new JigsawGame(assets);
 			mapGame.addEventListener("gameOver", onGamePlayed)
+			mapGame.addEventListener("easyEnd", function():void {
+				showAchievement(8);
+				onGamePlayed(null);
+			})
+			mapGame.addEventListener("hardEnd", function():void {
+				showAchievement(9);
+				onGamePlayed(null)
+			})
 			mapGame.addEventListener("gameRestart", onGameRestart)
 			addChild(mapGame);
 		}
@@ -356,6 +365,7 @@ package views.module3
 		private function onFindGameAddCard(e:Event):void
 		{
 			showCard("picture");
+			showAchievement(7);
 		}
 
 		private function onFindGamePlayed(e:Event):void
