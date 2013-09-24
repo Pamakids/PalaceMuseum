@@ -8,12 +8,13 @@ package views
 	import views.module1.Scene11;
 	import views.module1.Scene12;
 	import views.module1.Scene13;
+	import views.module1.Scene14;
 
 	public class Module1 extends PalaceModule
 	{
 		public function Module1()
 		{
-			sceneArr=[Scene11, Scene12, Scene13];
+			sceneArr=[Scene11, Scene12, Scene13, Scene14];
 
 			Q1="故宫这么大，皇帝住在哪儿？"
 			A1="顺治和康熙帝住在乾清宫，之后的八个皇帝都住在养心殿。"

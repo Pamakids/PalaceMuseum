@@ -147,7 +147,7 @@ package views.module3
 
 		private function onPrismAddCard(e:Event):void
 		{
-			showCard("card-dragon");
+			showCard("dragon");
 		}
 
 		private function onPrismPlayed(e:Event):void

@@ -1,27 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:b9f7974abd3630c8aa8a9043de1f12ba$ -->
+<!-- $TexturePacker:SmartUpdate:95b926d8eb8ed86d773cca2c8bfc13fc$ -->
 <TextureAtlas imagePath="m4s1.png">
-    <SubTexture name="body-countdown" x="1388" y="143" width="42" height="42"/>
-    <SubTexture name="railing1" x="2" y="2" width="1024" height="59"/>
-    <SubTexture name="railing2" x="2" y="63" width="1024" height="49"/>
-    <SubTexture name="railing3" x="2" y="114" width="1024" height="48"/>
-    <SubTexture name="xiyoubody1" x="462" y="164" width="97" height="61"/>
-    <SubTexture name="xiyoubody2" x="1330" y="143" width="56" height="63"/>
-    <SubTexture name="xiyoubody3" x="2" y="164" width="128" height="73"/>
-    <SubTexture name="xiyoubody4" x="249" y="164" width="110" height="69" frameX="0" frameY="0" frameWidth="112" frameHeight="69"/>
-    <SubTexture name="xiyoubody5" x="882" y="164" width="69" height="68"/>
-    <SubTexture name="xiyoubody6" x="132" y="164" width="115" height="71"/>
-    <SubTexture name="xiyouhead1" x="1028" y="2" width="163" height="121"/>
-    <SubTexture name="xiyouhead2" x="1224" y="121" width="104" height="123"/>
-    <SubTexture name="xiyouhead3" x="1193" y="2" width="142" height="117"/>
-    <SubTexture name="xiyouhead4" x="1128" y="125" width="94" height="111"/>
-    <SubTexture name="xiyouhead5" x="1337" y="2" width="127" height="139"/>
-    <SubTexture name="xiyouhead6" x="1028" y="125" width="98" height="105"/>
-    <SubTexture name="xiyoumask1" x="361" y="164" width="99" height="78"/>
-    <SubTexture name="xiyoumask2" x="726" y="164" width="78" height="68"/>
-    <SubTexture name="xiyoumask3" x="561" y="164" width="82" height="62"/>
-    <SubTexture name="xiyoumask4" x="645" y="164" width="79" height="67"/>
-    <SubTexture name="xiyoumask5" x="806" y="164" width="74" height="70"/>
-    <SubTexture name="xiyoumask6" x="953" y="164" width="71" height="62"/>
+    <SubTexture name="body-countdown" x="740" y="975" width="42" height="42"/>
+    <SubTexture name="btn1" x="1733" y="954" width="66" height="66" frameX="-1" frameY="0" frameWidth="70" frameHeight="66"/>
+    <SubTexture name="btn2" x="740" y="837" width="70" height="66"/>
+    <SubTexture name="btn3" x="1597" y="886" width="68" height="66" frameX="0" frameY="0" frameWidth="70" frameHeight="66"/>
+    <SubTexture name="btn4" x="1667" y="886" width="66" height="66" frameX="-1" frameY="0" frameWidth="70" frameHeight="66"/>
+    <SubTexture name="btn5" x="1665" y="954" width="66" height="66" frameX="-2" frameY="0" frameWidth="70" frameHeight="66"/>
+    <SubTexture name="btn6" x="1590" y="818" width="68" height="66" frameX="0" frameY="0" frameWidth="70" frameHeight="66"/>
+    <SubTexture name="btnclound" x="1597" y="954" width="66" height="66" frameX="0" frameY="0" frameWidth="70" frameHeight="66"/>
+    <SubTexture name="btnfire" x="1728" y="818" width="64" height="66" frameX="-2" frameY="0" frameWidth="70" frameHeight="66"/>
+    <SubTexture name="btnmountain" x="1527" y="887" width="68" height="66" frameX="0" frameY="0" frameWidth="70" frameHeight="66"/>
+    <SubTexture name="btnsmoke" x="1660" y="818" width="66" height="66" frameX="0" frameY="0" frameWidth="70" frameHeight="66"/>
+    <SubTexture name="firemoutain" x="986" y="818" width="349" height="198" frameX="-2" frameY="0" frameWidth="351" frameHeight="198"/>
+    <SubTexture name="head-bg" x="2" y="2" width="106" height="590"/>
+    <SubTexture name="lifeboard" x="1058" y="659" width="198" height="81"/>
+    <SubTexture name="lifeicon-lost" x="1058" y="599" width="49" height="50"/>
+    <SubTexture name="lifeicon" x="979" y="498" width="49" height="50"/>
+    <SubTexture name="lose-panel" x="110" y="2" width="708" height="430"/>
+    <SubTexture name="moutain" x="1483" y="732" width="357" height="84"/>
+    <SubTexture name="operagametitle" x="1058" y="323" width="697" height="274"/>
+    <SubTexture name="pillar1" x="858" y="808" width="42" height="206"/>
+    <SubTexture name="pillar2" x="813" y="808" width="43" height="211"/>
+    <SubTexture name="pillar3" x="687" y="808" width="51" height="211"/>
+    <SubTexture name="pillar4" x="814" y="591" width="51" height="215"/>
+    <SubTexture name="pillar5" x="603" y="808" width="82" height="212"/>
+    <SubTexture name="pillar6" x="902" y="806" width="82" height="204"/>
+    <SubTexture name="progress" x="381" y="564" width="486" height="25" frameX="-14" frameY="-12" frameWidth="530" frameHeight="51"/>
+    <SubTexture name="progressbg" x="951" y="742" width="530" height="51"/>
+    <SubTexture name="railing1" x="820" y="2" width="1024" height="59"/>
+    <SubTexture name="railing12" x="820" y="119" width="1024" height="51"/>
+    <SubTexture name="railing2" x="820" y="172" width="1024" height="49"/>
+    <SubTexture name="railing22" x="820" y="63" width="1024" height="54" frameX="0" frameY="0" frameWidth="1024" frameHeight="56"/>
+    <SubTexture name="railing3" x="820" y="273" width="1024" height="48"/>
+    <SubTexture name="railing32" x="820" y="223" width="1024" height="48"/>
+    <SubTexture name="record" x="869" y="553" width="187" height="187"/>
+    <SubTexture name="restart-light" x="239" y="434" width="140" height="135"/>
+    <SubTexture name="restart" x="857" y="430" width="120" height="121" frameX="-8" frameY="-6" frameWidth="140" frameHeight="135"/>
+    <SubTexture name="scoreboard" x="1337" y="908" width="188" height="90"/>
+    <SubTexture name="star-grey" x="1740" y="659" width="76" height="71" frameX="0" frameY="-1" frameWidth="76" frameHeight="73"/>
+    <SubTexture name="star-red" x="979" y="423" width="76" height="73"/>
+    <SubTexture name="startShow-light" x="1757" y="394" width="110" height="61"/>
+    <SubTexture name="startShow" x="1757" y="537" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
+    <SubTexture name="win-panel" x="2" y="594" width="599" height="401"/>
+    <SubTexture name="xiyoubody1" x="1757" y="596" width="97" height="61"/>
+    <SubTexture name="xiyoubody2" x="920" y="323" width="136" height="98"/>
+    <SubTexture name="xiyoubody3" x="1349" y="659" width="128" height="73"/>
+    <SubTexture name="xiyoubody4" x="1757" y="323" width="110" height="69" frameX="0" frameY="0" frameWidth="112" frameHeight="69"/>
+    <SubTexture name="xiyoubody5" x="740" y="905" width="69" height="68"/>
+    <SubTexture name="xiyoubody6" x="1479" y="659" width="115" height="71"/>
+    <SubTexture name="xiyoubody7" x="603" y="591" width="209" height="180"/>
+    <SubTexture name="xiyouhead1" x="692" y="434" width="163" height="121"/>
+    <SubTexture name="xiyouhead2" x="381" y="434" width="154" height="128"/>
+    <SubTexture name="xiyouhead3" x="1596" y="599" width="142" height="117"/>
+    <SubTexture name="xiyouhead4" x="1337" y="795" width="94" height="111"/>
+    <SubTexture name="xiyouhead5" x="110" y="434" width="127" height="139"/>
+    <SubTexture name="xiyouhead6" x="820" y="323" width="98" height="105"/>
+    <SubTexture name="xiyouhead7" x="537" y="434" width="153" height="127"/>
+    <SubTexture name="xiyoumask1" x="1757" y="457" width="99" height="78"/>
+    <SubTexture name="xiyoumask2" x="1258" y="659" width="89" height="78"/>
+    <SubTexture name="xiyoumask3" x="867" y="742" width="82" height="62"/>
+    <SubTexture name="xiyoumask4" x="1509" y="818" width="79" height="67"/>
+    <SubTexture name="xiyoumask5" x="1433" y="818" width="74" height="70"/>
+    <SubTexture name="xiyoumask6" x="740" y="773" width="71" height="62"/>
 </TextureAtlas>

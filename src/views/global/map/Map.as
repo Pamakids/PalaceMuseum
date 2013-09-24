@@ -206,7 +206,7 @@ package views.global.map
 		private function clear(status:int):void
 		{
 //			this.removeFromParent(true);
-			stage.removeEventListener(TouchEvent.TOUCH, touchHandler);
+//			stage.removeEventListener(TouchEvent.TOUCH, touchHandler);
 			visible=false;
 			closeButton.visible=false;
 			changing=false;
@@ -266,24 +266,16 @@ package views.global.map
 			TweenLite.to(flipAnimation, 1.5, {x: 0, scaleX: 1, scaleY: 1, onComplete: function():void
 			{
 				closeButton.visible=enableClose;
-				stage.addEventListener(TouchEvent.TOUCH, touchHandler);
+				addEventListener(TouchEvent.TOUCH, touchHandler);
 				TweenLite.to(flipAnimation, 8, {delay: 1, y: 0, ease: Cubic.easeOut});
 			}});
+			var i:int=to == -1 ? 0 : to;
 			if (hasTask || mc.moduleIndex == -1)
 			{
-				var i:int=to == -1 ? 0 : to;
 				trace('开始任务：' + tasks[i]);
 				LionMC.instance.say(tasks[i]);
 				if (!sos.isModuleCompleted(i))
 					showTaskHint(i);
-			}
-
-			if (!typeHolder)
-			{
-				typeHolder=new Sprite();
-				flipAnimation.addChild(typeHolder);
-				typeHolder.touchable=false;
-				resetTypeHolder();
 			}
 
 			if (!lockHolder)
@@ -291,8 +283,8 @@ package views.global.map
 				lockHolder=new Sprite();
 				flipAnimation.addChild(lockHolder);
 				lockHolder.touchable=false;
-				resetLockHolder();
 			}
+			resetLockHolder();
 
 			if (!callback)
 				return;
@@ -308,6 +300,13 @@ package views.global.map
 		 * */
 		private function showTaskHint(i:int):void
 		{
+			if (!typeHolder)
+			{
+				typeHolder=new Sprite();
+				flipAnimation.addChild(typeHolder);
+				typeHolder.touchable=false;
+			}
+			resetTypeHolder(i);
 		}
 
 		private function clearTaskHint():void
@@ -506,18 +505,18 @@ package views.global.map
 			else
 				flipAnimation.animationPlayed();
 			if (typeHolder)
-				resetTypeHolder();
+				resetTypeHolder(to);
 			if (lockHolder)
 				resetLockHolder();
 		}
 
 		/**
 		 * 场景类型
-		 *
+		 * 自动切换,任务提示用
 		 * */
 		private function resetTypeHolder(index:int=0):void
 		{
-			typeHolder.visible=false;
+			typeHolder.visible=!showFromCenter;
 			if (index < 0)
 				return;
 			typeHolder.removeChildren();
@@ -536,11 +535,11 @@ package views.global.map
 
 		/**
 		 * 场景解锁
-		 *
+		 * 手册进入,跳关用
 		 * */
 		private function resetLockHolder():void
 		{
-			lockHolder.visible=true;
+			lockHolder.visible=showFromCenter;
 			lockHolder.removeChildren();
 			for (var i:int=0; i < 4; i++)
 			{

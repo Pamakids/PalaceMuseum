@@ -1,4 +1,4 @@
-package views.module4.scene41
+package views.module4.scene42
 {
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
@@ -25,7 +25,7 @@ package views.module4.scene41
 
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
-	import views.module4.Scene41;
+	import views.module4.Scene42;
 
 	public class OperaGame extends PalaceGame
 	{
@@ -46,19 +46,24 @@ package views.module4.scene41
 		private var operaArr:Array=["xiyou", "san"];
 
 		private var crtB_HPosArr:Array; //头,身子 相对位置
-		private var xiyouB_PosArr:Array=[new Point(33, 107), new Point(26, 109),
+		private var xiyouB_PosArr:Array=[new Point(33, 107), new Point(-31, 86),
 			new Point(-3, 98), new Point(-7, 88), new Point(21, 123), new Point(-3, 87)];
 		private var sanB_PosArr:Array=[new Point(), new Point(),
 			new Point(), new Point(), new Point(), new Point()];
 
 		private var crtMaskPosArr:Array; //脸谱,相对位置
-		private var xiyouMaskPosArr:Array=[new Point(30, 44), new Point(13, 55),
+		private var xiyouMaskPosArr:Array=[new Point(30, 44), new Point(32, 50),
 			new Point(30, 37), new Point(7, 23), new Point(28, 69), new Point(16, 43)];
 
 		private function initStart():void
 		{
 			startHolder=new Sprite();
 			addChild(startHolder);
+			var title:Image=getImage("operagametitle");
+			title.x=(1024 - title.width) >> 1;
+			title.y=130;
+			startHolder.addChild(title);
+
 			var startBtn:ElasticButton=new ElasticButton(getImage("game-start"));
 			startBtn.shadow=getImage("game-start-down");
 			startBtn.addEventListener(ElasticButton.CLICK, onStartClick);
@@ -213,7 +218,7 @@ package views.module4.scene41
 		private function onEnterFrame(e:Event):void
 		{
 			ropeSP.graphics.clear();
-			ropeSP.graphics.lineStyle(2, 0x99ccff);
+			ropeSP.graphics.lineStyle(3, 0x99ccff);
 			for each (var body:OperaBody in bodyArr)
 			{
 				if (body)
@@ -439,7 +444,7 @@ package views.module4.scene41
 		private var gameOver:Boolean;
 
 		private var _score:int;
-		public var scene:Scene41;
+		public var scene:Scene42;
 
 		public function get score():int
 		{
@@ -455,10 +460,6 @@ package views.module4.scene41
 		private function initResult():void
 		{
 			endHolder=new Sprite();
-			addChild(endHolder);
-			endHolder.x=-1024;
-			//			score=10000;
-			//			life=3;
 			var isRecord:Boolean=false;
 			if (life > 0 && score > 0)
 			{
@@ -525,14 +526,33 @@ package views.module4.scene41
 			rsBtn.y=512;
 			endHolder.addChild(rsBtn);
 
-			TweenLite.to(gameHolder, .5, {x: 1024});
+			var nextShowBtn:ElasticButton=new ElasticButton(getImage("startShow"));
+			nextShowBtn.shadow=getImage("startShow-light");
+			nextShowBtn.x=1024 - 200;
+			nextShowBtn.y=768 - 100;
+			endHolder.addChild(nextShowBtn);
+			nextShowBtn.addEventListener(ElasticButton.CLICK, onNextShow);
 
-			TweenLite.to(endHolder, .5, {x: 0, onComplete: function():void {
+			function closeCallBack():void {
+				addChild(endHolder);
+				removeChild(gameHolder);
+			}
+
+			function openCallback():void {
 				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
-				closeBtn.visible=closeBtn.touchable=true;
+				closeBtn.visible=closeBtn.touchable=false;
 				if (isRecord)
 					showRecord();
-			}});
+			}
+
+			var e:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE_OPEN, openCallback, closeCallBack);
+			scene.onOperaSwitch(e);
+		}
+
+		private function onNextShow(e:Event):void
+		{
+			var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE, null, nextGame);
+			scene.onOperaSwitch(e1);
 		}
 
 		private function restartGame(e:Event=null):void
@@ -546,6 +566,11 @@ package views.module4.scene41
 		private function closeGame():void
 		{
 			dispatchEvent(new Event("gameOver"));
+		}
+
+		private function nextGame():void
+		{
+			dispatchEvent(new Event("nextGame"));
 		}
 
 		private function showRecord():void

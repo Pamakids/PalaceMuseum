@@ -1,4 +1,4 @@
-package views.module4.scene41
+package views.module4.scene42
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Bounce;
@@ -52,17 +52,22 @@ package views.module4.scene41
 			startShakeHead(Math.PI / 20, 5);
 			startShakeBody(Math.PI / 30, 5);
 
-			enterPt=new Point(stagePt.x, -300);
-			this.x=enterPt.x;
-			this.y=enterPt.y;
+			if (stagePt)
+			{
+				enterPt=new Point(stagePt.x, -300);
+				this.x=enterPt.x;
+				this.y=enterPt.y;
+			}
 
 			addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 
 		private function addCountDown():void
 		{
-			countBG.x=25;
-			countBG.y=8;
+			if (!countBG)
+				return;
+			countBG.x=30;
+			countBG.y=-5;
 			addChild(countBG);
 			countBG.touchable=false;
 
@@ -141,11 +146,12 @@ package views.module4.scene41
 
 		}
 
-		public function playEnter():void
+		public function playEnter(needCount:Boolean=true):void
 		{
 			var dur:Number=playDur * (stagePt.y - enterPt.y) / 1024;
 			TweenLite.to(this, dur, {x: stagePt.x, y: stagePt.y, ease: Bounce.easeOut, onComplete: function():void {
-				addCountDown();
+				if (needCount)
+					addCountDown();
 				ready=true;
 			}});
 		}
@@ -222,11 +228,13 @@ package views.module4.scene41
 		}
 
 
-		public function addMask(mask:OperaMask):void
+		public function addMask(mask:OperaMask, isAuto:Boolean=true):void
 		{
-//			var pt:Point=globalToLocal(new Point(mask.x, mask.y));
-			isMatched=true;
-			removeEventListener(TouchEvent.TOUCH, onTouch);
+			if (isAuto)
+			{
+				isMatched=true;
+				removeEventListener(TouchEvent.TOUCH, onTouch);
+			}
 			headHolder.addChild(mask);
 			mask.scaleX=mask.scaleY=1;
 			mask.pivotX=mask.pivotY=0;

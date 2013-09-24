@@ -14,6 +14,7 @@ package controllers
 	import views.Module2;
 	import views.Module3;
 	import views.Module4;
+	import views.Module5;
 	import views.components.Prompt;
 	import views.components.base.PalaceModule;
 	import views.global.TopBar;
@@ -42,7 +43,7 @@ package controllers
 		public var currentModule:PalaceModule;
 
 		public var main:Main;
-		private var modules:Array=[Module1, Module3, Module2, Module4];
+		private var modules:Array=[Module1, Module3, Module2, Module5, Module4];
 
 		public var stage:PalaceMuseum;
 

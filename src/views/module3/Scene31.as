@@ -355,7 +355,7 @@ package views.module3
 
 		private function onFindGameAddCard(e:Event):void
 		{
-			showCard("card-bug");
+			showCard("picture");
 		}
 
 		private function onFindGamePlayed(e:Event):void

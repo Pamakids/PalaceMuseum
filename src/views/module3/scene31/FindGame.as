@@ -160,34 +160,6 @@ package views.module3.scene31
 //			addCard("card-bug");
 		}
 
-		private function addCard(src:String):void
-		{
-			halo=new Sprite();
-			halo.addChild(getImage("halo"));
-			halo.pivotX=halo.width >> 1;
-			halo.pivotY=halo.height >> 1;
-			addChild(halo);
-			halo.x=512;
-			halo.y=768 / 2;
-			halo.visible=true;
-			halo.scaleX=halo.scaleY=.5;
-			halo.rotation=0;
-			TweenLite.to(halo, 2.5, {scaleX: 1, scaleY: 1, rotation: Math.PI, onComplete: function():void
-			{
-				halo.visible=false;
-			}});
-
-			var card:CollectionCard=new CollectionCard();
-			card.addChild(getImage(src));
-			card.pivotX=card.width >> 1;
-			card.pivotY=card.height >> 1;
-			card.x=512;
-			card.y=768 / 2;
-			card.show();
-			addChild(card);
-			trace('added card');
-		}
-
 		private var checkCount:int=0;
 		private var closeBtn:ElasticButton;
 		private var halo:Sprite;

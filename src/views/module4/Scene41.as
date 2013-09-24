@@ -1,148 +1,83 @@
 package views.module4
 {
-	import com.greensock.TweenLite;
+	import flash.geom.Point;
 
-	import events.OperaSwitchEvent;
-
-	import starling.core.Starling;
-	import starling.display.Image;
-	import starling.display.MovieClip;
-	import starling.display.Sprite;
-	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.Prompt;
 	import views.components.base.PalaceScene;
-	import views.module4.scene41.OperaGame;
+	import views.module4.scene41.Audience;
 
 	public class Scene41 extends PalaceScene
 	{
+		private var avatarTypeArr:Array=["chancellor", "maid", "empressdowager"];
+		private var txtArr:Array=["大臣：希望这次的座位别排在柱子后面",
+			"大臣：唉，跪着听戏真不好受",
+			"大臣：幸亏我年纪一把，能有个椅子坐",
+			"宫女：今儿皇上听戏倒是积极",
+			"太后：今演好了，重重有赏！"];
 
-		private var mc:MovieClip;
-
-		private var game:OperaGame;
-
-		private var gameHolder:Sprite;
-
-		private var curtainL:Image;
-		private var curtainR:Image;
-		private var offsetX:Number;
+		private var posArr:Array=[new Point(229, 554), new Point(353, 624),
+			new Point(810, 294), new Point(833, 447), new Point(731, 490)];
+		private var count:int=0;
 
 		public function Scene41(am:AssetManager=null)
 		{
 			super(am);
+			addChild(getImage("bg41"));
 
-			gameHolder=new Sprite();
-			addChild(gameHolder);
-
-			curtainL=getImage("opera-curtainL");
-			offsetX=curtainL.width;
-			curtainL.x=0;
-			addChild(curtainL);
-			curtainR=getImage("opera-curtainR");
-			curtainR.x=1024 - offsetX;
-			addChild(curtainR);
-
-			initGame();
+			addAvatars();
 		}
 
-		public function onOperaSwitch(e:OperaSwitchEvent):void
+		private function addAvatars():void
 		{
-			TweenLite.killDelayedCallsTo(this);
-			TweenLite.killTweensOf(curtainL);
-			TweenLite.killTweensOf(curtainR);
-			switch (e.action)
+			for (var i:int=0; i < 3; i++)
 			{
-				case OperaSwitchEvent.OPEN:
-				{
-					openCurtains(e.openCallback);
-					break;
-				}
-
-				case OperaSwitchEvent.CLOSE:
-				{
-					closeCurtains(e.closeCallback);
-					break;
-				}
-
-				case OperaSwitchEvent.OPEN_CLOSE:
-				{
-					openCurtains(function():void {
-						if (e.openCallback != null)
-							e.openCallback();
-						TweenLite.delayedCall(e.delay, function():void {
-							closeCurtains(e.closeCallback);
-						});
-					});
-					break;
-				}
-
-				case OperaSwitchEvent.CLOSE_OPEN:
-				{
-					closeCurtains(function():void {
-						if (e.closeCallback != null)
-							e.closeCallback();
-						TweenLite.delayedCall(e.delay, function():void {
-							openCurtains(e.openCallback);
-						});
-					});
-					break;
-				}
-
-				default:
-				{
-					break;
-				}
+				var chancellor:Audience=new Audience();
+				chancellor.addChild(getImage(avatarTypeArr[0]));
+				chancellor.x=posArr[i].x;
+				chancellor.y=posArr[i].y;
+				chancellor.index=i;
+				chancellor.addEventListener(TouchEvent.TOUCH, onAvatarTouch);
+				addChild(chancellor);
 			}
+
+			var maid:Audience=new Audience(); //宫女
+			maid.addChild(getImage(avatarTypeArr[1]));
+			maid.x=posArr[3].x;
+			maid.y=posArr[3].y;
+			maid.index=3;
+			maid.addEventListener(TouchEvent.TOUCH, onAvatarTouch);
+			addChild(maid);
+
+			var empressdowager:Audience=new Audience(); //太后
+			empressdowager.addChild(getImage(avatarTypeArr[2]));
+			empressdowager.x=posArr[4].x;
+			empressdowager.y=posArr[4].y;
+			empressdowager.index=4;
+			empressdowager.addEventListener(TouchEvent.TOUCH, onAvatarTouch);
+			addChild(empressdowager);
 		}
 
-		private function closeCurtains(closeCallback:Function=null):void
+		private function onAvatarTouch(e:TouchEvent):void
 		{
-			TweenLite.to(curtainL, 1, {x: 0});
-			TweenLite.to(curtainR, 1, {x: 1024 - offsetX, onComplete: closeCallback});
-		}
-
-		private function openCurtains(openCallback:Function=null):void
-		{
-			TweenLite.to(curtainL, 1, {x: -offsetX});
-			TweenLite.to(curtainR, 1, {x: 1024, onComplete: openCallback});
-		}
-
-		private function initBird():void
-		{
-			mc=new MovieClip(assets.getTextures("ufo"));
-			this.addChild(mc);
-			mc.fps=30;
-			mc.play();
-			mc.x=300;
-			mc.y=384;
-
-			Starling.juggler.add(mc);
-		}
-
-		private function initGame():void
-		{
-			game=new OperaGame(assets);
-			game.scene=this;
-			gameHolder.addChild(game);
-			game.addEventListener("gameOver", onGameOver);
-			game.addEventListener("gameRestart", onGameRestart);
-		}
-
-		private function onGameRestart(e:Event):void
-		{
-			game.removeEventListener("gameOver", onGameOver);
-			game.removeEventListener("gameRestart", onGameRestart);
-			gameHolder.removeChild(game);
-			game.dispose();
-			game=null;
-
-			initGame();
-		}
-
-		private function onGameOver(e:Event):void
-		{
-			// TODO Auto Generated method stub
-
+			var audience:Audience=e.currentTarget as Audience;
+			if (!audience)
+				return;
+			var tc:Touch=e.getTouch(audience, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			Prompt.showTXT(audience.x + audience.width - 20, audience.y, txtArr[audience.index]);
+			if (!audience.isClicked)
+			{
+				audience.isClicked=true;
+				count++;
+				if (count == 3)
+					sceneOver();
+			}
 		}
 	}
 }
