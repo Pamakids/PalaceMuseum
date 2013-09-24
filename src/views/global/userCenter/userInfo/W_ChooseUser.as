@@ -5,10 +5,9 @@ package views.global.userCenter.userInfo
 	import feathers.core.FeathersControl;
 	import feathers.data.ListCollection;
 	
+	import starling.display.DisplayObject;
 	import starling.display.Image;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
+	import starling.events.Event;
 	import starling.textures.Texture;
 	
 	import views.global.userCenter.UserCenterManager;
@@ -55,9 +54,11 @@ package views.global.userCenter.userInfo
 			buttons.gap = 55;
 		}
 		
-		
-		private function onTriggered():void
+		public var editHandler:Function;
+		private function onTriggered(e:Event):void
 		{
+			var info:Object = userDatas[buttons.getChildIndex( e.currentTarget as DisplayObject)];
+			editHandler( info );
 		}
 		
 		private var button_close:Button;
@@ -65,7 +66,7 @@ package views.global.userCenter.userInfo
 		{
 			button_close = new Button();
 			button_close.defaultSkin = new Image(UserCenterManager.getTexture("button_close_small"));
-			button_close.addEventListener(TouchEvent.TOUCH, closeWindow);
+			button_close.addEventListener(Event.TRIGGERED, closeWindow);
 			this.addChild( button_close );
 			button_close.x = 420;
 			button_close.y = 20;
@@ -119,13 +120,9 @@ package views.global.userCenter.userInfo
 		}
 		
 		public var closeWinHandler:Function = defaultCloseHandler;
-		private function closeWindow(e:TouchEvent):void
+		private function closeWindow(e:Event):void
 		{
-			var touch:Touch = e.getTouch(this.button_close);
-			if(touch && touch.phase == TouchPhase.ENDED)
-			{
-				closeWinHandler(this);
-			}
+			closeWinHandler(this);
 		}
 		private function defaultCloseHandler(obj:Object):void
 		{
