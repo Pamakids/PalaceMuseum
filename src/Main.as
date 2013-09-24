@@ -43,9 +43,9 @@ package
 			addChild(label);
 
 			var am:AssetManager=new AssetManager();
-			am.enqueue("assets/common/hint-bg.png", "assets/common/hint-bg-large.png", "assets/common/hint-bg-mid.png",
-				"assets/common/hint-bg-k.png", "assets/common/hint-bg-k-large.png", "assets/common/hint-bg-k-mid.png");
-			am.loadQueue(function(ratio:Number):void {
+			am.enqueue("assets/common/hint-bg.png", "assets/common/hint-bg-large.png", "assets/common/hint-bg-mid.png", "assets/common/hint-bg-k.png", "assets/common/hint-bg-k-large.png", "assets/common/hint-bg-k-mid.png");
+			am.loadQueue(function(ratio:Number):void
+			{
 				if (ratio == 1.0)
 					Prompt.addAssetManager(am);
 			})

@@ -12,6 +12,8 @@ package views.global.userCenter
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
+	
+	import views.global.userCenter.achievement.AchieveIcon;
 
 	/**
 	 * 用户中心管理类
@@ -198,6 +200,8 @@ package views.global.userCenter
 			textures[screen]=value;
 		}
 
+		private static const NumPages:int = 26;
+		
 		public static function getHandbookTextures():Vector.<Texture>
 		{
 			if (!textures["handbook_textures"])
@@ -208,7 +212,7 @@ package views.global.userCenter
 				trace(tx1 == tx2);
 				var leftImage:Image=new Image(_assetsManager.getTexture("page_left"));
 				var rightImage:Image=new Image(_assetsManager.getTexture("page_right"));
-				for (var i:int=0; i < 18; i++)
+				for (var i:int=0; i < NumPages; i++)
 				{
 					var render:RenderTexture=new RenderTexture(484, 664, true);
 					var image:Image=new Image(UserCenterManager.getTexture("content_page_" + String(i + 1)));
@@ -216,13 +220,9 @@ package views.global.userCenter
 					image.height=664;
 
 					if (i % 2 == 0) //左
-					{
 						render.draw(leftImage);
-					}
 					else //右
-					{
 						render.draw(rightImage);
-					}
 					render.draw(image)
 					vecTexture.push(render);
 				}
