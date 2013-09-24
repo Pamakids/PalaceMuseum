@@ -18,7 +18,7 @@ package views.components
 			lion=new LionTalk();
 			lion.scaleX=lion.scaleY=.5;
 			this.addChild(lion);
-			MC.instance.stage.addChild(this);
+			MC.instance.stage.stage.addChild(this);
 			lion.addEventListener(Event.FRAME_CONSTRUCTED, onMCPlaying);
 			mcWidth=lion.width * .5;
 			mcHeight=lion.height * .5;
@@ -77,6 +77,8 @@ package views.components
 
 		public function say(content:String, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20):void
 		{
+			trace('lion say:', content);
+			parent.setChildIndex(this, parent.numChildren - 1);
 			visible=true;
 			if (!_x && !_y)
 			{

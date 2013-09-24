@@ -145,7 +145,6 @@ package views.components.base
 
 		override public function dispose():void
 		{
-			TweenMax.killAll();
 			if (autoDispose && assetManager)
 			{
 				assetManager.dispose();

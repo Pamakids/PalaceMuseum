@@ -14,6 +14,7 @@ package
 	import starling.utils.AssetManager;
 
 	import views.Module5;
+	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.Container;
 	import views.global.map.Map;
@@ -74,6 +75,7 @@ package
 					}
 					else if (e.keyCode == Keyboard.RIGHT)
 					{
+//						LionMC.instance.say(Math.random().toString());
 						MC.instance.nextModule();
 					}
 				});

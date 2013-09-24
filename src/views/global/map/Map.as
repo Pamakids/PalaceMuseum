@@ -259,8 +259,7 @@ package views.global.map
 		}
 
 		public var isTask:Boolean=true;
-		private var sunPosArr:Array=[new Point(949, 39), new Point(863, 22),
-			new Point(713, 7), new Point(554, 0), new Point(217, 10), new Point(-200, 50)];
+		private var sunPosArr:Array=[new Point(949, 39), new Point(863, 22), new Point(713, 7), new Point(554, 0), new Point(217, 10), new Point(-200, 50)];
 
 		private function flipedHandler(e:Event):void
 		{
@@ -550,7 +549,8 @@ package views.global.map
 				sun.x=fp.x;
 				sun.y=fp.y;
 				var leftp:Point=sunPosArr[sunPosArr.length - 1];
-				TweenLite.to(sun, 1.3, {x: leftp.x, y: leftp.y, onComplete: function():void {
+				TweenLite.to(sun, 1.3, {x: leftp.x, y: leftp.y, onComplete: function():void
+				{
 					sun.x=1024;
 					TweenLite.to(sun, 1.2, {x: tp.x, y: tp.y});
 				}});
