@@ -8,14 +8,21 @@
 package views.components.base
 {
 	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
+
+	import flash.utils.clearTimeout;
+	import flash.utils.setTimeout;
 
 	import feathers.core.PopUpManager;
 
+	import models.FontVo;
 	import models.SOService;
 
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
@@ -53,6 +60,12 @@ package views.components.base
 //				assets.dispose();
 //				Prompt.removeAssetManager(assets);
 			}
+
+			if (nextButton)
+			{
+				TweenLite.killDelayedCallsTo(this);
+				TweenMax.killTweensOf(nextButton);
+			}
 			removeChildren();
 			super.dispose();
 			TopBar.hide();
@@ -73,6 +86,10 @@ package views.components.base
 
 		protected var nextButton:ElasticButton;
 
+		private var tfSP:Sprite;
+
+		private var tf:TextField;
+
 		protected function sceneOver():void
 		{
 			if (!nextButton)
@@ -82,7 +99,17 @@ package views.components.base
 				nextButton.x=1024 - 100;
 				nextButton.y=768 - 100;
 				nextButton.addEventListener(ElasticButton.CLICK, nextScene);
+				shakeNext();
 			}
+		}
+
+		private function shakeNext():void
+		{
+			TweenMax.to(nextButton, 1, {shake: {x: 5, numShakes: 4}, onComplete: function():void
+			{
+				setChildIndex(nextButton, numChildren - 1);
+				TweenLite.delayedCall(5, shakeNext);
+			}});
 		}
 
 		protected function nextScene(e:Event=null):void
@@ -91,11 +118,46 @@ package views.components.base
 			dispatchEvent(new Event("gotoNext", true));
 		}
 
+		private var delayIndex:int;
+
+		protected function showAchievement(_achieveIndex:int):void
+		{
+			if (SOService.instance.getSO(_achieveIndex.toString() + "_achieve"))
+				return;
+			SOService.instance.setSO(_achieveIndex.toString() + "_achieve", true);
+			var txt:String="xxx";
+//			txt="恭喜您获得成就: " + AchieveVO.achieveList[_achieveIndex][0];
+			if (!tfSP)
+			{
+				tfSP=new Sprite();
+				addChild(tfSP);
+				tfSP.touchable=false;
+				var quad:Quad=new Quad(400, 80, 0);
+				quad.alpha=.5;
+				tfSP.addChild(quad);
+				tf=new TextField(400, 80, txt, FontVo.PALACE_FONT, 28, 0xffffff);
+				tfSP.addChild(tf);
+				tfSP.x=512 - 200;
+				tfSP.y=-80;
+			}
+			else
+			{
+				if (delayIndex)
+					clearTimeout(delayIndex);
+				TweenLite.killTweensOf(tfSP);
+				tf.text=txt
+				tfSP.y=-80;
+			}
+			TweenLite.to(tfSP, .5, {y: 0});
+			delayIndex=setTimeout(function():void {
+				TweenLite.to(tfSP, .5, {y: -80})}, 2500);
+		}
+
 		protected function showCard(_cardName:String):void
 		{
-			if (SOService.instance.getSO(_cardName + "collected"))
+			if (SOService.instance.getSO("collection_card_" + _cardName))
 				return;
-			SOService.instance.setSO(_cardName + "collected", true);
+			SOService.instance.setSO("collection_card_" + _cardName + "collected", true);
 
 			var cardShow:Sprite=new Sprite();
 			cardShow.x=512;
@@ -119,7 +181,7 @@ package views.components.base
 			}});
 
 			var card:CollectionCard=new CollectionCard();
-			card.addChild(getImage(_cardName));
+			card.addChild(getImage(_cardName + "collectCard"));
 			card.pivotX=card.width >> 1;
 			card.pivotY=card.height >> 1;
 			card.show();

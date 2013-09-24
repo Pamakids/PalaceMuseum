@@ -272,6 +272,7 @@ package views.module1
 
 		private function nextScene():void
 		{
+			showCard("dragonRobe");
 			TweenLite.to(hatLockMark, .5, {alpha: 0});
 			TweenLite.to(clothLockMark, .5, {alpha: 0});
 			TweenLite.to(lion, 1, {x: lionX, onComplete: sceneOver});

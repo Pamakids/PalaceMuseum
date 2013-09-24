@@ -3,9 +3,9 @@ package views.global.userCenter
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	
+
 	import models.SOService;
-	
+
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
@@ -19,7 +19,7 @@ package views.global.userCenter
 	 */
 	public class UserCenterManager
 	{
-		[Embed(source="/assets/module1/loading.png")]
+		[Embed(source="/assets/common/loading.png")]
 		private static const Loading:Class
 
 		private static var loaded:Boolean=false;
@@ -67,7 +67,7 @@ package views.global.userCenter
 			_userDatas=new Dictionary(true);
 			_userCenter=new UserCenter();
 		}
-		
+
 		public static function getCrtUserCenter():UserCenter
 		{
 			return _userCenter;
@@ -114,7 +114,7 @@ package views.global.userCenter
 				}
 			});
 		}
-		
+
 
 		private static function removeLoadImage():void
 		{
@@ -176,6 +176,7 @@ package views.global.userCenter
 		{
 			return _assetsManager;
 		}
+
 		public static function getTexture(name:String):Texture
 		{
 			return _assetsManager.getTexture(name);
@@ -192,7 +193,7 @@ package views.global.userCenter
 
 		public static function setScreenTextures(screen:String, value:Object):void
 		{
-			if(textures[screen] && textures[screen] == value)
+			if (textures[screen] && textures[screen] == value)
 				return;
 			textures[screen]=value;
 		}
@@ -202,8 +203,8 @@ package views.global.userCenter
 			if (!textures["handbook_textures"])
 			{
 				var vecTexture:Vector.<Texture>=new Vector.<Texture>();
-				var tx1:Texture = _assetsManager.getTexture("page_left");
-				var tx2:Texture = Texture.fromTexture(tx1, new Rectangle(0,0,tx1.width,tx1.height));
+				var tx1:Texture=_assetsManager.getTexture("page_left");
+				var tx2:Texture=Texture.fromTexture(tx1, new Rectangle(0, 0, tx1.width, tx1.height));
 				trace(tx1 == tx2);
 				var leftImage:Image=new Image(_assetsManager.getTexture("page_left"));
 				var rightImage:Image=new Image(_assetsManager.getTexture("page_right"));

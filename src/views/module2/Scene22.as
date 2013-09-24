@@ -40,7 +40,6 @@ package views.module2
 
 			addEventListener(TouchEvent.TOUCH, onTouch);
 //			playMenuGame();
-
 		}
 
 		private function onTouch(e:TouchEvent):void

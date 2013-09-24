@@ -21,6 +21,7 @@ package
 	import views.Module2;
 	import views.Module3;
 	import views.Module4;
+	import views.Module5;
 	import views.components.Prompt;
 	import views.components.base.Container;
 	import views.global.map.Map;
@@ -29,7 +30,7 @@ package
 	public class Main extends Container
 	{
 		private var testingModule:Sprite;
-		private var testingModuleClass:Class=Module1;
+		private var testingModuleClass:Class=Module3;
 
 		public function Main()
 		{
