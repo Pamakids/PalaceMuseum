@@ -23,6 +23,7 @@ package views.global.map
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
+	import starling.utils.formatString;
 
 	import views.components.ElasticButton;
 	import views.components.FlipAnimation;
@@ -117,6 +118,7 @@ package views.global.map
 			centerPoint=new Dictionary();
 			tasks=new Dictionary();
 			var hp:Array=mapData.hotspots;
+
 			for each (var hotspot:Object in hp)
 			{
 				var rect:Rectangle=getRectFromArray(hotspot.rect as Array);
@@ -129,8 +131,13 @@ package views.global.map
 					centerPoint[gt[0]]=p;
 					tasks[gt[0]]=hotspot.task;
 				}
+				var type:int=hotspot.type;
+				if (type)
+					typeArr[type - 1].push(p);
 			}
 		}
+
+		private var typeArr:Array=[[], [], [], [], []];
 
 		private function getCenterFromRect(rect:Rectangle):Point
 		{
@@ -169,6 +176,7 @@ package views.global.map
 		 */
 		public static function show(callback:Function=null, from:int=-1, to:int=-1, fromCenter:Boolean=false):void
 		{
+			showFromCenter=fromCenter;
 			var ec:Boolean=true;
 			if (from || to || callback == null)
 				ec=false;
@@ -188,6 +196,8 @@ package views.global.map
 			}
 		}
 
+		private static var showFromCenter:Boolean;
+
 		private function closeTriggeredHandler():void
 		{
 			trace('close');
@@ -197,7 +207,7 @@ package views.global.map
 		private function clear(status:int):void
 		{
 //			this.removeFromParent(true);
-			stage.removeEventListener(TouchEvent.TOUCH, touchHandler);
+//			stage.removeEventListener(TouchEvent.TOUCH, touchHandler);
 			visible=false;
 			closeButton.visible=false;
 			changing=false;
@@ -225,7 +235,6 @@ package views.global.map
 			addChild(flipAnimation);
 
 			flipAnimation.addChild(king);
-
 			initCloseButton();
 		}
 
@@ -250,6 +259,8 @@ package views.global.map
 		}
 
 		public var isTask:Boolean=true;
+		private var sunPosArr:Array=[new Point(949, 39), new Point(863, 22),
+			new Point(713, 7), new Point(554, 0), new Point(217, 10), new Point(-200, 50)];
 
 		private function flipedHandler(e:Event):void
 		{
@@ -258,17 +269,27 @@ package views.global.map
 			TweenLite.to(flipAnimation, 1.5, {x: 0, scaleX: 1, scaleY: 1, onComplete: function():void
 			{
 				closeButton.visible=enableClose;
-				stage.addEventListener(TouchEvent.TOUCH, touchHandler);
+				addEventListener(TouchEvent.TOUCH, touchHandler);
+				resetSun();
 				TweenLite.to(flipAnimation, 8, {delay: 1, y: 0, ease: Cubic.easeOut});
 			}});
+			var i:int=to == -1 ? 0 : to;
 			if (hasTask || mc.moduleIndex == -1)
 			{
-				var i:int=to == -1 ? 0 : to;
 				trace('开始任务：' + tasks[i]);
 				LionMC.instance.say(tasks[i]);
 				if (!sos.isModuleCompleted(i))
 					showTaskHint(i);
 			}
+
+			if (!lockHolder)
+			{
+				lockHolder=new Sprite();
+				flipAnimation.addChild(lockHolder);
+				lockHolder.touchable=false;
+			}
+			resetLockHolder();
+
 			if (!callback)
 				return;
 			if (callback.length)
@@ -283,6 +304,13 @@ package views.global.map
 		 * */
 		private function showTaskHint(i:int):void
 		{
+			if (!typeHolder)
+			{
+				typeHolder=new Sprite();
+				flipAnimation.addChild(typeHolder);
+				typeHolder.touchable=false;
+			}
+			resetTypeHolder(i);
 		}
 
 		private function clearTaskHint():void
@@ -351,6 +379,8 @@ package views.global.map
 								var moduleIndex:int=item['goto'] ? item['goto'][0] : -1;
 								var mcModuleIndex:int=MC.instance.moduleIndex;
 								var top:Point=centerPoint[moduleIndex];
+								if (moduleIndex != -1)
+									resetSun(mcModuleIndex, moduleIndex)
 								if (moduleIndex != -1 && mcModuleIndex == moduleIndex)
 								{
 									if (!hasTask)
@@ -457,6 +487,10 @@ package views.global.map
 		private var hasTask:Boolean;
 		private var rectHolder:Shape;
 
+		private var typeHolder:Sprite;
+		private var lockHolder:Sprite;
+		private var sun:Image;
+
 		/**
 		 * 地图初始化后再次显示地图
 		 * @param ec EnableClose显示关闭按钮
@@ -477,6 +511,94 @@ package views.global.map
 				flipAnimation.playAnimation();
 			else
 				flipAnimation.animationPlayed();
+			if (typeHolder)
+				resetTypeHolder(to);
+			if (lockHolder)
+				resetLockHolder();
+
+			resetSun();
+		}
+
+		/**
+		 *
+		 * 太阳移动
+		 *
+		 * */
+		private function resetSun(_from:int=-1, _to:int=0):void
+		{
+			if (!sun)
+			{
+				sun=getImage("map-sun");
+				flipAnimation.addChild(sun);
+				sun.x=sunPosArr[0].x;
+				sun.y=sunPosArr[0].y;
+			}
+//			sun.visible=!showFromCenter;
+			TweenLite.killTweensOf(sun);
+			var fp:Point=sunPosArr[Math.max(0, _from)]; //from
+			var tp:Point=sunPosArr[Math.max(0, _to)]; //to
+			if (fp.x == tp.x)
+				return;
+			else if (fp.x > tp.x) //左移
+			{
+				sun.x=fp.x;
+				sun.y=fp.y;
+				TweenLite.to(sun, 2.5, {x: tp.x, y: tp.y});
+			}
+			else //右移
+			{
+				sun.x=fp.x;
+				sun.y=fp.y;
+				var leftp:Point=sunPosArr[sunPosArr.length - 1];
+				TweenLite.to(sun, 1.3, {x: leftp.x, y: leftp.y, onComplete: function():void {
+					sun.x=1024;
+					TweenLite.to(sun, 1.2, {x: tp.x, y: tp.y});
+				}});
+			}
+		}
+
+		/**
+		 * 场景类型
+		 * 自动切换,任务提示用
+		 * */
+		private function resetTypeHolder(index:int=0):void
+		{
+			typeHolder.visible=!showFromCenter;
+			if (index < 0)
+				return;
+			typeHolder.removeChildren();
+			var arr:Array=typeArr[index];
+			for each (var p:Point in arr)
+			{
+				var img:Image=getImage("map-type" + (index + 1).toString());
+				img.pivotX=img.width >> 1;
+				img.pivotY=img.height >> 1;
+				img.x=p.x;
+				img.y=p.y;
+				typeHolder.addChild(img);
+			}
+		}
+
+		/**
+		 * 场景解锁
+		 * 手册进入,跳关用
+		 * */
+		private function resetLockHolder():void
+		{
+			lockHolder.visible=showFromCenter;
+			lockHolder.removeChildren();
+			for (var i:int=0; i < 4; i++)
+			{
+				if (sos.isModuleCompleted(i))
+				{
+					var img:Image=getImage("map-unlock" + (i + 1).toString());
+					img.pivotX=img.width >> 1;
+					img.pivotY=img.height >> 1;
+					img.x=centerPoint[i].x;
+					img.y=centerPoint[i].y;
+					lockHolder.addChild(img);
+				}
+			}
 		}
 	}
 }

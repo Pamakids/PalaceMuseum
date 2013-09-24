@@ -249,7 +249,7 @@ package views.module1
 			if (sp.x == windowXPosArr[windowIndex])
 			{
 				crtWinSelected=true;
-
+				showAchievement(1);
 				okEff=new Sprite();
 				okEff.addChild(getImage("ok-effect"));
 				SPUtils.registSPCenter(okEff, 5);
@@ -317,9 +317,13 @@ package views.module1
 		}
 
 		private var p:Prompt;
+		private var hintCount:int=0;
 
 		private function showHint(_x:Number, _y:Number, _src:String, reg:int, _parent:Sprite):void
 		{
+			hintCount++;
+			if (hintCount == 8)
+				showAchievement(0);
 			if (crtWinSelected)
 				return;
 

@@ -1,63 +1,83 @@
 package views.module4
 {
-	import starling.core.Starling;
-	import starling.display.MovieClip;
-	import starling.events.Event;
+	import flash.geom.Point;
+
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.Prompt;
 	import views.components.base.PalaceScene;
-	import views.module4.scene41.OperaGame;
+	import views.module4.scene41.Audience;
 
 	public class Scene41 extends PalaceScene
 	{
+		private var avatarTypeArr:Array=["chancellor", "maid", "empressdowager"];
+		private var txtArr:Array=["大臣：希望这次的座位别排在柱子后面",
+			"大臣：唉，跪着听戏真不好受",
+			"大臣：幸亏我年纪一把，能有个椅子坐",
+			"宫女：今儿皇上听戏倒是积极",
+			"太后：今演好了，重重有赏！"];
 
-		private var mc:MovieClip;
+		private var posArr:Array=[new Point(229, 554), new Point(353, 624),
+			new Point(810, 294), new Point(833, 447), new Point(731, 490)];
+		private var count:int=0;
 
 		public function Scene41(am:AssetManager=null)
 		{
 			super(am);
+			addChild(getImage("bg41"));
 
-			initGame();
-//			initBird();
-
+			addAvatars();
 		}
 
-		private function initBird():void
+		private function addAvatars():void
 		{
-			mc=new MovieClip(assets.getTextures("ufo"));
-			this.addChild(mc);
-			mc.fps=30;
-			mc.play();
-			mc.x=300;
-			mc.y=384;
+			for (var i:int=0; i < 3; i++)
+			{
+				var chancellor:Audience=new Audience();
+				chancellor.addChild(getImage(avatarTypeArr[0]));
+				chancellor.x=posArr[i].x;
+				chancellor.y=posArr[i].y;
+				chancellor.index=i;
+				chancellor.addEventListener(TouchEvent.TOUCH, onAvatarTouch);
+				addChild(chancellor);
+			}
 
-			Starling.juggler.add(mc);
-			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			var maid:Audience=new Audience(); //宫女
+			maid.addChild(getImage(avatarTypeArr[1]));
+			maid.x=posArr[3].x;
+			maid.y=posArr[3].y;
+			maid.index=3;
+			maid.addEventListener(TouchEvent.TOUCH, onAvatarTouch);
+			addChild(maid);
+
+			var empressdowager:Audience=new Audience(); //太后
+			empressdowager.addChild(getImage(avatarTypeArr[2]));
+			empressdowager.x=posArr[4].x;
+			empressdowager.y=posArr[4].y;
+			empressdowager.index=4;
+			empressdowager.addEventListener(TouchEvent.TOUCH, onAvatarTouch);
+			addChild(empressdowager);
 		}
 
-		private function onEnterFrame(e:Event):void
+		private function onAvatarTouch(e:TouchEvent):void
 		{
-			mc.x-=20;
-//			mc.y+=Math.random() * 2 - 1;
-//			if (mc.y < 100)
-//				mc.y=0;
-//			else if (mc.y > 600)
-//				mc.y=768;
-			if (mc.x < -100)
-				mc.x=1024;
-		}
-
-		private function initGame():void
-		{
-			var game:OperaGame=new OperaGame(assets);
-			addChild(game);
-			game.addEventListener("gameOver", onGameOver);
-		}
-
-		private function onGameOver(e:Event):void
-		{
-			// TODO Auto Generated method stub
-
+			var audience:Audience=e.currentTarget as Audience;
+			if (!audience)
+				return;
+			var tc:Touch=e.getTouch(audience, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			Prompt.showTXT(audience.x + audience.width - 20, audience.y, txtArr[audience.index]);
+			if (!audience.isClicked)
+			{
+				audience.isClicked=true;
+				count++;
+				if (count == 3)
+					sceneOver();
+			}
 		}
 	}
 }
