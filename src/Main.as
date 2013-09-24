@@ -50,7 +50,7 @@ package
 //			testUserCenter();
 //			Map.show();
 //			return;
-			debugInit();
+//			debugInit();
 			Map.show();
 		}
 

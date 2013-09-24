@@ -15,6 +15,7 @@ package views.components.base
 
 	import feathers.core.PopUpManager;
 
+	import models.AchieveVO;
 	import models.FontVo;
 	import models.SOService;
 
@@ -125,8 +126,8 @@ package views.components.base
 			if (SOService.instance.getSO(_achieveIndex.toString() + "_achieve"))
 				return;
 			SOService.instance.setSO(_achieveIndex.toString() + "_achieve", true);
-			var txt:String="xxx";
-//			txt="恭喜您获得成就: " + AchieveVO.achieveList[_achieveIndex][0];
+//			var txt:String="xxx";
+			var txt:String="恭喜您获得成就: " + AchieveVO.achieveList[_achieveIndex][0];
 			if (!tfSP)
 			{
 				tfSP=new Sprite();
@@ -149,8 +150,10 @@ package views.components.base
 				tfSP.y=-80;
 			}
 			TweenLite.to(tfSP, .5, {y: 0});
-			delayIndex=setTimeout(function():void {
-				TweenLite.to(tfSP, .5, {y: -80})}, 2500);
+			delayIndex=setTimeout(function():void
+			{
+				TweenLite.to(tfSP, .5, {y: -80})
+			}, 2500);
 		}
 
 		protected function showCard(_cardName:String):void
@@ -174,7 +177,8 @@ package views.components.base
 			TweenLite.to(halo, 2.5, {scaleX: 1, scaleY: 1, rotation: Math.PI, onComplete: function():void
 			{
 				halo.visible=false;
-				TweenLite.delayedCall(.5, function():void {
+				TweenLite.delayedCall(.5, function():void
+				{
 					PopUpManager.removePopUp(cardShow);
 					cardShow.dispose()
 				});
