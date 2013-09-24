@@ -12,7 +12,7 @@ package views.global.userCenter
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.global.userCenter.achievement.AchieveIcon;
 
 	/**
@@ -200,8 +200,8 @@ package views.global.userCenter
 			textures[screen]=value;
 		}
 
-		private static const NumPages:int = 26;
-		
+		private static const NumPages:int=26;
+
 		public static function getHandbookTextures():Vector.<Texture>
 		{
 			if (!textures["handbook_textures"])

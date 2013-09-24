@@ -7,20 +7,12 @@ package
 
 	import models.Const;
 	import models.FontVo;
-	import models.SOService;
 
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
-	import views.Module1;
-	import views.Module2;
-	import views.Module3;
-	import views.Module4;
 	import views.Module5;
 	import views.components.Prompt;
 	import views.components.base.Container;
@@ -58,7 +50,7 @@ package
 //			Map.show();
 //			return;
 			debugInit();
-//			Map.show();
+			Map.show();
 		}
 
 		private function debugInit():void
