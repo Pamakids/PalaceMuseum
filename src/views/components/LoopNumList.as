@@ -1,7 +1,5 @@
 package views.components
 {
-	import com.greensock.TweenLite;
-	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.getTimer;
@@ -59,11 +57,15 @@ package views.components
 			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
+		private const maxVelocity:int = 120;
+		private const minVelocity:int = -120;
 		private var velocityX:Number;
 		private var velocityY:Number;
+		private var crtPosition:Point;
 		private var prevPosition:Point;
 		
 		private var prevTime:int;
+		private var crtTime:int;
 		private var endTime:int;
 		private var friction:Number = 0.85;
 		
@@ -87,9 +89,8 @@ package views.components
 			{
 				velocityX *= friction;
 				velocityY *= friction;
-				trace(velocityX, velocityX);
 				setPosition();
-				if((velocityX < 0.1 && durition == DIRECTION_HORIZONTAL) || (velocityY < 0.1 && durition == DIRECTION_VERTICAL))
+				if((Math.abs(velocityX) < 0.1 && durition == DIRECTION_HORIZONTAL) || (Math.abs(velocityY) < 0.1 && durition == DIRECTION_VERTICAL))
 				{
 					ifScroll = false;
 					correctionHandler();
@@ -101,7 +102,7 @@ package views.components
 				var num:Number = (durition == DIRECTION_HORIZONTAL)?xLength:yLength;
 				var item:Number = (durition == DIRECTION_HORIZONTAL)?itemWidth:itemHeight;
 				var count:int = num / item;
-				
+				trace(count);
 				num = max - min;
 				var i:int;
 				var label:TextField;
@@ -109,12 +110,12 @@ package views.components
 				{
 					for(i=0;i<count;i++)
 					{
-						label = vecLabel[num-1];
+						label = vecLabel.pop();
 						if(durition == DIRECTION_HORIZONTAL)		//水平方向，修改x坐标
 							label.x = vecLabel[0].x - itemWidth;
 						else
 							label.y = vecLabel[0].y - itemHeight;
-						vecLabel.unshift( vecLabel.pop() );
+						vecLabel.unshift( label );
 					}
 					
 					if(durition == DIRECTION_HORIZONTAL)
@@ -144,6 +145,8 @@ package views.components
 				trace(xLength, yLength);
 			}
 		}
+		
+		
 		private function onTouch(e:TouchEvent):void
 		{
 			var point:Point;
@@ -155,21 +158,24 @@ package views.components
 				{
 					case TouchPhase.BEGAN:
 						ifDrag = true;
-						prevPosition = point;
+						crtPosition = point;
+						crtTime = getTimer();
 						break;
 					case TouchPhase.MOVED:
-						prevTime = getTimer();
-						velocityX = (durition==DIRECTION_HORIZONTAL) ? (point.x - prevPosition.x) : 0;
-						velocityY = (durition==DIRECTION_HORIZONTAL) ? 0 : (point.y - prevPosition.y);
+						prevTime = crtTime;
+						crtTime = getTimer();
+						prevPosition = crtPosition;
+						crtPosition = point;
+						velocityX = (durition==DIRECTION_HORIZONTAL) ? (crtPosition.x - prevPosition.x) : 0;
+						velocityY = (durition==DIRECTION_HORIZONTAL) ? 0 : (crtPosition.y - prevPosition.y);
 						setPosition();
-						prevPosition = point;
 						break;
 					case TouchPhase.ENDED:
-						var time:int = getTimer() - prevTime;
-//						velocityX = (durition==DIRECTION_HORIZONTAL) ? (point.x - prevPosition.x)*1000/time : 0;
-//						velocityY = (durition==DIRECTION_HORIZONTAL) ? 0 : (point.y - prevPosition.y)*1000/time;
-						velocityX = 0;
-						velocityY = 30;
+						var time:int = Math.max( getTimer() - prevTime, 1 );
+						velocityX = (durition==DIRECTION_HORIZONTAL) ? (point.x - prevPosition.x)*1000/time : 0;
+						velocityY = (durition==DIRECTION_HORIZONTAL) ? 0 : (point.y - prevPosition.y)*1000/time;
+						velocityX = Math.min( Math.max(minVelocity, velocityX), maxVelocity );
+						velocityY = Math.min( Math.max(minVelocity, velocityY), maxVelocity );
 						ifDrag = false;
 						ifScroll = true;
 						break;
@@ -185,18 +191,16 @@ package views.components
 			velocityX = velocityY = 0;
 			
 			var label:TextField = vecLabel[0];
-			var i:int;
+			var d:Number;
 			if(durition == DIRECTION_HORIZONTAL)
 			{
-				i = Math.abs(label.x/itemWidth);
-				label = TextField[i+1];
-				velocityX = (label.x > itemWidth/2)?(itemWidth - label.x):label.x;
+				d = Math.abs( label.x % itemWidth );
+				velocityX = (d > itemWidth/2)?(d - itemWidth):d;
 			}
 			else
 			{
-				i = Math.abs(label.y/itemHeight)
-				label = TextField[i+1];
-				velocityY = (label.y > itemHeight/2)?(itemHeight - label.y):label.y;
+				d = Math.abs( label.y % itemHeight );
+				velocityY = (d > itemHeight/2)?( d - itemHeight ):d;
 			}
 			setPosition();
 			yLength = 0;
@@ -218,9 +222,9 @@ package views.components
 		private var quad:Quad;
 		private function initMask():void
 		{
-//			this.clipRect = new Rectangle(0,0,75,69);
+			this.clipRect = new Rectangle(0,0,69,90);
 			//热区
-			quad = new Quad(75,69,0x000000);
+			quad = new Quad(69,90,0x000000);
 			quad.alpha = 0;
 			this.addChild( quad );
 		}
@@ -267,7 +271,9 @@ package views.components
 		public var labelFactory:Function = defaultLabelFactory;
 		private function defaultLabelFactory():TextField
 		{
-			var label:TextField = new TextField(50, 26, "", FontVo.PALACE_FONT, 22, 0x000000);
+			var label:TextField = new TextField(69, 30, "", FontVo.PALACE_FONT, 26, 0xfeffcf);
+			label.hAlign = "left";
+			label.vAlign = "center";
 			return label;
 		}
 		private function creatString(i:int):String

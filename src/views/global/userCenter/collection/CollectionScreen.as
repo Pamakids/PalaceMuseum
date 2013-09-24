@@ -2,12 +2,15 @@ package views.global.userCenter.collection
 {
 	import flash.geom.Rectangle;
 	
+	import controllers.DC;
+	
 	import feathers.controls.List;
 	import feathers.controls.Screen;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.PopUpManager;
 	import feathers.data.ListCollection;
+	import feathers.layout.ILayout;
 	import feathers.layout.TiledRowsLayout;
 	
 	import starling.display.Image;
@@ -33,10 +36,11 @@ package views.global.userCenter.collection
 		{
 			initPages();
 			initDatas();
-			initLayout();
 			initList();
-//			TweenLite.delayedCall(1, initScreenTextures);
 		}
+		
+		private var crtPage:int = 0;
+		private var maxNum:int = 9;
 		
 		private function initPages():void
 		{
@@ -47,45 +51,64 @@ package views.global.userCenter.collection
 			image.x = this.viewWidth/2;
 		}
 		
-		private var layout:TiledRowsLayout;
-		private function initLayout():void
+		private var listLeft:List;
+		private var listRight:List;
+		private function listFactory():List
 		{
-			layout = new TiledRowsLayout();
-			layout.paddingTop = 90;
-			layout.paddingLeft = 10;
-			layout.horizontalGap = 25;
-			layout.verticalGap = 55;
-			layout.useVirtualLayout = true;
-			layout.verticalAlign = TiledRowsLayout.VERTICAL_ALIGN_TOP;
-		}
-		
-		private var list:List;
-		private function initList():void
-		{
-			list = new List();
-			list.dataProvider = new ListCollection( datas );
+			var list:List = new List();
 			list.itemRendererFactory = function():IListItemRenderer
 			{
 				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
 				renderer.iconSourceField = "thumbnail";
 				renderer.name = "id";
+				renderer.width = 147;
+				renderer.height = 155;
 				renderer.scaleX = renderer.scaleY = 0.8;
 				return renderer;
 			};
-			list.layout = layout;
-			this.addChild( list );
-			list.width = width;
-			list.height = height;
-			list.addEventListener(Event.CHANGE, onChange);
+			list.layout = layoutFactory();
+			return list;
+		}
+		private function layoutFactory():ILayout
+		{
+			var layout:TiledRowsLayout = new TiledRowsLayout();
+			layout.paddingTop = 90;
+			layout.paddingLeft = 10;
+			layout.horizontalGap = 15;
+			layout.verticalGap = 55;
+			layout.useVirtualLayout = true;
+			layout.verticalAlign = TiledRowsLayout.VERTICAL_ALIGN_TOP;
+			return layout;
+		}
+		private function initList():void
+		{
+			listLeft = listFactory();
+			listLeft.dataProvider = new ListCollection( datas[0] );
+			this.addChild( listLeft );
+			listLeft.width = width / 2;
+			listLeft.height = height;
+			listLeft.addEventListener(Event.CHANGE, onChange);
+			
+			listRight = listFactory();
+			this.addChild(listRight);
+			listRight.width = width / 2;
+			listRight.height = height;
+			listRight.x = width / 2;
+			if(datas.length > 1)
+			{
+				listRight.dataProvider = new ListCollection( datas[1] );
+				listRight.addEventListener(Event.CHANGE, onChange);
+			}
 		}
 		
 		private var cache:Texture;
-		private function onChange():void
+		private function onChange(e:Event):void
 		{
-			var data:Object = datas[list.selectedIndex];
+			var list:List = e.target as List;
+			var data:Object = list.dataProvider.data[list.selectedIndex];
 			if(data.finished == 0)		//未收集到
 				return;
-			cache = UserCenterManager.getTexture("collection_card_big");
+			cache = UserCenterManager.getTexture(data.id + "_big");
 			showImage();
 		}
 		
@@ -93,20 +116,19 @@ package views.global.userCenter.collection
 		private function showImage():void
 		{
 			(!image)?image = new Image( cache ):image.texture = cache;
-			image.readjustSize();
 			image.x = 1024 - image.width >> 1;
 			image.y = 768 - image.height >> 1;
-			if( !this.hasEventListener(TouchEvent.TOUCH) )
-				this.addEventListener(TouchEvent.TOUCH, hideImage);
 			PopUpManager.addPopUp( image, true, false);
+			if( !image.hasEventListener(TouchEvent.TOUCH) )
+				image.addEventListener(TouchEvent.TOUCH, hideImage);
 		}
 		
 		private function hideImage(e:TouchEvent):void
 		{
-			var touch:Touch = e.getTouch(stage);
-			if(touch)
+			if(e.currentTarget == image)
 			{
-				if(touch.phase == TouchPhase.ENDED && PopUpManager.isPopUp(image) )
+				var touch:Touch = e.getTouch(stage);
+				if(touch && touch.phase == TouchPhase.ENDED && PopUpManager.isPopUp(image))
 					PopUpManager.removePopUp( image );
 			}
 		}
@@ -117,67 +139,45 @@ package views.global.userCenter.collection
 		private var datas:Array;
 		private function initDatas():void
 		{
-			/*	数据格式
-			[
-			[成就id， 是否开启(0 未达成，1达成)],
-			[成就id， 是否开启],
-			[成就id， 是否开启],
-			[成就id， 是否开启],
-			[成就id， 是否达成],
-			...
-			]
-			*/
 			datas = [];
-			//			var arr:Array = UserCenterManager.getDatas(UserCenter.ACHIEVEMENT);
-			//test
-			var arr:Array = [
-				[0, 0],
-				[1, 1],
-				[2, 1],
-				[3, 1],
-				[4, 1],
-				[5, 0],
-				[6, 1],
-				[7, 0],
-				[8, 0],
-				[9, 1],
-				[10, 1],
-				[11, 1],
-				[12, 0],
-				[13, 0],
-				[14, 0]
-			];
+			var arr:Array = DC.instance.getCollectionData();
+			const max:int = arr.length;
+			var tempdatas:Array = [];
 			var obj:Object;
-			for(var i:int = arr.length-1;i>=0;i--)
+			for(var i:int = 0;i<max;i++)
 			{
-				obj = {};
-				obj.id = arr[i][0];
-				obj.finished = arr[i][1];
+				obj = { id: arr[i][0], finished: arr[i][1] };
 				if(obj.finished == 0)
-					//					obj.thumbnail = UserCenterManager.getTexture("achievement_card_"+obj.id+"_unfinish");
 					obj.thumbnail = UserCenterManager.getTexture("collection_card_unfinish");
 				else
-					//					obj.thumbnail = UserCenterManager.getTexture("achievement_card_"+obj.id+"_finish");
-					obj.thumbnail = UserCenterManager.getTexture("collection_card_finish");
-				datas.unshift( obj );
+					obj.thumbnail = UserCenterManager.getTexture(obj.id);
+				tempdatas.push( obj );
+			}
+			
+			//分页处理，每页显示9个数据
+			const pageNum:int = Math.ceil( tempdatas.length / maxNum );
+			for(i = 0;i<pageNum;i++)
+			{
+				datas.push( tempdatas.splice(0, maxNum) );
 			}
 		}
 		
 		override public function dispose():void
 		{
 			if(cache)
-				cache.dispose();
-			datas = null;
+				cache = null;
 			if(image)
-				image.dispose();
-			image = null;
-			if(layout)
-				layout = null;
-			if(list)
-				list.removeFromParent(true)
-			list = null;
-//			if(screenTexture)
-//				screenTexture = null;
+				image.removeFromParent(true);
+			if(listLeft)
+			{
+				listLeft.removeEventListener(Event.CHANGE, onChange);
+				listLeft.removeFromParent(true);
+			}
+			if(listRight)
+			{
+				listRight.removeEventListener(Event.CHANGE, onChange);
+				listRight.removeFromParent(true);
+			}
 			super.dispose();
 		}
 		
