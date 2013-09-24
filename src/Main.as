@@ -2,28 +2,21 @@ package
 {
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
-
+	
 	import controllers.MC;
-
+	
 	import models.Const;
 	import models.FontVo;
-	import models.SOService;
-
+	
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-
+	
 	import views.Module1;
-	import views.Module2;
-	import views.Module3;
-	import views.Module4;
+	import views.components.LoopNumList;
 	import views.components.Prompt;
 	import views.components.base.Container;
-	import views.global.map.Map;
 	import views.global.userCenter.UserCenterManager;
 
 	public class Main extends Container
@@ -52,14 +45,23 @@ package
 
 		override protected function init():void
 		{
+//			testLoopNumList();
 //			testFont();
 			testUserCenter();
 //			Map.show();
-			return;
 //			debugInit();
 //			Map.show();
 		}
-
+		
+		private function testLoopNumList():void
+		{
+			var loop:LoopNumList = new LoopNumList(1000, 1060);
+			loop.resetViewSize(69, 300);
+			loop.clipRect = null;
+			loop.y = 300;
+			this.addChild( loop );
+		}
+		
 		private function debugInit():void
 		{
 			if (Capabilities.isDebugger)

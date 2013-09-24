@@ -27,13 +27,25 @@ package views.components
 			initLists();
 		}
 		
-		private var loopnum:LoopNumList;
+		private var loopnumY:LoopNumList;
+		private var loopnumM:LoopNumList;
+		private var loopnumD:LoopNumList;
 		private function initLists():void
 		{
-			loopnum = new LoopNumList(0, 50);
-			loopnum.resetViewSize(72,96);
-			this.addChild( loopnum );
-			loopnum.x = 62;
+			loopnumY = new LoopNumList(1960, 2014);
+			this.addChild( loopnumY );
+			loopnumY.x = 68;
+			loopnumY.y = 2;
+			
+			loopnumM = new LoopNumList(1, 12);
+			this.addChild( loopnumM );
+			loopnumM.x = 184;
+			loopnumM.y = 2;
+			
+			loopnumD = new LoopNumList(1, 30);
+			this.addChild( loopnumD );
+			loopnumD.x = 276;
+			loopnumD.y = 2;
 		}		
 		
 		private function initImages():void
@@ -57,14 +69,6 @@ package views.components
 			this.addChild( image );
 			image.x = 266;
 			image.touchable = false;
-		}
-		
-		private function labelFactory():Label
-		{
-			var label:Label = new Label();
-			label.textRendererProperties.textFormat = new TextFormat( FontVo.PALACE_FONT, 26, 0x5e6311);
-			label.textRendererProperties.embedFonts = true;
-			return label;
 		}
 		
 		/**
