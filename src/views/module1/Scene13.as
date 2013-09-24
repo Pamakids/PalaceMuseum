@@ -34,6 +34,8 @@ package views.module1
 		public function set gamePlayed(value:Boolean):void
 		{
 			_gamePlayed=value;
+			if (_clockMatched)
+				showAchievement(5);
 			if (_gamePlayed)
 				sceneOver();
 		}
@@ -49,6 +51,8 @@ package views.module1
 		public function set clockMatched(value:Boolean):void
 		{
 			_clockMatched=value;
+			if (_gamePlayed)
+				showAchievement(5);
 			if (_clockMatched)
 				sceneOver();
 		}
@@ -142,12 +146,12 @@ package views.module1
 		{
 			if (!clockMatched)
 			{
+				showAchievement(3);
 				TweenLite.to(clock, .5, {scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete: function():void
 				{
 					clockMatched=true;
 					PopUpManager.removePopUp(clock);
-//					addCard("card-clock");
-					showCard("card-clock");
+					showCard("clock");
 				}});
 			}
 			else
@@ -211,12 +215,12 @@ package views.module1
 		{
 			if (!gamePlayed)
 			{
+				showAchievement(4);
 				TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
 				{
 					gamePlayed=true;
 					PopUpManager.removePopUp(gameHolder);
-//					addCard("card-plaque")
-					showCard("card-plaque");
+					showCard("newDay");
 				}});
 			}
 			else
@@ -226,40 +230,6 @@ package views.module1
 					PopUpManager.removePopUp(gameHolder);
 				}});
 			}
-		}
-
-		private function addCard(src:String):void
-		{
-			if (cardShow)
-				return;
-			var halo:Sprite=new Sprite();
-			halo.addChild(getImage("halo"));
-			halo.pivotX=halo.width >> 1;
-			halo.pivotY=halo.height >> 1;
-			addChild(halo);
-			halo.x=512;
-			halo.y=768 / 2;
-			cardShow=true;
-			setChildIndex(halo, numChildren - 1);
-			halo.visible=true;
-			halo.scaleX=halo.scaleY=.5;
-			halo.rotation=0;
-			TweenLite.to(halo, 2.5, {scaleX: 1, scaleY: 1, rotation: Math.PI, onComplete: function():void
-			{
-				halo.visible=false;
-				cardShow=false;
-				trace('haloed');
-			}});
-
-			var card:CollectionCard=new CollectionCard();
-			card.addChild(getImage(src));
-			card.pivotX=card.width >> 1;
-			card.pivotY=card.height >> 1;
-			card.x=512;
-			card.y=768 / 2;
-			card.show();
-			halo.addChild(card);
-			trace('added card');
 		}
 	}
 }

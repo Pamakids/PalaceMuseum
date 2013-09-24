@@ -65,7 +65,15 @@ package views.module3.scene31
 
 		private function closeGame():void
 		{
-			dispatchEvent(new Event("gameOver"));
+			if (isFinished)
+			{
+				if (gamelevel == 0)
+					dispatchEvent(new Event("easyEnd"));
+				else
+					dispatchEvent(new Event("hardEnd"));
+			}
+			else
+				dispatchEvent(new Event("gameOver"));
 		}
 
 		private function restartGame(e:Event=null):void
@@ -247,6 +255,7 @@ package views.module3.scene31
 		private var lbl:TextField;
 
 		private var analyst:BitmapAnalyst;
+		private var isFinished:Boolean;
 
 		public function initData(lvl:int):void
 		{
@@ -430,6 +439,7 @@ package views.module3.scene31
 
 		private function initResult(_count:int):void
 		{
+			isFinished=true;
 			addChild(endSP);
 			setChildIndex(closeBtn, numChildren - 1);
 			endSP.x=148;
