@@ -1,0 +1,66 @@
+package views.module5
+{
+	import flash.events.AccelerometerEvent;
+	import flash.sensors.Accelerometer;
+
+	import nape.geom.Vec2;
+
+	import starling.display.Image;
+	import starling.display.Sprite;
+	import starling.events.Event;
+	import starling.utils.AssetManager;
+
+	import views.components.base.PalaceScene;
+
+	public class Scene51 extends PalaceScene
+	{
+		private var dx:Number=0;
+		private var bgHolder:Sprite;
+		private var bgW:Number;
+		private var leftHit:Boolean;
+		private var rightHit:Boolean;
+
+		public function Scene51(am:AssetManager=null)
+		{
+			super(am);
+
+			bgHolder=new Sprite();
+			var bg1:Image=getImage("bg51l");
+			var bg2:Image=getImage("bg51r");
+			bg2.x=bg1.width;
+			bgHolder.addChild(bg1);
+			bgHolder.addChild(bg2);
+			bgW=bgHolder.width;
+			bgHolder.x=(1024 - bgW) / 2;
+			addChild(bgHolder);
+
+			var acc:Accelerometer;
+			acc=new Accelerometer();
+			acc.addEventListener(AccelerometerEvent.UPDATE, onUpdate);
+
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+
+		private function onEnterFrame(e:Event):void
+		{
+			bgHolder.x-=dx;
+			if (bgHolder.x > 0)
+			{
+				leftHit=true;
+				bgHolder.x=0;
+			}
+			else if (bgHolder.x < 1024 - bgW)
+			{
+				bgHolder.x=1024 - bgW;
+				rightHit=true;
+			}
+			if (leftHit && rightHit)
+				sceneOver();
+		}
+
+		protected function onUpdate(event:AccelerometerEvent):void
+		{
+			dx=event.accelerationX;
+		}
+	}
+}

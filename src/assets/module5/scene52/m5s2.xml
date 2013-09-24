@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:bea8ecb0fc59959dd73333de4c97754d$ -->
+<TextureAtlas imagePath="m5s2.png">
+    <SubTexture name="memorial-hand" x="2" y="1526" width="108" height="211"/>
+    <SubTexture name="memorial1" x="2" y="1145" width="183" height="379"/>
+    <SubTexture name="memorial2" x="2" y="764" width="183" height="379"/>
+    <SubTexture name="memorial3" x="2" y="383" width="183" height="379"/>
+    <SubTexture name="memorial4" x="2" y="2" width="183" height="379"/>
+</TextureAtlas>

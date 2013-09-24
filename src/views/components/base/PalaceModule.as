@@ -30,7 +30,7 @@ package views.components.base
 		public var crtScene:PalaceScene;
 		protected var tfHolder:Sprite;
 
-		[Embed(source="/assets/module1/loading.png")]
+		[Embed(source="/assets/common/loading.png")]
 		protected static var loading:Class
 
 		public function PalaceModule(am:AssetManager=null, width:Number=0, height:Number=0)
@@ -136,6 +136,9 @@ package views.components.base
 			}
 			else
 			{
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+				removeEventListener("gotoNext", nextScene);
+				load.removeFromParent(true);
 				MC.instance.nextModule();
 			}
 		}

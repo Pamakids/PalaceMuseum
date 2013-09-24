@@ -6,12 +6,13 @@ package views
 
 	import views.components.base.PalaceModule;
 	import views.module4.Scene41;
+	import views.module4.Scene42;
 
 	public class Module4 extends PalaceModule
 	{
 		public function Module4(am:AssetManager=null, width:Number=0, height:Number=0)
 		{
-			sceneArr=[Scene41];
+			sceneArr=[Scene41, Scene42];
 
 			Q1="皇帝爱学习吗？"
 			A1="清朝皇帝喜爱学习－儒家经典、汉语诗文、满文、蒙文和骑马射箭，样样要精通。"
