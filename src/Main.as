@@ -58,7 +58,7 @@ package
 //			Map.show();
 //			return;
 			debugInit();
-//			Map.show();
+			Map.show();
 		}
 
 		private function debugInit():void

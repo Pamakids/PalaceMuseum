@@ -23,6 +23,7 @@ package views.global.map
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
+	import starling.utils.formatString;
 
 	import views.components.ElasticButton;
 	import views.components.FlipAnimation;
@@ -258,6 +259,8 @@ package views.global.map
 		}
 
 		public var isTask:Boolean=true;
+		private var sunPosArr:Array=[new Point(949, 39), new Point(863, 22),
+			new Point(713, 7), new Point(554, 0), new Point(217, 10), new Point(-200, 50)];
 
 		private function flipedHandler(e:Event):void
 		{
@@ -267,6 +270,7 @@ package views.global.map
 			{
 				closeButton.visible=enableClose;
 				addEventListener(TouchEvent.TOUCH, touchHandler);
+				resetSun();
 				TweenLite.to(flipAnimation, 8, {delay: 1, y: 0, ease: Cubic.easeOut});
 			}});
 			var i:int=to == -1 ? 0 : to;
@@ -375,6 +379,8 @@ package views.global.map
 								var moduleIndex:int=item['goto'] ? item['goto'][0] : -1;
 								var mcModuleIndex:int=MC.instance.moduleIndex;
 								var top:Point=centerPoint[moduleIndex];
+								if (moduleIndex != -1)
+									resetSun(mcModuleIndex, moduleIndex)
 								if (moduleIndex != -1 && mcModuleIndex == moduleIndex)
 								{
 									if (!hasTask)
@@ -483,6 +489,7 @@ package views.global.map
 
 		private var typeHolder:Sprite;
 		private var lockHolder:Sprite;
+		private var sun:Image;
 
 		/**
 		 * 地图初始化后再次显示地图
@@ -508,6 +515,46 @@ package views.global.map
 				resetTypeHolder(to);
 			if (lockHolder)
 				resetLockHolder();
+
+			resetSun();
+		}
+
+		/**
+		 *
+		 * 太阳移动
+		 *
+		 * */
+		private function resetSun(_from:int=-1, _to:int=0):void
+		{
+			if (!sun)
+			{
+				sun=getImage("map-sun");
+				flipAnimation.addChild(sun);
+				sun.x=sunPosArr[0].x;
+				sun.y=sunPosArr[0].y;
+			}
+//			sun.visible=!showFromCenter;
+			TweenLite.killTweensOf(sun);
+			var fp:Point=sunPosArr[Math.max(0, _from)]; //from
+			var tp:Point=sunPosArr[Math.max(0, _to)]; //to
+			if (fp.x == tp.x)
+				return;
+			else if (fp.x > tp.x) //左移
+			{
+				sun.x=fp.x;
+				sun.y=fp.y;
+				TweenLite.to(sun, 2.5, {x: tp.x, y: tp.y});
+			}
+			else //右移
+			{
+				sun.x=fp.x;
+				sun.y=fp.y;
+				var leftp:Point=sunPosArr[sunPosArr.length - 1];
+				TweenLite.to(sun, 1.3, {x: leftp.x, y: leftp.y, onComplete: function():void {
+					sun.x=1024;
+					TweenLite.to(sun, 1.2, {x: tp.x, y: tp.y});
+				}});
+			}
 		}
 
 		/**
@@ -530,7 +577,6 @@ package views.global.map
 				img.y=p.y;
 				typeHolder.addChild(img);
 			}
-
 		}
 
 		/**
