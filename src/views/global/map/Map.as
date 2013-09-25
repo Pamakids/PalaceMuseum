@@ -88,7 +88,8 @@ package views.global.map
 //			points=[new Point(365, 495), new Point(365, 535)];
 			super(new AssetManager(), Const.WIDTH, Const.HEIGHT);
 			var f:File=File.applicationDirectory.resolvePath('assets/global/map');
-			assetManager.enqueue('assets/common/button_close.png', f, "json/map.json", "assets/global/userCenter/page_left.png");
+			var f2:File=File.applicationDirectory.resolvePath("assets/common");
+			assetManager.enqueue(f2, f, "json/map.json", "assets/global/userCenter/page_left.png");
 			assetManager.loadQueue(function(ratio:Number):void
 			{
 				trace(ratio);

@@ -11,6 +11,7 @@ package views.module5
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceScene;
+	import views.global.TopBar;
 
 	public class Scene52 extends PalaceScene
 	{
@@ -75,12 +76,14 @@ package views.module5
 
 		private function initDraw():void
 		{
+			TopBar.hide();
 			drawScene=new palace_paper(crtIndex, removeMemorial);
 			MC.instance.stage.addChild(drawScene);
 		}
 
 		private function removeMemorial():void
 		{
+			TopBar.show();
 			TweenLite.to(hand, .5, {y: handPosY, onComplete: function():void {
 
 				TweenLite.to(hand, .5, {y: handOutPosY});

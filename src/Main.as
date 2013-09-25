@@ -1,5 +1,6 @@
 package
 {
+	import flash.filesystem.File;
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
 
@@ -13,6 +14,8 @@ package
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
+	import views.Module3;
+	import views.Module4;
 	import views.Module5;
 	import views.components.LionMC;
 	import views.components.Prompt;
@@ -23,7 +26,7 @@ package
 	public class Main extends Container
 	{
 		private var testingModule:Sprite;
-		private var testingModuleClass:Class=Module5;
+		private var testingModuleClass:Class=Module4;
 
 		public function Main()
 		{
@@ -36,7 +39,8 @@ package
 			addChild(label);
 
 			var am:AssetManager=new AssetManager();
-			am.enqueue("assets/common/hint-bg.png", "assets/common/hint-bg-large.png", "assets/common/hint-bg-mid.png", "assets/common/hint-bg-k.png", "assets/common/hint-bg-k-large.png", "assets/common/hint-bg-k-mid.png");
+			var f:File=File.applicationDirectory.resolvePath("assets/common");
+			am.enqueue(f);
 			am.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)
@@ -50,8 +54,8 @@ package
 //			testUserCenter();
 //			Map.show();
 //			return;
-//			debugInit();
-			Map.show();
+			debugInit();
+//			Map.show();
 		}
 
 		private function debugInit():void

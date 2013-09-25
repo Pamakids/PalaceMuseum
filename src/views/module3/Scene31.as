@@ -9,12 +9,15 @@ package views.module3
 
 	import feathers.core.PopUpManager;
 
+	import models.FontVo;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
@@ -287,7 +290,7 @@ package views.module3
 				bigBook.addChild(img);
 				img.x=219;
 				img.y=138;
-				img.addEventListener(TouchEvent.TOUCH, onBigBookTouch);
+//				img.addEventListener(TouchEvent.TOUCH, onBigBookTouch);
 
 				bigBook.pivotX=512;
 				bigBook.pivotY=384;
@@ -298,11 +301,27 @@ package views.module3
 				close.x=840;
 				close.y=55;
 				close.addEventListener(ElasticButton.CLICK, onCloseBook);
+
+				var hint:Sprite=new Sprite();
+				bigBook.addChild(hint);
+				hint.x=568;
+				hint.y=480;
+				var bgImage:Image=getImage("hint-bg-k-large");
+				hint.addChild(bgImage);
+				var t:TextField=new TextField(bgImage.width - 30, bgImage.height - 10, bookTxt, FontVo.PALACE_FONT, 24, 0x561a1a, true);
+				t.x=bgImage.x + 15;
+				t.y=bgImage.y;
+				t.touchable=false;
+				t.hAlign="center";
+				hint.addChild(t);
+				hint.pivotY=bgImage.height;
 			}
 			bigBook.scaleX=.1;
 			bigBook.scaleY=.1;
 			PopUpManager.addPopUp(bigBook, true, false)
 			TweenLite.to(bigBook, 1, {scaleX: 1, scaleY: 1});
+
+
 		}
 
 		private function onBigBookTouch(e:TouchEvent):void
@@ -317,14 +336,14 @@ package views.module3
 
 		private function onCloseBook(e:Event):void
 		{
-			checkOver();
+			sceneOver();
 			PopUpManager.removePopUp(bigBook);
 		}
 
 		private function checkOver():void
 		{
-			if (gamePlayed && bookFinded && finded)
-				sceneOver();
+//			if (gamePlayed && bookFinded && finded)
+//				sceneOver();
 		}
 
 		private function initGame():void
