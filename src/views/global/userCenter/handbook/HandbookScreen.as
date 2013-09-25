@@ -27,7 +27,6 @@ package views.global.userCenter.handbook
 			initAnimation();
 		}
 
-
 		override public function dispose():void
 		{
 			if (animation)
@@ -76,6 +75,8 @@ package views.global.userCenter.handbook
 
 		public function turnToPage(index:int):void
 		{
+			if(index == 0)
+				return;
 			this.animation.buttonCallBackMode=true;
 			this.animation.addEventListener(SoftPageAnimation.ANIMATION_COMPLETED, onComplete);
 			this.animation.turnToPage(index);
