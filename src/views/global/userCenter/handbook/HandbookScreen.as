@@ -31,8 +31,8 @@ package views.global.userCenter.handbook
 		{
 			if (animation)
 			{
-				animation.removeEventListener(SoftPageAnimation.PAGE_UP, turnPage);
-				animation.removeEventListener(SoftPageAnimation.PAGE_DOWN, turnPage);
+//				animation.removeEventListener(SoftPageAnimation.PAGE_UP, turnPage);
+//				animation.removeEventListener(SoftPageAnimation.PAGE_DOWN, turnPage);
 				animation.dispose();
 			}
 			super.dispose();
@@ -46,14 +46,14 @@ package views.global.userCenter.handbook
 			animation=new SoftPageAnimation(width, height, vecTextures, 0, false, 0.5);
 			this.addChild(animation);
 
-			animation.addEventListener(SoftPageAnimation.PAGE_UP, turnPage);
-			animation.addEventListener(SoftPageAnimation.PAGE_DOWN, turnPage);
+//			animation.addEventListener(SoftPageAnimation.PAGE_UP, turnPage);
+//			animation.addEventListener(SoftPageAnimation.PAGE_DOWN, turnPage);
 		}
 
 
-		private function turnPage(e:Event):void
-		{
-		}
+//		private function turnPage(e:Event):void
+//		{
+//		}
 
 		private const vecTextures:Vector.<Texture>=UserCenterManager.getHandbookTextures();
 
