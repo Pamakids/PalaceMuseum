@@ -102,7 +102,6 @@ package views.components
 				var num:Number = (durition == DIRECTION_HORIZONTAL)?xLength:yLength;
 				var item:Number = (durition == DIRECTION_HORIZONTAL)?itemWidth:itemHeight;
 				var count:int = num / item;
-				trace(count);
 				num = max - min;
 				var i:int;
 				var label:TextField;
@@ -141,8 +140,6 @@ package views.components
 					else
 						yLength += count * item;
 				}
-				
-				trace(xLength, yLength);
 			}
 		}
 		
@@ -286,7 +283,6 @@ package views.components
 		
 		public function setMinToMax(min:int, max:int):void
 		{
-			
 		}
 		
 		private var max:int;

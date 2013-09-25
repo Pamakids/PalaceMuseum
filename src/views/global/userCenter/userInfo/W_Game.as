@@ -67,7 +67,6 @@ package views.global.userCenter.userInfo
 			nameLabel.touchable = false;
 			nameLabel.vAlign = "center";
 			nameLabel.hAlign = "center";
-//			nameLabel.border = true;
 			
 			resultLabel = new TextField(230, 100, getResultContent(), FontVo.PALACE_FONT, 20, 0x932720);
 			this.addChild( resultLabel );
@@ -76,7 +75,6 @@ package views.global.userCenter.userInfo
 			resultLabel.touchable = false;
 			resultLabel.vAlign = "top";
 			resultLabel.hAlign = "left";
-//			resultLabel.border = true;
 		}
 		
 		private function initButtons():void
@@ -143,7 +141,6 @@ package views.global.userCenter.userInfo
 		
 		override public function dispose():void
 		{
-			_gameData = null;
 			if(nameLabel)
 			{
 				nameLabel.removeFromParent(true);
@@ -177,15 +174,13 @@ package views.global.userCenter.userInfo
 			{
 				for each(var image:Image in stars)
 				{
-					if(image)
-					{
-						this.removeChild( image );
-						image.dispose();
-						image = null;
-					}
+					image.removeFromParent(true);
 				}
 				stars = null;
 			}
+			_gameData = null;
+			this.startGameHandler = null;
+			this.closeWinHandler = null;
 			super.dispose();
 		}
 		

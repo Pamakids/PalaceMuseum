@@ -43,6 +43,7 @@ package views.global.userCenter.userInfo
 		private function initDateChangeDevice():void
 		{
 			dateView = new DateChangeDevice();
+			dateView.setMinToMax(new Date(1960, 1, 1), new Date(2013, 12, 31));
 			this.addChild( dateView );
 			dateView.x = 65;
 			dateView.y = 169;
@@ -77,12 +78,15 @@ package views.global.userCenter.userInfo
 			button_choose.y = 310;
 		}
 		
+		public var changeHandler:Function;
 		private function changeCrtUser():void
 		{
 		}
 		
+		public var deleteHandler:Function;
 		private function deleteUser():void
 		{
+			deleteHandler(this.userdata);
 		}
 		
 		private var userview:ItemForUserList;
@@ -106,6 +110,29 @@ package views.global.userCenter.userInfo
 		
 		override public function dispose():void
 		{
+			if(userview)
+				userview.removeFromParent(true);
+			if(dateView)
+				dateView.removeFromParent(true);
+			if(button_close)
+			{
+				button_close.removeEventListener(Event.TRIGGERED, closeWindow);
+				button_close.removeFromParent(true);
+			}
+			if(button_delete)
+			{
+				button_delete.removeEventListener(Event.TRIGGERED, deleteUser);
+				button_delete.removeFromParent(true);
+			}
+			if(button_choose)
+			{
+				button_choose.removeEventListener(Event.TRIGGERED, changeCrtUser);
+				button_choose.removeFromParent(true);
+			}
+			this.changeHandler = null;
+			this.deleteHandler = null;
+			this.closeWinHandler = null;
+			super.dispose();
 		}
 		
 		/**

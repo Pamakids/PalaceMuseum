@@ -3,17 +3,15 @@ package views.global.userCenter
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-
+	
 	import models.SOService;
-
+	
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
-	import views.global.userCenter.achievement.AchieveIcon;
 
 	/**
 	 * 用户中心管理类
@@ -44,6 +42,8 @@ package views.global.userCenter
 			}
 			else
 			{
+				if(_userCenter && _userCenter.parent)
+					return;
 				if (!_userCenter)
 					initUserCenter();
 				_userCenterContainer.addChild(_userCenter);

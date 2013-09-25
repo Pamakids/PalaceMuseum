@@ -27,13 +27,12 @@ package views.global.userCenter.handbook
 			initAnimation();
 		}
 
-
 		override public function dispose():void
 		{
 			if (animation)
 			{
-				animation.removeEventListener(SoftPageAnimation.PAGE_UP, turnPage);
-				animation.removeEventListener(SoftPageAnimation.PAGE_DOWN, turnPage);
+//				animation.removeEventListener(SoftPageAnimation.PAGE_UP, turnPage);
+//				animation.removeEventListener(SoftPageAnimation.PAGE_DOWN, turnPage);
 				animation.dispose();
 			}
 			super.dispose();
@@ -47,14 +46,14 @@ package views.global.userCenter.handbook
 			animation=new SoftPageAnimation(width, height, vecTextures, 0, false, 0.5);
 			this.addChild(animation);
 
-			animation.addEventListener(SoftPageAnimation.PAGE_UP, turnPage);
-			animation.addEventListener(SoftPageAnimation.PAGE_DOWN, turnPage);
+//			animation.addEventListener(SoftPageAnimation.PAGE_UP, turnPage);
+//			animation.addEventListener(SoftPageAnimation.PAGE_DOWN, turnPage);
 		}
 
 
-		private function turnPage(e:Event):void
-		{
-		}
+//		private function turnPage(e:Event):void
+//		{
+//		}
 
 		private const vecTextures:Vector.<Texture>=UserCenterManager.getHandbookTextures();
 
@@ -76,6 +75,8 @@ package views.global.userCenter.handbook
 
 		public function turnToPage(index:int):void
 		{
+			if(index == 0)
+				return;
 			this.animation.buttonCallBackMode=true;
 			this.animation.addEventListener(SoftPageAnimation.ANIMATION_COMPLETED, onComplete);
 			this.animation.turnToPage(index);
@@ -87,6 +88,5 @@ package views.global.userCenter.handbook
 			this.animation.buttonCallBackMode=false;
 			this.animation.removeEventListener(Event.COMPLETE, onComplete);
 		}
-
 	}
 }

@@ -92,6 +92,9 @@ package views.global.userCenter.achievement
 				_name.removeFromParent(true);
 			if(image)
 				image.removeFromParent(true);
+			if(_content)
+				_content.removeFromParent(true);
+			super.dispose();
 		}
 		
 		
