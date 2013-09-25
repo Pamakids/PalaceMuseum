@@ -1,18 +1,20 @@
 package
 {
+	import flash.events.MouseEvent;
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
-
+	
 	import controllers.MC;
-
+	
 	import models.Const;
 	import models.FontVo;
-
+	
+	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-
+	
 	import views.Module5;
 	import views.components.LionMC;
 	import views.components.Prompt;
@@ -47,11 +49,11 @@ package
 		override protected function init():void
 		{
 //			testFont();
-//			testUserCenter();
+			testUserCenter();
 //			Map.show();
 //			return;
 //			debugInit();
-			Map.show();
+//			Map.show();
 		}
 
 		private function debugInit():void
@@ -134,6 +136,21 @@ package
 		{
 			UserCenterManager.userCenterContainer=this;
 			UserCenterManager.showUserCenter();
+//			Starling.current.nativeStage.addEventListener(MouseEvent.CLICK, onClick);
+		}
+		private var i:int = 0;
+		protected function onClick(event:MouseEvent):void
+		{
+			UserCenterManager.showUserCenter();
+//			if(i == 0)
+//			{
+//				UserCenterManager.showUserCenter();
+//				i = 1;
+//			}else
+//			{
+//				UserCenterManager.closeUserCenter();
+//				i = 0
+//			}
 		}
 	}
 }

@@ -64,10 +64,21 @@ package views.global.userCenter.collection
 				renderer.width = 147;
 				renderer.height = 155;
 				renderer.scaleX = renderer.scaleY = 0.8;
+				renderer.addEventListener(Event.TRIGGERED, onTriggered);
 				return renderer;
 			};
 			list.layout = layoutFactory();
 			return list;
+		}
+		
+		private function onTriggered(e:Event):void
+		{
+			trace(e.currentTarget);
+			var data:Object = (e.currentTarget as DefaultListItemRenderer).data;
+			if(data.finished == 0)		//未收集到
+				return;
+			cache = UserCenterManager.getTexture(data.id + "_big");
+			showImage();
 		}
 		private function layoutFactory():ILayout
 		{
@@ -87,7 +98,6 @@ package views.global.userCenter.collection
 			this.addChild( listLeft );
 			listLeft.width = width / 2;
 			listLeft.height = height;
-			listLeft.addEventListener(Event.CHANGE, onChange);
 			
 			listRight = listFactory();
 			this.addChild(listRight);
@@ -95,22 +105,10 @@ package views.global.userCenter.collection
 			listRight.height = height;
 			listRight.x = width / 2;
 			if(datas.length > 1)
-			{
 				listRight.dataProvider = new ListCollection( datas[1] );
-				listRight.addEventListener(Event.CHANGE, onChange);
-			}
 		}
 		
 		private var cache:Texture;
-		private function onChange(e:Event):void
-		{
-			var list:List = e.target as List;
-			var data:Object = list.dataProvider.data[list.selectedIndex];
-			if(data.finished == 0)		//未收集到
-				return;
-			cache = UserCenterManager.getTexture(data.id + "_big");
-			showImage();
-		}
 		
 		private var image:Image;
 		private function showImage():void
@@ -169,15 +167,9 @@ package views.global.userCenter.collection
 			if(image)
 				image.removeFromParent(true);
 			if(listLeft)
-			{
-				listLeft.removeEventListener(Event.CHANGE, onChange);
 				listLeft.removeFromParent(true);
-			}
 			if(listRight)
-			{
-				listRight.removeEventListener(Event.CHANGE, onChange);
 				listRight.removeFromParent(true);
-			}
 			super.dispose();
 		}
 		

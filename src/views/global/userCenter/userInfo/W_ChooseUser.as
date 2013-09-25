@@ -113,10 +113,31 @@ package views.global.userCenter.userInfo
 			this.addChild( image );
 			this.width = image.width;
 			this.height = image.height;
+			image.touchable = false;
 		}
 		
 		override public function dispose():void
 		{
+			if(button_close)
+			{
+				button_close.removeEventListener(Event.TRIGGERED, closeWindow);
+				button_close.removeFromParent(true);
+			}
+			if(buttons)
+				buttons.removeFromParent(true);
+			if(items)
+			{
+				for(var i:int = items.length-1;i>=0;i--)
+				{
+					items[i].removeFromParent(true);
+					items[i] = null;
+				}
+				items = null;
+			}
+			this.userDatas = null;
+			this.editHandler = null;
+			this.closeWinHandler = null;
+			super.dispose();
 		}
 		
 		public var closeWinHandler:Function = defaultCloseHandler;

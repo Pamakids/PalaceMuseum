@@ -1,11 +1,6 @@
 package views.components
 {
-	import flash.text.TextFormat;
-	
-	import feathers.controls.Label;
 	import feathers.core.FeathersControl;
-	
-	import models.FontVo;
 	
 	import starling.display.Image;
 	
@@ -105,6 +100,12 @@ package views.components
 		
 		override public function dispose():void
 		{
+			if(loopnumY)
+				loopnumY.removeFromParent(true);
+			if(loopnumM)
+				loopnumM.removeFromParent(true);
+			if(loopnumD)
+				loopnumD.removeFromParent(true);
 			super.dispose();
 		}
 	}

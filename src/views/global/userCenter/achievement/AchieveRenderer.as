@@ -44,6 +44,9 @@ package views.global.userCenter.achievement
 		
 		override public function dispose():void
 		{
+			if(achieveIcon)
+				achieveIcon.removeFromParent(true);
+			super.dispose();
 		}
 	}
 }
