@@ -88,6 +88,5 @@ package views.global.userCenter.handbook
 			this.animation.buttonCallBackMode=false;
 			this.animation.removeEventListener(Event.COMPLETE, onComplete);
 		}
-
 	}
 }

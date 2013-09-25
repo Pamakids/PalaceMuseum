@@ -68,7 +68,6 @@ package views.global.userCenter.achievement
 			this.addChild( listLeft );
 			listLeft.width = width / 2;
 			listLeft.height = height;
-			listLeft.addEventListener(Event.CHANGE, onChange);
 			
 			listRight = listFactory();
 			this.addChild(listRight);
@@ -78,7 +77,6 @@ package views.global.userCenter.achievement
 			if(datas.length > 1)
 			{
 				listRight.dataProvider = new ListCollection( datas[1] );
-				listRight.addEventListener(Event.CHANGE, onChange);
 			}
 		}
 		private function listFactory():List
@@ -90,16 +88,16 @@ package views.global.userCenter.achievement
 				renderer.data = "achidata";
 				renderer.width = 137;
 				renderer.height = 106;
+				renderer.addEventListener(Event.TRIGGERED, onTriggered);
 				return renderer;
 			};
 			list.layout = layoutFactory();
 			return list;
 		}
 		
-		private function onChange(e:Event):void
+		private function onTriggered(e:Event):void
 		{
-			var list:List = e.target as List;
-			var data:Object = list.dataProvider.data[list.selectedIndex];
+			var data:Object = (e.currentTarget as AchieveRenderer).data;
 			showImage(data);
 		}
 		

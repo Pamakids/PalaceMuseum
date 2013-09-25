@@ -42,6 +42,8 @@ package views.global.userCenter
 			}
 			else
 			{
+				if(_userCenter && _userCenter.parent)
+					return;
 				if (!_userCenter)
 					initUserCenter();
 				_userCenterContainer.addChild(_userCenter);
