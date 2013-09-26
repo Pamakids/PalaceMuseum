@@ -34,10 +34,8 @@ package views.module1
 		public function set gamePlayed(value:Boolean):void
 		{
 			_gamePlayed=value;
-			if (_clockMatched)
+			if (_clockMatched && _gamePlayed)
 				showAchievement(5);
-			if (_gamePlayed)
-				sceneOver();
 		}
 
 		private var clock:Clock;
@@ -51,7 +49,7 @@ package views.module1
 		public function set clockMatched(value:Boolean):void
 		{
 			_clockMatched=value;
-			if (_gamePlayed)
+			if (_clockMatched && _gamePlayed)
 				showAchievement(5);
 			if (_clockMatched)
 				sceneOver();

@@ -95,6 +95,7 @@ package views.module2
 
 		private function openBook():void
 		{
+			showAchievement(14);
 			book=new Sprite();
 			book.addChild(getImage("book21"));
 			close=getImage("close");
@@ -140,6 +141,7 @@ package views.module2
 			var tc:Touch=e.getTouch(stage, TouchPhase.BEGAN);
 			if (tc)
 			{
+				showAchievement(15);
 				if (!chefTurn)
 				{
 					chefTurn=true;

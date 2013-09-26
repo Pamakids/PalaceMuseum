@@ -37,6 +37,13 @@ package views.module4.scene42
 			initStart();
 		}
 
+		public function isWin():Boolean
+		{
+			return life > 0 && score > 0;
+		}
+
+		public var gamelevel:int=0;
+
 		private var startHolder:Sprite;
 		private var gameHolder:Sprite;
 		private var endHolder:Sprite;

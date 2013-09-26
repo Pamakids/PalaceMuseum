@@ -14,6 +14,7 @@ package views.components.base
 		public function PalaceGame(am:AssetManager=null)
 		{
 			this.assets=am;
+			super();
 		}
 
 		override protected function onStage(e:Event):void

@@ -122,6 +122,8 @@ package views.module4
 
 		private function onPlayGame2(e:Event):void
 		{
+			if (game.isWin())
+				showAchievement(game.gamelevel == 0 ? 28 : 29);
 			game.removeEventListener("gameOver", onGameOver);
 			game.removeEventListener("gameRestart", onGameRestart);
 			game.removeEventListener("nextGame", onPlayGame2);
@@ -142,6 +144,7 @@ package views.module4
 
 		private function onGame2Over(e:Event):void
 		{
+			showAchievement(27);
 			sceneOver();
 		}
 

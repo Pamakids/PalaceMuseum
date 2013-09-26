@@ -83,6 +83,7 @@ package views.module5
 
 		private function removeMemorial():void
 		{
+			showAchievement(22);
 			TopBar.show();
 			TweenLite.to(hand, .5, {y: handPosY, onComplete: function():void {
 
@@ -95,6 +96,7 @@ package views.module5
 					if (indexArr.length == 2) {
 						MC.instance.stage.stage.quality="high";
 						MC.instance.stage.removeChild(drawScene);
+						showAchievement(23);
 						sceneOver();
 					}
 					else

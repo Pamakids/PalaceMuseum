@@ -17,7 +17,6 @@ package views.module2
 
 	public class Scene23 extends PalaceScene
 	{
-
 		private var game:DishGame;
 
 		private var chatArr:Array=["chat-king-1", "chat-lion-1", "chat-king-2", "chat-king-3", "chat-lion-2", "chat-lion-3"];
@@ -89,6 +88,7 @@ package views.module2
 				addChild(cardB);
 				TweenLite.to(cardB, .5, {x: 685, y: 53, scaleX: 1, scaleY: 1, onComplete: function():void {
 					cardB.addEventListener(TouchEvent.TOUCH, onCardBTouch);
+					showAchievement(19);
 				}});
 			}
 		}
@@ -192,7 +192,8 @@ package views.module2
 
 		private function onGamePlayed(e:Event):void
 		{
-			TopBar.show();
+			if (game.isWin())
+				showAchievement(18);
 			game.removeEventListener("gameOver", onGamePlayed)
 			game.removeEventListener("gameRestart", onGameRestart)
 			game.removeChildren();

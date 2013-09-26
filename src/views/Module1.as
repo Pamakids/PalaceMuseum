@@ -27,7 +27,7 @@ package views
 			var assets:AssetManager=new AssetManager();
 			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName);
 			var f:File=File.applicationDirectory.resolvePath("assets/common");
-			assets.enqueue(file, f);
+			assets.enqueue(file, f, "json/hint12.json");
 			assets.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)
