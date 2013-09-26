@@ -10,6 +10,7 @@ package views.module4.scene42
 	import starling.display.Shape;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
@@ -58,19 +59,28 @@ package views.module4.scene42
 		}
 
 		private var ropeSP:Shape;
+		private var ropeTexture:Texture;
 
 		private function onEnterFrame():void
 		{
-			ropeSP.graphics.clear();
-			ropeSP.graphics.lineStyle(3, 0x99ccff);
+//			ropeSP.graphics.clear();
+//			ropeSP.graphics.lineStyle(3, 0x99ccff);
 			for each (var body:OperaBody in bodyArr)
 			{
 				if (body)
 				{
 					body.shake();
-
-					ropeSP.graphics.moveTo(body.stagePt.x, -200);
-					ropeSP.graphics.lineTo(body.x, body.y);
+					var rope:Shape=body.rope;
+					if (rope)
+					{
+						rope.graphics.clear();
+						rope.graphics.lineTexture(10, ropeTexture);
+//						rope.graphics.lineStyle(3, 0x99ccff);
+						rope.graphics.moveTo(body.stagePt.x - 5, -200);
+						rope.graphics.lineTo(body.x - 5, body.y);
+					}
+//					ropeSP.graphics.moveTo(body.stagePt.x, -200);
+//					ropeSP.graphics.lineTo(body.x, body.y);
 				}
 			}
 		}
@@ -162,6 +172,7 @@ package views.module4.scene42
 
 		private function addBodys():void
 		{
+			ropeTexture=assets.getTexture("loading");
 			for (var i:int=0; i < typeArr.length; i++)
 			{
 				addOneBody(i);
@@ -192,6 +203,8 @@ package views.module4.scene42
 			body.offsetsXY=xiyouB_PosArr[index];
 			body.maskPos=xiyouMaskPosArr[index]; //相对位置 by type
 			body.reset();
+			var rope:Shape=new Shape();
+			body.rope=rope;
 
 			var img:Image=getImage(crtOperaName + "mask" + type);
 			if (img)
@@ -211,6 +224,7 @@ package views.module4.scene42
 				sp=spArr[1];
 			else
 				sp=spArr[2];
+			sp.addChild(rope);
 			sp.addChild(body);
 		}
 

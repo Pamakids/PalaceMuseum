@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:de0048bbc0134a7a53b73db3bec1aedb$ -->
+<TextureAtlas imagePath="common.png">
+    <SubTexture name="bird" x="151" y="259" width="119" height="114"/>
+    <SubTexture name="book" x="873" y="151" width="91" height="93"/>
+    <SubTexture name="button_close" x="788" y="175" width="80" height="81"/>
+    <SubTexture name="game-start-down" x="697" y="2" width="174" height="171"/>
+    <SubTexture name="game-start" x="873" y="2" width="146" height="147" frameX="-11" frameY="-8" frameWidth="174" frameHeight="171"/>
+    <SubTexture name="hint-bg-k-large" x="2" y="2" width="300" height="255"/>
+    <SubTexture name="hint-bg-k-mid" x="574" y="206" width="212" height="181"/>
+    <SubTexture name="hint-bg-k" x="2" y="259" width="147" height="124"/>
+    <SubTexture name="hint-bg-large" x="444" y="2" width="251" height="202"/>
+    <SubTexture name="hint-bg-mid" x="366" y="217" width="206" height="166"/>
+    <SubTexture name="hint-bg" x="788" y="258" width="161" height="129"/>
+    <SubTexture name="lion" x="304" y="2" width="138" height="213"/>
+    <SubTexture name="loading" x="272" y="259" width="92" height="98" frameX="-4" frameY="0" frameWidth="100" frameHeight="100"/>
+    <SubTexture name="nextButton" x="966" y="151" width="48" height="48"/>
+</TextureAtlas>

@@ -5,13 +5,12 @@ package views.module4.scene42
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
-	import flash.ui.Keyboard;
 
 	import models.FontVo;
 
 	import starling.display.Image;
+	import starling.display.Shape;
 	import starling.display.Sprite;
-	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -246,6 +245,7 @@ package views.module4.scene42
 		public var timeCount:int=240;
 
 		private var countDownTxt:TextField;
+		public var rope:Shape;
 
 		public function countDown():void
 		{

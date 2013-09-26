@@ -21,6 +21,7 @@ package views.module4.scene42
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
+	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
@@ -215,18 +216,27 @@ package views.module4.scene42
 			score=0;
 		}
 
+		private var ropeTexture:Texture;
+
 		private function onEnterFrame(e:Event):void
 		{
-			ropeSP.graphics.clear();
-			ropeSP.graphics.lineStyle(3, 0x99ccff);
+//			ropeSP.graphics.clear();
+//			ropeSP.graphics.lineStyle(3, 0x99ccff);
 			for each (var body:OperaBody in bodyArr)
 			{
 				if (body)
 				{
 					body.shake();
+					var rope:Shape=body.rope;
 
-					ropeSP.graphics.moveTo(body.stagePt.x, -200);
-					ropeSP.graphics.lineTo(body.x, body.y);
+					if (rope)
+					{
+						rope.graphics.clear();
+						rope.graphics.lineTexture(3, ropeTexture);
+//						rope.graphics.lineStyle(3, 0x99ccff);
+						rope.graphics.moveTo(body.stagePt.x, -200);
+						rope.graphics.lineTo(body.x, body.y);
+					}
 					if (!gameOver)
 						body.countDown();
 					if (body.timeCount == 0 && body.ready)
@@ -257,6 +267,7 @@ package views.module4.scene42
 
 		private function addBodys():void
 		{
+			ropeTexture=assets.getTexture("loading");
 			for (var i:int=0; i < hardNess; i++)
 			{
 				addRandomBody();
@@ -321,8 +332,11 @@ package views.module4.scene42
 				body.maskPos=crtMaskPosArr[typeIndex]; //相对位置 by type
 				body.reset();
 				body.playEnter();
+				var rope:Shape=new Shape();
+				body.rope=rope;
 				bodyArr[index]=body;
 				var sp:Sprite=spArr[int(index / 2)];
+				sp.addChild(rope);
 				sp.addChild(body);
 			}
 		}
@@ -336,6 +350,7 @@ package views.module4.scene42
 			else
 				life--;
 			body.playExit(function():void {
+				body.rope.removeFromParent(true);
 				body.removeFromParent(true);
 				bodyArr[body.index]=null;
 				addRandomBody();
@@ -486,11 +501,11 @@ package views.module4.scene42
 
 				var dishgameresult:int=SOService.instance.getSO(gameResult) as int;
 
-				var scoreTXT:TextField=new TextField(300, 80, "");
+				var scoreTXT:TextField=new TextField(300, 100, "");
 				scoreTXT.fontSize=48;
 				scoreTXT.color=0xb83d00;
 				scoreTXT.x=420;
-				scoreTXT.y=280;
+				scoreTXT.y=270;
 				endHolder.addChild(scoreTXT);
 
 				var recordTXT:TextField=new TextField(100, 40, "");
