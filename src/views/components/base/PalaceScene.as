@@ -9,6 +9,8 @@ package views.components.base
 {
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
+	import com.pamakids.palace.utils.StringUtils;
+	import com.pamakids.utils.StringUtil;
 
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
@@ -29,6 +31,7 @@ package views.components.base
 
 	import views.components.CollectionCard;
 	import views.components.ElasticButton;
+	import views.components.PalaceBird;
 	import views.components.Prompt;
 	import views.global.TopBar;
 
@@ -39,9 +42,28 @@ package views.components.base
 
 		public function PalaceScene(am:AssetManager=null)
 		{
+			sceneName=StringUtils.getClassName(this);
 			Prompt.parent=this;
 			Prompt.addAssetManager(am);
 			this.assets=am;
+
+			if (Math.random() < 0.2)
+				TweenLite.delayedCall(1, function():void {
+					var img:Image=getImage(sceneName.toLocaleLowerCase() + "-bird");
+					if (img)
+						initBird(img);
+				});
+		}
+
+		private function initBird(img:Image):void
+		{
+			var bird:PalaceBird=new PalaceBird();
+			bird.img=img;
+			bird.bird=getImage("bird");
+			bird.bg=getImage("birdBG");
+			bird.close=new ElasticButton(getImage("button_close"));
+			bird.fly();
+			addChild(bird);
 		}
 
 		override protected function onStage(e:Event):void
@@ -108,7 +130,7 @@ package views.components.base
 		{
 			TweenMax.to(nextButton, 1, {shake: {x: 5, numShakes: 4}, onComplete: function():void
 			{
-				setChildIndex(nextButton, numChildren - 1);
+//				setChildIndex(nextButton, numChildren - 1);
 				TweenLite.delayedCall(5, shakeNext);
 			}});
 		}
@@ -120,6 +142,7 @@ package views.components.base
 		}
 
 		private var delayIndex:int;
+		public var sceneName:String;
 
 		protected function showAchievement(_achieveIndex:int):void
 		{
