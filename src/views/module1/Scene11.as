@@ -35,7 +35,13 @@ package views.module1
 		private var windowY:int=250;
 		private var windowArr:Vector.<Sprite>=new Vector.<Sprite>();
 
-		private var windowStrArr:Array=["hint3", "hint2", "hint2", "hint3"];
+		private var windowStrArr:Array=[];
+
+		private var hint0:String="皇帝寝室是哪一间呢？";
+		private var hint1:String="皇贵妃还在休息，不要打扰";
+		private var hint2:String="皇帝的休息室，他不在这里";
+		private var hint3:String="皇帝寝室，但他今天在另一间休息";
+		private var hint4:String="皇后在自己的寝宫，不在这里";
 
 		private var hotzone1:Rectangle=new Rectangle(48, 209, 140, 134); //窗-左
 		private var hotzone2:Rectangle=new Rectangle(746, 177, 158, 168); //门-中
@@ -56,6 +62,7 @@ package views.module1
 		public function Scene11(am:AssetManager)
 		{
 			super(am);
+			windowStrArr=[hint3, hint2, hint2, hint3];
 		}
 
 		override protected function init():void
@@ -112,7 +119,7 @@ package views.module1
 
 			TweenLite.delayedCall(1.5, function():void
 			{
-				showHint(50, 50, "hint0", 3, king);
+				showHint(50, 50, hint0, 3, king, 3);
 			});
 		}
 
@@ -124,7 +131,7 @@ package views.module1
 			var pt:Point=tc.getLocation(this);
 
 			if (dpt && Point.distance(dpt, pt) < 15)
-				showHint(50, 50, "hint0", 3, king);
+				showHint(50, 50, hint0, 3, king, 3);
 		}
 
 		private function onFGTouch(event:TouchEvent):void
@@ -143,7 +150,7 @@ package views.module1
 			if (!isShadowShow)
 				TweenLite.to(w0s, 1, {alpha: 1, onComplete: function():void
 				{
-					showHint(hotzone1.x + hotzone1.width / 2, hotzone1.y + hotzone1.height / 2, "hint1", 1, fg);
+					showHint(hotzone1.x + hotzone1.width / 2, hotzone1.y + hotzone1.height / 2, hint1, 1, fg);
 					isShadowShow=true;
 					effComplete=true;
 				}});
@@ -171,11 +178,11 @@ package views.module1
 			}
 			else if (hotzone2.containsPoint(lp))
 			{
-				showHint(hotzone2.x + hotzone2.width / 2, hotzone2.y + hotzone2.height / 2, "hint2", 1, fg);
+				showHint(hotzone2.x + hotzone2.width / 2, hotzone2.y + hotzone2.height / 2, hint2, 1, fg);
 			}
 			else if (hotzone3.containsPoint(lp))
 			{
-				showHint(hotzone3.x + hotzone3.width / 2, hotzone3.y + hotzone3.height / 2, "hint4", 3, fg);
+				showHint(hotzone3.x + hotzone3.width / 2, hotzone3.y + hotzone3.height / 2, hint4, 3, fg, 3);
 			}
 		}
 
@@ -319,7 +326,7 @@ package views.module1
 		private var p:Prompt;
 		private var hintCount:int=0;
 
-		private function showHint(_x:Number, _y:Number, _src:String, reg:int, _parent:Sprite):void
+		private function showHint(_x:Number, _y:Number, _src:String, reg:int, _parent:Sprite, align:int=1):void
 		{
 			hintCount++;
 			if (hintCount == 8)
@@ -329,7 +336,8 @@ package views.module1
 
 			if (p)
 				p.playHide();
-			p=Prompt.show(_x, _y, _src, '', reg, 2, null, _parent);
+			p=Prompt.showTXT(_x, _y, _src, 20, null, _parent, align)
+//			p=Prompt.show(_x, _y, _src, '', reg, 2, null, _parent);
 //			var _img:Image=getImage(_src);
 //
 ////			var hint:Sprite=new Sprite();

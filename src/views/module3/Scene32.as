@@ -38,12 +38,13 @@ package views.module3
 		private var posArr:Array=[new Point(263, 287), new Point(168, 151),
 			new Point(421, 79), new Point(651, 181), new Point(583, 105)];
 
-		private var hintArr:Array=[hint0, hint1, hint2, hint3, hint4];
+		private var hintArr:Array;
 		private var itemArr:Array=[];
 
 		public function Scene32(am:AssetManager=null)
 		{
 			super(am);
+			hintArr=[hint0, hint1, hint2, hint3, hint4]
 			crtKnowledgeIndex=6;
 			addChild(getImage("bg32"));
 
@@ -88,17 +89,28 @@ package views.module3
 			var _x:Number=item.x + item.width / 2;
 			var _y:Number=item.y + item.height / 2;
 			showHint(_x, _y, hintArr[index]);
+			check(index);
+		}
+
+		private function check(index:int):void
+		{
+			checkArr[index]=true;
+			for each (var b:Boolean in checkArr)
+			{
+				if (!b)
+					return;
+			}
+			showAchievement(10);
 		}
 
 		private var p:Prompt;
+		private var checkArr:Vector.<Boolean>=new Vector.<Boolean>(5);
 
 		private function showHint(_x:Number, _y:Number, content:String):void
 		{
-//			LionMC.instance.say(_x, _y, content);
 			if (p)
 				p.playHide();
-			p=Prompt.showTXT(_x, _y, content, 18, null, this);
-//			p=Prompt.show(_x, _y, "hint-bg-big", content, 1, 5, null, this, false, 18);
+			p=Prompt.showTXT(_x, _y, content, 18, null, this, 1, true);
 		}
 
 		private function onTeleTouch(e:TouchEvent):void
@@ -131,6 +143,7 @@ package views.module3
 
 		private function onTelePlayed(e:Event):void
 		{
+			showAchievement(13);
 			teleGame.removeEventListener("gameOver", onTelePlayed)
 			teleGame.removeChildren();
 			removeChild(teleGame);
@@ -148,6 +161,7 @@ package views.module3
 		private function onPrismAddCard(e:Event):void
 		{
 			showCard("dragon");
+			showAchievement(12);
 		}
 
 		private function onPrismPlayed(e:Event):void
@@ -168,6 +182,7 @@ package views.module3
 
 		private function onThermoPlayed(e:Event):void
 		{
+			showAchievement(11);
 			thermoGame.removeEventListener("gameOver", onThermoPlayed)
 			thermoGame.removeChildren();
 			removeChild(thermoGame);

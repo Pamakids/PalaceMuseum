@@ -90,11 +90,11 @@ package views.module2
 			addChild(game);
 			game.addEventListener("gameOver", onGamePlayed)
 			game.addEventListener("gameRestart", onGameRestart)
-
 		}
 
 		private function onGamePlayed(e:Event):void
 		{
+			showAchievement(game.gamelevel == 0 ? 16 : 17)
 			removeChild(game);
 			game=null;
 			removeEventListener(TouchEvent.TOUCH, onTouch);

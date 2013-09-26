@@ -46,6 +46,7 @@ package controllers
 		private var modules:Array=[Module1, Module3, Module2, Module5, Module4];
 
 		public var stage:PalaceMuseum;
+		private var topBarLayer:Sprite;
 
 		public function init(main:Main):void
 		{
@@ -53,7 +54,6 @@ package controllers
 			Prompt.parent=main;
 			Map.parent=main;
 			PopUpManager.root=main;
-			TopBar.parent=main;
 			UserCenterManager.userCenterContainer=main;
 			PopUpManager.overlayFactory=function defaultOverlayFactory():starling.display.DisplayObject
 			{
@@ -144,7 +144,10 @@ package controllers
 		private function initLayers():void
 		{
 			contentLayer=new Sprite();
+			topBarLayer=new Sprite();
 			main.addChild(contentLayer);
+			main.addChild(topBarLayer);
+			TopBar.parent=topBarLayer;
 		}
 	}
 }
