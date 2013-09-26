@@ -1,20 +1,23 @@
 package
 {
+	import flash.filesystem.File;
 	import flash.events.MouseEvent;
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
-	
+
 	import controllers.MC;
-	
+
 	import models.Const;
 	import models.FontVo;
-	
+
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-	
+
+	import views.Module3;
+	import views.Module4;
 	import views.Module5;
 	import views.components.LionMC;
 	import views.components.Prompt;
@@ -25,7 +28,7 @@ package
 	public class Main extends Container
 	{
 		private var testingModule:Sprite;
-		private var testingModuleClass:Class=Module5;
+		private var testingModuleClass:Class=Module4;
 
 		public function Main()
 		{
@@ -38,7 +41,8 @@ package
 			addChild(label);
 
 			var am:AssetManager=new AssetManager();
-			am.enqueue("assets/common/hint-bg.png", "assets/common/hint-bg-large.png", "assets/common/hint-bg-mid.png", "assets/common/hint-bg-k.png", "assets/common/hint-bg-k-large.png", "assets/common/hint-bg-k-mid.png");
+			var f:File=File.applicationDirectory.resolvePath("assets/common");
+			am.enqueue(f);
 			am.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)
@@ -49,10 +53,10 @@ package
 		override protected function init():void
 		{
 //			testFont();
-			testUserCenter();
+//			testUserCenter();
 //			Map.show();
 //			return;
-//			debugInit();
+			debugInit();
 //			Map.show();
 		}
 
@@ -138,7 +142,8 @@ package
 			UserCenterManager.showUserCenter();
 //			Starling.current.nativeStage.addEventListener(MouseEvent.CLICK, onClick);
 		}
-		private var i:int = 0;
+		private var i:int=0;
+
 		protected function onClick(event:MouseEvent):void
 		{
 			UserCenterManager.showUserCenter();
