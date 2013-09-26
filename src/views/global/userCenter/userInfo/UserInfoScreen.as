@@ -58,6 +58,22 @@ package views.global.userCenter.userInfo
 		private var w_game:W_Game;
 		private var w_editUser:W_EditUser;
 		private var w_chooseUser:W_ChooseUser;
+		private var w_deleteUser:W_DeleteUser;
+		
+		private function show_W_deleteUser(userdata:Object):void
+		{
+			if(!w_deleteUser)
+				init_w_deleteUser();
+			w_deleteUser.userdata = userdata;
+			w_deleteUser.deleteHandler = deleteHandler;
+			hideWinHandler(w_editUser, showWinHandler, w_deleteUser);
+		}
+		
+		private function init_w_deleteUser():void
+		{
+			w_deleteUser = new W_DeleteUser();
+			w_deleteUser.closeWinHandler = hideWinHandler;
+		}
 		
 		private function show_W_game(value:Object):void
 		{
@@ -78,6 +94,7 @@ package views.global.userCenter.userInfo
 			w_game = new W_Game(value);
 			w_game.closeWinHandler = hideWinHandler;
 		}
+		
 		private function hideWinHandler(win:DisplayObject, onCompleted:Function=null, paras:Object=null):void
 		{
 			TweenLite.to(win, 0.3, {x: 1024, ease: Cubic.easeOut, onComplete:function():void{
@@ -135,6 +152,26 @@ package views.global.userCenter.userInfo
 		{
 			w_editUser = new W_EditUser(userdata);
 			w_editUser.closeWinHandler = hideWinHandler;
+			w_editUser.deleteHandler = show_W_deleteUser;
+			w_editUser.changeHandler = changeHandler;
+		}
+		
+		/**
+		 * 删除角色
+		 * @param userdata
+		 * 
+		 */		
+		private function deleteHandler(userdata:Object):void
+		{
+		}
+		
+		/**
+		 * 变更角色
+		 * @param userdata
+		 * 
+		 */		
+		private function changeHandler(userdata:Object):void
+		{
 		}
 		
 		private var crtUser:CurrentUser;

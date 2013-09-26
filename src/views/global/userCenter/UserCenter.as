@@ -60,12 +60,9 @@ package views.global.userCenter
 
 //initialize--------------------------------------------------------------------------------------
 
-//		private var datas:Dictionary;
-
 		private function init():void
 		{
 			this.screenNames=[MAP, USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION];
-//			this.datas = new Dictionary(true);
 
 			initBackgroud();
 			initTabBar();

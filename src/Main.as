@@ -1,6 +1,7 @@
 package
 {
 	import flash.filesystem.File;
+	import flash.events.MouseEvent;
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
 
@@ -9,6 +10,7 @@ package
 	import models.Const;
 	import models.FontVo;
 
+	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
 	import starling.text.TextField;
@@ -138,6 +140,22 @@ package
 		{
 			UserCenterManager.userCenterContainer=this;
 			UserCenterManager.showUserCenter();
+//			Starling.current.nativeStage.addEventListener(MouseEvent.CLICK, onClick);
+		}
+		private var i:int=0;
+
+		protected function onClick(event:MouseEvent):void
+		{
+			UserCenterManager.showUserCenter();
+//			if(i == 0)
+//			{
+//				UserCenterManager.showUserCenter();
+//				i = 1;
+//			}else
+//			{
+//				UserCenterManager.closeUserCenter();
+//				i = 0
+//			}
 		}
 	}
 }
