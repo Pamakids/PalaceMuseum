@@ -1,7 +1,7 @@
 package
 {
-	import flash.filesystem.File;
 	import flash.events.MouseEvent;
+	import flash.filesystem.File;
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
 
@@ -9,6 +9,7 @@ package
 
 	import models.Const;
 	import models.FontVo;
+	import models.SOService;
 
 	import starling.core.Starling;
 	import starling.display.Sprite;
@@ -16,6 +17,7 @@ package
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
+	import views.Module1;
 	import views.Module3;
 	import views.Module4;
 	import views.Module5;
@@ -28,11 +30,11 @@ package
 	public class Main extends Container
 	{
 		private var testingModule:Sprite;
-		private var testingModuleClass:Class=Module4;
+		private var testingModuleClass:Class=Module1;
 
 		public function Main()
 		{
-//			SOService.instance.clear();
+			SOService.instance.clear();
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
@@ -56,8 +58,8 @@ package
 //			testUserCenter();
 //			Map.show();
 //			return;
-			debugInit();
-//			Map.show();
+//			debugInit();
+			Map.show();
 		}
 
 		private function debugInit():void

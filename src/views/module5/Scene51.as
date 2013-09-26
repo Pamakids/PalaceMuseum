@@ -72,7 +72,10 @@ package views.module5
 				rightHit=true;
 			}
 			if (leftHit && rightHit)
+			{
+				showAchievement(21);
 				sceneOver();
+			}
 		}
 	}
 }

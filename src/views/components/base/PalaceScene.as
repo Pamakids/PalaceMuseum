@@ -42,6 +42,7 @@ package views.components.base
 
 		public function PalaceScene(am:AssetManager=null)
 		{
+			super();
 			sceneName=StringUtils.getClassName(this);
 			Prompt.parent=this;
 			Prompt.addAssetManager(am);
@@ -78,12 +79,6 @@ package views.components.base
 
 		override public function dispose():void
 		{
-			if (assets)
-			{
-//				assets.dispose();
-//				Prompt.removeAssetManager(assets);
-			}
-
 			if (nextButton)
 			{
 				TweenLite.killDelayedCallsTo(this);
@@ -171,6 +166,7 @@ package views.components.base
 				TweenLite.killTweensOf(tfSP);
 				tf.text=txt
 				tfSP.y=-80;
+				setChildIndex(tfSP, numChildren - 1);
 			}
 			TweenLite.to(tfSP, .5, {y: 0});
 			delayIndex=setTimeout(function():void

@@ -67,7 +67,6 @@ package views.module2.scene23
 		}
 
 		private var startSP:Sprite=new Sprite();
-		;
 		private var gameSP:Sprite=new Sprite();
 		private var endSP:Sprite=new Sprite();
 
@@ -95,12 +94,6 @@ package views.module2.scene23
 			closeBtn.y=60;
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
 			closeBtn.visible=closeBtn.touchable=false;
-		}
-
-		override protected function onStage(e:Event):void
-		{
-			super.onStage(e);
-			TopBar.hide();
 		}
 
 		private function onStart(e:Event):void
@@ -513,6 +506,11 @@ package views.module2.scene23
 		}
 
 		private static const gameResult:String="dishgameresult";
+
+		public function isWin():Boolean
+		{
+			return life > 0 && score > 0;
+		}
 
 		private function initResult():void
 		{

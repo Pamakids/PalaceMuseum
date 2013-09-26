@@ -74,6 +74,8 @@ package views.module1
 		{
 			super(am);
 			crtKnowledgeIndex=2;
+
+			json=assets.getObject("hint12").hint;
 		}
 
 		override protected function init():void
@@ -339,10 +341,12 @@ package views.module1
 		private function showHint(bg:String, content:String, posIndex:int, callback:Function=null):void
 		{
 			var pos:Point=posArr[posIndex];
-			var index:int=bg.lastIndexOf("-") + 1;
-			var i:int=int(bg.charAt(index));
-			var delay:int=i + 3;
-			Prompt.show(pos.x, pos.y, bg, content, 1, delay, callback, this);
+			var txt:String=json[content];
+			Prompt.showTXT(pos.x, pos.y, txt, 20, callback, this);
+//			var index:int=bg.lastIndexOf("-") + 1;
+//			var i:int=int(bg.charAt(index));
+//			var delay:int=i + 3;
+//			Prompt.show(pos.x, pos.y, bg, content, 1, delay, callback, this);
 		}
 
 		private var posArr:Array=[new Point(90, 560), new Point(530, 200), new Point(530, 610)];
@@ -429,6 +433,8 @@ package views.module1
 
 		private var clothLockMark:Image;
 		private var scrolling:Boolean;
+
+		private var json:Object;
 
 		private function addShelf():void
 		{

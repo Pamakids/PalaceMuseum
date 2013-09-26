@@ -76,7 +76,10 @@ package views.module4
 				audience.isClicked=true;
 				count++;
 				if (count == 3)
+				{
+					showAchievement(26);
 					sceneOver();
+				}
 			}
 		}
 	}

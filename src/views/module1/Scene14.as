@@ -23,7 +23,7 @@ package views.module1
 			king=new OperaBody();
 			king.body=getImage("kingbody");
 			king.head=getImage("kinghead");
-			king.offsetsXY=new Point(35, 120);
+			king.offsetsXY=new Point(38, 115);
 			king.reset();
 			addChild(king);
 			king.x=pos1.x;
