@@ -20,12 +20,12 @@ package
 	import views.global.map.Map;
 	import views.global.userCenter.UserCenterManager;
 
-	public class Main extends Container
+	public class Test extends Container
 	{
 		private var testingModule:Sprite;
 		private var testingModuleClass:Class=Module5;
 
-		public function Main()
+		public function Test()
 		{
 //			SOService.instance.clear();
 			super(Const.WIDTH, Const.HEIGHT);
