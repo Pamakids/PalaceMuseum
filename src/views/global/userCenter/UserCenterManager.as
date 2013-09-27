@@ -200,7 +200,7 @@ package views.global.userCenter
 			textures[screen]=value;
 		}
 
-		private static const NumPages:int=26;
+		private static const NumPages:int=10;
 
 		public static function getHandbookTextures():Vector.<Texture>
 		{

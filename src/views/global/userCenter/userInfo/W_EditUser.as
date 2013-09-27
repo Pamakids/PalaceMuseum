@@ -1,5 +1,10 @@
 package views.global.userCenter.userInfo
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Cubic;
+	
+	import flash.geom.Point;
+	
 	import feathers.controls.Button;
 	import feathers.core.FeathersControl;
 	
@@ -86,6 +91,8 @@ package views.global.userCenter.userInfo
 		public var deleteHandler:Function;
 		private function deleteUser():void
 		{
+			if(iconList)
+				iconList.visible = false;
 			deleteHandler(this.userdata);
 		}
 		
@@ -93,9 +100,49 @@ package views.global.userCenter.userInfo
 		private function initUserView():void
 		{
 			userview = new ItemForUserList(userdata, true, true);
+			userview.editIconFactory = showIconList;
 			this.addChild( userview );
 			userview.x = 46;
 			userview.y = 37;
+			
+			userview.addEventListener(Event.TRIGGERED, showIconList);
+		}
+		
+		private var iconList:W_IconList;
+		private var showPoint:Point;
+		private var hidePoint:Point;
+		private function showIconList(data:Object):void
+		{
+			if(!iconList)
+			{
+				iconList = new W_IconList();
+				this.addChild( iconList );
+				showPoint = globalToLocal(new Point((1024 - iconList.width) >> 1, 768 - iconList.height));
+				hidePoint = new Point(showPoint.x, showPoint.y + iconList.height);
+				iconList.addEventListener(Event.TRIGGERED, changeHeadIcon);
+			}
+			iconList.x = hidePoint.x;
+			iconList.y = hidePoint.y;
+			iconList.visible = true;
+			TweenLite.to( iconList, 0.2, {y: showPoint.y} );
+		}
+		
+		private function changeHeadIcon(e:Event):void
+		{
+			this.userdata.iconIndex = e.data;
+			this.updateView();
+			this.hideIconList();
+		}
+		
+		private function hideIconList():void
+		{
+			if(iconList && iconList.parent)
+			{
+				TweenLite.to(iconList, 0.2, {y:hidePoint.y, ease:Cubic.easeOut, onComplete: function remove():void
+				{
+					iconList.visible = false;
+				}});
+			}
 		}
 		
 		private function initBackImages():void
@@ -110,8 +157,16 @@ package views.global.userCenter.userInfo
 		
 		override public function dispose():void
 		{
+			if(iconList)
+			{
+				iconList.removeEventListener(Event.TRIGGERED, changeHeadIcon);
+				iconList.removeFromParent(true);
+			}
 			if(userview)
+			{
+				userview.removeEventListener(Event.TRIGGERED, showIconList);
 				userview.removeFromParent(true);
+			}
 			if(dateView)
 				dateView.removeFromParent(true);
 			if(button_close)
@@ -155,6 +210,8 @@ package views.global.userCenter.userInfo
 		public var closeWinHandler:Function = defaultCloseHandler;
 		private function closeWindow(e:Event):void
 		{
+			if(iconList)
+				iconList.visible = false;
 			closeWinHandler(this);
 		}
 		private function defaultCloseHandler(obj:Object):void

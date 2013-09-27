@@ -1,11 +1,9 @@
 package states
 {
 	import com.greensock.TweenLite;
-	import com.greensock.easing.Cubic;
 	
 	import assets.BtnAssets;
 	import assets.ImgAssets;
-	import assets.SoundAssets;
 	
 	import drawing.CommonPaper;
 	
@@ -14,20 +12,14 @@ package states
 	import models.StateManager;
 	
 	import org.agony2d.Agony;
-	import org.agony2d.media.SfxManager;
 	import org.agony2d.notify.AEvent;
-	import org.agony2d.notify.DataEvent;
-	import org.agony2d.utils.MathUtil;
 	import org.agony2d.view.AgonyUI;
 	import org.agony2d.view.Fusion;
 	import org.agony2d.view.ImageButton;
-	import org.agony2d.view.StatsMobileUI;
 	import org.agony2d.view.UIState;
-	import org.agony2d.view.core.IComponent;
 	import org.agony2d.view.enum.ImageButtonType;
 	import org.agony2d.view.enum.LayoutType;
 	import org.agony2d.view.puppet.ImagePuppet;
-	import org.agony2d.view.puppet.SpritePuppet;
 	
 	public class GameTopUIState extends UIState
 	{
