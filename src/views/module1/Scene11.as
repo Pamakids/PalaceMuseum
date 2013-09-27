@@ -17,6 +17,11 @@ package views.module1
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 
+	/**
+	 * 早起模块
+	 * 找房间场景
+	 * @author Administrator
+	 */
 	public class Scene11 extends PalaceScene
 	{
 		private var bg_width:Number;
@@ -59,6 +64,10 @@ package views.module1
 
 		private var eunuch:Sprite;
 
+		/**
+		 *
+		 * @param am
+		 */
 		public function Scene11(am:AssetManager)
 		{
 			super(am);
@@ -94,6 +103,9 @@ package views.module1
 			onFGLoaded();
 		}
 
+		/**
+		 *
+		 */
 		protected function onFGLoaded():void
 		{
 			fg.addChild(getImage("frontground11"));

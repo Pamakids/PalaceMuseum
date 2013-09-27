@@ -7,14 +7,12 @@ package views.module3.scene31
 	import flash.geom.Rectangle;
 
 	import starling.display.Image;
-	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
-	import views.components.CollectionCard;
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
 
@@ -84,7 +82,7 @@ package views.module3.scene31
 		private function onCloseTouch(e:Event):void
 		{
 			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseTouch);
-			dispatchEvent(new Event("gameOver"));
+			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
 		private function onTouch(e:TouchEvent):void
@@ -156,12 +154,11 @@ package views.module3.scene31
 		{
 			checkCount++;
 			if (checkCount == 3)
-				dispatchEvent(new Event("addCard"));
-//			addCard("card-bug");
+				isFinish=true;
 		}
 
 		private var checkCount:int=0;
 		private var closeBtn:ElasticButton;
-		private var halo:Sprite;
+		public var isFinish:Boolean;
 	}
 }

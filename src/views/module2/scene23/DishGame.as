@@ -22,7 +22,6 @@ package views.module2.scene23
 
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
-	import views.global.TopBar;
 
 	public class DishGame extends PalaceGame
 	{
@@ -505,8 +504,6 @@ package views.module2.scene23
 			TweenLite.delayedCall(.5, initResult);
 		}
 
-		private static const gameResult:String="dishgameresult";
-
 		public function isWin():Boolean
 		{
 			return life > 0 && score > 0;
@@ -612,12 +609,12 @@ package views.module2.scene23
 
 		private function closeGame():void
 		{
-			dispatchEvent(new Event("gameOver"));
+			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
 		private function restartGame(e:Event=null):void
 		{
-			dispatchEvent(new Event("gameRestart"));
+			dispatchEvent(new Event(PalaceGame.GAME_RESTART));
 		}
 
 		private var _score:int;
