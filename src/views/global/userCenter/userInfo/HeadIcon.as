@@ -3,6 +3,7 @@ package views.global.userCenter.userInfo
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -24,7 +25,6 @@ package views.global.userCenter.userInfo
 	 */	
 	public class HeadIcon extends Sprite
 	{
-		public static const SECLECTED:String = "head_seclected";
 		/**
 		 * @param index	头像资源索引
 		 */		
@@ -101,7 +101,7 @@ package views.global.userCenter.userInfo
 		{
 			var t:Touch = e.getTouch(this);
 			if(t && t.phase == TouchPhase.ENDED)
-					dispatchEventWith(SECLECTED, false, this._index);
+					dispatchEventWith(Event.TRIGGERED, false, this._index);
 		}
 		
 		override public function dispose():void
