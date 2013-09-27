@@ -8,6 +8,8 @@ package views.module1.scene2
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 
+	import models.SOService;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -38,6 +40,46 @@ package views.module1.scene2
 		{
 			am=null;
 			super.dispose();
+		}
+
+		private var puzzleHintCount:String="puzzleHintCount";
+		private var isMoved:Boolean;
+		private var hintShow:Sprite;
+		private var count:int=0;
+		private var puzzleHint:Image;
+		private var hintReverse:Boolean;
+
+		private function onEnterFrame(e:Event):void
+		{
+			if (isMoved)
+			{
+				if (hintShow)
+					hintShow.removeFromParent(true);
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			}
+			if (count < 30 * 8)
+				count++;
+			else
+			{
+				if (!hintShow)
+				{
+					hintShow=new Sprite();
+					puzzleHint=new Image(am.getTexture('puzzlehint'));
+					puzzleHint.x=246;
+					puzzleHint.y=42;
+					hintShow.addChild(puzzleHint);
+					addChild(hintShow);
+					hintShow.touchable=false;
+				}
+				else
+				{
+					if (puzzleHint.alpha == 0)
+						hintReverse=false;
+					else if (puzzleHint.alpha == 1)
+						hintReverse=true;
+					puzzleHint.alpha+=hintReverse ? -.05 : .1;
+				}
+			}
 		}
 
 		private function generateRandomPositions(points:Array):Array
@@ -154,6 +196,8 @@ package views.module1.scene2
 			});
 
 			addEventListener(TouchEvent.TOUCH, touchHandler);
+			if (SOService.instance.checkHintCount(puzzleHintCount))
+				addEventListener(Event.ENTER_FRAME, onEnterFrame);
 
 		}
 
@@ -229,14 +273,17 @@ package views.module1.scene2
 							TweenLite.to(i, 0.5, {x: dp.x + clothXOffset, y: dp.y + clothYOffset, ease: Cubic.easeOut, onComplete: function():void
 							{
 								currentPositionDic[dragingCloth]=p;
-								if (p.x == correctPositionDic[dragingCloth].x)
+								if (p.x == correctPositionDic[dragingCloth].x) {
 									TweenLite.to(correctCircleDic[dragingCloth], 0.5, {alpha: 1});
+									isMoved=true;
+								}
 								else
 									TweenLite.to(correctCircleDic[dragingCloth], 0.5, {alpha: 0});
 								currentPositionDic[i]=dp;
 								if (dp.x == correctPositionDic[i].x)
 									TweenLite.to(correctCircleDic[i], 0.5, {alpha: 1, onComplete: function():void
 									{
+										isMoved=true;
 										var allMatched:Boolean=true;
 										for each (i in correctCircleDic)
 										{

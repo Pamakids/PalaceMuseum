@@ -1,5 +1,7 @@
 package views.components.base
 {
+	import com.pamakids.palace.utils.StringUtils;
+
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -9,12 +11,22 @@ package views.components.base
 
 	public class PalaceGame extends Container
 	{
+		public static const GAME_OVER:String="gameOver";
+		public static const GAME_RESTART:String="gameRestart";
+
 		protected var assets:AssetManager;
+		public var fromCenter:Boolean=false;
+		public var gameName:String;
 
 		public function PalaceGame(am:AssetManager=null)
 		{
 			this.assets=am;
 			super();
+		}
+
+		public function get gameResult():String
+		{
+			return StringUtils.getClassName(this).toLocaleLowerCase() + "gameresult";
 		}
 
 		override protected function onStage(e:Event):void
@@ -29,9 +41,13 @@ package views.components.base
 
 		override public function dispose():void
 		{
-			this.assets=null;
+			if (fromCenter)
+				assets.dispose()
+			else
+				this.assets=null;
 			super.dispose();
 			TopBar.show();
+
 		}
 
 		protected function getImage(name:String):Image

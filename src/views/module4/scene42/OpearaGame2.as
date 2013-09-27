@@ -165,7 +165,7 @@ package views.module4.scene42
 				if (!b)
 					return;
 			}
-			dispatchEvent(new Event("gameOver"));
+			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
 		private var bodyArr:Vector.<OperaBody>=new Vector.<OperaBody>();

@@ -3,8 +3,6 @@ package views.module5
 	import flash.events.AccelerometerEvent;
 	import flash.sensors.Accelerometer;
 
-	import nape.geom.Vec2;
-
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -12,6 +10,11 @@ package views.module5
 
 	import views.components.base.PalaceScene;
 
+	/**
+	 * 上朝模块
+	 * 上朝场景
+	 * @author Administrator
+	 */
 	public class Scene51 extends PalaceScene
 	{
 		private var dx:Number=0;

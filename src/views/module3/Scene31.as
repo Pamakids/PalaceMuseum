@@ -1,7 +1,6 @@
 package views.module3
 {
 	import com.greensock.TweenLite;
-	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Elastic;
 
 	import flash.geom.Point;
@@ -10,6 +9,7 @@ package views.module3
 	import feathers.core.PopUpManager;
 
 	import models.FontVo;
+	import models.SOService;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -23,11 +23,17 @@ package views.module3
 	import views.components.ElasticButton;
 	import views.components.Lion;
 	import views.components.Prompt;
+	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 	import views.module3.scene31.FindGame;
 	import views.module3.scene31.JigsawGame;
 	import views.module3.scene31.ShelfBook;
 
+	/**
+	 * 早读模块
+	 * 探索场景(地图拼图游戏)
+	 * @author Administrator
+	 */
 	public class Scene31 extends PalaceScene
 	{
 		private var mapGame:JigsawGame;
@@ -92,14 +98,63 @@ package views.module3
 			lion.rotation=-Math.PI / 4;
 			TweenLite.to(lion, .8, {x: 30, y: 540, rotation: 0, ease: Elastic.easeOut, onComplete: function():void
 			{
-				lion.say("hint31-find", "hint-bg", function():void {
+				lion.say(hint31find, function():void {
 					TweenLite.to(lion, .5, {x: -140, onComplete: function():void
 					{
 						ready=true;
+						if (SOService.instance.checkHintCount(shelfHintCount))
+							addEventListener(Event.ENTER_FRAME, onEnterFrame);
 					}
 						});
 				});
 			}});
+		}
+
+		private var shelfHintCount:String="shelfHintCount";
+		private var isMoved:Boolean;
+		private var hintShow:Sprite;
+		private var count:int=0;
+		private var hintFinger:Image;
+
+		private function onEnterFrame(e:Event):void
+		{
+			if (isMoved)
+			{
+				if (hintShow)
+					hintShow.removeFromParent(true);
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			}
+			if (count < 30 * 8)
+				count++;
+			else
+			{
+				if (!hintShow)
+				{
+					hintShow=new Sprite();
+					var hintArrow:Image=getImage("shelfhintarrow");
+					hintFinger=getImage("shelfhintfinger");
+					hintArrow.x=50;
+					hintArrow.y=137;
+					hintFinger.x=65;
+					hintFinger.y=202;
+					hintShow.addChild(hintArrow);
+					hintShow.addChild(hintFinger);
+					addChild(hintShow);
+					hintShow.touchable=false;
+				}
+				else
+				{
+					if (hintFinger.x == 165)
+					{
+						hintFinger.scaleX=hintFinger.scaleY=1;
+					}
+					else if (hintFinger.x == 65)
+					{
+						hintFinger.scaleX=hintFinger.scaleY=.8;
+					}
+					hintFinger.x+=hintFinger.scaleX == 1 ? -5 : 5;
+				}
+			}
 		}
 
 		private function onMapTouch(e:TouchEvent):void
@@ -182,6 +237,8 @@ package views.module3
 			shelfL.x=Math.max(0 - innerX, Math.min(shelfL.x + dx, 0));
 			shelfR.x=Math.max(rx, Math.min(shelfR.x - dx, rx + innerX));
 			shelfOpen=shelfL.x > -100;
+			if (!isMoved)
+				isMoved=shelfL.x > -200;
 		}
 
 		private var probability:Number=0;
@@ -234,7 +291,7 @@ package views.module3
 					setChildIndex(lion, numChildren - 1);
 					TweenLite.killTweensOf(lion);
 					TweenLite.to(lion, .5, {x: 30, onComplete: function():void {
-						lion.say("hint31-right", "hint-bg", function():void {
+						lion.say(hint31right, function():void {
 							TweenLite.to(lion, .5, {x: -140});
 						});
 					}
@@ -245,7 +302,6 @@ package views.module3
 					Prompt.showTXT(pt.x, pt.y, book.bookname, 24, null, pr, align, true)
 					probability+=.2;
 					book.clicked=true;
-//				Prompt.show(pt.x, pt.y, "hint-bg", "hint31-wrong", 1);
 				}
 			}
 		}
@@ -333,6 +389,8 @@ package views.module3
 		}
 
 		private var bookTxt:String="清朝皇帝对大臣的指\n令和讲话称为“圣训”。\n后继位的皇帝每天早读\n时首先会读一段圣训，\n学习领会祖先的教导。";
+		private var hint31right:String="恭喜你找到圣训！";
+		private var hint31find:String="《圣训》是皇帝每天早上必读的书本，快点找到它。";
 
 		private function onCloseBook(e:Event):void
 		{
@@ -349,23 +407,17 @@ package views.module3
 		private function initGame():void
 		{
 			mapGame=new JigsawGame(assets);
-			mapGame.addEventListener("gameOver", onGamePlayed)
-			mapGame.addEventListener("easyEnd", function():void {
-				showAchievement(8);
-				onGamePlayed(null);
-			})
-			mapGame.addEventListener("hardEnd", function():void {
-				showAchievement(9);
-				onGamePlayed(null)
-			})
-			mapGame.addEventListener("gameRestart", onGameRestart)
+			mapGame.addEventListener(PalaceGame.GAME_OVER, onGamePlayed)
+			mapGame.addEventListener(PalaceGame.GAME_RESTART, onGameRestart)
 			addChild(mapGame);
 		}
 
 		private function onGamePlayed(e:Event):void
 		{
-			mapGame.removeEventListener("gameOver", onGamePlayed)
-			mapGame.removeEventListener("gameRestart", onGameRestart)
+			if (mapGame.isFinished)
+				showAchievement(mapGame.gamelevel == 0 ? 8 : 9);
+			mapGame.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed)
+			mapGame.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart)
 			mapGame.removeChildren();
 			removeChild(mapGame);
 			mapGame=null;
@@ -376,21 +428,18 @@ package views.module3
 		private function initFindGame():void
 		{
 			findGame=new FindGame(assets);
-			findGame.addEventListener("gameOver", onFindGamePlayed)
-			findGame.addEventListener("addCard", onFindGameAddCard)
+			findGame.addEventListener(PalaceGame.GAME_RESTART, onFindGamePlayed)
 			addChild(findGame);
-		}
-
-		private function onFindGameAddCard(e:Event):void
-		{
-			showCard("picture");
-			showAchievement(7);
 		}
 
 		private function onFindGamePlayed(e:Event):void
 		{
-			findGame.removeEventListener("gameOver", onFindGamePlayed)
-			findGame.removeEventListener("addCard", onFindGameAddCard)
+			if (findGame.isFinish)
+			{
+				showCard("picture");
+				showAchievement(7);
+			}
+			findGame.removeEventListener(PalaceGame.GAME_OVER, onFindGamePlayed)
 			findGame.removeChildren();
 			removeChild(mapGame);
 			findGame=null;
@@ -400,16 +449,16 @@ package views.module3
 
 		private function onGameRestart(e:Event):void
 		{
-			mapGame.removeEventListener("gameOver", onGamePlayed);
-			mapGame.removeEventListener("gameRestart", onGameRestart);
+			mapGame.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed);
+			mapGame.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 			mapGame.removeChildren();
 			removeChild(mapGame);
 			mapGame=null;
 
 			mapGame=new JigsawGame(assets);
 			addChild(mapGame);
-			mapGame.addEventListener("gameOver", onGamePlayed);
-			mapGame.addEventListener("gameRestart", onGameRestart);
+			mapGame.addEventListener(PalaceGame.GAME_OVER, onGamePlayed);
+			mapGame.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 		}
 	}
 }

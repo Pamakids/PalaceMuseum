@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:02e23db0fc3f32ec4bc3b61781972333$ -->
+<!-- $TexturePacker:SmartUpdate:d47920853f311044f26f6c21e4cda294$ -->
 <TextureAtlas imagePath="m1s3.png">
-    <SubTexture name="book" x="797" y="662" width="91" height="93"/>
-    <SubTexture name="clock-close" x="797" y="756" width="80" height="81"/>
-    <SubTexture name="clock-frontlace" x="1" y="662" width="636" height="190" frameX="0" frameY="-73" frameWidth="636" frameHeight="298"/>
-    <SubTexture name="clock-hint" x="1500" y="412" width="33" height="112"/>
-    <SubTexture name="clock-lace" x="486" y="939" width="72" height="38"/>
-    <SubTexture name="clock-mask" x="1388" y="653" width="122" height="166"/>
-    <SubTexture name="clock-word" x="1" y="853" width="484" height="113"/>
-    <SubTexture name="clock" x="1388" y="412" width="111" height="240"/>
-    <SubTexture name="clockcollectCard" x="1239" y="1" width="338" height="410"/>
-    <SubTexture name="eunuch13" x="900" y="412" width="244" height="428" frameX="0" frameY="-2" frameWidth="244" frameHeight="430"/>
-    <SubTexture name="halo" x="1" y="1" width="898" height="660"/>
-    <SubTexture name="hour-hand" x="1500" y="525" width="16" height="72"/>
-    <SubTexture name="king13" x="1145" y="412" width="242" height="506" frameX="0" frameY="-2" frameWidth="244" frameHeight="508"/>
-    <SubTexture name="min-hand" x="1085" y="841" width="33" height="105"/>
-    <SubTexture name="newDaycollectCard" x="900" y="1" width="338" height="410"/>
-    <SubTexture name="plaque" x="486" y="853" width="290" height="85"/>
-    <SubTexture name="又" x="638" y="662" width="158" height="158"/>
-    <SubTexture name="新" x="934" y="841" width="150" height="158" frameX="-4" frameY="0" frameWidth="158" frameHeight="158"/>
-    <SubTexture name="日" x="1388" y="820" width="154" height="154" frameX="-4" frameY="0" frameWidth="158" frameHeight="158"/>
-    <SubTexture name="苟" x="777" y="841" width="156" height="158" frameX="-2" frameY="0" frameWidth="158" frameHeight="158"/>
+    <SubTexture name="book" x="933" y="755" width="91" height="93"/>
+    <SubTexture name="clock-close" x="1070" y="914" width="80" height="81"/>
+    <SubTexture name="clock-frontlace" x="1" y="1" width="636" height="190" frameX="0" frameY="-73" frameWidth="636" frameHeight="298"/>
+    <SubTexture name="clock-hint" x="585" y="192" width="33" height="112"/>
+    <SubTexture name="clock-lace" x="156" y="968" width="72" height="38"/>
+    <SubTexture name="clock-mask" x="113" y="621" width="122" height="166"/>
+    <SubTexture name="clock-word" x="585" y="852" width="484" height="113"/>
+    <SubTexture name="clock" x="1" y="621" width="111" height="240"/>
+    <SubTexture name="clockcollectCard" x="246" y="603" width="338" height="410"/>
+    <SubTexture name="clockhintarrow" x="113" y="788" width="102" height="40"/>
+    <SubTexture name="clockhintfinger" x="156" y="829" width="85" height="138"/>
+    <SubTexture name="eunuch13" x="1" y="192" width="244" height="428" frameX="0" frameY="-2" frameWidth="244" frameHeight="430"/>
+    <SubTexture name="gameanswer" x="881" y="1" width="320" height="335"/>
+    <SubTexture name="gamehinticon" x="1151" y="914" width="61" height="61"/>
+    <SubTexture name="hour-hand" x="585" y="411" width="16" height="72"/>
+    <SubTexture name="king13" x="638" y="1" width="242" height="506" frameX="0" frameY="-2" frameWidth="244" frameHeight="508"/>
+    <SubTexture name="min-hand" x="585" y="305" width="33" height="105"/>
+    <SubTexture name="newDaycollectCard" x="246" y="192" width="338" height="410"/>
+    <SubTexture name="plaque" x="881" y="337" width="290" height="85"/>
+    <SubTexture name="plaquehintarrow" x="585" y="508" width="347" height="343"/>
+    <SubTexture name="plaquehintfinger" x="933" y="423" width="145" height="172"/>
+    <SubTexture name="又" x="933" y="596" width="158" height="158"/>
+    <SubTexture name="新" x="1079" y="423" width="150" height="158" frameX="-4" frameY="0" frameWidth="158" frameHeight="158"/>
+    <SubTexture name="日" x="1" y="862" width="154" height="154" frameX="-4" frameY="0" frameWidth="158" frameHeight="158"/>
+    <SubTexture name="苟" x="1070" y="755" width="156" height="158" frameX="-2" frameY="0" frameWidth="158" frameHeight="158"/>
 </TextureAtlas>

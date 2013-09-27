@@ -83,14 +83,14 @@ package views.components
 			bg.pivotX=bg.width >> 1;
 			bg.pivotY=bg.height >> 1;
 			bg.x=512;
-			bg.y=484;
+			bg.y=444;
 			bg.scaleX=bg.scaleY=.2;
 			addChild(bg);
 
 			img.pivotX=img.width >> 1;
 			img.pivotY=img.height >> 1;
 			img.x=512;
-			img.y=484;
+			img.y=444;
 			img.scaleX=img.scaleY=.2;
 			addChild(img);
 
