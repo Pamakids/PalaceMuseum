@@ -9,23 +9,6 @@ package views.global.userCenter.achievement
 			super();
 		}
 		
-		public var source:Object;
-		/**
-		 * [name, content, isCompleted]
-		 */		
-		private var _achieveData:String;
-		public function set achieveData(value:String):void
-		{
-			if(_achieveData && _achieveData == value)
-				return;
-			_achieveData = value;
-			invalidate(INVALIDATION_FLAG_DATA);
-		}
-		public function get achieveData():String
-		{
-			return _achieveData;
-		}
-		
 		override protected function initialize():void
 		{
 			achieveIcon = new AchieveIcon();

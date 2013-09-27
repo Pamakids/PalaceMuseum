@@ -85,7 +85,6 @@ package views.global.userCenter.achievement
 			list.itemRendererFactory = function():IListItemRenderer
 			{
 				var renderer:AchieveRenderer = new AchieveRenderer();
-				renderer.data = "achidata";
 				renderer.width = 137;
 				renderer.height = 106;
 				renderer.addEventListener(Event.TRIGGERED, onTriggered);

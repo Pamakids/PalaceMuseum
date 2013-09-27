@@ -1,17 +1,9 @@
 package states
 {
-	import com.greensock.TweenLite;
-	import com.greensock.easing.Back;
-	import com.greensock.easing.Cubic;
-	
 	import flash.display.BitmapData;
 	import flash.events.Event;
-	import flash.filesystem.File;
-	import flash.filesystem.FileStream;
-	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.media.CameraRoll;
-	import flash.utils.ByteArray;
 	
 	import assets.ImgAssets;
 	
@@ -25,14 +17,10 @@ package states
 	import org.agony2d.input.Touch;
 	import org.agony2d.input.TouchManager;
 	import org.agony2d.notify.AEvent;
-	import org.agony2d.notify.DataEvent;
 	import org.agony2d.timer.DelayManager;
-	import org.agony2d.utils.ArrayUtil;
 	import org.agony2d.view.AgonyUI;
 	import org.agony2d.view.Fusion;
 	import org.agony2d.view.GestureFusion;
-	import org.agony2d.view.GridScrollFusion;
-	import org.agony2d.view.PivotFusion;
 	import org.agony2d.view.UIState;
 	import org.agony2d.view.core.IComponent;
 	import org.agony2d.view.puppet.ImagePuppet;

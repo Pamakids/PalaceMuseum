@@ -1,16 +1,9 @@
 package models
 {
-	import org.agony2d.Agony;
-	import org.agony2d.input.KeyboardManager;
-	import org.agony2d.notify.AEvent;
 	import org.agony2d.view.AgonyUI;
-	import org.agony2d.view.enum.LayoutType;
 	
-	import states.GameBottomUIState;
 	import states.GameSceneUIState;
 	import states.GameTopUIState;
-	import states.PlayerSceneUIState;
-	import states.PlayerTopAndBottomUIState;
 
 	public class StateManager
 	{
