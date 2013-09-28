@@ -2,28 +2,25 @@ package views.global.userCenter.map
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	import feathers.controls.Button;
-	import feathers.controls.Screen;
-
+	
 	import starling.display.Image;
 	import starling.events.Event;
-	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
-
+	
 	import views.global.map.Map;
-	import views.global.userCenter.IUserCenterScreen;
-	import views.global.userCenter.UserCenter;
+	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenterManager;
 
 	/**
 	 * 用户中心map场景
 	 * @author Administrator
 	 */
-	public class MapScreen extends Screen implements IUserCenterScreen
+	public class MapScreen extends BaseScreen
 	{
 		private var mapButton:Button;
 		private var mapTexture:Texture;
@@ -36,21 +33,17 @@ package views.global.userCenter.map
 
 		override protected function initialize():void
 		{
-			initContainer();
+			super.initialize();
 			initMapButton();
 			initCacheImage();
-//			initScreenTextures();
 		}
 
-		private function initContainer():void
+		override protected function initPages():void
 		{
 			var image:Image=new Image(UserCenterManager.getTexture("background_map"));
 			this.addChild(image);
 			image.touchable=false;
 		}
-
-		public var viewWidth:Number;
-		public var viewHeight:Number;
 
 		private function initCacheImage():void
 		{
@@ -116,27 +109,6 @@ package views.global.userCenter.map
 			if (mapTexture)
 				mapTexture.dispose();
 			super.dispose();
-		}
-
-		public function getScreenTexture():Vector.<Texture>
-		{
-			if (UserCenterManager.getScreenTexture(UserCenter.MAP) == null)
-				initScreenTextures();
-			return UserCenterManager.getScreenTexture(UserCenter.MAP);
-		}
-
-		private function initScreenTextures():void
-		{
-			var sts:Vector.<Texture>=UserCenterManager.getScreenTexture(UserCenter.MAP);
-			if (!sts)
-			{
-				var render:RenderTexture=new RenderTexture(viewWidth, viewHeight, true);
-				render.draw(this);
-				sts=new Vector.<Texture>(2);
-				sts[0]=Texture.fromTexture(render, new Rectangle(0, 0, viewWidth / 2, viewHeight));
-				sts[1]=Texture.fromTexture(render, new Rectangle(viewWidth / 2, 0, viewWidth / 2, viewHeight));
-				UserCenterManager.setScreenTextures(UserCenter.MAP, sts);
-			}
 		}
 	}
 }

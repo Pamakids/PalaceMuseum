@@ -3,10 +3,10 @@ package views.global.userCenter.userInfo
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	
-	import flash.geom.Rectangle;
+	import controllers.DC;
+	import controllers.MC;
 	
 	import feathers.controls.Button;
-	import feathers.controls.Screen;
 	import feathers.core.PopUpManager;
 	
 	import starling.display.DisplayObject;
@@ -14,18 +14,16 @@ package views.global.userCenter.userInfo
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	
-	import views.global.userCenter.IUserCenterScreen;
-	import views.global.userCenter.UserCenter;
+	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenterManager;
 
 	/**
 	 * 用户信息
 	 * @author Administrator
 	 */	
-	public class UserInfoScreen extends Screen implements IUserCenterScreen
+	public class UserInfoScreen extends BaseScreen
 	{
 		public function UserInfoScreen()
 		{
@@ -33,21 +31,36 @@ package views.global.userCenter.userInfo
 		
 		override protected function initialize():void
 		{
+			initGameDatas();
 			initBackgroundImage();
 			initCrtUserView();
 			initButton();
 			initGameList();
 		}
+		/**
+		 * 游戏数据
+		 * @return 
+		 * 	[
+		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "", numStars: 0},
+		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "", numStars: 0},
+		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "", numStars: 0}
+		 * 	]
+		 */	
+		private var gameDatas:Array;
+		private function initGameDatas():void
+		{
+			gameDatas = DC.instance.getGameDatas();
+		}
 		
 		private var gameList:Vector.<ItemForGameList>;
 		private function initGameList():void
 		{
-			const count:int = 4;
+			const count:int = gameDatas.length;
 			gameList = new Vector.<ItemForGameList>(count);
 			var item:ItemForGameList;
 			for(var i:int = 0;i<count;i++)
 			{
-				item = new ItemForGameList({name:"拼图游戏", numStars: Math.floor(Math.random()*4), iconIndex:i, resultEasy: "00:00", resultHard: "00:00"}, show_W_game);
+				item = new ItemForGameList(gameDatas[i], show_W_game);
 				this.addChild( item );
 				item.x = 55 + (i%2) * 470;
 				item.y = 240 + int(i/2) * 200;
@@ -93,6 +106,25 @@ package views.global.userCenter.userInfo
 		{
 			w_game = new W_Game(value);
 			w_game.closeWinHandler = hideWinHandler;
+			w_game.startGameHandler = startGameHandler;
+		}
+		
+		private var gameScene:GameScene;
+		private function startGameHandler(gameIndex:int):void
+		{
+			gameScene = new GameScene(gameIndex);
+			gameScene.playedCallBack = gamePlayedForW_game;
+			MC.instance.main.addChild( gameScene );
+		}
+		private function gamePlayedForW_game():void
+		{
+			initGameDatas();
+			const max:int = gameDatas.length;
+			for(var i:int = 0;i<max;i++)
+			{
+				gameList[i] = gameDatas[i];
+			}
+			gameScene.removeFromParent(true);
 		}
 		
 		private function hideWinHandler(win:DisplayObject, onCompleted:Function=null, paras:Object=null):void
@@ -210,27 +242,6 @@ package views.global.userCenter.userInfo
 		override public function dispose():void
 		{
 			super.dispose();
-		}
-		
-		public function getScreenTexture():Vector.<Texture>
-		{
-			if(!UserCenterManager.getScreenTexture(UserCenter.USERINFO))
-				initScreenTextures();
-			return UserCenterManager.getScreenTexture(UserCenter.USERINFO);
-		}
-		
-		public var viewWidth:Number;
-		public var viewHeight:Number;
-		private function initScreenTextures():void
-		{
-			if(UserCenterManager.getScreenTexture(UserCenter.USERINFO))
-				return;
-			var render:RenderTexture = new RenderTexture(viewWidth, viewHeight, true);
-			render.draw( this );
-			var ts:Vector.<Texture> = new Vector.<Texture>(2);
-			ts[0] = Texture.fromTexture( render, new Rectangle( 0, 0, viewWidth/2, viewHeight) );
-			ts[1] = Texture.fromTexture( render, new Rectangle( viewWidth/2, 0, viewWidth/2, viewHeight) );
-			UserCenterManager.setScreenTextures(UserCenter.USERINFO, ts);
 		}
 	}
 }

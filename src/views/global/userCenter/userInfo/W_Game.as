@@ -1,5 +1,7 @@
 package views.global.userCenter.userInfo
 {
+	import controllers.MC;
+	
 	import feathers.controls.Button;
 	import feathers.core.FeathersControl;
 	
@@ -179,18 +181,16 @@ package views.global.userCenter.userInfo
 				stars = null;
 			}
 			_gameData = null;
-			this.startGameHandler = null;
 			this.closeWinHandler = null;
 			super.dispose();
 		}
 		
 		public var startGameHandler:Function;
+		
 		private function startGame(e:Event):void
 		{
-			if(startGameHandler)
-			{
-				
-			}
+			closeWinHandler(this);
+			startGameHandler(_gameData.iconIndex);
 		}
 		
 		public var closeWinHandler:Function = defaultCloseHandler;
