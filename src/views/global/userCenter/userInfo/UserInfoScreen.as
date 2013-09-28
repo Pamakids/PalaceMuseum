@@ -122,7 +122,7 @@ package views.global.userCenter.userInfo
 			const max:int = gameDatas.length;
 			for(var i:int = 0;i<max;i++)
 			{
-				gameList[i] = gameDatas[i];
+				gameList[i].data = gameDatas[i];
 			}
 			gameScene.removeFromParent(true);
 		}

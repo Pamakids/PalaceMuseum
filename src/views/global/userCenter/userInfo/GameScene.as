@@ -44,7 +44,6 @@ package views.global.userCenter.userInfo
 				if (ratio == 1.0)
 				{
 					initGame(crtGameIndex);
-					_loadImage.removeEventListeners(Event.ENTER_FRAME);
 					_loadImage.removeFromParent(true);
 				}
 			});
