@@ -1,11 +1,8 @@
 package views.global.userCenter.achievement
 {
-	import flash.geom.Rectangle;
-	
 	import controllers.DC;
 	
 	import feathers.controls.List;
-	import feathers.controls.Screen;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.PopUpManager;
 	import feathers.data.ListCollection;
@@ -17,14 +14,11 @@ package views.global.userCenter.achievement
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import starling.textures.RenderTexture;
-	import starling.textures.Texture;
 	
-	import views.global.userCenter.IUserCenterScreen;
-	import views.global.userCenter.UserCenter;
+	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenterManager;
 	
-	public class AchievementScreen extends Screen implements IUserCenterScreen
+	public class AchievementScreen extends BaseScreen
 	{
 		public function AchievementScreen()
 		{
@@ -155,28 +149,6 @@ package views.global.userCenter.achievement
 			if(listRight)
 				listRight.removeFromParent(true);
 			super.dispose();
-		}
-		
-		public function getScreenTexture():Vector.<Texture>
-		{
-			if(!UserCenterManager.getScreenTexture(UserCenter.ACHIEVEMENT))
-				initScreenTextures();
-			return UserCenterManager.getScreenTexture(UserCenter.ACHIEVEMENT);
-		}
-		
-		public var viewWidth:Number;
-		public var viewHeight:Number;
-		
-		private function initScreenTextures():void
-		{
-			if(UserCenterManager.getScreenTexture(UserCenter.ACHIEVEMENT))
-				return;
-			var render:RenderTexture = new RenderTexture(viewWidth, viewHeight, true);
-			render.draw( this );
-			var ts:Vector.<Texture> = new Vector.<Texture>(2);
-			ts[0] = Texture.fromTexture( render, new Rectangle( 0, 0, viewWidth/2, viewHeight) );
-			ts[1] = Texture.fromTexture( render, new Rectangle( viewWidth/2, 0, viewWidth/2, viewHeight) );
-			UserCenterManager.setScreenTextures(UserCenter.ACHIEVEMENT, ts);
 		}
 	}
 }

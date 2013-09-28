@@ -103,5 +103,66 @@ package controllers
 			}
 			return _achidatas;
 		}
+		
+		/**
+		 * 游戏数据名称集合
+		 */	
+		private const classNames:Array = ["jigSawGame", "menuGame", "dishGame", "operaGame" ];
+		private const gameNames:Array = [ "地图拼图", "吉祥菜名", "银牌试毒", "粉墨登场" ];
+		/**
+		 * 游戏是否有难度区分:0 有， 1 没有
+		 */		
+		private const gameLevels:Array = [1, 0, 1, 1];
+		/**
+		 * 获取游戏数据
+		 * @return 
+		 * 	[
+		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "" },
+		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "" },
+		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "" }
+		 * 	]
+		 */		
+		public function getGameDatas():Array
+		{
+			var datas:Array = [];
+			var obj:Object;
+			for(var i:int = 0;i<4;i++)
+			{
+				obj = {
+					name:		gameNames[i],
+					className:	classNames[i],
+					iconIndex:	i,
+					numStars:	0
+				};
+				if(gameLevels[i] == 0)		//无难度划分
+				{
+					if(SOService.instance.getSO(obj.className))
+					{
+						obj.resultEasy = SOService.instance.getSO(obj.className);
+						obj.resultHard = "----------";
+					}
+					else
+					{
+						obj.resultEasy = "----------";
+						obj.resultHard = "----------";
+					}
+				}
+				else
+				{
+					if(SOService.instance.getSO(obj.className + 0))
+						obj.resultEasy = SOService.instance.getSO(obj.className + 0);
+					else
+						obj.resultEasy = "----------";
+					
+					if(SOService.instance.getSO(obj.className + 1))
+						obj.resultHard = SOService.instance.getSO(obj.className + 1);
+					else
+						obj.resultHard = "----------";
+				}
+				delete obj.className;
+				datas.push( obj );
+			}
+			return datas;
+		}
 	}
 }

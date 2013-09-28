@@ -1,11 +1,8 @@
 package views.global.userCenter.collection
 {
-	import flash.geom.Rectangle;
-	
 	import controllers.DC;
 	
 	import feathers.controls.List;
-	import feathers.controls.Screen;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.PopUpManager;
@@ -18,23 +15,20 @@ package views.global.userCenter.collection
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	
-	import views.global.userCenter.IUserCenterScreen;
-	import views.global.userCenter.UserCenter;
+	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenterManager;
 	
-	public class CollectionScreen extends Screen implements IUserCenterScreen
+	public class CollectionScreen extends BaseScreen
 	{
 		public function CollectionScreen()
 		{
-			super();
 		}
 		
 		override protected function initialize():void
 		{
-			initPages();
+			super.initialize();
 			initDatas();
 			initList();
 		}
@@ -173,27 +167,6 @@ package views.global.userCenter.collection
 			super.dispose();
 		}
 		
-		public function getScreenTexture():Vector.<Texture>
-		{
-			if(!UserCenterManager.getScreenTexture(UserCenter.COLLECTION))
-				initScreenTextures();
-			return UserCenterManager.getScreenTexture(UserCenter.COLLECTION);
-		}
-		
-		public var viewWidth:Number;
-		public var viewHeight:Number;
-		
-		private function initScreenTextures():void
-		{
-			if(UserCenterManager.getScreenTexture(UserCenter.COLLECTION))
-				return;
-			var render:RenderTexture = new RenderTexture(viewWidth, viewHeight, true);
-			render.draw( this );
-			var ts:Vector.<Texture> = new Vector.<Texture>(2);
-			ts[0] = Texture.fromTexture( render, new Rectangle( 0, 0, viewWidth/2, viewHeight) );
-			ts[1] = Texture.fromTexture( render, new Rectangle( viewWidth/2, 0, viewWidth/2, viewHeight) );
-			UserCenterManager.setScreenTextures(UserCenter.COLLECTION, ts);
-		}
 	}
 }
 

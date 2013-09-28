@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:1540e99644285e72e788fbd723268590$ -->
+<!-- $TexturePacker:SmartUpdate:9dbf97e75af02ec3bf1eeaf79c0ad641$ -->
 <TextureAtlas imagePath="assets.png">
-    <SubTexture name="achievement_card_finish" x="739" y="1345" width="137" height="106"/>
+    <SubTexture name="achievement_card_finish" x="1843" y="1116" width="137" height="106"/>
     <SubTexture name="achievement_card_finish_big" x="630" y="168" width="497" height="387"/>
     <SubTexture name="achievement_card_unfinish" x="1908" y="869" width="138" height="106"/>
     <SubTexture name="achievement_card_unfinish_big" x="1195" y="2" width="501" height="386"/>
@@ -13,7 +13,7 @@
     <SubTexture name="background_date_day" x="1129" y="282" width="54" height="97"/>
     <SubTexture name="background_date_year" x="535" y="509" width="75" height="96"/>
     <SubTexture name="background_headicon" x="500" y="893" width="101" height="101"/>
-    <SubTexture name="background_icon_1" x="500" y="1361" width="120" height="120"/>
+    <SubTexture name="background_icon_1" x="1843" y="1224" width="120" height="120"/>
     <SubTexture name="background_iconlist" x="630" y="2" width="563" height="164"/>
     <SubTexture name="background_nameboard" x="342" y="447" width="191" height="67"/>
     <SubTexture name="background_win_0" x="2" y="2" width="626" height="422"/>
@@ -34,34 +34,34 @@
     <SubTexture name="button_ok_up" x="500" y="1055" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
     <SubTexture name="button_start_down" x="500" y="642" width="110" height="61"/>
     <SubTexture name="button_start_up" x="500" y="996" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
-    <SubTexture name="card_game_0" x="1603" y="869" width="303" height="235"/>
-    <SubTexture name="card_game_1" x="2" y="1250" width="303" height="235"/>
-    <SubTexture name="card_game_2" x="603" y="969" width="303" height="235"/>
-    <SubTexture name="card_game_3" x="1603" y="869" width="303" height="235"/>
-    <SubTexture name="collection_card_clock" x="1057" y="1131" width="147" height="155"/>
+    <SubTexture name="card_game_0" x="1110" y="973" width="303" height="235"/>
+    <SubTexture name="card_game_1" x="1603" y="869" width="303" height="235"/>
+    <SubTexture name="card_game_2" x="2" y="1250" width="303" height="235"/>
+    <SubTexture name="card_game_3" x="603" y="969" width="303" height="235"/>
+    <SubTexture name="collection_card_clock" x="2" y="1487" width="147" height="155"/>
     <SubTexture name="collection_card_clock_big" x="2" y="838" width="338" height="410"/>
-    <SubTexture name="collection_card_dragon" x="908" y="1109" width="147" height="155"/>
-    <SubTexture name="collection_card_dragonRobe" x="1260" y="1130" width="147" height="155"/>
+    <SubTexture name="collection_card_dragon" x="307" y="1362" width="147" height="155"/>
+    <SubTexture name="collection_card_dragonRobe" x="749" y="1206" width="147" height="155"/>
     <SubTexture name="collection_card_dragonRobe_big" x="612" y="557" width="338" height="410"/>
     <SubTexture name="collection_card_dragon_big" x="2" y="426" width="338" height="410"/>
-    <SubTexture name="collection_card_newDay" x="1409" y="1102" width="147" height="155"/>
+    <SubTexture name="collection_card_newDay" x="600" y="1206" width="147" height="155"/>
     <SubTexture name="collection_card_newDay_big" x="1660" y="457" width="338" height="410"/>
-    <SubTexture name="collection_card_picture" x="1260" y="973" width="147" height="155"/>
+    <SubTexture name="collection_card_picture" x="908" y="1109" width="147" height="155"/>
     <SubTexture name="collection_card_picture_big" x="1698" y="29" width="338" height="410"/>
-    <SubTexture name="collection_card_unfinish" x="1110" y="973" width="148" height="156"/>
+    <SubTexture name="collection_card_unfinish" x="1415" y="1102" width="148" height="156"/>
     <SubTexture name="collection_down" x="342" y="1218" width="156" height="142"/>
     <SubTexture name="collection_up" x="342" y="1074" width="156" height="142"/>
     <SubTexture name="handbook_down" x="952" y="965" width="156" height="142"/>
     <SubTexture name="handbook_up" x="952" y="821" width="156" height="142"/>
     <SubTexture name="icon_star_gray" x="1129" y="225" width="59" height="55"/>
     <SubTexture name="icon_star_red" x="1129" y="168" width="59" height="55"/>
-    <SubTexture name="icon_userhead_0" x="881" y="1266" width="137" height="137"/>
-    <SubTexture name="icon_userhead_1" x="600" y="1222" width="137" height="137"/>
-    <SubTexture name="icon_userhead_2" x="742" y="1206" width="137" height="137"/>
+    <SubTexture name="icon_userhead_0" x="1704" y="1106" width="137" height="137"/>
+    <SubTexture name="icon_userhead_1" x="1565" y="1106" width="137" height="137"/>
+    <SubTexture name="icon_userhead_2" x="151" y="1487" width="137" height="137"/>
     <SubTexture name="icon_userhead_3" x="1908" y="977" width="137" height="137"/>
     <SubTexture name="line_long" x="1660" y="441" width="381" height="14"/>
     <SubTexture name="line_other" x="342" y="426" width="196" height="19"/>
-    <SubTexture name="line_short" x="600" y="1206" width="140" height="14"/>
+    <SubTexture name="line_short" x="456" y="1362" width="140" height="14"/>
     <SubTexture name="map_down" x="342" y="930" width="156" height="142"/>
     <SubTexture name="map_up" x="342" y="786" width="156" height="142"/>
     <SubTexture name="userinfo_down" x="342" y="642" width="156" height="142"/>

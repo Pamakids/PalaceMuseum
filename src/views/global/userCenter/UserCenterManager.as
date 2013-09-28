@@ -1,7 +1,6 @@
 package views.global.userCenter
 {
 	import flash.filesystem.File;
-	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 	
 	import models.SOService;
@@ -9,7 +8,6 @@ package views.global.userCenter
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
-	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
@@ -104,7 +102,7 @@ package views.global.userCenter
 		private static function loadFunc():void
 		{
 			_assetsManager=new AssetManager();
-			_assetsManager.enqueue(File.applicationDirectory.resolvePath("assets/global/userCenter"));
+			_assetsManager.enqueue(File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"));
 			_assetsManager.enqueue("assets/global/mapBG.jpg");
 			_assetsManager.loadQueue(function(ratio:Number):void
 			{
@@ -131,11 +129,6 @@ package views.global.userCenter
 			if (_userCenterContainer && _userCenterContainer == value)
 				return;
 			_userCenterContainer=value;
-		}
-
-		public static function setUserCenterSize(width:Number, height:Number):void
-		{
-			_userCenter.setSize(width, height);
 		}
 
 		/**
@@ -182,54 +175,6 @@ package views.global.userCenter
 		public static function getTexture(name:String):Texture
 		{
 			return _assetsManager.getTexture(name);
-		}
-
-		private static var textures:Dictionary=new Dictionary();
-
-		public static function getScreenTexture(screen:String):Vector.<Texture>
-		{
-			if (textures[screen])
-				return textures[screen];
-			return null;
-		}
-
-		public static function setScreenTextures(screen:String, value:Object):void
-		{
-			if (textures[screen] && textures[screen] == value)
-				return;
-			textures[screen]=value;
-		}
-
-		private static const NumPages:int=10;
-
-		public static function getHandbookTextures():Vector.<Texture>
-		{
-			if (!textures["handbook_textures"])
-			{
-				var vecTexture:Vector.<Texture>=new Vector.<Texture>();
-				var tx1:Texture=_assetsManager.getTexture("page_left");
-				var tx2:Texture=Texture.fromTexture(tx1, new Rectangle(0, 0, tx1.width, tx1.height));
-				trace(tx1 == tx2);
-				var leftImage:Image=new Image(_assetsManager.getTexture("page_left"));
-				var rightImage:Image=new Image(_assetsManager.getTexture("page_right"));
-				for (var i:int=0; i < NumPages; i++)
-				{
-					var render:RenderTexture=new RenderTexture(484, 664, true);
-					var image:Image=new Image(UserCenterManager.getTexture("content_page_" + String(i + 1)));
-					image.width=484;
-					image.height=664;
-
-					if (i % 2 == 0) //左
-						render.draw(leftImage);
-					else //右
-						render.draw(rightImage);
-					render.draw(image)
-					vecTexture.push(render);
-				}
-
-				textures["handbook_textures"]=vecTexture;
-			}
-			return textures["handbook_textures"];
 		}
 	}
 }

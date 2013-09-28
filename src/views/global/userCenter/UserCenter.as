@@ -1,28 +1,38 @@
 package views.global.userCenter
 {
+	import flash.geom.Point;
+	
 	import feathers.controls.Button;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
+	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
-
-	import views.components.SoftPageAnimation;
+	
+	import views.components.SoftPaperAnimation;
 	import views.global.userCenter.achievement.AchievementScreen;
 	import views.global.userCenter.collection.CollectionScreen;
 	import views.global.userCenter.handbook.HandbookScreen;
 	import views.global.userCenter.map.MapScreen;
 	import views.global.userCenter.userInfo.UserInfoScreen;
 
+	/**
+	 * 用户中心
+	 * @author Administrator
+	 * 
+	 */	
 	public class UserCenter extends Sprite
 	{
 		[Embed(source="/assets/common/loading.png")]
 		private var loading:Class
-
 		/**
 		 * 场景
 		 */
@@ -49,9 +59,6 @@ package views.global.userCenter
 		 */
 		private var backgroundImage:Image;
 		private var bookBackground:Image;
-		private var contentBackground:Image;
-		private var pageRightImage:Image;
-		private var pageLeftImage:Image;
 
 		public function UserCenter()
 		{
@@ -60,6 +67,7 @@ package views.global.userCenter
 
 //initialize--------------------------------------------------------------------------------------
 
+		private var aniable:Boolean = false;
 		private function init():void
 		{
 			this.screenNames=[MAP, USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION];
@@ -70,8 +78,18 @@ package views.global.userCenter
 			initContainer();
 			initNavigator();
 			initAnimation();
+			initRender();
 		}
-
+		
+		//render
+		private var crtRender:RenderTexture;
+		private var targetRender:RenderTexture;
+		private function initRender():void
+		{
+			crtRender = new RenderTexture(this.contentWidth, this.contentHeight);
+			targetRender = new RenderTexture(this.contentWidth, this.contentHeight);
+		}
+		
 		private function initBackgroud():void
 		{
 			this.backgroundImage=new Image(UserCenterManager.getTexture("main_background"));
@@ -108,11 +126,11 @@ package views.global.userCenter
 				}
 				]);
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;
-			_tabBar.selectedIndex=2;
 			this.addChild(_tabBar);
 			_tabBar.gap=2;
 			_tabBar.x=45;
 			_tabBar.y=36;
+			_tabBar.selectedIndex=2;
 			_tabBar.addEventListener(Event.CHANGE, tabs_changeHandler);
 		}
 
@@ -141,7 +159,8 @@ package views.global.userCenter
 				},
 				{
 					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
+					viewWidth: contentWidth, viewHeight: contentHeight,
+					loadAssetsComplete: loadComplete
 				}));
 			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen,
 				{
@@ -174,127 +193,157 @@ package views.global.userCenter
 			this.addChild(_container);
 			_container.x=28;
 			_container.y=89;
+			_container.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
-
-		/**
-		 * 翻页特效动画
-		 */
-		private var softBookAnimation:SoftPageAnimation;
-
 		private function initAnimation():void
 		{
-			var i:int=_tabBar.selectedIndex;
-			var ts:Vector.<Texture>=(_navigator.activeScreen as IUserCenterScreen).getScreenTexture();
-			softBookAnimation=new SoftPageAnimation(968, 664, ts, 0, false);
-			softBookAnimation.buttonCallBackMode=true;
-			softBookAnimation.addEventListener(SoftPageAnimation.ANIMATION_COMPLETED, animationCompleted);
-			this._container.addChild(softBookAnimation);
-			softBookAnimation.visible=false;
+			animation = new SoftPaperAnimation(contentWidth, contentHeight);
+			animation.setFixPageTexture(UserCenterManager.getTexture("content_page_1"), UserCenterManager.getTexture("content_page_2"));
+			this.addChild( animation );
+			animation.addEventListener(Event.COMPLETE, animationCompleted);
+			animation.visible = false;
+			animation.touchable = false;
+			animation.x = 28;
+			animation.y = 89;
 		}
-
+		
 //logical----------------------------------------------------------------------------
 
-		private function animationCompleted():void
-		{
-			softBookAnimation.visible=false;
-		}
+		private var animation:SoftPaperAnimation;
+		private var prevIndex:int = 2;
 
-		private var original:int=2;
-
+		//初始页纹理
+		private var textureL:Texture;
+		private var textureR:Texture;
+		//目标页纹理
+		private var targetL:Texture;
+		private var targetR:Texture;
+		
 		private function tabs_changeHandler():void
 		{
-			if (softBookAnimation && softBookAnimation.active) //动画播放中
+			if(!aniable)
 			{
-				_tabBar.selectedIndex=original;
+				aniable = true;
 				return;
 			}
-
-			var target:int=_tabBar.selectedIndex;
-			if (original == target)
+			if(animation.isRunning())
+			{
+				_tabBar.selectedIndex = prevIndex;
 				return;
-			//起始页纹理
-			var ts1:Vector.<Texture>=(_navigator.activeScreen as IUserCenterScreen).getScreenTexture();
-			//目标页
-			var ts2:Vector.<Texture>;
-			if (target == 2)
-				ts2=UserCenterManager.getHandbookTextures().slice(0, 2);
-			else
-				ts2=UserCenterManager.getScreenTexture(screenNames[target]);
-
-			var ts:Vector.<Texture>;
-			var start:int;
-			var end:int;
-
-			if (!ts2)
-			{
-				softBookAnimation.visible=true;
-				_navigator.showScreen(screenNames[target]);
-				ts2=(_navigator.activeScreen as IUserCenterScreen).getScreenTexture(); //目标页纹理
-				ts=new Vector.<Texture>(4);
-				if (original > target)
-				{
-					start=1;
-					end=0;
-					ts[0]=ts2[0];
-					ts[1]=ts2[1];
-					ts[2]=ts1[0];
-					ts[3]=ts1[1];
-				}
-				else
-				{
-					start=0;
-					end=1;
-					ts[0]=ts1[0];
-					ts[1]=ts1[1];
-					ts[2]=ts2[0];
-					ts[3]=ts2[1];
-				}
-				softBookAnimation.reSetTextures(ts, start);
-				softBookAnimation.turnToPage(end);
 			}
-			else
-			{
-				ts=new Vector.<Texture>(4);
-				if (original > target)
-				{
-					start=1;
-					end=0;
-					ts[0]=ts2[0];
-					ts[1]=ts2[1];
-					ts[2]=ts1[0];
-					ts[3]=ts1[1];
-				}
-				else
-				{
-					start=0;
-					end=1;
-					ts[0]=ts1[0];
-					ts[1]=ts1[1];
-					ts[2]=ts2[0];
-					ts[3]=ts2[1];
-				}
-				softBookAnimation.reSetTextures(ts, start);
-				softBookAnimation.visible=true;
-				_navigator.showScreen(screenNames[target]);
-				softBookAnimation.turnToPage(end);
-			}
-
-			original=target;
+			
+			var target:int = _tabBar.selectedIndex;
+//			//从原场景中获取纹理
+//			(_navigator.activeScreen as BaseScreen).getScreenTexture(crtRender);
+//			textureL = Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+//			textureR = Texture.fromTexture(crtRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+//			animation.setFixPageTexture(textureL, textureR);
+//			animation.visible = true;
+//			//使动画可见以遮挡目标页面
+			_navigator.showScreen(screenNames[target]);
+//			//将目标场景加载至舞台，加载完成后获取纹理
+//			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
+//			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+//			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+//			
+//			pageUp = prevIndex > target;
+//			//根据动画方向重新设置四个纹理顺序
+//			if(pageUp)
+//				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
+//			else
+//				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
+//			animation.start( pageUp );
+//			//修改prevIndex
+//			prevIndex = target;
 		}
-
+		
+		private function animationCompleted():void
+		{
+			animation.visible = false;
+		}
+		
 		private function onTriggered(e:Event):void
 		{
-			//关闭用户中心
 			UserCenterManager.closeUserCenter();
 		}
-		private var _currentIndex:int=-1;
-
-		private function set currentIndex(value:int):void
+		
+		
+		//手册翻页控制
+		private var beginX:Number;
+		private const standardLength:Number = 400;
+		private var pageUp:Boolean = false;
+		private var crtPage:int = 0;
+		private const maxPage:int = 13;
+		
+		private function onTouch(e:TouchEvent):void
 		{
-			if ((_currentIndex != -1) && (_currentIndex == value))
+			if(_tabBar.selectedIndex != 2)
 				return;
-			_currentIndex=value;
-			_navigator.showScreen(screenNames[_currentIndex]);
+			if(animation.isRunning())
+				return;
+			var touch:Touch = e.getTouch(this);
+			var point:Point;
+			if(touch)
+			{
+				point = touch.getLocation(this);
+				switch(touch.phase)
+				{
+					case TouchPhase.BEGAN:
+						beginX = point.x;
+						break;
+					case TouchPhase.ENDED:
+						if( Math.abs( point.x - beginX ) < standardLength )
+							return;
+						//方向
+						pageUp = (beginX < point.x);
+						//检测页面范围
+						if(pageUp && crtPage == 0)
+							return;
+						if(!pageUp && crtPage >= maxPage-1)
+							return;
+						crtPage += (pageUp?-1:1);
+						handbookTurnToPage(crtPage);
+						break;
+				}
+			}
+		}
+		
+		
+		private function handbookTurnToPage(pageIndex:int):void
+		{
+			//从原场景中获取纹理
+//			(_navigator.activeScreen as BaseScreen).getScreenTexture(crtRender);
+//			textureL = Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+//			textureR = Texture.fromTexture(crtRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+//			animation.setFixPageTexture(textureL, textureR);
+//			animation.visible = true;
+			
+			if(!(_navigator.activeScreen as HandbookScreen).hasAssets(pageIndex))
+			{
+				return;
+			}else
+			{
+				loadComplete()
+			}
+		}
+		
+		private function loadComplete():void
+		{
+			(_navigator.activeScreen as HandbookScreen).updateView(crtPage);
+			//将目标场景加载至舞台，加载完成后获取纹理
+//			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
+//			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+//			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+//			
+//			if(pageUp)		//pageUp
+//			{
+//				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
+//			}
+//			else						//pageDown
+//			{
+//				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
+//			}
+//			animation.start( pageUp );
 		}
 
 		/**
@@ -303,55 +352,34 @@ package views.global.userCenter
 		 */
 		public function showIndex(index:int=-1):void
 		{
-			if (index == -1)
+			if(index <= 0 || index >= maxPage)
 				return;
-			if (_navigator.activeScreen is HandbookScreen)
-			{
-				(_navigator.activeScreen as HandbookScreen).turnToPage(index);
-			}
+			pageUp = false;
+			crtPage = index;
+			handbookTurnToPage(index);
 		}
 
 		override public function dispose():void
 		{
 			if (_tabBar)
-				_tabBar.dispose();
-			_tabBar=null;
+				_tabBar.removeFromParent(true);
 			if (backgroundImage)
-				backgroundImage.dispose();
-			backgroundImage=null;
+				backgroundImage.removeFromParent(true);
 			if (bookBackground)
-				bookBackground.dispose();
-			bookBackground=null;
+				bookBackground.removeFromParent(true);
 			if (_navigator)
-				_navigator.dispose();
-			_navigator=null;
+				_navigator.removeFromParent(true);
 			if (_backButton)
-				_backButton.dispose();
-			_backButton=null;
+				_backButton.removeFromParent(true);
 			if (_container)
-				_container.dispose();
-			_container=null;
-			if (contentBackground)
-				contentBackground.dispose();
-			contentBackground=null;
-			if (pageLeftImage)
-				pageLeftImage.dispose();
-			pageLeftImage=null;
-			if (pageRightImage)
-				pageRightImage.dispose();
-			pageRightImage=null;
-			screenNames=null;
-			if (softBookAnimation)
-				softBookAnimation.dispose();
-			softBookAnimation=null;
+				_container.removeFromParent(true);
+			if(animation)
+				animation.removeFromParent(true);
+			if(crtRender)
+				crtRender.dispose();
+			if(targetRender)
+				targetRender.dispose();
 			super.dispose();
 		}
-
-		internal function setSize(width:Number, height:Number):void
-		{
-			this.width=width;
-			this.height=height;
-		}
-
 	}
 }

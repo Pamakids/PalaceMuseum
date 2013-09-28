@@ -189,7 +189,6 @@ package views.global.userCenter.userInfo
 		{
 			if(startGameHandler)
 			{
-				
 			}
 		}
 		
