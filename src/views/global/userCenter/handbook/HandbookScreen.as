@@ -1,92 +1,91 @@
 package views.global.userCenter.handbook
 {
-	import feathers.controls.Screen;
-
-	import starling.events.Event;
-	import starling.textures.Texture;
-
-	import views.components.SoftPageAnimation;
-	import views.global.userCenter.IUserCenterScreen;
+	import starling.display.Image;
+	import starling.utils.AssetManager;
+	
+	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenterManager;
 
 	/**
 	 * 用户中心速成手册场景
 	 * @author Administrator
 	 */
-	public class HandbookScreen extends Screen implements IUserCenterScreen
+	public class HandbookScreen extends BaseScreen
 	{
-		public static const SCREEN_TEXTURES_CHENGED:String="screen_textures_changed";
-
 		public function HandbookScreen()
 		{
-			super();
 		}
 
+		private var _assetsManager:AssetManager;
+		
+		private var crtPage:int = 0;
 		override protected function initialize():void
 		{
-			initAnimation();
+			super.initialize();
+			_assetsManager=new AssetManager();
+			_assetsManager.enqueue("assets/global/userCenter/content_page_1.png", "assets/global/userCenter/content_page_2.png");
+			initImages();
 		}
-
+		
+		private var cacheL:Image;
+		private var cacheR:Image;
+		private function initImages():void
+		{
+			cacheL = new Image(UserCenterManager.getTexture("content_page_1"));
+			this.addChild(cacheL);
+			cacheR = new Image(UserCenterManager.getTexture("content_page_2"));
+			this.addChild( cacheR );
+			cacheR.x = viewWidth / 2;
+			cacheL.touchable = cacheR.touchable = false;
+		}
+		
 		override public function dispose():void
 		{
-			if (animation)
-			{
-//				animation.removeEventListener(SoftPageAnimation.PAGE_UP, turnPage);
-//				animation.removeEventListener(SoftPageAnimation.PAGE_DOWN, turnPage);
-				animation.dispose();
-			}
-			super.dispose();
+			if(cacheL)
+				cacheL.removeFromParent(true);
+			if(cacheR)
+				cacheR.removeFromParent(true);
+			_assetsManager.dispose();
 		}
-
-
-		private var animation:SoftPageAnimation;
-
-		private function initAnimation():void
-		{
-			animation=new SoftPageAnimation(width, height, vecTextures, 0, false, 0.5);
-			this.addChild(animation);
-
-//			animation.addEventListener(SoftPageAnimation.PAGE_UP, turnPage);
-//			animation.addEventListener(SoftPageAnimation.PAGE_DOWN, turnPage);
-		}
-
-
-//		private function turnPage(e:Event):void
-//		{
-//		}
-
-		private const vecTextures:Vector.<Texture>=UserCenterManager.getHandbookTextures();
-
+		
 		/**
-		 * 获取该场景纹理
-		 */
-		public function getScreenTexture():Vector.<Texture>
+		 * 检测是否有某页纹理
+		 * @return 
+		 * 
+		 */		
+		public function hasAssets(pageIndex:int):Boolean
 		{
-			var ts:Vector.<Texture>=new Vector.<Texture>(2);
-			if (animation)
-				ts=UserCenterManager.getHandbookTextures().slice(animation.currentPage * 2, (animation.currentPage + 1) * 2);
+			if( _assetsManager.getTexture("content_page_" + String(pageIndex*2+1)) )
+			{
+				return true;
+			}
 			else
-				ts=UserCenterManager.getHandbookTextures().slice(0, 2);
-			return ts;
+			{
+				_assetsManager.enqueue(
+					"assets/global/userCenter/content_page_" + String(pageIndex*2+1) + ".png", 
+					"assets/global/userCenter/content_page_" + String(pageIndex*2+2) + ".png");
+				_assetsManager.loadQueue(function(ratio:Number):void
+				{
+					if (ratio == 1.0)
+					{
+						loadAssetsComplete();
+					}
+				});
+				return false;
+			}
 		}
-
-		public var viewWidth:Number;
-		public var viewHeight:Number;
-
-		public function turnToPage(index:int):void
+		
+		public var loadAssetsComplete:Function;
+		
+		/**
+		 * 更新页面
+		 * @param pageIndex
+		 * @return 
+		 */		
+		public function updateView(pageIndex:int):void
 		{
-			if(index == 0)
-				return;
-			this.animation.buttonCallBackMode=true;
-			this.animation.addEventListener(SoftPageAnimation.ANIMATION_COMPLETED, onComplete);
-			this.animation.turnToPage(index);
-		}
-
-		private function onComplete():void
-		{
-			trace(animation.currentPage);
-			this.animation.buttonCallBackMode=false;
-			this.animation.removeEventListener(Event.COMPLETE, onComplete);
+			cacheL.texture = _assetsManager.getTexture("content_page_" + String(pageIndex*2+1));
+			cacheR.texture = _assetsManager.getTexture("content_page_" + String(pageIndex*2+2));
 		}
 	}
 }

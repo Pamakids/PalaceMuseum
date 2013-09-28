@@ -1,10 +1,14 @@
-package views
+package views.global.userCenter.userInfo
 {
 	import flash.filesystem.File;
-
+	
+	import feathers.core.PopUpManager;
+	
+	import starling.display.Image;
 	import starling.events.Event;
+	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 	import views.module2.scene22.MenuGame;
@@ -14,6 +18,9 @@ package views
 
 	public class GameScene extends PalaceScene
 	{
+		[Embed(source="/assets/common/loading.png")]
+		private static const Loading:Class
+		
 		private var gamePathArr:Array=["22", "23", "31", "42"];
 		private var gameArr:Array=[MenuGame, DishGame, JigsawGame, OperaGame];
 
@@ -23,6 +30,9 @@ package views
 		public function GameScene(gameIndex:int)
 		{
 			crtGameIndex=gameIndex;
+			
+			initLoadImage();
+			
 			assets=new AssetManager();
 			var _name:String=gamePathArr[gameIndex];
 			var file:File=File.applicationDirectory.resolvePath("assets/" + "module" + _name.charAt(0) + "/scene" + _name);
@@ -30,19 +40,42 @@ package views
 			assets.enqueue(file, f);
 			assets.loadQueue(function(ratio:Number):void
 			{
+				
 				if (ratio == 1.0)
+				{
 					initGame(crtGameIndex);
+					_loadImage.removeEventListeners(Event.ENTER_FRAME);
+					_loadImage.removeFromParent(true);
+				}
 			});
 		}
 
 		private function initGame(index:int):void
 		{
-			var cls:PalaceGame=gameArr[index];
+			var cls:Class=gameArr[index];
 			game=new cls(assets);
 			game.fromCenter=true;
 			addChild(game);
 			game.addEventListener(PalaceGame.GAME_OVER, onGamePlayed);
 			game.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);
+		}
+		
+		private static var _loadImage:Image;
+		
+		private static function initLoadImage():void
+		{
+			_loadImage=new Image(Texture.fromBitmap(new Loading()));
+			_loadImage.pivotX=_loadImage.width >> 1;
+			_loadImage.pivotY=_loadImage.height >> 1;
+			_loadImage.x=1024 - 100;
+			_loadImage.y=768 - 100;
+			_loadImage.scaleX=_loadImage.scaleY=.5;
+			PopUpManager.addPopUp( _loadImage );
+			
+			_loadImage.addEventListener(Event.ENTER_FRAME, function(e:Event):void
+			{
+				_loadImage.rotation+=0.2;
+			});
 		}
 
 		private function onGameRestart(e:Event):void
@@ -51,6 +84,14 @@ package views
 			initGame(crtGameIndex);
 		}
 
+		override public function dispose():void
+		{
+			if(_loadImage)
+				_loadImage.dispose();
+			super.dispose();
+		}
+		
+		public var playedCallBack:Function;
 		private function onGamePlayed(e:Event):void
 		{
 			removeChild(game);
@@ -58,6 +99,8 @@ package views
 			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 			if (e)
 				game.dispose();
+			if(playedCallBack)
+				playedCallBack();
 		}
 	}
 }
