@@ -4,6 +4,7 @@ package views.global.userCenter.userInfo
 	import com.greensock.easing.Cubic;
 	
 	import controllers.DC;
+	import controllers.MC;
 	
 	import feathers.controls.Button;
 	import feathers.core.PopUpManager;
@@ -105,6 +106,25 @@ package views.global.userCenter.userInfo
 		{
 			w_game = new W_Game(value);
 			w_game.closeWinHandler = hideWinHandler;
+			w_game.startGameHandler = startGameHandler;
+		}
+		
+		private var gameScene:GameScene;
+		private function startGameHandler(gameIndex:int):void
+		{
+			gameScene = new GameScene(gameIndex);
+			gameScene.playedCallBack = gamePlayedForW_game;
+			MC.instance.main.addChild( gameScene );
+		}
+		private function gamePlayedForW_game():void
+		{
+			initGameDatas();
+			const max:int = gameDatas.length;
+			for(var i:int = 0;i<max;i++)
+			{
+				gameList[i] = gameDatas[i];
+			}
+			gameScene.removeFromParent(true);
 		}
 		
 		private function hideWinHandler(win:DisplayObject, onCompleted:Function=null, paras:Object=null):void

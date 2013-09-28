@@ -107,8 +107,8 @@ package controllers
 		/**
 		 * 游戏数据名称集合
 		 */	
-		private const classNames:Array = ["jigSawGame", "menuGame", "dishGame", "operaGame" ];
-		private const gameNames:Array = [ "地图拼图", "吉祥菜名", "银牌试毒", "粉墨登场" ];
+		private const classNames:Array = ["menuGame", "dishGame", "jigSawGame", "operaGame" ];
+		private const gameNames:Array = [ "吉祥菜名", "银牌试毒", "地图拼图", "粉墨登场" ];
 		/**
 		 * 游戏是否有难度区分:0 有， 1 没有
 		 */		

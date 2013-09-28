@@ -22,14 +22,19 @@ package views.global.userCenter.userInfo
 		 */		
 		public function ItemForGameList(data:Object, callBack:Function)
 		{
-			this.data = data;
+			this._data = data;
 			this.callBakc = callBack;
 		}
 		
+		private var _data:Object;
 		/**
 		 * { name: "游戏名称", iconIndex: "0", resultEasy: "00:00", resultHard: "00:00", numStars: 2 }
 		 */		
-		private var data:Object;
+		public function set data(value:Object):void
+		{
+			_data = value;
+			this.udpateStars();
+		}
 		private var label:TextField;
 		private var gameIcon:Button;
 		
@@ -45,7 +50,7 @@ package views.global.userCenter.userInfo
 		*/
 		private function initLable():void
 		{
-			label = new TextField(200, 60, data.name, FontVo.PALACE_FONT, 38, 0x561a1a, true);
+			label = new TextField(200, 60, _data.name, FontVo.PALACE_FONT, 38, 0x561a1a, true);
 			this.addChild( label );
 			label.x = 200;
 			label.y = 10;
@@ -59,7 +64,7 @@ package views.global.userCenter.userInfo
 		private function udpateStars():void
 		{
 			const max:int = _stars.length;
-			const count:int = data.numStars;
+			const count:int = _data.numStars;
 			
 			for(var i:int = 0; i<max; i++)
 			{
@@ -74,7 +79,7 @@ package views.global.userCenter.userInfo
 			gameIcon = new Button();
 			gameIcon.width = 205;
 			gameIcon.height = 159;
-			gameIcon.defaultSkin = new Image(UserCenterManager.getTexture("card_game_"+data.iconIndex));
+			gameIcon.defaultSkin = new Image(UserCenterManager.getTexture("card_game_"+_data.iconIndex));
 			this.addChild( gameIcon );
 			gameIcon.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
@@ -86,7 +91,7 @@ package views.global.userCenter.userInfo
 			{
 				if(touch.phase == TouchPhase.ENDED)
 				{
-					callBakc( data );
+					callBakc( _data );
 				}
 			}
 		}
@@ -103,7 +108,7 @@ package views.global.userCenter.userInfo
 			image.touchable = false;
 			
 			const max:int = 3;
-			const count:int = data.numStars;
+			const count:int = _data.numStars;
 			_stars = new Vector.<Image>(max);
 			texture = UserCenterManager.getTexture("icon_star_gray");
 			for(var i:int = 0;i<max;i++)
@@ -121,7 +126,7 @@ package views.global.userCenter.userInfo
 		
 		override public function dispose():void
 		{
-			data = null;
+			_data = null;
 			callBakc = null;
 			if(label)
 				label.removeFromParent(true);
