@@ -14,9 +14,15 @@ package views.module2
 	import starling.utils.AssetManager;
 
 	import views.components.Prompt;
+	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 	import views.module2.scene22.MenuGame;
 
+	/**
+	 * 早膳模块
+	 * 送菜场景(菜名连线)
+	 * @author Administrator
+	 */
 	public class Scene22 extends PalaceScene
 	{
 
@@ -58,11 +64,14 @@ package views.module2
 					if (i == 0)
 						playMenuGame();
 					else
-						Prompt.show(rect.x + rect.width / 3 * 2, rect.y + 50, "hint-bg", "hint-" + (3 - i).toString(), 1);
+						Prompt.showTXT(rect.x + rect.width / 3 * 2, rect.y + 50, this["hint" + (3 - i).toString()]);
 					break;
 				}
 			}
 		}
+
+		private var hint1:String="檀木桌子好重啊！";
+		private var hint2:String="快点，快点。皇上该着急了！";
 
 		private function playMenuGame():void
 		{
@@ -72,24 +81,24 @@ package views.module2
 			game.y=514;
 			game.scaleX=game.scaleY=.01;
 			addChild(game);
-			game.addEventListener("gameOver", onGamePlayed)
-			game.addEventListener("gameRestart", onGameRestart)
+			game.addEventListener(PalaceGame.GAME_OVER, onGamePlayed)
+			game.addEventListener(PalaceGame.GAME_RESTART, onGameRestart)
 
 			TweenLite.to(game, .5, {x: 0, y: 0, scaleX: 1, scaleY: 1, ease: Bounce.easeIn});
 		}
 
 		private function onGameRestart(e:Event):void
 		{
-			game.removeEventListener("gameOver", onGamePlayed)
-			game.removeEventListener("gameRestart", onGameRestart)
+			game.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed)
+			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart)
 			game.removeChildren();
 			removeChild(game);
 			game=null;
 
 			game=new MenuGame(assets);
 			addChild(game);
-			game.addEventListener("gameOver", onGamePlayed)
-			game.addEventListener("gameRestart", onGameRestart)
+			game.addEventListener(PalaceGame.GAME_OVER, onGamePlayed)
+			game.addEventListener(PalaceGame.GAME_RESTART, onGameRestart)
 		}
 
 		private function onGamePlayed(e:Event):void

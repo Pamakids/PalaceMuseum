@@ -3,7 +3,9 @@ package views.module2.scene22
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Quad;
+	import com.pamakids.palace.utils.StringUtils;
 	import com.pamakids.utils.DPIUtil;
+	import com.pamakids.utils.StringUtil;
 
 	import flash.events.AccelerometerEvent;
 	import flash.events.TimerEvent;
@@ -547,12 +549,12 @@ package views.module2.scene22
 
 		private function closeGame():void
 		{
-			dispatchEvent(new Event("gameOver"));
+			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
 		private function restartGame(e:Event=null):void
 		{
-			dispatchEvent(new Event("gameRestart"));
+			dispatchEvent(new Event(PalaceGame.GAME_RESTART));
 		}
 
 		private function getStringFormTime(_count:int):String
@@ -593,8 +595,6 @@ package views.module2.scene22
 						closeBtn.visible=closeBtn.touchable=true;
 					}});
 		}
-
-		private static const gameResult:String="menugameresult";
 
 		private function onBlockTouch(e:TouchEvent):void
 		{

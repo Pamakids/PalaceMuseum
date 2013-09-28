@@ -65,20 +65,12 @@ package views.module3.scene31
 
 		private function closeGame():void
 		{
-			if (isFinished)
-			{
-				if (gamelevel == 0)
-					dispatchEvent(new Event("easyEnd"));
-				else
-					dispatchEvent(new Event("hardEnd"));
-			}
-			else
-				dispatchEvent(new Event("gameOver"));
+			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
 		private function restartGame(e:Event=null):void
 		{
-			dispatchEvent(new Event("gameRestart"));
+			dispatchEvent(new Event(PalaceGame.GAME_RESTART));
 		}
 
 		private function onStartTouch(e:Event):void
@@ -195,8 +187,6 @@ package views.module3.scene31
 			return txt;
 		}
 
-		private static const gameResult:String="Jigsawgameresult";
-
 		private function showRecord():void
 		{
 			var recordIcon:Image=getImage("game-record");
@@ -255,7 +245,7 @@ package views.module3.scene31
 		private var lbl:TextField;
 
 		private var analyst:BitmapAnalyst;
-		private var isFinished:Boolean;
+		public var isFinished:Boolean;
 
 		public function initData(lvl:int):void
 		{
@@ -446,19 +436,19 @@ package views.module3.scene31
 			endSP.y=-547;
 
 			var gameResultlvl:String=gameResult + gamelevel.toString();
-			var menugameresult:int=SOService.instance.getSO(gameResultlvl) as int;
+			var jigsawgameresult:int=SOService.instance.getSO(gameResultlvl) as int;
 
 			var resultTXT:String;
 			var recordTXT:String;
 			var delayFunction:Function;
 
-			if (!menugameresult)
+			if (!jigsawgameresult)
 			{
 				SOService.instance.setSO(gameResultlvl, _count);
 				delayFunction=showRecord;
 				resultTXT=recordTXT=getStringFormTime(_count);
 			}
-			else if (_count < menugameresult)
+			else if (_count < jigsawgameresult)
 			{
 				SOService.instance.setSO(gameResultlvl, _count);
 				delayFunction=showRecord;
@@ -467,7 +457,7 @@ package views.module3.scene31
 			else
 			{
 				resultTXT=getStringFormTime(_count);
-				recordTXT=getStringFormTime(menugameresult);
+				recordTXT=getStringFormTime(jigsawgameresult);
 			}
 			endSP.addChild(getImage("menu-end"));
 

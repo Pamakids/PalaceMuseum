@@ -4,6 +4,8 @@ package models
 
 	import controllers.MC;
 
+	import starling.events.Event;
+
 	public class SOService
 	{
 		public function SOService()
@@ -33,6 +35,23 @@ package models
 		{
 			so.data[key]=value;
 			so.flush();
+		}
+
+		public function checkHintCount(value:String):Boolean
+		{
+			var hintCount:int=getSO(value) as int;
+			if (!hintCount)
+			{
+				SOService.instance.setSO(value, 1);
+				return true;
+			}
+			else if (hintCount <= 3)
+			{
+				hintCount++;
+				SOService.instance.setSO(value, hintCount);
+				return true;
+			}
+			return false;
 		}
 
 		public function isModuleCompleted(index:int):Boolean

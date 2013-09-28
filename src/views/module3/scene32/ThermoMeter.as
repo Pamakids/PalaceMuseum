@@ -227,7 +227,7 @@ package views.module3.scene32
 		private function onCloseTouch(e:Event):void
 		{
 			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseTouch);
-			dispatchEvent(new Event("gameOver"));
+			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
 		private var _temp:Number=0;

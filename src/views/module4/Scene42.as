@@ -10,10 +10,16 @@ package views.module4
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 
+	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 	import views.module4.scene42.OpearaGame2;
 	import views.module4.scene42.OperaGame;
 
+	/**
+	 * 娱乐模块
+	 * 看戏场景(京剧游戏1,2)
+	 * @author Administrator
+	 */
 	public class Scene42 extends PalaceScene
 	{
 
@@ -115,17 +121,17 @@ package views.module4
 			game=new OperaGame(assets);
 			game.scene=this;
 			gameHolder.addChild(game);
-			game.addEventListener("gameOver", onGameOver);
+			game.addEventListener(PalaceGame.GAME_OVER, onGameOver);
 			game.addEventListener("nextGame", onPlayGame2);
-			game.addEventListener("gameRestart", onGameRestart);
+			game.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 		}
 
 		private function onPlayGame2(e:Event):void
 		{
 			if (game.isWin())
 				showAchievement(game.gamelevel == 0 ? 28 : 29);
-			game.removeEventListener("gameOver", onGameOver);
-			game.removeEventListener("gameRestart", onGameRestart);
+			game.removeEventListener(PalaceGame.GAME_OVER, onGameOver);
+			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 			game.removeEventListener("nextGame", onPlayGame2);
 			gameHolder.removeChild(game);
 			game.dispose();
@@ -139,7 +145,7 @@ package views.module4
 			game2=new OpearaGame2(assets);
 			gameHolder.addChild(game2);
 			game2.scene=this;
-			game2.addEventListener("gameOver", onGame2Over);
+			game2.addEventListener(PalaceGame.GAME_OVER, onGame2Over);
 		}
 
 		private function onGame2Over(e:Event):void
@@ -150,8 +156,8 @@ package views.module4
 
 		private function onGameRestart(e:Event):void
 		{
-			game.removeEventListener("gameOver", onGameOver);
-			game.removeEventListener("gameRestart", onGameRestart);
+			game.removeEventListener(PalaceGame.GAME_OVER, onGameOver);
+			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 			game.removeEventListener("nextGame", onPlayGame2);
 			gameHolder.removeChild(game);
 			game.dispose();

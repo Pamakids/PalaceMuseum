@@ -67,17 +67,15 @@ package views.module4.scene42
 		{
 			startHolder=new Sprite();
 			addChild(startHolder);
-			var title:Image=getImage("operagametitle");
-			title.x=(1024 - title.width) >> 1;
-			title.y=130;
+			var title:Image=getImage("operagame-hint");
 			startHolder.addChild(title);
 
 			var startBtn:ElasticButton=new ElasticButton(getImage("game-start"));
 			startBtn.shadow=getImage("game-start-down");
 			startBtn.addEventListener(ElasticButton.CLICK, onStartClick);
 			startHolder.addChild(startBtn);
-			startBtn.x=512;
-			startBtn.y=650;
+			startBtn.x=924;
+			startBtn.y=693;
 
 			closeBtn=new ElasticButton(getImage("button_close"));
 			addChild(closeBtn);
@@ -462,7 +460,6 @@ package views.module4.scene42
 			mask.reset();
 		}
 
-		private static const gameResult:String="operagameresult";
 		private var gameOver:Boolean;
 
 		private var _score:int;
@@ -506,7 +503,7 @@ package views.module4.scene42
 					endHolder.addChild(star2);
 				}
 
-				var dishgameresult:int=SOService.instance.getSO(gameResult) as int;
+				var operagameresult:int=SOService.instance.getSO(gameResult + gamelevel.toString()) as int;
 
 				var scoreTXT:TextField=new TextField(300, 100, "");
 				scoreTXT.fontSize=48;
@@ -522,7 +519,7 @@ package views.module4.scene42
 				recordTXT.y=370;
 				endHolder.addChild(recordTXT);
 
-				if (!dishgameresult || dishgameresult < score)
+				if (!operagameresult || operagameresult < score)
 				{
 					scoreTXT.text=recordTXT.text=score.toString();
 					isRecord=true;
@@ -531,7 +528,7 @@ package views.module4.scene42
 				else
 				{
 					scoreTXT.text=score.toString();
-					recordTXT.text=dishgameresult.toString();
+					recordTXT.text=operagameresult.toString();
 				}
 			}
 			else
@@ -580,14 +577,14 @@ package views.module4.scene42
 		private function restartGame(e:Event=null):void
 		{
 			var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE_OPEN, null, function():void {
-				dispatchEvent(new Event("gameRestart"));
+				dispatchEvent(new Event(PalaceGame.GAME_RESTART));
 			});
 			scene.onOperaSwitch(e1);
 		}
 
 		private function closeGame():void
 		{
-			dispatchEvent(new Event("gameOver"));
+			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
 		private function nextGame():void
