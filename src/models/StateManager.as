@@ -1,7 +1,7 @@
 package models
 {
 	import org.agony2d.view.AgonyUI;
-
+	
 	import states.GameSceneUIState;
 	import states.GameTopUIState;
 

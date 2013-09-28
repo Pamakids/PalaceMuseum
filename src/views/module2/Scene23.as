@@ -2,6 +2,8 @@ package views.module2
 {
 	import com.greensock.TweenLite;
 
+	import models.SOService;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -165,7 +167,53 @@ package views.module2
 				dy=450;
 			}
 			Prompt.showTXT(dx, dy, this[chat], 20, nextChat, this);
+			if (chat == "chatking3")
+			{
+				if (SOService.instance.checkHintCount(silverCardClickHint))
+					addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			}
 		}
+
+		private var silverCardClickHint:String="silverCardClickHint";
+		private var isMoved:Boolean;
+		private var hintShow:Sprite;
+		private var count:int=0;
+		private var hintFinger:Image;
+
+		private function onEnterFrame(e:Event):void
+		{
+			if (isMoved)
+			{
+				if (hintShow)
+					hintShow.removeFromParent(true);
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			}
+			if (count < 30 * 8)
+				count++;
+			else
+			{
+				if (!hintShow)
+				{
+					hintShow=new Sprite();
+					hintFinger=getImage("pushbuttonhint");
+					hintFinger.x=262;
+					hintFinger.y=408;
+					hintShow.addChild(hintFinger);
+					addChild(hintShow);
+					hintShow.touchable=false;
+				}
+				else
+				{
+					if (hintFinger.y == 358)
+						isHintReverse=true;
+					else if (hintFinger.y == 408)
+						isHintReverse=false;
+					hintFinger.y+=isHintReverse ? 5 : -5;
+				}
+			}
+		}
+
+		private var isHintReverse:Boolean;
 
 		private function nextChat():void
 		{
@@ -192,6 +240,7 @@ package views.module2
 			if (!tc)
 				return;
 			pin.removeEventListener(TouchEvent.TOUCH, onPinTouch);
+			isMoved=true;
 			initDishGame();
 		}
 

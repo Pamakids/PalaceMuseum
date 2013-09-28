@@ -503,7 +503,7 @@ package views.module4.scene42
 					endHolder.addChild(star2);
 				}
 
-				var dishgameresult:int=SOService.instance.getSO(gameResult) as int;
+				var operagameresult:int=SOService.instance.getSO(gameResult + gamelevel.toString()) as int;
 
 				var scoreTXT:TextField=new TextField(300, 100, "");
 				scoreTXT.fontSize=48;
@@ -519,7 +519,7 @@ package views.module4.scene42
 				recordTXT.y=370;
 				endHolder.addChild(recordTXT);
 
-				if (!dishgameresult || dishgameresult < score)
+				if (!operagameresult || operagameresult < score)
 				{
 					scoreTXT.text=recordTXT.text=score.toString();
 					isRecord=true;
@@ -528,7 +528,7 @@ package views.module4.scene42
 				else
 				{
 					scoreTXT.text=score.toString();
-					recordTXT.text=dishgameresult.toString();
+					recordTXT.text=operagameresult.toString();
 				}
 			}
 			else

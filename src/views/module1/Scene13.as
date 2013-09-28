@@ -196,15 +196,6 @@ package views.module1
 				game.addEventListener(PalaceGame.GAME_OVER, gameOver);
 				gameHolder.addChild(game);
 			}
-			else
-			{
-				gameHolder.scaleX=gameHolder.scaleY=1;
-				if (game.isOver)
-				{
-					game.reset();
-				}
-			}
-
 			PopUpManager.addPopUp(gameHolder, true, false);
 		}
 
@@ -217,6 +208,9 @@ package views.module1
 				{
 					gamePlayed=true;
 					PopUpManager.removePopUp(gameHolder);
+					game.dispose2();
+					game=null;
+					gameHolder=null;
 					showCard("newDay");
 				}});
 			}
@@ -225,6 +219,9 @@ package views.module1
 				TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
 				{
 					PopUpManager.removePopUp(gameHolder);
+					game.dispose2();
+					game=null;
+					gameHolder=null;
 				}});
 			}
 		}

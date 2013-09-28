@@ -12,7 +12,6 @@ package views.global.userCenter.userInfo
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.events.TouchEvent;
 	
 	import views.global.userCenter.UserCenterManager;
 	
@@ -61,6 +60,8 @@ package views.global.userCenter.userInfo
 			image.touchable = false;
 		}
 		
+		public var editIconFactory:Function;
+		
 		private function initTextInput():void
 		{
 			textInput = new TextInput();
@@ -98,11 +99,11 @@ package views.global.userCenter.userInfo
 			head.scaleX = head.scaleY = 0.7;
 			head.touchable = _touchable;
 			if(_touchable)
-				head.addEventListener(HeadIcon.SECLECTED, onTouch);
+				head.addEventListener(Event.TRIGGERED, onTriggered);
 		}
-		private function onTouch(e:Event):void
+		private function onTriggered(e:Event):void
 		{
-			trace(e.data);		//头像索引
+			editIconFactory( this._data );
 		}
 		
 		private var _editable:Boolean = false;
@@ -119,8 +120,8 @@ package views.global.userCenter.userInfo
 			_data = null;
 			if(head)
 			{
-				if(head.hasEventListener(TouchEvent.TOUCH))
-					head.removeEventListener(TouchEvent.TOUCH, onTouch);
+				if(head.hasEventListener(Event.TRIGGERED))
+					head.removeEventListener(Event.TRIGGERED, onTriggered);
 				this.removeChild(head);
 				head.dispose();
 				head=null;
@@ -129,7 +130,6 @@ package views.global.userCenter.userInfo
 			{
 				if(_editable)
 				{
-//					textInput.removeEventListener(FeathersEventType.FOCUS_IN, input_focusInHandler);
 					textInput.removeEventListener(FeathersEventType.FOCUS_OUT, input_focusOutHandler);
 				}
 				this.removeChild( textInput );

@@ -1,10 +1,10 @@
 package states
 {
 	import com.greensock.TweenLite;
-
+	
 	import assets.BtnAssets;
 	import assets.ImgAssets;
-
+	
 	import drawing.CommonPaper;
 
 	import models.Config;
@@ -20,7 +20,7 @@ package states
 	import org.agony2d.view.enum.ImageButtonType;
 	import org.agony2d.view.enum.LayoutType;
 	import org.agony2d.view.puppet.ImagePuppet;
-
+	
 	public class GameTopUIState extends UIState
 	{
 

@@ -3,6 +3,8 @@ package views.module5
 	import flash.events.AccelerometerEvent;
 	import flash.sensors.Accelerometer;
 
+	import models.SOService;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -43,7 +45,8 @@ package views.module5
 			acc=new Accelerometer();
 			acc.addEventListener(AccelerometerEvent.UPDATE, onUpdate);
 
-//			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			if (SOService.instance.checkHintCount(shakeHintCount))
+				addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 
 		override public function dispose():void
@@ -53,10 +56,53 @@ package views.module5
 //			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 
+		private var shakeHintCount:String="shakeHintCount";
+		private var isMoved:Boolean;
+		private var hintShow:Sprite;
+		private var count:int=0;
+		private var hintFinger:Image;
+
 		private function onEnterFrame(e:Event):void
 		{
-
+			if (isMoved && (leftHit || rightHit))
+			{
+				if (hintShow)
+					hintShow.removeFromParent(true);
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			}
+			if (count < 30 * 8)
+				count++;
+			else
+			{
+				shakeCount++;
+				if (shakeCount >= 30 * 5)
+					isMoved=true;
+				if (!hintShow)
+				{
+					hintShow=new Sprite();
+					hintFinger=getImage("shakehint");
+					hintFinger.pivotX=hintFinger.width >> 1;
+					hintFinger.pivotY=hintFinger.height;
+					hintFinger.x=512;
+					hintFinger.y=650;
+					hintShow.addChild(hintFinger);
+					addChild(hintShow);
+					hintShow.touchable=false;
+				}
+				else
+				{
+					if (hintFinger.rotation >= degress6 * 5)
+						shakeReverse=true;
+					else if (hintFinger.rotation <= -degress6 * 5)
+						shakeReverse=false;
+					hintFinger.rotation+=shakeReverse ? -degress6 : degress6;
+				}
+			}
 		}
+
+		private var shakeCount:int=0;
+		private var shakeReverse:Boolean;
+		private var degress6:Number=Math.PI / 60;
 
 		protected function onUpdate(event:AccelerometerEvent):void
 		{

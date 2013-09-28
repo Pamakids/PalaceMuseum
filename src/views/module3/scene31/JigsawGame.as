@@ -436,19 +436,19 @@ package views.module3.scene31
 			endSP.y=-547;
 
 			var gameResultlvl:String=gameResult + gamelevel.toString();
-			var menugameresult:int=SOService.instance.getSO(gameResultlvl) as int;
+			var jigsawgameresult:int=SOService.instance.getSO(gameResultlvl) as int;
 
 			var resultTXT:String;
 			var recordTXT:String;
 			var delayFunction:Function;
 
-			if (!menugameresult)
+			if (!jigsawgameresult)
 			{
 				SOService.instance.setSO(gameResultlvl, _count);
 				delayFunction=showRecord;
 				resultTXT=recordTXT=getStringFormTime(_count);
 			}
-			else if (_count < menugameresult)
+			else if (_count < jigsawgameresult)
 			{
 				SOService.instance.setSO(gameResultlvl, _count);
 				delayFunction=showRecord;
@@ -457,7 +457,7 @@ package views.module3.scene31
 			else
 			{
 				resultTXT=getStringFormTime(_count);
-				recordTXT=getStringFormTime(menugameresult);
+				recordTXT=getStringFormTime(jigsawgameresult);
 			}
 			endSP.addChild(getImage("menu-end"));
 

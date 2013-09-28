@@ -4,7 +4,7 @@ package states
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.media.CameraRoll;
-
+	
 	import assets.ImgAssets;
 
 	import drawing.CommonPaper;
