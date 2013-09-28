@@ -14,7 +14,7 @@ package views.components.base
 		public static const GAME_OVER:String="gameOver";
 		public static const GAME_RESTART:String="gameRestart";
 
-		protected var assets:AssetManager;
+		public var assets:AssetManager;
 		public var fromCenter:Boolean=false;
 		public var gameName:String;
 
@@ -42,7 +42,7 @@ package views.components.base
 		override public function dispose():void
 		{
 			if (fromCenter)
-				assets.dispose()
+				this.assets.dispose()
 			else
 				this.assets=null;
 			super.dispose();
