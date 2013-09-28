@@ -49,24 +49,22 @@ package views.components
 			}
 		}
 
-		public function say(content:String, bg:String="hint-bg", callback:Function=null):void
+		public function say(content:String, callback:Function=null):void
 		{
 			var hintX:Number=_src.width - 40;
 			var hintY:Number=40;
 
 			if (prompt)
 			{
-				if (prompt.callback != null)
-					prompt.callback();
-				removeChild(prompt)
-				prompt=null;
+				prompt.playHide();
 			}
-			prompt=new Prompt(bg, content, 1);
-			addChild(prompt);
-			prompt.x=hintX;
-			prompt.y=hintY;
-			prompt.callback=callback;
-			prompt.playShow(3);
+			prompt=Prompt.showTXT(hintX, hintY, content, 20, callback, this);
+//			prompt=new Prompt(bg, content, 1);
+//			addChild(prompt);
+//			prompt.x=hintX;
+//			prompt.y=hintY;
+//			prompt.callback=callback;
+//			prompt.playShow(3);
 		}
 
 		private var _state:int;

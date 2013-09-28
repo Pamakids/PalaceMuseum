@@ -8,6 +8,8 @@ package views.module1.scene3
 
 	import feathers.core.PopUpManager;
 
+	import models.SOService;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -56,15 +58,53 @@ package views.module1.scene3
 			addChild(close);
 			close.addEventListener(TouchEvent.TOUCH, onCloseTouch);
 
-			//			addEventListener(Event.ENTER_FRAME,onEnterFrame);
+			if (SOService.instance.checkHintCount(clockHint))
+				addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			addEventListener(TouchEvent.TOUCH, onTouch);
-//			pivotX=bg.width / 2;
-//			pivotY=bg.height / 2;
 		}
 
-		override public function dispose():void
+		private var clockHint:String="clockhintCount";
+		private var count:int=0;
+
+		private function onEnterFrame(e:Event):void
 		{
-			assets=null;
+			if (isMoved)
+			{
+				if (hintShow)
+					hintShow.removeFromParent(true);
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			}
+			if (count < 30 * 8)
+				count++;
+			else
+			{
+				if (!hintShow)
+				{
+					hintShow=new Sprite();
+					hintFinger=getImage("clockhintfinger");
+					var hintArrow:Image=getImage("clockhintarrow");
+					hintArrow.x=455;
+					hintArrow.y=320;
+					hintFinger.x=535;
+					hintFinger.y=410;
+					hintShow.addChild(hintArrow);
+					hintShow.addChild(hintFinger);
+					addChild(hintShow);
+					hintShow.touchable=false;
+				}
+				else
+				{
+					if (hintFinger.x == 435)
+					{
+						hintFinger.scaleX=hintFinger.scaleY=1;
+					}
+					else if (hintFinger.x == 535)
+					{
+						hintFinger.scaleX=hintFinger.scaleY=.8;
+					}
+					hintFinger.x+=hintFinger.scaleX == 1 ? 5 : -5;
+				}
+			}
 		}
 
 		private function onCloseTouch(e:TouchEvent):void
@@ -74,7 +114,14 @@ package views.module1.scene3
 			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
 			if (!tc)
 				return;
-			PopUpManager.removePopUp(this);
+			PopUpManager.removePopUp(this, true);
+		}
+
+		override public function dispose():void
+		{
+			this.assets=null;
+			removeChildren();
+			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 
 		private function onTouch(e:TouchEvent):void
@@ -101,6 +148,7 @@ package views.module1.scene3
 							var delta:int=tc.getMovement(this).x;
 							if (delta < 0)
 							{
+								isMoved=true;
 								crtTime-=delta;
 								for (var i:int=0; i < laceArr.length; i++)
 								{
@@ -208,6 +256,21 @@ package views.module1.scene3
 		private const WORD_WIDTH:int=484;
 
 		private var close:Image;
+		private var _isMoved:Boolean;
+
+		public function get isMoved():Boolean
+		{
+			return _isMoved;
+		}
+
+		public function set isMoved(value:Boolean):void
+		{
+			_isMoved=value;
+		}
+
+		private var hintShow:Sprite;
+
+		private var hintFinger:Image;
 
 		private function addClock():void
 		{

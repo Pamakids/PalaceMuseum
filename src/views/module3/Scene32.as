@@ -9,13 +9,18 @@ package views.module3
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
-	import views.components.LionMC;
 	import views.components.Prompt;
+	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 	import views.module3.scene32.Telescope;
 	import views.module3.scene32.ThermoMeter;
 	import views.module3.scene32.TriangularPrism;
 
+	/**
+	 * 早读模块
+	 * 科学实验场景(三个小游戏)
+	 * @author Administrator
+	 */
 	public class Scene32 extends PalaceScene
 	{
 
@@ -138,13 +143,13 @@ package views.module3
 		{
 			teleGame=new Telescope(assets)
 			addChild(teleGame);
-			teleGame.addEventListener("gameOver", onTelePlayed)
+			teleGame.addEventListener(PalaceGame.GAME_OVER, onTelePlayed)
 		}
 
 		private function onTelePlayed(e:Event):void
 		{
 			showAchievement(13);
-			teleGame.removeEventListener("gameOver", onTelePlayed)
+			teleGame.removeEventListener(PalaceGame.GAME_OVER, onTelePlayed)
 			teleGame.removeChildren();
 			removeChild(teleGame);
 			teleGame=null;
@@ -154,7 +159,7 @@ package views.module3
 		{
 			prismGame=new TriangularPrism(assets);
 			addChild(prismGame);
-			prismGame.addEventListener("gameOver", onPrismPlayed)
+			prismGame.addEventListener(PalaceGame.GAME_OVER, onPrismPlayed)
 			prismGame.addEventListener("addCard", onPrismAddCard)
 		}
 
@@ -166,7 +171,7 @@ package views.module3
 
 		private function onPrismPlayed(e:Event):void
 		{
-			prismGame.removeEventListener("gameOver", onPrismPlayed)
+			prismGame.removeEventListener(PalaceGame.GAME_OVER, onPrismPlayed)
 			prismGame.removeEventListener("addCard", onPrismAddCard)
 			prismGame.removeChildren();
 			removeChild(prismGame);
@@ -177,13 +182,13 @@ package views.module3
 		{
 			thermoGame=new ThermoMeter(assets);
 			addChild(thermoGame);
-			thermoGame.addEventListener("gameOver", onThermoPlayed)
+			thermoGame.addEventListener(PalaceGame.GAME_OVER, onThermoPlayed)
 		}
 
 		private function onThermoPlayed(e:Event):void
 		{
 			showAchievement(11);
-			thermoGame.removeEventListener("gameOver", onThermoPlayed)
+			thermoGame.removeEventListener(PalaceGame.GAME_OVER, onThermoPlayed)
 			thermoGame.removeChildren();
 			removeChild(thermoGame);
 			thermoGame=null;

@@ -11,6 +11,11 @@ package views.module4
 	import views.components.base.PalaceScene;
 	import views.module4.scene41.Audience;
 
+	/**
+	 * 娱乐模块
+	 * 对话场景
+	 * @author Administrator
+	 */
 	public class Scene41 extends PalaceScene
 	{
 		private var avatarTypeArr:Array=["chancellor", "maid", "empressdowager"];

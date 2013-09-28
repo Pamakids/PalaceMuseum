@@ -11,11 +11,16 @@ package views.module1
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
-	import views.components.CollectionCard;
+	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 	import views.module1.scene3.Clock;
 	import views.module1.scene3.TwisterGame;
 
+	/**
+	 * 早起模块
+	 * 探索场景: 时钟/牌匾
+	 * @author Administrator
+	 */
 	public class Scene13 extends PalaceScene
 	{
 		private var bg:Sprite;
@@ -125,14 +130,8 @@ package views.module1
 
 		private function initClock():void
 		{
-			if (!clockMatched)
-			{
-				if (!clock)
-				{
-					clock=new Clock(assets);
-					clock.addEventListener("clockMatch", clockMatch);
-				}
-			}
+			clock=new Clock(assets);
+			clock.addEventListener("clockMatch", clockMatch);
 			clock.scaleX=clock.scaleY=1;
 			clock.x=50;
 			clock.y=25;
@@ -194,18 +193,9 @@ package views.module1
 				gameHolder.addChild(gameBG);
 
 				game=new TwisterGame(assets);
-				game.addEventListener("gameover", gameOver);
+				game.addEventListener(PalaceGame.GAME_OVER, gameOver);
 				gameHolder.addChild(game);
 			}
-			else
-			{
-				gameHolder.scaleX=gameHolder.scaleY=1;
-				if (game.isOver)
-				{
-					game.reset();
-				}
-			}
-
 			PopUpManager.addPopUp(gameHolder, true, false);
 		}
 
@@ -218,6 +208,9 @@ package views.module1
 				{
 					gamePlayed=true;
 					PopUpManager.removePopUp(gameHolder);
+					game.dispose2();
+					game=null;
+					gameHolder=null;
 					showCard("newDay");
 				}});
 			}
@@ -226,6 +219,9 @@ package views.module1
 				TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
 				{
 					PopUpManager.removePopUp(gameHolder);
+					game.dispose2();
+					game=null;
+					gameHolder=null;
 				}});
 			}
 		}

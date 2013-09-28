@@ -2,6 +2,8 @@ package views.module2
 {
 	import com.greensock.TweenLite;
 
+	import models.SOService;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -11,15 +13,20 @@ package views.module2
 	import starling.utils.AssetManager;
 
 	import views.components.Prompt;
+	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
-	import views.global.TopBar;
 	import views.module2.scene23.DishGame;
 
+	/**
+	 * 早膳模块
+	 * 用膳场景(试毒游戏)
+	 * @author Administrator
+	 */
 	public class Scene23 extends PalaceScene
 	{
 		private var game:DishGame;
 
-		private var chatArr:Array=["chat-king-1", "chat-lion-1", "chat-king-2", "chat-king-3", "chat-lion-2", "chat-lion-3"];
+		private var chatArr:Array=["chatking1", "chatlion1", "chatking2", "chatking3", "chatlion2", "chatlion3"];
 		private var cardXArr:Array=[438, 488, 537, 584];
 		private var cardY:Number=510;
 
@@ -35,6 +42,14 @@ package views.module2
 		private var cardHolder:Sprite;
 		private var cardSelected:Boolean;
 		private var cardEnable:Boolean;
+
+		private var chatking1:String="什么时候可以吃饭？";
+		private var chatking2:String="太慢了，我自己来！";
+		private var chatking3:String="快点找到银牌！";
+
+		private var chatlion1:String="别着急，小太监还没有用银牌试毒，不能吃。";
+		private var chatlion2:String="这些是膳牌，是大臣请求接见是递交的，翻翻看吧！";
+		private var chatlion3:String="今天暂时不单独接见，露出破绽就坏了！先去上朝吧！";
 
 		public function Scene23(am:AssetManager=null)
 		{
@@ -151,8 +166,54 @@ package views.module2
 				dx=200;
 				dy=450;
 			}
-			Prompt.show(dx, dy, "hint-bg", chat, 1, 4, nextChat, this);
+			Prompt.showTXT(dx, dy, this[chat], 20, nextChat, this);
+			if (chat == "chatking3")
+			{
+				if (SOService.instance.checkHintCount(silverCardClickHint))
+					addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			}
 		}
+
+		private var silverCardClickHint:String="silverCardClickHint";
+		private var isMoved:Boolean;
+		private var hintShow:Sprite;
+		private var count:int=0;
+		private var hintFinger:Image;
+
+		private function onEnterFrame(e:Event):void
+		{
+			if (isMoved)
+			{
+				if (hintShow)
+					hintShow.removeFromParent(true);
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			}
+			if (count < 30 * 8)
+				count++;
+			else
+			{
+				if (!hintShow)
+				{
+					hintShow=new Sprite();
+					hintFinger=getImage("pushbuttonhint");
+					hintFinger.x=262;
+					hintFinger.y=408;
+					hintShow.addChild(hintFinger);
+					addChild(hintShow);
+					hintShow.touchable=false;
+				}
+				else
+				{
+					if (hintFinger.y == 358)
+						isHintReverse=true;
+					else if (hintFinger.y == 408)
+						isHintReverse=false;
+					hintFinger.y+=isHintReverse ? 5 : -5;
+				}
+			}
+		}
+
+		private var isHintReverse:Boolean;
 
 		private function nextChat():void
 		{
@@ -179,14 +240,15 @@ package views.module2
 			if (!tc)
 				return;
 			pin.removeEventListener(TouchEvent.TOUCH, onPinTouch);
+			isMoved=true;
 			initDishGame();
 		}
 
 		private function initDishGame():void
 		{
 			game=new DishGame(assets);
-			game.addEventListener("gameOver", onGamePlayed)
-			game.addEventListener("gameRestart", onGameRestart)
+			game.addEventListener(PalaceGame.GAME_OVER, onGamePlayed)
+			game.addEventListener(PalaceGame.GAME_RESTART, onGameRestart)
 			addChild(game);
 		}
 
@@ -194,8 +256,8 @@ package views.module2
 		{
 			if (game.isWin())
 				showAchievement(18);
-			game.removeEventListener("gameOver", onGamePlayed)
-			game.removeEventListener("gameRestart", onGameRestart)
+			game.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed)
+			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart)
 			game.removeChildren();
 			removeChild(game);
 			game=null;
@@ -218,16 +280,16 @@ package views.module2
 
 		private function onGameRestart(e:Event):void
 		{
-			game.removeEventListener("gameOver", onGamePlayed);
-			game.removeEventListener("gameRestart", onGameRestart);
+			game.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed);
+			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 			game.removeChildren();
 			removeChild(game);
 			game=null;
 
 			game=new DishGame(assets);
 			addChild(game);
-			game.addEventListener("gameOver", onGamePlayed);
-			game.addEventListener("gameRestart", onGameRestart);
+			game.addEventListener(PalaceGame.GAME_OVER, onGamePlayed);
+			game.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 			game.startGame();
 		}
 	}
