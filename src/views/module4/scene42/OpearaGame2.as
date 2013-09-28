@@ -6,6 +6,8 @@ package views.module4.scene42
 
 	import events.OperaSwitchEvent;
 
+	import models.SOService;
+
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -56,6 +58,48 @@ package views.module4.scene42
 			});
 
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			if (SOService.instance.checkHintCount(silverCardClickHint))
+				addEventListener(Event.ENTER_FRAME, onEnterFrame2);
+		}
+
+		private var silverCardClickHint:String="silverCardClickHint";
+		private var isMoved:Boolean;
+		private var hintShow:Sprite;
+		private var count:int=0;
+		private var hintFinger:Image;
+		private var isHintReverse:Boolean;
+
+		private function onEnterFrame2(e:Event):void
+		{
+			if (isMoved)
+			{
+				if (hintShow)
+					hintShow.removeFromParent(true);
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame2);
+			}
+			if (count < 30 * 8)
+				count++;
+			else
+			{
+				if (!hintShow)
+				{
+					hintShow=new Sprite();
+					hintFinger=getImage("pushbuttonhint");
+					hintFinger.x=36;
+					hintFinger.y=586;
+					hintShow.addChild(hintFinger);
+					addChild(hintShow);
+					hintShow.touchable=false;
+				}
+				else
+				{
+					if (hintFinger.y == 536)
+						isHintReverse=true;
+					else if (hintFinger.y == 586)
+						isHintReverse=false;
+					hintFinger.y+=isHintReverse ? 5 : -5;
+				}
+			}
 		}
 
 		private var ropeSP:Shape;
@@ -159,13 +203,14 @@ package views.module4.scene42
 
 		private function checkClick(index:int):void
 		{
+			isMoved=true;
 			checkArr[index]=true;
 			for each (var b:Boolean in checkArr)
 			{
 				if (!b)
 					return;
 			}
-			dispatchEvent(new Event("gameOver"));
+			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
 		private var bodyArr:Vector.<OperaBody>=new Vector.<OperaBody>();

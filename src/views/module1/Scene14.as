@@ -4,7 +4,6 @@ package views.module1
 
 	import flash.geom.Point;
 
-	import starling.display.Image;
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 
@@ -12,6 +11,11 @@ package views.module1
 	import views.components.base.PalaceScene;
 	import views.module4.scene42.OperaBody;
 
+	/**
+	 * 早起模块
+	 * 过场对话场景
+	 * @author Administrator
+	 */
 	public class Scene14 extends PalaceScene
 	{
 		public function Scene14(am:AssetManager=null)

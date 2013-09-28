@@ -10,7 +10,6 @@ package views.module2
 
 	import starling.display.Image;
 	import starling.display.Sprite;
-	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -19,6 +18,11 @@ package views.module2
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 
+	/**
+	 * 早膳模块
+	 * 偷看场景
+	 * @author Administrator
+	 */
 	public class Scene21 extends PalaceScene
 	{
 

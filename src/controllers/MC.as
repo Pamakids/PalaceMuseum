@@ -16,6 +16,7 @@ package controllers
 	import views.Module4;
 	import views.Module5;
 	import views.components.Prompt;
+	import views.components.base.Container;
 	import views.components.base.PalaceModule;
 	import views.global.TopBar;
 	import views.global.map.Map;
@@ -42,13 +43,13 @@ package controllers
 		private var contentLayer:Sprite;
 		public var currentModule:PalaceModule;
 
-		public var main:Main;
+		public var main:Container;
 		private var modules:Array=[Module1, Module3, Module2, Module5, Module4];
 
 		public var stage:PalaceMuseum;
 		private var topBarLayer:Sprite;
 
-		public function init(main:Main):void
+		public function init(main:Container):void
 		{
 			this.main=main;
 			Prompt.parent=main;

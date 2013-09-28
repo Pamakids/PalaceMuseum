@@ -4,10 +4,12 @@ package views.module1.scene3
 	import com.greensock.TweenMax;
 	import com.pamakids.utils.DPIUtil;
 
-	import feathers.core.PopUpManager;
-
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+
+	import feathers.core.PopUpManager;
+
+	import models.SOService;
 
 	import starling.display.Image;
 	import starling.display.Shape;
@@ -18,6 +20,8 @@ package views.module1.scene3
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.ElasticButton;
+	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 
 	public class TwisterGame extends PalaceScene
@@ -45,14 +49,74 @@ package views.module1.scene3
 		public function TwisterGame(am:AssetManager)
 		{
 			super(am);
-//			var mStarling:Starling = Starling.current;
-//			mStarling.simulateMultitouch = true;
 		}
+
+		private var isMoved:Boolean;
+		private var hintShow:Sprite;
+		private var count:int=0;
+
+		private function onEnterFrame(e:Event):void
+		{
+			if (isMoved)
+			{
+				if (hintShow)
+					hintShow.removeFromParent(true);
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			}
+			if (count < 30 * 8)
+				count++;
+			else
+			{
+				if (!hintShow)
+				{
+					hintShow=new Sprite();
+					hintFinger=getImage("plaquehintfinger");
+					var hintArrow:Image=getImage("plaquehintarrow");
+					hintArrow.x=-Block.GAP / 2 - 15;
+					hintArrow.y=-Block.GAP / 2 - 15;
+					hintFinger.x=Block.GAP / 2;
+					hintFinger.y=Block.GAP / 2;
+					hintFinger.pivotX=hintFinger.width >> 1;
+					hintFinger.pivotY=hintFinger.height >> 1;
+					hintShow.addChild(hintArrow);
+					hintShow.addChild(hintFinger);
+					addChild(hintShow);
+					hintShow.touchable=false;
+					hintShow.visible=!hintShow;
+				}
+				else
+				{
+					hintShow.visible=!answerShow;
+					if (hintFinger.rotation >= degress6 * 30)
+					{
+						hintFinger.scaleX=hintFinger.scaleY=1;
+					}
+					else if (hintFinger.rotation <= 0)
+					{
+						hintFinger.scaleX=hintFinger.scaleY=.8;
+					}
+					hintFinger.rotation+=hintFinger.scaleX == 1 ? -degress6 : degress6;
+				}
+			}
+		}
+
+		private var degress6:Number=Math.PI / 60;
 
 		override public function dispose():void
 		{
-			this.assets=null;
+//			this.assets=null;
+//			removeChildren();
+//			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
+
+		public function dispose2():void
+		{
+			this.assets=null;
+			removeChildren();
+			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+
+		private var twistHint:String="twistHintCount";
 
 		override protected function init():void
 		{
@@ -99,12 +163,9 @@ package views.module1.scene3
 			TweenLite.delayedCall(3, shuffle);
 		}
 
-		private function onCloseTouch(e:TouchEvent):void
+		private function onCloseTouch(e:Event):void
 		{
 			if (isOver)
-				return;
-			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
-			if (!tc)
 				return;
 			PopUpManager.removePopUp(this.parent);
 		}
@@ -123,7 +184,7 @@ package views.module1.scene3
 
 		private function onTouch(event:TouchEvent):void
 		{
-			if (twisting || !readyToGo || isOver)
+			if (twisting || !readyToGo || isOver || answerShow)
 				return;
 			//得到触碰并且正在移动的点（1个或多个）
 			var touches:Vector.<Touch>=event.getTouches(stage, TouchPhase.MOVED);
@@ -184,6 +245,7 @@ package views.module1.scene3
 		{
 			if (!auto)
 			{
+				isMoved=true;
 				downPointA=downPointB=null;
 				twisting=true;
 			}
@@ -232,9 +294,8 @@ package views.module1.scene3
 
 			TweenLite.delayedCall(2, function():void
 			{
-				dispatchEvent(new Event("gameover", true));
+				dispatchEvent(new Event(PalaceGame.GAME_OVER, true));
 			});
-
 		}
 
 		private function checkAllMathed():Boolean
@@ -295,8 +356,27 @@ package views.module1.scene3
 
 		private var shape:Shape;
 
-		private var close:Image;
+		private var close:ElasticButton;
 		private var inited:Boolean;
+		private var hintFinger:Image;
+		private var _answerShow:Boolean;
+
+		public function get answerShow():Boolean
+		{
+			return _answerShow;
+		}
+
+		public function set answerShow(value:Boolean):void
+		{
+			_answerShow=value;
+			for each (var b:Block in blockArr)
+			{
+				if (b)
+					b.alpha=_answerShow ? .5 : 1;
+			}
+		}
+
+		private var hintIcon:ElasticButton;
 
 		private function shuffle():void
 		{
@@ -319,11 +399,14 @@ package views.module1.scene3
 
 				if (!close)
 				{
-					close=getImage("clock-close");
+					close=new ElasticButton(getImage("clock-close"));
 					close.x=492;
 					close.y=-181;
 					addChild(close);
-					close.addEventListener(TouchEvent.TOUCH, onCloseTouch);
+					close.addEventListener(ElasticButton.CLICK, onCloseTouch);
+					if (SOService.instance.checkHintCount(twistHint))
+						addEventListener(Event.ENTER_FRAME, onEnterFrame);
+					addHintIcon();
 				}
 				else
 				{
@@ -331,6 +414,32 @@ package views.module1.scene3
 				}
 
 			}
+		}
+
+		private function addHintIcon():void
+		{
+			hintIcon=new ElasticButton(getImage("gamehinticon"));
+			addChild(hintIcon);
+			hintIcon.x=-120;
+			hintIcon.y=-50;
+			hintIcon.addEventListener(ElasticButton.CLICK, onHintClick);
+		}
+
+		private function onHintClick(e:Event):void
+		{
+			if (answerShow)
+				return;
+			var answer:Image=getImage("gameanswer");
+			answer.pivotX=answer.width >> 1;
+			answer.pivotY=answer.height >> 1;
+			addChild(answer);
+			answer.x=150;
+			answer.y=130;
+			answerShow=true;
+			TweenLite.delayedCall(3, function():void {
+				answer.removeFromParent(true);
+				answerShow=false;
+			});
 		}
 
 		public function reset():void

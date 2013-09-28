@@ -13,6 +13,11 @@ package views.module5
 	import views.components.base.PalaceScene;
 	import views.global.TopBar;
 
+	/**
+	 * 上朝模块
+	 * 批奏折场景(批奏折/as3)
+	 * @author Administrator
+	 */
 	public class Scene52 extends PalaceScene
 	{
 		public function Scene52(am:AssetManager=null)
