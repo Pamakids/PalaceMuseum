@@ -40,7 +40,6 @@ package views.module3
 
 		private var map:Image;
 
-
 		public function Scene31(am:AssetManager=null)
 		{
 			super(am);
@@ -428,7 +427,7 @@ package views.module3
 		private function initFindGame():void
 		{
 			findGame=new FindGame(assets);
-			findGame.addEventListener(PalaceGame.GAME_RESTART, onFindGamePlayed)
+			findGame.addEventListener(PalaceGame.GAME_OVER, onFindGamePlayed)
 			addChild(findGame);
 		}
 

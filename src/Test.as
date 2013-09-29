@@ -13,6 +13,7 @@ package
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
+	import views.Module2;
 	import views.Module5;
 	import views.components.LionMC;
 	import views.components.Prompt;
@@ -23,7 +24,7 @@ package
 	public class Test extends Container
 	{
 		private var testingModule:Sprite;
-		private var testingModuleClass:Class=Module5;
+		private var testingModuleClass:Class=Module2;
 
 		public function Test()
 		{
@@ -50,8 +51,8 @@ package
 //			testUserCenter();
 //			Map.show();
 //			return;
-//			debugInit();
-			Map.show();
+			debugInit();
+//			Map.show();
 		}
 
 		private function debugInit():void

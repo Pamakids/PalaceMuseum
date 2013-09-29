@@ -558,7 +558,10 @@ package views.module4.scene42
 			endHolder.addChild(rsBtn);
 
 			if (fromCenter)
+			{
 				closeBtn.touchable=closeBtn.visible=true;
+				setChildIndex(closeBtn, numChildren - 1);
+			}
 			else
 			{
 				var nextShowBtn:ElasticButton=new ElasticButton(getImage("startShow"));
@@ -570,13 +573,12 @@ package views.module4.scene42
 			}
 
 			function closeCallBack():void {
-				addChild(endHolder);
 				removeChild(gameHolder);
+				addChild(endHolder);
 			}
 
 			function openCallback():void {
 				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
-				closeBtn.visible=closeBtn.touchable=false;
 				if (isRecord)
 					showRecord();
 			}

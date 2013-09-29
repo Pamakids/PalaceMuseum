@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:c9dcaaf159979d15620df7e7a274c3b2$ -->
+<TextureAtlas imagePath="game31.png">
+    <SubTexture name="game-record" x="701" y="567" width="201" height="201"/>
+    <SubTexture name="jigsaw-name" x="2" y="551" width="697" height="274"/>
+    <SubTexture name="menu-end" x="2" y="2" width="722" height="547"/>
+    <SubTexture name="menu-hard-down" x="726" y="2" width="220" height="115"/>
+    <SubTexture name="menu-hard" x="726" y="233" width="210" height="107" frameX="0" frameY="-6" frameWidth="220" frameHeight="115"/>
+    <SubTexture name="menu-simple-down" x="726" y="119" width="212" height="112"/>
+    <SubTexture name="menu-simple" x="726" y="342" width="202" height="112" frameX="-8" frameY="0" frameWidth="212" frameHeight="112"/>
+    <SubTexture name="menu-timebar" x="726" y="456" width="202" height="109"/>
+    <SubTexture name="restart-light" x="2" y="827" width="140" height="135"/>
+    <SubTexture name="restart" x="144" y="827" width="120" height="121" frameX="-8" frameY="-6" frameWidth="140" frameHeight="135"/>
+</TextureAtlas>
