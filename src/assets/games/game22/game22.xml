@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:3b89d6ee7d10190a202ca1e0035152b9$ -->
+<TextureAtlas imagePath="game22.png">
+    <SubTexture name="game-record" x="2" y="1463" width="201" height="201"/>
+    <SubTexture name="menu-1-bar" x="1444" y="1025" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-1-block" x="200" y="736" width="196" height="81"/>
+    <SubTexture name="menu-10-bar" x="1444" y="932" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-10-block" x="2" y="653" width="196" height="81"/>
+    <SubTexture name="menu-11-bar" x="1444" y="839" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-11-block" x="200" y="653" width="196" height="81"/>
+    <SubTexture name="menu-12-bar" x="1444" y="746" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-12-block" x="2" y="570" width="196" height="81"/>
+    <SubTexture name="menu-2-bar" x="1444" y="653" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-2-block" x="200" y="570" width="196" height="81"/>
+    <SubTexture name="menu-3-bar" x="1444" y="560" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-3-block" x="2" y="1013" width="196" height="81"/>
+    <SubTexture name="menu-4-bar" x="1471" y="467" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-4-block" x="398" y="930" width="196" height="81"/>
+    <SubTexture name="menu-5-bar" x="1471" y="374" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-5-block" x="398" y="847" width="196" height="81"/>
+    <SubTexture name="menu-6-bar" x="1471" y="281" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-6-block" x="398" y="764" width="196" height="81"/>
+    <SubTexture name="menu-7-bar" x="1471" y="188" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-7-block" x="398" y="681" width="196" height="81"/>
+    <SubTexture name="menu-8-bar" x="1471" y="95" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-8-block" x="200" y="1230" width="196" height="81"/>
+    <SubTexture name="menu-9-bar" x="1471" y="2" width="565" height="91" frameX="0" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-9-block" x="2" y="1230" width="196" height="81"/>
+    <SubTexture name="menu-area" x="2" y="2" width="743" height="566"/>
+    <SubTexture name="menu-check" x="1444" y="1118" width="565" height="83" frameX="-2" frameY="0" frameWidth="567" frameHeight="91"/>
+    <SubTexture name="menu-end" x="747" y="2" width="722" height="547"/>
+    <SubTexture name="menu-hard-down" x="1444" y="1203" width="220" height="115"/>
+    <SubTexture name="menu-hard" x="1666" y="1317" width="210" height="107" frameX="0" frameY="-6" frameWidth="220" frameHeight="115"/>
+    <SubTexture name="menu-hint" x="747" y="551" width="695" height="677" frameX="-1" frameY="0" frameWidth="697" frameHeight="677"/>
+    <SubTexture name="menu-rope" x="2038" y="2" width="6" height="28"/>
+    <SubTexture name="menu-simple-down" x="1666" y="1203" width="212" height="112"/>
+    <SubTexture name="menu-simple" x="2" y="1320" width="202" height="112" frameX="-8" frameY="0" frameWidth="212" frameHeight="112"/>
+    <SubTexture name="menu-timebar" x="398" y="570" width="202" height="109"/>
+    <SubTexture name="restart-light" x="1880" y="1203" width="140" height="135"/>
+    <SubTexture name="restart" x="1878" y="1340" width="120" height="121" frameX="-8" frameY="-6" frameWidth="140" frameHeight="135"/>
+</TextureAtlas>

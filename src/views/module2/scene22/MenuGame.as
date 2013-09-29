@@ -110,8 +110,8 @@ package views.module2.scene22
 			startSP.addChild(hbHolder);
 			hbHolder.addEventListener(TouchEvent.TOUCH, onHBTouch);
 
-			startBtn=new ElasticButton(getImage("menu-start"));
-			startBtn.shadow=getImage("menu-start-down");
+			startBtn=new ElasticButton(getImage("game-start"));
+			startBtn.shadow=getImage("game-start-down");
 			startBtn.x=891;
 			startBtn.y=666;
 			startSP.addChild(startBtn);
