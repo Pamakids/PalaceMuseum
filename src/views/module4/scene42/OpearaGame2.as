@@ -118,8 +118,8 @@ package views.module4.scene42
 					if (rope)
 					{
 						rope.graphics.clear();
-						rope.graphics.lineTexture(10, ropeTexture);
-//						rope.graphics.lineStyle(3, 0x99ccff);
+//						rope.graphics.lineTexture(10, ropeTexture);
+						rope.graphics.lineStyle(3, 0x99ccff);
 						rope.graphics.moveTo(body.stagePt.x - 5, -200);
 						rope.graphics.lineTo(body.x - 5, body.y);
 					}
