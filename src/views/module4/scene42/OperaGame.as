@@ -84,11 +84,11 @@ package views.module4.scene42
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
 			closeBtn.visible=closeBtn.touchable=false;
 
-			if (!fromCenter && scene)
-				TweenLite.delayedCall(.5, function():void {
+			TweenLite.delayedCall(.5, function():void {
+				if (!fromCenter) {
 					var e:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.OPEN);
-					scene.onOperaSwitch(e);
-				});
+					scene.onOperaSwitch(e);}
+			});
 //			dispatchEvent(e);
 		}
 
@@ -249,8 +249,8 @@ package views.module4.scene42
 					if (rope)
 					{
 						rope.graphics.clear();
-						rope.graphics.lineTexture(3, ropeTexture);
-//						rope.graphics.lineStyle(3, 0x99ccff);
+//						rope.graphics.lineTexture(3, ropeTexture);
+						rope.graphics.lineStyle(3, 0x99ccff);
 						rope.graphics.moveTo(body.stagePt.x, -200);
 						rope.graphics.lineTo(body.x, body.y);
 					}
