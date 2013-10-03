@@ -13,7 +13,7 @@ package views
 	{
 		public function Module2(am:AssetManager=null)
 		{
-			sceneArr=[Scene21,Scene22,Scene23];
+			sceneArr=[Scene21, Scene22, Scene23];
 
 			Q1="什么是“传膳”？"
 			A1="皇帝吃饭称为“传膳”或“用膳”，没有固定地点，就在休息、办公的地方放桌子、摆盘子。"
