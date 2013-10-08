@@ -4,8 +4,12 @@ package views.module1
 	import com.greensock.TweenMax;
 	import com.pamakids.palace.utils.SPUtils;
 
+	import flash.display.MovieClip;
+	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+
+	import controllers.MC;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -62,7 +66,7 @@ package views.module1
 
 		private var okEff:Sprite;
 
-		private var eunuch:Sprite;
+		private var eunuch:MovieClip;
 
 		/**
 		 *
@@ -314,18 +318,40 @@ package views.module1
 		{
 			TweenLite.to(okEff, 1, {alpha: 0, onComplete: function():void
 			{
-				eunuch=new Sprite();
-				eunuch.addChild(getImage("eunuch11"));
-				SPUtils.registSPCenter(eunuch, 5);
-				addChild(eunuch);
-				eunuch.x=1150;
-				eunuch.y=530;
+//				eunuch=new Sprite();
+//				eunuch.addChild(getImage("eunuch11"));
+//				SPUtils.registSPCenter(eunuch, 5);
+//				addChild(eunuch);
+				eunuch=new Eunuch();
+				eunuch.x=1024;
+				eunuch.y=350;
 
-				TweenLite.to(eunuch, 1, {x: 800});
-
-				sceneOver();
-
+				MC.instance.addChild(eunuch);
+				eunuch.play();
+				eunuch.addEventListener(Event.FRAME_CONSTRUCTED, onPlayMC);
+				TweenLite.to(eunuch, 6, {x: 780, onComplete: sceneOver});
+//				sceneOver();
 			}});
+		}
+
+		protected function onPlayMC(event:Event):void
+		{
+			if (eunuch.currentFrame == eunuch.totalFrames)
+			{
+				eunuch.stop();
+				eunuch.removeEventListener(Event.FRAME_CONSTRUCTED, onPlayMC);
+			}
+		}
+
+		override public function dispose():void
+		{
+			super.dispose();
+			if (eunuch)
+			{
+				eunuch.stop();
+				MC.instance.removeChild(eunuch);
+				eunuch=null;
+			}
 		}
 
 		//显示提示气泡

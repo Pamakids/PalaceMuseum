@@ -113,7 +113,6 @@ package views.module2.scene23
 			initInfo();
 
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 
 		private function initInfo():void
@@ -245,12 +244,14 @@ package views.module2.scene23
 				playHand(i);
 
 				dish.tweenMove(function():void {
+					dish.addCount();
 					dishArr[i]=dish;
 					dish.addEventListener(TouchEvent.TOUCH, onDishTouch);
 				})
 			}
 			else
 			{
+				dish.addCount();
 				dish.addEventListener(TouchEvent.TOUCH, onDishTouch);
 				dishArr[i]=dish;
 			}
@@ -289,13 +290,6 @@ package views.module2.scene23
 		private function getPoison():Boolean
 		{
 			return Math.random() > .8;
-		}
-
-		private function onTouch(e:TouchEvent):void
-		{
-			var tc:Touch=e.getTouch(stage);
-			if (!tc)
-				return;
 		}
 
 		private function onDishTouch(e:TouchEvent):void
@@ -409,11 +403,16 @@ package views.module2.scene23
 
 			for each (var _dish:Dish in dishArr)
 			{
-				if (_dish && _dish.isFlying)
+				if (_dish)
 				{
-					_dish.x+=_dish.speedX;
-					_dish.y+=_dish.speedY;
-					checkArea(_dish);
+					if (_dish.isFlying)
+					{
+						_dish.x+=_dish.speedX;
+						_dish.y+=_dish.speedY;
+						checkArea(_dish);
+					}
+					else
+						_dish.countDown();
 				}
 			}
 		}
@@ -738,11 +737,13 @@ package views.module2.scene23
 			upHand.y=upY;
 			gameSP.addChild(upHand);
 			upHand.rotation=Math.PI;
+			upHand.touchable=false;
 
 			downHand=new Sprite();
 			downHand.addChild(getImage("dish-hand"));
 			downHand.y=downY;
 			gameSP.addChild(downHand);
+			downHand.touchable=false;
 
 			dishHolder=new Sprite();
 			gameSP.addChild(dishHolder);
