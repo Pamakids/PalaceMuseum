@@ -3,6 +3,7 @@ package controllers
 	import com.pamakids.utils.Singleton;
 
 	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
 
 	import feathers.core.PopUpManager;
 
@@ -74,6 +75,26 @@ package controllers
 		public function removeChild(displayObject:flash.display.DisplayObject):void
 		{
 			stage.removeChild(displayObject);
+		}
+
+		public function hideMC():void
+		{
+			for (var i:int=0; i < MC.instance.stage.numChildren; i++)
+			{
+				var obj:flash.display.DisplayObject=stage.getChildAt(i);
+				if (obj is MovieClip)
+					obj.visible=false;
+			}
+		}
+
+		public function showMC():void
+		{
+			for (var i:int=0; i < MC.instance.stage.numChildren; i++)
+			{
+				var obj:flash.display.DisplayObject=stage.getChildAt(i);
+				if (obj is MovieClip)
+					obj.visible=true;
+			}
 		}
 
 		public function get moduleIndex():int

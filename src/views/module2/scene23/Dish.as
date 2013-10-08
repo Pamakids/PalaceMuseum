@@ -15,6 +15,7 @@ package views.module2.scene23
 		private var _pt:Point;
 		public var speedX:Number;
 		public var speedY:Number;
+		public var isBad:Boolean;
 
 		public function get pt():Point
 		{
@@ -36,5 +37,17 @@ package views.module2.scene23
 		public function Dish()
 		{
 		}
+
+		public function countDown():void
+		{
+
+		}
+
+		public function addCount():void
+		{
+
+		}
+
+		private var count:int=80;
 	}
 }

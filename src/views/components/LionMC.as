@@ -6,49 +6,53 @@ package views.components
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Stage;
-	import flash.events.Event;
-	import flash.events.MouseEvent;
 
 	import controllers.MC;
 
+	/**
+	 *
+	 * @author Administrator
+	 */
 	public class LionMC extends Sprite
 	{
 		public function LionMC()
 		{
-			lion=new LionTalk();
-			lion.scaleX=lion.scaleY=.5;
-			this.addChild(lion);
 			MC.instance.stage.addChild(this);
-			lion.addEventListener(Event.FRAME_CONSTRUCTED, onMCPlaying);
-			mcWidth=lion.width * .5;
-			mcHeight=lion.height * .5;
-			trace(lion.width, lion.height)
 			this.visible=false;
-			lion.stop();
-//			addEventListener(MouseEvent.CLICK, onClick);
 		}
 
-		protected function onClick(event:MouseEvent):void
+		private function showLion(type:int=0):void
 		{
-			if (p)
-				p.playHide();
-			else
-				isSayingOver=true;
-		}
-
-		protected function onMCPlaying(event:Event):void
-		{
-			if (isSayingOver && lion.currentFrame == lion.totalFrames)
+			if (lion)
 			{
 				lion.stop();
-				isSayingOver=false;
-				playHide();
+				removeChild(lion);
+				lion=null;
 			}
+			lion=new mcArr[type];
+			lion.scaleX=lion.scaleY=.5;
+			mcWidth=lion.width * .5;
+			mcHeight=lion.height * .5;
+			lion.stop();
+			trace(lion.width, lion.height)
+			this.addChild(lion);
+//			lion.addEventListener(Event.FRAME_CONSTRUCTED, onMCPlaying);
 		}
+
+//		protected function onMCPlaying(event:Event):void
+//		{
+//			if (isSayingOver && lion.currentFrame == lion.totalFrames)
+//			{
+//				lion.stop();
+//				isSayingOver=false;
+//				playHide();
+//			}
+//		}
 
 		private function playHide():void
 		{
-			tl.reverse();
+			if (tl)
+				tl.reverse();
 //			TweenLite.to(this, .7, {alpha: 0, onComplete: function():void {
 //				if (callBack != null)
 //					callBack();
@@ -69,14 +73,47 @@ package views.components
 		private var mcWidth:Number;
 
 		private var lion:MovieClip;
-		private var isSayingOver:Boolean;
+		private var _isSayingOver:Boolean;
+
+		public function get isSayingOver():Boolean
+		{
+			return _isSayingOver;
+		}
+
+		/**
+		 *
+		 * @param value
+		 */
+		public function set isSayingOver(value:Boolean):void
+		{
+			_isSayingOver=value;
+			if (value)
+			{
+				if (lion)
+					lion.stop();
+				isSayingOver=false;
+				playHide();
+			}
+		}
+
 		private var callBack:Function;
 
 		private var tl:TweenMax;
 		private var mcHeight:Number;
+		private var mcArr:Array=[LionTalk, LionHappy, LionUnHappy, LionNaughty];
 
-		public function say(content:String, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20):void
+		/**
+		 *
+		 * @param content
+		 * @param type 0:说话 1:开心 2:不满 3:调皮
+		 * @param _x
+		 * @param _y
+		 * @param _callBack
+		 * @param fontSize
+		 */
+		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20):void
 		{
+			showLion(_type);
 			trace('lion say:', content);
 			visible=true;
 			if (!_x && !_y)
@@ -106,10 +143,14 @@ package views.components
 			}});
 		}
 
+		/**
+		 *
+		 */
 		public function hide():void
 		{
 			visible=false;
-			p.visible=false;
+			if (p)
+				p.visible=false;
 		}
 	}
 }

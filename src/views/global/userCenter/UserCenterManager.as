@@ -1,10 +1,14 @@
 package views.global.userCenter
 {
+	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
 	import flash.filesystem.File;
 	import flash.utils.Dictionary;
-	
+
+	import controllers.MC;
+
 	import models.SOService;
-	
+
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
@@ -40,12 +44,13 @@ package views.global.userCenter
 			}
 			else
 			{
-				if(_userCenter && _userCenter.parent)
+				if (_userCenter && _userCenter.parent)
 					return;
 				if (!_userCenter)
 					initUserCenter();
 				_userCenterContainer.addChild(_userCenter);
 				_userCenter.showIndex(index);
+				MC.instance.hideMC();
 			}
 		}
 
@@ -55,6 +60,7 @@ package views.global.userCenter
 			if (_userCenter)
 				_userCenter.removeFromParent(true);
 			_userCenter=null;
+			MC.instance.showMC();
 		}
 
 
