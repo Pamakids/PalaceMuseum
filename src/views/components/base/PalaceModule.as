@@ -20,6 +20,7 @@ package views.components.base
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
+	import views.components.LionMC;
 	import views.components.Prompt;
 
 	public class PalaceModule extends Container
@@ -38,6 +39,7 @@ package views.components.base
 			moduleName=StringUtils.getClassName(this);
 			assetManager=am;
 			super(width, height);
+			LionMC.instance.hide();
 		}
 
 		protected var load:Sprite;
