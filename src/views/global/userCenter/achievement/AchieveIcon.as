@@ -1,10 +1,16 @@
 package views.global.userCenter.achievement
 {
+	import flash.geom.Point;
+	
 	import feathers.core.FeathersControl;
 	
 	import models.FontVo;
 	
 	import starling.display.Image;
+	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	
 	import views.global.userCenter.UserCenterManager;
@@ -14,7 +20,7 @@ package views.global.userCenter.achievement
 		private var _state:int;
 		/**
 		 * 成就图标
-		 * @param size
+		 * @param state
 		 * 0 小
 		 * 1 大
 		 */		
@@ -23,19 +29,26 @@ package views.global.userCenter.achievement
 			this._state = state;
 		}
 		
-		private var _name:TextField;
 		override protected function draw():void
 		{
-			if(_state == 0)
-				image.texture = (_data.achidata[2]==0)?UserCenterManager.getTexture("achievement_card_unfinish"):UserCenterManager.getTexture("achievement_card_finish");
-			else
-				image.texture = (_data.achidata[2]==0)?UserCenterManager.getTexture("achievement_card_unfinish_big"):UserCenterManager.getTexture("achievement_card_finish_big");
-			_name.text = _data.achidata[0];
-			_name.color = (_data.achidata[2]==0)?0xfffcee:0xfffe185;
-			if(_content)
+			if(_data)
 			{
-				_content.text = _data.achidata[1];
-				_content.color = (_data.achidata[2]==0)?0xfffcee:0xfffe185;
+				if(_state == 0)
+					image.texture = (_data.achidata[2]==0)?UserCenterManager.getTexture("achievement_card_unfinish"):UserCenterManager.getTexture("achievement_card_finish");
+				else
+					image.texture = (_data.achidata[2]==0)?UserCenterManager.getTexture("achievement_card_unfinish_big"):UserCenterManager.getTexture("achievement_card_finish_big");
+				_name.text = _data.achidata[0];
+				_name.color = (_data.achidata[2]==0)?0xfffcee:0xfffe185;
+				if(_content)
+				{
+					_content.text = _data.achidata[1];
+					_content.color = (_data.achidata[2]==0)?0xfffcee:0xfffe185;
+				}
+				this.visible = true;
+			}
+			else
+			{
+				this.visible = false;
 			}
 		}
 		
@@ -44,6 +57,29 @@ package views.global.userCenter.achievement
 			initBackground();
 			initName();
 			initContent();
+			
+			this.addEventListener(TouchEvent.TOUCH, onTouch);
+		}
+		
+		private var begin:Point
+		private function onTouch(e:TouchEvent):void
+		{
+			var touch:Touch = e.getTouch(this);
+			var point:Point;
+			if(touch)
+			{
+				switch(touch.phase)
+				{
+					case TouchPhase.BEGAN:
+						begin = touch.getLocation(this);
+						break;
+					case TouchPhase.ENDED:
+						point = touch.getLocation(this);
+						if(Math.sqrt((begin.x - point.x)*(begin.x - point.x) + (begin.y - point.y)*(begin.y - point.y)) <= 20)
+							dispatchEvent(new Event(Event.TRIGGERED));
+						break;
+				}
+			}
 		}
 		
 		private var _content:TextField;
@@ -58,6 +94,7 @@ package views.global.userCenter.achievement
 			_content.touchable = false;
 		}
 		
+		private var _name:TextField;
 		private function initName():void
 		{
 			if(_state == 0)
@@ -88,6 +125,8 @@ package views.global.userCenter.achievement
 		
 		override public function dispose():void
 		{
+			if(this.hasEventListener(TouchEvent.TOUCH))
+				this.removeEventListener(TouchEvent.TOUCH, onTouch);
 			if(_name)
 				_name.removeFromParent(true);
 			if(image)
@@ -99,8 +138,10 @@ package views.global.userCenter.achievement
 		
 		
 		/**
-		 * id:	""
-		 * achidata: 	["name", "content", ifCollected]
+		 * {
+		 * 		id:	""
+		 * 		achidata: 	["name", "content", ifCollected]
+		 * }
 		 */
 		private var _data:Object;
 		public function set data(value:Object):void

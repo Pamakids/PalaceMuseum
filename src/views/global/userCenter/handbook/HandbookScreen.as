@@ -37,6 +37,10 @@ package views.global.userCenter.handbook
 			this.addChild( cacheR );
 			cacheR.x = viewWidth / 2;
 			cacheL.touchable = cacheR.touchable = false;
+			
+			//test
+			cacheL.width = cacheR.width = viewWidth / 2;
+			cacheL.height = cacheR.height = viewHeight;
 		}
 		
 		override public function dispose():void
@@ -69,6 +73,7 @@ package views.global.userCenter.handbook
 					if (ratio == 1.0)
 					{
 						loadAssetsComplete();
+						trace("loadComplete");
 					}
 				});
 				return false;

@@ -34,7 +34,7 @@ package
 
 		public function Main()
 		{
-//			SOService.instance.clear();
+			SOService.instance.clear();
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
@@ -55,11 +55,11 @@ package
 		override protected function init():void
 		{
 //			testFont();
-//			testUserCenter();
+			testUserCenter();
 //			Map.show();
 //			return;
 //			debugInit();
-			Map.show();
+//			Map.show();
 		}
 
 		private function debugInit():void
