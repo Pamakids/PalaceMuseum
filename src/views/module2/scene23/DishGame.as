@@ -230,9 +230,7 @@ package views.module2.scene23
 			var dish:Dish=new Dish();
 			var img:Image=getImage("dish" + crtdataArr[i]);
 			dish.index=i;
-			dish.addChild(img);
-			dish.pivotX=img.width >> 1;
-			dish.pivotY=img.height >> 1;
+			dish.addContent(img);
 			dish.pt=posArr[i];
 			dish.isPoison=getPoison();
 

@@ -15,6 +15,8 @@ package views.global.userCenter
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
+	import views.global.TopBar;
+
 	/**
 	 * 用户中心管理类
 	 * @author Administrator
@@ -61,6 +63,7 @@ package views.global.userCenter
 				_userCenter.removeFromParent(true);
 			_userCenter=null;
 			MC.instance.showMC();
+			TopBar.enable=true;
 		}
 
 
