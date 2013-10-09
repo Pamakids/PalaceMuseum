@@ -24,9 +24,9 @@ package views.module1
 
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
-	import views.module1.scene2.BoxCellRenderer;
-	import views.module1.scene2.Cloth;
-	import views.module1.scene2.ClothPuzzle;
+	import views.module1.scene12.BoxCellRenderer;
+	import views.module1.scene12.Cloth;
+	import views.module1.scene12.ClothPuzzle;
 
 	/**
 	 * 早起模块

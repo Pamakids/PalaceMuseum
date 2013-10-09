@@ -53,7 +53,6 @@ package views.module5
 		{
 			super.dispose();
 			acc.removeEventListener(AccelerometerEvent.UPDATE, onUpdate);
-//			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 
 		private var shakeHintCount:String="shakeHintCount";
@@ -64,11 +63,15 @@ package views.module5
 
 		private function onEnterFrame(e:Event):void
 		{
-			if (isMoved && (leftHit || rightHit))
+			if (isMoved || (leftHit || rightHit))
 			{
 				if (hintShow)
+				{
+					hintShow.removeChildren();
 					hintShow.removeFromParent(true);
+				}
 				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+				return;
 			}
 			if (count < 30 * 8)
 				count++;
@@ -76,7 +79,10 @@ package views.module5
 			{
 				shakeCount++;
 				if (shakeCount >= 30 * 5)
+				{
 					isMoved=true;
+					return;
+				}
 				if (!hintShow)
 				{
 					hintShow=new Sprite();
@@ -91,18 +97,18 @@ package views.module5
 				}
 				else
 				{
-					if (hintFinger.rotation >= degress6 * 5)
+					if (hintFinger.rotation >= degress2 * 15)
 						shakeReverse=true;
-					else if (hintFinger.rotation <= -degress6 * 5)
+					else if (hintFinger.rotation <= -degress2 * 15)
 						shakeReverse=false;
-					hintFinger.rotation+=shakeReverse ? -degress6 : degress6;
+					hintFinger.rotation+=shakeReverse ? -degress2 : degress2;
 				}
 			}
 		}
 
 		private var shakeCount:int=0;
 		private var shakeReverse:Boolean;
-		private var degress6:Number=Math.PI / 60;
+		private var degress2:Number=Math.PI / 180;
 
 		protected function onUpdate(event:AccelerometerEvent):void
 		{

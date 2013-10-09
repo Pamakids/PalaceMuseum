@@ -171,5 +171,10 @@ package controllers
 			main.addChild(topBarLayer);
 			TopBar.parent=topBarLayer;
 		}
+
+		public function set contentEnable(value:Boolean):void
+		{
+			contentLayer.touchable=value;
+		}
 	}
 }
