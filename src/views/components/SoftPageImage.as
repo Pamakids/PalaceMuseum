@@ -3,6 +3,7 @@ package views.components
 	import flash.geom.Point;
 	
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	import starling.utils.deg2rad;
@@ -32,11 +33,13 @@ package views.components
 		 */		
 		public function SoftPageImage(texture:Texture, bookWidth:Number, bookHeight:Number)
 		{
+			originalTexture = texture;
 			super(texture);
 			this.bookWidth = bookWidth;
 			this.bookHeight = bookHeight;
 		}
-		
+		/** 原本页纹理 */		
+		public var originalTexture:Texture;
 		/**新一页纹理*/
 		public var anotherTexture:Texture;
 		
@@ -71,14 +74,14 @@ package views.components
 		 * @param leftToRight
 		 * 
 		 */		
-		public function setLocation(render:RenderTexture, progress:Number, leftToRight:Boolean):void
+		public function setLocation(render:RenderTexture, progress:Number, pageUp:Boolean):void
 		{
 			var radius:Number;
 			var angle:Number;		//拖拽点相对于圆心的旋转角度
 			var degAngle:Number;	//angle对应的弧度值
 			var tempAngle:Number	//_edgePointCopy相对于圆心的旋转角度
 			var degTemp:Number;
-			if(leftToRight)
+			if(pageUp)
 			{
 				angle = -180 + progress*180;
 				degAngle = deg2rad( angle );
@@ -143,17 +146,20 @@ package views.components
 				}
 			}
 			
-			createView(render, leftToRight);
+			createView(render, pageUp);
 		}
 		
-		private function createView(render:RenderTexture, leftToRight:Boolean):void
+		private function createView(render:RenderTexture, pageUp:Boolean):void
 		{
-			if(leftToRight)
+			texture = originalTexture;
+			if(pageUp)
 			{
 				if(currentPointCount == 3)
 				{
 					mVertexData.setPosition(0, 0, 0);
+					mVertexData.setTexCoords(0, 0, 0);
 					mVertexData.setPosition(1, bookWidth/2, 0);
+					mVertexData.setTexCoords(1, 1, 0);
 					mVertexData.setPosition(2, 0, _edgePointCopy.y);
 					mVertexData.setTexCoords(2, 0, _edgePointCopy.y/bookHeight);
 					mVertexData.setPosition(3, bookWidth/2, _edgePointCopy.y);
@@ -178,6 +184,7 @@ package views.components
 					mVertexData.setTexCoords(2, 1-_edgePoint.x*2/bookWidth, 1);
 					mVertexData.setPosition(3, _dragPoint.x, _dragPoint.y);
 					render.draw( this );
+					readjustSize();
 				}else if(currentPointCount == 4)
 				{
 					mVertexData.setPosition(0, _edgePointCopy.x, 0);
@@ -203,7 +210,9 @@ package views.components
 				if(currentPointCount == 3)
 				{
 					mVertexData.setPosition(0, bookWidth/2, 0);
+					mVertexData.setTexCoords(0, 0, 0);
 					mVertexData.setPosition(1, bookWidth, 0);
+					mVertexData.setTexCoords(1, 1, 0);
 					mVertexData.setPosition(2, bookWidth/2, _edgePointCopy.y);
 					mVertexData.setTexCoords(2, 0, _edgePointCopy.y/bookHeight);
 					mVertexData.setPosition(3, bookWidth, _edgePointCopy.y);
@@ -228,6 +237,7 @@ package views.components
 					mVertexData.setPosition(3, _edgePoint.x, bookHeight);
 					mVertexData.setTexCoords(3, 1 - (_edgePoint.x - bookWidth/2)*2/bookWidth, 1);
 					render.draw( this );
+					readjustSize();
 				}
 				else if(currentPointCount == 4)
 				{
@@ -250,6 +260,28 @@ package views.components
 				}
 			}
 			
+//			test(render);
 		}
+		
+		//test----------------------------------------------------------------------------------
+		private var quad:Quad;
+		private function test(render:RenderTexture):void
+		{
+			if(!quad)
+				quad = new Quad(20, 20, 0x336699);
+			quad.x = _edgePoint.x - 10;
+			quad.y = _edgePoint.y - 10 + this.y;
+			render.draw(quad);
+			quad.x = _edgePointCopy.x - 10;
+			quad.y = _edgePointCopy.y - 10 + this.y;
+			render.draw(quad);
+			quad.x = _dragPoint.x - 10;
+			quad.y = _dragPoint.y - 10 + this.y;
+			render.draw(quad);
+			quad.x = _dragPointCopy.x - 10;
+			quad.y = _dragPointCopy.y - 10 + this.y;
+			render.draw(quad);
+		}
+		//test----------------------------------------------------------------------------------
 	}
 }

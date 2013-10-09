@@ -40,7 +40,6 @@ package views.module3
 
 		private var map:Image;
 
-
 		public function Scene31(am:AssetManager=null)
 		{
 			super(am);
@@ -115,9 +114,12 @@ package views.module3
 		private var hintShow:Sprite;
 		private var count:int=0;
 		private var hintFinger:Image;
+		private var inGame:Boolean;
 
 		private function onEnterFrame(e:Event):void
 		{
+			if (inGame)
+				return;
 			if (isMoved)
 			{
 				if (hintShow)
@@ -410,6 +412,7 @@ package views.module3
 			mapGame.addEventListener(PalaceGame.GAME_OVER, onGamePlayed)
 			mapGame.addEventListener(PalaceGame.GAME_RESTART, onGameRestart)
 			addChild(mapGame);
+			inGame=true;
 		}
 
 		private function onGamePlayed(e:Event):void
@@ -423,13 +426,15 @@ package views.module3
 			mapGame=null;
 			gamePlayed=true;
 			checkOver();
+			inGame=false;
 		}
 
 		private function initFindGame():void
 		{
 			findGame=new FindGame(assets);
-			findGame.addEventListener(PalaceGame.GAME_RESTART, onFindGamePlayed)
+			findGame.addEventListener(PalaceGame.GAME_OVER, onFindGamePlayed)
 			addChild(findGame);
+			inGame=true;
 		}
 
 		private function onFindGamePlayed(e:Event):void
@@ -445,6 +450,7 @@ package views.module3
 			findGame=null;
 			finded=true;
 			checkOver();
+			inGame=false;
 		}
 
 		private function onGameRestart(e:Event):void

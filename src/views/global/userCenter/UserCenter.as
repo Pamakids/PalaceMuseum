@@ -1,6 +1,7 @@
 package views.global.userCenter
 {
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	import feathers.controls.Button;
 	import feathers.controls.ScreenNavigator;
@@ -233,28 +234,28 @@ package views.global.userCenter
 			}
 			
 			var target:int = _tabBar.selectedIndex;
-//			//从原场景中获取纹理
-//			(_navigator.activeScreen as BaseScreen).getScreenTexture(crtRender);
-//			textureL = Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
-//			textureR = Texture.fromTexture(crtRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
-//			animation.setFixPageTexture(textureL, textureR);
-//			animation.visible = true;
-//			//使动画可见以遮挡目标页面
+			//从原场景中获取纹理
+			(_navigator.activeScreen as BaseScreen).getScreenTexture(crtRender);
+			textureL = Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+			textureR = Texture.fromTexture(crtRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+			animation.setFixPageTexture(textureL, textureR);
+			animation.visible = true;
+			//使动画可见以遮挡目标页面
 			_navigator.showScreen(screenNames[target]);
-//			//将目标场景加载至舞台，加载完成后获取纹理
-//			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
-//			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
-//			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
-//			
-//			pageUp = prevIndex > target;
-//			//根据动画方向重新设置四个纹理顺序
-//			if(pageUp)
-//				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
-//			else
-//				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
-//			animation.start( pageUp );
-//			//修改prevIndex
-//			prevIndex = target;
+			//将目标场景加载至舞台，加载完成后获取纹理
+			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
+			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+			
+			pageUp = prevIndex > target;
+			//根据动画方向重新设置四个纹理顺序
+			if(pageUp)
+				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
+			else
+				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
+			animation.start( pageUp );
+			//修改prevIndex
+			prevIndex = target;
 		}
 		
 		private function animationCompleted():void
@@ -312,11 +313,11 @@ package views.global.userCenter
 		private function handbookTurnToPage(pageIndex:int):void
 		{
 			//从原场景中获取纹理
-//			(_navigator.activeScreen as BaseScreen).getScreenTexture(crtRender);
-//			textureL = Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
-//			textureR = Texture.fromTexture(crtRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
-//			animation.setFixPageTexture(textureL, textureR);
-//			animation.visible = true;
+			(_navigator.activeScreen as BaseScreen).getScreenTexture(crtRender);
+			textureL = Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+			textureR = Texture.fromTexture(crtRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+			animation.setFixPageTexture(textureL, textureR);
+			animation.visible = true;
 			
 			if(!(_navigator.activeScreen as HandbookScreen).hasAssets(pageIndex))
 			{
@@ -331,19 +332,19 @@ package views.global.userCenter
 		{
 			(_navigator.activeScreen as HandbookScreen).updateView(crtPage);
 			//将目标场景加载至舞台，加载完成后获取纹理
-//			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
-//			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
-//			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
-//			
-//			if(pageUp)		//pageUp
-//			{
-//				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
-//			}
-//			else						//pageDown
-//			{
-//				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
-//			}
-//			animation.start( pageUp );
+			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
+			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+			
+			if(pageUp)		//pageUp
+			{
+				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
+			}
+			else						//pageDown
+			{
+				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
+			}
+			animation.start( pageUp );
 		}
 
 		/**

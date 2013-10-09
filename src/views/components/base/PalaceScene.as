@@ -10,7 +10,6 @@ package views.components.base
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.pamakids.palace.utils.StringUtils;
-	import com.pamakids.utils.StringUtil;
 
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
@@ -45,7 +44,7 @@ package views.components.base
 			super();
 			sceneName=StringUtils.getClassName(this);
 			Prompt.parent=this;
-			Prompt.addAssetManager(am);
+//			Prompt.addAssetManager(am);
 			this.assets=am;
 
 			if (Math.random() < 0.2)

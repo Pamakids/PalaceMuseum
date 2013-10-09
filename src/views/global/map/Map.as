@@ -177,6 +177,7 @@ package views.global.map
 		 */
 		public static function show(callback:Function=null, from:int=-1, to:int=-1, fromCenter:Boolean=false):void
 		{
+			MC.instance.hideMC();
 			showFromCenter=fromCenter;
 			var ec:Boolean=true;
 			if (from || to || callback == null)
@@ -277,7 +278,7 @@ package views.global.map
 			if (hasTask || mc.moduleIndex == -1)
 			{
 				trace('开始任务：' + tasks[i]);
-				LionMC.instance.say(tasks[i]);
+				LionMC.instance.say(tasks[i], int(Math.random() * 4));
 				if (!sos.isModuleCompleted(i))
 					showTaskHint(i);
 			}

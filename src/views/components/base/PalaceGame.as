@@ -2,6 +2,8 @@ package views.components.base
 {
 	import com.pamakids.palace.utils.StringUtils;
 
+	import controllers.MC;
+
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -33,6 +35,7 @@ package views.components.base
 		{
 			super.onStage(e);
 			TopBar.hide();
+			MC.instance.hideMC();
 		}
 
 		override protected function init():void
@@ -47,7 +50,7 @@ package views.components.base
 				this.assets=null;
 			super.dispose();
 			TopBar.show();
-
+			MC.instance.showMC();
 		}
 
 		protected function getImage(name:String):Image
