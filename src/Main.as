@@ -55,11 +55,11 @@ package
 		override protected function init():void
 		{
 //			testFont();
-//			testUserCenter();
+			testUserCenter();
 //			Map.show();
 //			return;
 //			debugInit();
-			Map.show();
+//			Map.show();
 		}
 
 		private function debugInit():void

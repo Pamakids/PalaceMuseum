@@ -2,14 +2,10 @@ package views.global.userCenter.achievement
 {
 	import controllers.DC;
 	
-	import feathers.controls.List;
-	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.PopUpManager;
-	import feathers.data.ListCollection;
-	import feathers.layout.ILayout;
-	import feathers.layout.TiledRowsLayout;
 	
 	import starling.display.Image;
+	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -29,8 +25,46 @@ package views.global.userCenter.achievement
 		{
 			initPages();
 			initDatas();
-			initList();
+			initContainer();
+			initIcons();
 		}
+		
+		private function initIcons():void
+		{
+			for(var i:int = 0;i<maxNum;i++)
+			{
+				var iconL:AchieveIcon = iconFactory(i)
+				var iconR:AchieveIcon = iconFactory(i, false)
+			}
+		}
+		private function iconFactory(index:int, left:Boolean=true):AchieveIcon
+		{
+			var icon:AchieveIcon = new AchieveIcon();
+			icon.data = left?datas[0][index]:((datas[1])?datas[1][index]:null);
+			left?containerL.addChild(icon):containerR.addChild( icon );
+			icon.x = 20 + (icon.width + 10)*(index%3);
+			icon.y = 90 + (icon.height + 60) * Math.floor( index/3 );
+			icon.addEventListener(Event.TRIGGERED, onTriggered);
+			return icon;
+		}
+		
+		private function onTriggered(e:Event):void
+		{
+			showImage((e.currentTarget as AchieveIcon).data);
+		}
+		
+		private function initContainer():void
+		{
+			containerL = new Sprite();
+			this.addChild( containerL );
+			
+			containerR = new Sprite();
+			containerR.x = viewWidth / 2;
+			this.addChild( containerR );
+		}
+		
+		private var containerL:Sprite;
+		private var containerR:Sprite;
 		
 		private function initPages():void
 		{
@@ -41,58 +75,55 @@ package views.global.userCenter.achievement
 			image.x = this.viewWidth/2;
 		}
 		
-		private function layoutFactory():ILayout
-		{
-			var layout:TiledRowsLayout = new TiledRowsLayout();
-			layout.paddingTop = 90;
-			layout.paddingLeft = 5;
-			layout.horizontalGap = 10;
-			layout.verticalGap = 50;
-			layout.useVirtualLayout = true;
-			layout.verticalAlign = TiledRowsLayout.VERTICAL_ALIGN_TOP;
-			return layout;
-		}
-		
-		private var listLeft:List;
-		private var listRight:List;
-		private function initList():void
-		{
-			listLeft = listFactory();
-			listLeft.dataProvider = new ListCollection( datas[0] );
-			this.addChild( listLeft );
-			listLeft.width = width / 2;
-			listLeft.height = height;
-			
-			listRight = listFactory();
-			this.addChild(listRight);
-			listRight.width = width / 2;
-			listRight.height = height;
-			listRight.x = width / 2;
-			if(datas.length > 1)
-			{
-				listRight.dataProvider = new ListCollection( datas[1] );
-			}
-		}
-		private function listFactory():List
-		{
-			var list:List = new List();
-			list.itemRendererFactory = function():IListItemRenderer
-			{
-				var renderer:AchieveRenderer = new AchieveRenderer();
-				renderer.width = 137;
-				renderer.height = 106;
-				renderer.addEventListener(Event.TRIGGERED, onTriggered);
-				return renderer;
-			};
-			list.layout = layoutFactory();
-			return list;
-		}
-		
-		private function onTriggered(e:Event):void
-		{
-			var data:Object = (e.currentTarget as AchieveRenderer).data;
-			showImage(data);
-		}
+//		private function layoutFactory():ILayout
+//		{
+//			var layout:TiledRowsLayout = new TiledRowsLayout();
+//			layout.paddingTop = 90;
+//			layout.paddingLeft = 5;
+//			layout.horizontalGap = 10;
+//			layout.verticalGap = 50;
+//			layout.useVirtualLayout = true;
+//			layout.verticalAlign = TiledRowsLayout.VERTICAL_ALIGN_TOP;
+//			return layout;
+//		}
+//		
+//		private var listLeft:List;
+//		private var listRight:List;
+//		private function initList():void
+//		{
+//			listLeft = listFactory();
+//			listLeft.dataProvider = new ListCollection( datas[0] );
+//			this.addChild( listLeft );
+//			listLeft.width = width / 2;
+//			listLeft.height = height;
+//			
+//			listRight = listFactory();
+//			listRight.dataProvider = new ListCollection( datas[1] );
+//			this.addChild(listRight);
+//			listRight.width = width / 2;
+//			listRight.height = height;
+//			listRight.x = width / 2;
+//		}
+//		private function listFactory():List
+//		{
+//			var list:List = new List();
+//			list.itemRendererFactory = function():IListItemRenderer
+//			{
+//				var renderer:AchieveRenderer = new AchieveRenderer();
+//				renderer.width = 137;
+//				renderer.height = 106;
+//				renderer.addEventListener(Event.TRIGGERED, onTriggered);
+//				return renderer;
+//			};
+//			list.layout = layoutFactory();
+//			return list;
+//		}
+//		
+//		private function onTriggered(e:Event):void
+//		{
+//			var data:Object = (e.currentTarget as AchieveRenderer).data;
+//			showImage(data);
+//		}
 		
 		private var image:AchieveIcon;
 		private function showImage(data:Object):void
@@ -116,7 +147,7 @@ package views.global.userCenter.achievement
 						PopUpManager.removePopUp(image);
 			}
 		}
-		
+		/**单页显示数量*/		
 		private var maxNum:int = 9;
 		private var datas:Array;
 		private function initDatas():void
@@ -138,17 +169,36 @@ package views.global.userCenter.achievement
 			{
 				datas.push( tempdatas.splice(0, maxNum) );
 			}
+			
+			this.maxPage = Math.ceil( datas.length/2 );
 		}
 		
 		override public function dispose():void
 		{
+			containerL.removeFromParent(true);
+			containerR.removeFromParent(true);
 			if(image)
 				image.dispose();
-			if(listLeft)
-				listLeft.removeFromParent(true);
-			if(listRight)
-				listRight.removeFromParent(true);
+//			if(listLeft)
+//				listLeft.removeFromParent(true);
+//			if(listRight)
+//				listRight.removeFromParent(true);
 			super.dispose();
+		}
+		
+		public var maxPage:int;
+		public function updateView(pageIndex:int):void
+		{
+			var arr:Array;
+			for(var i:int = 0;i<maxNum;i++)
+			{
+				arr = datas[pageIndex*2];
+				(containerL.getChildAt(i) as AchieveIcon).data = arr[i];
+				
+				arr = datas[pageIndex*2+1];
+				(containerR.getChildAt(i) as AchieveIcon).data = (arr)?arr[i]:null;
+			}
+			this.validate();
 		}
 	}
 }
