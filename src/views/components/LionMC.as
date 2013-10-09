@@ -35,7 +35,7 @@ package views.components
 			mcHeight=lion.height * .5;
 			lion.stop();
 			trace(lion.width, lion.height)
-			this.addChild(lion);
+			addChild(lion);
 //			lion.addEventListener(Event.FRAME_CONSTRUCTED, onMCPlaying);
 		}
 
@@ -123,7 +123,7 @@ package views.components
 				_x=(s.fullScreenWidth / sc - mcWidth) / 2;
 				_y=(s.fullScreenHeight / sc - mcHeight) / 2;
 			}
-			x=_x < 512 ? -mcWidth * 2 : 1024 + mcWidth;
+			x=_x < 512 ? -100 - mcWidth * 2 : 1124 + mcWidth;
 			y=_y - 200;
 			callBack=_callBack;
 			if (p)

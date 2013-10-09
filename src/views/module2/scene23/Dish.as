@@ -4,6 +4,7 @@ package views.module2.scene23
 
 	import flash.geom.Point;
 
+	import starling.display.Image;
 	import starling.display.Sprite;
 
 	public class Dish extends Sprite
@@ -15,7 +16,29 @@ package views.module2.scene23
 		private var _pt:Point;
 		public var speedX:Number;
 		public var speedY:Number;
-		public var isBad:Boolean;
+		private var _isBad:Boolean;
+
+		public function get isBad():Boolean
+		{
+			return _isBad;
+		}
+
+		public function set isBad(value:Boolean):void
+		{
+			_isBad=value;
+			if (value)
+				addFly();
+		}
+
+		/**
+		 *
+		 * 菜品变质动画
+		 * */
+		private function addFly():void
+		{
+			// TODO Auto Generated method stub
+
+		}
 
 		public function get pt():Point
 		{
@@ -38,9 +61,19 @@ package views.module2.scene23
 		{
 		}
 
+		public function addContent(img:Image):void
+		{
+			addChild(img);
+			img.pivotX=img.width >> 1;
+			img.pivotY=img.height >> 1;
+		}
+
 		public function countDown():void
 		{
-
+			if (count > 0)
+				count--;
+			else
+				isBad=true;
 		}
 
 		public function addCount():void
@@ -48,6 +81,6 @@ package views.module2.scene23
 
 		}
 
-		private var count:int=80;
+		private var count:int=300;
 	}
 }

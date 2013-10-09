@@ -13,8 +13,8 @@ package views.module1
 
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
-	import views.module1.scene3.Clock;
-	import views.module1.scene3.TwisterGame;
+	import views.module1.scene13.Clock;
+	import views.module1.scene13.TwisterGame;
 
 	/**
 	 * 早起模块

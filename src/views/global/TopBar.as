@@ -36,6 +36,7 @@ package views.global
 			if (MC.instance.currentModule && MC.instance.currentModule.crtScene)
 				index=MC.instance.currentModule.crtScene.crtKnowledgeIndex - 1;
 			UserCenterManager.showUserCenter(index);
+			enable=false;
 		}
 
 		public static var parent:Sprite;
@@ -60,6 +61,13 @@ package views.global
 		{
 			if (bar)
 				bar.visible=false;
+		}
+
+		public static function set enable(value:Boolean):void
+		{
+			MC.instance.contentEnable=value;
+			if (bar)
+				bar.touchable=value;
 		}
 	}
 }

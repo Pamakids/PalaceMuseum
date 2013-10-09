@@ -158,7 +158,7 @@ package views.global.map
 			b.x=width - b.width / 2 - 10;
 			b.y=b.height / 2 + 10;
 			closeButton=b;
-			closeButton.visible=false;
+			closeButton.visible=showFromCenter;
 		}
 
 		public static var map:Map;
@@ -269,7 +269,7 @@ package views.global.map
 				positionKing(centerPoint[from]);
 			TweenLite.to(flipAnimation, 1.5, {x: 0, scaleX: 1, scaleY: 1, onComplete: function():void
 			{
-				closeButton.visible=enableClose;
+				closeButton.visible=showFromCenter;
 				addEventListener(TouchEvent.TOUCH, touchHandler);
 				resetSun();
 				TweenLite.to(flipAnimation, 8, {delay: 1, y: 0, ease: Cubic.easeOut});
@@ -479,7 +479,6 @@ package views.global.map
 			showingHint[_content]=p;
 		}
 
-		private var enableClose:Boolean;
 		private var sos:SOService;
 		private var mc:MC;
 		/**
@@ -504,7 +503,6 @@ package views.global.map
 			else
 				hasTask=false;
 			visible=true;
-			enableClose=ec;
 			TweenLite.killTweensOf(flipAnimation);
 			flipAnimation.y=0;
 			flipAnimation.height=height;
@@ -516,7 +514,8 @@ package views.global.map
 				resetTypeHolder(to);
 			if (lockHolder)
 				resetLockHolder();
-
+			if (closeButton)
+				closeButton.visible=showFromCenter;
 			resetSun();
 		}
 
