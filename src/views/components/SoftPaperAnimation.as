@@ -1,5 +1,7 @@
 package views.components
 {
+	import flash.geom.Point;
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -96,7 +98,7 @@ package views.components
 		 * 动画开始，播放前需使用setPageTexture指定相关纹理
 		 * @param pageUp
 		 */		
-		public function start(pageUp:Boolean = false, velocity = 0.03):void
+		public function start(pageUp:Boolean = false, velocity = 0.05):void
 		{
 			if(!softImage)
 			{
@@ -104,15 +106,18 @@ package views.components
 			}
 			else
 			{
-				softImage.texture = (pageUp)?page_3:page_2;
+				softImage.originalTexture = (pageUp)?page_3:page_2;
 				softImage.anotherTexture = (pageUp)?page_2:page_3;
 			}
 			render.clear();
 			cacheImageL.texture = page_1;
 			cacheImageR.texture = page_4;
 			this.pageUp = pageUp;
+			this.velocity = velocity;
 			progress = 0;
 			isActive = true;
+			
+//			test();
 		}
 		
 //		private var image:Image;
@@ -123,19 +128,21 @@ package views.components
 //			{
 //				var point:Point = this.globalToLocal(new Point());
 //				
-//				image = new Image(softImage.texture);
-//				this.addChild( image );
+//				image = new Image(softImage.originalTexture);
+//				this.parent.addChild( image );
 //				image.x = point.x;
 //				image.y = point.y;
 //				
+//				
 //				anoImage = new Image(softImage.anotherTexture);
-//				this.addChild( anoImage);
+//				this.parent.addChild( anoImage);
+//				image.scaleX = image.scaleY = anoImage.scaleX = anoImage.scaleY = 0.5;
 //				anoImage.x = 1024 - anoImage.width;
 //				anoImage.y = point.y;
 //			}
 //			else
 //			{
-//				image.texture = softImage.texture;
+//				image.texture = softImage.originalTexture;
 //				anoImage.texture = softImage.anotherTexture;
 //			}
 //		}
@@ -144,7 +151,7 @@ package views.components
 		 * 动画播放进度[0 - 1]
 		 */		
 		private var progress:Number;
-		private var velocity:Number = 0.05;
+		private var velocity:Number;
 		
 		private function initSoftImage(pageUp:Boolean):void
 		{
