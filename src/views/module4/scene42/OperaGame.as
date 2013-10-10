@@ -42,26 +42,26 @@ package views.module4.scene42
 			return life > 0 && score > 0;
 		}
 
-		public var gamelevel:int=0;
+		public var gamelevel:int=1; //0-西游,1-三国
 
 		private var startHolder:Sprite;
 		private var gameHolder:Sprite;
 		private var endHolder:Sprite;
 
-		private var operaIndex:int=0; //0-西游,1-水浒
-
 		private var crtOperaName:String;
-		private var operaArr:Array=["xiyou", "san"];
+		private var operaArr:Array=["xiyou", "sanguo"];
 
 		private var crtB_HPosArr:Array; //头,身子 相对位置
 		private var xiyouB_PosArr:Array=[new Point(33, 107), new Point(-31, 86),
 			new Point(-3, 98), new Point(-7, 88), new Point(21, 123), new Point(-3, 87)];
-		private var sanB_PosArr:Array=[new Point(), new Point(),
-			new Point(), new Point(), new Point(), new Point()];
+		private var sanguoB_PosArr:Array=[new Point(6, 114), new Point(21, 115),
+			new Point(22, 111), new Point(-16, 68), new Point(-6, 117), new Point(-32, 58)];
 
 		private var crtMaskPosArr:Array; //脸谱,相对位置
 		private var xiyouMaskPosArr:Array=[new Point(30, 44), new Point(32, 50),
 			new Point(30, 37), new Point(7, 23), new Point(28, 69), new Point(16, 43)];
+		private var sanguoMaskPosArr:Array=[new Point(18, 41), new Point(15, 64),
+			new Point(22, 50), new Point(25, 41), new Point(22, 54), new Point(6, 46)];
 
 		private function initStart():void
 		{
@@ -82,7 +82,7 @@ package views.module4.scene42
 			closeBtn.x=950;
 			closeBtn.y=60;
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
-			closeBtn.visible=closeBtn.touchable=false;
+//			closeBtn.visible=closeBtn.touchable=false;
 
 			TweenLite.delayedCall(.5, function():void {
 				if (!fromCenter) {
@@ -121,7 +121,7 @@ package views.module4.scene42
 			startHolder.dispose();
 			startHolder=null;
 
-			crtOperaName=operaArr[operaIndex];
+			crtOperaName=operaArr[gamelevel];
 			crtB_HPosArr=this[crtOperaName + "B_PosArr"];
 			crtMaskPosArr=this[crtOperaName + "MaskPosArr"];
 
@@ -347,6 +347,8 @@ package views.module4.scene42
 				body.stagePt=bodyPosArr[index] //位置 by index
 				body.offsetsXY=crtB_HPosArr[typeIndex];
 				body.maskPos=crtMaskPosArr[typeIndex]; //相对位置 by type
+				if (typeIndex == 5 && gamelevel == 1)
+					body.fixY=38;
 				body.reset();
 				body.playEnter();
 				var rope:Shape=new Shape();
@@ -404,6 +406,8 @@ package views.module4.scene42
 
 			if (index == 0)
 				mask.scaleX=mask.scaleY=.8;
+			else if (gamelevel == 1)
+				mask.scaleX=mask.scaleY=.9;
 
 			if (!isInit)
 			{
@@ -564,6 +568,7 @@ package views.module4.scene42
 			}
 			else
 			{
+				closeBtn.touchable=closeBtn.visible=false;
 				var nextShowBtn:ElasticButton=new ElasticButton(getImage("startShow"));
 				nextShowBtn.shadow=getImage("startShow-light");
 				nextShowBtn.x=1024 - 200;
@@ -617,7 +622,17 @@ package views.module4.scene42
 
 		private function closeGame():void
 		{
-			dispatchEvent(new Event(PalaceGame.GAME_OVER));
+			if (fromCenter)
+			{
+				dispatchEvent(new Event(PalaceGame.GAME_OVER));
+			}
+			else
+			{
+				var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE_OPEN, null, function():void {
+					dispatchEvent(new Event(PalaceGame.GAME_OVER));
+				});
+				scene.onOperaSwitch(e1);
+			}
 		}
 
 		private function nextGame():void
