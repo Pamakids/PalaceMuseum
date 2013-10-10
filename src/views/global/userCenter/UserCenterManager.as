@@ -1,20 +1,16 @@
 package views.global.userCenter
 {
-	import flash.display.DisplayObject;
-	import flash.display.MovieClip;
 	import flash.filesystem.File;
 	import flash.utils.Dictionary;
-
+	
 	import controllers.MC;
-
-	import models.SOService;
-
+	
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
+	
 	import views.global.TopBar;
 
 	/**
@@ -140,41 +136,6 @@ package views.global.userCenter
 			_userCenterContainer=value;
 		}
 
-		/**
-		 * 获取用户中心Tab场景相关数据
-		 * @param screen
-		 * @return
-		 */
-		public static function getDatas(screen:String):Array
-		{
-			if (!_userDatas[screen] || testNeedUpdate(screen))
-				_userDatas[screen]=SOService.instance.getSO(screen);
-			if (!_userDatas[screen])
-			{
-				_userDatas[screen]=[];
-				SOService.instance.setSO(screen, _userDatas[screen]);
-			}
-			return _userDatas[screen];
-		}
-
-		/**
-		 * 检测指定场景数据是否需重新获取
-		 * @param screen
-		 * @return
-		 */
-		private static var needUpdateScreens:Array=[];
-
-		private static function testNeedUpdate(screen:String):Boolean
-		{
-			return !(needUpdateScreens.indexOf(screen) == -1);
-		}
-
-		public static function setNeedUpdate(screen:String):void
-		{
-			if ((needUpdateScreens.indexOf(screen) == -1))
-				needUpdateScreens.push(screen);
-		}
-
 
 		public static function getAssetsManager():AssetManager
 		{
@@ -188,6 +149,4 @@ package views.global.userCenter
 	}
 }
 
-class MyClass
-{
-}
+class MyClass{}

@@ -73,6 +73,8 @@ package views.components
 		 */		
 		public function setMinToMax(min:Date, max:Date):void
 		{
+			maxDate = max;
+			minDate = min;
 		}
 		
 		private var _crtDate:Date = new Date();
@@ -85,7 +87,7 @@ package views.components
 			_crtDate = date;
 		}
 		
-		private var _maxDate:Date = new Date(2014, 12, 31);;
+		private var _maxDate:Date = new Date(2016, 12, 31);
 		public function set maxDate(date:Date):void
 		{
 			_maxDate = date;
@@ -97,6 +99,15 @@ package views.components
 			_minDate = date;
 		}
 		
+		/**
+		 * 当前时间
+		 */		
+		public function setCrtDate(date:Date):void
+		{
+			if(date > maxDate || date < minDate)
+				throw new Error("范围超出");
+			
+		}
 		
 		override public function dispose():void
 		{
