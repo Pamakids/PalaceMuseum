@@ -37,6 +37,8 @@ package views.global.userCenter.userInfo
 			initButton();
 			initGameList();
 		}
+		
+		
 		/**
 		 * 游戏数据
 		 * @return 
@@ -72,6 +74,7 @@ package views.global.userCenter.userInfo
 		private var w_editUser:W_EditUser;
 		private var w_chooseUser:W_ChooseUser;
 		private var w_deleteUser:W_DeleteUser;
+		private var w_alert:W_Alert;
 		
 		private function show_W_deleteUser(userdata:Object):void
 		{
@@ -166,8 +169,21 @@ package views.global.userCenter.userInfo
 				w_chooseUser = new W_ChooseUser();
 				w_chooseUser.closeWinHandler = hideWinHandler;
 				w_chooseUser.editHandler = show_w_editUser;
+				w_chooseUser.changeCtrUserHandler = show_W_alert;
 			}
 			showWinHandler(w_chooseUser);
+		}
+		
+		
+		private function show_W_alert(userData:Object):void
+		{
+			if(!w_alert)
+			{
+				w_alert = new W_Alert();
+				w_alert.closeWinHandler = hideWinHandler;
+			}
+			w_alert.userdata = userData;
+			hideWinHandler(w_chooseUser, showWinHandler, w_alert);
 		}
 		
 		/**
@@ -206,13 +222,22 @@ package views.global.userCenter.userInfo
 		{
 		}
 		
-		private var crtUser:CurrentUser;
+		private var crtUserData:Object;
+		private var crtUserView:CurrentUserView;
 		private function initCrtUserView():void
 		{
-			crtUser = new CurrentUser({ username: "我是小皇帝", iconIndex: 0, birthday: "2013-01-11"});
-			this.addChild( crtUser );
-			crtUser.x = 55;
-			crtUser.y = 42;
+			//获取用户当前角色数据
+			crtUserData = {
+				username: "我是小皇帝", 
+				iconIndex: 0, 
+				birthday: "2013-01-11"
+			};
+			
+			//初始化角色显示组件
+			crtUserView = new CurrentUserView(crtUserData);
+			this.addChild( crtUserView );
+			crtUserView.x = 55;
+			crtUserView.y = 42;
 		}
 		
 		private function initBackgroundImage():void

@@ -28,7 +28,7 @@ package views.global.userCenter.userInfo
 		/**
 		 * @param index	头像资源索引
 		 */		
-		public function HeadIcon(index:String)
+		public function HeadIcon(index:String = null)
 		{
 			this._index = index;
 			init();
@@ -42,10 +42,13 @@ package views.global.userCenter.userInfo
 		private var _icon:Image;
 		private function initIcon():void
 		{
-			_icon = new Image(UserCenterManager.getTexture("icon_userhead_" + _index));
-			this.addChild( _icon );
-			_icon.x = -_icon.width >> 1;
-			_icon.y = -_icon.height >> 1;
+			if(_index)
+			{
+				_icon = new Image(UserCenterManager.getTexture("icon_userhead_" + _index));
+				this.addChild( _icon );
+				_icon.x = -_icon.width >> 1;
+				_icon.y = -_icon.height >> 1;
+			}
 		}
 		
 		private var _index:String;
@@ -71,10 +74,15 @@ package views.global.userCenter.userInfo
 		 */		
 		public function resetIcon(index:String):void
 		{
-			if(_index == index)
+			if(!index)
+				return;
+			if(_index && index && _index == index)
 				return;
 			_index = index;
-			_icon.texture = UserCenterManager.getTexture("icon_userhead_" + _index);
+			if(!_icon)
+				initIcon();
+			else
+				_icon.texture = UserCenterManager.getTexture("icon_userhead_" + _index);
 		}
 		
 		/**

@@ -12,6 +12,9 @@ package views.global.userCenter.userInfo
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	
 	import views.global.userCenter.UserCenterManager;
 	
@@ -33,7 +36,7 @@ package views.global.userCenter.userInfo
 		 * @param editable
 		 * 用户名编辑
 		 */
-		public function ItemForUserList(data:Object, touchable:Boolean=false, editable:Boolean=false)
+		public function ItemForUserList(data:Object=null, touchable:Boolean=false, editable:Boolean=false)
 		{
 			_data = data;
 			_touchable = touchable;
@@ -47,17 +50,23 @@ package views.global.userCenter.userInfo
 			initTextInput();
 		}
 		
+		/**
+		 * 暂时存储变更，若确定变更则存入本地缓存
+		 */		
+		private var cacheData:Object;
+		
+		private var nameBoard:Image;
 		private function initBackImages():void
 		{
-			var image:Image = new Image(UserCenterManager.getTexture("background_nameboard"));
-			this.addChild( image );
-			image.x = 50;
-			image.y = 27;
-			image.touchable = false;
+			nameBoard = new Image(UserCenterManager.getTexture("background_nameboard"));
+			this.addChild( nameBoard );
+			nameBoard.x = 50;
+			nameBoard.y = 27;
+			if(!_data)
+				nameBoard.alpha = 0.6;
 			
-			image = new Image(UserCenterManager.getTexture("background_headicon"));
+			var image:Image = new Image(UserCenterManager.getTexture("background_headicon"));
 			this.addChild( image );
-			image.touchable = false;
 		}
 		
 		public var editIconFactory:Function;
@@ -70,8 +79,7 @@ package views.global.userCenter.userInfo
 			};
 			textInput.textEditorProperties.textFormat = new TextFormat(FontVo.PALACE_FONT, 26, 0xfeffcf, null, null, null, null, null, TextFormatAlign.CENTER);
 			textInput.textEditorProperties.embedFonts = true;
-			textInput.text = this._data.username;
-			textInput.text = "我是小皇帝";
+			textInput.text = _data?_data.username:"";
 			textInput.maxChars = 5;
 			this.addChild( textInput );
 			textInput.width = 140;
@@ -93,7 +101,7 @@ package views.global.userCenter.userInfo
 		
 		private function initHeadIcon():void
 		{
-			head = new HeadIcon(_data.iconIndex);
+			head = new HeadIcon(_data?_data.iconIndex:null);
 			this.addChild( head );
 			head.x = head.y = 50;
 			head.scaleX = head.scaleY = 0.7;
@@ -114,6 +122,21 @@ package views.global.userCenter.userInfo
 		 * { username: "name", iconIndex: 0, birthday: "2013-01-11"}
 		 */		
 		private var _data:Object;
+		
+		override public function set touchable(value:Boolean):void
+		{
+			if(value && !this.hasEventListener(TouchEvent.TOUCH))
+				this.addEventListener(TouchEvent.TOUCH, onTouch);
+			else if(!value && this.hasEventListener(TouchEvent.TOUCH))
+				this.removeEventListener(TouchEvent.TOUCH, onTouch);
+			super.touchable = value;
+		}
+		private function onTouch(e:TouchEvent):void
+		{
+			var touch:Touch = e.getTouch(this);
+			if(touch && touch.phase == TouchPhase.ENDED)
+				dispatchEventWith(Event.TRIGGERED, false, _data);
+		}
 		
 		override public function dispose():void
 		{
@@ -141,8 +164,12 @@ package views.global.userCenter.userInfo
 		
 		public function updateView():void
 		{
-			head.resetIcon(_data.iconIndex);
-			textInput.text = _data.username;
+			if(_data)
+			{
+				head.resetIcon(_data.iconIndex);
+				textInput.text = _data.username;
+				nameBoard.alpha = 1;
+			}
 		}
 	}
 }

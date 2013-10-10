@@ -8,13 +8,13 @@ package views.global.userCenter.userInfo
 	
 	import views.global.userCenter.UserCenterManager;
 	
-	public class CurrentUser extends Sprite
+	public class CurrentUserView extends Sprite
 	{
 		/**
 		 * @param data
 		 * { username: "name", iconIndex: 0, birthday: "2013-01-11"}
 		 */		
-		public function CurrentUser(data:Object)
+		public function CurrentUserView(data:Object)
 		{
 			_data = data;
 			init();

@@ -52,6 +52,14 @@ package views.global.userCenter.userInfo
 			this.addChild( dateView );
 			dateView.x = 65;
 			dateView.y = 169;
+			dateView.addEventListener(Event.CHANGE, onChange);
+		}
+		
+		/**
+		 * 监听日期变更
+		 */		
+		private function onChange(e:Event):void
+		{
 		}
 		
 		private var button_close:Button;

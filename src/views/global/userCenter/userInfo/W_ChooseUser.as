@@ -8,6 +8,8 @@ package views.global.userCenter.userInfo
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
 	import starling.textures.Texture;
 	
 	import views.global.userCenter.UserCenterManager;
@@ -26,9 +28,22 @@ package views.global.userCenter.userInfo
 		{
 			initUserdatas();
 			initBackImages();
+			initTitle();
 			initUserList();
 			initButtons();
 			initButtonGroup();
+		}
+		
+		/**
+		 * 被选中的标记
+		 */		
+		private var seclectedTitle:Image;
+		private function initTitle():void
+		{
+			seclectedTitle = new Image(UserCenterManager.getTexture("background_selected_icon"));
+			this.addChild(seclectedTitle);
+			seclectedTitle.visible = false;
+			seclectedTitle.touchable = false;
 		}
 		
 		private var buttons:ButtonGroup;
@@ -76,17 +91,42 @@ package views.global.userCenter.userInfo
 		private function initUserList():void
 		{
 			var item:ItemForUserList;
-			const max:int = userDatas.length;
-			items = new Vector.<ItemForUserList>(max);
-			for(var i:int = 0;i<max;i++)
+			var data:Object;
+			items = new Vector.<ItemForUserList>(maxUserNum);
+			for(var i:int = 0;i<maxUserNum;i++)
 			{
-				item = new ItemForUserList(userDatas[i]);
+				data = userDatas[i];
+				item = new ItemForUserList(data);
+				item.touchable = true;
 				this.addChild( item );
 				item.x = 46;
 				item.y = 37 + i * 116;
 				items[i] = item;
+				item.addEventListener(Event.TRIGGERED, changeCtrUser);
+				
+				//检测是否为当前用户，是则将选中标记位置移动至item位置
+				if(true)
+				{
+					seclectedTitle.x = 32;
+					seclectedTitle.y = 28;
+					seclectedTitle.visible = true;
+				}
 			}
 		}
+		private function changeCtrUser(e:Event):void
+		{
+			//提示用户切换用户
+			if(!e.data)		//无角色
+				return;
+//			if(true)		//验证为当前用户
+//				return;
+			trace("切换用户");
+			changeCtrUserHandler(e.data)
+		}
+		
+		public var changeCtrUserHandler:Function;
+		
+		private const maxUserNum:int = 3;
 		
 		/**
 		 * [
@@ -98,8 +138,9 @@ package views.global.userCenter.userInfo
 		private var userDatas:Array;
 		private function initUserdatas():void
 		{
+			//获取用户所有角色数据
 			userDatas = [];
-			for(var i:int = 0;i<3;i++)
+			for(var i:int = 0;i<2;i++)
 			{
 				userDatas.push(
 					{ username: "name", iconIndex: i, birthday: "2013-01-11"}
