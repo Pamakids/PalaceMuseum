@@ -1,29 +1,27 @@
 package models
 {
-	import com.pamakids.models.BaseVO;
 
 	/**
 	 * 用户信息
 	 * @author mani
 	 */
-	public class UserVO extends BaseVO
+	public class UserVO
 	{
 		public function UserVO()
 		{
-			super();
 		}
 
 		/**
-		 * 用户设备唯一ID号
+		 * 用户名称
 		 */
-		public var udid:String;
+		public var username:String;
 		/**
 		 * 用户生日
 		 */
-		public var birthday:String;
+		public var birthday:int;
 		/**
-		 * 运行次数
+		 * 头像索引
 		 */
-		public var runTimes:int;
+		public var avatarIndex:int;
 	}
 }

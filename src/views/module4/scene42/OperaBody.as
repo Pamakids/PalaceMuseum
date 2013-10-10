@@ -25,6 +25,7 @@ package views.module4.scene42
 		public var stagePt:Point;
 		public var offsetsXY:Point;
 		public var maskPos:Point;
+		public var fixY:Number=0;
 
 		public function OperaBody()
 		{
@@ -39,7 +40,7 @@ package views.module4.scene42
 		public function reset():void
 		{
 			headHolder.pivotX=head.width >> 1;
-			headHolder.pivotY=head.height;
+			headHolder.pivotY=head.height - fixY;
 
 			body.pivotX=headHolder.pivotX - offsetsXY.x;
 			body.pivotY=headHolder.pivotY - offsetsXY.y;
@@ -142,7 +143,6 @@ package views.module4.scene42
 		{
 			bodyAngle=value;
 			db=bodyAngle / (sec * 30);
-
 		}
 
 		public function playEnter(needCount:Boolean=true):void

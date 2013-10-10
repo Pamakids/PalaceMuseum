@@ -22,15 +22,26 @@ package views.module4.scene42
 	public class OpearaGame2 extends PalaceGame
 	{
 		public var scene:Scene42;
-		private var crtOperaName:String="xiyou";
+		private var crtOperaName:String;
+		private var operaArr:Array=["xiyou", "sanguo"];
+		private var gameLevel:int=0;
 
-		public function OpearaGame2(am:AssetManager=null)
+		public function OpearaGame2(lvl:int, am:AssetManager=null)
 		{
 			super(am);
+			gameLevel=lvl;
+			crtOperaName=operaArr[gameLevel];
+			crtTypeArr=this[crtOperaName + "TypeArr"];
+			crtBodyPosArr=this[crtOperaName + "BodyPosArr"];
+			crtB_HPosArr=this[crtOperaName + "B_PosArr"];
+			crtMaskPosArr=this[crtOperaName + "MaskPosArr"];
 
 			addChild(getImage("operabg2"));
 
-			addMountains();
+			if (gameLevel == 0)
+				addMountains();
+			else
+				addBoatAndCloud();
 
 			addPillars();
 
@@ -60,6 +71,12 @@ package views.module4.scene42
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			if (SOService.instance.checkHintCount(silverCardClickHint))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame2);
+		}
+
+		private function addBoatAndCloud():void
+		{
+			// TODO Auto Generated method stub
+
 		}
 
 		private var silverCardClickHint:String="silverCardClickHint";
@@ -144,7 +161,7 @@ package views.module4.scene42
 			btnbg.touchable=false;
 			for (var i:int=0; i < btnTypeArr.length; i++)
 			{
-				var btn:ElasticButton=new ElasticButton(getImage("btn" + btnTypeArr[i]));
+				var btn:ElasticButton=new ElasticButton(getImage(crtOperaName + "btn" + btnTypeArr[i]));
 				btn.x=56 + i * 100;
 				btn.y=btnPosY;
 				addChild(btn);
@@ -152,17 +169,52 @@ package views.module4.scene42
 				btnArr.push(btn);
 			}
 
-			var mountainBtn:ElasticButton=new ElasticButton(getImage("btnmountain"));
-			mountainBtn.x=870;
-			mountainBtn.y=btnPosY;
-			addChild(mountainBtn);
-			mountainBtn.addEventListener(ElasticButton.CLICK, onMountainBtnClick);
+			if (gameLevel == 0)
+			{
+				var mountainBtn:ElasticButton=new ElasticButton(getImage(crtOperaName + "btnmountain"));
+				mountainBtn.x=870;
+				mountainBtn.y=btnPosY;
+				addChild(mountainBtn);
+				mountainBtn.addEventListener(ElasticButton.CLICK, onMountainBtnClick);
 
-			var fireBtn:ElasticButton=new ElasticButton(getImage("btnfire"));
-			fireBtn.x=970;
-			fireBtn.y=btnPosY;
-			addChild(fireBtn);
-			fireBtn.addEventListener(ElasticButton.CLICK, onFireBtnClick);
+				var fireBtn:ElasticButton=new ElasticButton(getImage(crtOperaName + "btnfire"));
+				fireBtn.x=970;
+				fireBtn.y=btnPosY;
+				addChild(fireBtn);
+				fireBtn.addEventListener(ElasticButton.CLICK, onFireBtnClick);
+			}
+			else
+			{
+				var boatBtn:ElasticButton=new ElasticButton(getImage(crtOperaName + "btnboat"));
+				boatBtn.x=870;
+				boatBtn.y=btnPosY;
+				addChild(boatBtn);
+				boatBtn.addEventListener(ElasticButton.CLICK, onBoatBtnClick);
+
+				var cloudBtn:ElasticButton=new ElasticButton(getImage(crtOperaName + "btncloud"));
+				cloudBtn.x=970;
+				cloudBtn.y=btnPosY;
+				addChild(cloudBtn);
+				cloudBtn.addEventListener(ElasticButton.CLICK, onCloudBtnClick);
+			}
+		}
+
+		private function onBoatBtnClick(e:Event):void
+		{
+			checkClick(7)
+//			TweenLite.killTweensOf(boat);
+//			firMountainOpen=!firMountainOpen;
+//			var _scale:Number=firMountainOpen ? 1 : 0.01;
+//			TweenLite.to(fireMountain, .5, {scaleX: _scale, scaleY: _scale});
+		}
+
+		private function onCloudBtnClick(e:Event):void
+		{
+			checkClick(6)
+//			TweenLite.killTweensOf(mountain);
+//			mountainOpen=!mountainOpen;
+//			var _scale:Number=mountainOpen ? 1 : 0.01;
+//			TweenLite.to(mountain, .5, {scaleX: _scale, scaleY: _scale});
 		}
 
 		private function onFireBtnClick(e:Event):void
@@ -218,35 +270,45 @@ package views.module4.scene42
 		private function addBodys():void
 		{
 			ropeTexture=assets.getTexture("loading");
-			for (var i:int=0; i < typeArr.length; i++)
+			for (var i:int=0; i < crtTypeArr.length; i++)
 			{
 				addOneBody(i);
 			}
 		}
 
-		private var typeArr:Array=["7", "6", "3", "5", "4", "1"];
+		private var crtTypeArr:Array;
+		private var crtBodyPosArr:Array; //头,身子 相对位置
+		private var crtB_HPosArr:Array; //头,身子 相对位置
+		private var crtMaskPosArr:Array; //脸谱,相对位置
 
-		private var bodyPosArr:Array=[new Point(836, 144), new Point(380, 380),
+		private var xiyouTypeArr:Array=["7", "6", "3", "5", "4", "1"];
+		private var xiyouBodyPosArr:Array=[new Point(836, 144), new Point(380, 380),
 			new Point(649, 375), new Point(274, 634), new Point(528, 632), new Point(773, 644)];
-
 		private var xiyouB_PosArr:Array=[new Point(-104, 2), new Point(-3, 87), new Point(-3, 98), new Point(21, 123), new Point(-7, 88), new Point(33, 107)];
-//		private var xiyouB_PosArr2:Array=[new Point(33, 107), new Point(26, 109), new Point(-3, 98), new Point(-7, 88), new Point(21, 123), new Point(-3, 87)];
 		private var xiyouMaskPosArr:Array=[new Point(0, 0), new Point(16, 43), new Point(30, 37), new Point(28, 69), new Point(7, 23), new Point(30, 44)];
 
-//		private var xiyouMaskPosArr2:Array=[new Point(30, 44), new Point(13, 55), new Point(30, 37), new Point(7, 23), new Point(28, 69), new Point(16, 43)];
+		private var sanguoTypeArr:Array=["1", "2", "3", "4", "5", "6"];
+		private var sanguoBodyPosArr:Array=[new Point(131, 148), new Point(450, 154),
+			new Point(900, 153), new Point(300, 400), new Point(521, 400), new Point(738, 380)];
+		private var sanguoB_PosArr:Array=[new Point(6, 114), new Point(21, 115),
+			new Point(22, 111), new Point(-16, 68), new Point(-6, 117), new Point(-32, 58)];
+		private var sanguoMaskPosArr:Array=[new Point(18, 41), new Point(15, 64),
+			new Point(22, 50), new Point(25, 41), new Point(22, 54), new Point(6, 46)];
 
 		private function addOneBody(index:int):void
 		{
 			var body:OperaBody=new OperaBody();
 			body.index=index;
-			var type:String=typeArr[index];
+			var type:String=crtTypeArr[index];
 			body.type=type;
 			body.body=getImage(crtOperaName + "body" + type);
 			body.head=getImage(crtOperaName + "head" + type);
 			body.countBG=getImage("body-countdown");
-			body.stagePt=bodyPosArr[index] //位置 by index
-			body.offsetsXY=xiyouB_PosArr[index];
-			body.maskPos=xiyouMaskPosArr[index]; //相对位置 by type
+			body.stagePt=crtBodyPosArr[index] //位置 by index
+			body.offsetsXY=crtB_HPosArr[index];
+			body.maskPos=crtMaskPosArr[index]; //相对位置 by type
+			if (index == 5 && gameLevel == 1)
+				body.fixY=38;
 			body.reset();
 			var rope:Shape=new Shape();
 			body.rope=rope;
@@ -263,12 +325,15 @@ package views.module4.scene42
 
 			bodyArr[index]=body;
 			var sp:Sprite;
-			if (index < 1)
-				sp=spArr[0];
-			else if (index < 3)
-				sp=spArr[1];
+			if (gameLevel == 0)
+				if (index < 1)
+					sp=spArr[0];
+				else if (index < 3)
+					sp=spArr[1];
+				else
+					sp=spArr[2];
 			else
-				sp=spArr[2];
+				sp=index < 3 ? spArr[0] : spArr[1]
 			sp.addChild(rope);
 			sp.addChild(body);
 		}

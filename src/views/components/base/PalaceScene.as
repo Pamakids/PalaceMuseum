@@ -118,6 +118,14 @@ package views.components.base
 				nextButton.addEventListener(ElasticButton.CLICK, nextScene);
 				shakeNext();
 			}
+			else
+				nextButton.visible=true;
+		}
+
+		protected function hideNext():void
+		{
+			if (nextButton)
+				nextButton.visible=false;
 		}
 
 		private function shakeNext():void
