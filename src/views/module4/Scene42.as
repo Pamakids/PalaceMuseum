@@ -128,8 +128,9 @@ package views.module4
 
 		private function onPlayGame2(e:Event):void
 		{
+			var lvl:int=game.gamelevel;
 			if (game.isWin())
-				showAchievement(game.gamelevel == 0 ? 28 : 29);
+				showAchievement(lvl == 0 ? 28 : 29);
 			game.removeEventListener(PalaceGame.GAME_OVER, onGameOver);
 			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 			game.removeEventListener("nextGame", onPlayGame2);
@@ -137,12 +138,12 @@ package views.module4
 			game.dispose();
 			game=null;
 
-			initGame2();
+			initGame2(lvl);
 		}
 
-		private function initGame2():void
+		private function initGame2(lvl:int):void
 		{
-			game2=new OpearaGame2(assets);
+			game2=new OpearaGame2(lvl, assets);
 			gameHolder.addChild(game2);
 			game2.scene=this;
 			game2.addEventListener(PalaceGame.GAME_OVER, onGame2Over);
@@ -168,7 +169,15 @@ package views.module4
 
 		private function onGameOver(e:Event):void
 		{
+			var lvl:int=game.gamelevel;
+			game.removeEventListener(PalaceGame.GAME_OVER, onGameOver);
+			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
+			game.removeEventListener("nextGame", onPlayGame2);
+			gameHolder.removeChild(game);
+			game.dispose();
+			game=null;
 
+			initGame2(lvl);
 		}
 	}
 }

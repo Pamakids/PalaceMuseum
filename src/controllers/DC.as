@@ -1,7 +1,7 @@
 package controllers
 {
 	import com.pamakids.utils.Singleton;
-	
+
 	import models.AchieveVO;
 	import models.CollectionVO;
 	import models.SOService;
@@ -29,14 +29,14 @@ package controllers
 		 */
 		public function completeModule():void
 		{
-			so.completeModule();
+			so.completeModule(mc.moduleIndex);
 		}
 
 		public static function get instance():DC
 		{
 			return Singleton.getInstance(DC);
 		}
-		
+
 		/**
 		 * 用户中心相关数据变更
 		 * @param type
@@ -45,24 +45,24 @@ package controllers
 		 * 			2	物品收集
 		 * 			3	小游戏数据
 		 * @param value
-		 */		
+		 */
 		public function setDatas(type:int, value:Object):void
 		{
-			
-			switch(type)
+
+			switch (type)
 			{
-				case 0:		//用户数据变更
+				case 0: //用户数据变更
 					break;
-				case 1:		//用户新成就
+				case 1: //用户新成就
 					break;
-				case 2:		//新收集到物品
+				case 2: //新收集到物品
 					break;
-				case 3:		//小游戏数据
+				case 3: //小游戏数据
 					break;
 			}
-			so.setSO("","");
+			so.setSO("", "");
 		}
-		
+
 		/**
 		 * 物品收集数据：Array
 		 * [
@@ -70,19 +70,19 @@ package controllers
 		 * 		["name", ifCollected],
 		 * 		...
 		 * ]
-		 */		
+		 */
 		public function getCollectionData():Array
 		{
-			var _collectionData:Array = [];
+			var _collectionData:Array=[];
 			var i:int;
-			for each(var s:String in CollectionVO.vecCardName)
+			for each (var s:String in CollectionVO.vecCardName)
 			{
-				i = (SOService.instance.getSO(s + "collected"))?1:0;
-				_collectionData.push( [s, i] );
+				i=(SOService.instance.getSO(s + "collected")) ? 1 : 0;
+				_collectionData.push([s, i]);
 			}
 			return _collectionData;
 		}
-		
+
 		/**
 		 * 成就数据：Array
 		 * [
@@ -90,77 +90,78 @@ package controllers
 		 * 		["name", "content", ifCollected],
 		 * 		...
 		 * ]
-		 */	
+		 */
 		public function getAchievementData():Array
 		{
-			var _achidatas:Array = [];
-			var arr:Array = AchieveVO.achieveList;
-			const max:int = arr.length;
+			var _achidatas:Array=[];
+			var arr:Array=AchieveVO.achieveList;
+			const max:int=arr.length;
 			var i:int;
-			for(i = 0;i<max;i++)
+			for (i=0; i < max; i++)
 			{
-				_achidatas.push( [arr[i][0], arr[i][1], (SOService.instance.getSO(i + "_achieve"))?1:0] )
+				_achidatas.push([arr[i][0], arr[i][1], (SOService.instance.getSO(i + "_achieve")) ? 1 : 0])
 			}
 			return _achidatas;
 		}
-		
+
 		/**
 		 * 游戏数据名称集合
-		 */	
-		private const classNames:Array = ["menuGame", "dishGame", "jigSawGame", "operaGame" ];
-		private const gameNames:Array = [ "吉祥菜名", "银牌试毒", "地图拼图", "粉墨登场" ];
+		 */
+		private const classNames:Array=["menuGame", "dishGame", "jigSawGame", "operaGame"];
+		private const gameNames:Array=["吉祥菜名", "银牌试毒", "地图拼图", "粉墨登场"];
 		/**
 		 * 游戏是否有难度区分:0 有， 1 没有
-		 */		
-		private const gameLevels:Array = [1, 0, 1, 1];
+		 */
+		private const gameLevels:Array=[1, 0, 1, 1];
+
 		/**
 		 * 获取游戏数据
-		 * @return 
+		 * @return
 		 * 	[
 		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "" },
 		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "" },
 		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "" }
 		 * 	]
-		 */		
+		 */
 		public function getGameDatas():Array
 		{
-			var datas:Array = [];
+			var datas:Array=[];
 			var obj:Object;
-			for(var i:int = 0;i<4;i++)
+			for (var i:int=0; i < 4; i++)
 			{
-				obj = {
-					name:		gameNames[i],
-					className:	classNames[i],
-					iconIndex:	i,
-					numStars:	0
-				};
-				if(gameLevels[i] == 0)		//无难度划分
+				obj={
+						name: gameNames[i],
+						className: classNames[i],
+						iconIndex: i,
+						numStars: 0
+					};
+				if (gameLevels[i] == 0) //无难度划分
 				{
-					if(SOService.instance.getSO(obj.className))
+					if (SOService.instance.getSO(obj.className))
 					{
-						obj.resultEasy = SOService.instance.getSO(obj.className);
-						obj.resultHard = "----------";
+						obj.resultEasy=SOService.instance.getSO(obj.className);
+						obj.resultHard="----------";
 					}
 					else
 					{
-						obj.resultEasy = "----------";
-						obj.resultHard = "----------";
+						obj.resultEasy="----------";
+						obj.resultHard="----------";
 					}
 				}
 				else
 				{
-					if(SOService.instance.getSO(obj.className + 0))
-						obj.resultEasy = SOService.instance.getSO(obj.className + 0);
+					if (SOService.instance.getSO(obj.className + 0))
+						obj.resultEasy=SOService.instance.getSO(obj.className + 0);
 					else
-						obj.resultEasy = "----------";
-					
-					if(SOService.instance.getSO(obj.className + 1))
-						obj.resultHard = SOService.instance.getSO(obj.className + 1);
+						obj.resultEasy="----------";
+
+					if (SOService.instance.getSO(obj.className + 1))
+						obj.resultHard=SOService.instance.getSO(obj.className + 1);
 					else
-						obj.resultHard = "----------";
+						obj.resultHard="----------";
 				}
 				delete obj.className;
-				datas.push( obj );
+				datas.push(obj);
 			}
 			return datas;
 		}
