@@ -13,7 +13,10 @@ package views.components
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
-	
+	/**
+	 * 循环数字列表
+	 * @author Administrator
+	 */	
 	public class LoopNumList extends Sprite
 	{
 		public static const DIRECTION_VERTICAL:String = "vertical";

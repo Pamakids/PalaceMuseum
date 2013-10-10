@@ -74,56 +74,7 @@ package views.global.userCenter.achievement
 			this.addChild( image );
 			image.x = this.viewWidth/2;
 		}
-		
-//		private function layoutFactory():ILayout
-//		{
-//			var layout:TiledRowsLayout = new TiledRowsLayout();
-//			layout.paddingTop = 90;
-//			layout.paddingLeft = 5;
-//			layout.horizontalGap = 10;
-//			layout.verticalGap = 50;
-//			layout.useVirtualLayout = true;
-//			layout.verticalAlign = TiledRowsLayout.VERTICAL_ALIGN_TOP;
-//			return layout;
-//		}
-//		
-//		private var listLeft:List;
-//		private var listRight:List;
-//		private function initList():void
-//		{
-//			listLeft = listFactory();
-//			listLeft.dataProvider = new ListCollection( datas[0] );
-//			this.addChild( listLeft );
-//			listLeft.width = width / 2;
-//			listLeft.height = height;
-//			
-//			listRight = listFactory();
-//			listRight.dataProvider = new ListCollection( datas[1] );
-//			this.addChild(listRight);
-//			listRight.width = width / 2;
-//			listRight.height = height;
-//			listRight.x = width / 2;
-//		}
-//		private function listFactory():List
-//		{
-//			var list:List = new List();
-//			list.itemRendererFactory = function():IListItemRenderer
-//			{
-//				var renderer:AchieveRenderer = new AchieveRenderer();
-//				renderer.width = 137;
-//				renderer.height = 106;
-//				renderer.addEventListener(Event.TRIGGERED, onTriggered);
-//				return renderer;
-//			};
-//			list.layout = layoutFactory();
-//			return list;
-//		}
-//		
-//		private function onTriggered(e:Event):void
-//		{
-//			var data:Object = (e.currentTarget as AchieveRenderer).data;
-//			showImage(data);
-//		}
+
 		
 		private var image:AchieveIcon;
 		private function showImage(data:Object):void
@@ -179,10 +130,6 @@ package views.global.userCenter.achievement
 			containerR.removeFromParent(true);
 			if(image)
 				image.dispose();
-//			if(listLeft)
-//				listLeft.removeFromParent(true);
-//			if(listRight)
-//				listRight.removeFromParent(true);
 			super.dispose();
 		}
 		
