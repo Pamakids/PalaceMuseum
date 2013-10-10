@@ -1,5 +1,7 @@
 package views.global.userCenter
 {
+	import com.greensock.TweenLite;
+	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
@@ -365,7 +367,6 @@ package views.global.userCenter
 				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
 			animation.start( pageUp );
 		}
-
 		
 		//成就翻页
 		private function achieveTurnToPage(pageIndex:int):void
@@ -375,8 +376,12 @@ package views.global.userCenter
 			textureR = Texture.fromTexture(crtRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
 			animation.setFixPageTexture(textureL, textureR);
 			animation.visible = true;
-			
 			(_navigator.activeScreen as AchievementScreen).updateView(crtPage_Achieve);
+			
+			TweenLite.delayedCall(0.1, onComplete);
+		}
+		private function onComplete():void
+		{
 			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
 			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
 			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
