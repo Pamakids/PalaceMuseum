@@ -1,46 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:99b4c86571c440e77fdf61697a26b479$ -->
+<!-- $TexturePacker:SmartUpdate:f5e43e8c2bb041e9c83faee7b8a559a1$ -->
 <TextureAtlas imagePath="game42.png">
     <SubTexture name="bg-opera" x="2" y="2" width="1024" height="768"/>
     <SubTexture name="body-countdown" x="1988" y="106" width="42" height="42"/>
-    <SubTexture name="head-bg" x="1938" y="722" width="106" height="590"/>
-    <SubTexture name="lifeboard" x="1738" y="722" width="198" height="81"/>
+    <SubTexture name="head-bg" x="2" y="1260" width="106" height="590"/>
+    <SubTexture name="lifeboard" x="1738" y="1170" width="198" height="81"/>
     <SubTexture name="lifeicon-lost" x="1988" y="54" width="49" height="50"/>
     <SubTexture name="lifeicon" x="1988" y="2" width="49" height="50"/>
     <SubTexture name="lose-panel" x="1028" y="722" width="708" height="430"/>
     <SubTexture name="operagame-hint" x="1028" y="2" width="958" height="718"/>
-    <SubTexture name="progress" x="534" y="1015" width="486" height="25" frameX="-14" frameY="-12" frameWidth="530" frameHeight="51"/>
-    <SubTexture name="progressbg" x="2" y="1154" width="530" height="51"/>
+    <SubTexture name="progress" x="1013" y="1207" width="486" height="25" frameX="-14" frameY="-12" frameWidth="530" frameHeight="51"/>
+    <SubTexture name="progressbg" x="1016" y="1154" width="530" height="51"/>
     <SubTexture name="railing1" x="2" y="853" width="1024" height="59"/>
     <SubTexture name="railing2" x="2" y="914" width="1024" height="49"/>
     <SubTexture name="railing3" x="2" y="965" width="1024" height="48"/>
-    <SubTexture name="record" x="1738" y="897" width="187" height="187"/>
+    <SubTexture name="record" x="2" y="1852" width="187" height="187"/>
     <SubTexture name="restart-light" x="2" y="1015" width="140" height="135"/>
-    <SubTexture name="restart" x="300" y="1015" width="120" height="121" frameX="-8" frameY="-6" frameWidth="140" frameHeight="135"/>
+    <SubTexture name="restart" x="476" y="1833" width="120" height="121" frameX="-8" frameY="-6" frameWidth="140" frameHeight="135"/>
+    <SubTexture name="sanguo-light" x="1738" y="836" width="213" height="113"/>
+    <SubTexture name="sanguo" x="1738" y="1055" width="203" height="113" frameX="-2" frameY="0" frameWidth="213" frameHeight="113"/>
+    <SubTexture name="sanguobody1" x="875" y="1134" width="139" height="68"/>
+    <SubTexture name="sanguobody2" x="454" y="1525" width="104" height="71"/>
+    <SubTexture name="sanguobody3" x="560" y="1488" width="61" height="60"/>
+    <SubTexture name="sanguobody4" x="2" y="1154" width="142" height="102"/>
+    <SubTexture name="sanguobody5" x="191" y="1983" width="112" height="62"/>
+    <SubTexture name="sanguobody6" x="336" y="1418" width="112" height="113"/>
+    <SubTexture name="sanguohead1" x="191" y="1851" width="127" height="130"/>
+    <SubTexture name="sanguohead2" x="110" y="1488" width="104" height="140"/>
+    <SubTexture name="sanguohead3" x="239" y="1584" width="117" height="124"/>
+    <SubTexture name="sanguohead4" x="144" y="1015" width="128" height="132"/>
+    <SubTexture name="sanguohead5" x="216" y="1443" width="118" height="139"/>
+    <SubTexture name="sanguohead6" x="1943" y="1104" width="99" height="154"/>
+    <SubTexture name="sanguomask1" x="1953" y="859" width="90" height="89"/>
+    <SubTexture name="sanguomask2" x="191" y="1293" width="75" height="76"/>
+    <SubTexture name="sanguomask3" x="110" y="1331" width="74" height="74"/>
+    <SubTexture name="sanguomask4" x="1961" y="786" width="79" height="71"/>
+    <SubTexture name="sanguomask5" x="110" y="1407" width="73" height="79"/>
+    <SubTexture name="sanguomask6" x="1953" y="1030" width="88" height="72"/>
     <SubTexture name="scorebg" x="2" y="772" width="1024" height="79"/>
-    <SubTexture name="scoreboard" x="1738" y="805" width="188" height="90"/>
-    <SubTexture name="star-grey" x="2" y="1792" width="76" height="71" frameX="0" frameY="-1" frameWidth="76" frameHeight="73"/>
-    <SubTexture name="star-red" x="2" y="1717" width="76" height="73"/>
-    <SubTexture name="startShow-light" x="853" y="1115" width="110" height="61"/>
-    <SubTexture name="startShow" x="432" y="1207" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
-    <SubTexture name="win-panel" x="2" y="1314" width="599" height="401"/>
-    <SubTexture name="xiyoubody1" x="663" y="1161" width="97" height="61"/>
-    <SubTexture name="xiyoubody2" x="2" y="1209" width="136" height="98"/>
-    <SubTexture name="xiyoubody3" x="579" y="1042" width="128" height="73"/>
-    <SubTexture name="xiyoubody4" x="422" y="1015" width="110" height="69" frameX="0" frameY="0" frameWidth="112" frameHeight="69"/>
-    <SubTexture name="xiyoubody5" x="2" y="1937" width="69" height="68"/>
-    <SubTexture name="xiyoubody6" x="853" y="1042" width="115" height="71"/>
-    <SubTexture name="xiyouhead1" x="1738" y="1086" width="163" height="121"/>
-    <SubTexture name="xiyouhead2" x="144" y="1015" width="154" height="128"/>
-    <SubTexture name="xiyouhead3" x="709" y="1042" width="142" height="117"/>
-    <SubTexture name="xiyouhead4" x="663" y="1224" width="94" height="111"/>
-    <SubTexture name="xiyouhead5" x="534" y="1154" width="127" height="139"/>
-    <SubTexture name="xiyouhead6" x="140" y="1207" width="98" height="105"/>
-    <SubTexture name="xiyoumask1" x="240" y="1207" width="99" height="78"/>
-    <SubTexture name="xiyoumask2" x="341" y="1207" width="89" height="78"/>
-    <SubTexture name="xiyoumask3" x="422" y="1086" width="82" height="62"/>
-    <SubTexture name="xiyoumask4" x="762" y="1161" width="79" height="67"/>
-    <SubTexture name="xiyoumask5" x="2" y="1865" width="74" height="70"/>
-    <SubTexture name="xiyoumask6" x="506" y="1086" width="71" height="62"/>
+    <SubTexture name="scoreboard" x="1548" y="1154" width="188" height="90"/>
+    <SubTexture name="star-grey" x="110" y="1258" width="76" height="71" frameX="0" frameY="-1" frameWidth="76" frameHeight="73"/>
+    <SubTexture name="star-red" x="191" y="1218" width="76" height="73"/>
+    <SubTexture name="startShow-light" x="358" y="1646" width="110" height="61"/>
+    <SubTexture name="startShow" x="239" y="1710" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
+    <SubTexture name="win-panel" x="274" y="1015" width="599" height="401"/>
+    <SubTexture name="xiyou-light" x="1738" y="722" width="221" height="112"/>
+    <SubTexture name="xiyou" x="1738" y="951" width="213" height="102" frameX="-8" frameY="-9" frameWidth="221" frameHeight="112"/>
+    <SubTexture name="xiyoubody1" x="470" y="1598" width="97" height="61"/>
+    <SubTexture name="xiyoubody2" x="875" y="1204" width="136" height="98"/>
+    <SubTexture name="xiyoubody3" x="211" y="1771" width="128" height="73"/>
+    <SubTexture name="xiyoubody4" x="378" y="1976" width="110" height="69" frameX="0" frameY="0" frameWidth="112" frameHeight="69"/>
+    <SubTexture name="xiyoubody5" x="550" y="1418" width="69" height="68"/>
+    <SubTexture name="xiyoubody6" x="490" y="1956" width="115" height="71"/>
+    <SubTexture name="xiyouhead1" x="341" y="1710" width="163" height="121"/>
+    <SubTexture name="xiyouhead2" x="320" y="1846" width="154" height="128"/>
+    <SubTexture name="xiyouhead3" x="875" y="1015" width="142" height="117"/>
+    <SubTexture name="xiyouhead4" x="358" y="1533" width="94" height="111"/>
+    <SubTexture name="xiyouhead5" x="110" y="1630" width="127" height="139"/>
+    <SubTexture name="xiyouhead6" x="450" y="1418" width="98" height="105"/>
+    <SubTexture name="xiyoumask1" x="110" y="1771" width="99" height="78"/>
+    <SubTexture name="xiyoumask2" x="1953" y="950" width="89" height="78"/>
+    <SubTexture name="xiyoumask3" x="1961" y="722" width="82" height="62"/>
+    <SubTexture name="xiyoumask4" x="191" y="1149" width="79" height="67"/>
+    <SubTexture name="xiyoumask5" x="191" y="1371" width="74" height="70"/>
+    <SubTexture name="xiyoumask6" x="305" y="1983" width="71" height="62"/>
 </TextureAtlas>

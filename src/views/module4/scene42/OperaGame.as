@@ -42,7 +42,7 @@ package views.module4.scene42
 			return life > 0 && score > 0;
 		}
 
-		public var gamelevel:int=1; //0-西游,1-三国
+		public var gamelevel:int=0; //0-西游,1-三国
 
 		private var startHolder:Sprite;
 		private var gameHolder:Sprite;
@@ -70,6 +70,28 @@ package views.module4.scene42
 			var title:Image=getImage("operagame-hint");
 			startHolder.addChild(title);
 
+			xiyouBtn=new Sprite();
+			var sBtn:Image=getImage("xiyou");
+			var sBtnD:Image=getImage("xiyou-light");
+			sBtn.visible=false;
+			xiyouBtn.x=235;
+			xiyouBtn.y=572;
+			xiyouBtn.addChild(sBtn);
+			xiyouBtn.addChild(sBtnD);
+			startHolder.addChild(xiyouBtn);
+			xiyouBtn.addEventListener(TouchEvent.TOUCH, onLevelSelect);
+
+			sanguoBtn=new Sprite();
+			var hBtn:Image=getImage("sanguo");
+			var hBtnD:Image=getImage("sanguo-light");
+			sanguoBtn.x=545;
+			sanguoBtn.y=568;
+			hBtnD.visible=false;
+			sanguoBtn.addChild(hBtn);
+			sanguoBtn.addChild(hBtnD);
+			startHolder.addChild(sanguoBtn);
+			sanguoBtn.addEventListener(TouchEvent.TOUCH, onLevelSelect);
+
 			var startBtn:ElasticButton=new ElasticButton(getImage("game-start"));
 			startBtn.shadow=getImage("game-start-down");
 			startBtn.addEventListener(ElasticButton.CLICK, onStartClick);
@@ -90,6 +112,25 @@ package views.module4.scene42
 					scene.onOperaSwitch(e);}
 			});
 //			dispatchEvent(e);
+		}
+
+		private function onLevelSelect(e:TouchEvent):void
+		{
+			var sp:Sprite=e.currentTarget as Sprite;
+			if (!sp)
+				return;
+			var tc:Touch=e.getTouch(sp, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			var isXiyou:Boolean=(sp == xiyouBtn);
+			if (isXiyou == (gamelevel == 0))
+				return;
+			xiyouBtn.getChildAt(0).visible=!isXiyou;
+			xiyouBtn.getChildAt(1).visible=isXiyou;
+			sanguoBtn.getChildAt(0).visible=isXiyou;
+			sanguoBtn.getChildAt(1).visible=!isXiyou;
+			gamelevel=isXiyou ? 0 : 1;
+			trace(gamelevel);
 		}
 
 		private function onCloseTouch(e:Event):void
@@ -480,6 +521,10 @@ package views.module4.scene42
 
 		private var _score:int;
 		public var scene:Scene42;
+
+		private var xiyouBtn:Sprite;
+
+		private var sanguoBtn:Sprite;
 
 		public function get score():int
 		{
