@@ -3,6 +3,7 @@ package views.components
 	import feathers.core.FeathersControl;
 	
 	import starling.display.Image;
+	import starling.events.Event;
 	
 	import views.global.userCenter.UserCenterManager;
 
@@ -27,7 +28,7 @@ package views.components
 		private var loopnumD:LoopNumList;
 		private function initLists():void
 		{
-			loopnumY = new LoopNumList(1960, 2014);
+			loopnumY = new LoopNumList(_minDate.fullYear, _maxDate.fullYear);
 			this.addChild( loopnumY );
 			loopnumY.x = 68;
 			loopnumY.y = 2;
@@ -37,11 +38,52 @@ package views.components
 			loopnumM.x = 184;
 			loopnumM.y = 2;
 			
-			loopnumD = new LoopNumList(1, 30);
+			loopnumD = new LoopNumList(1, 31);
 			this.addChild( loopnumD );
 			loopnumD.x = 276;
 			loopnumD.y = 2;
+			
+			loopnumY.addEventListener(Event.CHANGE, onChanged);
+			loopnumM.addEventListener(Event.CHANGE, onChanged);
+			loopnumD.addEventListener(Event.CHANGE, onChanged);
 		}		
+		
+		/**
+		 * 临时存储的日期
+		 */		
+		private var cacheDate:Date;
+		private function onChanged(e:Event):void
+		{
+			trace(e.data);
+			var date:Date;
+			switch(e.currentTarget)
+			{
+				case loopnumY:		//年份变更
+					cacheDate.fullYear = int(e.data);
+					if(cacheDate.month == 1)		//2月需变更天数
+					{
+						date = new Date(cacheDate.fullYear, cacheDate.month+1);
+						date.time-=1;
+						loopnumD.resetMinToMax(1, date.date);
+					}
+					break;
+				case loopnumM:		//月份变更，并计算该月总天数
+					cacheDate.month = int(e.data)-1;
+					date = new Date(cacheDate.fullYear, cacheDate.month+1);
+					date.time-=1;
+					loopnumD.resetMinToMax(1, date.date);
+					break;
+				case loopnumD:		//日期变更
+					cacheDate.date = int(e.data)-1;
+					break;
+			}
+			dispatchEventWith(Event.CHANGE, false, cacheDate);
+		}
+		
+		public function getCrtDate():Date
+		{
+			return cacheDate;
+		}
 		
 		private function initImages():void
 		{
@@ -67,14 +109,14 @@ package views.components
 		}
 		
 		/**
-		 * 设置时间显示范围
+		 * 设置时间显示范围，单位：年
 		 * @param min
 		 * @param max
 		 */		
-		public function setMinToMax(min:Date, max:Date):void
+		public function setMinToMax(min:int, max:int):void
 		{
-			maxDate = max;
-			minDate = min;
+			this._maxDate = new Date(max, 11, 31);
+			this._minDate = new Date(min, 0, 1);
 		}
 		
 		private var _crtDate:Date = new Date();
@@ -87,30 +129,26 @@ package views.components
 			_crtDate = date;
 		}
 		
-		private var _maxDate:Date = new Date(2016, 12, 31);
-		public function set maxDate(date:Date):void
-		{
-			_maxDate = date;
-		}
-		
-		private var _minDate:Date = new Date(1960, 01, 01);
-		public function set minDate(date:Date):void
-		{
-			_minDate = date;
-		}
+		private var _maxDate:Date = new Date(2016, 11, 31);
+		private var _minDate:Date = new Date(1960, 0, 1);
 		
 		/**
 		 * 当前时间
 		 */		
 		public function setCrtDate(date:Date):void
 		{
-			if(date > maxDate || date < minDate)
+			if(date > _maxDate || date < _minDate)
 				throw new Error("范围超出");
-			
+			cacheDate = new Date(date.fullYear, date.month, date.date);
+			loopnumY.setCrtNum(cacheDate.fullYear);
+			loopnumM.setCrtNum(cacheDate.month+1);
+			loopnumD.setCrtNum(cacheDate.date);
 		}
 		
 		override public function dispose():void
 		{
+			if(cacheDate)
+				cacheDate = null;
 			if(loopnumY)
 				loopnumY.removeFromParent(true);
 			if(loopnumM)
