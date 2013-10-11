@@ -38,15 +38,15 @@ package views.module4.scene42
 
 			addChild(getImage("operabg2"));
 
-			if (gameLevel == 0)
-				addMountains();
-			else
-				addBoatAndCloud();
-
 			addPillars();
 
 			ropeSP=new Shape();
 			addChild(ropeSP);
+
+			if (gameLevel == 0)
+				addMountains();
+			else
+				addBoat();
 
 			for (var i:int=0; i < 3; i++)
 			{
@@ -61,6 +61,8 @@ package views.module4.scene42
 			}
 
 			addBodys();
+			if (gameLevel == 1)
+				addCloud();
 			addBtns();
 
 			TweenLite.delayedCall(.5, function():void {
@@ -71,12 +73,6 @@ package views.module4.scene42
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			if (SOService.instance.checkHintCount(silverCardClickHint))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame2);
-		}
-
-		private function addBoatAndCloud():void
-		{
-			// TODO Auto Generated method stub
-
 		}
 
 		private var silverCardClickHint:String="silverCardClickHint";
@@ -202,19 +198,67 @@ package views.module4.scene42
 		private function onBoatBtnClick(e:Event):void
 		{
 			checkClick(7)
-//			TweenLite.killTweensOf(boat);
-//			firMountainOpen=!firMountainOpen;
-//			var _scale:Number=firMountainOpen ? 1 : 0.01;
-//			TweenLite.to(fireMountain, .5, {scaleX: _scale, scaleY: _scale});
+			var b:ElasticButton=e.currentTarget as ElasticButton;
+			b.touchable=false;
+			var dx:Number;
+			if (boat.x > 1024)
+			{
+				dx=Math.random() * 100;
+				TweenLite.to(boat, 3, {x: dx, onComplete: function():void {
+					b.touchable=true;
+				}});
+			}
+			else
+			{
+				dx=-1100;
+				TweenLite.to(boat, 1.5, {x: dx, onComplete: function():void {
+					boat.x=1100;
+					b.touchable=true;
+				}});
+			}
 		}
 
 		private function onCloudBtnClick(e:Event):void
 		{
 			checkClick(6)
-//			TweenLite.killTweensOf(mountain);
-//			mountainOpen=!mountainOpen;
-//			var _scale:Number=mountainOpen ? 1 : 0.01;
-//			TweenLite.to(mountain, .5, {scaleX: _scale, scaleY: _scale});
+			var b:ElasticButton=e.currentTarget as ElasticButton;
+			b.touchable=false;
+			var dx:Number;
+			if (cloud.x > 1024)
+			{
+				dx=100 + Math.random() * 400;
+				TweenLite.to(cloud, 3, {x: dx, onComplete: function():void {
+					b.touchable=true;
+				}});
+			}
+			else
+			{
+				dx=-1100;
+				TweenLite.to(cloud, 1.5, {x: dx, onComplete: function():void {
+					cloud.x=1100;
+					b.touchable=true;
+				}});
+			}
+		}
+
+		private var boat:Sprite;
+		private var cloud:Image;
+
+		private function addBoat():void
+		{
+			boat=new Sprite();
+			boat.addChild(getImage("boat"));
+			addChild(boat);
+			boat.x=1100;
+			boat.y=501;
+		}
+
+		private function addCloud():void
+		{
+			cloud=getImage("cloud");
+			addChild(cloud);
+			cloud.x=1100;
+			cloud.y=3;
 		}
 
 		private function onFireBtnClick(e:Event):void

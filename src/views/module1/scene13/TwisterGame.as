@@ -400,8 +400,8 @@ package views.module1.scene13
 				if (!close)
 				{
 					close=new ElasticButton(getImage("clock-close"));
-					close.x=492;
-					close.y=-181;
+					close.x=550;
+					close.y=-130;
 					addChild(close);
 					close.addEventListener(ElasticButton.CLICK, onCloseTouch);
 					if (SOService.instance.checkHintCount(twistHint))

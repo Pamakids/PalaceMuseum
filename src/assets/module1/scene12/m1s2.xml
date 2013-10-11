@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:159499a0d2c2b1ae1f8bae03072cfd8a$ -->
+<!-- $TexturePacker:SmartUpdate:66d776d1ee8ea45fbb2025ec6c042cb8$ -->
 <TextureAtlas imagePath="m1s2.png">
-    <SubTexture name="box" x="867" y="436" width="282" height="189" frameX="-1" frameY="-2" frameWidth="284" frameHeight="191"/>
-    <SubTexture name="boxcell" x="805" y="626" width="224" height="223" frameX="-23" frameY="0" frameWidth="284" frameHeight="223"/>
-    <SubTexture name="boxcover" x="1" y="872" width="270" height="40"/>
-    <SubTexture name="cloth-lock" x="1283" y="233" width="70" height="65"/>
-    <SubTexture name="clothhintarrow" x="1" y="913" width="122" height="55"/>
-    <SubTexture name="clothhintfinger" x="1280" y="814" width="117" height="111"/>
-    <SubTexture name="dragonRobecollectCard" x="257" y="1" width="338" height="410"/>
-    <SubTexture name="king12" x="1" y="1" width="255" height="542" frameX="-53" frameY="-104" frameWidth="353" frameHeight="646"/>
-    <SubTexture name="lion" x="1030" y="626" width="138" height="213"/>
-    <SubTexture name="puzzlehint" x="867" y="331" width="530" height="104"/>
-    <SubTexture name="quiz-matchsign" x="1169" y="623" width="207" height="190"/>
-    <SubTexture name="quiz-地" x="394" y="870" width="121" height="115"/>
-    <SubTexture name="quiz-天" x="272" y="870" width="121" height="115"/>
-    <SubTexture name="quiz-日" x="1283" y="117" width="121" height="115"/>
-    <SubTexture name="quiz-月" x="1283" y="1" width="121" height="115"/>
-    <SubTexture name="常帽" x="1030" y="840" width="249" height="164" frameX="-54" frameY="-61" frameWidth="353" frameHeight="260"/>
-    <SubTexture name="常服" x="561" y="611" width="243" height="301" frameX="-61" frameY="-7" frameWidth="353" frameHeight="333"/>
-    <SubTexture name="朝帽" x="251" y="611" width="309" height="258" frameX="-23" frameY="0" frameWidth="353" frameHeight="260"/>
-    <SubTexture name="朝服" x="961" y="1" width="321" height="329" frameX="-20" frameY="-4" frameWidth="353" frameHeight="333"/>
-    <SubTexture name="行帽" x="805" y="850" width="219" height="158" frameX="-67" frameY="-55" frameWidth="353" frameHeight="260"/>
-    <SubTexture name="行服" x="1" y="544" width="249" height="327" frameX="-57" frameY="0" frameWidth="353" frameHeight="333"/>
-    <SubTexture name="雨帽" x="257" y="412" width="349" height="198" frameX="-2" frameY="-61" frameWidth="353" frameHeight="260"/>
-    <SubTexture name="雨服" x="596" y="1" width="364" height="305" frameX="-6" frameY="-4" frameWidth="370" frameHeight="333"/>
-    <SubTexture name="龙帽" x="1150" y="436" width="251" height="186" frameX="-53" frameY="-41" frameWidth="353" frameHeight="260"/>
-    <SubTexture name="龙袍" x="607" y="307" width="259" height="287" frameX="-61" frameY="-24" frameWidth="353" frameHeight="333"/>
+    <SubTexture name="bgquiz" x="1026" y="1" width="994" height="657" frameX="-12" frameY="-24" frameWidth="1024" frameHeight="699"/>
+    <SubTexture name="bgquizshadow" x="1" y="1" width="1024" height="699"/>
+    <SubTexture name="box" x="1746" y="659" width="282" height="189" frameX="-1" frameY="-2" frameWidth="284" frameHeight="191"/>
+    <SubTexture name="boxcell" x="610" y="1721" width="224" height="223" frameX="-23" frameY="0" frameWidth="284" frameHeight="223"/>
+    <SubTexture name="boxcover" x="1746" y="849" width="270" height="40"/>
+    <SubTexture name="circle" x="1026" y="659" width="719" height="692"/>
+    <SubTexture name="circlelight" x="835" y="1020" width="150" height="170"/>
+    <SubTexture name="cloth-lock" x="340" y="1000" width="70" height="65"/>
+    <SubTexture name="clothhintarrow" x="835" y="1886" width="122" height="55"/>
+    <SubTexture name="clothhintfinger" x="340" y="888" width="117" height="111"/>
+    <SubTexture name="dragonRobecollectCard" x="1" y="900" width="338" height="410"/>
+    <SubTexture name="hintbar" x="610" y="1945" width="504" height="95"/>
+    <SubTexture name="king12" x="1746" y="1178" width="255" height="542" frameX="-53" frameY="-104" frameWidth="353" frameHeight="646"/>
+    <SubTexture name="lion" x="461" y="701" width="138" height="213"/>
+    <SubTexture name="puzzlehint" x="458" y="915" width="530" height="104"/>
+    <SubTexture name="quiz-matchsign" x="1" y="701" width="207" height="190"/>
+    <SubTexture name="quiz-地" x="1085" y="1721" width="121" height="115"/>
+    <SubTexture name="quiz-天" x="650" y="1252" width="121" height="115"/>
+    <SubTexture name="quiz-日" x="650" y="1136" width="121" height="115"/>
+    <SubTexture name="quiz-月" x="650" y="1020" width="121" height="115"/>
+    <SubTexture name="常帽" x="835" y="1721" width="249" height="164" frameX="-54" frameY="-61" frameWidth="353" frameHeight="260"/>
+    <SubTexture name="常服" x="366" y="1721" width="243" height="301" frameX="-61" frameY="-7" frameWidth="353" frameHeight="333"/>
+    <SubTexture name="朝帽" x="340" y="1066" width="309" height="258" frameX="-23" frameY="0" frameWidth="353" frameHeight="260"/>
+    <SubTexture name="朝服" x="1" y="1352" width="321" height="329" frameX="-20" frameY="-4" frameWidth="353" frameHeight="333"/>
+    <SubTexture name="行帽" x="772" y="1191" width="219" height="158" frameX="-67" frameY="-55" frameWidth="353" frameHeight="260"/>
+    <SubTexture name="行服" x="323" y="1352" width="249" height="327" frameX="-57" frameY="0" frameWidth="353" frameHeight="333"/>
+    <SubTexture name="雨帽" x="610" y="701" width="349" height="198" frameX="-2" frameY="-61" frameWidth="353" frameHeight="260"/>
+    <SubTexture name="雨服" x="1" y="1721" width="364" height="305" frameX="-6" frameY="-4" frameWidth="370" frameHeight="333"/>
+    <SubTexture name="龙帽" x="209" y="701" width="251" height="186" frameX="-53" frameY="-41" frameWidth="353" frameHeight="260"/>
+    <SubTexture name="龙袍" x="1746" y="890" width="259" height="287" frameX="-61" frameY="-24" frameWidth="353" frameHeight="333"/>
 </TextureAtlas>
