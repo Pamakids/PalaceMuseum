@@ -140,12 +140,12 @@ package controllers
 					if (SOService.instance.getSO(obj.className))
 					{
 						obj.resultEasy=SOService.instance.getSO(obj.className);
-						obj.resultHard="----------";
+						obj.resultHard="000000";
 					}
 					else
 					{
-						obj.resultEasy="----------";
-						obj.resultHard="----------";
+						obj.resultEasy="000000";
+						obj.resultHard="000000";
 					}
 				}
 				else
@@ -153,12 +153,12 @@ package controllers
 					if (SOService.instance.getSO(obj.className + 0))
 						obj.resultEasy=SOService.instance.getSO(obj.className + 0);
 					else
-						obj.resultEasy="----------";
+						obj.resultEasy="000000";
 
 					if (SOService.instance.getSO(obj.className + 1))
 						obj.resultHard=SOService.instance.getSO(obj.className + 1);
 					else
-						obj.resultHard="----------";
+						obj.resultHard="000000";
 				}
 				delete obj.className;
 				datas.push(obj);

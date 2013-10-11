@@ -37,7 +37,8 @@ package views.global.userCenter.userInfo
 			const max:int = 3;
 			
 			nameLabel.text = _gameData.name;
-			resultLabel.text = getResultContent();
+			resultLabel_1.text = "简单模式： "+_gameData.resultEasy;
+			resultLabel_2.text = "困难模式： "+_gameData.resultHard;
 			icon.texture = UserCenterManager.getTexture("card_game_" + _gameData.iconIndex);
 			for(var i:int = 0;i<max;i++)
 			{
@@ -46,7 +47,9 @@ package views.global.userCenter.userInfo
 		}
 		
 		private var nameLabel:TextField;			//菜名
-		private var resultLabel:TextField;			//成绩单
+		private var resultLabel_0:TextField;			//成绩单
+		private var resultLabel_1:TextField;			//成绩单
+		private var resultLabel_2:TextField;			//成绩单
 		private var icon:Image;						//游戏icon
 		private var button_start:Button;			//开始游戏按钮
 		private var button_close:Button;			//关闭按钮
@@ -60,23 +63,33 @@ package views.global.userCenter.userInfo
 			initGameicon();
 		}
 		
+		private var leading:int = 10;
 		private function initLabels():void
 		{
 			nameLabel = new TextField(230, 80, _gameData.name, FontVo.PALACE_FONT, 32, 0x932720 );
 			this.addChild( nameLabel );
 			nameLabel.x = 345;
 			nameLabel.y = 66;
-			nameLabel.touchable = false;
-			nameLabel.vAlign = "center";
-			nameLabel.hAlign = "center";
 			
-			resultLabel = new TextField(230, 100, getResultContent(), FontVo.PALACE_FONT, 20, 0x932720);
-			this.addChild( resultLabel );
-			resultLabel.x = 345;
-			resultLabel.y = 180;
-			resultLabel.touchable = false;
-			resultLabel.vAlign = "top";
-			resultLabel.hAlign = "left";
+			resultLabel_0 = new TextField(230, 30, "最好成绩", FontVo.PALACE_FONT, 24, 0x932720);
+			this.addChild( resultLabel_0 );
+			resultLabel_0.x = 345;
+			resultLabel_0.y = 180;
+			resultLabel_1 = new TextField(230, 30, "简单模式： "+_gameData.resultEasy, FontVo.PALACE_FONT, 24, 0x932720);
+			this.addChild( resultLabel_1 );
+			resultLabel_1.x = 345;
+			resultLabel_1.y = resultLabel_0.y + resultLabel_0.height + leading;
+			resultLabel_2 = new TextField(230, 30, "困难模式： "+_gameData.resultHard, FontVo.PALACE_FONT, 24, 0x932720);
+			this.addChild( resultLabel_2 );
+			resultLabel_2.x = 345;
+			resultLabel_2.y = resultLabel_1.y + resultLabel_1.height + leading;
+			
+			nameLabel.touchable = resultLabel_0.touchable = resultLabel_1.touchable = resultLabel_2.touchable = false;
+			nameLabel.vAlign = resultLabel_0.vAlign = resultLabel_1.vAlign = resultLabel_2.vAlign = "center";
+			nameLabel.hAlign = "center";
+			resultLabel_0.hAlign = resultLabel_1.hAlign = resultLabel_2.hAlign = "left";
+			
+//			resultLabel_0.border = resultLabel_1.border = resultLabel_2.border = true;
 		}
 		
 		private function initButtons():void
@@ -135,29 +148,19 @@ package views.global.userCenter.userInfo
 			icon.y = 58;
 			icon.touchable = false;
 		}
-		private function getResultContent():String
-		{
-			var str:String = "最好成绩\n简单模式： "+_gameData.resultEasy+"\n困难模式： "+_gameData.resultHard;
-			return str;
-		}
 		
 		override public function dispose():void
 		{
 			if(nameLabel)
-			{
 				nameLabel.removeFromParent(true);
-				nameLabel = null;
-			}
-			if(resultLabel)
-			{
-				resultLabel.removeFromParent(true);
-				resultLabel = null;
-			}
+			if(resultLabel_0)
+				resultLabel_0.removeFromParent(true);
+			if(resultLabel_1)
+				resultLabel_1.removeFromParent(true);
+			if(resultLabel_2)
+				resultLabel_2.removeFromParent(true);
 			if(icon)
-			{
 				icon.removeFromParent(true);
-				icon = null;
-			}
 			if(button_start)
 			{
 				button_start.removeEventListener(TouchEvent.TOUCH, startGame);
