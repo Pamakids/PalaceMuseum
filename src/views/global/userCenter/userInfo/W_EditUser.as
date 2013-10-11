@@ -48,11 +48,14 @@ package views.global.userCenter.userInfo
 		private function initDateChangeDevice():void
 		{
 			dateView = new DateChangeDevice();
-			dateView.setMinToMax(new Date(1960, 1, 1), new Date(2013, 12, 31));
+			dateView.setMinToMax(1960, 2016);
 			this.addChild( dateView );
 			dateView.x = 65;
 			dateView.y = 169;
 			dateView.addEventListener(Event.CHANGE, onChange);
+			//解析出生日期
+			var arr:Array = userdata.birthday.split("-");
+			dateView.setCrtDate(new Date(arr[0], int(arr[1])-1, int(arr[2])));
 		}
 		
 		/**
@@ -176,7 +179,11 @@ package views.global.userCenter.userInfo
 				userview.removeFromParent(true);
 			}
 			if(dateView)
+			{
+				dateView.removeEventListener(Event.CHANGE, onChange);
 				dateView.removeFromParent(true);
+				
+			}
 			if(button_close)
 			{
 				button_close.removeEventListener(Event.TRIGGERED, closeWindow);
