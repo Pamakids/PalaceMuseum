@@ -1,7 +1,5 @@
 package views.components
 {
-	import com.greensock.TweenLite;
-	
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -342,7 +340,6 @@ package views.components
 		{
 			if(this.min == min && this.max == max)
 				return;
-			trace(min, max);
 			this.min = min;
 			this.max = max;
 			var item:TextField;

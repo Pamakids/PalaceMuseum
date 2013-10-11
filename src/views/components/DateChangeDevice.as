@@ -54,7 +54,6 @@ package views.components
 		private var cacheDate:Date;
 		private function onChanged(e:Event):void
 		{
-			trace(e.data);
 			var date:Date;
 			switch(e.currentTarget)
 			{
