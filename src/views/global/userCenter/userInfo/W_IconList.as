@@ -25,7 +25,7 @@ package views.global.userCenter.userInfo
 		
 		private var list:List;
 		/**
-		 * { username: "name", iconIndex: i, birthday: "2013-01-11"},
+		 * { username: "name", avatarIndex: i, birthday: "2013-01-11"},
 		 */		
 		private function initList():void
 		{

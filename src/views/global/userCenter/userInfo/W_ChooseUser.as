@@ -5,11 +5,11 @@ package views.global.userCenter.userInfo
 	import feathers.core.FeathersControl;
 	import feathers.data.ListCollection;
 	
+	import models.SOService;
+	
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
 	import starling.textures.Texture;
 	
 	import views.global.userCenter.UserCenterManager;
@@ -26,24 +26,33 @@ package views.global.userCenter.userInfo
 		
 		override protected function initialize():void
 		{
-			initUserdatas();
 			initBackImages();
-			initTitle();
+			initSeclectedTitle();
 			initUserList();
 			initButtons();
 			initButtonGroup();
 		}
 		
+		override protected function draw():void
+		{
+			initUserdatas();
+			selectedTitle.x = 32;
+			selectedTitle.y = 28 + SOService.instance.getLastUser()*116;
+			for(var i:int = 0;i<maxUserNum;i++)
+			{
+				items[i].resetData(this.userDatas[i]);
+			}
+		}
+		
 		/**
 		 * 被选中的标记
 		 */		
-		private var seclectedTitle:Image;
-		private function initTitle():void
+		private var selectedTitle:Image;
+		private function initSeclectedTitle():void
 		{
-			seclectedTitle = new Image(UserCenterManager.getTexture("background_selected_icon"));
-			this.addChild(seclectedTitle);
-			seclectedTitle.visible = false;
-			seclectedTitle.touchable = false;
+			selectedTitle = new Image(UserCenterManager.getTexture("background_selected_icon"));
+			this.addChild(selectedTitle);
+			selectedTitle.touchable = false;
 		}
 		
 		private var buttons:ButtonGroup;
@@ -72,8 +81,7 @@ package views.global.userCenter.userInfo
 		public var editHandler:Function;
 		private function onTriggered(e:Event):void
 		{
-			var info:Object = userDatas[buttons.getChildIndex( e.currentTarget as DisplayObject)];
-			editHandler( info );
+			editHandler( buttons.getChildIndex( e.currentTarget as DisplayObject) );
 		}
 		
 		private var button_close:Button;
@@ -95,22 +103,13 @@ package views.global.userCenter.userInfo
 			items = new Vector.<ItemForUserList>(maxUserNum);
 			for(var i:int = 0;i<maxUserNum;i++)
 			{
-				data = userDatas[i];
-				item = new ItemForUserList(data);
+				item = new ItemForUserList(/*data*/);
 				item.touchable = true;
 				this.addChild( item );
 				item.x = 46;
 				item.y = 37 + i * 116;
 				items[i] = item;
 				item.addEventListener(Event.TRIGGERED, changeCtrUser);
-				
-				//检测是否为当前用户，是则将选中标记位置移动至item位置
-				if(true)
-				{
-					seclectedTitle.x = 32;
-					seclectedTitle.y = 28;
-					seclectedTitle.visible = true;
-				}
 			}
 		}
 		private function changeCtrUser(e:Event):void
@@ -118,34 +117,27 @@ package views.global.userCenter.userInfo
 			//提示用户切换用户
 			if(!e.data)		//无角色
 				return;
-//			if(true)		//验证为当前用户
-//				return;
-			trace("切换用户");
-			changeCtrUserHandler(e.data)
+			var index:int = items.indexOf(e.currentTarget as ItemForUserList);
+			if(SOService.instance.getLastUser() == index)		//验证为当前用户
+				return;
+			changeCtrUserHandler(index);
 		}
-		
 		public var changeCtrUserHandler:Function;
 		
 		private const maxUserNum:int = 3;
 		
 		/**
 		 * [
-		 * 		{ username: "name", iconIndex: i, birthday: "2013-01-11"},
-		 * 		{ username: "name", iconIndex: i, birthday: "2013-01-11"},
-		 * 		{ username: "name", iconIndex: i, birthday: "2013-01-11"}
+		 * 		{ username: "name", avatarIndex: i, birthday: "2013-01-11"},
+		 * 		{ username: "name", avatarIndex: i, birthday: "2013-01-11"},
+		 * 		{ username: "name", avatarIndex: i, birthday: "2013-01-11"}
 		 * ]
 		 */		
-		private var userDatas:Array;
+		private var userDatas:Vector.<Object>;
 		private function initUserdatas():void
 		{
 			//获取用户所有角色数据
-			userDatas = [];
-			for(var i:int = 0;i<2;i++)
-			{
-				userDatas.push(
-					{ username: "name", iconIndex: i, birthday: "2013-01-11"}
-				);
-			}
+			userDatas = SOService.instance.getUserInfoList();
 		}
 		
 		private function initBackImages():void
@@ -164,12 +156,15 @@ package views.global.userCenter.userInfo
 				button_close.removeEventListener(Event.TRIGGERED, closeWindow);
 				button_close.removeFromParent(true);
 			}
+			if(selectedTitle)
+				selectedTitle.removeFromParent(true);
 			if(buttons)
 				buttons.removeFromParent(true);
 			if(items)
 			{
 				for(var i:int = items.length-1;i>=0;i--)
 				{
+					items[i].removeEventListener(Event.TRIGGERED, changeCtrUser);
 					items[i].removeFromParent(true);
 					items[i] = null;
 				}

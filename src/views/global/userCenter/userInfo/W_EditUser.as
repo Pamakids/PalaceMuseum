@@ -8,6 +8,8 @@ package views.global.userCenter.userInfo
 	import feathers.controls.Button;
 	import feathers.core.FeathersControl;
 	
+	import models.SOService;
+	
 	import starling.display.Image;
 	import starling.events.Event;
 	
@@ -20,18 +22,21 @@ package views.global.userCenter.userInfo
 	 * 		修改用户名
 	 * 		修改出生日期
 	 * @author Administrator
+	 * 新建或编辑用户将派发Event.CHANGE事件
 	 */	
 	public class W_EditUser extends FeathersControl
 	{
 		/**
-		 * @param value
-		 * { username: "name", iconIndex: i, birthday: "2013-01-11"},
+		 * @param userIndex
 		 */		
-		public function W_EditUser(value:Object)
+		public function W_EditUser(userIndex:int)
 		{
-			this.userdata = value;
+			this.userIndex = userIndex;
+			creatUserInfo();
 		}
+		private var userIndex:int;
 		private var userdata:Object;
+		private var isCreat:Boolean =false;
 		
 		override protected function initialize():void
 		{
@@ -47,22 +52,18 @@ package views.global.userCenter.userInfo
 		private var dateView:DateChangeDevice;
 		private function initDateChangeDevice():void
 		{
-			dateView = new DateChangeDevice();
-			dateView.setMinToMax(1960, 2016);
+			dateView = new DateChangeDevice(1960, 2016);
 			this.addChild( dateView );
 			dateView.x = 65;
 			dateView.y = 169;
-			dateView.addEventListener(Event.CHANGE, onChange);
 			//解析出生日期
-			var arr:Array = userdata.birthday.split("-");
-			dateView.setCrtDate(new Date(arr[0], int(arr[1])-1, int(arr[2])));
+			updateDateView();
 		}
 		
-		/**
-		 * 监听日期变更
-		 */		
-		private function onChange(e:Event):void
+		private function updateDateView():void
 		{
+			var arr:Array = userdata.birthday.split("-");
+			dateView.setCrtDate(new Date(arr[0], int(arr[1])-1, int(arr[2])));
 		}
 		
 		private var button_close:Button;
@@ -84,6 +85,11 @@ package views.global.userCenter.userInfo
 			this.addChild( button_delete );
 			button_delete.x = 44;
 			button_delete.y = 310;
+			if(isCreat || userIndex == SOService.instance.getLastUser() || userIndex == 0)
+			{
+				button_delete.alpha = 0.5;
+				button_delete.touchable = false;
+			}
 			
 			button_choose = new Button();
 			button_choose.defaultSkin = new Image(UserCenterManager.getTexture("button_agreeChange_up"));
@@ -94,9 +100,15 @@ package views.global.userCenter.userInfo
 			button_choose.y = 310;
 		}
 		
-		public var changeHandler:Function;
 		private function changeCrtUser():void
 		{
+			//重新获取生日数据
+			this.userdata.birthday = SOService.dateToString(this.dateView.getCrtDate());
+			
+			SOService.instance.editUser(this.userIndex, this.userdata);
+			dispatchEvent(new Event(Event.CHANGE));
+			
+			closeWindow();
 		}
 		
 		public var deleteHandler:Function;
@@ -104,18 +116,17 @@ package views.global.userCenter.userInfo
 		{
 			if(iconList)
 				iconList.visible = false;
-			deleteHandler(this.userdata);
+			deleteHandler(this.userIndex);
 		}
 		
 		private var userview:ItemForUserList;
 		private function initUserView():void
 		{
-			userview = new ItemForUserList(userdata, true, true);
+			userview = new ItemForUserList(userdata, true);
 			userview.editIconFactory = showIconList;
 			this.addChild( userview );
 			userview.x = 46;
 			userview.y = 37;
-			
 			userview.addEventListener(Event.TRIGGERED, showIconList);
 		}
 		
@@ -140,8 +151,8 @@ package views.global.userCenter.userInfo
 		
 		private function changeHeadIcon(e:Event):void
 		{
-			this.userdata.iconIndex = e.data;
-			this.updateView();
+			this.userdata.avatarIndex = e.data;
+			this.userview.resetData(userdata);
 			this.hideIconList();
 		}
 		
@@ -165,7 +176,6 @@ package views.global.userCenter.userInfo
 			image.touchable = false;
 		}
 		
-		
 		override public function dispose():void
 		{
 			if(iconList)
@@ -179,11 +189,7 @@ package views.global.userCenter.userInfo
 				userview.removeFromParent(true);
 			}
 			if(dateView)
-			{
-				dateView.removeEventListener(Event.CHANGE, onChange);
 				dateView.removeFromParent(true);
-				
-			}
 			if(button_close)
 			{
 				button_close.removeEventListener(Event.TRIGGERED, closeWindow);
@@ -199,41 +205,56 @@ package views.global.userCenter.userInfo
 				button_choose.removeEventListener(Event.TRIGGERED, changeCrtUser);
 				button_choose.removeFromParent(true);
 			}
-			this.changeHandler = null;
 			this.deleteHandler = null;
 			this.closeWinHandler = null;
 			super.dispose();
 		}
 		
 		/**
-		 * @param value
-		 * { username: "name", iconIndex: i, birthday: "2013-01-11"},
+		 * @param userIndex
 		 */		
-		public function resetData(value:Object):void
+		public function resetData(userIndex:int):void
 		{
-			if(userdata && userdata == value)
-				return;
-			userdata = value;
-			updateView();
+			this.userIndex = userIndex;
+			creatUserInfo();
+			this.userview.resetData(this.userdata);
+			this.dateView.setCrtDate(SOService.StringToDate(this.userdata.birthday));
+			if(isCreat || userIndex == SOService.instance.getLastUser() || userIndex == 0)
+			{
+				button_delete.alpha = 0.5;
+				button_delete.touchable = false;
+			}
+			else
+			{
+				button_delete.alpha = 1;
+				button_delete.touchable = true;
+			}
 		}
 		
-		private function updateView():void
+		private function creatUserInfo():void
 		{
-			userview.updateView();
+			this.userdata = SOService.instance.getUserInfo(userIndex);
+			if(!userdata)
+			{
+				isCreat = true;
+				userdata = {
+					username:		"请输入",
+					avatarIndex:	0,
+					birthday:		SOService.dateToString(new Date())
+				};
+			}
+			else
+			{
+				isCreat = false;
+			}
 		}
 		
-		public var closeWinHandler:Function = defaultCloseHandler;
-		private function closeWindow(e:Event):void
+		public var closeWinHandler:Function;
+		private function closeWindow(e:Event=null):void
 		{
 			if(iconList)
 				iconList.visible = false;
 			closeWinHandler(this);
-		}
-		private function defaultCloseHandler(obj:Object):void
-		{
-			if(parent)
-				parent.removeChild( this );
-			this.dispose();
 		}
 	}
 }
