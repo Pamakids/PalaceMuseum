@@ -13,14 +13,25 @@ package views.components
 	 */	
 	public class DateChangeDevice extends FeathersControl
 	{
-		public function DateChangeDevice()
+		/**
+		 * 时间修改组件
+		 * @param minY	年份下限
+		 * @param maxY	年份上限
+		 * 
+		 */		
+		public function DateChangeDevice(minY:int, maxY:int)
 		{
+			this._maxDate = new Date(maxY, 11, 31);
+			this._minDate = new Date(minY, 0, 1);
 		}
 		
 		override protected function initialize():void
 		{
 			initImages();
 			initLists();
+			
+			if(!cacheDate)
+				cacheDate = new Date(loopnumY.getCrtNum(), loopnumM.getCrtNum()-1, loopnumD.getCrtNum());
 		}
 		
 		private var loopnumY:LoopNumList;
@@ -107,29 +118,8 @@ package views.components
 			image.touchable = false;
 		}
 		
-		/**
-		 * 设置时间显示范围，单位：年
-		 * @param min
-		 * @param max
-		 */		
-		public function setMinToMax(min:int, max:int):void
-		{
-			this._maxDate = new Date(max, 11, 31);
-			this._minDate = new Date(min, 0, 1);
-		}
-		
-		private var _crtDate:Date = new Date();
-		public function get crtDate():Date
-		{
-			return crtDate;
-		}
-		public function set crtDate(date:Date):void
-		{
-			_crtDate = date;
-		}
-		
-		private var _maxDate:Date = new Date(2016, 11, 31);
-		private var _minDate:Date = new Date(1960, 0, 1);
+		private var _maxDate:Date;
+		private var _minDate:Date;
 		
 		/**
 		 * 当前时间

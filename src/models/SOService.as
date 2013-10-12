@@ -136,12 +136,22 @@ package models
 			{
 				var info:UserVO=new UserVO();
 				info.username="我是小皇帝";
-				info.birthday=new Date().getTime();
+				info.birthday = SOService.dateToString(new Date())
 				info.avatarIndex=0;
 				arr[0]=info;
-				editUser(0, info);
+				setUserSO("users", arr);
 			}
 			return arr[index];
+		}
+		
+		/**
+		 * 获取用户信息列表
+		 * @return 
+		 */		
+		public function getUserInfoList():Vector.<Object>
+		{
+			var arr:Vector.<Object>=getUserSO("users") as Vector.<Object>;
+			return arr;
 		}
 
 		private static var _instance:SOService;
@@ -234,6 +244,25 @@ package models
 		{
 			userInfo.clear();
 			so.clear();
+		}
+		
+		public static function dateToString(date:Date):String
+		{
+			var str:String = date.fullYear.toString();
+			var s:String = String(date.month + 1);
+			if(s.length == 1)
+				s = "0" + s;
+			str += ("-" + s);
+			s = date.date.toString();
+			if(s.length == 1)
+				s = "0" + s;
+			str += ("-" + s);
+			return str;
+		}
+		public static function StringToDate(date:String):Date
+		{
+			var arr:Array = date.split("-");
+			return new Date(arr[0], int(arr[1])-1, arr[2]);
 		}
 	}
 }
