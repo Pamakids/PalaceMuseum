@@ -2,31 +2,24 @@ package views.module1
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Elastic;
-	import com.pamakids.palace.utils.SPUtils;
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 
-	import feathers.controls.List;
-	import feathers.controls.renderers.IListItemRenderer;
-	import feathers.data.ListCollection;
-	import feathers.layout.VerticalLayout;
-
-	import models.SOService;
+	import models.FontVo;
 
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
-	import views.module1.scene12.BoxCellRenderer;
-	import views.module1.scene12.Cloth;
 	import views.module1.scene12.Cloth2;
 	import views.module1.scene12.ClothCircle;
 	import views.module1.scene12.ClothPuzzle;
@@ -38,7 +31,7 @@ package views.module1
 	 */
 	public class Scene12New extends PalaceScene
 	{
-		private var bg:Sprite;
+		private var bgHolder:Sprite;
 
 		private var kingHolder:Sprite;
 		private var boxHolder:Sprite;
@@ -59,56 +52,17 @@ package views.module1
 			if (_opened != value)
 			{
 				_opened=value
-				TweenLite.to(boxCover, 1, {y: (value ? -272 : -4)});
+				TweenLite.to(boxCover, 1, {y: (value ? -272 : -4), onComplete: (value ? null : function():void {
+					TweenLite.to(boxHolder, .5, {x: 1100});
+				})
+					});
 			}
 		}
 
 		private var clothHintCount:String="clothHintCount";
-		private var isMoved:Boolean;
-		private var hintShow:Sprite;
 		private var count:int=0;
 		private var hintFinger:Image;
 
-		private function onEnterFrame(e:Event):void
-		{
-			if (isMoved)
-			{
-				if (hintShow)
-					hintShow.removeFromParent(true);
-				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-			}
-			if (count < 30 * 8)
-				count++;
-			else
-			{
-				if (!hintShow)
-				{
-					hintShow=new Sprite();
-					var hintArrow:Image=getImage("clothhintarrow");
-					hintFinger=getImage("clothhintfinger");
-					hintArrow.x=596;
-					hintArrow.y=354;
-					hintFinger.x=789;
-					hintFinger.y=414;
-					hintShow.addChild(hintArrow);
-					hintShow.addChild(hintFinger);
-					addChild(hintShow);
-					hintShow.touchable=false;
-				}
-				else
-				{
-					if (hintFinger.x == 589)
-					{
-						hintFinger.scaleX=hintFinger.scaleY=1;
-					}
-					else if (hintFinger.x == 789)
-					{
-						hintFinger.scaleX=hintFinger.scaleY=.8;
-					}
-					hintFinger.x+=hintFinger.scaleX == 1 ? 10 : -10;
-				}
-			}
-		}
 
 		private var quizSolved:Boolean;
 		private var index:int=0;
@@ -125,10 +79,10 @@ package views.module1
 		{
 			taskType=int(Math.random() * clothArr.length);
 
-			bg=new Sprite();
-			addChild(bg);
+			bgHolder=new Sprite();
+			addChild(bgHolder);
 
-			bg.addChild(getImage("background12"));
+			bgHolder.addChild(getImage("background12"));
 
 			addCircle();
 			addKing();
@@ -219,21 +173,22 @@ package views.module1
 				var cloth:Cloth2=new Cloth2();
 				cloth.cloth=getImage(clothArr[i]);
 				cloth.hat=getImage(hatArr[i]);
-				cloth.type=i;
-				cloth.light=getImage("circlelight");
+				cloth.type=clothArr[i];
 				dataArr.push(cloth);
 			}
 			shuffleArr(dataArr, 5);
-			if ((dataArr[0].type) == taskType)
+			if ((dataArr[0].type) == clothArr[taskType])
 			{
 				dataArr=dataArr.reverse();
 			}
 			circle=new ClothCircle();
+			circle.readyCallback=initMission;
 			circle.dataArr=dataArr;
-			circle.circle=getImage("circle");
+			circle.light=assets.getTexture("light");
 			addChild(circle);
-			circle.x=547;
-			circle.y=612;
+			circle.x=533;
+			circle.y=653;
+			circle.checkIndex=checkIndex;
 		}
 
 		private var taskType:int=0;
@@ -299,17 +254,57 @@ package views.module1
 
 				opened=true;
 				crtKnowledgeIndex=3;
-				TweenLite.delayedCall(2, function():void
+				TweenLite.delayedCall(1, function():void
 				{
-					showLionHint("hint-gamestart", initMission);
+					showLionHint("hint-gamestart", initCircle);
 				});
 			}});
 		}
 
 		private function initMission():void
 		{
+			opened=false;
 			var str:String=clothArr[taskType];
-			showLionHint("hint-find-" + str, initCircle);
+			showLionHint("hint-find-" + str, function():void {
+				addEventListener(TouchEvent.TOUCH, onDrag);
+			});
+		}
+
+		private var speedX:Number=0;
+		private var knowledgeHolder:Sprite;
+		private var knowledgeTF:TextField;
+
+		private function checkIndex(type:String):void
+		{
+			showKnowledge(type);
+			if (type == clothArr[taskType])
+				sceneOver();
+			else
+				hideNext();
+		}
+
+		private function showKnowledge(type:String):void
+		{
+			trace(type, clothArr[taskType], taskType)
+			var txt:String=json["hint-ok-" + type];
+			if (!knowledgeHolder)
+			{
+				knowledgeHolder=new Sprite();
+				addChild(knowledgeHolder);
+				knowledgeHolder.x=512;
+				knowledgeHolder.y=680;
+				var knowledgeBG:Image=getImage("hintbar");
+				knowledgeHolder.addChild(knowledgeBG);
+				knowledgeHolder.pivotX=knowledgeBG.width >> 1;
+				knowledgeHolder.pivotY=knowledgeBG.height >> 1;
+				knowledgeTF=new TextField(knowledgeBG.width - 30, knowledgeBG.height - 10, txt, FontVo.PALACE_FONT, 20, 0x561a1a, true);
+				knowledgeTF.x=knowledgeBG.x + 15;
+				knowledgeTF.y=knowledgeBG.y + 3;
+				knowledgeHolder.addChild(knowledgeTF);
+				knowledgeTF.touchable=false;
+				knowledgeTF.hAlign="center";
+			}
+			knowledgeTF.text=txt;
 		}
 
 		private function initCircle():void
@@ -318,9 +313,11 @@ package views.module1
 			circle.sp2=backSP;
 			circle.initCircle();
 
-			TweenLite.to(circle, .6, {alpha: 1, onComplete: function():void {
-				addEventListener(TouchEvent.TOUCH, onDrag);
-			}});
+			var quad:Quad=new Quad(1024, 768, 0);
+			quad.alpha=0;
+			bgHolder.addChild(quad);
+
+			TweenLite.to(quad, 1, {alpha: .6});
 		}
 
 		private function onDrag(e:TouchEvent):void
@@ -332,20 +329,21 @@ package views.module1
 			{
 				case TouchPhase.BEGAN:
 				{
-
+					circle.startDrag();
 					break;
 				}
 
 				case TouchPhase.MOVED:
 				{
 					var move:Point=tc.getMovement(this);
-					circle.angle-=move.x / 200 / Math.PI;
+					speedX=move.x / 200 / Math.PI;
+					circle.angle-=speedX;
 					break;
 				}
 
 				case TouchPhase.ENDED:
 				{
-
+					circle.tweenPlay(speedX);
 					break;
 				}
 
@@ -362,14 +360,18 @@ package views.module1
 			frontSP=new Sprite();
 
 			kingHolder=new Sprite();
-			kingHolder.addChild(getImage("king12"));
-			SPUtils.registSPCenter(kingHolder, 2);
+			var king:Image=getImage("king12")
+			king.x=-1;
+			king.y=2;
+			kingHolder.addChild(king);
+			kingHolder.pivotX=king.width >> 1;
+			kingHolder.pivotY=king.height;
 
 			addChild(backSP);
 			addChild(kingHolder);
 			addChild(frontSP);
-			backSP.x=frontSP.x=kingHolder.x=547;
-			backSP.y=frontSP.y=kingHolder.y=612;
+			backSP.x=frontSP.x=kingHolder.x=533;
+			backSP.y=frontSP.y=kingHolder.y=653;
 		}
 	}
 }

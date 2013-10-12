@@ -1,13 +1,20 @@
 package views.module3.scene31
 {
+	import com.pamakids.palace.utils.PNGEncoder;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
+	import flash.display.PNGEncoderOptions;
 	import flash.display.Sprite;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.filters.BevelFilter;
 	import flash.filters.BitmapFilterQuality;
 	import flash.filters.BitmapFilterType;
 	import flash.geom.Point;
+	import flash.utils.ByteArray;
 
 	public class BitmapAnalyst extends Sprite
 	{
@@ -129,7 +136,32 @@ package views.module3.scene31
 			var image:Bitmap=new Bitmap(bpd);
 			image.smoothing=true;
 
+//			savePNG(bpd, tx.toString() + ty.toString());
+
 			return image;
+		}
+
+		private function savePNG(bp:BitmapData, _name:String):void
+		{
+			var pngEc:PNGEncoder=new PNGEncoder();
+			//encode the bitmapdata object and keep the encoded ByteArray
+			var imgByteArray:ByteArray=pngEc.encode(bp);
+			var file:File=File.desktopDirectory.resolvePath(_name + ".png");
+			//Use a FileStream to save the bytearray as bytes to the new file
+			var fs:FileStream=new FileStream();
+			try
+			{
+				//open file in write mode
+				fs.open(file, FileMode.WRITE);
+				//write bytes from the byte array
+				fs.writeBytes(imgByteArray);
+				//close the file
+				fs.close();
+			}
+			catch (e:Error)
+			{
+				trace(e.message);
+			}
 		}
 
 		/*碎片斜角滤镜*/
