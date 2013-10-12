@@ -8,6 +8,7 @@ package views.global.userCenter.userInfo
 	import feathers.events.FeathersEventType;
 	
 	import models.FontVo;
+	import models.SOService;
 	
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -30,16 +31,13 @@ package views.global.userCenter.userInfo
 		
 		/**
 		 * @param data
-		 * { username: "name", iconIndex: 0, birthday: "2013-01-11"}
-		 * @param touchable
-		 * 头像交互
+		 * { username: "name", avatarIndex: 0, birthday: "2013-01-11"}
 		 * @param editable
 		 * 用户名编辑
 		 */
-		public function ItemForUserList(data:Object=null, touchable:Boolean=false, editable:Boolean=false)
+		public function ItemForUserList(data:Object=null, editable:Boolean=false)
 		{
 			_data = data;
-			_touchable = touchable;
 			_editable = editable;
 			init();
 		}
@@ -63,8 +61,7 @@ package views.global.userCenter.userInfo
 			nameBoard.x = 50;
 			nameBoard.y = 27;
 			if(!_data)
-				nameBoard.alpha = 0.6;
-			
+				nameBoard.alpha = .6;
 			var image:Image = new Image(UserCenterManager.getTexture("background_headicon"));
 			this.addChild( image );
 		}
@@ -86,11 +83,8 @@ package views.global.userCenter.userInfo
 			textInput.height = 30;
 			textInput.x = 100;
 			textInput.y = 35;
+			textInput.addEventListener( FeathersEventType.FOCUS_OUT, input_focusOutHandler )
 			textInput.touchable = this._editable;
-			if(_editable)
-			{
-				textInput.addEventListener( FeathersEventType.FOCUS_OUT, input_focusOutHandler )
-			}
 		}
 		
 		private function input_focusOutHandler():void
@@ -101,13 +95,12 @@ package views.global.userCenter.userInfo
 		
 		private function initHeadIcon():void
 		{
-			head = new HeadIcon(_data?_data.iconIndex:null);
+			head = new HeadIcon(_data?_data.avatarIndex:null);
 			this.addChild( head );
 			head.x = head.y = 50;
 			head.scaleX = head.scaleY = 0.7;
-			head.touchable = _touchable;
-			if(_touchable)
-				head.addEventListener(Event.TRIGGERED, onTriggered);
+			head.addEventListener(Event.TRIGGERED, onTriggered);
+			head.touchable = _editable;
 		}
 		private function onTriggered(e:Event):void
 		{
@@ -115,11 +108,42 @@ package views.global.userCenter.userInfo
 		}
 		
 		private var _editable:Boolean = false;
-		private var _touchable:Boolean = false;
+		
+		public function resetData(userData:Object):void
+		{
+			this._data = userData;
+			if(this)
+			if(this._editable)		//能编辑
+			{
+				if(!_data)
+					_data = {
+						username:		"请输入",
+						avatarIndex:	0,
+						birthday:		SOService.dateToString(new Date())
+					};
+				this.head.resetIcon(_data.avatarIndex);
+				this.textInput.text = _data.username;
+			}
+			else			//不能编辑
+			{
+				if(_data)
+				{
+					this.head.resetIcon(_data.avatarIndex);
+					this.textInput.text = _data.username;
+					this.nameBoard.alpha = 1;
+				}
+				else
+				{
+					this.head.resetIcon(null);
+					this.textInput.text = "";
+					this.nameBoard.alpha = 0.6;
+				}
+			}
+		}
 		
 		/**
 		 * 角色信息
-		 * { username: "name", iconIndex: 0, birthday: "2013-01-11"}
+		 * { username: "name", avatarIndex: 0, birthday: "2013-01-11"}
 		 */		
 		private var _data:Object;
 		
@@ -141,35 +165,22 @@ package views.global.userCenter.userInfo
 		override public function dispose():void
 		{
 			_data = null;
+			editIconFactory = null;
+			if(nameBoard)
+				nameBoard.removeFromParent(true);
 			if(head)
 			{
 				if(head.hasEventListener(Event.TRIGGERED))
 					head.removeEventListener(Event.TRIGGERED, onTriggered);
-				this.removeChild(head);
-				head.dispose();
-				head=null;
+				head.removeFromParent(true);
 			}
 			if(textInput)
 			{
 				if(_editable)
-				{
 					textInput.removeEventListener(FeathersEventType.FOCUS_OUT, input_focusOutHandler);
-				}
-				this.removeChild( textInput );
-				textInput.dispose();
-				textInput = null;
+				textInput.removeFromParent(true)
 			}
 			super.dispose();
-		}
-		
-		public function updateView():void
-		{
-			if(_data)
-			{
-				head.resetIcon(_data.iconIndex);
-				textInput.text = _data.username;
-				nameBoard.alpha = 1;
-			}
 		}
 	}
 }

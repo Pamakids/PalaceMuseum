@@ -43,7 +43,6 @@ package views.components
 		
 		private var durition:String;
 //		private var maxViewNum:int;
-		private var contents:Array;
 		/**
 		 * 用来标示列表中的显示顺序，位置从上到下（或从左到右）
 		 */		
@@ -416,29 +415,14 @@ package views.components
 				if(int(item.text) == value)
 				{
 					if(durition == DIRECTION_HORIZONTAL)
-					{
-						velocityX = (item.x>0)?-itemWidth:itemWidth;
-						moveTimes = (itemWidth-item.x) / velocityX;
-					}
+						velocityX = itemWidth-item.x;
 					else
-					{
-						velocityY = (item.y>0)?-itemHeight:itemHeight;
-						moveTimes = (itemHeight-item.y) / velocityY;
-					}
-					
-					var timer:Timer = new Timer(100, moveTimes);
-					timer.addEventListener(TimerEvent.TIMER, function onTimer(e:TimerEvent):void{
-						setPosition();
-					});
-					timer.addEventListener(TimerEvent.TIMER_COMPLETE, function onComplete(e:TimerEvent):void{
-						crtnum = value;
-					});
-					timer.start();
+						velocityY = itemHeight-item.y
+					setPosition();
 					break;
 				}
 			}
 		}
-		private var moveTimes:uint=0;
 		
 		public function resetViewSize(width:Number, height:Number):void
 		{
@@ -453,6 +437,10 @@ package views.components
 			this.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			if(quad)
 				quad.removeFromParent(true);
+			for each(var item:TextField in vecLabel)
+			{
+				item.removeFromParent(true);
+			}
 			super.dispose();
 		}
 	}

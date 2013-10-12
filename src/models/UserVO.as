@@ -18,7 +18,7 @@ package models
 		/**
 		 * 用户生日
 		 */
-		public var birthday:int;
+		public var birthday:String;
 		/**
 		 * 头像索引
 		 */

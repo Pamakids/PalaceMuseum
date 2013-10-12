@@ -56,7 +56,6 @@ package views.global.userCenter.userInfo
 			label.y = 10;
 			label.vAlign = label.hAlign = "center";
 			label.touchable = false;
-//			label.border = true;
 		}
 		/*
 		* 星星
@@ -130,16 +129,24 @@ package views.global.userCenter.userInfo
 			callBakc = null;
 			if(label)
 				label.removeFromParent(true);
-			label = null;
 			if(gameIcon)
 			{
 				gameIcon.removeEventListener(TouchEvent.TOUCH, onTouch);
 				gameIcon.removeFromParent(true);
-				gameIcon = null;
+			}
+			for each(var image:Image in _stars)
+			{
+				image.removeFromParent(true);
 			}
 			super.dispose();
 		}
 		
 		private var callBakc:Function;
+		
+		public function resetData(gameData:Object):void
+		{
+			this._data = gameData;
+			udpateStars();
+		}
 	}
 }
