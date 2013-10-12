@@ -12,7 +12,7 @@ package views.global.userCenter.userInfo
 	{
 		/**
 		 * @param data
-		 * { username: "name", iconIndex: 0, birthday: "2013-01-11"}
+		 * { username: "name", avatarIndex: 0, birthday: "2013-01-11"}
 		 */		
 		public function CurrentUserView(data:Object)
 		{
@@ -47,7 +47,7 @@ package views.global.userCenter.userInfo
 		private var _icon:HeadIcon;
 		private function initHeadicon():void
 		{
-			_icon = new HeadIcon(_data.iconIndex);
+			_icon = new HeadIcon(_data.avatarIndex);
 			this.addChild( _icon );
 			_icon.x = 74;
 			_icon.y = 74;
@@ -56,20 +56,23 @@ package views.global.userCenter.userInfo
 		/**
 		 * 
 		 * @param data
-		 * { username: "name", iconIndex: 0, birthday: "2013-01-11"}
+		 * { username: "name", avatarIndex: 0, birthday: "2013-01-11"}
 		 */		
 		public function resetData(data:Object = null):void
 		{
-			if(data)	_data = data;
+			if(data)	
+				_data = data;
 			_textfield.text = _data.username;
-			_icon.resetIcon(_data.iconIndex);
+			_icon.resetIcon(_data.avatarIndex);
 		}
 		
 		override public function dispose():void
 		{
 			this._data = null;
-			this._icon.removeFromParent(true);
-			this._textfield.removeFromParent(true);
+			if(_icon)
+				_icon.removeFromParent(true);
+			if(_textfield)
+				_textfield.removeFromParent(true);
 			super.dispose();
 		}
 	}

@@ -10,6 +10,7 @@ package views.global.userCenter.userInfo
 	import starling.text.TextField;
 	
 	import views.global.userCenter.UserCenterManager;
+
 	/**
 	 * 切换用户提示窗口
 	 * @author Administrator
@@ -36,24 +37,15 @@ package views.global.userCenter.userInfo
 			text.touchable = false;
 		}
 		
-		public var userdata:Object;
-		private var button_close:Button;
 		private var button_ok:Button;
 		private var button_cancle:Button;
 		
 		private function initButtons():void
 		{
-			button_close = new Button();
-			button_close.defaultSkin = new Image(UserCenterManager.getTexture("button_close_small"));
-			button_close.addEventListener(Event.TRIGGERED, closeWindow);
-			this.addChild( button_close );
-			button_close.x = 420;
-			button_close.y = 20;
-			
 			button_ok = new Button();
 			button_ok.defaultSkin = new Image(UserCenterManager.getTexture("button_ok_up"));
 			button_ok.downSkin = new Image(UserCenterManager.getTexture("button_ok_down"));
-			button_ok.addEventListener(Event.TRIGGERED, okFunction);
+			button_ok.addEventListener(Event.TRIGGERED, ok_handler);
 			this.addChild( button_ok );
 			button_ok.x = 270;
 			button_ok.y = 300;
@@ -61,22 +53,14 @@ package views.global.userCenter.userInfo
 			button_cancle = new Button();
 			button_cancle.defaultSkin = new Image(UserCenterManager.getTexture("button_cancle_up"));
 			button_cancle.downSkin = new Image(UserCenterManager.getTexture("button_cancle_down"));
-			button_cancle.addEventListener(Event.TRIGGERED, closeWindow);
+			button_cancle.addEventListener(Event.TRIGGERED, cancle_handler);
 			this.addChild( button_cancle );
 			button_cancle.x = 100;
 			button_cancle.y = 300;
 		}
 		
-		//同意切换用户
-		private function okFunction():void
-		{
-			//用户切换执行方法
-			
-			//切换用户
-			closeWindow();
-		}
-		
-		
+		public var ok_handler:Function;
+		public var cancle_handler:Function;
 		
 		private function initBackImages():void
 		{
@@ -91,28 +75,17 @@ package views.global.userCenter.userInfo
 		{
 			if(button_ok)
 			{
-				button_ok.removeEventListener(Event.TRIGGERED, okFunction);
+				button_ok.removeEventListener(Event.TRIGGERED, ok_handler);
 				button_ok.removeFromParent(true);
 			}
 			if(button_cancle)
 			{
-				button_cancle.removeEventListener(Event.TRIGGERED, closeWindow);
+				button_cancle.removeEventListener(Event.TRIGGERED, cancle_handler);
 				button_cancle.removeFromParent(true);
 			}
-			if(button_close)
-			{
-				button_close.removeEventListener(Event.TRIGGERED, closeWindow);
-				button_close.removeFromParent(true);
-			}
-			this.userdata = null;
-			this.closeWinHandler = null;
+			this.ok_handler = null;
+			this.cancle_handler = null;
 			super.dispose();
-		}
-		
-		public var closeWinHandler:Function;
-		private function closeWindow():void
-		{
-			closeWinHandler(this);
 		}
 	}
 }

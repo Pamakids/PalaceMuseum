@@ -33,20 +33,11 @@ package views.global.userCenter.userInfo
 			text.touchable = false;
 		}
 		
-		public var userdata:Object;
-		private var button_close:Button;
 		private var button_ok:Button;
 		private var button_cancle:Button;
 		
 		private function initButtons():void
 		{
-			button_close = new Button();
-			button_close.defaultSkin = new Image(UserCenterManager.getTexture("button_close_small"));
-			button_close.addEventListener(Event.TRIGGERED, closeWindow);
-			this.addChild( button_close );
-			button_close.x = 420;
-			button_close.y = 20;
-			
 			button_ok = new Button();
 			button_ok.defaultSkin = new Image(UserCenterManager.getTexture("button_ok_up"));
 			button_ok.downSkin = new Image(UserCenterManager.getTexture("button_ok_down"));
@@ -66,7 +57,7 @@ package views.global.userCenter.userInfo
 		
 		private function deleteUser():void
 		{
-			deleteHandler(this.userdata);
+			deleteHandler();
 			closeWindow();
 		}
 		
@@ -91,12 +82,6 @@ package views.global.userCenter.userInfo
 				button_cancle.removeEventListener(Event.TRIGGERED, closeWindow);
 				button_cancle.removeFromParent(true);
 			}
-			if(button_close)
-			{
-				button_close.removeEventListener(Event.TRIGGERED, closeWindow);
-				button_close.removeFromParent(true);
-			}
-			this.userdata = null;
 			this.closeWinHandler = null;
 			this.deleteHandler = null;
 			super.dispose();

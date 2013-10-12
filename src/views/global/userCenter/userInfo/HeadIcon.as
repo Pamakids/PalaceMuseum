@@ -74,15 +74,22 @@ package views.global.userCenter.userInfo
 		 */		
 		public function resetIcon(index:String):void
 		{
-			if(!index)
-				return;
 			if(_index && index && _index == index)
 				return;
 			_index = index;
-			if(!_icon)
-				initIcon();
+			if(!index)
+			{
+				if(_icon)
+					_icon.visible = false;
+			}
 			else
-				_icon.texture = UserCenterManager.getTexture("icon_userhead_" + _index);
+			{
+				if(!_icon)
+					initIcon();
+				else
+					_icon.texture = UserCenterManager.getTexture("icon_userhead_" + _index);
+				_icon.visible = true;
+			}
 		}
 		
 		/**
@@ -115,17 +122,9 @@ package views.global.userCenter.userInfo
 		override public function dispose():void
 		{
 			if(_icon)
-			{
-				this.removeChild( _icon );
-				_icon.dispose();
-				_icon = null;
-			}
+				_icon.removeFromParent(true);
 			if(_background)
-			{
-				this.removeChild( _background );
-				_background.dispose();
-				_background = null;
-			}
+				_background.removeFromParent(true);
 			if(this.touchable)
 				this.removeEventListener(TouchEvent.TOUCH, onTouch);
 			super.dispose();

@@ -9,8 +9,11 @@ package views.global.userCenter.userInfo
 	import feathers.controls.Button;
 	import feathers.core.PopUpManager;
 	
+	import models.SOService;
+	
 	import starling.display.DisplayObject;
 	import starling.display.Image;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -76,19 +79,20 @@ package views.global.userCenter.userInfo
 		private var w_deleteUser:W_DeleteUser;
 		private var w_alert:W_Alert;
 		
-		private function show_W_deleteUser(userdata:Object):void
+		private function show_W_deleteUser(userIndex:int):void
 		{
+			deleteIndex = userIndex;
 			if(!w_deleteUser)
 				init_w_deleteUser();
-			w_deleteUser.userdata = userdata;
-			w_deleteUser.deleteHandler = deleteHandler;
 			hideWinHandler(w_editUser, showWinHandler, w_deleteUser);
 		}
+		private var deleteIndex:int;
 		
 		private function init_w_deleteUser():void
 		{
 			w_deleteUser = new W_DeleteUser();
 			w_deleteUser.closeWinHandler = hideWinHandler;
+			w_deleteUser.deleteHandler = deleteHandler;
 		}
 		
 		private function show_W_game(value:Object):void
@@ -142,20 +146,20 @@ package views.global.userCenter.userInfo
 		/**
 		 * 切换角色按钮
 		 */		
-		private var button:Button;
+		private var button_change:Button;
 		private function initButton():void
 		{
-			button = new Button();
-			button.defaultSkin = new Image( UserCenterManager.getTexture("button_changeUser_up") );
-			button.downSkin = new Image( UserCenterManager.getTexture("button_changeUser_down") );
-			this.addChild( button );
-			button.x = 814;
-			button.y = 143;
-			button.addEventListener( TouchEvent.TOUCH, onTouch );
+			button_change = new Button();
+			button_change.defaultSkin = new Image( UserCenterManager.getTexture("button_changeUser_up") );
+			button_change.downSkin = new Image( UserCenterManager.getTexture("button_changeUser_down") );
+			this.addChild( button_change );
+			button_change.x = 814;
+			button_change.y = 143;
+			button_change.addEventListener( TouchEvent.TOUCH, onTouch );
 		}
 		private function onTouch(e:TouchEvent):void
 		{
-			var touch:Touch = e.getTouch(button);
+			var touch:Touch = e.getTouch(button_change);
 			if(touch && touch.phase == TouchPhase.ENDED)
 			{
 				show_w_chooseUser();
@@ -174,34 +178,65 @@ package views.global.userCenter.userInfo
 			showWinHandler(w_chooseUser);
 		}
 		
-		
-		private function show_W_alert(userData:Object):void
+		private var nextUser:int;
+		private function show_W_alert(index:int):void
 		{
+			nextUser = index;
 			if(!w_alert)
 			{
 				w_alert = new W_Alert();
-				w_alert.closeWinHandler = hideWinHandler;
+				w_alert.ok_handler = okForAlert;
+				w_alert.cancle_handler = cancleForAlert;
 			}
-			w_alert.userdata = userData;
+			
 			hideWinHandler(w_chooseUser, showWinHandler, w_alert);
+		}
+		private function okForAlert():void
+		{
+			SOService.instance.changeUser(nextUser);
+			changeUserHandler();
+			hideWinHandler(w_alert);
+		}
+		private function cancleForAlert():void
+		{
+			hideWinHandler(w_alert);
+		}
+		/**
+		 * 切换用户执行方法
+		 */		
+		private function changeUserHandler():void
+		{
+			crtUserData = SOService.instance.getUserInfo(SOService.instance.getLastUser());
+			crtUserView.resetData(crtUserData);
+			
+			//重置角色游戏数据
+			initGameDatas();
+			//刷新显示
+			for(var i:int = gameDatas.length - 1; i>=0;i--)
+			{
+				gameList[i].resetData(gameDatas[i]);
+			}
+			
+			if(w_chooseUser)
+				w_chooseUser.invalidate(INVALIDATION_FLAG_ALL);
 		}
 		
 		/**
 		 * 
-		 * @param data
+		 * @param userIndex
 		 * 
 		 */		
-		private function show_w_editUser(userdata:Object):void
+		private function show_w_editUser(userIndex:int):void
 		{
-			(!w_editUser)?init_w_editUser(userdata):w_editUser.resetData(userdata);
+			(!w_editUser)?init_w_editUser(userIndex):w_editUser.resetData(userIndex);
 			hideWinHandler(w_chooseUser, showWinHandler, w_editUser);
 		}
-		private function init_w_editUser(userdata:Object):void
+		private function init_w_editUser(userIndex:int):void
 		{
-			w_editUser = new W_EditUser(userdata);
+			w_editUser = new W_EditUser(userIndex);
 			w_editUser.closeWinHandler = hideWinHandler;
 			w_editUser.deleteHandler = show_W_deleteUser;
-			w_editUser.changeHandler = changeHandler;
+			w_editUser.addEventListener(Event.CHANGE, changeUserHandler);
 		}
 		
 		/**
@@ -209,8 +244,11 @@ package views.global.userCenter.userInfo
 		 * @param userdata
 		 * 
 		 */		
-		private function deleteHandler(userdata:Object):void
+		private function deleteHandler():void
 		{
+			SOService.instance.deleteUser(deleteIndex);
+			if(w_chooseUser)
+				w_chooseUser.invalidate(INVALIDATION_FLAG_ALL);
 		}
 		
 		/**
@@ -227,12 +265,7 @@ package views.global.userCenter.userInfo
 		private function initCrtUserView():void
 		{
 			//获取用户当前角色数据
-			crtUserData = {
-				username: "我是小皇帝", 
-				iconIndex: 0, 
-				birthday: "2013-01-11"
-			};
-			
+			crtUserData = SOService.instance.getUserInfo(SOService.instance.getLastUser());
 			//初始化角色显示组件
 			crtUserView = new CurrentUserView(crtUserData);
 			this.addChild( crtUserView );
@@ -266,6 +299,32 @@ package views.global.userCenter.userInfo
 		
 		override public function dispose():void
 		{
+			for each(var item:ItemForGameList in gameList)
+			{
+				item.removeFromParent(true);
+			}
+			if(w_game)
+				w_game.removeFromParent(true);
+			if(w_editUser)
+			{
+				w_editUser.addEventListener(Event.CHANGE, changeUserHandler);
+				w_editUser.removeFromParent(true);
+			}
+			if(w_chooseUser)
+				w_chooseUser.removeFromParent(true);
+			if(w_deleteUser)
+				w_deleteUser.removeFromParent(true);
+			if(w_alert)
+				w_alert.removeFromParent(true);
+			if(gameScene)
+				gameScene.removeFromParent(true);
+			if(button_change)
+			{
+				button_change.removeEventListener( TouchEvent.TOUCH, onTouch );
+				button_change.removeFromParent(true);
+			}
+			if(crtUserView)
+				crtUserView.removeFromParent(true);
 			super.dispose();
 		}
 	}
