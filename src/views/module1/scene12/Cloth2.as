@@ -1,6 +1,7 @@
 package views.module1.scene12
 {
-	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
+	import com.greensock.easing.Circ;
 
 	import flash.geom.Point;
 
@@ -16,7 +17,6 @@ package views.module1.scene12
 
 		public var hat:Image;
 		public var cloth:Image;
-		public var light:Image;
 
 		private var _offset:Number;
 
@@ -29,16 +29,16 @@ package views.module1.scene12
 		{
 			_offset=1 - value;
 			hat.y=hatY + _offset * 100;
-			hat.rotation=_offset * Math.PI / 12;
-			cloth.rotation=-_offset * Math.PI / 20;
+			hat.scaleX=hat.scaleY=Math.min(1, value + .8);
+//			hat.rotation=_offset * Math.PI / 12;
+//			cloth.rotation=-_offset * Math.PI / 20;
 		}
 
-		private var hatY:Number=-474;
-		private var clothY:Number=-422;
-		private var lightY:Number=15;
+		private var hatY:Number=-404;
+		private var clothY:Number=-350;
 
 		public var index:int;
-		public var type:int;
+		public var type:String;
 
 		public function initCloth():void
 		{
@@ -51,16 +51,14 @@ package views.module1.scene12
 			hat.y=hatY;
 			addChild(cloth);
 			cloth.y=clothY;
-
-			light.pivotX=light.width >> 1;
-			light.pivotY=light.height;
-			addChild(light);
-			light.y=lightY;
 		}
 
 		public function playEnter(pos:Point):void
 		{
-			TweenLite.to(this, .5, {x: pos.x, y: pos.y});
+			var midX:Number=(x + pos.x) / 2;
+			var midY:Number=(y + pos.y) / 2 - 300;
+			TweenMax.to(this, 1, {bezierThrough: [{x: midX, y: midY}, {x: pos.x, y: pos.y}], ease: Circ.easeOut});
+//			TweenLite.to(this, .5, {x: pos.x, y: pos.y});
 		}
 	}
 }
