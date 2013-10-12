@@ -34,7 +34,7 @@ package
 
 		public function Main()
 		{
-			SOService.instance.clear();
+//			SOService.instance.clear();
 //			SOService.instance.init();
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
