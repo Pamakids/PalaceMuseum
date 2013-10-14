@@ -16,7 +16,7 @@ package views.components
 	import starling.textures.Texture;
 	
 	/**
-	 * 书本软翻页动画
+	 * 书本软翻页动画(项目中使用的是 views.components.SoftPaperAnimation)
 	 * @author aser_sayhi
 	 */	
 	public class SoftPageAnimation extends Sprite
