@@ -283,7 +283,6 @@ package views.global.userCenter
 		private const standardLength:Number = 400;	//翻页有效拖拽距离
 		//用户手册场景
 		private var crtPage_Handbook:int = 0;
-		private const maxPage_Handbook:int = 13;
 		//成就场景
 		private var crtPage_Achieve:int = 0;
 		
@@ -314,8 +313,13 @@ package views.global.userCenter
 							//检测页面范围
 							if(pageUp && crtPage_Handbook == 0)
 								return;
-							if(!pageUp && crtPage_Handbook >= maxPage_Handbook-1)
+							if(!pageUp && crtPage_Handbook >= HandbookScreen.MAX_NUM-1)
 								return;
+							//清理多余纹理，释放内存
+							if(pageUp)
+								(_navigator.activeScreen as HandbookScreen).clearByPageIndex(crtPage_Handbook+1);
+							else
+								(_navigator.activeScreen as HandbookScreen).clearByPageIndex(crtPage_Handbook-1);
 							crtPage_Handbook += (pageUp?-1:1);
 							handbookTurnToPage(crtPage_Handbook);
 						}
@@ -400,11 +404,11 @@ package views.global.userCenter
 		 */
 		public function showIndex(index:int=-1):void
 		{
-			if(index <= 0 || index >= maxPage_Handbook)
+			if(index <= 0 || index >= HandbookScreen.MAX_NUM)
 				return;
 			pageUp = false;
 			crtPage_Handbook = index;
-			handbookTurnToPage(index);
+			handbookTurnToPage(crtPage_Handbook);
 		}
 
 		override public function dispose():void

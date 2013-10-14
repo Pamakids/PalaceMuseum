@@ -31,10 +31,8 @@ package views.global.userCenter
 		/**
 		 * 获取场景纹理
 		 */		
-		public function getScreenTexture(render:RenderTexture = null):RenderTexture
+		public function getScreenTexture(render:RenderTexture):RenderTexture
 		{
-			if(!render)
-				render = new RenderTexture(viewWidth, viewHeight);
 			render.draw(this);
 			return render;
 		}
