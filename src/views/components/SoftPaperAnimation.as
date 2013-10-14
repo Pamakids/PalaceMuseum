@@ -1,11 +1,8 @@
 package views.components
 {
-	import flash.geom.Point;
-	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	
 	public class SoftPaperAnimation extends Sprite
@@ -34,8 +31,6 @@ package views.components
 		private var softImage:SoftPageImage;
 		private var cacheImageL:Image;
 		private var cacheImageR:Image;
-		private var render:RenderTexture;
-		private var renderImage:Image;
 		
 		protected function initialize():void
 		{
@@ -44,18 +39,9 @@ package views.components
 			maxHeight = Math.ceil( Math.sqrt(bookWidth*bookWidth + bookHeight*bookHeight) );
 			
 			initCacheImage();
-			initRender();
+			initSoftImage();
 			
 			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-		}
-		
-		private function initRender():void
-		{
-			render = new RenderTexture(bookWidth, maxHeight);
-			renderImage = new Image( render);
-			this.addChild( renderImage );
-			renderImage.touchable = false;
-			renderImage.y = bookHeight - maxHeight;
 		}
 		
 		private function initCacheImage():void
@@ -67,6 +53,11 @@ package views.components
 			cacheImageR.x = bookWidth/2;
 			cacheImageL.touchable = cacheImageR.touchable  =false;
 		}
+		private function initSoftImage():void
+		{
+			softImage = new SoftPageImage(bookWidth, bookHeight);
+			this.addChild(softImage);
+		}
 		
 		/**
 		 * 时间轴方法
@@ -75,17 +66,16 @@ package views.components
 		{
 			if(!isActive)
 				return;
-			render.clear();
 			progress += this.velocity;
 			if(progress >= 1)
 			{
 				progress = 1;
-				softImage.setLocation(render, progress, pageUp);
+				softImage.setLocation(progress, pageUp);
 				complete();
 			}
 			else
 			{
-				softImage.setLocation(render, progress, pageUp);
+				softImage.setLocation(progress, pageUp);
 			}
 		}
 		
@@ -100,52 +90,15 @@ package views.components
 		 */		
 		public function start(pageUp:Boolean = false, velocity = 0.05):void
 		{
-			if(!softImage)
-			{
-				initSoftImage( pageUp );
-			}
-			else
-			{
-				softImage.originalTexture = (pageUp)?page_3:page_2;
-				softImage.anotherTexture = (pageUp)?page_2:page_3;
-			}
-			render.clear();
+			softImage.originalTexture = (pageUp)?page_3:page_2;
+			softImage.anotherTexture = (pageUp)?page_2:page_3;
 			cacheImageL.texture = page_1;
 			cacheImageR.texture = page_4;
 			this.pageUp = pageUp;
 			this.velocity = velocity;
 			progress = 0;
 			isActive = true;
-			
-//			test();
 		}
-		
-//		private var image:Image;
-//		private var anoImage:Image;
-//		private function test():void
-//		{
-//			if(!image)
-//			{
-//				var point:Point = this.globalToLocal(new Point());
-//				
-//				image = new Image(softImage.originalTexture);
-//				this.parent.addChild( image );
-//				image.x = point.x;
-//				image.y = point.y;
-//				
-//				
-//				anoImage = new Image(softImage.anotherTexture);
-//				this.parent.addChild( anoImage);
-//				image.scaleX = image.scaleY = anoImage.scaleX = anoImage.scaleY = 0.5;
-//				anoImage.x = 1024 - anoImage.width;
-//				anoImage.y = point.y;
-//			}
-//			else
-//			{
-//				image.texture = softImage.originalTexture;
-//				anoImage.texture = softImage.anotherTexture;
-//			}
-//		}
 		
 		/**
 		 * 动画播放进度[0 - 1]
@@ -153,12 +106,6 @@ package views.components
 		private var progress:Number;
 		private var velocity:Number;
 		
-		private function initSoftImage(pageUp:Boolean):void
-		{
-			softImage = new SoftPageImage((pageUp)?page_3:page_2, bookWidth, bookHeight);
-			softImage.anotherTexture = (pageUp)?page_2:page_3;
-			softImage.y = maxHeight - bookHeight;
-		}
 		/**
 		 * 动画播放完成
 		 */		
@@ -213,8 +160,6 @@ package views.components
 		 */		
 		public function setFixPageTexture(page_L:Texture, page_R:Texture):void
 		{
-			if(render)
-				render.clear();
 			if(!page_1 || (page_1 && page_1 != page_L))
 			{
 				page_1 = page_L;
