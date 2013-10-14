@@ -23,6 +23,7 @@ package views.module5
 		public function Scene52(am:AssetManager=null)
 		{
 			super(am);
+			crtKnowledgeIndex=11;
 			addChild(getImage("bg52"));
 
 			hand=getImage("memorial-hand");

@@ -32,6 +32,7 @@ package views.module4
 		public function Scene41(am:AssetManager=null)
 		{
 			super(am);
+			crtKnowledgeIndex=12;
 			addChild(getImage("bg41"));
 
 			addAvatars();

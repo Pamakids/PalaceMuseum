@@ -19,6 +19,7 @@ package views.components.base
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
+	import views.components.ElasticButton;
 	import views.components.Prompt;
 
 	public class PalaceModule extends Container
@@ -28,6 +29,7 @@ package views.components.base
 		protected var autoDispose:Boolean=true;
 		public var crtScene:PalaceScene;
 		protected var tfHolder:Sprite;
+		protected var skipIndex:int=-1;
 
 		[Embed(source="/assets/common/loading.png")]
 		protected static var loading:Class
@@ -50,17 +52,18 @@ package views.components.base
 
 		protected function addQAS():void
 		{
+			var isSingle:Boolean=(Q2 == "");
 			tfHolder=new Sprite();
 			addChild(tfHolder);
 			tfHolder.touchable=false;
 			var tfQ1:TextField=new TextField(600, 100, Q1, FontVo.PALACE_FONT, 32, 0xffffff, true);
 			tfQ1.x=200;
-			tfQ1.y=100;
+			tfQ1.y=isSingle ? 200 : 100;
 			tfQ1.hAlign="left";
 			tfHolder.addChild(tfQ1);
-			var tfA1:TextField=new TextField(600, 100, A1, FontVo.PALACE_FONT, 28, 0xffffff, true);
+			var tfA1:TextField=new TextField(600, 150, A1, FontVo.PALACE_FONT, 28, 0xffffff, true);
 			tfA1.x=220;
-			tfA1.y=180;
+			tfA1.y=isSingle ? 350 : 180;
 			tfA1.hAlign="left";
 			tfHolder.addChild(tfA1);
 			var tfQ2:TextField=new TextField(600, 100, Q2, FontVo.PALACE_FONT, 32, 0xffffff, true);
@@ -68,7 +71,7 @@ package views.components.base
 			tfQ2.y=300;
 			tfQ2.hAlign="left";
 			tfHolder.addChild(tfQ2);
-			var tfA2:TextField=new TextField(600, 100, A2, FontVo.PALACE_FONT, 28, 0xffffff, true);
+			var tfA2:TextField=new TextField(600, 150, A2, FontVo.PALACE_FONT, 28, 0xffffff, true);
 			tfA2.x=220;
 			tfA2.y=380;
 			tfA2.hAlign="left";
@@ -77,9 +80,33 @@ package views.components.base
 			isLoading=true;
 		}
 
-		protected function removeQAS():void
+		protected function addNext():void
+		{
+			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			if (load)
+				load.removeFromParent(true);
+			if (skipIndex < 0)
+			{
+				var next:ElasticButton=new ElasticButton(getImage("nextButton"));
+				addChild(next);
+				next.x=1024 - 100;
+				next.y=768 - 100;
+				next.addEventListener(ElasticButton.CLICK, initScene);
+			}
+			else
+			{
+				sceneIndex=skipIndex;
+				loadScene(sceneIndex);
+			}
+		}
+
+		private function initScene(e:Event):void
 		{
 			tfHolder.removeFromParent(true);
+			var next:ElasticButton=e.currentTarget as ElasticButton;
+			next.removeFromParent(true);
+			sceneIndex=skipIndex < 0 ? 0 : skipIndex;
+			loadScene(sceneIndex);
 		}
 
 		protected function addLoading():void
@@ -138,7 +165,8 @@ package views.components.base
 			{
 				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 				removeEventListener("gotoNext", nextScene);
-				load.removeFromParent(true);
+				if (load)
+					load.removeFromParent(true);
 				MC.instance.nextModule();
 			}
 		}

@@ -10,8 +10,9 @@ package views
 
 	public class Module3 extends PalaceModule
 	{
-		public function Module3(am:AssetManager=null)
+		public function Module3(_skipIndex:int=-1)
 		{
+			skipIndex=_skipIndex;
 			sceneArr=[Scene31, Scene32];
 
 			Q1="皇帝爱学习吗？"
@@ -32,10 +33,10 @@ package views
 				{
 					assetManager=assets;
 					isLoading=false;
-					removeQAS();
+					addNext();
 
-					sceneIndex=0;
-					loadScene(sceneIndex);
+//					sceneIndex=0;
+//					loadScene(sceneIndex);
 				}
 			});
 		}

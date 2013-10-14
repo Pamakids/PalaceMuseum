@@ -29,7 +29,7 @@ package views.module5
 		public function Scene51(am:AssetManager=null)
 		{
 			super(am);
-
+			crtKnowledgeIndex=10;
 			bgHolder=new Sprite();
 			var bg1:Image=getImage("bg51l");
 			var bg2:Image=getImage("bg51r");

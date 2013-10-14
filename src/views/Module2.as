@@ -11,8 +11,9 @@ package views
 
 	public class Module2 extends PalaceModule
 	{
-		public function Module2(am:AssetManager=null)
+		public function Module2(_skipIndex:int=-1)
 		{
+			skipIndex=_skipIndex;
 			sceneArr=[Scene21, Scene22, Scene23];
 
 			Q1="什么是“传膳”？"
@@ -33,9 +34,9 @@ package views
 				{
 					assetManager=assets;
 					isLoading=false;
-					sceneIndex=0;
-					loadScene(sceneIndex);
-					removeQAS();
+//					sceneIndex=0;
+//					loadScene(sceneIndex);
+					addNext();
 				}
 			});
 		}

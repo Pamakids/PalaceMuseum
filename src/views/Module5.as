@@ -10,14 +10,13 @@ package views
 
 	public class Module5 extends PalaceModule
 	{
-		public function Module5(am:AssetManager=null, width:Number=0, height:Number=0)
+		public function Module5(_skipIndex:int=-1)
 		{
+			skipIndex=_skipIndex;
 			sceneArr=[Scene51, Scene52];
 
-			Q1="皇帝爱学习吗？"
-			A1="清朝皇帝喜爱学习－儒家经典、汉语诗文、满文、蒙文和骑马射箭，样样要精通。"
-			Q2="皇帝起床后第一件事做什么？"
-			A2="先给太后请安，之后的第一件事就是早读学习。"
+			Q1="皇帝需要工作吗？"
+			A1="清朝的国家大事都由皇帝一个人来决定。早饭后9点到11点是皇帝办公的时间，主要用来批阅奏章，召见官员。定期，皇帝还要一大早在乾清门会见各部官员，直接商讨、处理政务。"
 
 			addLoading();
 			addQAS();
@@ -32,9 +31,9 @@ package views
 				{
 					isLoading=false;
 					assetManager=assets;
-					sceneIndex=0;
-					loadScene(sceneIndex);
-					removeQAS();
+//					sceneIndex=0;
+//					loadScene(sceneIndex);
+					addNext();
 				}
 			});
 		}
