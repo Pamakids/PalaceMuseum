@@ -177,6 +177,7 @@ package views.global.map
 		 */
 		public static function show(callback:Function=null, from:int=-1, to:int=-1, fromCenter:Boolean=false):void
 		{
+			SOService.instance.setSO("lastScene", "map");
 			MC.instance.hideMC();
 			showFromCenter=fromCenter;
 			var ec:Boolean=true;
@@ -200,16 +201,13 @@ package views.global.map
 
 		private static var showFromCenter:Boolean;
 
-		private function closeTriggeredHandler():void
+		private function closeTriggeredHandler(e:Event):void
 		{
-			trace('close');
 			clear(1);
 		}
 
 		private function clear(status:int):void
 		{
-//			this.removeFromParent(true);
-//			stage.removeEventListener(TouchEvent.TOUCH, touchHandler);
 			visible=false;
 			closeButton.visible=false;
 			changing=false;
@@ -242,19 +240,16 @@ package views.global.map
 
 		override public function dispose():void
 		{
-			if (stage)
-				stage.removeEventListener(TouchEvent.TOUCH, touchHandler);
+			removeEventListener(TouchEvent.TOUCH, touchHandler);
 			super.dispose();
 			trace('disposed');
 		}
 
 		private function positionKing(kingPoint:Point):void
 		{
-//			var kingPoint:Point=points[index];
 			if (!king.parent)
 				flipAnimation.addChild(king);
 			king.parent.setChildIndex(king, king.parent.numChildren - 1);
-			trace(king.parent.numChildren);
 			king.visible=true;
 			king.x=kingPoint.x;
 			king.y=kingPoint.y;
@@ -275,13 +270,22 @@ package views.global.map
 				TweenLite.to(flipAnimation, 8, {delay: 1, y: 0, ease: Cubic.easeOut});
 			}});
 			var i:int=to == -1 ? 0 : to;
-			if (hasTask || mc.moduleIndex == -1)
+			if (!showFromCenter || mc.moduleIndex == -1)
 			{
+				to=i;
 				trace('开始任务：' + tasks[i]);
 				LionMC.instance.say(tasks[i], int(Math.random() * 4));
-				if (!sos.isModuleCompleted(i))
-					showTaskHint(i);
+//				if (!sos.isModuleCompleted(i))
+				showTaskHint(i);
 			}
+
+			if (!pathHolder)
+			{
+				pathHolder=new Sprite();
+				flipAnimation.addChild(pathHolder);
+				pathHolder.touchable=false;
+			}
+			resetDrawPath();
 
 			if (!lockHolder)
 			{
@@ -377,65 +381,106 @@ package views.global.map
 								item=mapData.hotspots[i];
 								trace('Contains:', item);
 
-								var moduleIndex:int=item['goto'] ? item['goto'][0] : -1;
-								var mcModuleIndex:int=MC.instance.moduleIndex;
-								var top:Point=centerPoint[moduleIndex];
-								if (moduleIndex != -1)
-									resetSun(mcModuleIndex, moduleIndex)
-								if (moduleIndex != -1 && mcModuleIndex == moduleIndex)
+								var targetIndex:int=item['goto'] ? item['goto'][0] : -1;
+								var crtIndex:int=MC.instance.moduleIndex;
+								var top:Point=centerPoint[targetIndex];
+
+								if (targetIndex != -1)
 								{
-									if (!hasTask)
+									resetSun(crtIndex, targetIndex);
+
+									if (showFromCenter)
 									{
-										showKing(getCenterFromRect(r), function():void
-										{
-											clear(2);
-										});
+										if (sos.isModuleCompleted(targetIndex))
+											changing=true;
 									}
 									else
 									{
-										TweenLite.to(king, 1.8, {x: top.x, y: top.y, ease: Cubic.easeOut, onComplete: function():void
+										if (to == targetIndex)
+											changing=true;
+									}
+
+									if (changing)
+									{
+										if (king.visible)
 										{
-											clear(2);
-											MC.instance.gotoModule(moduleIndex);
-										}});
+											TweenLite.to(king, 1.8, {x: top.x, y: top.y, ease: Cubic.easeOut});
+											drawPath(king.x, king.y, top.x, top.y, 1.8);
+										}
+										else
+										{
+											showKing(getCenterFromRect(r), null);
+										}
 									}
 								}
-								else
+
+								if (!showingHint[item.tip])
 								{
-									if (showingHint[item.tip])
-										return;
-									if (moduleIndex != -1)
-										changing=true;
-									showHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 900 ? 3 : 1, function():void
-									{
-										delete showingHint[item.tip];
-//										if (sos.isModuleCompleted(moduleIndex))
-										if (moduleIndex != -1)
+									showHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 900 ? 3 : 1,
+										function():void
 										{
-//											if (mcModuleIndex != -1 && mcModuleIndex != moduleIndex)
-//												return;
-											if (king.visible)
-											{
-												TweenLite.to(king, 1.8, {x: top.x, y: top.y, ease: Cubic.easeOut, onComplete: function():void
-												{
-													clear(2);
-													MC.instance.gotoModule(moduleIndex);
-												}});
+											delete showingHint[item.tip];
+											if (changing) {
+												clear(2);
+												MC.instance.gotoModule(targetIndex);
 											}
-											else
-											{
-												showKing(getCenterFromRect(r), function():void
-												{
-													TweenLite.delayedCall(0.8, function():void
-													{
-														clear(2);
-														MC.instance.gotoModule(moduleIndex);
-													});
-												});
-											}
-										}
-									});
+										});
 								}
+
+//								if (targetIndex != -1 && crtIndex == targetIndex)
+//								{
+//									if (!hasTask)
+//									{
+//										showKing(getCenterFromRect(r), function():void
+//										{
+//											clear(2);
+//										});
+//									}
+//									else
+//									{
+//										TweenLite.to(king, 1.8, {x: top.x, y: top.y, ease: Cubic.easeOut, onComplete: function():void
+//										{
+//											clear(2);
+//											MC.instance.gotoModule(targetIndex);
+//										}});
+//									}
+//								}
+//								else
+//								{
+//									if (showingHint[item.tip])
+//										return;
+//									if (targetIndex != -1)
+//										changing=true;
+//									showHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 900 ? 3 : 1, function():void
+//									{
+//										delete showingHint[item.tip];
+////										if (sos.isModuleCompleted(moduleIndex))
+//										if (targetIndex != -1)
+//										{
+////											if (mcModuleIndex != -1 && mcModuleIndex != moduleIndex)
+////												return;
+//											if (king.visible)
+//											{
+//												TweenLite.to(king, 1.8, {x: top.x, y: top.y, ease: Cubic.easeOut, onComplete: function():void
+//												{
+//													clear(2);
+//													MC.instance.gotoModule(targetIndex);
+//												}});
+//											}
+//											else
+//											{
+//												showKing(getCenterFromRect(r), function():void
+//												{
+//													TweenLite.delayedCall(0.8, function():void
+//													{
+//														clear(2);
+//														MC.instance.gotoModule(targetIndex);
+//													});
+//												});
+//											}
+//										}
+//									});
+//								}
 								break;
 							}
 						}
@@ -443,6 +488,39 @@ package views.global.map
 					break;
 			}
 		}
+
+		private function drawPath(x1:Number, y1:Number, x2:Number, y2:Number, time:Number):void
+		{
+			var totalCount:int=time * 30;
+			var count:int=0;
+			drawingPath.graphics.clear();
+			drawingPath.graphics.lineStyle(3, 0x66ccff);
+			drawingPath.graphics.moveTo(x1, y1);
+			drawingPath.addEventListener(Event.ENTER_FRAME,
+				function(e:Event):void {
+					if (count < totalCount && visible)
+					{
+						count++;
+						var d:Number=count / totalCount;
+						var dx:Number=(x2 - x1) * d + x1;
+						var dy:Number=(y2 - y1) * d + y1;
+						drawingPath.graphics.lineTo(dx, dy);
+					}
+				});
+		}
+
+		private function resetDrawPath():void
+		{
+			if (!drawingPath)
+			{
+				drawingPath=new Shape();
+				pathHolder.addChild(drawingPath);
+			}
+			drawingPath.graphics.clear();
+		}
+
+		private var drawingPath:Shape;
+		private var path:Shape;
 
 		private function drawRect(r:Rectangle):void
 		{
@@ -489,6 +567,7 @@ package views.global.map
 
 		private var typeHolder:Sprite;
 		private var lockHolder:Sprite;
+		private var pathHolder:Sprite;
 		private var sun:Image;
 
 		/**
@@ -498,6 +577,7 @@ package views.global.map
 		 */
 		public function show(ec:Boolean, ea:Boolean, fromCenter:Boolean):void
 		{
+			changing=false;
 			if (!fromCenter)
 				hasTask=!ea;
 			else
@@ -586,9 +666,17 @@ package views.global.map
 		 * */
 		private function resetLockHolder():void
 		{
+			if (!path)
+			{
+				path=new Shape();
+				pathHolder.addChild(path);
+			}
+			path.graphics.clear();
+			path.graphics.lineStyle(3, 0x66ccff);
+
 			lockHolder.visible=showFromCenter;
 			lockHolder.removeChildren();
-			for (var i:int=0; i < 4; i++)
+			for (var i:int=0; i < 5; i++)
 			{
 				if (sos.isModuleCompleted(i))
 				{
@@ -598,6 +686,11 @@ package views.global.map
 					img.x=centerPoint[i].x;
 					img.y=centerPoint[i].y;
 					lockHolder.addChild(img);
+
+					if (i == 0)
+						path.graphics.moveTo(img.x, img.y);
+					else
+						path.graphics.lineTo(img.x, img.y);
 				}
 			}
 		}

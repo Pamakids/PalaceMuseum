@@ -125,10 +125,10 @@ package controllers
 			}
 		}
 
-		public function gotoModule(index:int):void
+		public function gotoModule(index:int, sceneIndex:int=-1):void
 		{
 			_moduleIndex=index;
-			showModule();
+			showModule(sceneIndex);
 		}
 
 		public function clearCrtModule():void
@@ -141,10 +141,10 @@ package controllers
 			}
 		}
 
-		private function showModule():void
+		private function showModule(index:int=-1):void
 		{
 			clearCrtModule();
-			currentModule=new modules[moduleIndex];
+			currentModule=new modules[moduleIndex](index);
 			contentLayer.addChild(currentModule);
 			trace('load new module');
 		}

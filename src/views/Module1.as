@@ -12,8 +12,9 @@ package views
 
 	public class Module1 extends PalaceModule
 	{
-		public function Module1()
+		public function Module1(_skipIndex:int=-1)
 		{
+			skipIndex=_skipIndex;
 			sceneArr=[Scene11, Scene12New, Scene13, Scene14];
 
 			Q1="故宫这么大，皇帝住在哪儿？"
@@ -34,9 +35,9 @@ package views
 				{
 					assetManager=assets;
 					isLoading=false;
-					sceneIndex=0;
-					loadScene(sceneIndex);
-					removeQAS();
+//					sceneIndex=0;
+//					loadScene(sceneIndex);
+					addNext();
 				}
 			});
 		}
