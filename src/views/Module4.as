@@ -10,14 +10,13 @@ package views
 
 	public class Module4 extends PalaceModule
 	{
-		public function Module4(am:AssetManager=null, width:Number=0, height:Number=0)
+		public function Module4(_skipIndex:int=-1)
 		{
+			skipIndex=_skipIndex;
 			sceneArr=[Scene41, Scene42];
 
-			Q1="皇帝爱学习吗？"
-			A1="清朝皇帝喜爱学习－儒家经典、汉语诗文、满文、蒙文和骑马射箭，样样要精通。"
-			Q2="皇帝起床后第一件事做什么？"
-			A2="先给太后请安，之后的第一件事就是早读学习。"
+			Q1="皇帝怎么娱乐休闲？"
+			A1="清朝皇宫中有多种多样的娱乐活动，琴棋书画、花鸟虫鱼，各个皇帝的喜好不一样。所有皇帝和后妃们都最喜欢看戏。"
 
 			addLoading();
 			addQAS();
@@ -32,9 +31,9 @@ package views
 				{
 					isLoading=false;
 					assetManager=assets;
-					sceneIndex=0;
-					loadScene(sceneIndex);
-					removeQAS();
+//					sceneIndex=0;
+//					loadScene(sceneIndex);
+					addNext();
 				}
 			});
 		}

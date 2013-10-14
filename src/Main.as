@@ -60,7 +60,18 @@ package
 //			Map.show();
 //			return;
 //			debugInit();
-			Map.show();
+			var lastScene:String=SOService.instance.getSO("lastScene") as String;
+			if (lastScene == "map" || !lastScene)
+				Map.show();
+			else
+				parseMS(lastScene);
+		}
+
+		private function parseMS(lastScene:String):void
+		{
+			var moduleIndex:int=int(lastScene.charAt(0)) - 1;
+			var sceneIndex:int=int(lastScene.charAt(1)) - 1;
+			MC.instance.gotoModule(moduleIndex, sceneIndex);
 		}
 
 		private function debugInit():void

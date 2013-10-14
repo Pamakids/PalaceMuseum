@@ -43,8 +43,10 @@ package views.components.base
 		{
 			super();
 			sceneName=StringUtils.getClassName(this);
+			var str:String=sceneName.substr(sceneName.lastIndexOf("ene" + 1) + 3, 2);
+//			trace(str)
+			SOService.instance.setSO("lastScene", str);
 			Prompt.parent=this;
-//			Prompt.addAssetManager(am);
 			this.assets=am;
 
 			if (Math.random() < 0.2)
