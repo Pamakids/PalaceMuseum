@@ -27,11 +27,10 @@ package views.module1.scene12
 
 		public function set offset(value:Number):void
 		{
-			_offset=1 - value;
+			//value 0-1;
+			_offset=1 - Math.max(0, Math.min(1, (value * 10 - 4) / 6));
 			hat.y=hatY + _offset * 100;
-			hat.scaleX=hat.scaleY=Math.min(1, value + .8);
-//			hat.rotation=_offset * Math.PI / 12;
-//			cloth.rotation=-_offset * Math.PI / 20;
+			hat.scaleX=hat.scaleY=Math.max(.5, Math.min(1, (value * 10 - 4) / 6));
 		}
 
 		private var hatY:Number=-404;

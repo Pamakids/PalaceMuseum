@@ -43,7 +43,7 @@ package views.components.base
 		{
 			super();
 			sceneName=StringUtils.getClassName(this);
-			var str:String=sceneName.substr(sceneName.lastIndexOf("ene" + 1) + 3, 2);
+			var str:String=sceneName.substr(sceneName.lastIndexOf("ene") + 3, 2);
 //			trace(str)
 			SOService.instance.setSO("lastScene", str);
 			Prompt.parent=this;
@@ -148,7 +148,7 @@ package views.components.base
 		private var delayIndex:int;
 		public var sceneName:String;
 
-		protected function showAchievement(_achieveIndex:int):void
+		protected function showAchievement(_achieveIndex:int, _callback:Function=null):void
 		{
 			if (SOService.instance.getSO(_achieveIndex.toString() + "_achieve"))
 				return;
@@ -160,31 +160,38 @@ package views.components.base
 				tfSP=new Sprite();
 				addChild(tfSP);
 				tfSP.touchable=false;
-				var quad:Quad=new Quad(400, 80, 0);
-				quad.alpha=.5;
-				tfSP.addChild(quad);
-				tf=new TextField(400, 80, txt, FontVo.PALACE_FONT, 28, 0xffffff);
+
+//				var quad:Quad=new Quad(400, 80, 0);
+//				quad.alpha=.5;
+//				tfSP.addChild(quad);
+
+				var bar:Image=getImage("acheivebar");
+				bar.pivotX=bar.width >> 1;
+				tfSP.addChild(bar);
+				tf=new TextField(400, 80, txt, FontVo.PALACE_FONT, 32, 0xfbf4cb);
 				tfSP.addChild(tf);
-				tfSP.x=512 - 200;
-				tfSP.y=-80;
+				tf.x=-200;
+				tf.y=15;
+				tfSP.x=512;
+				tfSP.y=-170;
 			}
 			else
 			{
 				if (delayIndex)
 					clearTimeout(delayIndex);
 				TweenLite.killTweensOf(tfSP);
-				tf.text=txt
-				tfSP.y=-80;
+				tf.text=txt;
+				tfSP.y=-170;
 				setChildIndex(tfSP, numChildren - 1);
 			}
 			TweenLite.to(tfSP, .5, {y: 0});
 			delayIndex=setTimeout(function():void
 			{
-				TweenLite.to(tfSP, .5, {y: -80})
+				TweenLite.to(tfSP, .5, {y: -170, onComplete: _callback})
 			}, 2500);
 		}
 
-		protected function showCard(_cardName:String):void
+		protected function showCard(_cardName:String, callback:Function=null):void
 		{
 			if (SOService.instance.getSO("collection_card_" + _cardName))
 				return;
@@ -212,7 +219,7 @@ package views.components.base
 				});
 			}});
 
-			var card:CollectionCard=new CollectionCard();
+			var card:CollectionCard=new CollectionCard(callback);
 			card.addChild(getImage(_cardName + "collectCard"));
 			card.pivotX=card.width >> 1;
 			card.pivotY=card.height >> 1;

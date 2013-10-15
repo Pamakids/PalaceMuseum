@@ -318,10 +318,6 @@ package views.module1
 		{
 			TweenLite.to(okEff, 1, {alpha: 0, onComplete: function():void
 			{
-//				eunuch=new Sprite();
-//				eunuch.addChild(getImage("eunuch11"));
-//				SPUtils.registSPCenter(eunuch, 5);
-//				addChild(eunuch);
 				eunuch=new Eunuch();
 				eunuch.x=1024;
 				eunuch.y=350;
@@ -375,23 +371,6 @@ package views.module1
 			if (p)
 				p.playHide();
 			p=Prompt.showTXT(_x, _y, _src, 20, null, _parent, align)
-//			p=Prompt.show(_x, _y, _src, '', reg, 2, null, _parent);
-//			var _img:Image=getImage(_src);
-//
-////			var hint:Sprite=new Sprite();
-////			hint.addChild(img);
-////			SPUtils.registSPCenter(hint,reg);
-////			hint.x=_x;
-////			hint.y=_y;
-////			_parent.addChild(hint);
-//			if (!hint)
-//				hint=new Hint();
-//			hint.registration=reg;
-//			hint.img=_img;
-//			hint.x=_x;
-//			hint.y=_y;
-//			_parent.addChild(hint);
-//			hint.show();
 		}
 
 		private function onTouch(event:TouchEvent):void

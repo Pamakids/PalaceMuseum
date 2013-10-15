@@ -12,10 +12,10 @@ package controllers
 	import starling.display.Sprite;
 
 	import views.Module1;
-	import views.Module2;
 	import views.Module3;
-	import views.Module4;
+	import views.Module2;
 	import views.Module5;
+	import views.Module4;
 	import views.components.Prompt;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
@@ -45,7 +45,7 @@ package controllers
 		public var currentModule:PalaceModule;
 
 		public var main:Container;
-		private var modules:Array=[Module1, Module3, Module2, Module5, Module4];
+		private var modules:Array=[Module1, Module2, Module3, Module4, Module5];
 
 		public var stage:PalaceMuseum;
 		private var topBarLayer:Sprite;

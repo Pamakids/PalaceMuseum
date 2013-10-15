@@ -52,10 +52,16 @@ package views.module1
 			if (_opened != value)
 			{
 				_opened=value
-				TweenLite.to(boxCover, 1, {y: (value ? -272 : -4), onComplete: (value ? null : function():void {
+				if (value)
+				{
+					var dx:Number=boxCover.x + 400;
+					TweenLite.to(boxCover, .2, {y: -50, onComplete: function():void {
+						TweenLite.to(boxCover, .5, {x: dx});
+					}
+						});
+				}
+				else
 					TweenLite.to(boxHolder, .5, {x: 1100});
-				})
-					});
 			}
 		}
 
@@ -266,6 +272,7 @@ package views.module1
 			opened=false;
 			var str:String=clothArr[taskType];
 			showLionHint("hint-find-" + str, function():void {
+				TweenLite.to(lion, .5, {x: lionX});
 				addEventListener(TouchEvent.TOUCH, onDrag);
 			});
 		}
@@ -278,21 +285,24 @@ package views.module1
 		{
 			showKnowledge(type);
 			if (type == clothArr[taskType])
+			{
+				showAchievement(2);
 				sceneOver();
+			}
 			else
 				hideNext();
 		}
 
 		private function showKnowledge(type:String):void
 		{
-			trace(type, clothArr[taskType], taskType)
+//			trace(type, clothArr[taskType], taskType)
 			var txt:String=json["hint-ok-" + type];
 			if (!knowledgeHolder)
 			{
 				knowledgeHolder=new Sprite();
 				addChild(knowledgeHolder);
-				knowledgeHolder.x=512;
-				knowledgeHolder.y=680;
+				knowledgeHolder.x=532;
+				knowledgeHolder.y=720;
 				var knowledgeBG:Image=getImage("hintbar");
 				knowledgeHolder.addChild(knowledgeBG);
 				knowledgeHolder.pivotX=knowledgeBG.width >> 1;
@@ -338,6 +348,13 @@ package views.module1
 					var move:Point=tc.getMovement(this);
 					speedX=move.x / 200 / Math.PI;
 					circle.angle-=speedX;
+					break;
+				}
+
+				case TouchPhase.STATIONARY:
+				{
+					speedX=0;
+					trace("stay")
 					break;
 				}
 

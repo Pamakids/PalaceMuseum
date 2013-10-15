@@ -39,8 +39,6 @@ package views.module1
 		public function set gamePlayed(value:Boolean):void
 		{
 			_gamePlayed=value;
-			if (_clockMatched && _gamePlayed)
-				showAchievement(5);
 		}
 
 		private var clock:Clock;
@@ -54,8 +52,6 @@ package views.module1
 		public function set clockMatched(value:Boolean):void
 		{
 			_clockMatched=value;
-			if (_clockMatched && _gamePlayed)
-				showAchievement(5);
 			if (_clockMatched)
 				sceneOver();
 		}
@@ -139,16 +135,23 @@ package views.module1
 			PopUpManager.addPopUp(clock, true, false);
 		}
 
+		private function checkAcheive5():void
+		{
+			if (_clockMatched && _gamePlayed)
+				showAchievement(5);
+		}
+
 		private function clockMatch(e:Event):void
 		{
 			if (!clockMatched)
 			{
-				showAchievement(3);
 				TweenLite.to(clock, .5, {scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete: function():void
 				{
 					clockMatched=true;
 					PopUpManager.removePopUp(clock);
-					showCard("clock");
+					showCard("clock", function():void {
+						showAchievement(3, checkAcheive5);
+					});
 				}});
 			}
 			else
@@ -203,7 +206,6 @@ package views.module1
 		{
 			if (!gamePlayed)
 			{
-				showAchievement(4);
 				TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
 				{
 					gamePlayed=true;
@@ -211,7 +213,9 @@ package views.module1
 					game.dispose2();
 					game=null;
 					gameHolder=null;
-					showCard("newDay");
+					showCard("newDay", function():void {
+						showAchievement(4, checkAcheive5);
+					});
 				}});
 			}
 			else

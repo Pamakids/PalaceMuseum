@@ -235,7 +235,6 @@ package views.global.map
 			addChild(flipAnimation);
 
 			flipAnimation.addChild(king);
-			initCloseButton();
 		}
 
 		override public function dispose():void
@@ -264,6 +263,7 @@ package views.global.map
 				positionKing(centerPoint[from]);
 			TweenLite.to(flipAnimation, 1.5, {x: 0, scaleX: 1, scaleY: 1, onComplete: function():void
 			{
+				initCloseButton();
 				closeButton.visible=showFromCenter;
 				addEventListener(TouchEvent.TOUCH, touchHandler);
 				resetSun();
