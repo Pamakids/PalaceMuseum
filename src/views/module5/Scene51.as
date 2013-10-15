@@ -1,135 +1,91 @@
 package views.module5
 {
-	import flash.events.AccelerometerEvent;
-	import flash.sensors.Accelerometer;
+	import flash.geom.Point;
 
-	import models.SOService;
-
-	import starling.display.Image;
-	import starling.display.Sprite;
-	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.Prompt;
 	import views.components.base.PalaceScene;
+	import views.module5.scene51.Audience;
 
 	/**
-	 * 上朝模块
-	 * 上朝场景
+	 * 娱乐模块
+	 * 对话场景
 	 * @author Administrator
 	 */
 	public class Scene51 extends PalaceScene
 	{
-		private var dx:Number=0;
-		private var bgHolder:Sprite;
-		private var bgW:Number;
-		private var leftHit:Boolean;
-		private var rightHit:Boolean;
-		private var acc:Accelerometer;
+		private var avatarTypeArr:Array=["chancellor", "maid", "empressdowager"];
+		private var txtArr:Array=["大臣：希望这次的座位别排在柱子后面",
+			"大臣：唉，跪着听戏真不好受",
+			"大臣：幸亏我年纪一把，能有个椅子坐",
+			"宫女：今儿皇上听戏倒是积极",
+			"太后：今演好了，重重有赏！"];
+
+		private var posArr:Array=[new Point(229, 554), new Point(353, 624),
+			new Point(810, 294), new Point(833, 447), new Point(731, 490)];
+		private var count:int=0;
 
 		public function Scene51(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=10;
-			bgHolder=new Sprite();
-			var bg1:Image=getImage("bg51l");
-			var bg2:Image=getImage("bg51r");
-			bg2.x=bg1.width - 1;
-			bgHolder.addChild(bg1);
-			bgHolder.addChild(bg2);
-			bgW=bgHolder.width;
-			bgHolder.x=(1024 - bgW) / 2;
-			addChild(bgHolder);
+			crtKnowledgeIndex=12;
+			addChild(getImage("bg41"));
 
-			trace(bgHolder.width);
-
-			acc=new Accelerometer();
-			acc.addEventListener(AccelerometerEvent.UPDATE, onUpdate);
-
-			if (SOService.instance.checkHintCount(shakeHintCount))
-				addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			addAvatars();
 		}
 
-		override public function dispose():void
+		private function addAvatars():void
 		{
-			super.dispose();
-			acc.removeEventListener(AccelerometerEvent.UPDATE, onUpdate);
-		}
-
-		private var shakeHintCount:String="shakeHintCount";
-		private var isMoved:Boolean;
-		private var hintShow:Sprite;
-		private var count:int=0;
-		private var hintFinger:Image;
-
-		private function onEnterFrame(e:Event):void
-		{
-			if (isMoved || (leftHit || rightHit))
+			for (var i:int=0; i < 3; i++)
 			{
-				if (hintShow)
-				{
-					hintShow.removeChildren();
-					hintShow.removeFromParent(true);
-				}
-				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+				var chancellor:Audience=new Audience();
+				chancellor.addChild(getImage(avatarTypeArr[0]));
+				chancellor.x=posArr[i].x;
+				chancellor.y=posArr[i].y;
+				chancellor.index=i;
+				chancellor.addEventListener(TouchEvent.TOUCH, onAvatarTouch);
+				addChild(chancellor);
+			}
+
+			var maid:Audience=new Audience(); //宫女
+			maid.addChild(getImage(avatarTypeArr[1]));
+			maid.x=posArr[3].x;
+			maid.y=posArr[3].y;
+			maid.index=3;
+			maid.addEventListener(TouchEvent.TOUCH, onAvatarTouch);
+			addChild(maid);
+
+			var empressdowager:Audience=new Audience(); //太后
+			empressdowager.addChild(getImage(avatarTypeArr[2]));
+			empressdowager.x=posArr[4].x;
+			empressdowager.y=posArr[4].y;
+			empressdowager.index=4;
+			empressdowager.addEventListener(TouchEvent.TOUCH, onAvatarTouch);
+			addChild(empressdowager);
+		}
+
+		private function onAvatarTouch(e:TouchEvent):void
+		{
+			var audience:Audience=e.currentTarget as Audience;
+			if (!audience)
 				return;
-			}
-			if (count < 30 * 8)
+			var tc:Touch=e.getTouch(audience, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			Prompt.showTXT(audience.x + audience.width - 20, audience.y, txtArr[audience.index]);
+			if (!audience.isClicked)
+			{
+				audience.isClicked=true;
 				count++;
-			else
-			{
-				shakeCount++;
-				if (shakeCount >= 30 * 5)
+				if (count == 3)
 				{
-					isMoved=true;
-					return;
+					showAchievement(26);
+					sceneOver();
 				}
-				if (!hintShow)
-				{
-					hintShow=new Sprite();
-					hintFinger=getImage("shakehint");
-					hintFinger.pivotX=hintFinger.width >> 1;
-					hintFinger.pivotY=hintFinger.height;
-					hintFinger.x=512;
-					hintFinger.y=650;
-					hintShow.addChild(hintFinger);
-					addChild(hintShow);
-					hintShow.touchable=false;
-				}
-				else
-				{
-					if (hintFinger.rotation >= degress2 * 15)
-						shakeReverse=true;
-					else if (hintFinger.rotation <= -degress2 * 15)
-						shakeReverse=false;
-					hintFinger.rotation+=shakeReverse ? -degress2 : degress2;
-				}
-			}
-		}
-
-		private var shakeCount:int=0;
-		private var shakeReverse:Boolean;
-		private var degress2:Number=Math.PI / 180;
-
-		protected function onUpdate(event:AccelerometerEvent):void
-		{
-			trace(event.accelerationX);
-			dx=event.accelerationX * 1024;
-
-			bgHolder.x-=dx;
-			if (bgHolder.x > 0)
-			{
-				leftHit=true;
-				bgHolder.x=0;
-			}
-			else if (bgHolder.x < 1024 - bgW)
-			{
-				bgHolder.x=1024 - bgW;
-				rightHit=true;
-			}
-			if (leftHit && rightHit)
-			{
-				showAchievement(21);
-				sceneOver();
 			}
 		}
 	}

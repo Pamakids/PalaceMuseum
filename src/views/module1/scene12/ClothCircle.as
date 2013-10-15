@@ -81,13 +81,13 @@ package views.module1.scene12
 			var pt:Point=new Point(dx, dy - 70);
 			var offset:Number=Math.sin(clothAngle);
 			var scale:Number=getScale(offset);
-			cloth.x=350;
-			cloth.y=50;
+			cloth.x=290;
+			cloth.y=20;
 			cloth.scaleX=cloth.scaleY=scale;
 			cloth.offset=(1 + offset) / 2; //0-1
 			var pr:Sprite=offset > 0 ? sp1 : sp2;
 
-			TweenLite.delayedCall(index / 2, function():void {
+			TweenLite.delayedCall(index / 5, function():void {
 				if (pr != cloth.parent)
 					pr.addChild(cloth);
 				cloth.playEnter(pt);
@@ -97,7 +97,7 @@ package views.module1.scene12
 			shadow.pivotX=shadow.width >> 1;
 			shadow.pivotY=shadow.height >> 1;
 			shadow.x=dx;
-			shadow.y=dy - 105;
+			shadow.y=dy - 50 - (1 + offset) * 50 / 2;
 			shadow.scaleX=shadow.scaleY=scale;
 			shadowArr.push(shadow);
 			circleHodler.addChild(shadow);
@@ -112,7 +112,7 @@ package views.module1.scene12
 		private function getScale(_offset):Number
 		{
 			var scale:Number=((1 + _offset) / 2 + 1) / 2
-			return scale * scale; //0.25-1
+			return Math.max(scale * scale, 0.5); //0.25-1
 		}
 
 		private function setClothPos(cloth:Cloth2):void
@@ -133,7 +133,7 @@ package views.module1.scene12
 
 			var shadow:Image=shadowArr[index];
 			shadow.x=dx;
-			shadow.y=dy - 105;
+			shadow.y=dy - 50 - (1 + offset) * 50 / 2;
 			shadow.scaleX=shadow.scaleY=scale;
 		}
 
@@ -144,7 +144,7 @@ package views.module1.scene12
 
 		public function tweenPlay(speedX:Number):void
 		{
-			trace(speedX)
+//			trace(speedX)
 			TweenLite.killTweensOf(this);
 			var index:int=getTargetIndex(speedX);
 			var destAngle:Number=getAngle(index)
@@ -170,11 +170,14 @@ package views.module1.scene12
 		private function getTargetIndex(speedX:Number):int
 		{
 			var index:int;
+			var index0:int=Math.round(angle / dAngle);
 			var index1:int=Math.floor(angle / dAngle);
 			var index2:int=Math.ceil(angle / dAngle);
 			var vx:Number=Math.abs(speedX);
 			var fix:int=Math.abs(speedX) > 0.02 ? 1 : 0;
-			if (speedX > 0)
+			if (speedX == 0)
+				index=index0;
+			else if (speedX > 0)
 				index=index1 - fix;
 			else
 				index=index2 + fix;

@@ -144,6 +144,7 @@ package views.module1.scene12
 			correctCircleDic=new Dictionary();
 			clothDic=new Dictionary();
 			currentPositionDic=new Dictionary();
+			lightDic=new Dictionary();
 
 
 			while (!randomPoints)
@@ -152,6 +153,7 @@ package views.module1.scene12
 			}
 
 			ia=new Dictionary();
+			var index:int=0;
 			for (var key:String in clothPoints)
 			{
 				var p:Point=clothPoints[key];
@@ -176,6 +178,11 @@ package views.module1.scene12
 				correctPositionDic[ci]=points[pi];
 				correctCircleDic[ci]=i;
 				ia[ci]=pi;
+
+				var light:Sprite=new Sprite();
+				lightDic[ci]=light;
+
+				index++;
 			}
 
 //			trace(width, height);
@@ -210,6 +217,7 @@ package views.module1.scene12
 		private var clothDic:Dictionary;
 
 		private var randomPoints:Array;
+		private var lightDic:Dictionary;
 
 		private function touchHandler(event:TouchEvent):void
 		{
@@ -224,8 +232,13 @@ package views.module1.scene12
 					checkPointInRect(new Point(touch.globalX / scale, touch.globalY / scale), true);
 					if (dragingCloth)
 					{
-						downPoint=new Point(touch.globalX / scale, touch.globalY / scale);
-						setChildIndex(dragingCloth, numChildren - 1);
+						if (correctCircleDic[dragingCloth].alpha > 0)
+							dragingCloth=null;
+						else
+						{
+							downPoint=new Point(touch.globalX / scale, touch.globalY / scale);
+							setChildIndex(dragingCloth, numChildren - 1);
+						}
 					}
 				}
 				else if (touch.phase == TouchPhase.MOVED)
@@ -269,12 +282,22 @@ package views.module1.scene12
 							ready=false;
 							otherCloth=i;
 							var dp:Point=currentPositionDic[dragingCloth];
+							if (correctCircleDic[i].alpha > 0)
+							{
+								TweenLite.to(dragingCloth, 0.5, {x: dp.x + clothXOffset, y: dp.y + clothYOffset, ease: Cubic.easeOut, onComplete: function():void {
+									dragingCloth=null;
+									ready=true;
+								}});
+								return;
+							}
 							TweenLite.to(dragingCloth, 0.5, {x: p.x + clothXOffset, y: p.y + clothYOffset, ease: Cubic.easeOut});
 							TweenLite.to(i, 0.5, {x: dp.x + clothXOffset, y: dp.y + clothYOffset, ease: Cubic.easeOut, onComplete: function():void
 							{
 								currentPositionDic[dragingCloth]=p;
 								if (p.x == correctPositionDic[dragingCloth].x) {
-									TweenLite.to(correctCircleDic[dragingCloth], 0.5, {alpha: 1});
+									TweenLite.to(correctCircleDic[dragingCloth], 0.5, {alpha: 1, onComplete: function():void {
+										playLight(lightDic[dragingCloth]);
+									}});
 									isMoved=true;
 								}
 								else
@@ -283,6 +306,7 @@ package views.module1.scene12
 								if (dp.x == correctPositionDic[i].x)
 									TweenLite.to(correctCircleDic[i], 0.5, {alpha: 1, onComplete: function():void
 									{
+										playLight(lightDic[i]);
 										isMoved=true;
 										var allMatched:Boolean=true;
 										for each (i in correctCircleDic)
@@ -295,7 +319,6 @@ package views.module1.scene12
 										}
 										if (allMatched)
 										{
-//											trace('all matched');
 											TweenLite.to(matchedGlow, 0.8, {alpha: 1, onComplete: function():void
 											{
 												dispatchEvent(new Event('allMatched'));
@@ -322,6 +345,17 @@ package views.module1.scene12
 				}});
 				dragingCloth=null;
 			}
+		}
+
+		private function playLight(sp:Sprite):void
+		{
+//			var img1:Sprite=sp.getChildAt(0) as Sprite;
+//			var img2:Sprite=sp.getChildAt(1) as Sprite;
+//
+//			if (img1 && img2)
+//				TweenLite.to(img1.clipRect, .3, {y: 0, onComplete: function():void {
+//					TweenLite.to(img2, .3, {alpha: 1});
+//				}});
 		}
 	}
 }

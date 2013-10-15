@@ -117,7 +117,7 @@ package views.components.base
 			load.y=768 - 100;
 			load.scaleX=load.scaleY=.5;
 			load.addChild(Image.fromBitmap(new loading()));
-			load.pivotX=load.pivotY=50;
+			load.pivotX=load.pivotY=64;
 
 			isLoading=true;
 
