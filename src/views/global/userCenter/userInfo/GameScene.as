@@ -12,10 +12,10 @@ package views.global.userCenter.userInfo
 
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
-	import views.module2.scene22.MenuGame;
-	import views.module2.scene23.DishGame;
-	import views.module3.scene31.JigsawGame;
-	import views.module4.scene42.OperaGame;
+	import views.module3.scene32.MenuGame;
+	import views.module3.scene33.DishGame;
+	import views.module2.scene21.JigsawGame;
+	import views.module5.scene52.OperaGame;
 
 	public class GameScene extends PalaceScene
 	{

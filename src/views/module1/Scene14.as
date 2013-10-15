@@ -9,7 +9,7 @@ package views.module1
 
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
-	import views.module4.scene42.OperaBody;
+	import views.module5.scene52.OperaBody;
 
 	/**
 	 * 早起模块
