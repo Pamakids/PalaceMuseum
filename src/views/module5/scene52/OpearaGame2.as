@@ -8,6 +8,8 @@ package views.module5.scene52
 
 	import models.SOService;
 
+	import particle.FireParticle;
+
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -25,6 +27,7 @@ package views.module5.scene52
 		private var crtOperaName:String;
 		private var operaArr:Array=["xiyou", "sanguo"];
 		private var gameLevel:int=0;
+		private var fireParticle:FireParticle;
 
 		public function OpearaGame2(lvl:int, am:AssetManager=null)
 		{

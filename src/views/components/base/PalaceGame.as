@@ -4,6 +4,8 @@ package views.components.base
 
 	import controllers.MC;
 
+	import models.SOService;
+
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -22,13 +24,15 @@ package views.components.base
 
 		public function PalaceGame(am:AssetManager=null)
 		{
+			gameName=StringUtils.getClassName(this);
+			SOService.instance.setSO(gameName, true);
 			this.assets=am;
 			super();
 		}
 
 		public function get gameResult():String
 		{
-			return StringUtils.getClassName(this).toLocaleLowerCase() + "gameresult";
+			return gameName + "gameresult";
 		}
 
 		override protected function onStage(e:Event):void

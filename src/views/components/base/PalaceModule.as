@@ -34,6 +34,9 @@ package views.components.base
 		[Embed(source="/assets/common/loading.png")]
 		protected static var loading:Class
 
+		[Embed(source="/assets/common/gamebg.jpg")]
+		protected static var loadingBG:Class
+
 		public function PalaceModule(am:AssetManager=null, width:Number=0, height:Number=0)
 		{
 			moduleName=StringUtils.getClassName(this);
@@ -56,6 +59,9 @@ package views.components.base
 			tfHolder=new Sprite();
 			addChild(tfHolder);
 			tfHolder.touchable=false;
+			var bg:Image=Image.fromBitmap(new loadingBG());
+			tfHolder.addChild(bg);
+
 			var tfQ1:TextField=new TextField(600, 100, Q1, FontVo.PALACE_FONT, 32, 0xffffff, true);
 			tfQ1.x=200;
 			tfQ1.y=isSingle ? 200 : 100;

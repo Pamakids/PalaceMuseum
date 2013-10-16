@@ -139,6 +139,10 @@ package views.components
 				p=Prompt.showTXT(x + mcWidth - 10, y + 10, content, fontSize, function():void
 				{
 					isSayingOver=true;
+					if (callBack != null) {
+						callBack();
+						callBack=null;
+					}
 				}, MC.instance.main);
 			}});
 		}

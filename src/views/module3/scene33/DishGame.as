@@ -86,6 +86,7 @@ package views.module3.scene33
 			startBtn.x=856;
 			startBtn.y=665;
 			startBtn.addEventListener(ElasticButton.CLICK, onStart);
+			shakeNext();
 
 			closeBtn=new ElasticButton(getImage("button_close"));
 			addChild(closeBtn);
@@ -93,6 +94,15 @@ package views.module3.scene33
 			closeBtn.y=60;
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
 			closeBtn.visible=closeBtn.touchable=false;
+		}
+
+		private function shakeNext():void
+		{
+			if (startBtn)
+				TweenMax.to(startBtn, 1, {shake: {x: 5, numShakes: 4}, onComplete: function():void
+				{
+					TweenLite.delayedCall(5, shakeNext);
+				}});
 		}
 
 		private function onStart(e:Event):void

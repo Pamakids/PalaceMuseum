@@ -30,6 +30,8 @@ package views.global.map
 	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceModule;
+	import views.global.userCenter.UserCenter;
+	import views.global.userCenter.UserCenterManager;
 
 	/**
 	 * 热点数据格式用map.json的应该就能满足所有需求
@@ -98,10 +100,6 @@ package views.global.map
 					LoadManager.instance.loadImage('assets/global/mapBG.jpg', bgLoadedHandler);
 					mapData=assetManager.getObject("map");
 					parseData();
-					king=getImage('king');
-					king.pivotX=king.width / 2;
-					king.pivotY=king.height / 2;
-					king.visible=false;
 				}
 			});
 			sos=SOService.instance;
@@ -152,12 +150,14 @@ package views.global.map
 
 		private function initCloseButton():void
 		{
-			var b:ElasticButton=new ElasticButton(getImage('button_close'));
-			addChild(b);
-			b.addEventListener(ElasticButton.CLICK, closeTriggeredHandler);
-			b.x=width - b.width / 2 - 10;
-			b.y=b.height / 2 + 10;
-			closeButton=b;
+			if (!closeButton)
+			{
+				closeButton=new ElasticButton(getImage('button_close'));
+				addChild(closeButton);
+				closeButton.addEventListener(ElasticButton.CLICK, closeTriggeredHandler);
+				closeButton.x=width - closeButton.width / 2 - 10;
+				closeButton.y=closeButton.height / 2 + 10;
+			}
 			closeButton.visible=showFromCenter;
 		}
 
@@ -177,7 +177,12 @@ package views.global.map
 		 */
 		public static function show(callback:Function=null, from:int=-1, to:int=-1, fromCenter:Boolean=false):void
 		{
-			SOService.instance.setSO("lastScene", "map");
+			var msIndex:String=SOService.instance.getSO("lastScene") as String;
+			if (!msIndex)
+				msIndex="00map";
+			else if (msIndex.lastIndexOf("map") < 0)
+				msIndex=msIndex + "map";
+			SOService.instance.setSO("lastScene", msIndex);
 			MC.instance.hideMC();
 			showFromCenter=fromCenter;
 			var ec:Boolean=true;
@@ -233,8 +238,7 @@ package views.global.map
 			flipAnimation.width=width;
 			flipAnimation.height=height;
 			addChild(flipAnimation);
-
-			flipAnimation.addChild(king);
+			positionKing();
 		}
 
 		override public function dispose():void
@@ -244,14 +248,26 @@ package views.global.map
 			trace('disposed');
 		}
 
-		private function positionKing(kingPoint:Point):void
+		private function positionKing(kingPoint:Point=null):void
 		{
-			if (!king.parent)
+			if (!king)
+			{
+				king=getImage('king');
+				king.pivotX=king.width / 2;
+				king.pivotY=king.height / 2;
 				flipAnimation.addChild(king);
-			king.parent.setChildIndex(king, king.parent.numChildren - 1);
-			king.visible=true;
-			king.x=kingPoint.x;
-			king.y=kingPoint.y;
+			}
+			flipAnimation.setChildIndex(king, flipAnimation.numChildren - 1);
+			if (kingPoint)
+			{
+				king.visible=true;
+				king.x=kingPoint.x;
+				king.y=kingPoint.y;
+			}
+			else
+			{
+				king.visible=false;
+			}
 		}
 
 		public var isTask:Boolean=true;
@@ -259,16 +275,19 @@ package views.global.map
 
 		private function flipedHandler(e:Event):void
 		{
-			if (king && centerPoint[from])
-				positionKing(centerPoint[from]);
-			TweenLite.to(flipAnimation, 1.5, {x: 0, scaleX: 1, scaleY: 1, onComplete: function():void
+			positionKing(centerPoint[showFromCenter ? mc.moduleIndex : from]);
+			var comFunc:Function=function():void
 			{
 				initCloseButton();
 				closeButton.visible=showFromCenter;
 				addEventListener(TouchEvent.TOUCH, touchHandler);
 				resetSun();
-				TweenLite.to(flipAnimation, 8, {delay: 1, y: 0, ease: Cubic.easeOut});
-			}});
+				TweenLite.to(flipAnimation, 5, {delay: 1, y: 0, ease: Cubic.easeOut});
+			};
+			if (flipAnimation.scaleX == 1)
+				comFunc();
+			else
+				TweenLite.to(flipAnimation, 1.5, {x: 0, scaleX: 1, scaleY: 1, onComplete: comFunc});
 			var i:int=to == -1 ? 0 : to;
 			if (!showFromCenter || mc.moduleIndex == -1)
 			{
@@ -387,23 +406,34 @@ package views.global.map
 
 								if (targetIndex != -1)
 								{
-									resetSun(crtIndex, targetIndex);
-
 									if (showFromCenter)
 									{
-										if (sos.isModuleCompleted(targetIndex))
+										if (targetIndex == crtIndex)
+										{
+											clear(2);
+											UserCenterManager.closeUserCenter();
+											return;
+										}
+										else if (sos.isModuleCompleted(targetIndex))
+										{
+											resetSun(crtIndex, targetIndex);
 											changing=true;
+										}
 									}
 									else
 									{
 										if (to == targetIndex)
+										{
+											resetSun(crtIndex, targetIndex);
 											changing=true;
+										}
 									}
 
 									if (changing)
 									{
 										if (king.visible)
 										{
+											flipAnimation.setChildIndex(king, flipAnimation.numChildren - 1);
 											TweenLite.to(king, 1.8, {x: top.x, y: top.y, ease: Cubic.easeOut});
 											drawPath(king.x, king.y, top.x, top.y, 1.8);
 										}
@@ -584,7 +614,7 @@ package views.global.map
 				hasTask=false;
 			visible=true;
 			TweenLite.killTweensOf(flipAnimation);
-			flipAnimation.y=0;
+			flipAnimation.y=showFromCenter ? 0 : -460.8;
 			flipAnimation.height=height;
 			if (ea)
 				flipAnimation.playAnimation();

@@ -56,7 +56,7 @@ package views.module1
 				{
 					var dx:Number=boxCover.x + 400;
 					TweenLite.to(boxCover, .2, {y: -50, onComplete: function():void {
-						TweenLite.to(boxCover, .5, {x: dx});
+						TweenLite.to(boxCover, .5, {x: dx, onComplete: initCircle});
 					}
 						});
 				}
@@ -100,12 +100,6 @@ package views.module1
 		{
 			crtLionContent=content;
 			showHint(content, 0, callback);
-		}
-
-		private function nextScene():void
-		{
-			showCard("dragonRobe");
-			TweenLite.to(lion, 1, {x: lionX, onComplete: sceneOver});
 		}
 
 		private function addBox():void
@@ -260,10 +254,10 @@ package views.module1
 
 				opened=true;
 				crtKnowledgeIndex=3;
-				TweenLite.delayedCall(1, function():void
-				{
-					showLionHint("hint-gamestart", initCircle);
-				});
+//				TweenLite.delayedCall(1, function():void
+//				{
+//					showLionHint("hint-gamestart", initCircle);
+//				});
 			}});
 		}
 
@@ -286,7 +280,9 @@ package views.module1
 			showKnowledge(type);
 			if (type == clothArr[taskType])
 			{
-				showAchievement(2);
+				showCard("dragonRobe", function():void {
+					showAchievement(2);
+				});
 				sceneOver();
 			}
 			else
