@@ -4,7 +4,6 @@ package views.global.userCenter.achievement
 	
 	import feathers.core.PopUpManager;
 	
-	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -12,7 +11,6 @@ package views.global.userCenter.achievement
 	import starling.events.TouchPhase;
 	
 	import views.global.userCenter.BaseScreen;
-	import views.global.userCenter.UserCenterManager;
 	
 	public class AchievementScreen extends BaseScreen
 	{
@@ -23,7 +21,7 @@ package views.global.userCenter.achievement
 		
 		override protected function initialize():void
 		{
-			initPages();
+			super.initialize();
 			initDatas();
 			initContainer();
 			initIcons();
@@ -65,16 +63,6 @@ package views.global.userCenter.achievement
 		
 		private var containerL:Sprite;
 		private var containerR:Sprite;
-		
-		private function initPages():void
-		{
-			var image:Image = new Image(UserCenterManager.getTexture("page_left"));
-			this.addChild( image );
-			image = new Image(UserCenterManager.getTexture("page_right"));
-			this.addChild( image );
-			image.x = this.viewWidth/2;
-		}
-
 		
 		private var image:AchieveIcon;
 		private function showImage(data:Object):void
