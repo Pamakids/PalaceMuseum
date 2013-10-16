@@ -290,14 +290,14 @@ package views.module2
 					rightBook=book;
 					bookFinded=true;
 					showBigBook();
-					setChildIndex(lion, numChildren - 1);
-					TweenLite.killTweensOf(lion);
-					TweenLite.to(lion, .5, {x: 30, onComplete: function():void {
-						lion.say(hint31right, function():void {
-							TweenLite.to(lion, .5, {x: -140});
-						});
-					}
-						});
+//					setChildIndex(lion, numChildren - 1);
+//					TweenLite.killTweensOf(lion);
+//					TweenLite.to(lion, .5, {x: 30, onComplete: function():void {
+//						lion.say(hint31right, function():void {
+//							TweenLite.to(lion, .5, {x: -140});
+//						});
+//					}
+//						});
 				}
 				else
 				{
@@ -367,16 +367,7 @@ package views.module2
 
 		}
 
-		private function onBigBookTouch(e:TouchEvent):void
-		{
-			var img:Image=e.currentTarget as Image;
-			var tc:Touch=e.getTouch(img, TouchPhase.ENDED);
-			if (tc)
-				Prompt.showTXT(568, 480, bookTxt, 20, null, bigBook, 1, true);
-		}
-
-		private var bookTxt:String="清朝皇帝对大臣的指\n令和讲话称为“圣训”。\n后继位的皇帝每天早读\n时首先会读一段圣训，\n学习领会祖先的教导。";
-		private var hint31right:String="恭喜你找到圣训！";
+//		private var hint31right:String="恭喜你找到圣训！";
 		private var hint31find:String="《圣训》是皇帝每天早上必读的书本，快点找到它。";
 
 		private function onCloseBook(e:Event):void

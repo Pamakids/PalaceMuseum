@@ -11,7 +11,6 @@ package views.module1
 
 	import controllers.MC;
 
-	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -121,6 +120,8 @@ package views.module1
 			fg.addEventListener(TouchEvent.TOUCH, onFGTouch);
 			addWindows();
 			addKing();
+
+			TweenLite.to(this, 1.5, {offsetX: 0});
 		}
 
 		private function addKing():void
@@ -155,7 +156,7 @@ package views.module1
 			var tc:Touch=event.getTouch(this, TouchPhase.ENDED);
 			if (!tc)
 				return;
-			var pt:Point=tc.getLocation(this);
+			var pt:Point=tc.getLocation(stage);
 
 			if (dpt && Point.distance(dpt, pt) < 15)
 				checkFG(pt);
@@ -233,9 +234,12 @@ package views.module1
 			}
 		}
 
-		private function onWindowTouch(event:TouchEvent):void
+		private function onWindowTouch(e:TouchEvent):void
 		{
-			var tc:Touch=event.getTouch(this);
+			var w:Sprite=e.currentTarget as Sprite;
+			if (!w)
+				return;
+			var tc:Touch=e.getTouch(w);
 			if (!tc)
 				return;
 			var pt:Point=tc.getLocation(this);
@@ -244,8 +248,7 @@ package views.module1
 			{
 				case TouchPhase.BEGAN:
 				{
-					var img:Image=event.target as Image;
-					crtTarget=img.parent as Sprite;
+					crtTarget=w;
 					break;
 				}
 				case TouchPhase.ENDED:
@@ -418,6 +421,33 @@ package views.module1
 					break;
 				}
 			}
+		}
+
+		private var _offsetX:Number=30;
+
+		public function get offsetX():Number
+		{
+			return _offsetX;
+		}
+
+		public function set offsetX(value:Number):void
+		{
+			_offsetX=value;
+			onAutoMove(value);
+		}
+
+
+		private function onAutoMove(dx:Number):void
+		{
+			var tx:Number=fg.x + dx / 2;
+			if (tx < (1024 - fg_width))
+				dx=(1024 - fg_width - fg.x) * 2;
+			else if (tx > 0)
+				dx=(0 - fg.x) * 2;
+			bg.x+=dx / 5;
+			mg.x+=dx / 3;
+			fg.x+=dx / 2;
+			king.x-=dx / 8;
 		}
 	}
 }

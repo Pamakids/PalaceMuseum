@@ -133,6 +133,8 @@ package views.module1.scene12
 			addChild(matchedGlow);
 
 			var points:Array=[new Point(151, 95), new Point(330, 64), new Point(510, 95), new Point(689, 73)];
+			var points1:Array=[new Point(238, 262), new Point(427, 233), new Point(608, 264), new Point(797, 242)];
+			var points2:Array=[new Point(74, 257), new Point(309, 248), new Point(482, 257), new Point(671, 240)];
 			correctPositionDic=new Dictionary();
 			var clothPoints:Dictionary;
 			clothPoints=new Dictionary();
@@ -140,6 +142,18 @@ package views.module1.scene12
 			clothPoints['月']=points[1];
 			clothPoints['天']=points[2];
 			clothPoints['地']=points[3];
+
+			var lightPts:Dictionary=new Dictionary();
+			lightPts['日']=points1[0];
+			lightPts['月']=points1[1];
+			lightPts['天']=points1[2];
+			lightPts['地']=points1[3];
+
+			var boxLightPts:Dictionary=new Dictionary();
+			boxLightPts['日']=points2[0];
+			boxLightPts['月']=points2[1];
+			boxLightPts['天']=points2[2];
+			boxLightPts['地']=points2[3];
 
 			correctCircleDic=new Dictionary();
 			clothDic=new Dictionary();
@@ -180,6 +194,22 @@ package views.module1.scene12
 				ia[ci]=pi;
 
 				var light:Sprite=new Sprite();
+				var line:Sprite=new Sprite();
+				var img:Image=new Image(am.getTexture("light" + key));
+				line.addChild(img);
+				line.clipRect=new Rectangle(0, -img.height, img.width, img.height);
+				line.x=lightPts[key].x;
+				line.y=lightPts[key].y;
+
+				var halo:Image=new Image(am.getTexture("boxlight" + key));
+				halo.alpha=0;
+				halo.x=boxLightPts[key].x;
+				halo.y=boxLightPts[key].y;
+
+				light.addChild(line);
+				light.addChild(halo);
+				light.touchable=false;
+				addChild(light);
 				lightDic[ci]=light;
 
 				index++;
@@ -295,8 +325,9 @@ package views.module1.scene12
 							{
 								currentPositionDic[dragingCloth]=p;
 								if (p.x == correctPositionDic[dragingCloth].x) {
+									var sp:Sprite=lightDic[dragingCloth];
 									TweenLite.to(correctCircleDic[dragingCloth], 0.5, {alpha: 1, onComplete: function():void {
-										playLight(lightDic[dragingCloth]);
+										playLight(sp);
 									}});
 									isMoved=true;
 								}
@@ -304,9 +335,11 @@ package views.module1.scene12
 									TweenLite.to(correctCircleDic[dragingCloth], 0.5, {alpha: 0});
 								currentPositionDic[i]=dp;
 								if (dp.x == correctPositionDic[i].x)
+								{
+									var sp2:Sprite=lightDic[i];
 									TweenLite.to(correctCircleDic[i], 0.5, {alpha: 1, onComplete: function():void
 									{
-										playLight(lightDic[i]);
+										playLight(sp2);
 										isMoved=true;
 										var allMatched:Boolean=true;
 										for each (i in correctCircleDic)
@@ -319,12 +352,13 @@ package views.module1.scene12
 										}
 										if (allMatched)
 										{
-											TweenLite.to(matchedGlow, 0.8, {alpha: 1, onComplete: function():void
+											TweenLite.to(matchedGlow, 2, {alpha: 1, onComplete: function():void
 											{
 												dispatchEvent(new Event('allMatched'));
 											}});
 										}
 									}});
+								}
 								else
 									TweenLite.to(correctCircleDic[i], 0.5, {alpha: 0});
 								ready=true;
@@ -349,13 +383,19 @@ package views.module1.scene12
 
 		private function playLight(sp:Sprite):void
 		{
-//			var img1:Sprite=sp.getChildAt(0) as Sprite;
-//			var img2:Sprite=sp.getChildAt(1) as Sprite;
-//
-//			if (img1 && img2)
-//				TweenLite.to(img1.clipRect, .3, {y: 0, onComplete: function():void {
-//					TweenLite.to(img2, .3, {alpha: 1});
-//				}});
+			if (!sp)
+				return;
+			var img1:Sprite=sp.getChildAt(0) as Sprite;
+			var img2:Image=sp.getChildAt(1) as Image;
+
+			if (img1 && img2)
+			{
+//				img1.clipRect=new Rectangle(0, -img1.height, img1.width, img1.height);
+//				var h:Number=img1.height;
+				TweenLite.to(img1.clipRect, .3, {y: 0, onComplete: function():void {
+					TweenLite.to(img2, .3, {alpha: 1});
+				}});
+			}
 		}
 	}
 }

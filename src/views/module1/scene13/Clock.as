@@ -18,6 +18,7 @@ package views.module1.scene13
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.ElasticButton;
 	import views.components.base.PalaceScene;
 
 	public class Clock extends PalaceScene
@@ -53,10 +54,11 @@ package views.module1.scene13
 			flace.y=374;
 			addChild(flace);
 
-			close=getImage("clock-close");
-			close.x=830;
+			close=new ElasticButton(getImage("button_close"));
+			close.x=870;
+			close.y=50;
 			addChild(close);
-			close.addEventListener(TouchEvent.TOUCH, onCloseTouch);
+			close.addEventListener(ElasticButton.CLICK, onCloseClick);
 
 			if (SOService.instance.checkHintCount(clockHint))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -107,12 +109,9 @@ package views.module1.scene13
 			}
 		}
 
-		private function onCloseTouch(e:TouchEvent):void
+		private function onCloseClick(e:Event):void
 		{
 			if (ended)
-				return;
-			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
-			if (!tc)
 				return;
 			PopUpManager.removePopUp(this, true);
 		}
@@ -224,10 +223,10 @@ package views.module1.scene13
 		private function addWheel():void
 		{
 			var wheel:Sprite=new Sprite();
-			wheel.x=438;
-			wheel.y=315;
+			wheel.x=436;
+			wheel.y=314;
 			addChild(wheel);
-			wheel.clipRect=new Rectangle(2, 0, 129, 182);
+			wheel.clipRect=new Rectangle(2, 0, 134, 181);
 
 			for (var i:int=0; i < 6; i++)
 			{
@@ -248,14 +247,16 @@ package views.module1.scene13
 			}
 
 			mask=getImage("clock-mask");
-			wheel.addChild(mask);
-
+			mask.x=436;
+			mask.y=312;
+			addChild(mask);
+//			mask.height=181;
 		}
 
 		private const LACE_WIDTH:int=72;
 		private const WORD_WIDTH:int=484;
 
-		private var close:Image;
+		private var close:ElasticButton;
 		private var _isMoved:Boolean;
 
 		public function get isMoved():Boolean

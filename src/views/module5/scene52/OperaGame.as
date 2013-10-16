@@ -92,12 +92,13 @@ package views.module5.scene52
 			startHolder.addChild(sanguoBtn);
 			sanguoBtn.addEventListener(TouchEvent.TOUCH, onLevelSelect);
 
-			var startBtn:ElasticButton=new ElasticButton(getImage("game-start"));
+			startBtn=new ElasticButton(getImage("game-start"));
 			startBtn.shadow=getImage("game-start-down");
 			startBtn.addEventListener(ElasticButton.CLICK, onStartClick);
 			startHolder.addChild(startBtn);
-			startBtn.x=924;
-			startBtn.y=693;
+			startBtn.x=920;
+			startBtn.y=666;
+			shakeNext();
 
 			closeBtn=new ElasticButton(getImage("button_close"));
 			addChild(closeBtn);
@@ -112,6 +113,15 @@ package views.module5.scene52
 					scene.onOperaSwitch(e);}
 			});
 //			dispatchEvent(e);
+		}
+
+		private function shakeNext():void
+		{
+			if (startBtn)
+				TweenMax.to(startBtn, 1, {shake: {x: 5, numShakes: 4}, onComplete: function():void
+				{
+					TweenLite.delayedCall(5, shakeNext);
+				}});
 		}
 
 		private function onLevelSelect(e:TouchEvent):void
@@ -524,6 +534,8 @@ package views.module5.scene52
 		private var xiyouBtn:Sprite;
 
 		private var sanguoBtn:Sprite;
+
+		private var startBtn:ElasticButton;
 
 		public function get score():int
 		{
