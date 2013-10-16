@@ -18,9 +18,9 @@ package
 	import starling.utils.AssetManager;
 
 	import views.Module1;
-	import views.Module3;
-	import views.Module4;
+	import views.Module2;
 	import views.Module5;
+	import views.Module4;
 	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.Container;
@@ -71,7 +71,10 @@ package
 		{
 			var moduleIndex:int=int(lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(lastScene.charAt(1)) - 1;
-			MC.instance.gotoModule(moduleIndex, sceneIndex);
+			if (moduleIndex < 0 || sceneIndex < 0)
+				Map.show();
+			else
+				MC.instance.gotoModule(moduleIndex, sceneIndex);
 		}
 
 		private function debugInit():void

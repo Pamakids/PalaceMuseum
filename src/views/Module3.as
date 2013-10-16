@@ -7,18 +7,19 @@ package views
 	import views.components.base.PalaceModule;
 	import views.module3.Scene31;
 	import views.module3.Scene32;
+	import views.module3.Scene33;
 
 	public class Module3 extends PalaceModule
 	{
 		public function Module3(_skipIndex:int=-1)
 		{
 			skipIndex=_skipIndex;
-			sceneArr=[Scene31, Scene32];
+			sceneArr=[Scene31, Scene32, Scene33];
 
-			Q1="皇帝爱学习吗？"
-			A1="清朝皇帝喜爱学习－儒家经典、汉语诗文、满文、蒙文和骑马射箭，样样要精通。"
-			Q2="皇帝起床后第一件事做什么？"
-			A2="先给太后请安，之后的第一件事就是早读学习。"
+			Q1="什么是“传膳”？"
+			A1="皇帝吃饭称为“传膳”或“用膳”，没有固定地点，就在休息、办公的地方放桌子、摆盘子。"
+			Q2="皇帝也是一日三餐吗？"
+			A2="清朝皇帝一天只吃两顿正餐，早饭在7点到9点之间，晚饭在下午1点到3点之间。"
 
 			addLoading();
 			addQAS();
@@ -33,10 +34,9 @@ package views
 				{
 					assetManager=assets;
 					isLoading=false;
-					addNext();
-
 //					sceneIndex=0;
 //					loadScene(sceneIndex);
+					addNext();
 				}
 			});
 		}

@@ -15,7 +15,7 @@ package
 	import starling.utils.AssetManager;
 
 	import views.Module1;
-	import views.Module5;
+	import views.Module4;
 	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.Container;

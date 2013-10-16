@@ -1,9 +1,7 @@
 package views.components
 {
-	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.utils.Timer;
 	import flash.utils.getTimer;
 	
 	import models.FontVo;
@@ -22,8 +20,8 @@ package views.components
 	 */	
 	public class LoopNumList extends Sprite
 	{
-		public static const DIRECTION_VERTICAL:String = "vertical";
-		public static const DIRECTION_HORIZONTAL:String = "horizontal";
+		private static const DURITION_VERTICAL:String = "vertical";
+		private static const DURITION_HORIZONTAL:String = "horizontal";
 		
 		/**
 		 * @param min	最小值
@@ -31,31 +29,54 @@ package views.components
 		 * @param maxView	同屏显示数量，暂时未使用，后期优化需要使用该参数
 		 * @param durition	滚动方向
 		 */		
-		public function LoopNumList(min:int, max:int, maxViewNum:int = 3, direction:String = DIRECTION_VERTICAL)
+		public function LoopNumList(min:int, max:int, isHorizontal:Boolean=false)
 		{
 			this.min = min;
 			this.max = max;
-//			this.maxViewNum = maxViewNum;
-			this.durition = direction;
-			this.crtnum = min;
+			this.isHorizontal = isHorizontal;
 			initialize();
 		}
 		
-		private var durition:String;
-//		private var maxViewNum:int;
+		private var isHorizontal:Boolean;
 		/**
 		 * 用来标示列表中的显示顺序，位置从上到下（或从左到右）
 		 */		
 		private var vecLabel:Vector.<TextField>;
-		
+		private const maxTextfieldNum:int = 7;
 		private function initialize():void
 		{
-			vecLabel = new Vector.<TextField>();
+			vecLabel = new Vector.<TextField>(maxTextfieldNum);
 			initLabels();
-			initMask();
+			initHotspot();
 			
 			this.addEventListener(TouchEvent.TOUCH, onTouch);
 			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+		
+		private function initHotspot():void
+		{
+			this.clipRect = new Rectangle(0,0,69,90);
+			var quad:Quad = new Quad(clipRect.width, clipRect.height, 0x000000);
+			this.addChild( quad );
+			quad.alpha = 0;
+		}
+		
+		private function initLabels():void
+		{
+			var label:TextField;
+			for(var i:int = 0;i<maxTextfieldNum;i++)
+			{
+				label = labelFactory();
+				label.text = creatString(i+min);
+				if(isHorizontal)
+					label.x = label.width * i;
+				else
+					label.y = label.height * i;
+				
+				vecLabel[i] = label;		
+			}
+			itemWidth = label.width;
+			itemHeight = label.height;
 		}
 		
 		private const maxVelocity:int = 120;
@@ -68,19 +89,14 @@ package views.components
 		private var prevTime:int;
 		private var crtTime:int;
 		private var endTime:int;
-		private var friction:Number = 0.95;
+		private var friction:Number = 0.9;
 		
 		private var itemWidth:Number = 0;
 		private var itemHeight:Number = 0;
-		private var totalWidth:Number = 0;
-		private var totalHeight:Number = 0;
 		/**
 		 * 自动滚动标记
 		 */		
 		private var ifScroll:Boolean = false;
-		
-		private var xLength:Number = 0;
-		private var yLength:Number = 0;
 		
 		private function onEnterFrame():void
 		{
@@ -89,7 +105,7 @@ package views.components
 				velocityX *= friction;
 				velocityY *= friction;
 				setPosition();
-				if((velocityX == 0 && durition == DIRECTION_HORIZONTAL) || (velocityY == 0 && durition == DIRECTION_VERTICAL))
+				if((velocityX == 0 && isHorizontal) || (velocityY == 0 && !isHorizontal))
 				{
 					ifScroll = false;
 					correctionHandler();
@@ -116,14 +132,14 @@ package views.components
 						crtTime = getTimer();
 						prevPosition = crtPosition;
 						crtPosition = point;
-						velocityX = (durition==DIRECTION_HORIZONTAL) ? crtPosition.x - prevPosition.x : 0;
-						velocityY = (durition==DIRECTION_HORIZONTAL) ? 0 : crtPosition.y - prevPosition.y;
+						velocityX = isHorizontal ? crtPosition.x - prevPosition.x : 0;
+						velocityY = isHorizontal ? 0 : crtPosition.y - prevPosition.y;
 						setPosition();
 						break;
 					case TouchPhase.ENDED:
 						var time:int = Math.max( getTimer() - prevTime, 1 );
-						velocityX = (durition==DIRECTION_HORIZONTAL) ? (point.x - prevPosition.x)*1000/time : 0;
-						velocityY = (durition==DIRECTION_HORIZONTAL) ? 0 : (point.y - prevPosition.y)*0100/time;
+						velocityX = isHorizontal ? (point.x - prevPosition.x)*1000/time : 0;
+						velocityY = isHorizontal ? 0 : (point.y - prevPosition.y)*0100/time;
 						velocityX = Math.min( Math.max(minVelocity, velocityX), maxVelocity );
 						velocityY = Math.min( Math.max(minVelocity, velocityY), maxVelocity );
 						ifScroll = true;
@@ -141,7 +157,7 @@ package views.components
 			
 			var label:TextField = vecLabel[0];
 			var d:Number;
-			if(durition == DIRECTION_HORIZONTAL)
+			if(isHorizontal)
 			{
 				d = Math.abs( label.x % itemWidth );
 				velocityX = (d > itemWidth/2)?(d - itemWidth):d;
@@ -152,9 +168,6 @@ package views.components
 				velocityY = (d > itemHeight/2)?( d - itemHeight ):d;
 			}
 			setPosition();
-			yLength = 0;
-			xLength = 0;
-			
 			searchCrtNum();
 		}
 		
@@ -163,22 +176,11 @@ package views.components
 		 */		
 		private function searchCrtNum():void
 		{
-			var item:TextField;
-			for(var i:int = vecLabel.length-1;i>=0;i--)
+			for each(var item:TextField in vecLabel)
 			{
-				item = vecLabel[i];
-				if(durition == DIRECTION_HORIZONTAL)
+				if( (isHorizontal && item.x == itemWidth) || (!isHorizontal && item.y == itemHeight) )
 				{
-					if(item.x != 0)
-						continue;
-					crtnum = int(vecLabel[i+1].text);
-					break;
-				}
-				else
-				{
-					if(item.y != 0)
-						continue;
-					crtnum = int(vecLabel[i+1].text);
+					crtnum = int(item.text);
 					break;
 				}
 			}
@@ -191,26 +193,35 @@ package views.components
 				item.x += velocityX;
 				item.y += velocityY;
 			}
-			testPosition()
+			
+			testPosition();
 		}
+		
 		/**
-		 * 检测文本位置，符合变更条件即变更位置
+		 * 检测文本位置，符合变更条件即变更位置与文本内容
 		 */		
 		private function testPosition():void
 		{
 			var i:int;
 			var item:TextField;
-			const num:int = vecLabel.length-1;
-			if(durition == DIRECTION_HORIZONTAL)			//水平移动
+			var tempItem:TextField;
+			var n:int;
+			const num:int = maxTextfieldNum-1;
+			if(isHorizontal)			//水平移动
 			{
 				if(velocityX > 0)
 				{
 					for(i = num;;)
 					{
 						item = vecLabel[i];
-						if(item.x >= totalWidth/2)
+						if(item.x >= itemWidth*3)
 						{
-							item.x = vecLabel[0].x - itemWidth;
+							tempItem = vecLabel[0];
+							item.x = tempItem.x - itemWidth;
+							n = int(tempItem.text)-1;
+							if(n<min)
+								n = max - (min-n) + 1;
+							item.text = creatString(n);
 							vecLabel.unshift(vecLabel.pop());
 						}
 						else
@@ -222,9 +233,14 @@ package views.components
 					for(i = 0;;)
 					{
 						item = vecLabel[i];
-						if(item.x <= -totalWidth/2)
+						if(item.x <= -itemWidth)
 						{
-							item.x = vecLabel[num].x + itemWidth;
+							tempItem = vecLabel[num];
+							item.x = tempItem.x + itemWidth;
+							n = int(tempItem.text)+1;
+							if(n>max)
+								n = min + (n-max) - 1;
+							item.text = creatString(n);
 							vecLabel.push(vecLabel.shift());
 						}else
 							break;
@@ -238,9 +254,14 @@ package views.components
 					for(i = num;;)
 					{
 						item = vecLabel[i];
-						if(item.y >= totalHeight/2)
+						if(item.y >= itemHeight*3)
 						{
-							item.y = vecLabel[0].y - itemHeight;
+							tempItem = vecLabel[0];
+							item.y = tempItem.y - itemHeight;
+							n = int(tempItem.text)-1;
+							if(n<min)
+								n = max - (min-n) + 1;
+							item.text = creatString(n);
 							vecLabel.unshift(vecLabel.pop());
 						}
 						else
@@ -252,63 +273,19 @@ package views.components
 					for(i = 0;;)
 					{
 						item = vecLabel[i];
-						if(item.y <= -totalHeight/2)
+						if(item.y <= -itemHeight)
 						{
-							item.y = vecLabel[num].y + itemHeight;
+							tempItem = vecLabel[num];
+							item.y = tempItem.y + itemHeight;
+							n = int(tempItem.text)+1;
+							if(n>max)
+								n = min + (n-max) - 1;
+							item.text = creatString(n);
 							vecLabel.push(vecLabel.shift());
 						}else
 							break;
 					}
 				}
-			}
-		}
-		
-		
-		private var quad:Quad;
-		private function initMask():void
-		{
-			this.clipRect = new Rectangle(0,0,69,90);
-			//热区
-			quad = new Quad(69,90,0x000000);
-			quad.alpha = 0;
-			this.addChild( quad );
-		}
-		
-		private function initLabels():void
-		{
-			const count:int = max - min + 1;
-			var label:TextField;
-			for(var i:int = 0;i<count;i++)
-			{
-				label = labelFactory();
-				label.text = creatString(i+min);
-				if(durition == DIRECTION_HORIZONTAL)
-					label.x = label.width * i;
-				else
-					label.y = label.height * i
-			}
-			itemWidth = label.width;
-			itemHeight = label.height;
-			totalWidth = itemWidth * count;
-			totalHeight = itemHeight * count;
-			
-			//创建显示顺序
-			creatSequential();
-		}
-		
-		private function creatSequential():void
-		{
-			var label:TextField;
-			var count:int = max - min + 1;
-			var num:int = count >> 1;
-			for( var i:int = count - 1; i>=num; i--)		//将后面的item移动至前面
-			{
-				label = vecLabel.pop();
-				if(durition == DIRECTION_HORIZONTAL)		//水平方向，修改x坐标
-					label.x = vecLabel[0].x - itemWidth;
-				else
-					label.y = vecLabel[0].y - itemHeight;
-				vecLabel.unshift( label );
 			}
 		}
 		
@@ -320,7 +297,6 @@ package views.components
 			label.vAlign = "center";
 			this.addChild( label );
 			label.touchable = false;
-			vecLabel.push(label);
 			return label;
 		}
 		private function creatString(i:int):String
@@ -341,46 +317,10 @@ package views.components
 				return;
 			this.min = min;
 			this.max = max;
-			var item:TextField;
-			var i:int;
-			var num:int = vecLabel.length;		//原显示对象数量
-			var newNum:int = max-min+1;			//现在需要的显示对象数量
-			if(num >= newNum)
-			{
-				for(i = 0;i<num;i++)
-				{
-					item = vecLabel[i];
-					if(i>=newNum)		//清理多余对象
-					{
-						item.removeFromParent(true);
-					}
-					else				//重新赋值
-					{
-						item.text = creatString(min+i);
-						item.x = (durition == DIRECTION_HORIZONTAL)?itemWidth*i:0;
-						item.y = (durition == DIRECTION_HORIZONTAL)?0:itemHeight*i;
-					}
-				}
-				vecLabel.splice(newNum, (num-newNum));
-			}
-			else
-			{
-				for(i=0;i<newNum;i++)
-				{
-					if(i<num)		//重新赋值
-						item = vecLabel[i];
-					else		//创建新对象
-						item = labelFactory();
-					item.text = creatString(min+i);
-					item.x = (durition == DIRECTION_HORIZONTAL)?itemWidth*i:0;
-					item.y = (durition == DIRECTION_HORIZONTAL)?0:itemHeight*i;
-				}
-			}
-			
-			crtnum = int(vecLabel[1].text);
-			totalHeight = itemHeight * newNum;
-			totalWidth = itemWidth * newNum;
-			creatSequential();
+			var num:int = crt;
+			if(num > max || num<min)
+				crt = min;
+			setCrtNum(crt);
 		}
 		/**
 		 * 列表最大数值
@@ -410,33 +350,25 @@ package views.components
 		{
 			if(value<min || value > max)
 				throw new Error("数字范围超出");
-			for each(var item:TextField in vecLabel)
+			var num:int;
+			var item:TextField;
+			for(var i:int = 0; i< maxTextfieldNum;i++)
 			{
-				if(int(item.text) == value)
-				{
-					if(durition == DIRECTION_HORIZONTAL)
-						velocityX = itemWidth-item.x;
-					else
-						velocityY = itemHeight-item.y
-					setPosition();
-					break;
-				}
+				item = vecLabel[i];
+				num = value - ( (isHorizontal) ? (itemWidth-item.x)/itemWidth : (itemHeight-item.y)/itemHeight );
+				if(num<min)
+					num = max - (min-num) + 1;
+				else if(num>max)
+					num = min + (num-max) -1;
+				item.text = creatString( num );
 			}
-		}
-		
-		public function resetViewSize(width:Number, height:Number):void
-		{
-			this.clipRect = new Rectangle(0,0,width,height);
-			quad.width = width;
-			quad.height = height;
+			crtnum = value;
 		}
 		
 		override public function dispose():void
 		{
 			this.removeEventListener(TouchEvent.TOUCH, onTouch);
 			this.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-			if(quad)
-				quad.removeFromParent(true);
 			for each(var item:TextField in vecLabel)
 			{
 				item.removeFromParent(true);

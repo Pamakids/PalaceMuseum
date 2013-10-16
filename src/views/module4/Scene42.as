@@ -2,182 +2,114 @@ package views.module4
 {
 	import com.greensock.TweenLite;
 
-	import events.OperaSwitchEvent;
+	import controllers.MC;
 
 	import starling.display.Image;
-	import starling.display.MovieClip;
-	import starling.display.Sprite;
-	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
-	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
-	import views.module4.scene42.OpearaGame2;
-	import views.module4.scene42.OperaGame;
+	import views.global.TopBar;
 
 	/**
-	 * 娱乐模块
-	 * 看戏场景(京剧游戏1,2)
+	 * 上朝模块
+	 * 批奏折场景(批奏折/as3)
 	 * @author Administrator
 	 */
 	public class Scene42 extends PalaceScene
 	{
-
-		private var mc:MovieClip;
-
-		private var game:OperaGame;
-
-		private var gameHolder:Sprite;
-
-		private var curtainL:Image;
-		private var curtainR:Image;
-		private var offsetX:Number;
-
-		private var game2:OpearaGame2;
-
 		public function Scene42(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=13;
-			gameHolder=new Sprite();
-			addChild(gameHolder);
+			crtKnowledgeIndex=11;
+			addChild(getImage("bg52"));
 
-			curtainL=getImage("opera-curtainL");
-			offsetX=curtainL.width;
-			curtainL.x=0;
-			addChild(curtainL);
-			curtainR=getImage("opera-curtainR");
-			curtainR.x=1024 - offsetX;
-			addChild(curtainR);
+			hand=getImage("memorial-hand");
+			addChild(hand);
+			handPosX=posX + memorialW - (hand.width >> 1);
+			handOutPosY=outPosY + memorialH - (hand.height >> 1);
+			handPosY=posY + memorialH - (hand.height >> 1);
+			hand.x=handPosX;
+			hand.y=handOutPosY;
 
-			initGame();
-//			initGame2();
+			addOneMemorial();
 		}
 
-		public function onOperaSwitch(e:OperaSwitchEvent):void
+		private var handPosX:Number; //手 位置
+		private var handPosY:Number;
+		private var handOutPosY:Number;
+		private var posX:Number=526; //奏折位置
+		private var posY:Number=384;
+		private var outPosY:Number=1024; // 初始位置
+		private var memorialW:Number=183;
+		private var memorialH:Number=379;
+
+		private var hand:Image;
+		private var crtMemorial:Image;
+		private var crtIndex:int;
+		private var indexArr:Array=[0, 1, 2, 3];
+
+		private var drawScene:palace_paper;
+
+		private function addOneMemorial():void
 		{
-			TweenLite.killDelayedCallsTo(this);
-			TweenLite.killTweensOf(curtainL);
-			TweenLite.killTweensOf(curtainR);
-			switch (e.action)
+			var index:int=Math.random() * indexArr.length;
+			crtIndex=indexArr[index];
+			indexArr.splice(index, 1);
+			var memorial:Image=getImage("memorial" + (crtIndex + 1).toString());
+			memorial.x=posX;
+			memorial.y=outPosY;
+			crtMemorial=memorial;
+			addChild(crtMemorial);
+			TweenLite.to(hand, .5, {y: handPosY});
+			TweenLite.to(crtMemorial, .5, {y: posY, onComplete: function():void {
+				TweenLite.to(hand, .5, {y: handOutPosY})
+				crtMemorial.addEventListener(TouchEvent.TOUCH, onMemorialTouch);
+			}});
+		}
+
+		private function onMemorialTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(crtMemorial, TouchPhase.ENDED);
+			if (tc)
 			{
-				case OperaSwitchEvent.OPEN:
-				{
-					openCurtains(e.openCallback);
-					break;
-				}
-
-				case OperaSwitchEvent.CLOSE:
-				{
-					closeCurtains(e.closeCallback);
-					break;
-				}
-
-				case OperaSwitchEvent.OPEN_CLOSE:
-				{
-					openCurtains(function():void {
-						if (e.openCallback != null)
-							e.openCallback();
-						TweenLite.delayedCall(e.delay, function():void {
-							closeCurtains(e.closeCallback);
-						});
-					});
-					break;
-				}
-
-				case OperaSwitchEvent.CLOSE_OPEN:
-				{
-					closeCurtains(function():void {
-						if (e.closeCallback != null)
-							e.closeCallback();
-						TweenLite.delayedCall(e.delay, function():void {
-							openCurtains(e.openCallback);
-						});
-					});
-					break;
-				}
-
-				default:
-				{
-					break;
-				}
+				crtMemorial.removeEventListener(TouchEvent.TOUCH, onMemorialTouch);
+				initDraw();
 			}
 		}
 
-		private function closeCurtains(closeCallback:Function=null):void
+		private function initDraw():void
 		{
-			TweenLite.to(curtainL, 1, {x: 0});
-			TweenLite.to(curtainR, 1, {x: 1024 - offsetX, onComplete: closeCallback});
+			TopBar.hide();
+			drawScene=new palace_paper(crtIndex, removeMemorial);
+			MC.instance.stage.addChild(drawScene);
 		}
 
-		private function openCurtains(openCallback:Function=null):void
+		private function removeMemorial():void
 		{
-			TweenLite.to(curtainL, 1, {x: -offsetX});
-			TweenLite.to(curtainR, 1, {x: 1024, onComplete: openCallback});
-		}
+			showAchievement(22);
+			TopBar.show();
+			TweenLite.to(hand, .5, {y: handPosY, onComplete: function():void {
 
-		private function initGame():void
-		{
-			game=new OperaGame(assets);
-			game.scene=this;
-			gameHolder.addChild(game);
-			game.addEventListener(PalaceGame.GAME_OVER, onGameOver);
-			game.addEventListener("nextGame", onPlayGame2);
-			game.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);
-		}
+				TweenLite.to(hand, .5, {y: handOutPosY});
 
-		private function onPlayGame2(e:Event):void
-		{
-			var lvl:int=game.gamelevel;
-			if (game.isWin())
-				showAchievement(lvl == 0 ? 28 : 29);
-			game.removeEventListener(PalaceGame.GAME_OVER, onGameOver);
-			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
-			game.removeEventListener("nextGame", onPlayGame2);
-			gameHolder.removeChild(game);
-			game.dispose();
-			game=null;
+				TweenLite.to(crtMemorial, .5, {y: outPosY, onComplete: function():void {
+					crtMemorial.removeFromParent(true);
+					crtMemorial=null;
+					trace(indexArr.length)
+					if (indexArr.length == 2) {
+						MC.instance.stage.stage.quality="high";
+						MC.instance.stage.removeChild(drawScene);
+						showAchievement(23);
+						sceneOver();
+					}
+					else
+						addOneMemorial();
+				}});
+			}});
 
-			initGame2(lvl);
-		}
-
-		private function initGame2(lvl:int):void
-		{
-			game2=new OpearaGame2(lvl, assets);
-			gameHolder.addChild(game2);
-			game2.scene=this;
-			game2.addEventListener(PalaceGame.GAME_OVER, onGame2Over);
-		}
-
-		private function onGame2Over(e:Event):void
-		{
-			showAchievement(27);
-			sceneOver();
-		}
-
-		private function onGameRestart(e:Event):void
-		{
-			game.removeEventListener(PalaceGame.GAME_OVER, onGameOver);
-			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
-			game.removeEventListener("nextGame", onPlayGame2);
-			gameHolder.removeChild(game);
-			game.dispose();
-			game=null;
-
-			initGame();
-		}
-
-		private function onGameOver(e:Event):void
-		{
-			var lvl:int=game.gamelevel;
-			game.removeEventListener(PalaceGame.GAME_OVER, onGameOver);
-			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
-			game.removeEventListener("nextGame", onPlayGame2);
-			gameHolder.removeChild(game);
-			game.dispose();
-			game=null;
-
-			initGame2(lvl);
 		}
 	}
 }
