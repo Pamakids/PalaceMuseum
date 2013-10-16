@@ -11,8 +11,6 @@ package views.global.userCenter
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
 	
-	import models.SOService;
-	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
