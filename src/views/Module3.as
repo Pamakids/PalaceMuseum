@@ -21,8 +21,8 @@ package views
 			Q2="皇帝也是一日三餐吗？"
 			A2="清朝皇帝一天只吃两顿正餐，早饭在7点到9点之间，晚饭在下午1点到3点之间。"
 
-			addLoading();
 			addQAS();
+			addLoading();
 
 			var assets:AssetManager=new AssetManager();
 			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName);

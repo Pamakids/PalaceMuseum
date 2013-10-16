@@ -43,14 +43,16 @@ package views.components.base
 		{
 			super();
 			sceneName=StringUtils.getClassName(this);
-			var str:String=sceneName.substr(sceneName.lastIndexOf("ene") + 3, 2);
-//			trace(str)
-			SOService.instance.setSO("lastScene", str);
+			if (sceneName.indexOf("scene") == 0)
+			{
+				var str:String=sceneName.substr(5, 2);
+				SOService.instance.setSO("lastScene", str);
+			}
 			Prompt.parent=this;
 			this.assets=am;
 
 			if (Math.random() < 0.2)
-				TweenLite.delayedCall(1, function():void {
+				TweenLite.delayedCall(3, function():void {
 					var img:Image=getImage(sceneName.toLocaleLowerCase() + "-bird");
 					if (img)
 						initBird(img);
@@ -151,7 +153,11 @@ package views.components.base
 		protected function showAchievement(_achieveIndex:int, _callback:Function=null):void
 		{
 			if (SOService.instance.getSO(_achieveIndex.toString() + "_achieve"))
+			{
+				if (_callback != null)
+					_callback();
 				return;
+			}
 			SOService.instance.setSO(_achieveIndex.toString() + "_achieve", true);
 //			var txt:String="xxx";
 			var txt:String="恭喜您获得成就: " + AchieveVO.achieveList[_achieveIndex][0];
@@ -193,8 +199,12 @@ package views.components.base
 
 		protected function showCard(_cardName:String, callback:Function=null):void
 		{
-			if (SOService.instance.getSO("collection_card_" + _cardName))
+			if (SOService.instance.getSO("collection_card_" + _cardName + "collected"))
+			{
+				if (callback != null)
+					callback();
 				return;
+			}
 			SOService.instance.setSO("collection_card_" + _cardName + "collected", true);
 
 			var cardShow:Sprite=new Sprite();

@@ -20,8 +20,8 @@ package views
 			Q2="皇帝起床后第一件事做什么？"
 			A2="先给太后请安，之后的第一件事就是早读学习。"
 
-			addLoading();
 			addQAS();
+			addLoading();
 
 			var assets:AssetManager=new AssetManager();
 			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName);

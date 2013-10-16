@@ -22,8 +22,8 @@ package views
 			Q2="皇帝睡懒觉吗？"
 			A2="清朝的皇帝几乎每天5点左右起床。"
 
-			addLoading();
 			addQAS();
+			addLoading();
 
 			var assets:AssetManager=new AssetManager();
 			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName);

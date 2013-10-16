@@ -10,7 +10,7 @@ package com.pamakids.palace.utils
 
 		public static function getClassName(cls:Object):String
 		{
-			var clsName:String=getQualifiedClassName(cls).toLocaleLowerCase();
+			var clsName:String=getQualifiedClassName(cls).toLowerCase();
 			clsName=clsName.substring(clsName.lastIndexOf(':') + 1);
 			return clsName;
 		}

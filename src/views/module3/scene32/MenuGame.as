@@ -1,6 +1,7 @@
 package views.module3.scene32
 {
 	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Quad;
 	import com.pamakids.palace.utils.StringUtils;
@@ -116,8 +117,17 @@ package views.module3.scene32
 			startBtn.y=666;
 			startSP.addChild(startBtn);
 			startBtn.addEventListener(ElasticButton.CLICK, onStartTouch);
-
+			shakeNext();
 			gamelevel=0;
+		}
+
+		private function shakeNext():void
+		{
+			if (startBtn)
+				TweenMax.to(startBtn, 1, {shake: {x: 5, numShakes: 4}, onComplete: function():void
+				{
+					TweenLite.delayedCall(5, shakeNext);
+				}});
 		}
 
 		private function onStartTouch(e:Event):void

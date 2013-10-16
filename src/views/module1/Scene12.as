@@ -279,7 +279,7 @@ package views.module1
 			opened=false;
 			TweenLite.delayedCall(2, function():void
 			{
-				showLionHint("hint-end", nextScene);
+				showLionHint("hint-end", clothChecked);
 			});
 		}
 
@@ -302,7 +302,7 @@ package views.module1
 			}
 		}
 
-		private function nextScene():void
+		private function clothChecked():void
 		{
 			showCard("dragonRobe");
 			TweenLite.to(hatLockMark, .5, {alpha: 0});

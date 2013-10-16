@@ -112,8 +112,8 @@ package views.module4
 
 		protected function onUpdate(event:AccelerometerEvent):void
 		{
-			trace(event.accelerationX);
-			dx=event.accelerationX * 1024;
+//			trace(event.accelerationX);
+			dx=event.accelerationX * 128;
 
 			bgHolder.x-=dx;
 			if (bgHolder.x > 0)

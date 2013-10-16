@@ -11,6 +11,7 @@ package views.module1
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.LionMC;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 	import views.module1.scene13.Clock;
@@ -137,8 +138,8 @@ package views.module1
 
 		private function checkAcheive5():void
 		{
-			if (_clockMatched && _gamePlayed)
-				showAchievement(5);
+//			if (_clockMatched && _gamePlayed)
+//				showAchievement(5);
 		}
 
 		private function clockMatch(e:Event):void
@@ -147,10 +148,12 @@ package views.module1
 			{
 				TweenLite.to(clock, .5, {scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete: function():void
 				{
-					clockMatched=true;
 					PopUpManager.removePopUp(clock);
 					showCard("clock", function():void {
 						showAchievement(3, checkAcheive5);
+					});
+					LionMC.instance.say("请皇上去给太后请安", 0, 100, 500, function():void {
+						clockMatched=true;
 					});
 				}});
 			}
@@ -190,43 +193,51 @@ package views.module1
 				gameHolder.y=768 / 2;
 
 				var gameBG:Sprite=new Sprite();
-				gameBG.addChild(getImage("gamebg13"));
+				gameBG.addChild(getImage("bggame13"));
 				gameBG.pivotX=gameBG.width >> 1;
 				gameBG.pivotY=gameBG.height >> 1;
 				gameHolder.addChild(gameBG);
 
 				game=new TwisterGame(assets);
-				game.addEventListener(PalaceGame.GAME_OVER, gameOver);
+//				game.addEventListener(PalaceGame.GAME_OVER, gameOver);
+				game.addEventListener(PalaceGame.GAME_OVER, closeGame);
 				gameHolder.addChild(game);
 			}
 			PopUpManager.addPopUp(gameHolder, true, false);
 		}
 
-		private function gameOver(e:Event):void
+		private function closeGame(e:Event):void
 		{
-			if (!gamePlayed)
+			if (game.isOver)
 			{
-				TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
+				if (!gamePlayed)
 				{
-					gamePlayed=true;
-					PopUpManager.removePopUp(gameHolder);
-					game.dispose2();
-					game=null;
-					gameHolder=null;
-					showCard("newDay", function():void {
-						showAchievement(4, checkAcheive5);
-					});
-				}});
+					TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
+					{
+						gamePlayed=true;
+						PopUpManager.removePopUp(gameHolder);
+						game.dispose2();
+						game=null;
+						gameHolder=null;
+						showCard("newDay", function():void {
+							showAchievement(4, checkAcheive5);
+						});
+					}});
+				}
+				else
+				{
+					TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
+					{
+						PopUpManager.removePopUp(gameHolder);
+						game.dispose2();
+						game=null;
+						gameHolder=null;
+					}});
+				}
 			}
 			else
 			{
-				TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
-				{
-					PopUpManager.removePopUp(gameHolder);
-					game.dispose2();
-					game=null;
-					gameHolder=null;
-				}});
+				PopUpManager.removePopUp(gameHolder);
 			}
 		}
 	}
