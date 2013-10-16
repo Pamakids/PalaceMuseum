@@ -1,18 +1,16 @@
 package views.global.userCenter
 {
 	import com.greensock.TweenLite;
-
+	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	import feathers.controls.Button;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
-
-	import models.SOService;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -21,7 +19,7 @@ package views.global.userCenter
 	import starling.events.TouchPhase;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
-
+	
 	import views.components.SoftPaperAnimation;
 	import views.global.userCenter.achievement.AchievementScreen;
 	import views.global.userCenter.collection.CollectionScreen;
@@ -32,10 +30,12 @@ package views.global.userCenter
 	/**
 	 * 用户中心
 	 * @author Administrator
-	 *
-	 */
+	 * 
+	 */	
 	public class UserCenter extends Sprite
 	{
+		[Embed(source="/assets/common/loading.png")]
+		private var loading:Class
 		/**
 		 * 场景
 		 */
@@ -67,11 +67,10 @@ package views.global.userCenter
 		{
 			init();
 		}
-
-
+		
+		
 //initialize--------------------------------------------------------------------------------------
-		private var aniable:Boolean=false;
-
+		private var aniable:Boolean = false;
 		private function init():void
 		{
 			this.screenNames=[MAP, USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION];
@@ -84,17 +83,16 @@ package views.global.userCenter
 			initAnimation();
 			initRender();
 		}
-
+		
 		//render
 		private var crtRender:RenderTexture;
 		private var targetRender:RenderTexture;
-
 		private function initRender():void
 		{
-			crtRender=new RenderTexture(this.contentWidth, this.contentHeight);
-			targetRender=new RenderTexture(this.contentWidth, this.contentHeight);
+			crtRender = new RenderTexture(this.contentWidth, this.contentHeight);
+			targetRender = new RenderTexture(this.contentWidth, this.contentHeight);
 		}
-
+		
 		private function initBackgroud():void
 		{
 			this.backgroundImage=new Image(UserCenterManager.getTexture("main_background"));
@@ -200,23 +198,22 @@ package views.global.userCenter
 			_container.y=89;
 			_container.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
-
 		private function initAnimation():void
 		{
-			animation=new SoftPaperAnimation(contentWidth, contentHeight);
+			animation = new SoftPaperAnimation(contentWidth, contentHeight);
 			animation.setFixPageTexture(UserCenterManager.getTexture("content_page_1"), UserCenterManager.getTexture("content_page_2"));
-			this.addChild(animation);
+			this.addChild( animation );
 			animation.addEventListener(Event.COMPLETE, animationCompleted);
-			animation.visible=false;
-			animation.touchable=false;
-			animation.x=28;
-			animation.y=89;
+			animation.visible = false;
+			animation.touchable = false;
+			animation.x = 28;
+			animation.y = 89;
 		}
-
+		
 //logical----------------------------------------------------------------------------
 
 		private var animation:SoftPaperAnimation;
-		private var prevIndex:int=2;
+		private var prevIndex:int = 2;
 
 		//初始页纹理
 		private var textureL:Texture;
@@ -224,193 +221,191 @@ package views.global.userCenter
 		//目标页纹理
 		private var targetL:Texture;
 		private var targetR:Texture;
-
+		
 		private function tabs_changeHandler():void
 		{
-			if (!aniable)
+			if(!aniable)
 			{
-				aniable=true;
+				aniable = true;
 				return;
 			}
-			if (animation.isRunning())
+			if(animation.isRunning())
 			{
-				_tabBar.selectedIndex=prevIndex;
+				_tabBar.selectedIndex = prevIndex;
 				return;
 			}
-
-			var target:int=_tabBar.selectedIndex;
+			
+			var target:int = _tabBar.selectedIndex;
 			//从原场景中获取纹理
 			(_navigator.activeScreen as BaseScreen).getScreenTexture(crtRender);
-			textureL=Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth / 2, contentHeight));
-			textureR=Texture.fromTexture(crtRender, new Rectangle(contentWidth / 2, 0, contentWidth / 2, contentHeight));
+			textureL = Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+			textureR = Texture.fromTexture(crtRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
 			animation.setFixPageTexture(textureL, textureR);
-			animation.visible=true;
+			animation.visible = true;
 			//使动画可见以遮挡目标页面
 			_navigator.showScreen(screenNames[target]);
 			//将目标场景加载至舞台，加载完成后获取纹理
 			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
-			targetL=Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth / 2, contentHeight));
-			targetR=Texture.fromTexture(targetRender, new Rectangle(contentWidth / 2, 0, contentWidth / 2, contentHeight));
-
-			pageUp=prevIndex > target;
+			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+			
+			pageUp = prevIndex > target;
 			//根据动画方向重新设置四个纹理顺序
-			if (pageUp)
+			if(pageUp)
 				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
 			else
 				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
-			animation.start(pageUp);
+			animation.start( pageUp );
 			//修改prevIndex
-			prevIndex=target;
-			if (prevIndex == 3) //成就
+			prevIndex = target;
+			if(prevIndex == 3)		//成就
 			{
-				crtPage_Achieve=0;
+				crtPage_Achieve = 0;
 			}
 		}
-
+		
 		private function animationCompleted():void
 		{
-			animation.visible=false;
+			animation.visible = false;
 		}
-
+		
 		private function onTriggered(e:Event):void
 		{
 			UserCenterManager.closeUserCenter();
 		}
-
-		private var pageUp:Boolean=false;
-
+		
+		private var pageUp:Boolean = false;
+		
 		//子场景翻页控制
 		private var beginX:Number;
-		private const standardLength:Number=400; //翻页有效拖拽距离
+		private const standardLength:Number = 400;	//翻页有效拖拽距离
 		//用户手册场景
-		private var crtPage_Handbook:int=0;
+		private var crtPage_Handbook:int = 0;
 		//成就场景
-		private var crtPage_Achieve:int=0;
-
+		private var crtPage_Achieve:int = 0;
+		
 		private function onTouch(e:TouchEvent):void
 		{
-			var index:int=_tabBar.selectedIndex;
-			if (index != 2 && index != 3) //速成手册 or 成就
+			var index:int = _tabBar.selectedIndex;
+			if(index != 2 && index != 3)		//速成手册 or 成就
 				return;
-			if (animation.isRunning())
+			if(animation.isRunning())
 				return;
-			var touch:Touch=e.getTouch(this);
+			var touch:Touch = e.getTouch(this);
 			var point:Point;
-			if (touch)
+			if(touch)
 			{
-				point=touch.getLocation(this);
-				switch (touch.phase)
+				point = touch.getLocation(this);
+				switch(touch.phase)
 				{
 					case TouchPhase.BEGAN:
-						beginX=point.x;
+						beginX = point.x;
 						break;
 					case TouchPhase.ENDED:
-						if (Math.abs(point.x - beginX) < standardLength)
+						if( Math.abs( point.x - beginX ) < standardLength )
 							return;
 						//方向
-						pageUp=(beginX < point.x);
-						if (index == 2) //用户手册页面
+						pageUp = (beginX < point.x);
+						if(index==2)					//用户手册页面
 						{
 							//检测页面范围
-							if (pageUp && crtPage_Handbook == 0)
+							if(pageUp && crtPage_Handbook == 0)
 								return;
-							if (!pageUp && crtPage_Handbook >= HandbookScreen.MAX_NUM - 1)
+							if(!pageUp && crtPage_Handbook >= HandbookScreen.MAX_NUM-1)
 								return;
 							//清理多余纹理，释放内存
-							if (pageUp)
-								(_navigator.activeScreen as HandbookScreen).clearByPageIndex(crtPage_Handbook + 1);
+							if(pageUp)
+								(_navigator.activeScreen as HandbookScreen).clearByPageIndex(crtPage_Handbook+1);
 							else
-								(_navigator.activeScreen as HandbookScreen).clearByPageIndex(crtPage_Handbook - 1);
-							crtPage_Handbook+=(pageUp ? -1 : 1);
+								(_navigator.activeScreen as HandbookScreen).clearByPageIndex(crtPage_Handbook-1);
+							crtPage_Handbook += (pageUp?-1:1);
 							handbookTurnToPage(crtPage_Handbook);
 						}
-						else if (index == 3) //成就页面
+						else if(index == 3)				//成就页面
 						{
-							var maxPage_Achieve:int=(_navigator.activeScreen as AchievementScreen).maxPage;
+							var maxPage_Achieve:int = (_navigator.activeScreen as AchievementScreen).maxPage;
 							//检测页面范围
-							if (pageUp && crtPage_Achieve == 0)
+							if(pageUp && crtPage_Achieve == 0)
 								return;
-							if (!pageUp && crtPage_Achieve >= maxPage_Achieve - 1)
+							if(!pageUp && crtPage_Achieve >= maxPage_Achieve-1)
 								return;
-							crtPage_Achieve+=(pageUp ? -1 : 1);
+							crtPage_Achieve += (pageUp?-1:1);
 							achieveTurnToPage(crtPage_Achieve);
 						}
 						break;
 				}
 			}
 		}
-
+		
 		//速成手册翻页
 		private function handbookTurnToPage(pageIndex:int):void
 		{
 			//从原场景中获取纹理
 			(_navigator.activeScreen as BaseScreen).getScreenTexture(crtRender);
-			textureL=Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth / 2, contentHeight));
-			textureR=Texture.fromTexture(crtRender, new Rectangle(contentWidth / 2, 0, contentWidth / 2, contentHeight));
+			textureL = Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+			textureR = Texture.fromTexture(crtRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
 			animation.setFixPageTexture(textureL, textureR);
-			animation.visible=true;
-
-			if (!(_navigator.activeScreen as HandbookScreen).hasAssets(pageIndex))
+			animation.visible = true;
+			
+			if(!(_navigator.activeScreen as HandbookScreen).hasAssets(pageIndex))
 			{
 				return;
-			}
-			else
+			}else
 			{
 				loadComplete()
 			}
 		}
-
-
+		
+		
 		private function loadComplete():void
 		{
 			(_navigator.activeScreen as HandbookScreen).updateView(crtPage_Handbook);
 			//将目标场景加载至舞台，加载完成后获取纹理
 			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
-			targetL=Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth / 2, contentHeight));
-			targetR=Texture.fromTexture(targetRender, new Rectangle(contentWidth / 2, 0, contentWidth / 2, contentHeight));
-
-			if (pageUp) //pageUp
+			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+			
+			if(pageUp)		//pageUp
 				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
-			else //pageDown
+			else						//pageDown
 				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
-			animation.start(pageUp);
+			animation.start( pageUp );
 		}
-
+		
 		//成就翻页
 		private function achieveTurnToPage(pageIndex:int):void
 		{
 			(_navigator.activeScreen as BaseScreen).getScreenTexture(crtRender);
-			textureL=Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth / 2, contentHeight));
-			textureR=Texture.fromTexture(crtRender, new Rectangle(contentWidth / 2, 0, contentWidth / 2, contentHeight));
+			textureL = Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+			textureR = Texture.fromTexture(crtRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
 			animation.setFixPageTexture(textureL, textureR);
-			animation.visible=true;
+			animation.visible = true;
 			(_navigator.activeScreen as AchievementScreen).updateView(crtPage_Achieve);
-
+			
 			TweenLite.delayedCall(0.1, onComplete);
 		}
-
 		private function onComplete():void
 		{
 			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
-			targetL=Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth / 2, contentHeight));
-			targetR=Texture.fromTexture(targetRender, new Rectangle(contentWidth / 2, 0, contentWidth / 2, contentHeight));
-			if (pageUp) //pageUp
+			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+			if(pageUp)		//pageUp
 				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
-			else //pageDown
+			else			//pageDown
 				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
-			animation.start(pageUp);
+			animation.start( pageUp );
 		}
-
+		
 		/**
 		 * 指定显示速成手册内页码
 		 * @param index
 		 */
 		public function showIndex(index:int=-1):void
 		{
-			if (index <= 0 || index >= HandbookScreen.MAX_NUM)
+			if(index <= 0 || index >= HandbookScreen.MAX_NUM)
 				return;
-			pageUp=false;
-			crtPage_Handbook=index;
+			pageUp = false;
+			crtPage_Handbook = index;
 			handbookTurnToPage(crtPage_Handbook);
 		}
 
@@ -428,11 +423,11 @@ package views.global.userCenter
 				_backButton.removeFromParent(true);
 			if (_container)
 				_container.removeFromParent(true);
-			if (animation)
+			if(animation)
 				animation.removeFromParent(true);
-			if (crtRender)
+			if(crtRender)
 				crtRender.dispose();
-			if (targetRender)
+			if(targetRender)
 				targetRender.dispose();
 			super.dispose();
 		}

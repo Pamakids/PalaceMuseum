@@ -70,24 +70,27 @@ package views.components
 			{
 				case loopnumY:		//年份变更
 					cacheDate.fullYear = int(e.data);
-					if(cacheDate.month == 1)		//2月需变更天数
+					if(cacheDate.month == 2)		//2月需变更天数
 					{
-						date = new Date(cacheDate.fullYear, cacheDate.month+1);
+						date = new Date(cacheDate.fullYear, cacheDate.month);
 						date.time-=1;
 						loopnumD.resetMinToMax(1, date.date);
 					}
 					break;
 				case loopnumM:		//月份变更，并计算该月总天数
-					cacheDate.month = int(e.data)-1;
-					date = new Date(cacheDate.fullYear, cacheDate.month+1);
+					cacheDate.month = int(e.data);
+					date = new Date(cacheDate.fullYear, int(e.data));
 					date.time-=1;
 					loopnumD.resetMinToMax(1, date.date);
+					trace("month:" + e.data);
+					trace("max:" + date.date);
 					break;
 				case loopnumD:		//日期变更
-					cacheDate.date = int(e.data)-1;
+					cacheDate.date = int(e.data);
 					break;
 			}
-			dispatchEventWith(Event.CHANGE, false, cacheDate);
+//			dispatchEventWith(Event.CHANGE, false, cacheDate);
+//			trace(cacheDate);
 		}
 		
 		public function getCrtDate():Date
@@ -136,14 +139,21 @@ package views.components
 		
 		override public function dispose():void
 		{
-			if(cacheDate)
-				cacheDate = null;
 			if(loopnumY)
+			{
+				loopnumY.removeEventListener(Event.CHANGE, onChanged);
 				loopnumY.removeFromParent(true);
+			}
 			if(loopnumM)
+			{
+				loopnumM.removeEventListener(Event.CHANGE, onChanged);
 				loopnumM.removeFromParent(true);
+			}
 			if(loopnumD)
+			{
+				loopnumD.removeEventListener(Event.CHANGE, onChanged);
 				loopnumD.removeFromParent(true);
+			}
 			super.dispose();
 		}
 	}
