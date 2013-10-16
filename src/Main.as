@@ -66,6 +66,11 @@ package
 
 		private function parseMS(lastScene:String):void
 		{
+			if(!lastScene)
+			{
+				Map.show();
+				return;
+			}
 			var moduleIndex:int=int(lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(lastScene.charAt(1)) - 1;
 			if (moduleIndex < 0 || sceneIndex < 0)

@@ -144,6 +144,10 @@ package controllers
 		private function showModule(index:int=-1):void
 		{
 			clearCrtModule();
+			if(moduleIndex == -1)
+				moduleIndex=0;
+			if(index == -1)
+				index = 0;
 			currentModule=new modules[moduleIndex](index);
 			contentLayer.addChild(currentModule);
 			trace('load new module');
