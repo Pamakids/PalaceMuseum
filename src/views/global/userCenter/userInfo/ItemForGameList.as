@@ -12,7 +12,6 @@ package views.global.userCenter.userInfo
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	
-	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
 	
 	public class ItemForGameList extends FeathersControl
