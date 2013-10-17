@@ -1,9 +1,8 @@
 package controllers
 {
 	import com.pamakids.utils.Singleton;
-
+	
 	import models.AchieveVO;
-	import models.CollectionVO;
 	import models.SOService;
 
 	/**
@@ -37,50 +36,9 @@ package controllers
 			return Singleton.getInstance(DC);
 		}
 
-		/**
-		 * 用户中心相关数据变更
-		 * @param type
-		 * 			0	用户属性变化
-		 * 			1	成就解锁
-		 * 			2	物品收集
-		 * 			3	小游戏数据
-		 * @param value
-		 */
-		public function setDatas(type:int, value:Object):void
+		public function testCollectionIsOpend(id:String):Boolean
 		{
-
-			switch (type)
-			{
-				case 0: //用户数据变更
-					break;
-				case 1: //用户新成就
-					break;
-				case 2: //新收集到物品
-					break;
-				case 3: //小游戏数据
-					break;
-			}
-			so.setSO("", "");
-		}
-
-		/**
-		 * 物品收集数据：Array
-		 * [
-		 * 		["name", ifCollected],
-		 * 		["name", ifCollected],
-		 * 		...
-		 * ]
-		 */
-		public function getCollectionData():Array
-		{
-			var _collectionData:Array=[];
-			var i:int;
-			for each (var s:String in CollectionVO.vecCardName)
-			{
-				i=(SOService.instance.getSO(s + "collected")) ? 1 : 0;
-				_collectionData.push([s, i]);
-			}
-			return _collectionData;
+			return so.getSO("collection_card_" + id + "_collectioned");
 		}
 
 		/**
@@ -99,7 +57,8 @@ package controllers
 			var i:int;
 			for (i=0; i < max; i++)
 			{
-				_achidatas.push([arr[i][0], arr[i][1], (SOService.instance.getSO(i + "_achieve")) ? 1 : 0])
+				if(arr[i])
+					_achidatas.push([arr[i][0], arr[i][1], (SOService.instance.getSO(i + "_achieve")) ? 1 : 0])
 			}
 			return _achidatas;
 		}
@@ -107,7 +66,7 @@ package controllers
 		/**
 		 * 游戏数据名称集合
 		 */
-		private const classNames:Array=["menuGame", "dishGame", "jigSawGame", "operaGame"];
+		private const classNames:Array=["menugame", "dishgame", "jigSawgame", "operagame"];
 		private const gameNames:Array=["吉祥菜名", "银牌试毒", "地图拼图", "粉墨登场"];
 		/**
 		 * 游戏是否有难度区分:0 有， 1 没有
@@ -118,9 +77,9 @@ package controllers
 		 * 获取游戏数据
 		 * @return
 		 * 	[
-		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "" },
-		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "" },
-		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "" }
+		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "", isOpend: false },
+		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "", isOpend: false },
+		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "", isOpend: false }
 		 * 	]
 		 */
 		public function getGameDatas():Array
@@ -135,11 +94,12 @@ package controllers
 						iconIndex: i,
 						numStars: 0
 					};
+				obj.isOpend = SOService.instance.getSO(obj.className);
 				if (gameLevels[i] == 0) //无难度划分
 				{
 					if (SOService.instance.getSO(obj.className))
 					{
-						obj.resultEasy=SOService.instance.getSO(obj.className);
+						obj.resultEasy=SOService.instance.getSO(obj.className + "gameresult");
 						obj.resultHard="000000";
 					}
 					else
@@ -151,12 +111,12 @@ package controllers
 				else
 				{
 					if (SOService.instance.getSO(obj.className + 0))
-						obj.resultEasy=SOService.instance.getSO(obj.className + 0);
+						obj.resultEasy=SOService.instance.getSO(obj.className + "gameresult" + 0);
 					else
 						obj.resultEasy="000000";
 
 					if (SOService.instance.getSO(obj.className + 1))
-						obj.resultHard=SOService.instance.getSO(obj.className + 1);
+						obj.resultHard=SOService.instance.getSO(obj.className + "gameresult" + 1);
 					else
 						obj.resultHard="000000";
 				}

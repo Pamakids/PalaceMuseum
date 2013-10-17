@@ -34,7 +34,7 @@ package views.global.userCenter.userInfo
 		
 		override protected function initialize():void
 		{
-			initGameDatas();
+			getGameDatas();
 			initBackgroundImage();
 			initCrtUserView();
 			initButton();
@@ -52,7 +52,7 @@ package views.global.userCenter.userInfo
 		 * 	]
 		 */	
 		private var gameDatas:Array;
-		private function initGameDatas():void
+		private function getGameDatas():void
 		{
 			gameDatas = DC.instance.getGameDatas();
 		}
@@ -125,7 +125,7 @@ package views.global.userCenter.userInfo
 		}
 		private function gamePlayedForW_game():void
 		{
-			initGameDatas();
+			getGameDatas();
 			const max:int = gameDatas.length;
 			for(var i:int = 0;i<max;i++)
 			{
@@ -210,7 +210,7 @@ package views.global.userCenter.userInfo
 			crtUserView.resetData(crtUserData);
 			
 			//重置角色游戏数据
-			initGameDatas();
+			getGameDatas();
 			//刷新显示
 			for(var i:int = gameDatas.length - 1; i>=0;i--)
 			{

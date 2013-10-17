@@ -10,12 +10,11 @@ package models
 		{
 		}
 		
-		public static const vecCardName:Array = [
-			"collection_card_dragonRobe",
-			"collection_card_newDay",
-			"collection_card_clock",
-			"collection_card_picture",
-			"collection_card_dragon"
-		];
+		public var id:String;
+		public var content:String;
+		public var name:String;
+		public var explain:String;
+		public var isCollected:Boolean = false;
+		
 	}
 }

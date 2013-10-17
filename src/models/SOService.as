@@ -249,7 +249,7 @@ package models
 		public static function dateToString(date:Date):String
 		{
 			var str:String = date.fullYear.toString();
-			var s:String = String(date.month + 1);
+			var s:String = date.month.toString();
 			if(s.length == 1)
 				s = "0" + s;
 			str += ("-" + s);
