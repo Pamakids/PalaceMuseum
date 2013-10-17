@@ -31,6 +31,10 @@ package views.module1.scene12
 			_offset=1 - Math.max(0, Math.min(1, (value * 10 - 4) / 6));
 			hat.y=hatY + _offset * 100;
 			hat.scaleX=hat.scaleY=Math.max(.5, Math.min(1, (value * 10 - 4) / 6));
+//			if (this.scaleX > .9)
+//			{
+//				hat.scaleX=scaleX * 1.05
+//			}
 		}
 
 		private var hatY:Number=-404;

@@ -47,6 +47,8 @@ package views.module4
 
 			if (SOService.instance.checkHintCount(shakeHintCount))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame);
+
+			sceneOver();
 		}
 
 		override public function dispose():void
@@ -128,8 +130,7 @@ package views.module4
 			}
 			if (leftHit && rightHit)
 			{
-				showAchievement(21);
-				sceneOver();
+				showAchievement(21, sceneOver);
 			}
 		}
 	}

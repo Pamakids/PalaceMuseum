@@ -180,6 +180,8 @@ package views.global.map
 			var msIndex:String=SOService.instance.getSO("lastScene") as String;
 			if (!msIndex)
 				msIndex="00map";
+			if (!fromCenter && to >= 0)
+				msIndex=(to + 1).toString() + "1map";
 			else if (msIndex.lastIndexOf("map") < 0)
 				msIndex=msIndex + "map";
 			SOService.instance.setSO("lastScene", msIndex);
@@ -293,7 +295,7 @@ package views.global.map
 			{
 				to=i;
 				trace('开始任务：' + tasks[i]);
-				LionMC.instance.say(tasks[i], int(Math.random() * 4));
+				LionMC.instance.say(tasks[i], 3);
 //				if (!sos.isModuleCompleted(i))
 				showTaskHint(i);
 			}

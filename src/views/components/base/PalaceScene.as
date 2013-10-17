@@ -230,7 +230,7 @@ package views.components.base
 			}});
 
 			var card:CollectionCard=new CollectionCard(callback);
-			card.addChild(getImage(_cardName + "collectCard"));
+			card.addChild(getImage("collection_card_" + _cardName));
 			card.pivotX=card.width >> 1;
 			card.pivotY=card.height >> 1;
 			card.show();

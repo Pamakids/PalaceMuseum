@@ -4,6 +4,8 @@ package views.module5.scene52
 
 	import flash.geom.Point;
 
+	import controllers.MC;
+
 	import events.OperaSwitchEvent;
 
 	import models.SOService;
@@ -19,6 +21,7 @@ package views.module5.scene52
 
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
+	import views.global.TopBar;
 	import views.module5.Scene52;
 
 	public class OpearaGame2 extends PalaceGame
@@ -76,6 +79,13 @@ package views.module5.scene52
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			if (SOService.instance.checkHintCount(silverCardClickHint))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame2);
+		}
+
+		override protected function onStage(e:Event):void
+		{
+			super.onStage(e);
+			TopBar.show();
+			MC.instance.hideMC();
 		}
 
 		private var silverCardClickHint:String="silverCardClickHint";
@@ -170,20 +180,32 @@ package views.module5.scene52
 
 			if (gameLevel == 0)
 			{
+				var fireBtnXiyou:ElasticButton=new ElasticButton(getImage("sanguobtnfire"));
+				fireBtnXiyou.x=770;
+				fireBtnXiyou.y=btnPosY;
+				addChild(fireBtnXiyou);
+				fireBtnXiyou.addEventListener(ElasticButton.CLICK, onXiyouFireBtnClick);
+
 				var mountainBtn:ElasticButton=new ElasticButton(getImage(crtOperaName + "btnmountain"));
 				mountainBtn.x=870;
 				mountainBtn.y=btnPosY;
 				addChild(mountainBtn);
 				mountainBtn.addEventListener(ElasticButton.CLICK, onMountainBtnClick);
 
-				var fireBtn:ElasticButton=new ElasticButton(getImage(crtOperaName + "btnfire"));
-				fireBtn.x=970;
-				fireBtn.y=btnPosY;
-				addChild(fireBtn);
-				fireBtn.addEventListener(ElasticButton.CLICK, onFireBtnClick);
+				var fireMoutainBtn:ElasticButton=new ElasticButton(getImage(crtOperaName + "btnfire"));
+				fireMoutainBtn.x=970;
+				fireMoutainBtn.y=btnPosY;
+				addChild(fireMoutainBtn);
+				fireMoutainBtn.addEventListener(ElasticButton.CLICK, onFireBtnClick);
 			}
 			else
 			{
+				var fireBtnSanguo:ElasticButton=new ElasticButton(getImage("sanguobtnfire"));
+				fireBtnSanguo.x=770;
+				fireBtnSanguo.y=btnPosY;
+				addChild(fireBtnSanguo);
+				fireBtnSanguo.addEventListener(ElasticButton.CLICK, onSanguoFireBtnClick);
+
 				var boatBtn:ElasticButton=new ElasticButton(getImage(crtOperaName + "btnboat"));
 				boatBtn.x=870;
 				boatBtn.y=btnPosY;
@@ -216,6 +238,11 @@ package views.module5.scene52
 				dx=-1100;
 				TweenLite.to(boat, 1.5, {x: dx, onComplete: function():void {
 					boat.x=1100;
+					if (fireParticle)
+					{
+						fireParticle.dispose();
+						fireParticle=null;
+					}
 					b.touchable=true;
 				}});
 			}
@@ -264,13 +291,54 @@ package views.module5.scene52
 			cloud.y=3;
 		}
 
+		private function onXiyouFireBtnClick(e:Event):void
+		{
+			if (fireParticle)
+			{
+				var b:ElasticButton=e.currentTarget as ElasticButton;
+				b.touchable=false;
+				TweenLite.to(fireParticle, .5, {alpha: .1, scaleY: .1, onComplete: function():void {
+					fireParticle.dispose();
+					fireParticle=null;
+					b.touchable=true;
+				}});
+			}
+			else
+			{
+				fireParticle=new FireParticle();
+				fireParticle.init(gameLevel);
+				moutainHolder.addChild(fireParticle);
+				fireParticle.x=170;
+				fireParticle.scaleX=2.5;
+				fireParticle.y=175;
+			}
+		}
+
+		private function onSanguoFireBtnClick(e:Event):void
+		{
+			if (fireParticle)
+			{
+				var ptc:FireParticle=fireParticle;
+				fireParticle=null;
+				TweenLite.to(ptc, 1, {alpha: .1, scaleX: .5, onComplete: function():void {
+					ptc.removeFromParent(true);
+					ptc=null;
+				}});
+			}
+			fireParticle=new FireParticle();
+			fireParticle.init(gameLevel);
+			boat.addChild(fireParticle);
+			fireParticle.x=int(Math.random() * 5) * 200 + 80;
+			fireParticle.y=150;
+		}
+
 		private function onFireBtnClick(e:Event):void
 		{
 			checkClick(7)
 			TweenLite.killTweensOf(fireMountain);
 			firMountainOpen=!firMountainOpen;
-			var _scale:Number=firMountainOpen ? 1 : 0.01;
-			TweenLite.to(fireMountain, .5, {scaleX: _scale, scaleY: _scale});
+			var _scale:Number=firMountainOpen ? 1 : 0;
+			TweenLite.to(moutainHolder, .5, {scaleX: _scale, scaleY: _scale});
 		}
 
 		private function onMountainBtnClick(e:Event):void
@@ -398,15 +466,19 @@ package views.module5.scene52
 			addChild(mountain);
 			mountainOpen=false;
 
+			moutainHolder=new Sprite();
+			addChild(moutainHolder);
 			fireMountain=getImage("firemoutain");
-			fireMountain.pivotX=fireMountain.width >> 1;
-			fireMountain.pivotY=fireMountain.height;
-			fireMountain.scaleX=fireMountain.scaleY=.01;
-			fireMountain.x=387;
-			fireMountain.y=200;
-			addChild(fireMountain);
+			moutainHolder.addChild(fireMountain);
+			moutainHolder.pivotX=fireMountain.width >> 1;
+			moutainHolder.pivotY=fireMountain.height;
+			moutainHolder.scaleX=moutainHolder.scaleY=.01;
+			moutainHolder.x=387;
+			moutainHolder.y=200;
 			firMountainOpen=false;
 		}
+
+		private var moutainHolder:Sprite;
 
 		private var pillarPosArr:Array=[new Point(285, 0), new Point(697, 0),
 			new Point(246, 239), new Point(749, 240), new Point(202, 477), new Point(757, 478)];

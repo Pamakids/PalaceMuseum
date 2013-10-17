@@ -3,6 +3,8 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 
+	import Firefly.Paper;
+
 	import models.Config;
 	import models.DrawingManager;
 	import models.StateManager;
@@ -30,7 +32,6 @@ package
 				this.doInitAgonyUI()
 				mInited=true
 			}
-
 			this.doInitModel()
 		}
 
@@ -38,21 +39,26 @@ package
 
 		private function doInitAgony2d():void
 		{
-			Agony.startup(stage, "low")
+			Agony.startup(stage, 1024, 768, "medium")
+
 		}
 
 		private function doInitAgonyUI():void
 		{
-			AgonyUI.startup(false, 1024, 768, true, true)
+			AgonyUI.startup(false, true)
 			AgonyUI.setButtonEffectType(ButtonEffectType.LEAVE_PRESS)
 		}
 
 
 		private function doInitModel():void
 		{
-			DrawingManager.getInstance().initialize()
-
+//			DrawingManager.getInstance().initialize()
 			StateManager.setGameScene(true)
+
+
+//			var paper:Paper = new Paper()
+//			paper.y = 35 + 127
+//			stage.addChild(paper)
 		}
 
 	}

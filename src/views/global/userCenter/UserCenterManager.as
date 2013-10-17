@@ -2,15 +2,16 @@ package views.global.userCenter
 {
 	import flash.filesystem.File;
 	import flash.utils.Dictionary;
-	
+
 	import controllers.MC;
-	
+
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
+	import views.components.LionMC;
 	import views.global.TopBar;
 
 	/**
@@ -49,6 +50,7 @@ package views.global.userCenter
 				_userCenterContainer.addChild(_userCenter);
 				_userCenter.showIndex(index);
 				MC.instance.hideMC();
+				LionMC.instance.hide();
 			}
 		}
 
@@ -154,4 +156,6 @@ package views.global.userCenter
 	}
 }
 
-class MyClass{}
+class MyClass
+{
+}

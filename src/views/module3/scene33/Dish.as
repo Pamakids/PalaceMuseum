@@ -4,8 +4,11 @@ package views.module3.scene33
 
 	import flash.geom.Point;
 
+	import models.FontVo;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.text.TextField;
 
 	public class Dish extends Sprite
 	{
@@ -25,9 +28,30 @@ package views.module3.scene33
 
 		public function set isBad(value:Boolean):void
 		{
+			if (_isBad == value)
+				return;
 			_isBad=value;
 			if (value)
 				addFly();
+		}
+
+		public var countBG:Image;
+		private var countDownTxt:TextField;
+
+		private function addCountDown():void
+		{
+			if (!countBG)
+				return;
+			countBG.x=30;
+			countBG.y=-5;
+			addChild(countBG);
+			countBG.touchable=false;
+
+			countDownTxt=new TextField(countBG.width, countBG.height, "8", FontVo.PALACE_FONT, 24, 0x5d2025);
+			countDownTxt.x=countBG.x;
+			countDownTxt.y=countBG.y;
+			addChild(countDownTxt);
+			countBG.touchable=false;
 		}
 
 		/**

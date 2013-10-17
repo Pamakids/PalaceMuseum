@@ -66,21 +66,25 @@ package views.components.base
 			tfQ1.x=200;
 			tfQ1.y=isSingle ? 200 : 100;
 			tfQ1.hAlign="left";
+			tfQ1.vAlign="top";
 			tfHolder.addChild(tfQ1);
 			var tfA1:TextField=new TextField(600, 150, A1, FontVo.PALACE_FONT, 28, 0xffffff, true);
 			tfA1.x=220;
 			tfA1.y=isSingle ? 350 : 180;
 			tfA1.hAlign="left";
+			tfA1.vAlign="top";
 			tfHolder.addChild(tfA1);
 			var tfQ2:TextField=new TextField(600, 100, Q2, FontVo.PALACE_FONT, 32, 0xffffff, true);
 			tfQ2.x=200;
-			tfQ2.y=300;
+			tfQ2.y=400;
 			tfQ2.hAlign="left";
+			tfQ2.vAlign="top";
 			tfHolder.addChild(tfQ2);
 			var tfA2:TextField=new TextField(600, 150, A2, FontVo.PALACE_FONT, 28, 0xffffff, true);
 			tfA2.x=220;
-			tfA2.y=380;
+			tfA2.y=480;
 			tfA2.hAlign="left";
+			tfA2.vAlign="top";
 			tfHolder.addChild(tfA2);
 
 			isLoading=true;

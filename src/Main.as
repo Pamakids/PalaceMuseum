@@ -66,7 +66,7 @@ package
 
 		private function parseMS(lastScene:String):void
 		{
-			if(!lastScene)
+			if (!lastScene)
 			{
 				Map.show();
 				return;

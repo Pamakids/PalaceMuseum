@@ -111,7 +111,7 @@ package views.components
 		 * @param _callBack
 		 * @param fontSize
 		 */
-		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20):void
+		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20, needMask:Boolean=true):void
 		{
 			showLion(_type);
 			trace('lion say:', content);
@@ -133,6 +133,8 @@ package views.components
 				p.playHide();
 			}
 
+			if (needMask)
+				MC.instance.main.addMask();
 			tl=TweenMax.to(this, .5, {x: _x, y: _y, motionBlur: true, onComplete: function():void
 			{
 				lion.gotoAndPlay(1);
@@ -143,6 +145,8 @@ package views.components
 						callBack();
 						callBack=null;
 					}
+					if (needMask)
+						MC.instance.main.removeMask();
 				}, MC.instance.main);
 			}});
 		}
