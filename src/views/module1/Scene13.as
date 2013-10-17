@@ -146,16 +146,22 @@ package views.module1
 		{
 			if (!clockMatched)
 			{
-				TweenLite.to(clock, .5, {scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete: function():void
-				{
-					PopUpManager.removePopUp(clock);
-					showCard("2", function():void {
-						showAchievement(3, checkAcheive5);
-					});
-					LionMC.instance.say("请皇上去给太后请安", 0, 100, 500, function():void {
-						clockMatched=true;
-					}, 20, false);
-				}});
+				TweenLite.to(clock, .5,
+					{scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete:
+						function():void
+						{
+							PopUpManager.removePopUp(clock);
+							showCard("2",
+								function():void
+								{
+									showAchievement(3, checkAcheive5);
+									LionMC.instance.say("请皇上去给太后请安", 0, 100, 500, null, 20, false);
+								}
+								);
+							clockMatched=true;
+						}
+					}
+					);
 			}
 			else
 			{
@@ -220,7 +226,9 @@ package views.module1
 						game=null;
 						gameHolder=null;
 						showCard("1", function():void {
-							showAchievement(4, checkAcheive5);
+							showAchievement(4, function():void {
+
+							});
 						});
 					}});
 				}
