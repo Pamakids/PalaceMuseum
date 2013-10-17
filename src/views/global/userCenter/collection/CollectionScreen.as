@@ -39,7 +39,7 @@ package views.global.userCenter.collection
 		}
 		
 		private var crtPage:int = 0;
-		private var maxNum:int = 9;
+		private var maxNum:int = 6;
 		
 		private function initPages():void
 		{
@@ -80,10 +80,10 @@ package views.global.userCenter.collection
 		private function layoutFactory():ILayout
 		{
 			var layout:TiledRowsLayout = new TiledRowsLayout();
-			layout.paddingTop = 90;
+			layout.paddingTop = 150;
 			layout.paddingLeft = 10;
 			layout.horizontalGap = 15;
-			layout.verticalGap = 55;
+			layout.verticalGap = 90;
 			layout.useVirtualLayout = true;
 			layout.verticalAlign = TiledRowsLayout.VERTICAL_ALIGN_TOP;
 			return layout;
@@ -158,6 +158,7 @@ package views.global.userCenter.collection
 				vo.content = arr[i].content;
 				vo.explain = arr[i].explain;
 				vo.isCollected = DC.instance.testCollectionIsOpend(vo.id);
+//				vo.isCollected = true;
 				source[i] = vo;
 			}
 			
