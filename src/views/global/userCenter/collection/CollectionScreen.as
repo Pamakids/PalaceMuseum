@@ -1,21 +1,26 @@
 package views.global.userCenter.collection
 {
+	import flash.geom.Point;
+	
 	import controllers.DC;
 	
 	import feathers.controls.List;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
-	import feathers.core.PopUpManager;
 	import feathers.data.ListCollection;
 	import feathers.layout.ILayout;
 	import feathers.layout.TiledRowsLayout;
 	
+	import models.CollectionVO;
+	import models.SOService;
+	
 	import starling.display.Image;
+	import starling.display.Quad;
+	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import starling.textures.Texture;
 	
 	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenterManager;
@@ -34,7 +39,7 @@ package views.global.userCenter.collection
 		}
 		
 		private var crtPage:int = 0;
-		private var maxNum:int = 9;
+		private var maxNum:int = 6;
 		
 		private function initPages():void
 		{
@@ -68,19 +73,17 @@ package views.global.userCenter.collection
 		private function onTriggered(e:Event):void
 		{
 			trace(e.currentTarget);
-			var data:Object = (e.currentTarget as DefaultListItemRenderer).data;
-			if(data.finished == 0)		//未收集到
-				return;
-			cache = UserCenterManager.getTexture(data.id + "_big");
+			var i:int = int((e.currentTarget as DefaultListItemRenderer).data.id);
+			selectedVo = source[i];
 			showImage();
 		}
 		private function layoutFactory():ILayout
 		{
 			var layout:TiledRowsLayout = new TiledRowsLayout();
-			layout.paddingTop = 90;
+			layout.paddingTop = 150;
 			layout.paddingLeft = 10;
 			layout.horizontalGap = 15;
-			layout.verticalGap = 55;
+			layout.verticalGap = 90;
 			layout.useVirtualLayout = true;
 			layout.verticalAlign = TiledRowsLayout.VERTICAL_ALIGN_TOP;
 			return layout;
@@ -88,7 +91,7 @@ package views.global.userCenter.collection
 		private function initList():void
 		{
 			listLeft = listFactory();
-			listLeft.dataProvider = new ListCollection( datas[0] );
+			listLeft.dataProvider = new ListCollection( pageDatas[0] );
 			this.addChild( listLeft );
 			listLeft.width = width / 2;
 			listLeft.height = height;
@@ -98,68 +101,101 @@ package views.global.userCenter.collection
 			listRight.width = width / 2;
 			listRight.height = height;
 			listRight.x = width / 2;
-			if(datas.length > 1)
-				listRight.dataProvider = new ListCollection( datas[1] );
+			listRight.dataProvider = new ListCollection( pageDatas[1] );
 		}
 		
-		private var cache:Texture;
-		
-		private var image:Image;
+		private var card:CollectionShow;
+		private var container:Sprite;
+		private var quad:Quad;
+		private var selectedVo:CollectionVO;
 		private function showImage():void
 		{
-			(!image)?image = new Image( cache ):image.texture = cache;
-			image.x = 1024 - image.width >> 1;
-			image.y = 768 - image.height >> 1;
-			PopUpManager.addPopUp( image, true, false);
-			if( !image.hasEventListener(TouchEvent.TOUCH) )
-				image.addEventListener(TouchEvent.TOUCH, hideImage);
+			if(!card)
+			{
+				var point:Point = globalToLocal(new Point());
+				container = new Sprite();
+				this.addChild( container );
+				container.x = point.x;
+				container.y = point.y;
+				
+				quad = new Quad(1024, 768, 0x000000);
+				quad.alpha = .4;
+				container.addChild( quad );
+				quad.addEventListener(TouchEvent.TOUCH, onTouchPop);
+				
+				card = new CollectionShow();
+				card.x = 1024  >> 1;
+				card.y = 768 - card.height >> 1;
+				container.addChild( card );
+			}
+			card.resetData(selectedVo);
+			container.visible = true;
 		}
 		
-		private function hideImage(e:TouchEvent):void
+		private function onTouchPop(e:TouchEvent):void
 		{
-			if(e.currentTarget == image)
+			var touch:Touch = e.getTouch(stage);
+			if(touch && touch.phase == TouchPhase.ENDED)
 			{
-				var touch:Touch = e.getTouch(stage);
-				if(touch && touch.phase == TouchPhase.ENDED && PopUpManager.isPopUp(image))
-					PopUpManager.removePopUp( image );
+				container.visible = false;
 			}
 		}
-		
 		
 		private var finishCount:uint = 10;
 		private var unfinishCount:uint = 5;
-		private var datas:Array;
+		private var source:Vector.<CollectionVO>;
 		private function initDatas():void
 		{
-			datas = [];
-			var arr:Array = DC.instance.getCollectionData();
+			var arr:Array = UserCenterManager.getAssetsManager().getObject("collection").source;
 			const max:int = arr.length;
+			source = new Vector.<CollectionVO>(max);
+			var vo:CollectionVO;
+			for(var i:int = 0;i<max;i ++)
+			{
+				vo = new CollectionVO();
+				vo.id = i.toString();
+				vo.name = arr[i].name;
+				vo.content = arr[i].content;
+				vo.explain = arr[i].explain;
+				vo.isCollected = DC.instance.testCollectionIsOpend(vo.id);
+//				vo.isCollected = true;
+				source[i] = vo;
+			}
+			
+			//list数据源
 			var tempdatas:Array = [];
 			var obj:Object;
-			for(var i:int = 0;i<max;i++)
+			for(i = 0;i<max;i++)
 			{
-				obj = { id: arr[i][0], finished: arr[i][1] };
-				if(obj.finished == 0)
-					obj.thumbnail = UserCenterManager.getTexture("collection_card_unfinish");
+				obj = { id: source[i].id, finished: source[i].isCollected };
+				if(!obj.finished)
+					obj.thumbnail = UserCenterManager.getTexture("card_collection_unfinish");
 				else
-					obj.thumbnail = UserCenterManager.getTexture(obj.id);
+					obj.thumbnail = UserCenterManager.getTexture("card_collection_" + obj.id);
 				tempdatas.push( obj );
 			}
 			
-			//分页处理，每页显示9个数据
-			const pageNum:int = Math.ceil( tempdatas.length / maxNum );
+			//分页处理
+			pageDatas = [];
+			const pageNum:int = Math.ceil(max / maxNum );
 			for(i = 0;i<pageNum;i++)
 			{
-				datas.push( tempdatas.splice(0, maxNum) );
+				pageDatas.push( tempdatas.splice(0, maxNum) );
 			}
 		}
+		private var pageDatas:Array;
 		
 		override public function dispose():void
 		{
-			if(cache)
-				cache = null;
-			if(image)
-				image.removeFromParent(true);
+			if(card)
+				card.removeFromParent(true);
+			if(quad)
+			{
+				quad.removeEventListener(TouchEvent.TOUCH, onTouchPop);
+				quad.removeFromParent(true);
+			}
+			if(container)
+				container.removeFromParent(true);
 			if(listLeft)
 				listLeft.removeFromParent(true);
 			if(listRight)
