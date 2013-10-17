@@ -17,26 +17,31 @@ package views.global.userCenter.userInfo
 	public class ItemForGameList extends FeathersControl
 	{
 		/**
-		 * @param data { name: "游戏名称", iconIndex: "0", resultEasy: "00:00", resultHard: "00:00", numStars: 2 }
+		 * @param data { name: "游戏名称", iconIndex: "0", resultEasy: "00:00", resultHard: "00:00", numStars: 2, isOpend: false }
 		 * @param callBack
 		 */		
 		public function ItemForGameList(data:Object, callBack:Function)
 		{
 			this._data = data;
+			this.touchable = this.isOpend = _data.isOpend;
 			this.callBakc = callBack;
 		}
 		
 		private var _data:Object;
 		/**
-		 * { name: "游戏名称", iconIndex: "0", resultEasy: "00:00", resultHard: "00:00", numStars: 2 }
+		 * { name: "游戏名称", iconIndex: "0", resultEasy: "00:00", resultHard: "00:00", numStars: 2, isOpend: false }
 		 */		
 		public function set data(value:Object):void
 		{
 			_data = value;
+			this.touchable = this.isOpend = _data.isOpend;
 			this.udpateStars();
 		}
 		private var label:TextField;
 		private var gameIcon:Button;
+		private var lock:Image;
+		private var mask:Image;
+		public var isOpend:Boolean;
 		
 		override protected function initialize():void
 		{
@@ -81,6 +86,19 @@ package views.global.userCenter.userInfo
 			gameIcon.defaultSkin = new Image(UserCenterManager.getTexture("card_game_"+_data.iconIndex));
 			this.addChild( gameIcon );
 			gameIcon.addEventListener(TouchEvent.TOUCH, onTouch);
+			
+			if(!isOpend)
+			{
+				mask = new Image(UserCenterManager.getTexture("card_game_mask"));
+				mask.width = gameIcon.width;
+				mask.height = gameIcon.height;
+				this.addChild( mask );
+				lock = new Image(UserCenterManager.getTexture("icon_lock"));
+				lock.x = 15;
+				lock.y = 96;
+				this.addChild( lock );
+				mask.touchable = lock.touchable = false;
+			}
 		}
 		
 		private function onTouch(e:TouchEvent):void
@@ -129,6 +147,10 @@ package views.global.userCenter.userInfo
 			callBakc = null;
 			if(label)
 				label.removeFromParent(true);
+			if(mask)
+				mask.removeFromParent(true);
+			if(lock)
+				lock.removeFromParent(true);
 			if(gameIcon)
 			{
 				gameIcon.removeEventListener(TouchEvent.TOUCH, onTouch);

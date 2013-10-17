@@ -229,7 +229,7 @@ package views.global.userCenter
 				aniable = true;
 				return;
 			}
-			if(animation.isRunning())
+			if(animation.isRunning() || !initialized)
 			{
 				_tabBar.selectedIndex = prevIndex;
 				return;
@@ -359,6 +359,8 @@ package views.global.userCenter
 		
 		private function loadComplete():void
 		{
+//			if(!_navigator.activeScreen is HandbookScreen)
+//				return;
 			(_navigator.activeScreen as HandbookScreen).updateView(crtPage_Handbook);
 			//将目标场景加载至舞台，加载完成后获取纹理
 			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
@@ -370,6 +372,8 @@ package views.global.userCenter
 			else						//pageDown
 				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
 			animation.start( pageUp );
+			
+			initialized = true;
 		}
 		
 		//成就翻页
@@ -386,6 +390,8 @@ package views.global.userCenter
 		}
 		private function onComplete():void
 		{
+			if(!_navigator.activeScreen is AchievementScreen)
+				return;
 			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
 			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
 			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
@@ -405,9 +411,11 @@ package views.global.userCenter
 			if(index <= 0 || index >= HandbookScreen.MAX_NUM)
 				return;
 			pageUp = false;
+			initialized = false;
 			crtPage_Handbook = index;
 			handbookTurnToPage(crtPage_Handbook);
 		}
+		private var initialized:Boolean;
 
 		override public function dispose():void
 		{

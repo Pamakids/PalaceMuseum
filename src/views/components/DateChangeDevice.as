@@ -89,8 +89,6 @@ package views.components
 					cacheDate.date = int(e.data);
 					break;
 			}
-//			dispatchEventWith(Event.CHANGE, false, cacheDate);
-//			trace(cacheDate);
 		}
 		
 		public function getCrtDate():Date

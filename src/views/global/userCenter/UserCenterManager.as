@@ -109,8 +109,13 @@ package views.global.userCenter
 		private static function loadFunc():void
 		{
 			_assetsManager=new AssetManager();
-			_assetsManager.enqueue(File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"));
-			_assetsManager.enqueue("assets/global/mapBG.jpg", "assets/global/userCenter/content_page_1.png", "assets/global/userCenter/content_page_2.png");
+			_assetsManager.enqueue(
+				File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"),
+				"assets/global/mapBG.jpg", 
+				"assets/global/userCenter/content_page_1.png", 
+				"assets/global/userCenter/content_page_2.png",
+				"json/collection.json"
+			);
 			_assetsManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)
