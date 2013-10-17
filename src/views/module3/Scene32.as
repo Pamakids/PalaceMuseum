@@ -40,8 +40,8 @@ package views.module3
 
 			addChild(getImage("bg-22"));
 
-			areaArr.push(new Rectangle(148, 326, 205, 288));
 			areaArr.push(new Rectangle(316, 238, 182, 342));
+			areaArr.push(new Rectangle(148, 326, 205, 288));
 			areaArr.push(new Rectangle(718, 272, 185, 300));
 
 			addEventListener(TouchEvent.TOUCH, onTouch);
@@ -49,6 +49,8 @@ package views.module3
 
 		private function onTouch(e:TouchEvent):void
 		{
+			if (inGame)
+				return;
 			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
 			if (!tc)
 				return;
@@ -63,7 +65,7 @@ package views.module3
 					if (i == 0)
 						playMenuGame();
 					else
-						Prompt.showTXT(rect.x + rect.width / 3 * 2, rect.y + 50, this["hint" + (3 - i).toString()]);
+						Prompt.showTXT(rect.x + rect.width / 4, rect.y + 150, this["hint" + (3 - i).toString()], 20, null, null, 3);
 					break;
 				}
 			}
@@ -71,10 +73,12 @@ package views.module3
 
 		private var hint1:String="檀木桌子好重啊！";
 		private var hint2:String="快点，快点。皇上该着急了！";
+		private var inGame:Boolean;
 
 		private function playMenuGame():void
 		{
-			removeEventListener(TouchEvent.TOUCH, onTouch);
+//			removeEventListener(TouchEvent.TOUCH, onTouch);
+			inGame=true;
 			game=new MenuGame(assets);
 			game.x=280;
 			game.y=514;
@@ -102,10 +106,11 @@ package views.module3
 
 		private function onGamePlayed(e:Event):void
 		{
+			inGame=false;
 			showAchievement(game.gamelevel == 0 ? 16 : 17)
 			removeChild(game);
 			game=null;
-			removeEventListener(TouchEvent.TOUCH, onTouch);
+//			removeEventListener(TouchEvent.TOUCH, onTouch);
 			sceneOver();
 		}
 

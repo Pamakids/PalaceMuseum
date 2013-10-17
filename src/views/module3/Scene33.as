@@ -26,7 +26,7 @@ package views.module3
 	{
 		private var game:DishGame;
 
-		private var chatArr:Array=["chatking1", "chatlion1", "chatking2", "chatking3", "chatlion2", "chatlion3"];
+		private var chatArr:Array=["chatking1", "chatlion1", "chatking2", "chatking3", "chatlion2"];
 		private var cardXArr:Array=[438, 488, 537, 584];
 		private var cardY:Number=510;
 
@@ -49,7 +49,8 @@ package views.module3
 
 		private var chatlion1:String="别着急，小太监还没有用银牌试毒，不能吃。";
 		private var chatlion2:String="这些是膳牌，是大臣请求接见是递交的，翻翻看吧！";
-		private var chatlion3:String="今天暂时不单独接见，露出破绽就坏了！先去上朝吧！";
+
+//		private var chatlion3:String="今天暂时不单独接见，露出破绽就坏了！先去上朝吧！";
 
 		public function Scene33(am:AssetManager=null)
 		{
@@ -60,7 +61,7 @@ package views.module3
 			addFood();
 			addCards();
 
-			var lion:Image=getImage("lion23");
+			lion=getImage("lion23");
 			lion.x=5;
 			lion.y=316;
 			addChild(lion);
@@ -114,11 +115,11 @@ package views.module3
 				return;
 			var card:Image=e.currentTarget as Image;
 			card.removeEventListener(TouchEvent.TOUCH, onCardBTouch);
-
 			TweenLite.to(card, .5, {alpha: 0,
 					onComplete: function():void {
+						cardSelected=false;
 						showAchievement(19);
-						startChat();
+						sceneOver();
 					}});
 		}
 
@@ -154,7 +155,7 @@ package views.module3
 
 		private function startChat():void
 		{
-			if (chatIndex >= 6)
+			if (chatIndex >= 5)
 				return;
 			var chat:String=chatArr[chatIndex];
 			var dx:Number;
@@ -218,6 +219,8 @@ package views.module3
 
 		private var isHintReverse:Boolean;
 
+		private var lion:Image;
+
 		private function nextChat():void
 		{
 			chatIndex++;
@@ -228,10 +231,7 @@ package views.module3
 			else if (chatIndex == 5)
 			{
 				cardEnable=true;
-			}
-			else if (chatIndex == 6)
-			{
-				sceneOver();
+				TweenLite.to(lion, .5, {x: -350});
 			}
 			else
 				startChat();

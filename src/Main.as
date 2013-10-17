@@ -61,20 +61,24 @@ package
 //			return;
 //			debugInit();
 			var lastScene:String=SOService.instance.getSO("lastScene") as String;
-			if (lastScene == "map" || !lastScene)
-				Map.show();
-			else
-				parseMS(lastScene);
+			parseMS(lastScene);
 		}
 
 		private function parseMS(lastScene:String):void
 		{
+			if(!lastScene)
+			{
+				Map.show();
+				return;
+			}
 			var moduleIndex:int=int(lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(lastScene.charAt(1)) - 1;
 			if (moduleIndex < 0 || sceneIndex < 0)
 				Map.show();
-			else
+			else if (lastScene.lastIndexOf("map") < 0)
 				MC.instance.gotoModule(moduleIndex, sceneIndex);
+			else
+				Map.show(null, moduleIndex - 1, moduleIndex);
 		}
 
 		private function debugInit():void

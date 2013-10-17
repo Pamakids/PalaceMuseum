@@ -165,9 +165,7 @@ package views.module1.scene13
 
 		private function onCloseTouch(e:Event):void
 		{
-			if (isOver)
-				return;
-			PopUpManager.removePopUp(this.parent);
+			dispatchEvent(new Event(PalaceGame.GAME_OVER, true));
 		}
 
 		private function initTwisterAreas():void
@@ -284,18 +282,49 @@ package views.module1.scene13
 				});
 		}
 
+		/**
+		 *
+		 * 旋转
+		 * */
+		private function flipHolder():void
+		{
+			touchable=false;
+			var sp:Sprite=this.parent as Sprite;
+			TweenLite.to(sp, .5, {scaleX: 0, onComplete: function():void {
+				hintIcon.visible=false;
+				blockHolder.visible=false;
+				halo.visible=false;
+				var word:Image=getImage("plaque-word");
+				word.pivotX=word.width >> 1;
+				word.pivotY=word.height >> 1;
+				word.x=Block.GAP;
+				word.y=Block.GAP;
+				addChild(word);
+				TweenLite.to(sp, .5, {scaleX: 1, onComplete: function():void {
+					touchable=true;
+				}});
+			}});
+		}
+
 		private function gameOver():void
 		{
 			isOver=true;
-			for each (var block:Block in blockArr)
-			{
-				TweenMax.to(block, 1, {shake: {rotation: .2, numShakes: 4}});
-			}
+			halo=getImage("halo2");
+			halo.pivotX=halo.width >> 1;
+			halo.pivotY=halo.height >> 1;
+			addChildAt(halo, 0);
+			halo.x=Block.GAP;
+			halo.y=Block.GAP;
+			TweenLite.to(halo, 2, {rotation: Math.PI * 4, onComplete: flipHolder});
+//			for each (var block:Block in blockArr)
+//			{
+//				TweenMax.to(block, 1, {shake: {rotation: .2, numShakes: 4}});
+//			}
 
-			TweenLite.delayedCall(2, function():void
-			{
-				dispatchEvent(new Event(PalaceGame.GAME_OVER, true));
-			});
+//			TweenLite.delayedCall(2, function():void
+//			{
+//				dispatchEvent(new Event(PalaceGame.GAME_OVER, true));
+//			});
 		}
 
 		private function checkAllMathed():Boolean
@@ -369,14 +398,17 @@ package views.module1.scene13
 		public function set answerShow(value:Boolean):void
 		{
 			_answerShow=value;
-			for each (var b:Block in blockArr)
-			{
-				if (b)
-					b.alpha=_answerShow ? .5 : 1;
-			}
+			blockHolder.alpha=_answerShow ? .5 : 1;
+//			for each (var b:Block in blockArr)
+//			{
+//				if (b)
+//					b.alpha=_answerShow ? .5 : 1;
+//			}
 		}
 
 		private var hintIcon:ElasticButton;
+
+		private var halo:Image;
 
 		private function shuffle():void
 		{
@@ -399,7 +431,7 @@ package views.module1.scene13
 
 				if (!close)
 				{
-					close=new ElasticButton(getImage("clock-close"));
+					close=new ElasticButton(getImage("button_close"));
 					close.x=550;
 					close.y=-130;
 					addChild(close);
@@ -413,6 +445,7 @@ package views.module1.scene13
 					close.visible=true;
 				}
 
+//				gameOver();
 			}
 		}
 

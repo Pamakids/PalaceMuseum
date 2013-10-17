@@ -5,14 +5,18 @@ package particle
 	import starling.extensions.PDParticleSystem;
 	import starling.textures.Texture;
 
-	public class SmokeParticle extends Sprite
+	public class FireParticle extends Sprite
 	{
 
 		private var particleSystem:PDParticleSystem;
 
-		public function SmokeParticle()
+		public function FireParticle()
 		{
-			var config:XML=XML(new ParticleAsset.particleXML());
+		}
+
+		public function init(type:int=0):void
+		{
+			var config:XML=XML(new ParticleAsset["particleXML" + type.toString()]());
 			var texture:Texture=Texture.fromBitmap(new ParticleAsset.particleTextrue());
 
 			particleSystem=new PDParticleSystem(config, texture);
