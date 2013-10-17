@@ -2,6 +2,8 @@ package views.global.userCenter.collection
 {
 	import flash.geom.Point;
 	
+	import controllers.DC;
+	
 	import feathers.controls.List;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
@@ -10,6 +12,7 @@ package views.global.userCenter.collection
 	import feathers.layout.TiledRowsLayout;
 	
 	import models.CollectionVO;
+	import models.SOService;
 	
 	import starling.display.Image;
 	import starling.display.Quad;
@@ -154,9 +157,7 @@ package views.global.userCenter.collection
 				vo.name = arr[i].name;
 				vo.content = arr[i].content;
 				vo.explain = arr[i].explain;
-//				if(SOService.instance.getSO("collection_card_" + vo.id + "_collectioned"))
-//					vo.isCollected = true;
-				vo.isCollected = (i%2==0);
+				vo.isCollected = DC.instance.testCollectionIsOpend(vo.id);
 				source[i] = vo;
 			}
 			
