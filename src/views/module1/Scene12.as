@@ -304,7 +304,7 @@ package views.module1
 
 		private function clothChecked():void
 		{
-			showCard("dragonRobe");
+			showCard("0");
 			TweenLite.to(hatLockMark, .5, {alpha: 0});
 			TweenLite.to(clothLockMark, .5, {alpha: 0});
 			TweenLite.to(lion, 1, {x: lionX, onComplete: sceneOver});

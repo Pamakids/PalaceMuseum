@@ -3,14 +3,11 @@ package views.module2.scene22
 	import com.pamakids.palace.utils.SPUtils;
 
 	import flash.events.AccelerometerEvent;
-	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
 	import flash.geom.Point;
-	import flash.sensors.Accelerometer;
-	import flash.utils.Timer;
 
-	import starling.display.DisplayObject;
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -30,10 +27,10 @@ package views.module2.scene22
 		private var telHolder:Sprite;
 
 		private var tele1:Image;
-
 		private var tele2:Image;
-
 		private var tele3:Image;
+
+		public var finished:Boolean;
 
 		public function Telescope(am:AssetManager=null)
 		{
@@ -52,14 +49,16 @@ package views.module2.scene22
 			king.y=439;
 			addChild(king);
 			king.touchable=false;
+			addEye();
+
 			var arm:Image=getImage("tele-arm");
 			arm.x=747;
 			arm.y=569;
 			addChild(arm);
 			arm.touchable=false;
 
-			var acc:Accelerometer=new Accelerometer();
-			acc.addEventListener(AccelerometerEvent.UPDATE, onUpdate);
+//			var acc:Accelerometer=new Accelerometer();
+//			acc.addEventListener(AccelerometerEvent.UPDATE, onUpdate);
 
 			closeBtn=new ElasticButton(getImage("button_close"));
 			addChild(closeBtn);
@@ -162,6 +161,10 @@ package views.module2.scene22
 
 		private function rotateRing(tc:Touch, target:Sprite):void
 		{
+			isRingMoved=true;
+			if (isZoomed)
+				finished=true;
+
 			var currentPosA:Point=tc.getLocation(this);
 			var previousPosA:Point=tc.getPreviousLocation(this);
 			var currentVector:Point=currentPosA.subtract(centerPT);
@@ -248,6 +251,9 @@ package views.module2.scene22
 		private var speedY:Number=0;
 
 		private var actionIndex:int=-1;
+		private var isRingMoved:Boolean;
+		private var isZoomed:Boolean;
+		private var eye:MovieClip;
 
 		private function onTeleTouch(e:TouchEvent):void
 		{
@@ -265,8 +271,36 @@ package views.module2.scene22
 				tele2.y=Math.max(-84, tele3.y);
 
 				view.scale=Math.abs(tele3.y) / maxY;
+
+				isZoomed=true;
+				if (isRingMoved)
+					finished=true;
+
 				updataBlur();
 			}
+		}
+
+		private function addEye():void
+		{
+			eye=new MovieClip(assets.getTextures("eye"), 30);
+			eye.loop=1;
+			eye.play();
+			Starling.juggler.add(eye);
+			eye.x=806;
+			eye.y=559;
+			addChild(eye);
+		}
+
+		override public function dispose():void
+		{
+			if (eye)
+			{
+				eye.stop();
+				Starling.juggler.remove(eye);
+				eye.removeFromParent(true);
+				eye=null;
+			}
+			super.dispose();
 		}
 	}
 }

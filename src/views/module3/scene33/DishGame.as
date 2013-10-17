@@ -93,7 +93,6 @@ package views.module3.scene33
 			closeBtn.x=950;
 			closeBtn.y=60;
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
-			closeBtn.visible=closeBtn.touchable=false;
 		}
 
 		private function shakeNext():void
@@ -107,6 +106,7 @@ package views.module3.scene33
 
 		private function onStart(e:Event):void
 		{
+			closeBtn.visible=closeBtn.touchable=false;
 			startBtn.touchable=false;
 			startGame();
 		}
@@ -170,6 +170,7 @@ package views.module3.scene33
 			scoreTF=new TextField(100, 40, "");
 			scoreTF.fontSize=24;
 			scoreTF.color=0xb83d00;
+			scoreTF.vAlign="top";
 			infoHolder.addChild(scoreTF);
 			scoreTF.x=885;
 			scoreTF.y=20;
@@ -553,6 +554,7 @@ package views.module3.scene33
 				scoreTXT.color=0xb83d00;
 				scoreTXT.x=420;
 				scoreTXT.y=280;
+				scoreTXT.vAlign="top"
 				endSP.addChild(scoreTXT);
 
 				var recordTXT:TextField=new TextField(100, 40, "");

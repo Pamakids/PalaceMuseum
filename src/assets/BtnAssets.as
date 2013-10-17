@@ -24,6 +24,7 @@ package assets
 		[Embed(source="data/buttons/btnEffect.png")]
 		public static const btnEffect:Class
 		
-		
+		[Embed(source="data/buttons/button_close.png")]
+		public static const btn_close:Class
 	}
 }

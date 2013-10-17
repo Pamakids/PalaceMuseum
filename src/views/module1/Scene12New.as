@@ -8,7 +8,10 @@ package views.module1
 
 	import models.FontVo;
 
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -263,6 +266,7 @@ package views.module1
 
 		private function initMission():void
 		{
+			playKing(1);
 			opened=false;
 			var str:String=clothArr[taskType];
 			showLionHint("hint-find-" + str, function():void {
@@ -280,13 +284,18 @@ package views.module1
 			showKnowledge(type);
 			if (type == clothArr[taskType])
 			{
-				showCard("dragonRobe", function():void {
+				playKing(0);
+				showCard("0", function():void {
 					showAchievement(2);
 				});
 				sceneOver();
 			}
 			else
+			{
+				var _index:int=Math.random() > .6 ? 1 : (Math.random() > .5 ? 2 : 3);
+				playKing(_index);
 				hideNext();
+			}
 		}
 
 		private function showKnowledge(type:String):void
@@ -324,6 +333,7 @@ package views.module1
 			bgHolder.addChild(quad);
 
 			TweenLite.to(quad, 1, {alpha: .6});
+			quizSolved=true;
 		}
 
 		private function onDrag(e:TouchEvent):void
@@ -367,12 +377,17 @@ package views.module1
 			}
 		}
 
+		private var expArr:Array=["kingHappy", "kingLook", "KingNaughty", "kingStrange"];
+
+		private var kingHead:MovieClip;
+
 		private function addKing():void
 		{
 			backSP=new Sprite();
 			frontSP=new Sprite();
 
 			kingHolder=new Sprite();
+			playKing(0);
 			var king:Image=getImage("king12")
 			king.x=-1;
 			king.y=2;
@@ -386,6 +401,55 @@ package views.module1
 			backSP.x=frontSP.x=kingHolder.x=533;
 			backSP.y=frontSP.y=kingHolder.y=653;
 		}
+
+		public function playKing(expressionIndex:int):void
+		{
+			if (kingDelay)
+			{
+				kingDelay.kill();
+				kingDelay=null;
+			}
+			if (kingHead)
+			{
+				kingHead.stop();
+				Starling.juggler.remove(kingHead);
+				kingHead.removeFromParent(true);
+				kingHead=null;
+			}
+
+			kingHead=new MovieClip(assets.getTextures(expArr[expressionIndex]), 30);
+			kingHead.loop=0;
+			kingHead.play();
+			Starling.juggler.add(kingHead);
+			kingHead.x=62;
+			kingHead.y=108;
+			kingHolder.addChildAt(kingHead, 0);
+
+			if (quizSolved)
+			{
+				var _index:int=Math.random() > .7 ? 1 : 2;
+				kingDelay=TweenLite.delayedCall(8, playKing, [_index]);
+			}
+		}
+
+		override public function dispose():void
+		{
+			if (kingDelay)
+			{
+				kingDelay.kill();
+				kingDelay=null;
+			}
+			if (kingHead)
+			{
+				kingHead.stop();
+				Starling.juggler.remove(kingHead);
+				kingHead.removeFromParent(true);
+				kingHead=null;
+			}
+			super.dispose();
+		}
+
+		private var kingDelay:TweenLite;
 	}
 }
 

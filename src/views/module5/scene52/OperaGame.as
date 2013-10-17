@@ -581,7 +581,8 @@ package views.module5.scene52
 				scoreTXT.fontSize=48;
 				scoreTXT.color=0xb83d00;
 				scoreTXT.x=420;
-				scoreTXT.y=270;
+				scoreTXT.y=285;
+				scoreTXT.vAlign="top";
 				endHolder.addChild(scoreTXT);
 
 				var recordTXT:TextField=new TextField(100, 40, "");

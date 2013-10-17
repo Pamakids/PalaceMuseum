@@ -74,8 +74,8 @@ package views.module1
 			bg.pivotX=bg.width >> 1;
 
 			addPlaque();
-			addKing();
-			addEunuch();
+//			addKing();
+//			addEunuch();
 			addClock();
 			addBook();
 		}
@@ -149,12 +149,12 @@ package views.module1
 				TweenLite.to(clock, .5, {scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete: function():void
 				{
 					PopUpManager.removePopUp(clock);
-					showCard("clock", function():void {
+					showCard("2", function():void {
 						showAchievement(3, checkAcheive5);
 					});
 					LionMC.instance.say("请皇上去给太后请安", 0, 100, 500, function():void {
 						clockMatched=true;
-					});
+					}, 20, false);
 				}});
 			}
 			else
@@ -219,7 +219,7 @@ package views.module1
 						game.dispose2();
 						game=null;
 						gameHolder=null;
-						showCard("newDay", function():void {
+						showCard("1", function():void {
 							showAchievement(4, checkAcheive5);
 						});
 					}});

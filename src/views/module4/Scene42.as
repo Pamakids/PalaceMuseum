@@ -100,7 +100,7 @@ package views.module4
 					crtMemorial=null;
 					trace(indexArr.length)
 					if (indexArr.length == 2) {
-						MC.instance.stage.stage.quality="high";
+//						MC.instance.stage.stage.quality="high";
 						MC.instance.stage.removeChild(drawScene);
 						showAchievement(23);
 						sceneOver();

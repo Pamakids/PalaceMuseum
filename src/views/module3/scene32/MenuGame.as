@@ -79,7 +79,6 @@ package views.module3.scene32
 			closeBtn.x=950;
 			closeBtn.y=60;
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
-			closeBtn.visible=closeBtn.touchable=false;
 
 			addStart();
 		}
@@ -132,6 +131,7 @@ package views.module3.scene32
 
 		private function onStartTouch(e:Event):void
 		{
+			closeBtn.visible=closeBtn.touchable=false;
 			startBtn.removeEventListener(TouchEvent.TOUCH, onStartTouch);
 			startSP.touchable=false;
 			TweenLite.delayedCall(1, function():void {
@@ -184,6 +184,7 @@ package views.module3.scene32
 			lbl=new TextField(200, 50, "00:00:00");
 			lbl.fontSize=32;
 			lbl.color=0x83d00;
+			lbl.vAlign="top";
 			gameSP.addChild(lbl);
 			lbl.x=20;
 			lbl.y=25;
@@ -479,6 +480,7 @@ package views.module3.scene32
 
 		private function gameOver():void
 		{
+			isWin=true;
 			TweenLite.to(playBG, 1, {alpha: 0});
 			TweenLite.to(timeHolder, 1, {x: 1024});
 			TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn,
@@ -521,11 +523,12 @@ package views.module3.scene32
 			}
 			endSP.addChild(getImage("menu-end"));
 
-			var resultTF:TextField=new TextField(300, 80, resultTXT);
+			var resultTF:TextField=new TextField(300, 100, resultTXT);
 			resultTF.fontSize=48;
 			resultTF.color=0xb83d00;
 			resultTF.x=305;
-			resultTF.y=240;
+			resultTF.y=255;
+			resultTF.vAlign="top";
 			endSP.addChild(resultTF);
 
 			var recordTF:TextField=new TextField(150, 40, recordTXT);
@@ -647,6 +650,7 @@ package views.module3.scene32
 
 		private var timeHolder:Sprite;
 		private var closeBtn:ElasticButton;
+		public var isWin:Boolean;
 
 		public function get gamelevel():int
 		{

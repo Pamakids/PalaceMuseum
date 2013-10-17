@@ -2,17 +2,17 @@ package states
 {
 	import com.greensock.TweenLite;
 
+	import Firefly.Paper;
+
 	import assets.BtnAssets;
 	import assets.ImgAssets;
 
-	import drawing.CommonPaper;
-
 	import models.Config;
-	import models.DrawingManager;
 	import models.StateManager;
 
 	import org.agony2d.Agony;
 	import org.agony2d.notify.AEvent;
+	import org.agony2d.notify.DataEvent;
 	import org.agony2d.view.AgonyUI;
 	import org.agony2d.view.Fusion;
 	import org.agony2d.view.ImageButton;
@@ -21,13 +21,17 @@ package states
 	import org.agony2d.view.enum.LayoutType;
 	import org.agony2d.view.puppet.ImagePuppet;
 
-	public class GameTopUIState extends UIState
+	public class GameTopAUIState extends UIState
 	{
 
 
 		public static const TURN_TO_NEXT_TIP:String="turnToNextTip"
 
 		public static const TAKE_PHOTO:String="takePhoto"
+
+		public static const PAPER_CLEAR:String="paperClear"
+
+		public static const TURN_TO_TRANSLATE:String="turnToTranslate"
 
 
 		override public function enter():void
@@ -37,8 +41,6 @@ package states
 			var img:ImagePuppet
 
 			AgonyUI.addImageButtonData(BtnAssets.btnEffect, "btnEffect", ImageButtonType.BUTTON_RELEASE)
-
-			mPaper=DrawingManager.getInstance().paper
 
 			this.fusion.spaceWidth=AgonyUI.fusion.spaceWidth
 			this.fusion.spaceHeight=AgonyUI.fusion.spaceHeight
@@ -73,7 +75,7 @@ package states
 				mBtnB=new ImageButton("btnEffect")
 				mBtnB.userData=1
 				this.fusion.addElement(mBtnB, 42, 0, LayoutType.B__A, LayoutType.BA)
-				mBtnB.addEventListener(AEvent.CLICK, onBrushStateChange)
+				//mBtnB.addEventListener(AEvent.CLICK, onBrushStateChange)
 
 
 				{
@@ -89,7 +91,7 @@ package states
 				mBtnC=new ImageButton("btnEffect")
 				mBtnC.userData=2
 				this.fusion.addElement(mBtnC, 42, 0, LayoutType.B__A, LayoutType.BA)
-				mBtnC.addEventListener(AEvent.CLICK, onBrushStateChange)
+				mBtnC.addEventListener(AEvent.CLICK, onPaperClear)
 
 				{
 					img=new ImagePuppet
@@ -122,7 +124,7 @@ package states
 				mFinishBtn=new ImageButton("btnEffect")
 				this.fusion.addElement(mFinishBtn, 42, 0, LayoutType.B__A, LayoutType.BA)
 				mFinishBtn.image.visible=false
-				this.onPaperClear(null)
+//				this.onPaperClear(null)
 
 				{
 					img=new ImagePuppet
@@ -130,23 +132,30 @@ package states
 					mFinishBtn.addElement(img, 0, 0, LayoutType.F__A__F_ALIGN, LayoutType.F__A__F_ALIGN)
 				}
 
-				mFinishBtn.addEventListener(AEvent.CLICK, onTopComplete)
+				mFinishBtn.addEventListener(AEvent.CLICK, onTakePhoto)
 				mFinishBtn.addEventListener(AEvent.BUTTON_PRESS, onButtonPress)
 				mFinishBtn.addEventListener(AEvent.BUTTON_RELEASE, onButtonRelease)
 			}
 
-//			var l:int = mImgList.length
-//			while(--l>-1){
-//				imgBtn = mImgList[l]
-//				imgBtn.addEventListener(AEvent.PRESS, onMakeSfxForPress)
-//			}
-//			
-			Agony.process.addEventListener(GameSceneUIState.PAPER_DIRTY, onPaperDirty)
+			//			var l:int = mImgList.length
+			//			while(--l>-1){
+			//				imgBtn = mImgList[l]
+			//				imgBtn.addEventListener(AEvent.PRESS, onMakeSfxForPress)
+			//			}
+			//		
+			{
+				img=new ImagePuppet(5)
+				img.embed(BtnAssets.btn_close, false)
+				this.fusion.addElement(img, AgonyUI.fusion.spaceWidth - 60, 60)
+				img.addEventListener(AEvent.CLICK, onTopComplete)
+			}
+
+			Agony.process.addEventListener(Paper.PAPER_DIRTY, onPaperDirty)
 		}
 
 		override public function exit():void
 		{
-			Agony.process.removeEventListener(GameSceneUIState.PAPER_DIRTY, onPaperDirty)
+			Agony.process.removeEventListener(Paper.PAPER_DIRTY, onPaperDirty)
 			TweenLite.killTweensOf(this.fusion)
 
 			if (mTranslateImg)
@@ -156,7 +165,6 @@ package states
 		}
 
 
-		private var mPaper:CommonPaper
 		private var mImgList:Array
 		private var mFinishBtn:ImageButton
 		private var mIsTranslateState:Boolean
@@ -189,25 +197,24 @@ package states
 				mTranslateImg.kill()
 				mTranslateImg=null
 			}
+			Agony.process.dispatchEvent(new DataEvent(TURN_TO_TRANSLATE, mIsTranslateState))
 		}
 
-		private function onBrushStateChange(e:AEvent):void
+		private function onClear(e:AEvent):void
 		{
 			var target:ImageButton
 
 			target=e.target as ImageButton
-			if (target.userData == 1)
-			{
-				DrawingManager.getInstance().paper.brushIndex=2
-				mBtnB.image.visible=true
-				mBtnC.image.visible=false
-			}
-			else if (target.userData == 2)
-			{
-				DrawingManager.getInstance().paper.brushIndex=1
-				mBtnB.image.visible=false
-				mBtnC.image.visible=true
-			}
+//			if(target.userData == 1){
+//				DrawingManager.getInstance().paper.brushIndex = 2
+//				mBtnB.image.visible = true
+//				mBtnC.image.visible = false
+//			}
+//			else if(target.userData == 2){
+//				DrawingManager.getInstance().paper.brushIndex = 1
+//				mBtnB.image.visible = false
+//				mBtnC.image.visible = true
+//			}
 
 			this.doSetTranslateState(false)
 		}
@@ -218,10 +225,14 @@ package states
 			this.doSetTranslateState(false)
 		}
 
-		private function onTopComplete(e:AEvent):void
+		private function onTakePhoto(e:AEvent):void
 		{
 			this.doSetTranslateState(false)
 			Agony.process.dispatchDirectEvent(TAKE_PHOTO)
+		}
+
+		private function onTopComplete(e:AEvent):void
+		{
 			StateManager.setGameScene(false)
 
 			if (Config.onComplete != null)
@@ -256,7 +267,9 @@ package states
 		{
 			mFinishBtn.alpha=0.44
 			mFinishBtn.interactive=false
-			DrawingManager.getInstance().isPaperDirty=false
+			this.doSetTranslateState(false)
+//			DrawingManager.getInstance().isPaperDirty = false
+			Agony.process.dispatchDirectEvent(PAPER_CLEAR)
 		}
 
 		private function onPaperDirty(e:AEvent):void

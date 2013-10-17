@@ -20,6 +20,7 @@ package particle
 			var texture:Texture=Texture.fromBitmap(new ParticleAsset.particleTextrue());
 
 			particleSystem=new PDParticleSystem(config, texture);
+			particleSystem.touchable=false;
 			particleSystem.start();
 
 			addChild(particleSystem);
@@ -28,7 +29,6 @@ package particle
 
 		override public function dispose():void
 		{
-			super.dispose();
 			if (particleSystem)
 			{
 				particleSystem.stop(true);
@@ -36,6 +36,7 @@ package particle
 				Starling.juggler.remove(particleSystem);
 				particleSystem=null;
 			}
+			super.dispose();
 		}
 	}
 }
