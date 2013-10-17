@@ -3,8 +3,11 @@ package states
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Back;
 	import com.greensock.easing.Cubic;
+	import com.greensock.easing.Quad;
+	import com.greensock.easing.Strong;
 	
 	import flash.display.BitmapData;
+	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.filesystem.FileStream;
@@ -12,6 +15,8 @@ package states
 	import flash.geom.Point;
 	import flash.media.CameraRoll;
 	import flash.utils.ByteArray;
+	
+	import Firefly.Paper;
 	
 	import assets.ImgAssets;
 	
@@ -35,32 +40,30 @@ package states
 	import org.agony2d.view.PivotFusion;
 	import org.agony2d.view.UIState;
 	import org.agony2d.view.core.IComponent;
+	import org.agony2d.view.enum.LayoutType;
 	import org.agony2d.view.puppet.ImagePuppet;
 	import org.agony2d.view.puppet.SpritePuppet;
-
+	
 	// [ bytes ] paster - draw
-	public class GameSceneUIState extends UIState
+	public class GameSceneAUIState extends UIState
 	{
 		
 		public static const START_DRAW:String = "startDraw"
 		
 		public static const TOP_AND_BOTTOM_AUTO_BACK:String = "topAndBottomAutoBack"
-			
-		public static const PAPER_DIRTY:String = "paperDirty"
-			
-			
+
+		
 		override public function enter():void{
 			mSceneIndex = Config.SCENE_INDEX
 			mTipRefList = ImgAssets.getTipList(mSceneIndex)
 			
 			this.doAddBg()
-			this.doAddPaper()
 			this.doAddListeners()
 			//TouchManager.getInstance().addEventListener(ATouchEvent.NEW_TOUCH, __onNewTouch)
-				
+			
 			//this.fusion.interactive = false
 			this.fusion.y = 127
-				
+			
 		}
 		
 		private function doAddBg() : void{
@@ -80,7 +83,7 @@ package states
 				img.embed(ImgAssets.getBgRef(Config.SCENE_INDEX))
 				this.fusion.addElement(img, 0, 35)
 			}
-			
+
 			// tip...
 			{
 				switch(mSceneIndex)
@@ -118,6 +121,21 @@ package states
 				mTipImg = new ImagePuppet
 				this.fusion.addElement(mTipImg, tx, ty)
 			}
+			// board...
+			{
+				mBoard = new Fusion
+				// paper...
+				{
+					var sprite:SpritePuppet = new SpritePuppet
+					mBoard.addElement(sprite)
+					{
+						mPaper = new Paper
+						sprite.addChild(mPaper)
+					}
+				}
+				
+				this.fusion.addElement(mBoard, 0, 35)	
+			}
 		}
 		
 		private function doAddListeners(): void{
@@ -134,12 +152,15 @@ package states
 			if(mEraser){
 				mEraser.kill()
 			}
-//			if(mIsPaperState){
-//				TouchManager.getInstance().removeEventListener(ATouchEvent.NEW_TOUCH, __onNewTouch)
-//			}
-			mPaper.isStarted = false
+			//			if(mIsPaperState){
+			//				TouchManager.getInstance().removeEventListener(ATouchEvent.NEW_TOUCH, __onNewTouch)
+			//			}
 			Agony.process.removeEventListener(GameTopUIState.TURN_TO_NEXT_TIP, onTurnToNextTip)
 			Agony.process.removeEventListener(GameTopUIState.TAKE_PHOTO, onTakePhoto)
+			mPaper.kill()
+			if(mPhoto){
+				TweenLite.killTweensOf(mPhoto)
+			}
 		}
 		
 		
@@ -150,8 +171,8 @@ package states
 		//////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////
 		
+		private var mPaper:MovieClip
 		private var mBoard:Fusion
-		private var mPaper:CommonPaper
 		private var mImg:ImagePuppet
 		private var mPixelRatio:Number, mContentRatio:Number
 		private var mEraser:SpritePuppet
@@ -161,123 +182,10 @@ package states
 		private var mTipIndex:int = -1
 		private var mSceneIndex:int
 		private var mTipRefList:Array
+		private var mPhoto:ImagePuppet
 		
 		
-		private function doAddPaper():void
-		{	
-			var img:ImagePuppet
-			
-			mPixelRatio = AgonyUI.pixelRatio
-			mPaper = DrawingManager.getInstance().paper
-			mPaper.isStarted = true
-			mContentRatio = mPaper.contentRatio
-			
-			// board...
-			{
-				mBoard = new Fusion
-//				mBoard.interactive = false
-					
-				// paper...
-				{
-					mImg = new ImagePuppet
-					//mImg.interactive = false
-					mImg.bitmapData = mPaper.content
-					mImg.scaleX = mImg.scaleY = 1 / mContentRatio
-					mBoard.addElement(mImg)
-					mImg.addEventListener(AEvent.PRESS, __onNewTouch)
-				}
-						
-				this.fusion.addElement(mBoard, 0, 35)	
-			}
-		}
-		
-		private function getEraser() : IComponent {
-			if(!mEraser){
-				mEraser = new SpritePuppet
-				mEraser.cacheAsBitmap = true
-				mEraser.interactive=false
-			}
-			mEraser.graphics.clear()
-			mEraser.graphics.lineStyle(1.4, 0, 0.9)
-			mEraser.graphics.beginFill(0xdddd44, 0.15)
-			mEraser.graphics.drawCircle(0,0,mPaper.currBrush.scale * Config.ERASER_SIZE)
-			return mEraser
-		}
-		
-		private function __onNewTouch(e:AEvent):void
-		{
-			var touch:Touch
-			var ratio:Number
-			var point:Point
-			
-//			ratio = 1 / mContentRatio * mBoard.scaleRatio
-			ratio = 1 / mContentRatio * mPixelRatio
-			touch = AgonyUI.currTouch
-			//trace(ratio)
-//			point = mImg.transformCoord(touch.stageX  , touch.stageY )
-//			point = mImg.transformCoord(touch.stageX  , touch.stageY )	
-			point = mImg.transformCoord(touch.stageX / mPixelRatio, touch.stageY / mPixelRatio )
-				
-//			if(mPaper.drawPoint(touch.stageX * ratio, touch.stageY * ratio)){
-			//trace(point)
-//			if(mPaper.drawPoint(point.x, point.y)){
-			if(mPaper.startDraw(point.x* ratio, point.y* ratio)){
-				touch.addEventListener(AEvent.MOVE, __onMove, 22000)
-				touch.addEventListener(AEvent.RELEASE, __onRelease,22000)
-				
-				if(mPaper.isEraseState){
-					mBoard.addElement(this.getEraser(), point.x* 1 / mContentRatio, point.y* 1 / mContentRatio)
-				}
-				//Logger.reportMessage(this, "new touch...")
-				if(!DrawingManager.getInstance().isPaperDirty){
-					Agony.process.dispatchDirectEvent(PAPER_DIRTY)
-					DrawingManager.getInstance().isPaperDirty = true
-				}
-				Agony.process.dispatchDirectEvent(START_DRAW)
-			}
-		}
-		
-		private function __onMove(e:AEvent):void
-		{
-			var touch:Touch
-			var ratio:Number
-			var pointA:Point, pointB:Point
-			
-//			ratio = 1 / mContentRatio * mBoard.scaleRatio
-			ratio = 1 / mContentRatio * mPixelRatio
-			touch = e.target as Touch
-//			trace(ratio)
-			
-			pointA = mImg.transformCoord(touch.stageX / mPixelRatio , touch.stageY  / mPixelRatio)
-			pointB = mImg.transformCoord(touch.prevStageX / mPixelRatio , touch.prevStageY / mPixelRatio )
-				
-//			pointA = mImg.transformCoord(touch.stageX , touch.stageY )
-//			pointB = mImg.transformCoord(touch.prevStageX , touch.prevStageY )
-				
-			//trace(pointA + "..." + pointB)
-//			mPaper.drawLine(touch.stageX, touch.stageY,touch.prevStageX,touch.prevStageY)
-//			mPaper.drawLine(pointA.x, pointA.y,pointB.x, pointB.y)
-			mPaper.drawLine(pointA.x * ratio, pointA.y * ratio,pointB.x * ratio,pointB.y * ratio)
-			if(mEraser){
-				mEraser.x = pointA.x * 1 / mContentRatio
-				mEraser.y = pointA.y * 1 / mContentRatio
-			}
-			e.stopImmediatePropagation()
-		}
-		
-		private function __onRelease(e:AEvent):void {
-			mPaper.endDraw()
-			if(mEraser){
-				mEraser.kill()
-				mEraser = null
-			}
-		}
-		
-		private function onStateToBrush(e:AEvent):void{
-			mIsPaperState = true
-			TouchManager.getInstance().addEventListener(ATouchEvent.NEW_TOUCH, __onNewTouch)
-		}
-		
+
 		private function onTurnToNextTip(e:AEvent):void{
 			if(++mTipIndex < mTipRefList.length){
 				mTipImg.embed(mTipRefList[mTipIndex], false)
@@ -293,9 +201,24 @@ package states
 			var roll:CameraRoll
 			var BA:BitmapData
 			
+			BA = new BitmapData(this.fusion.spaceWidth, this.fusion.spaceHeight, true, 0x0)
+			BA.draw(this.fusion.displayObject)
+			{
+				mPhoto = new ImagePuppet(5)
+				mPhoto.bitmapData = BA
+				mPhoto.scaleX = 1
+				mPhoto.scaleY = 1
+				AgonyUI.fusion.addElement(mPhoto,AgonyUI.fusion.spaceWidth/2,AgonyUI.fusion.spaceHeight/2 - 100)
+				TweenLite.to(mPhoto, 1.6, {scaleX:0.8,scaleY:0.8,ease:Cubic.easeOut,onComplete:function():void{
+					TweenLite.to(mPhoto, 0.7, {alpha:0.4,onComplete:function():void{
+						
+						mPhoto.kill()
+						mPhoto = null
+					}})
+
+				}})
+			}
 			if(CameraRoll.supportsAddBitmapData){
-				BA = new BitmapData(this.fusion.spaceWidth, this.fusion.spaceHeight, true, 0x0)
-				BA.draw(this.fusion.displayObject)
 				roll = new CameraRoll
 				roll.addBitmapData(BA)
 				roll.addEventListener(Event.COMPLETE, onCameraRollComplete)

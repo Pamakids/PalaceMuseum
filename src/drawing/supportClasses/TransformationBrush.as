@@ -37,7 +37,8 @@ public class TransformationBrush extends BrushBase {
 			cachedMatrix.rotate(cachedAngle)
 		}
 		cachedMatrix.translate(destX, destY)
-		m_content.drawWithQuality(data, cachedMatrix, this.getColorTransform(), null, null, false,"low")
+		m_content.draw(data, cachedMatrix, this.getColorTransform(), null, null, true)
+//		m_content.drawWithQuality(data, cachedMatrix, this.getColorTransform(), null, null, false,"low")
 
 	}
 	

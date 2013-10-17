@@ -151,10 +151,10 @@ package views.module1.scene13
 								crtTime-=delta;
 								for (var i:int=0; i < laceArr.length; i++)
 								{
-									var img:Image=laceArr[i] as Image;
+									var img:Sprite=laceArr[i] as Sprite;
 									img.x+=delta / 3;
 									if (img.x < -LACE_WIDTH)
-										img.x=3 * LACE_WIDTH + img.x;
+										img.x+=3 * LACE_WIDTH;
 								}
 
 								for (var j:int=0; j < wordArr.length; j++)
@@ -162,7 +162,7 @@ package views.module1.scene13
 									var img1:Image=wordArr[j] as Image;
 									img1.x+=delta / 2;
 									if (img1.x < -WORD_WIDTH)
-										img1.x=2 * WORD_WIDTH + img1.x;
+										img1.x+=2 * WORD_WIDTH;
 								}
 							}
 						}
@@ -230,9 +230,11 @@ package views.module1.scene13
 
 			for (var i:int=0; i < 6; i++)
 			{
-				var lace:Image=getImage("clock-lace");
+				var lace:Sprite=new Sprite();
+				lace.addChild(getImage("clock-lace"));
 				lace.x=i % 3 * LACE_WIDTH;
 				lace.y=i < 3 ? 0 : 143;
+//				lace.clipRect=new Rectangle(0.1, 0, lace.width - .2, lace.height);
 				wheel.addChild(lace);
 				laceArr.push(lace);
 			}

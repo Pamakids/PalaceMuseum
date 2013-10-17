@@ -336,6 +336,7 @@ package views.module2.scene21
 			lbl=new TextField(200, 50, "00:00:00");
 			lbl.fontSize=32;
 			lbl.color=0x83d00;
+			lbl.vAlign="top";
 			gameSP.addChild(lbl);
 			lbl.x=20;
 			lbl.y=25;
@@ -471,11 +472,12 @@ package views.module2.scene21
 			}
 			endSP.addChild(getImage("menu-end"));
 
-			var resultTF:TextField=new TextField(300, 80, resultTXT);
+			var resultTF:TextField=new TextField(300, 100, resultTXT);
 			resultTF.fontSize=48;
 			resultTF.color=0xb83d00;
 			resultTF.x=305;
-			resultTF.y=240;
+			resultTF.y=255;
+			resultTF.vAlign="top";
 			endSP.addChild(resultTF);
 
 			var recordTF:TextField=new TextField(150, 40, recordTXT);

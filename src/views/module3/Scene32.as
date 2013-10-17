@@ -107,11 +107,13 @@ package views.module3
 		private function onGamePlayed(e:Event):void
 		{
 			inGame=false;
-			showAchievement(game.gamelevel == 0 ? 16 : 17)
-			removeChild(game);
+			if (game.isWin)
+			{
+				showAchievement(game.gamelevel == 0 ? 16 : 17)
+				sceneOver();
+			}
+			game.removeFromParent(true);
 			game=null;
-//			removeEventListener(TouchEvent.TOUCH, onTouch);
-			sceneOver();
 		}
 
 		override protected function nextScene(e:Event=null):void

@@ -2,6 +2,7 @@ package views.components.base
 {
 	import com.pamakids.utils.DPIUtil;
 
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 
@@ -60,6 +61,22 @@ package views.components.base
 		}
 
 		private var _height:Number;
+		private var mask:Quad;
 
+		public function addMask():void
+		{
+			mask=new Quad(1024, 768, 0, true);
+			mask.alpha=.4;
+			addChild(mask);
+		}
+
+		public function removeMask():void
+		{
+			if (mask)
+			{
+				mask.removeFromParent(true);
+				mask=null;
+			}
+		}
 	}
 }

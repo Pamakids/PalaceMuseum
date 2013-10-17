@@ -82,6 +82,8 @@ package views.module1
 			crtKnowledgeIndex=1;
 			windowIndex=Math.random() > .5 ? 0 : 3;
 
+			_offsetX=Math.random() > .5 ? 30 : -30;
+
 			bg=new Sprite();
 			bg.x=512;
 			addChild(bg);
@@ -156,10 +158,10 @@ package views.module1
 			var tc:Touch=event.getTouch(this, TouchPhase.ENDED);
 			if (!tc)
 				return;
-			var pt:Point=tc.getLocation(stage);
+			var pt:Point=tc.getLocation(this);
 
 			if (dpt && Point.distance(dpt, pt) < 15)
-				checkFG(pt);
+				checkFG(tc.getLocation(fg));
 		}
 
 		private function showShadow():void
@@ -181,9 +183,7 @@ package views.module1
 
 		private function checkFG(pt:Point):void
 		{
-			var lp:Point=fg.globalToLocal(pt);
-
-			if (hotzone1.containsPoint(lp))
+			if (hotzone1.containsPoint(pt))
 			{
 				if (!effComplete)
 					return;
@@ -193,11 +193,11 @@ package views.module1
 				else
 					TweenLite.to(w0s, 1, {alpha: 0, onComplete: showShadow});
 			}
-			else if (hotzone2.containsPoint(lp))
+			else if (hotzone2.containsPoint(pt))
 			{
 				showHint(hotzone2.x + hotzone2.width / 2, hotzone2.y + hotzone2.height / 2, hint2, 1, fg);
 			}
-			else if (hotzone3.containsPoint(lp))
+			else if (hotzone3.containsPoint(pt))
 			{
 				showHint(hotzone3.x + hotzone3.width / 2, hotzone3.y + hotzone3.height / 2, hint4, 3, fg, 3);
 			}
@@ -410,9 +410,6 @@ package views.module1
 				}
 				case TouchPhase.ENDED:
 				{
-//					var point:Point = tc.getLocation(this);
-//					Prompt.show(point.x, point.y, "hint3", "位图字体位图字体", 5);
-
 					dpt=null;
 					break;
 				}
@@ -423,7 +420,7 @@ package views.module1
 			}
 		}
 
-		private var _offsetX:Number=30;
+		private var _offsetX:Number;
 
 		public function get offsetX():Number
 		{

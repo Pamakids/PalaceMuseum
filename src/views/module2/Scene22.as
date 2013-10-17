@@ -148,7 +148,8 @@ package views.module2
 
 		private function onTelePlayed(e:Event):void
 		{
-			showAchievement(13);
+			if (teleGame.finished)
+				showAchievement(13);
 			teleGame.removeEventListener(PalaceGame.GAME_OVER, onTelePlayed)
 			teleGame.removeChildren();
 			removeChild(teleGame);
@@ -165,7 +166,7 @@ package views.module2
 
 		private function onPrismAddCard(e:Event):void
 		{
-			showCard("dragon", function():void {
+			showCard("5", function():void {
 				showAchievement(12)
 			});
 		}

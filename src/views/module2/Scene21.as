@@ -8,7 +8,6 @@ package views.module2
 
 	import feathers.core.PopUpManager;
 
-	import models.FontVo;
 	import models.SOService;
 
 	import starling.display.Image;
@@ -17,7 +16,6 @@ package views.module2
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
@@ -418,7 +416,7 @@ package views.module2
 		{
 			if (findGame.isFinish)
 			{
-				showCard("picture", function():void {
+				showCard("3", function():void {
 					showAchievement(7);
 				});
 			}

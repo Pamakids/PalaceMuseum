@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:1f329c80565b13f364862aeb5cdd6127$ -->
+<!-- $TexturePacker:SmartUpdate:cfcb8f956084a5ae456ade747784375c$ -->
 <TextureAtlas imagePath="m1s3.png">
     <SubTexture name="background13" x="1" y="1" width="1024" height="768"/>
     <SubTexture name="bggame13" x="1026" y="1" width="784" height="617" frameX="-1" frameY="0" frameWidth="810" frameHeight="617"/>
-    <SubTexture name="book" x="1923" y="1" width="91" height="93"/>
+    <SubTexture name="book" x="1923" y="140" width="91" height="93"/>
     <SubTexture name="clock-bg" x="1" y="770" width="858" height="717"/>
-    <SubTexture name="clock-close" x="1819" y="1047" width="80" height="81"/>
+    <SubTexture name="clock-close" x="1801" y="715" width="80" height="81"/>
     <SubTexture name="clock-frontlace" x="1026" y="619" width="636" height="190" frameX="0" frameY="-73" frameWidth="636" frameHeight="298"/>
-    <SubTexture name="clock-hint" x="1387" y="1335" width="33" height="112"/>
+    <SubTexture name="clock-hint" x="1259" y="1837" width="33" height="112"/>
     <SubTexture name="clock-lace" x="860" y="770" width="72" height="38"/>
     <SubTexture name="clock-mask" x="1663" y="619" width="137" height="186"/>
-    <SubTexture name="clock-word" x="1301" y="1221" width="484" height="113"/>
+    <SubTexture name="clock-word" x="623" y="1904" width="484" height="113"/>
     <SubTexture name="clock" x="1811" y="1" width="111" height="240"/>
-    <SubTexture name="clockcollectCard" x="866" y="1493" width="338" height="410"/>
-    <SubTexture name="clockhintarrow" x="1301" y="1156" width="102" height="40"/>
-    <SubTexture name="clockhintfinger" x="1301" y="1335" width="85" height="138"/>
-    <SubTexture name="eunuch13" x="1205" y="1493" width="244" height="428" frameX="0" frameY="-2" frameWidth="244" frameHeight="430"/>
-    <SubTexture name="gameanswer" x="1450" y="1679" width="320" height="335"/>
-    <SubTexture name="gamehinticon" x="1923" y="95" width="61" height="61"/>
+    <SubTexture name="clockhintarrow" x="1" y="2002" width="102" height="40"/>
+    <SubTexture name="clockhintfinger" x="1923" y="1" width="85" height="138"/>
+    <SubTexture name="collection_card_1" x="623" y="1493" width="338" height="410"/>
+    <SubTexture name="collection_card_2" x="1480" y="810" width="338" height="410"/>
+    <SubTexture name="eunuch13" x="1553" y="1221" width="244" height="428" frameX="0" frameY="-2" frameWidth="244" frameHeight="430"/>
+    <SubTexture name="gameanswer" x="1553" y="1650" width="320" height="335"/>
+    <SubTexture name="gamehinticon" x="962" y="1837" width="61" height="61"/>
     <SubTexture name="halo2" x="1" y="1488" width="621" height="513" frameX="0" frameY="0" frameWidth="621" frameHeight="527"/>
-    <SubTexture name="hour-hand" x="1771" y="1679" width="16" height="72"/>
-    <SubTexture name="king13" x="623" y="1493" width="242" height="506" frameX="0" frameY="-2" frameWidth="244" frameHeight="508"/>
-    <SubTexture name="min-hand" x="1786" y="1221" width="31" height="105" frameX="0" frameY="0" frameWidth="33" frameHeight="105"/>
-    <SubTexture name="newDaycollectCard" x="1480" y="810" width="338" height="410"/>
+    <SubTexture name="hour-hand" x="1798" y="1221" width="16" height="72"/>
+    <SubTexture name="king13" x="1310" y="1329" width="242" height="506" frameX="0" frameY="-2" frameWidth="244" frameHeight="508"/>
+    <SubTexture name="min-hand" x="1447" y="1156" width="31" height="105" frameX="0" frameY="0" frameWidth="33" frameHeight="105"/>
     <SubTexture name="plaque-word" x="860" y="1156" width="440" height="336"/>
-    <SubTexture name="plaque" x="866" y="1904" width="290" height="85"/>
-    <SubTexture name="plaquehintarrow" x="1450" y="1335" width="347" height="343"/>
-    <SubTexture name="plaquehintfinger" x="1811" y="242" width="145" height="172"/>
+    <SubTexture name="plaque" x="1259" y="1950" width="290" height="85"/>
+    <SubTexture name="plaquehintarrow" x="962" y="1493" width="347" height="343"/>
+    <SubTexture name="plaquehintfinger" x="1301" y="1156" width="145" height="172"/>
     <SubTexture name="scene13-bird" x="860" y="810" width="619" height="345"/>
-    <SubTexture name="又" x="1811" y="415" width="158" height="158"/>
-    <SubTexture name="新" x="1819" y="733" width="150" height="158" frameX="-4" frameY="0" frameWidth="158" frameHeight="158"/>
-    <SubTexture name="日" x="1819" y="892" width="154" height="154" frameX="-4" frameY="0" frameWidth="158" frameHeight="158"/>
-    <SubTexture name="苟" x="1811" y="574" width="156" height="158" frameX="-2" frameY="0" frameWidth="158" frameHeight="158"/>
+    <SubTexture name="又" x="1811" y="242" width="158" height="158"/>
+    <SubTexture name="新" x="1108" y="1837" width="150" height="158" frameX="-4" frameY="0" frameWidth="158" frameHeight="158"/>
+    <SubTexture name="日" x="1811" y="560" width="154" height="154" frameX="-4" frameY="0" frameWidth="158" frameHeight="158"/>
+    <SubTexture name="苟" x="1811" y="401" width="156" height="158" frameX="-2" frameY="0" frameWidth="158" frameHeight="158"/>
 </TextureAtlas>
