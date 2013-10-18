@@ -37,7 +37,7 @@ package views.module1.scene12
 //			}
 		}
 
-		private var hatY:Number=-404;
+		private var hatY:Number=-395;
 		private var clothY:Number=-350;
 
 		public var index:int;

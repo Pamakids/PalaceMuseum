@@ -9,6 +9,7 @@ package views.module2
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
@@ -63,22 +64,28 @@ package views.module2
 				itemArr.push(item);
 			}
 
+			LionMC.instance.say("皇上的洋人老师，带来几个新鲜玩意儿，试试吧", 0, 200, 500, addTouchs, 20, false);
+
 			thermo=getImage("thermometer32");
 			thermo.x=45;
 			thermo.y=246;
 			addChild(thermo);
-			thermo.addEventListener(TouchEvent.TOUCH, onThermoTouch);
 
 			tele=getImage("tele32");
 			tele.x=474;
 			tele.y=453;
 			addChild(tele);
-			tele.addEventListener(TouchEvent.TOUCH, onTeleTouch);
 
 			prism=getImage("prism32");
 			prism.x=834;
 			prism.y=380;
 			addChild(prism);
+		}
+
+		private function addTouchs():void
+		{
+			thermo.addEventListener(TouchEvent.TOUCH, onThermoTouch);
+			tele.addEventListener(TouchEvent.TOUCH, onTeleTouch);
 			prism.addEventListener(TouchEvent.TOUCH, onPrismTouch);
 		}
 

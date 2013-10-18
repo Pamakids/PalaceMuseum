@@ -129,6 +129,8 @@ package views.global.map
 				var gt:Array=hotspot['goto'];
 				if (gt)
 				{
+					if (gt[0] == 1)
+						p=new Point(p.x + 45, p.y)
 					centerPoint[gt[0]]=p;
 					tasks[gt[0]]=hotspot.task;
 				}
@@ -217,6 +219,10 @@ package views.global.map
 
 		private function clear(status:int):void
 		{
+			var msIndex:String=SOService.instance.getSO("lastScene") as String;
+			if (msIndex && msIndex.lastIndexOf("map") >= 0)
+				SOService.instance.setSO("lastScene", msIndex.substr(0, 2));
+
 			visible=false;
 			closeButton.visible=false;
 			changing=false;
@@ -450,15 +456,20 @@ package views.global.map
 
 								if (!showingHint[item.tip])
 								{
-									showHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 900 ? 3 : 1,
-										function():void
-										{
-											delete showingHint[item.tip];
-											if (changing) {
+									if (changing)
+										showFinalHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 900 ? 3 : 1,
+											function():void
+											{
+												delete showingHint[item.tip];
 												clear(2);
 												MC.instance.gotoModule(targetIndex);
-											}
-										});
+											});
+									else
+										showHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 900 ? 3 : 1,
+											function():void
+											{
+												delete showingHint[item.tip];
+											});
 								}
 
 //								if (targetIndex != -1 && crtIndex == targetIndex)
@@ -525,36 +536,36 @@ package views.global.map
 
 		private function drawPath(x1:Number, y1:Number, x2:Number, y2:Number, time:Number):void
 		{
-			var totalCount:int=time * 30;
-			var count:int=0;
-			drawingPath.graphics.clear();
-			drawingPath.graphics.lineStyle(3, 0x66ccff);
-			drawingPath.graphics.moveTo(x1, y1);
-			drawingPath.addEventListener(Event.ENTER_FRAME,
-				function(e:Event):void {
-					if (count < totalCount && visible)
-					{
-						count++;
-						var d:Number=count / totalCount;
-						var dx:Number=(x2 - x1) * d + x1;
-						var dy:Number=(y2 - y1) * d + y1;
-						drawingPath.graphics.lineTo(dx, dy);
-					}
-				});
+//			var totalCount:int=time * 30;
+//			var count:int=0;
+//			drawingPath.graphics.clear();
+//			drawingPath.graphics.lineStyle(3, 0x66ccff);
+//			drawingPath.graphics.moveTo(x1, y1);
+//			drawingPath.addEventListener(Event.ENTER_FRAME,
+//				function(e:Event):void {
+//					if (count < totalCount && visible)
+//					{
+//						count++;
+//						var d:Number=count / totalCount;
+//						var dx:Number=(x2 - x1) * d + x1;
+//						var dy:Number=(y2 - y1) * d + y1;
+//						drawingPath.graphics.lineTo(dx, dy);
+//					}
+//				});
 		}
 
 		private function resetDrawPath():void
 		{
-			if (!drawingPath)
-			{
-				drawingPath=new Shape();
-				pathHolder.addChild(drawingPath);
-			}
-			drawingPath.graphics.clear();
+//			if (!drawingPath)
+//			{
+//				drawingPath=new Shape();
+//				pathHolder.addChild(drawingPath);
+//			}
+//			drawingPath.graphics.clear();
 		}
 
-		private var drawingPath:Shape;
-		private var path:Shape;
+//		private var drawingPath:Shape;
+//		private var path:Shape;
 
 		private function drawRect(r:Rectangle):void
 		{
@@ -590,6 +601,16 @@ package views.global.map
 			p=Prompt.showTXT(_x, _y, _content, 18, callbakc, _parent, bgAlign, true);
 			showingHint[_content]=p;
 		}
+
+		private function showFinalHint(_x:Number, _y:Number, _content:String, reg:int, _parent:Sprite, bgAlign:int=1, callbakc:Function=null):void
+		{
+			if (p2)
+				p2.playHide();
+			p2=Prompt.showTXT(_x, _y, _content, 18, callbakc, _parent, bgAlign, true);
+			showingHint[_content]=p2;
+		}
+
+		private var p2:Prompt;
 
 		private var sos:SOService;
 		private var mc:MC;
@@ -700,13 +721,13 @@ package views.global.map
 		 * */
 		private function resetLockHolder():void
 		{
-			if (!path)
-			{
-				path=new Shape();
-				pathHolder.addChild(path);
-			}
-			path.graphics.clear();
-			path.graphics.lineStyle(3, 0x66ccff);
+//			if (!path)
+//			{
+//				path=new Shape();
+//				pathHolder.addChild(path);
+//			}
+//			path.graphics.clear();
+//			path.graphics.lineStyle(3, 0x66ccff);
 
 			lockHolder.visible=showFromCenter;
 			lockHolder.removeChildren();
@@ -721,10 +742,10 @@ package views.global.map
 					img.y=centerPoint[i].y;
 					lockHolder.addChild(img);
 
-					if (i == 0)
-						path.graphics.moveTo(img.x, img.y);
-					else
-						path.graphics.lineTo(img.x, img.y);
+//					if (i == 0)
+//						path.graphics.moveTo(img.x, img.y);
+//					else
+//						path.graphics.lineTo(img.x, img.y);
 				}
 			}
 		}

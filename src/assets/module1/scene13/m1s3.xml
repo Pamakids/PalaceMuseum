@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:cfcb8f956084a5ae456ade747784375c$ -->
+<!-- $TexturePacker:SmartUpdate:5d82fab5361f05235f5c1dc0aae07b03$ -->
 <TextureAtlas imagePath="m1s3.png">
     <SubTexture name="background13" x="1" y="1" width="1024" height="768"/>
     <SubTexture name="bggame13" x="1026" y="1" width="784" height="617" frameX="-1" frameY="0" frameWidth="810" frameHeight="617"/>
-    <SubTexture name="book" x="1923" y="140" width="91" height="93"/>
     <SubTexture name="clock-bg" x="1" y="770" width="858" height="717"/>
-    <SubTexture name="clock-close" x="1801" y="715" width="80" height="81"/>
     <SubTexture name="clock-frontlace" x="1026" y="619" width="636" height="190" frameX="0" frameY="-73" frameWidth="636" frameHeight="298"/>
     <SubTexture name="clock-hint" x="1259" y="1837" width="33" height="112"/>
-    <SubTexture name="clock-lace" x="860" y="770" width="72" height="38"/>
     <SubTexture name="clock-mask" x="1663" y="619" width="137" height="186"/>
     <SubTexture name="clock-word" x="623" y="1904" width="484" height="113"/>
     <SubTexture name="clock" x="1811" y="1" width="111" height="240"/>

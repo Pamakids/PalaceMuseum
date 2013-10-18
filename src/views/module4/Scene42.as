@@ -4,12 +4,18 @@ package views.module4
 
 	import controllers.MC;
 
+	import feathers.core.PopUpManager;
+
 	import starling.display.Image;
+	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.ElasticButton;
+	import views.components.LionMC;
 	import views.components.base.PalaceScene;
 	import views.global.TopBar;
 
@@ -53,6 +59,8 @@ package views.module4
 
 		private var drawScene:palace_paper;
 
+		private var chooseWin:Sprite;
+
 		private function addOneMemorial():void
 		{
 			var index:int=Math.random() * indexArr.length;
@@ -89,7 +97,6 @@ package views.module4
 
 		private function removeMemorial():void
 		{
-			showAchievement(22);
 			TopBar.show();
 			TweenLite.to(hand, .5, {y: handPosY, onComplete: function():void {
 
@@ -100,16 +107,70 @@ package views.module4
 					crtMemorial=null;
 					trace(indexArr.length)
 					if (indexArr.length == 2) {
-//						MC.instance.stage.stage.quality="high";
 						MC.instance.stage.removeChild(drawScene);
-						showAchievement(23);
-						sceneOver();
+						drawScene=null;
+						showCard("9", function():void {
+							showAchievement(23, playLion);
+						});
+
 					}
 					else
-						addOneMemorial();
+						addChoose();
 				}});
 			}});
 
+		}
+
+		private function playLion():void
+		{
+			LionMC.instance.say("皇上辛苦了，这就传晚膳", 0, 200, 500, sceneOver);
+		}
+
+		private function addChoose():void
+		{
+			chooseWin=new Sprite();
+
+			var bar:Image=getImage("continue");
+			bar.x=321;
+			bar.y=466;
+			chooseWin.addChild(bar);
+
+			var yes:ElasticButton=new ElasticButton(getImage("yesBtn"));
+			yes.shadow=getImage("yesBtn-down");
+			yes.x=394 + 36;
+			yes.y=592 + 36;
+			chooseWin.addChild(yes);
+			yes.addEventListener(ElasticButton.CLICK, onYes);
+
+			var no:ElasticButton=new ElasticButton(getImage("noBtn"));
+			no.shadow=getImage("noBtn-down");
+			no.x=528 + 36;
+			no.y=592 + 36;
+			chooseWin.addChild(no);
+			no.addEventListener(ElasticButton.CLICK, onNo);
+
+			PopUpManager.addPopUp(chooseWin, true, false);
+		}
+
+		private function onYes(e:Event):void
+		{
+			chooseWin.touchable=false;
+			PopUpManager.removePopUp(chooseWin);
+			chooseWin.dispose();
+			addOneMemorial();
+		}
+
+		private function onNo():void
+		{
+			chooseWin.touchable=false;
+			PopUpManager.removePopUp(chooseWin);
+			chooseWin.dispose();
+			MC.instance.stage.removeChild(drawScene);
+			drawScene=null;
+//			LionMC.instance.say("皇上辛苦了，这就传晚膳", 0, 200, 500, sceneOver);
+			showCard("8", function():void {
+				showAchievement(22, playLion);
+			});
 		}
 	}
 }

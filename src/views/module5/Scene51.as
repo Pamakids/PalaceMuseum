@@ -1,6 +1,7 @@
 package views.module5
 {
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -9,7 +10,6 @@ package views.module5
 
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
-	import views.module5.scene51.Audience;
 
 	/**
 	 * 娱乐模块
@@ -18,75 +18,60 @@ package views.module5
 	 */
 	public class Scene51 extends PalaceScene
 	{
-		private var avatarTypeArr:Array=["chancellor", "maid", "empressdowager"];
+//		private var avatarTypeArr:Array=["chancellor", "maid", "empressdowager"];
 		private var txtArr:Array=["大臣：希望这次的座位别排在柱子后面",
 			"大臣：唉，跪着听戏真不好受",
 			"大臣：幸亏我年纪一把，能有个椅子坐",
 			"宫女：今儿皇上听戏倒是积极",
 			"太后：今演好了，重重有赏！"];
 
-		private var posArr:Array=[new Point(229, 554), new Point(353, 624),
-			new Point(810, 294), new Point(833, 447), new Point(731, 490)];
 		private var count:int=0;
+		private var areaArr:Array=[new Rectangle(247, 567, 43, 48), new Rectangle(280, 626, 44, 59),
+			new Rectangle(368, 685, 44, 59), new Rectangle(696, 564, 29, 61), new Rectangle(771, 553, 45, 76)];
+		private var checkArr:Vector.<Boolean>=new Vector.<Boolean>(5);
 
 		public function Scene51(am:AssetManager=null)
 		{
 			super(am);
 			crtKnowledgeIndex=12;
-			addChild(getImage("bg41"));
+			addChild(getImage("bg51"));
 
-			addAvatars();
+			addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 
-		private function addAvatars():void
+		private function onTouch(e:TouchEvent):void
 		{
-			for (var i:int=0; i < 3; i++)
-			{
-				var chancellor:Audience=new Audience();
-				chancellor.addChild(getImage(avatarTypeArr[0]));
-				chancellor.x=posArr[i].x;
-				chancellor.y=posArr[i].y;
-				chancellor.index=i;
-				chancellor.addEventListener(TouchEvent.TOUCH, onAvatarTouch);
-				addChild(chancellor);
-			}
-
-			var maid:Audience=new Audience(); //宫女
-			maid.addChild(getImage(avatarTypeArr[1]));
-			maid.x=posArr[3].x;
-			maid.y=posArr[3].y;
-			maid.index=3;
-			maid.addEventListener(TouchEvent.TOUCH, onAvatarTouch);
-			addChild(maid);
-
-			var empressdowager:Audience=new Audience(); //太后
-			empressdowager.addChild(getImage(avatarTypeArr[2]));
-			empressdowager.x=posArr[4].x;
-			empressdowager.y=posArr[4].y;
-			empressdowager.index=4;
-			empressdowager.addEventListener(TouchEvent.TOUCH, onAvatarTouch);
-			addChild(empressdowager);
-		}
-
-		private function onAvatarTouch(e:TouchEvent):void
-		{
-			var audience:Audience=e.currentTarget as Audience;
-			if (!audience)
-				return;
-			var tc:Touch=e.getTouch(audience, TouchPhase.ENDED);
+			var tc:Touch=e.getTouch(this, TouchPhase.ENDED);
 			if (!tc)
 				return;
-			Prompt.showTXT(audience.x + audience.width - 20, audience.y, txtArr[audience.index]);
-			if (!audience.isClicked)
+
+			for (var i:int=0; i < areaArr.length; i++)
 			{
-				audience.isClicked=true;
-				count++;
-				if (count == 3)
+				var rect:Rectangle=areaArr[i];
+				if (rect && rect.containsPoint(tc.getLocation(this)))
 				{
-					showAchievement(26);
-					sceneOver();
+					checkArr[i]=true;
+					if (p)
+						p.playHide();
+					p=Prompt.showTXT(rect.x + rect.width - 20, rect.y, txtArr[i]);
+					checkAll();
+					return;
 				}
 			}
+		}
+
+		private var p:Prompt;
+
+		private function checkAll():void
+		{
+			var count:int=0;
+			for each (var b:Boolean in checkArr)
+			{
+				if (b)
+					count++;
+			}
+			if (count == 3)
+				sceneOver();
 		}
 	}
 }

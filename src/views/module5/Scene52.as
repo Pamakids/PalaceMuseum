@@ -10,6 +10,7 @@ package views.module5
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 
+	import views.components.FlipImage;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 	import views.module5.scene52.OpearaGame2;
@@ -30,7 +31,7 @@ package views.module5
 		private var gameHolder:Sprite;
 
 		private var curtainL:Image;
-		private var curtainR:Image;
+		private var curtainR:FlipImage;
 		private var offsetX:Number;
 
 		private var game2:OpearaGame2;
@@ -46,7 +47,8 @@ package views.module5
 			offsetX=curtainL.width;
 			curtainL.x=0;
 			addChild(curtainL);
-			curtainR=getImage("opera-curtainR");
+			curtainR=new FlipImage(curtainL.texture, true, false);
+			curtainR.location=1;
 			curtainR.x=1024 - offsetX;
 			addChild(curtainR);
 
@@ -130,15 +132,24 @@ package views.module5
 		{
 			var lvl:int=game.gamelevel;
 			if (game.isWin())
-				showAchievement(lvl == 0 ? 28 : 29);
+			{
+				if (lvl == 0)
+					showCard("10", function():void {
+						initGame2(lvl);
+						showAchievement(28);
+					});
+				else
+					showCard("11", function():void {
+						initGame2(lvl);
+						showAchievement(29);
+					});
+			}
 			game.removeEventListener(PalaceGame.GAME_OVER, onGameOver);
 			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 			game.removeEventListener("nextGame", onPlayGame2);
 			gameHolder.removeChild(game);
 			game.dispose();
 			game=null;
-
-			initGame2(lvl);
 		}
 
 		private function initGame2(lvl:int):void

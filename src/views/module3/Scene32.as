@@ -109,7 +109,11 @@ package views.module3
 			inGame=false;
 			if (game.isWin)
 			{
-				showAchievement(game.gamelevel == 0 ? 16 : 17)
+				if (game.gamelevel == 0)
+					showAchievement(16);
+				else
+					showCard("6", function():void {
+						showAchievement(17)});
 				sceneOver();
 			}
 			game.removeFromParent(true);

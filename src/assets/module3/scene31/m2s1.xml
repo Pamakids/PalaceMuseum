@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:7a314c8458bc03a039ea07d38bb228cd$ -->
+<!-- $TexturePacker:SmartUpdate:d091571f844916d72de93fc33a741029$ -->
 <TextureAtlas imagePath="m2s1.png">
     <SubTexture name="bg21" x="2" y="2" width="1024" height="768"/>
     <SubTexture name="book21" x="1028" y="2" width="937" height="766"/>
-    <SubTexture name="chef-back" x="2" y="1270" width="246" height="400" frameX="0" frameY="0" frameWidth="250" frameHeight="400"/>
-    <SubTexture name="chef-front" x="2" y="1672" width="238" height="360" frameX="-12" frameY="-37" frameWidth="250" frameHeight="400"/>
-    <SubTexture name="close" x="242" y="1672" width="80" height="81"/>
     <SubTexture name="fg21" x="2" y="772" width="1024" height="496"/>
-    <SubTexture name="king21" x="1028" y="770" width="282" height="249"/>
 </TextureAtlas>

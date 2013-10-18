@@ -1,6 +1,8 @@
 ﻿package Firefly
 {
 
+	import com.pamakids.utils.DPIUtil;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
@@ -62,7 +64,7 @@
 //			addEventListener(MouseEvent.MOUSE_DOWN, _mouseDown);
 //			addEventListener(MouseEvent.MOUSE_UP, _mouseUp);
 			TouchManager.getInstance().addEventListener(ATouchEvent.NEW_TOUCH, _mouseDown, 1000000)
-			bmd=new BitmapData(1024, 508, true, 0x0);
+			bmd=new BitmapData(1024 * DPIUtil.getDPIScale(), 508 * DPIUtil.getDPIScale(), true, 0x0);
 			bm=new Bitmap(bmd);
 			addChild(bm);
 

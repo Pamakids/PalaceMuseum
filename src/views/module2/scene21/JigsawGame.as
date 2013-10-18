@@ -29,7 +29,7 @@ package views.module2.scene21
 
 	public class JigsawGame extends PalaceGame
 	{
-		[Embed(source="/assets/module2/scene21/map.jpg")]
+		[Embed(source="/assets/module2/scene21/map.png")]
 		private var img:Class;
 
 		private var startSP:Sprite=new Sprite();

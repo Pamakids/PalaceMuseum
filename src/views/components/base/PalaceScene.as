@@ -21,7 +21,6 @@ package views.components.base
 	import models.SOService;
 
 	import starling.display.Image;
-	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
