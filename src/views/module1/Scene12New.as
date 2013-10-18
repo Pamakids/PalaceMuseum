@@ -417,7 +417,7 @@ package views.module1
 				kingHead=null;
 			}
 
-			kingHead=new MovieClip(assets.getTextures(expArr[expressionIndex]), 30);
+			kingHead=new MovieClip(assets.getTextures(expArr[expressionIndex]), 18);
 			kingHead.loop=0;
 			kingHead.play();
 			Starling.juggler.add(kingHead);

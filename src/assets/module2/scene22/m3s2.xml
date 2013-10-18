@@ -1,289 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:f5ed3e7a5af157de2189e16da4f6b411$ -->
+<!-- $TexturePacker:SmartUpdate:515235d262e497de4d6dee662dc42fe9$ -->
 <TextureAtlas imagePath="m3s2.png">
-	<SubTexture name="brushpot"
-				x="1095"
-				y="1364"
-				width="118"
-				height="191"/>
-	<SubTexture name="collection_card_5"
-				x="2"
-				y="936"
-				width="338"
-				height="410"/>
-	<SubTexture name="hint32"
-				x="547"
-				y="391"
-				width="137"
-				height="58"/>
-	<SubTexture name="inkstone"
-				x="1269"
-				y="1554"
-				width="208"
-				height="137"/>
-	<SubTexture name="light-input"
-				x="2"
-				y="2"
-				width="1020"
-				height="39"/>
-	<SubTexture name="light-out"
-				x="2"
-				y="43"
-				width="688"
-				height="346"/>
-	<SubTexture name="light-prism"
-				x="1052"
-				y="1766"
-				width="194"
-				height="169"/>
-	<SubTexture name="light-sign"
-				x="2"
-				y="1364"
-				width="369"
-				height="578"/>
-	<SubTexture name="paper"
-				x="547"
-				y="647"
-				width="435"
-				height="383"/>
-	<SubTexture name="part0"
-				x="806"
-				y="1610"
-				width="243"
-				height="237"/>
-	<SubTexture name="part1"
-				x="844"
-				y="1364"
-				width="249"
-				height="200"/>
-	<SubTexture name="part2"
-				x="1797"
-				y="574"
-				width="228"
-				height="194"/>
-	<SubTexture name="part3"
-				x="1051"
-				y="1566"
-				width="216"
-				height="198"/>
-	<SubTexture name="part4"
-				x="692"
-				y="339"
-				width="273"
-				height="218"/>
-	<SubTexture name="part5"
-				x="1805"
-				y="397"
-				width="231"
-				height="175"/>
-	<SubTexture name="part6"
-				x="373"
-				y="1868"
-				width="202"
-				height="176"/>
-	<SubTexture name="part7"
-				x="1805"
-				y="205"
-				width="234"
-				height="190"/>
-	<SubTexture name="part8"
-				x="577"
-				y="1860"
-				width="249"
-				height="185"/>
-	<SubTexture name="prism32"
-				x="746"
-				y="1364"
-				width="96"
-				height="244"/>
-	<SubTexture name="scene22-bird"
-				x="1024"
-				y="2"
-				width="779"
-				height="406"/>
-	<SubTexture name="tele-arm"
-				x="1347"
-				y="1081"
-				width="128"
-				height="151"/>
-	<SubTexture name="tele-king"
-				x="1534"
-				y="410"
-				width="261"
-				height="329"
-				frameX="-20"
-				frameY="0"
-				frameWidth="281"
-				frameHeight="329"/>
-	<SubTexture name="tele-mask"
-				x="1020"
-				y="410"
-				width="512"
-				height="512"/>
-	<SubTexture name="tele-ring-in"
-				x="1534"
-				y="853"
-				width="509"
-				height="509"
-				frameX="-17"
-				frameY="-17"
-				frameWidth="543"
-				frameHeight="543"/>
-	<SubTexture name="tele-ring-out"
-				x="2"
-				y="391"
-				width="543"
-				height="543"/>
-	<SubTexture name="tele1"
-				x="974"
-				y="129"
-				width="37"
-				height="126"
-				frameX="0"
-				frameY="0"
-				frameWidth="39"
-				frameHeight="126"/>
-	<SubTexture name="tele2"
-				x="974"
-				y="43"
-				width="47"
-				height="84"/>
-	<SubTexture name="tele3"
-				x="967"
-				y="339"
-				width="51"
-				height="80"
-				frameX="0"
-				frameY="0"
-				frameWidth="51"
-				frameHeight="96"/>
-	<SubTexture name="tele32"
-				x="692"
-				y="43"
-				width="280"
-				height="294"/>
-	<SubTexture name="thermo-body-shadow"
-				x="940"
-				y="1849"
-				width="110"
-				height="194"/>
-	<SubTexture name="thermo-body"
-				x="828"
-				y="1849"
-				width="110"
-				height="194"/>
-	<SubTexture name="thermo-boiling-shadow"
-				x="373"
-				y="936"
-				width="168"
-				height="199"
-				frameX="-3"
-				frameY="0"
-				frameWidth="174"
-				frameHeight="201"/>
-	<SubTexture name="thermo-boiling"
-				x="342"
-				y="1137"
-				width="174"
-				height="201"/>
-	<SubTexture name="thermo-halo"
-				x="620"
-				y="1676"
-				width="184"
-				height="181"/>
-	<SubTexture name="thermo-ice-shadow"
-				x="1534"
-				y="770"
-				width="199"
-				height="78"
-				frameX="-3"
-				frameY="-3"
-				frameWidth="205"
-				frameHeight="84"/>
-	<SubTexture name="thermo-ice"
-				x="685"
-				y="559"
-				width="205"
-				height="84"/>
-	<SubTexture name="thermo-light"
-				x="1534"
-				y="754"
-				width="244"
-				height="11"
-				frameX="-3"
-				frameY="-1"
-				frameWidth="250"
-				frameHeight="15"/>
-	<SubTexture name="thermo-line"
-				x="1534"
-				y="741"
-				width="244"
-				height="11"
-				frameX="-3"
-				frameY="-1"
-				frameWidth="250"
-				frameHeight="15"/>
-	<SubTexture name="thermo-mercury"
-				x="2038"
-				y="397"
-				width="6"
-				height="454"/>
-	<SubTexture name="thermo-pan"
-				x="1347"
-				y="924"
-				width="154"
-				height="155"
-				frameX="-11"
-				frameY="-10"
-				frameWidth="184"
-				frameHeight="181"/>
-	<SubTexture name="thermo-snowman-shadow"
-				x="1215"
-				y="1364"
-				width="130"
-				height="188"
-				frameX="-3"
-				frameY="-3"
-				frameWidth="136"
-				frameHeight="194"/>
-	<SubTexture name="thermo-snowman"
-				x="547"
-				y="451"
-				width="136"
-				height="194"/>
-	<SubTexture name="thermo-tea-shadow"
-				x="1248"
-				y="1766"
-				width="109"
-				height="158"
-				frameX="-3"
-				frameY="0"
-				frameWidth="115"
-				frameHeight="160"/>
-	<SubTexture name="thermo-tea"
-				x="1347"
-				y="1234"
-				width="115"
-				height="160"/>
-	<SubTexture name="thermo"
-				x="532"
-				y="1137"
-				width="86"
-				height="721"/>
-	<SubTexture name="thermometer32"
-				x="373"
-				y="1364"
-				width="157"
-				height="502"/>
-	<SubTexture name="waterpot"
-				x="1805"
-				y="2"
-				width="235"
-				height="201"/>
-	<SubTexture name="writingbrush"
-				x="620"
-				y="1364"
-				width="124"
-				height="310"/>
+    <SubTexture name="brushpot" x="1095" y="1364" width="118" height="191"/>
+    <SubTexture name="collection_card_5" x="2" y="936" width="338" height="410"/>
+    <SubTexture name="hint32" x="547" y="391" width="137" height="58"/>
+    <SubTexture name="inkstone" x="1269" y="1554" width="208" height="137"/>
+    <SubTexture name="light-input" x="2" y="2" width="1020" height="39"/>
+    <SubTexture name="light-out" x="2" y="43" width="688" height="346"/>
+    <SubTexture name="light-prism" x="1052" y="1766" width="194" height="169"/>
+    <SubTexture name="light-sign" x="2" y="1364" width="369" height="578"/>
+    <SubTexture name="paper" x="547" y="647" width="435" height="383"/>
+    <SubTexture name="part0" x="806" y="1610" width="243" height="237"/>
+    <SubTexture name="part1" x="844" y="1364" width="249" height="200"/>
+    <SubTexture name="part2" x="1797" y="574" width="228" height="194"/>
+    <SubTexture name="part3" x="1051" y="1566" width="216" height="198"/>
+    <SubTexture name="part4" x="692" y="339" width="273" height="218"/>
+    <SubTexture name="part5" x="1805" y="397" width="231" height="175"/>
+    <SubTexture name="part6" x="373" y="1868" width="202" height="176"/>
+    <SubTexture name="part7" x="1805" y="205" width="234" height="190"/>
+    <SubTexture name="part8" x="577" y="1860" width="249" height="185"/>
+    <SubTexture name="prism32" x="746" y="1364" width="96" height="244"/>
+    <SubTexture name="scene22-bird" x="1024" y="2" width="779" height="406"/>
+    <SubTexture name="tele-arm" x="1347" y="1081" width="128" height="151"/>
+    <SubTexture name="tele-king" x="1534" y="410" width="261" height="329" frameX="-20" frameY="0" frameWidth="281" frameHeight="329"/>
+    <SubTexture name="tele-mask" x="1020" y="410" width="512" height="512"/>
+    <SubTexture name="tele-ring-in" x="1534" y="853" width="509" height="509" frameX="-17" frameY="-17" frameWidth="543" frameHeight="543"/>
+    <SubTexture name="tele-ring-out" x="2" y="391" width="543" height="543"/>
+    <SubTexture name="tele1" x="974" y="129" width="37" height="126" frameX="0" frameY="0" frameWidth="39" frameHeight="126"/>
+    <SubTexture name="tele2" x="974" y="43" width="47" height="84"/>
+    <SubTexture name="tele3" x="967" y="339" width="51" height="80" frameX="0" frameY="0" frameWidth="51" frameHeight="96"/>
+    <SubTexture name="tele32" x="692" y="43" width="280" height="294"/>
+    <SubTexture name="thermo-body-shadow" x="940" y="1849" width="110" height="194"/>
+    <SubTexture name="thermo-body" x="828" y="1849" width="110" height="194"/>
+    <SubTexture name="thermo-boiling-shadow" x="373" y="936" width="168" height="199" frameX="-3" frameY="0" frameWidth="174" frameHeight="201"/>
+    <SubTexture name="thermo-boiling" x="342" y="1137" width="174" height="201"/>
+    <SubTexture name="thermo-halo" x="620" y="1676" width="184" height="181"/>
+    <SubTexture name="thermo-ice-shadow" x="1534" y="770" width="199" height="78" frameX="-3" frameY="-3" frameWidth="205" frameHeight="84"/>
+    <SubTexture name="thermo-ice" x="685" y="559" width="205" height="84"/>
+    <SubTexture name="thermo-light" x="1534" y="754" width="244" height="11" frameX="-3" frameY="-1" frameWidth="250" frameHeight="15"/>
+    <SubTexture name="thermo-line" x="1534" y="741" width="244" height="11" frameX="-3" frameY="-1" frameWidth="250" frameHeight="15"/>
+    <SubTexture name="thermo-mercury" x="2038" y="397" width="6" height="454"/>
+    <SubTexture name="thermo-pan" x="1347" y="924" width="154" height="155" frameX="-11" frameY="-10" frameWidth="184" frameHeight="181"/>
+    <SubTexture name="thermo-snowman-shadow" x="1215" y="1364" width="130" height="188" frameX="-3" frameY="-3" frameWidth="136" frameHeight="194"/>
+    <SubTexture name="thermo-snowman" x="547" y="451" width="136" height="194"/>
+    <SubTexture name="thermo-tea-shadow" x="1248" y="1766" width="109" height="158" frameX="-3" frameY="0" frameWidth="115" frameHeight="160"/>
+    <SubTexture name="thermo-tea" x="1347" y="1234" width="115" height="160"/>
+    <SubTexture name="thermo" x="532" y="1137" width="86" height="721"/>
+    <SubTexture name="thermometer32" x="373" y="1364" width="157" height="502"/>
+    <SubTexture name="waterpot" x="1805" y="2" width="235" height="201"/>
+    <SubTexture name="writingbrush" x="620" y="1364" width="124" height="310"/>
 </TextureAtlas>

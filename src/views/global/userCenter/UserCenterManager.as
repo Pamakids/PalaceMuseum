@@ -80,6 +80,18 @@ package views.global.userCenter
 			return _userCenter;
 		}
 
+		public static function enable():void
+		{
+			if (_userCenter)
+				_userCenter.touchable=true;
+		}
+
+		public static function disable():void
+		{
+			if (_userCenter)
+				_userCenter.touchable=false;
+		}
+
 		/**
 		 * 资源加载
 		 */
@@ -111,11 +123,11 @@ package views.global.userCenter
 			_assetsManager=new AssetManager();
 			_assetsManager.enqueue(
 				File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"),
-				"assets/global/mapBG.jpg", 
-				"assets/global/userCenter/content_page_1.png", 
+				"assets/global/mapBG.jpg",
+				"assets/global/userCenter/content_page_1.png",
 				"assets/global/userCenter/content_page_2.png",
 				"json/collection.json"
-			);
+				);
 			_assetsManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)

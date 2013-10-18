@@ -6,7 +6,9 @@ package views.module2.scene21
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -53,13 +55,14 @@ package views.module2.scene21
 			flute.visible=false;
 			addChild(flute);
 
-			bug=getImage("crickets");
-			bug.x=originPosArr[2].x;
-			bug.y=originPosArr[2].y;
-			bug.scaleX=bug.scaleY=55 / 102;
-			addChild(bug);
-			bug.addEventListener(TouchEvent.TOUCH, onBugTouch);
+			addBugS();
 
+//			bug=getImage("crickets");
+//			bug.x=originPosArr[2].x;
+//			bug.y=originPosArr[2].y;
+//			bug.scaleX=bug.scaleY=55 / 102;
+//			addChild(bug);
+//			bug.addEventListener(TouchEvent.TOUCH, onBugTouch);
 			addEventListener(TouchEvent.TOUCH, onTouch);
 
 			closeBtn=new ElasticButton(getImage("button_close"));
@@ -69,15 +72,82 @@ package views.module2.scene21
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
 		}
 
-		private function onBugTouch(e:TouchEvent):void
+		private function addBugS():void
 		{
-			var tc:Touch=e.getTouch(bug, TouchPhase.ENDED);
+			bugS=new MovieClip(assets.getTextures("bugS"), 30);
+			bugS.x=originPosArr[2].x;
+			bugS.y=originPosArr[2].y;
+			bugS.stop();
+			addChild(bugS);
+			bugS.addEventListener(TouchEvent.TOUCH, onBugSTouch);
+		}
+
+		private function onBugSTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(bugS, TouchPhase.ENDED);
 			if (tc)
 			{
-				bug.removeEventListener(TouchEvent.TOUCH, onBugTouch);
-				playBug(destPosArr[2]);
+				bugS.removeEventListener(TouchEvent.TOUCH, onBugSTouch);
+				bugS.loop=0;
+				bugS.play();
+				Starling.juggler.add(bugS);
+				bugS.addEventListener(Event.COMPLETE, playBugB);
 			}
 		}
+
+//		private function onBugTouch(e:TouchEvent):void
+//		{
+//			var tc:Touch=e.getTouch(bug, TouchPhase.ENDED);
+//			if (tc)
+//			{
+//				bug.removeEventListener(TouchEvent.TOUCH, onBugTouch);
+//				playBug(destPosArr[2]);
+//			}
+//		}
+
+		private var jumpCount:int=0;
+
+		private function playBugB(e:Event):void
+		{
+			if (bugS)
+			{
+				var img:Image=shadowArr[2] as Image;
+				TweenLite.to(img, 2, {alpha: 0});
+				bugS.removeEventListener(Event.COMPLETE, playBugB);
+				bugS.stop();
+				Starling.juggler.remove(bugS);
+				bugS.removeFromParent(true);
+				bugS=null;
+			}
+
+			if (!bugB)
+			{
+				bugB=new MovieClip(assets.getTextures("bugB"), 30);
+				bugB.loop=3;
+				Starling.juggler.add(bugB);
+				addChild(bugB);
+				bugB.addEventListener(Event.COMPLETE, playBugB);
+			}
+			if (jumpCount < 3)
+			{
+				bugB.stop();
+				bugB.x=bugBDestX - (2 - jumpCount) * jumpGap;
+				bugB.y=bugBY;
+				bugB.play();
+			}
+			else
+			{
+				bugB.removeEventListener(Event.COMPLETE, playBugB);
+				bugB.pause();
+				Starling.juggler.remove(bugB);
+				checkResult();
+			}
+			jumpCount++;
+		}
+
+		private var jumpGap:Number=165;
+		private var bugBDestX:Number=75;
+		private var bugBY:Number=-32;
 
 		private function onCloseTouch(e:Event):void
 		{
@@ -105,7 +175,7 @@ package views.module2.scene21
 
 		private var rattleDrumArea:Rectangle=new Rectangle(300, 200, 45, 118);
 		private var fluteArea:Rectangle=new Rectangle(645, 500, 50, 45);
-		private var originPosArr:Array=[new Point(326, 291), new Point(652, 478), new Point(818, 538)];
+		private var originPosArr:Array=[new Point(326, 291), new Point(652, 478), new Point(806, 490)];
 		private var destPosArr:Array=[new Point(133, 23), new Point(35, 9), new Point(251, 16)];
 		private var shadowArr:Array=[];
 
@@ -160,5 +230,7 @@ package views.module2.scene21
 		private var checkCount:int=0;
 		private var closeBtn:ElasticButton;
 		public var isFinish:Boolean;
+		private var bugS:MovieClip;
+		private var bugB:MovieClip;
 	}
 }

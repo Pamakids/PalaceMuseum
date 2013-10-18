@@ -8,6 +8,7 @@ package views.module1
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 
 	import controllers.MC;
 
@@ -82,8 +83,6 @@ package views.module1
 			crtKnowledgeIndex=1;
 			windowIndex=Math.random() > .5 ? 0 : 3;
 
-			_offsetX=Math.random() > .5 ? 30 : -30;
-
 			bg=new Sprite();
 			bg.x=512;
 			addChild(bg);
@@ -123,7 +122,13 @@ package views.module1
 			addWindows();
 			addKing();
 
-			TweenLite.to(this, 1.5, {offsetX: 0});
+			onAutoMove(2000);
+			_offsetX=-10;
+			TweenLite.to(this, 5, {offsetX: -10, onComplete:
+					function():void
+					{
+						showHint(50, 50, hint0, 3, king, 3);
+					}});
 		}
 
 		private function addKing():void
@@ -135,11 +140,6 @@ package views.module1
 			king.x=512;
 			king.y=768;
 			king.addEventListener(TouchEvent.TOUCH, onKingTouch);
-
-			TweenLite.delayedCall(1.5, function():void
-			{
-				showHint(50, 50, hint0, 3, king, 3);
-			});
 		}
 
 		private function onKingTouch(event:TouchEvent):void
@@ -361,15 +361,27 @@ package views.module1
 		}
 
 		private var p:Prompt;
-		private var hintCount:int=0;
+//		private var hintCount:int=0;
+
+		private var checkDic:Dictionary=new Dictionary();
 
 		private function showHint(_x:Number, _y:Number, _src:String, reg:int, _parent:Sprite, align:int=1):void
 		{
-			hintCount++;
-			if (hintCount == 8)
-				showAchievement(0);
+
 			if (crtWinSelected)
 				return;
+
+			checkDic[_src + _x.toFixed(1)]=true;
+			var b:Boolean;
+			var hintCount:int=0;
+			for each (b in checkDic)
+			{
+				if (b)
+					hintCount++;
+			}
+
+			if (hintCount > 5)
+				showAchievement(0);
 
 			if (p)
 				p.playHide();
@@ -389,6 +401,11 @@ package views.module1
 			{
 				case TouchPhase.BEGAN:
 				{
+					if (_offsetX != 0)
+					{
+						_offsetX == 0;
+						TweenLite.killTweensOf(this, true);
+					}
 					dpt=pt;
 					break;
 				}

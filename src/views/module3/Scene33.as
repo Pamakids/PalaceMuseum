@@ -4,7 +4,9 @@ package views.module3
 
 	import models.SOService;
 
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -144,9 +146,18 @@ package views.module3
 
 			kingHolder=new Sprite();
 			addChild(kingHolder);
-			var kingStand:Image=getImage("king-stand");
-			kingHolder.addChild(kingStand);
-			kingStand.x=254;
+
+			var kingHungry:MovieClip=new MovieClip(assets.getTextures("kingHungry"), 18);
+			kingHolder.addChild(kingHungry);
+			Starling.juggler.add(kingHungry);
+			kingHungry.loop=-1;
+			kingHungry.play();
+			kingHungry.x=569;
+			kingHungry.y=28;
+
+//			var kingStand:Image=getImage("king-stand");
+//			kingHolder.addChild(kingStand);
+//			kingStand.x=254;
 
 			var table:Image=getImage("table23");
 			table.y=768 - 287;
@@ -258,7 +269,11 @@ package views.module3
 		private function onGamePlayed(e:Event):void
 		{
 			if (game.isWin())
-				showAchievement(18);
+			{
+				showCard("7", function():void {
+					showAchievement(18);
+				});
+			}
 			game.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed)
 			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart)
 			game.removeChildren();

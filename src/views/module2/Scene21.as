@@ -55,7 +55,8 @@ package views.module2
 			can=getImage("can31");
 			can.y=291;
 			addChild(can);
-			can.addEventListener(TouchEvent.TOUCH, onCanTouch);
+			can.touchable=false;
+			addEventListener(TouchEvent.TOUCH, onCanTouch);
 
 			var curtainL:Image=getImage("curtain-l");
 			addChild(curtainL);
@@ -78,7 +79,7 @@ package views.module2
 		{
 			if (!ready)
 				return;
-			var tc:Touch=e.getTouch(can, TouchPhase.ENDED);
+			var tc:Touch=e.getTouch(this, TouchPhase.ENDED);
 			if (tc)
 				if (canArea.containsPoint(tc.getLocation(this)))
 					initFindGame();
@@ -165,19 +166,21 @@ package views.module2
 			if (tc)
 				initGame();
 		}
-		private var canArea:Rectangle=new Rectangle(55, 423, 105, 331);
+		private var canArea:Rectangle=new Rectangle(57, 550, 121, 218);
 
-		private var dataArrR:Array=[7, 3, 8, 1, 2, 5, 9, 10, 4, 6, 11];
-		private var posArrR:Array=[new Point(99, 48), new Point(243, 72), new Point(107, 194), new Point(242, 184), new Point(373, 207),
-			new Point(72, 336), new Point(155, 355), new Point(248, 338), new Point(94, 468), new Point(220, 476), new Point(356, 440)];
 		private var dataArrL:Array=[1, 2, 3, 7, 8, 9, 10, 11, 4, 5, 6];
 		private var posArrL:Array=[new Point(97, 50), new Point(201, 74), new Point(305, 74), new Point(81, 183), new Point(224, 194),
 			new Point(310, 213), new Point(100, 337), new Point(235, 327), new Point(90, 466), new Point(189, 453), new Point(294, 475)];
+		private var dataArrR:Array=[7, 3, 8, 1, 2, 5, 9, 10, 4, 6, 11];
+		private var posArrR:Array=[new Point(99, 48), new Point(243, 72), new Point(107, 194), new Point(242, 184), new Point(373, 207),
+			new Point(72, 336), new Point(155, 355), new Point(248, 338), new Point(94, 468), new Point(220, 476), new Point(356, 440)];
 
 		private var innerX:Number=300;
 		private var rx:Number=1024 - 457;
 
-		private var nameArr:Array=["《蒙语入门》", "《学藏语》", "《资治通鉴》", "《三国志传》", "《四书》", "《五经》", "《全唐诗》"];
+		private var nameArr:Array=["《诗经》", "《学蒙语》", "《大学》", "《资治通鉴》", "《论语》", "《春秋》", "《三国志传》", "《史记》",
+			"《全唐诗》", "《古文渊鉴》", "《孟子》", "《学藏语》", "《二十四孝》", "《礼记》", "《御注老子》", "《历代题诗》",
+			"《周易》", "《圣训》", "《明史》", "《中庸》", "《佩文韵府》", "《尚书》"];
 
 		private var lIndexArr:Array=[7, 10];
 		private var rIndexArr:Array=[1, 3, 4, 7, 9, 10];
@@ -193,7 +196,7 @@ package views.module2
 
 				book.x=posArrL[i].x;
 				book.y=posArrL[i].y;
-				book.bookname=nameArr[int(Math.random() * nameArr.length)]
+				book.bookname=nameArr[i]
 				book.addEventListener(TouchEvent.TOUCH, onBookTouch);
 				shelfL.addChild(book);
 			}
@@ -209,7 +212,7 @@ package views.module2
 				book1.addChild(getImage("book" + dataArrR[j].toString()));
 				book1.x=posArrR[j].x;
 				book1.y=posArrR[j].y;
-				book1.bookname=nameArr[int(Math.random() * nameArr.length)]
+				book1.bookname=nameArr[j + 11]
 				book1.addEventListener(TouchEvent.TOUCH, onBookTouch);
 				shelfR.addChild(book1);
 			}
@@ -251,7 +254,6 @@ package views.module2
 		private var shelfR:Sprite;
 		private var shelfOpen:Boolean;
 		private var gamePlayed:Boolean;
-		private var bookFinded:Boolean;
 
 		private var bigBook:Sprite;
 		private var finded:Boolean;
@@ -278,33 +280,17 @@ package views.module2
 			var align:int=1;
 			if (checkAlign(book))
 				align=3;
-			if (book.clicked)
-				Prompt.showTXT(pt.x, pt.y, book.bookname, 24, null, pr, align, true)
+			if (book.bookname == "《圣训》")
+				showBigBook();
 			else
 			{
-				if ((Math.random() < probability && !bookFinded) || rightBook == book)
-				{
-//					showAchievement(6);
-					rightBook=book;
-					bookFinded=true;
-					showBigBook();
-//					setChildIndex(lion, numChildren - 1);
-//					TweenLite.killTweensOf(lion);
-//					TweenLite.to(lion, .5, {x: 30, onComplete: function():void {
-//						lion.say(hint31right, function():void {
-//							TweenLite.to(lion, .5, {x: -140});
-//						});
-//					}
-//						});
-				}
-				else
-				{
-					Prompt.showTXT(pt.x, pt.y, book.bookname, 24, null, pr, align, true)
-					probability+=.2;
-					book.clicked=true;
-				}
+				if (p)
+					p.playHide();
+				p=Prompt.showTXT(pt.x, pt.y, book.bookname, 24, null, pr, align, true)
 			}
 		}
+
+		private var p:Prompt;
 
 		private function checkAlign(book:ShelfBook):Boolean
 		{
@@ -334,8 +320,6 @@ package views.module2
 			}
 			return -1;
 		}
-
-		private var rightBook:ShelfBook;
 
 		private function showBigBook():void
 		{
@@ -393,7 +377,12 @@ package views.module2
 		private function onGamePlayed(e:Event):void
 		{
 			if (mapGame.isFinished)
-				showAchievement(mapGame.gamelevel == 0 ? 8 : 9);
+				if (mapGame.gamelevel == 0)
+					showAchievement(8);
+				else
+					showCard("4", function():void {
+						showAchievement(9);
+					});
 			mapGame.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed)
 			mapGame.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart)
 			mapGame.removeChildren();
@@ -420,8 +409,7 @@ package views.module2
 					showAchievement(7);
 				});
 			}
-			findGame.removeEventListener(PalaceGame.GAME_OVER, onFindGamePlayed)
-			findGame.removeChildren();
+			findGame.removeFromParent(true);
 			removeChild(mapGame);
 			findGame=null;
 			finded=true;
