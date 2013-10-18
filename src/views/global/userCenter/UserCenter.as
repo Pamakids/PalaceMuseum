@@ -63,8 +63,9 @@ package views.global.userCenter
 		private var backgroundImage:Image;
 		private var bookBackground:Image;
 
-		public function UserCenter()
+		public function UserCenter(index:int)
 		{
+			this.crtPage_Handbook = index;
 			init();
 		}
 		
@@ -163,7 +164,8 @@ package views.global.userCenter
 				{
 					width: contentWidth, height: contentHeight,
 					viewWidth: contentWidth, viewHeight: contentHeight,
-					loadAssetsComplete: loadComplete
+					loadAssetsComplete: loadComplete,
+					crtPage: crtPage_Handbook
 				}));
 			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen,
 				{
@@ -278,7 +280,7 @@ package views.global.userCenter
 		
 		//子场景翻页控制
 		private var beginX:Number;
-		private const standardLength:Number = 400;	//翻页有效拖拽距离
+		private const standardLength:Number = 50;	//翻页有效拖拽距离
 		//用户手册场景
 		private var crtPage_Handbook:int = 0;
 		//成就场景
@@ -286,6 +288,8 @@ package views.global.userCenter
 		
 		private function onTouch(e:TouchEvent):void
 		{
+			if(!initialized)
+				return;
 			var index:int = _tabBar.selectedIndex;
 			if(index != 2 && index != 3)		//速成手册 or 成就
 				return;
@@ -356,11 +360,8 @@ package views.global.userCenter
 			}
 		}
 		
-		
 		private function loadComplete():void
 		{
-//			if(!_navigator.activeScreen is HandbookScreen)
-//				return;
 			(_navigator.activeScreen as HandbookScreen).updateView(crtPage_Handbook);
 			//将目标场景加载至舞台，加载完成后获取纹理
 			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
@@ -372,8 +373,6 @@ package views.global.userCenter
 			else						//pageDown
 				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
 			animation.start( pageUp );
-			
-			initialized = true;
 		}
 		
 		//成就翻页
@@ -402,21 +401,9 @@ package views.global.userCenter
 			animation.start( pageUp );
 		}
 		
-		/**
-		 * 指定显示速成手册内页码
-		 * @param index
-		 */
-		public function showIndex(index:int=-1):void
-		{
-			if(index <= 0 || index >= HandbookScreen.MAX_NUM)
-				return;
-			pageUp = false;
-			initialized = false;
-			crtPage_Handbook = index;
-			handbookTurnToPage(crtPage_Handbook);
-		}
-		private var initialized:Boolean;
 
+		public var initialized:Boolean = false;
+		
 		override public function dispose():void
 		{
 			if (_tabBar)

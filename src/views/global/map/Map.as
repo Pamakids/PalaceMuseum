@@ -3,18 +3,18 @@ package views.global.map
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.pamakids.manager.LoadManager;
-
+	
 	import flash.display.Bitmap;
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-
+	
 	import controllers.MC;
-
+	
 	import models.Const;
 	import models.SOService;
-
+	
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -24,7 +24,7 @@ package views.global.map
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 	import starling.utils.formatString;
-
+	
 	import views.components.ElasticButton;
 	import views.components.FlipAnimation;
 	import views.components.LionMC;
@@ -80,6 +80,8 @@ package views.global.map
 		 * 地图上不同模块或场景对应的区域
 		 */
 		private var hotspots:Array;
+		
+		private static var assetManager:AssetManager;
 
 		public function Map(from:int=-1, to:int=-1)
 		{
@@ -91,7 +93,7 @@ package views.global.map
 			super(new AssetManager(), Const.WIDTH, Const.HEIGHT);
 			var f:File=File.applicationDirectory.resolvePath('assets/global/map');
 			var f2:File=File.applicationDirectory.resolvePath("assets/common");
-			assetManager.enqueue(f2, f, "json/map.json", "assets/global/userCenter/page_left.png");
+			assetManager.enqueue(f2, f, "json/map.json", "assets/global/map_back.jpg");
 			assetManager.loadQueue(function(ratio:Number):void
 			{
 				trace(ratio);
@@ -241,7 +243,7 @@ package views.global.map
 		private function bgLoadedHandler(b:Bitmap):void
 		{
 			flipAnimation=new FlipAnimation(b, 4, 3);
-			flipAnimation.backcover=assetManager.getTexture('page_left');
+			flipAnimation.backcover=assetManager.getTexture('map_back');
 			flipAnimation.addEventListener('completed', flipedHandler);
 			flipAnimation.width=width;
 			flipAnimation.height=height;

@@ -1,9 +1,10 @@
 package views.global.userCenter.achievement
 {
+	import flash.geom.Point;
+	
 	import controllers.DC;
 	
-	import feathers.core.PopUpManager;
-	
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -65,27 +66,42 @@ package views.global.userCenter.achievement
 		private var containerR:Sprite;
 		
 		private var image:AchieveIcon;
+		private var container:Sprite;
+		private var quad:Quad;
 		private function showImage(data:Object):void
 		{
 			if(!image)
+			{
+				var point:Point = globalToLocal(new Point());
+				
+				container = new Sprite();
+				this.addChild( container );
+				container.x = point.x;
+				container.y = point.y;
+				
+				quad = new Quad(1024, 768, 0x000000);
+				quad.alpha = .4;
+				container.addChild( quad );
+				quad.addEventListener(TouchEvent.TOUCH, onTouchPop);
+				
 				image = new AchieveIcon(1);
+				container.addChild( image );
+				image.x = 1024 - image.width  >> 1;
+				image.y = 768 - image.height >> 1;
+			}
 			image.data = data;
-			image.x = 262;
-			image.y = 191;
-			PopUpManager.addPopUp(image, true, false);
-			if( !this.hasEventListener(TouchEvent.TOUCH) )
-				image.addEventListener(TouchEvent.TOUCH, hideImage);
+			container.visible = true;
 		}
 		
-		private function hideImage(e:TouchEvent):void
+		private function onTouchPop(e:TouchEvent):void
 		{
-			if(e.currentTarget == image)
+			var touch:Touch = e.getTouch(stage);
+			if(touch && touch.phase == TouchPhase.ENDED)
 			{
-				var touch:Touch = e.getTouch(stage);
-				if(touch && touch.phase == TouchPhase.ENDED && PopUpManager.isPopUp(image) )
-						PopUpManager.removePopUp(image);
+				container.visible = false;
 			}
 		}
+		
 		/**单页显示数量*/		
 		private var maxNum:int = 9;
 		private var datas:Array;
@@ -114,10 +130,19 @@ package views.global.userCenter.achievement
 		
 		override public function dispose():void
 		{
-			containerL.removeFromParent(true);
-			containerR.removeFromParent(true);
+			if(containerL)
+				containerL.removeFromParent(true);
+			if(containerR)
+				containerR.removeFromParent(true);
 			if(image)
 				image.dispose();
+			if(quad)
+			{
+				quad.removeEventListener(TouchEvent.TOUCH, onTouchPop);
+				quad.removeFromParent(true);
+			}
+			if(container)
+				container.removeFromParent(true);
 			super.dispose();
 		}
 		

@@ -12,7 +12,6 @@ package views.global.userCenter.collection
 	import feathers.layout.TiledRowsLayout;
 	
 	import models.CollectionVO;
-	import models.SOService;
 	
 	import starling.display.Image;
 	import starling.display.Quad;
@@ -158,7 +157,6 @@ package views.global.userCenter.collection
 				vo.content = arr[i].content;
 				vo.explain = arr[i].explain;
 				vo.isCollected = DC.instance.testCollectionIsOpend(vo.id);
-//				vo.isCollected = true;
 				source[i] = vo;
 			}
 			
