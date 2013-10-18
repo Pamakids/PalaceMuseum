@@ -2,15 +2,15 @@ package views.global.userCenter
 {
 	import flash.filesystem.File;
 	import flash.utils.Dictionary;
-
+	
 	import controllers.MC;
-
+	
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.LionMC;
 	import views.global.TopBar;
 
@@ -46,9 +46,9 @@ package views.global.userCenter
 				if (_userCenter && _userCenter.parent)
 					return;
 				if (!_userCenter)
-					initUserCenter();
+					_userCenter=new UserCenter(index);
 				_userCenterContainer.addChild(_userCenter);
-				_userCenter.showIndex(index);
+//				_userCenter.showIndex(index);
 				MC.instance.hideMC();
 				LionMC.instance.hide();
 			}
@@ -66,14 +66,6 @@ package views.global.userCenter
 
 
 		private static var _userCenter:UserCenter;
-		private static var _userDatas:Dictionary;
-
-		private static function initUserCenter():void
-		{
-			//获取用户相关数据
-			_userDatas=new Dictionary(true);
-			_userCenter=new UserCenter();
-		}
 
 		public static function getCrtUserCenter():UserCenter
 		{
@@ -153,6 +145,7 @@ package views.global.userCenter
 		{
 			return _assetsManager.getTexture(name);
 		}
+		
 	}
 }
 

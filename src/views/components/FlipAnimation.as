@@ -2,17 +2,17 @@ package views.components
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-
+	
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
-
+	
 	import views.components.base.Container;
 
 	[Event(name="completed", type="starling.events.Event")]
@@ -24,6 +24,7 @@ package views.components
 	{
 
 		private var textures:Vector.<Texture>;
+//		private var backcovers:Vector.<Texture>;
 		private var horizontal:Boolean;
 		private var minToMax:Boolean;
 		private var contentWidth:Number;
@@ -48,25 +49,21 @@ package views.components
 			this.slices=slices;
 			this.horizontal=horizontal;
 			this.minToMax=minToMax;
-			result=new Image(Texture.fromBitmap(bitmap));
+			var texture:Texture = Texture.fromBitmap(bitmap)
+			result=new Image(texture);
 			result.visible=false;
 			contentWidth=bitmap.width;
 			contentHeight=bitmap.height;
 			interval=horizontal ? contentWidth / slices : contentHeight / slices;
 			textures=new Vector.<Texture>;
-			var bd:BitmapData=bitmap.bitmapData;
-			var newBD:BitmapData;
-			var w:int=horizontal ? bd.width / slices : bd.width;
-			var h:int=horizontal ? bd.height : bd.height / slices;
-			for (var i:int; i < slices; i++)
+			
+			var rect:Rectangle = new Rectangle(0, 0, (horizontal?interval:contentWidth), (horizontal?contentHeight:interval));
+			for(var i:int = 0;i<slices;i++)
 			{
-				newBD=new BitmapData(w, h);
-				newBD.copyPixels(bd, new Rectangle(horizontal ? i * w : 0, horizontal ? 0 : i * h, w, h), new Point());
-				textures[i]=Texture.fromBitmapData(newBD);
-				newBD.dispose();
+				horizontal ? rect.x = interval * i : rect.y = interval * i;
+				textures[i] = Texture.fromTexture(texture, rect);
 			}
 			doScale();
-			bd.dispose();
 		}
 
 		private function doScale():void
@@ -146,10 +143,11 @@ package views.components
 				flipingImage=getImage();
 
 				//根据temp值替换纹理材质
-				if (backcover)
+				if (_backcover)
 				{
 					if (temp > 0) //反面
-						flipingImage.texture=backcover;
+//						flipingImage.texture=backcovers[animationIndex];
+						flipingImage.texture=_backcover;
 					else
 						flipingImage.texture=textures[animationIndex];
 				}
@@ -253,6 +251,20 @@ package views.components
 		public var temp:Number=0;
 		private var flipingImage:FlipImage;
 
-		public var backcover:Texture;
+		private var _backcover:Texture;
+		public function set backcover(value:Texture):void
+		{
+			if(_backcover && _backcover == value)
+				return;
+			_backcover = value;
+//			if(!backcovers)
+//				backcovers = new Vector.<Texture>(this.slices);
+//			var rect:Rectangle = new Rectangle(0, 0, (horizontal?interval:contentWidth), (horizontal?contentHeight:interval));
+//			for(var i:int = 0;i<slices;i++)
+//			{
+//				horizontal ? rect.x = interval * i : rect.y = interval * i;
+//				backcovers[i] = Texture.fromTexture(_backcover, rect);
+//			}
+		}
 	}
 }
