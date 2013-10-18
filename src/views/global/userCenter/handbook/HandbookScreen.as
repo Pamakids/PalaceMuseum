@@ -24,38 +24,45 @@ package views.global.userCenter.handbook
 
 		private var _assetsManager:AssetManager;
 		
-		private var crtPage:int = 0;
+		public var crtPage:int = 0;
 		override protected function initialize():void
 		{
 			super.initialize();
 			_assetsManager=new AssetManager();
-			_assetsManager.enqueue(
-				"assets/global/userCenter/content_page_1.png",
-				"assets/global/userCenter/content_page_2.png",
-				"assets/global/userCenter/content_page_3.png",
-				"assets/global/userCenter/content_page_4.png"
-			);
-			_assetsManager.loadQueue(function(ratio:Number):void{
-				if(ratio == 1)
-					trace("initialized");
-			});
-			initImages();
+			if(this.crtPage == 0)
+			{
+				initImages();
+				loadPrevAndNext(crtPage);
+				_assetsManager.loadQueue(function(r:Number):void{});
+			}
+			else
+			{
+				_assetsManager.enqueue(
+					"assets/global/userCenter/content_page_"+(crtPage*2+1)+".png",
+					"assets/global/userCenter/content_page_"+(crtPage*2+2)+".png"
+				);
+				_assetsManager.loadQueue(function(ratio:Number):void{
+					if(ratio == 1)
+					{
+						initImages();
+						loadPrevAndNext(crtPage);
+						_assetsManager.loadQueue(function(r:Number):void{});
+					}
+				});
+			}
 		}
 		
 		private var cacheL:Image;
 		private var cacheR:Image;
 		private function initImages():void
 		{
-			cacheL = new Image(UserCenterManager.getTexture("content_page_1"));
+			cacheL = new Image((crtPage == 0)?UserCenterManager.getTexture("content_page_1"):_assetsManager.getTexture("content_page_"+(crtPage*2+1)));
 			this.addChild(cacheL);
-			cacheR = new Image(UserCenterManager.getTexture("content_page_2"));
+			cacheR = new Image((crtPage == 0)?UserCenterManager.getTexture("content_page_2"):_assetsManager.getTexture("content_page_"+(crtPage*2+2)));
 			this.addChild( cacheR );
 			cacheR.x = viewWidth / 2;
 			cacheL.touchable = cacheR.touchable = false;
-			
-			//test
-			cacheL.width = cacheR.width = viewWidth / 2;
-			cacheL.height = cacheR.height = viewHeight;
+			UserCenterManager.getCrtUserCenter().initialized = true;
 		}
 		
 		override public function dispose():void
@@ -140,6 +147,7 @@ package views.global.userCenter.handbook
 			if(texture)
 				_assetsManager.removeTexture(name, true);
 		}
+		
 		/**
 		 * 更新页面
 		 * @param pageIndex

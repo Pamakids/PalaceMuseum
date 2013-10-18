@@ -38,7 +38,7 @@ package controllers
 
 		public function testCollectionIsOpend(id:String):Boolean
 		{
-			return so.getSO("collection_card_" + id + "_collectioned");
+			return so.getSO("collection_card_" + id + "collected");
 		}
 
 		/**
