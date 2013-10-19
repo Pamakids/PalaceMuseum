@@ -36,24 +36,23 @@ package views.components
 		private var result:Image;
 
 		/**
-		 * @param bitmap 折叠素材
+		 * @param texture 折叠素材
 		 * @param slices 切片数量
 		 * @param duration 动画总时间
 		 * @param horizontal 是否水平
 		 * @param minToMax 是否从小到大，比如水平是根据x值从小到大，则是从左到右滚动
 		 */
-		public function FlipAnimation(bitmap:Bitmap, slices:int, duration:Number=3, horizontal:Boolean=false, minToMax:Boolean=true)
+		public function FlipAnimation(texture:Texture, slices:int, duration:Number=3, horizontal:Boolean=false, minToMax:Boolean=true)
 		{
 			super();
 			this.duration=duration / slices;
 			this.slices=slices;
 			this.horizontal=horizontal;
 			this.minToMax=minToMax;
-			var texture:Texture = Texture.fromBitmap(bitmap)
 			result=new Image(texture);
 			result.visible=false;
-			contentWidth=bitmap.width;
-			contentHeight=bitmap.height;
+			contentWidth=result.width;
+			contentHeight=result.height;
 			interval=horizontal ? contentWidth / slices : contentHeight / slices;
 			textures=new Vector.<Texture>;
 			
