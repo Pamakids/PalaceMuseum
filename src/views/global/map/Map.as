@@ -83,6 +83,27 @@ package views.global.map
 
 		private static var assetManager:AssetManager;
 
+		private static var loaded:Boolean = false;
+		
+		public static function loadAssets():void
+		{
+			if(!assetManager)
+				assetManager = new AssetManager();
+			var f:File=File.applicationDirectory.resolvePath('assets/global/map');
+			var f2:File=File.applicationDirectory.resolvePath("assets/common");
+			assetManager.enqueue(f2, f, "json/map.json", "assets/global/map_back.jpg", 'assets/global/mapBG.jpg');
+			assetManager.loadQueue(function(ratio:Number):void
+			{
+				if (ratio == 1)
+				{
+					trace("Map loaded!");
+					loaded = true;
+					if(map)
+						map.init();
+				}
+			});
+		}
+		
 		public function Map(from:int=-1, to:int=-1)
 		{
 			this.viewContainer=new Sprite();
@@ -90,23 +111,23 @@ package views.global.map
 			this.to=to;
 //			hotspots=[new Rectangle(333, 476, 64, 36), new Rectangle(314, 516, 104, 38)];
 //			points=[new Point(365, 495), new Point(365, 535)];
-			super(new AssetManager(), Const.WIDTH, Const.HEIGHT);
-			var f:File=File.applicationDirectory.resolvePath('assets/global/map');
-			var f2:File=File.applicationDirectory.resolvePath("assets/common");
-			assetManager.enqueue(f2, f, "json/map.json", "assets/global/map_back.jpg");
-			assetManager.loadQueue(function(ratio:Number):void
-			{
-				if (ratio == 1)
-				{
-					LoadManager.instance.loadImage('assets/global/mapBG.jpg', bgLoadedHandler);
-					mapData=assetManager.getObject("map");
-					parseData();
-				}
-			});
+			if(!Map.assetManager)
+				loadAssets();
+			super(Map.assetManager, Const.WIDTH, Const.HEIGHT);
 			sos=SOService.instance;
 			mc=MC.instance;
+			map=this;
+			if(loaded)
+				init();
 		}
 
+		private function init():void
+		{
+			mapData=assetManager.getObject("map");
+			parseData();
+			initFlipAnimation();
+		}
+		
 		private var centerPoint:Dictionary;
 		private var tasks:Dictionary;
 
@@ -205,7 +226,6 @@ package views.global.map
 			{
 				var m:Map=new Map(from, to);
 				parent.addChild(m);
-				map=m;
 			}
 		}
 
@@ -239,9 +259,9 @@ package views.global.map
 			}
 		}
 
-		private function bgLoadedHandler(b:Bitmap):void
+		private function initFlipAnimation():void
 		{
-			flipAnimation=new FlipAnimation(b, 4, 3);
+			flipAnimation=new FlipAnimation(assetManager.getTexture("mapBG"), 4, 3);
 			flipAnimation.backcover=assetManager.getTexture('map_back');
 			flipAnimation.addEventListener('completed', flipedHandler);
 			flipAnimation.width=width;

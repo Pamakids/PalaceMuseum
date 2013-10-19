@@ -13,6 +13,7 @@ package views.global.userCenter
 
 	import views.components.LionMC;
 	import views.global.TopBar;
+	import views.global.map.Map;
 
 	/**
 	 * 用户中心管理类
@@ -40,6 +41,9 @@ package views.global.userCenter
 			{
 				loadAssets();
 				_index=index;
+				
+				//加载地图资源
+				Map.loadAssets();
 			}
 			else
 			{
@@ -48,7 +52,6 @@ package views.global.userCenter
 				if (!_userCenter)
 					_userCenter=new UserCenter(index);
 				_userCenterContainer.addChild(_userCenter);
-//				_userCenter.showIndex(index);
 				MC.instance.hideMC();
 				LionMC.instance.hide();
 			}
