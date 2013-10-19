@@ -24,6 +24,7 @@ package views.components
 		private var upCompleted:Boolean;
 		private var downCompleted:Boolean;
 		private var playingEffect:Boolean;
+		public var index:int;
 
 		/**
 		 * use listener ElasticButton.CLICK

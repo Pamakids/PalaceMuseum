@@ -325,7 +325,7 @@ package views.module1
 				eunuch.x=1024;
 				eunuch.y=350;
 
-				MC.instance.addChild(eunuch);
+				MC.instance.addMC(eunuch);
 				eunuch.play();
 				eunuch.addEventListener(Event.FRAME_CONSTRUCTED, onPlayMC);
 				TweenLite.to(eunuch, 6, {x: 780, onComplete: sceneOver});
@@ -348,7 +348,7 @@ package views.module1
 			if (eunuch)
 			{
 				eunuch.stop();
-				MC.instance.removeChild(eunuch);
+				MC.instance.removeMC(eunuch);
 				eunuch=null;
 			}
 		}
@@ -449,7 +449,6 @@ package views.module1
 			_offsetX=value;
 			onAutoMove(value);
 		}
-
 
 		private function onAutoMove(dx:Number):void
 		{

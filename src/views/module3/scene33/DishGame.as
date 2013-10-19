@@ -11,13 +11,16 @@ package views.module3.scene33
 
 	import models.SOService;
 
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
+	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
@@ -222,6 +225,8 @@ package views.module3.scene33
 				setOneData(j);
 			}
 
+			flyVec=assets.getTextures("flyMC");
+
 			for (var i:int=0; i < dishNum; i++)
 			{
 				addOneDish(i);
@@ -244,7 +249,7 @@ package views.module3.scene33
 			dish.addContent(img);
 			dish.pt=posArr[i];
 			dish.isPoison=getPoison();
-
+			dish.fly=new MovieClip(flyVec, 18);
 			dishHolder.addChild(dish);
 
 			if (isHand)
@@ -265,6 +270,8 @@ package views.module3.scene33
 				dishArr[i]=dish;
 			}
 		}
+
+		private var flyVec:Vector.<Texture>;
 
 		private function playHand(index:int):void
 		{
@@ -650,14 +657,20 @@ package views.module3.scene33
 			var dy:Number;
 			if (kingArea.containsPoint(pt))
 			{
-				dx=kingArea.x + kingArea.width / 2 - 10;
-				dy=kingArea.y + kingArea.height / 2 + 60;
+				dx=kingArea.x + kingArea.width / 2 + 10;
+				dy=kingArea.y + kingArea.height / 2 + 50;
 				isClassed=true;
 
 				if (_dish.tested && !_dish.isPoison)
+				{
 					score+=100;
+					playKing(3);
+				}
 				else
+				{
 					life--;
+					playKing(4);
+				}
 			}
 			else if (jarArea.containsPoint(pt))
 			{
@@ -666,14 +679,21 @@ package views.module3.scene33
 				isClassed=true;
 
 				if (_dish.tested && _dish.isPoison)
+				{
 					score+=100;
+					playKing(0);
+				}
 				else
+				{
 					life--;
+					playKing(Math.random() > .5 ? 1 : 2);
+				}
 			}
 			else if (!stageArea.containsPoint(pt))
 			{
 				isOut=true;
 				life--;
+				playKing(Math.random() > .5 ? 1 : 2);
 			}
 
 			if (isClassed)
@@ -728,12 +748,15 @@ package views.module3.scene33
 			table.y=132;
 			gameSP.addChild(table);
 
-			var king:Image=getImage("dish-king");
-			king.x=1024 - king.width;
-			king.y=62;
-			gameSP.addChild(king);
+			kingHolder=new Sprite();
+			var kingBG:Image=getImage("dish-king-bg");
+			kingBG.x=1024 - kingBG.width;
+			kingBG.y=62;
+			gameSP.addChild(kingHolder);
+			kingHolder.addChild(kingBG);
+			kingArea=new Rectangle(kingBG.x, kingBG.y, kingBG.width, kingBG.height);
 
-			kingArea=new Rectangle(king.x, king.y, king.width, king.height);
+			playKing(Math.random() > .5 ? 0 : 2);
 
 			var jar:Image=getImage("dish-jar");
 			jar.x=1024 - jar.width;
@@ -759,6 +782,29 @@ package views.module3.scene33
 			gameSP.addChild(dishHolder);
 		}
 
+		private var expArr:Array=["高兴", "无聊", "平时", "吃饭", "中毒"];
+
+		/**
+		 * @param 0:高兴,1:无聊,2:平时,3:吃饭,4:中毒
+		 * */
+		private function playKing(index:int):void
+		{
+			if (king)
+			{
+				Starling.juggler.remove(king);
+				king.stop();
+				king.removeFromParent(true);
+				king=null;
+			}
+			king=new MovieClip(assets.getTextures(expArr[index]), 18);
+			king.x=kingArea.x + 50;
+			king.y=kingArea.y + 30;
+			kingHolder.addChild(king);
+			Starling.juggler.add(king);
+			king.loop=0;
+			king.play();
+		}
+
 		private var upY:Number=0;
 		private var upDY:Number=211;
 
@@ -777,6 +823,10 @@ package views.module3.scene33
 
 		private var timer:Timer;
 		private var rsBtn:ElasticButton;
+
+		private var king:MovieClip;
+
+		private var kingHolder:Sprite;
 
 		private function initAreas():void
 		{

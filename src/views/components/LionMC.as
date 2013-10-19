@@ -6,6 +6,7 @@ package views.components
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Stage;
+	import flash.events.MouseEvent;
 
 	import controllers.MC;
 
@@ -19,6 +20,13 @@ package views.components
 		{
 			MC.instance.stage.addChild(this);
 			this.visible=false;
+			addEventListener(MouseEvent.CLICK, onClick);
+		}
+
+		protected function onClick(event:MouseEvent):void
+		{
+			if (p)
+				p.playHide();
 		}
 
 		private function showLion(type:int=0):void
@@ -147,7 +155,7 @@ package views.components
 					}
 					if (needMask)
 						MC.instance.main.removeMask();
-				}, MC.instance.main);
+				}, MC.instance.main, 1, false, 0);
 			}});
 		}
 
