@@ -30,7 +30,6 @@ package views.global.userCenter
 	/**
 	 * 用户中心
 	 * @author Administrator
-	 * 
 	 */	
 	public class UserCenter extends Sprite
 	{
@@ -61,7 +60,6 @@ package views.global.userCenter
 		 * 背景
 		 */
 		private var backgroundImage:Image;
-		private var bookBackground:Image;
 
 		public function UserCenter(index:int)
 		{
@@ -71,7 +69,7 @@ package views.global.userCenter
 		
 		
 //initialize--------------------------------------------------------------------------------------
-		private var aniable:Boolean = false;
+		public var aniable:Boolean = false;
 		private function init():void
 		{
 			this.screenNames=[MAP, USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION];
@@ -90,18 +88,15 @@ package views.global.userCenter
 		private var targetRender:RenderTexture;
 		private function initRender():void
 		{
-			crtRender = new RenderTexture(this.contentWidth, this.contentHeight);
-			targetRender = new RenderTexture(this.contentWidth, this.contentHeight);
+			crtRender = new RenderTexture(this.contentWidth, this.contentHeight, false);
+			targetRender = new RenderTexture(this.contentWidth, this.contentHeight, false);
 		}
 		
 		private function initBackgroud():void
 		{
 			this.backgroundImage=new Image(UserCenterManager.getTexture("main_background"));
 			this.addChild(this.backgroundImage);
-			this.bookBackground=new Image(UserCenterManager.getTexture("book_background"));
-			this.addChild(this.bookBackground);
-			this.bookBackground.y=74;
-			this.backgroundImage.touchable=this.bookBackground.touchable=false;
+			this.backgroundImage.touchable=false;
 		}
 
 		private function initTabBar():void
@@ -239,18 +234,13 @@ package views.global.userCenter
 			
 			var target:int = _tabBar.selectedIndex;
 			//从原场景中获取纹理
-			(_navigator.activeScreen as BaseScreen).getScreenTexture(crtRender);
-			textureL = Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
-			textureR = Texture.fromTexture(crtRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+			getCrtTexture();
 			animation.setFixPageTexture(textureL, textureR);
 			animation.visible = true;
 			//使动画可见以遮挡目标页面
 			_navigator.showScreen(screenNames[target]);
 			//将目标场景加载至舞台，加载完成后获取纹理
-			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
-			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
-			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
-			
+			getTarTexture();
 			pageUp = prevIndex > target;
 			//根据动画方向重新设置四个纹理顺序
 			if(pageUp)
@@ -341,13 +331,24 @@ package views.global.userCenter
 			}
 		}
 		
+		private function getCrtTexture():void
+		{
+			crtRender.draw(_navigator.activeScreen);
+			textureL = Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+			textureR = Texture.fromTexture(crtRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+		}
+		private function getTarTexture():void
+		{
+			//从原场景中获取纹理
+			targetRender.draw(_navigator.activeScreen);
+			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
+			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+		}
+		
 		//速成手册翻页
 		private function handbookTurnToPage(pageIndex:int):void
 		{
-			//从原场景中获取纹理
-			(_navigator.activeScreen as BaseScreen).getScreenTexture(crtRender);
-			textureL = Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
-			textureR = Texture.fromTexture(crtRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+			getCrtTexture();
 			animation.setFixPageTexture(textureL, textureR);
 			animation.visible = true;
 			
@@ -364,9 +365,7 @@ package views.global.userCenter
 		{
 			(_navigator.activeScreen as HandbookScreen).updateView(crtPage_Handbook);
 			//将目标场景加载至舞台，加载完成后获取纹理
-			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
-			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
-			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+			getTarTexture();
 			
 			if(pageUp)		//pageUp
 				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
@@ -378,9 +377,7 @@ package views.global.userCenter
 		//成就翻页
 		private function achieveTurnToPage(pageIndex:int):void
 		{
-			(_navigator.activeScreen as BaseScreen).getScreenTexture(crtRender);
-			textureL = Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
-			textureR = Texture.fromTexture(crtRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+			getCrtTexture();
 			animation.setFixPageTexture(textureL, textureR);
 			animation.visible = true;
 			(_navigator.activeScreen as AchievementScreen).updateView(crtPage_Achieve);
@@ -391,9 +388,7 @@ package views.global.userCenter
 		{
 			if(!_navigator.activeScreen is AchievementScreen)
 				return;
-			(_navigator.activeScreen as BaseScreen).getScreenTexture(targetRender);
-			targetL = Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth/2, contentHeight));
-			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
+			getTarTexture();
 			if(pageUp)		//pageUp
 				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
 			else			//pageDown
@@ -410,8 +405,6 @@ package views.global.userCenter
 				_tabBar.removeFromParent(true);
 			if (backgroundImage)
 				backgroundImage.removeFromParent(true);
-			if (bookBackground)
-				bookBackground.removeFromParent(true);
 			if (_navigator)
 				_navigator.removeFromParent(true);
 			if (_backButton)

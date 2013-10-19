@@ -37,13 +37,12 @@ package views.global.userCenter
 
 		public static function showUserCenter(index:int=-1):void
 		{
+			if(index < 0)
+				index = 0;
 			if (!loaded)
 			{
 				loadAssets();
 				_index=index;
-				
-				//加载地图资源
-				Map.loadAssets();
 			}
 			else
 			{
@@ -118,7 +117,6 @@ package views.global.userCenter
 			_assetsManager=new AssetManager();
 			_assetsManager.enqueue(
 				File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"),
-				"assets/global/mapBG.jpg",
 				"assets/global/userCenter/content_page_1.png",
 				"assets/global/userCenter/content_page_2.png",
 				"json/collection.json"
@@ -130,6 +128,10 @@ package views.global.userCenter
 					removeLoadImage();
 					loaded=true;
 					showUserCenter(_index);
+					
+//					加载地图资源
+					if(!Map.map)
+						Map.loadAssets();
 				}
 			});
 		}
