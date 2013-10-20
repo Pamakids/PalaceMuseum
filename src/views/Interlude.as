@@ -63,7 +63,7 @@ package views
 		private function onAdded(e:Event):void
 		{
 //			Starling.current.stage.visible = false;
-			Starling.current.stage3D.visible = false;
+//			Starling.current.stage3D.visible = false;
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			initialize();
 		}

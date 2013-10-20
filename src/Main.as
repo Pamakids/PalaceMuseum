@@ -56,17 +56,13 @@ package
 
 		override protected function init():void
 		{
-			var lastScene:String=SOService.instance.getSO("lastScene") as String;
-			if(!lastScene)
-				initIntro();
-			else
 				startGame();
 		}
 		
 		private var inito:Interlude;
 		private function initIntro():void
 		{
-			inito = new Interlude("assets/intro/intro.mp4", false, (!Map.map)?Map.loadAssets:null, startGame);
+			inito = new Interlude("assets/intro/intro.m4v", false, (!Map.map)?Map.loadAssets:null, startGame);
 			Starling.current.nativeStage.addChild( inito );
 		}
 		
