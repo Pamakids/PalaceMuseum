@@ -24,13 +24,12 @@ package
 	{
 		public function PalaceMuseum()
 		{
-			SOService.instance.clear();
+//			SOService.instance.clear();
 			var lastScene:String=SOService.instance.getSO("lastScene") as String;
 			if(!lastScene)
 				initIntro();
 			else
 				startGame();
-			
 		}
 		
 		private function startGame():void
