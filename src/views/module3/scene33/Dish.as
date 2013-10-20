@@ -75,7 +75,10 @@ package views.module3.scene33
 				fly.loop=0;
 				fly.play();
 			}
-			Prompt.showTXT(Math.random(), -100, "-100", 30, null, this);
+			Prompt.showTXT(Math.random(), -100, "-100", 30, null, this, 1, false, 1);
+			if (scoreCut != null)
+				scoreCut();
+			scoreCut=null;
 		}
 
 		private function completeHandler(e:Event):void
@@ -86,6 +89,7 @@ package views.module3.scene33
 
 		override public function dispose():void
 		{
+			scoreCut=null;
 			if (fly && contains(fly))
 			{
 				fly.stop();
@@ -124,22 +128,31 @@ package views.module3.scene33
 			img.pivotY=img.height >> 1;
 		}
 
+		private var timeCount:int=240;
+
 		public function countDown():void
 		{
-			if (countReady && !isBad)
-				if (count > 0)
-					count--;
+			if (countReady && countDownTxt && !isBad)
+			{
+				if (timeCount > 0)
+				{
+					timeCount--;
+					countDownTxt.text=Math.round(timeCount / 30).toString();
+				}
 				else
 					isBad=true;
+			}
 		}
 
 		public function addCount():void
 		{
+			addCountDown();
 			countReady=true;
 		}
 
 		private var count:int=300;
 		public var fly:MovieClip;
 		private var countReady:Boolean;
+		public var scoreCut:Function;
 	}
 }

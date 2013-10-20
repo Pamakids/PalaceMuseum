@@ -37,7 +37,7 @@ package views.module5.scene52
 		public var body:Image;
 		public var countBG:Image;
 
-		public function reset():void
+		public function reset(shake:Boolean=true):void
 		{
 			headHolder.pivotX=head.width >> 1;
 			headHolder.pivotY=head.height - fixY;
@@ -49,8 +49,11 @@ package views.module5.scene52
 			addChild(headHolder);
 			headHolder.addChild(head);
 
-			startShakeHead(Math.PI / 20, 5);
-			startShakeBody(Math.PI / 30, 5);
+			if (shake)
+			{
+				startShakeHead(Math.PI / 20, 5);
+				startShakeBody(Math.PI / 30, 5);
+			}
 
 			if (stagePt)
 			{

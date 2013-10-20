@@ -10,7 +10,7 @@ package views.module5.scene52
 
 	import models.SOService;
 
-	import particle.FireParticle;
+	import particle.PalaceParticle;
 
 	import starling.display.Image;
 	import starling.display.Shape;
@@ -30,7 +30,7 @@ package views.module5.scene52
 		private var crtOperaName:String;
 		private var operaArr:Array=["xiyou", "sanguo"];
 		private var gameLevel:int=0;
-		private var fireParticle:FireParticle;
+		private var fireParticle:PalaceParticle;
 
 		public function OpearaGame2(lvl:int, am:AssetManager=null)
 		{
@@ -305,7 +305,7 @@ package views.module5.scene52
 			}
 			else
 			{
-				fireParticle=new FireParticle();
+				fireParticle=new PalaceParticle();
 				fireParticle.init(gameLevel);
 				moutainHolder.addChild(fireParticle);
 				fireParticle.x=170;
@@ -318,14 +318,14 @@ package views.module5.scene52
 		{
 			if (fireParticle)
 			{
-				var ptc:FireParticle=fireParticle;
+				var ptc:PalaceParticle=fireParticle;
 				fireParticle=null;
 				TweenLite.to(ptc, 1, {alpha: .1, scaleX: .5, onComplete: function():void {
 					ptc.removeFromParent(true);
 					ptc=null;
 				}});
 			}
-			fireParticle=new FireParticle();
+			fireParticle=new PalaceParticle();
 			fireParticle.init(gameLevel);
 			boat.addChild(fireParticle);
 			fireParticle.x=int(Math.random() * 5) * 200 + 80;
