@@ -55,7 +55,7 @@ package views.module4
 			if (SOService.instance.checkHintCount(shakeHintCount))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame);
 
-			sceneOver();
+//			sceneOver();
 		}
 
 		private var crawPosArr:Array=[new Point(1278, 708), new Point(1064, 490), new Point(1488, 490)];
@@ -103,6 +103,7 @@ package views.module4
 			var index:int=crawArr.indexOf(craw);
 			craw.removeEventListener(TouchEvent.TOUCH, onCrowTouch);
 			craw.touchable=false;
+			checkArr[index]=true;
 			var dx:Number;
 			switch (index)
 			{
@@ -180,6 +181,13 @@ package views.module4
 					break;
 				}
 			}
+
+			for each (var b:Boolean in checkArr)
+			{
+				if (!b)
+					return;
+			}
+			showAchievement(21, sceneOver);
 		}
 
 		private function onChancellorTouch(e:TouchEvent):void
@@ -224,6 +232,8 @@ package views.module4
 		private var hintShow:Sprite;
 		private var count:int=0;
 		private var hintFinger:Image;
+
+		private var checkArr:Vector.<Boolean>=new Vector.<Boolean>(3);
 
 		private function onEnterFrame(e:Event):void
 		{
@@ -289,10 +299,10 @@ package views.module4
 				bgHolder.x=1024 - bgW;
 				rightHit=true;
 			}
-			if (leftHit && rightHit)
-			{
-				showAchievement(21, sceneOver);
-			}
+//			if (leftHit && rightHit)
+//			{
+//				showAchievement(21, sceneOver);
+//			}
 		}
 	}
 }

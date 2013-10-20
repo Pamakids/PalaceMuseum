@@ -1,11 +1,14 @@
 package controllers
 {
+	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.Singleton;
 
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 
 	import feathers.core.PopUpManager;
+
+	import sound.SoundAssets;
 
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
@@ -40,6 +43,16 @@ package controllers
 			super();
 		}
 
+		public static function playSound(id:String, times=1):void
+		{
+			if (!SoundManager.instance.sounds[id])
+			{
+				var cls:Class=SoundAssets[id];
+				SoundManager.instance.addSound(id, new cls());
+			}
+			SoundManager.instance.play(id, times, true);
+		}
+
 		private var _moduleIndex:int=-1;
 		private var contentLayer:Sprite;
 		public var currentModule:PalaceModule;
@@ -65,6 +78,8 @@ package controllers
 			};
 
 			initLayers();
+
+			playSound("main", 999);
 		}
 
 		public function addChild(displayObject:flash.display.DisplayObject):void

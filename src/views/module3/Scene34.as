@@ -42,8 +42,12 @@ package views.module3
 			king.x=pos1.x;
 			king.y=pos1.y;
 			king.touchable=false;
+			king.alpha=0;
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			TweenLite.delayedCall(6, moveKing);
+			TweenLite.delayedCall(5, function():void {
+				TweenLite.to(king, 1, {alpha: 1, onComplete: moveKing});
+			}
+			);
 		}
 
 		override public function dispose():void

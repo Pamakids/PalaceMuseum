@@ -173,9 +173,9 @@ package views.module2.scene21
 
 		private function getStringFormTime(_count:int):String
 		{
-			var sectime:int=_count / 100;
+			var sectime:int=_count / 30;
 
-			var mm:int=(_count % 100);
+			var mm:int=(_count % 30);
 			var min:int=sectime % 3600 / 60;
 			var sec:int=sectime % 60;
 			var hour:int=sectime / 3600;
@@ -316,7 +316,7 @@ package views.module2.scene21
 
 			TweenLite.to(timeHolder, 1, {x: 822, onComplete: function():void {
 				ready=true;
-				time=new Timer(10);
+				time=new Timer(33);
 				time.addEventListener(TimerEvent.TIMER, onTimer);
 				time.start();
 			}});
