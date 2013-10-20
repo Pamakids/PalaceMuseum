@@ -6,9 +6,14 @@ package views.module3.scene33
 
 	import models.FontVo;
 
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.text.TextField;
+
+	import views.components.Prompt;
 
 	public class Dish extends Sprite
 	{
@@ -60,8 +65,35 @@ package views.module3.scene33
 		 * */
 		private function addFly():void
 		{
-			// TODO Auto Generated method stub
+			if (fly)
+			{
+				addChild(fly);
+				fly.x=-60;
+				fly.y=-200;
+				Starling.juggler.add(fly);
+				fly.addEventListener(Event.COMPLETE, completeHandler);
+				fly.loop=0;
+				fly.play();
+			}
+			Prompt.showTXT(Math.random(), -100, "-100", 30, null, this);
+		}
 
+		private function completeHandler(e:Event):void
+		{
+			fly.removeEventListener(Event.COMPLETE, completeHandler);
+			TweenLite.to(fly, .5, {y: -87});
+		}
+
+		override public function dispose():void
+		{
+			if (fly && contains(fly))
+			{
+				fly.stop();
+				Starling.juggler.remove(fly);
+				fly.removeFromParent(true);
+				fly=null;
+			}
+			super.dispose();
 		}
 
 		public function get pt():Point
@@ -94,17 +126,20 @@ package views.module3.scene33
 
 		public function countDown():void
 		{
-			if (count > 0)
-				count--;
-			else
-				isBad=true;
+			if (countReady && !isBad)
+				if (count > 0)
+					count--;
+				else
+					isBad=true;
 		}
 
 		public function addCount():void
 		{
-
+			countReady=true;
 		}
 
 		private var count:int=300;
+		public var fly:MovieClip;
+		private var countReady:Boolean;
 	}
 }

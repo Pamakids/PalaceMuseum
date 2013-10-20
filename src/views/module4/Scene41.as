@@ -1,5 +1,7 @@
 package views.module4
 {
+	import com.greensock.TweenLite;
+
 	import flash.events.AccelerometerEvent;
 	import flash.geom.Point;
 	import flash.sensors.Accelerometer;
@@ -56,12 +58,12 @@ package views.module4
 			sceneOver();
 		}
 
-		private var crawPosArr:Array=[new Point(1278, 708), new Point(1064, 503), new Point(1488, 500)];
+		private var crawPosArr:Array=[new Point(1278, 708), new Point(1064, 490), new Point(1488, 490)];
 		private var crawArr:Array=[];
 		private var peoplePosArr:Array=[new Point(1241, 641), new Point(911, 416), new Point(1421, 416)];
 
 		private var hintArr:Array=["大臣们奏事时，依次来到皇帝的龙案前跪下，汇报工作，接受指令",
-			"御门听政相当于国家最高级别的办公会议", "只有各个部门的重要领导才有资格参加"];
+			"御门听政相当于国家最高级别的办公会议，只有各部门的重要领导才有资格参加", "大臣如果迟到或早退，不仅要被皇帝骂，有时还会被扣工资"];
 
 		private function addCraws():void
 		{
@@ -91,13 +93,17 @@ package views.module4
 			var tc:Touch=e.getTouch(craw, TouchPhase.ENDED);
 			if (!tc)
 				return;
-			var index:int=crawArr.indexOf(craw);
-			showChancellor(index);
-			craw.removeEventListener(TouchEvent.TOUCH, onCrowTouch);
+
+			showChancellor(craw);
+
 		}
 
-		private function showChancellor(index:int):void
+		private function showChancellor(craw:Image):void
 		{
+			var index:int=crawArr.indexOf(craw);
+			craw.removeEventListener(TouchEvent.TOUCH, onCrowTouch);
+			craw.touchable=false;
+			var dx:Number;
 			switch (index)
 			{
 				case 0:
@@ -107,10 +113,14 @@ package views.module4
 						chancellor=getImage("chancellor");
 						chancellor.x=peoplePosArr[index].x;
 						chancellor.y=peoplePosArr[index].y;
-						chancellor.addEventListener(TouchEvent.TOUCH, onChancellorTouch);
+
 						peopleHolder.addChild(chancellor);
 
-						showHint(chancellor.x + 20, chancellor.y, hintArr[index]);
+						dx=craw.x + 50;
+						TweenLite.to(craw, 1, {x: dx, onComplete: function():void {
+							chancellor.addEventListener(TouchEvent.TOUCH, onChancellorTouch);
+							showHint(chancellor.x + 50, chancellor.y, hintArr[index]);
+						}});
 					}
 					break;
 				}
@@ -123,7 +133,6 @@ package views.module4
 						wen.x=peoplePosArr[index].x;
 						wen.y=peoplePosArr[index].y;
 						peopleHolder.addChild(wen);
-						wen.addEventListener(TouchEvent.TOUCH, onWenTouch);
 
 						var wenchen:Image=getImage("wenguan");
 						wenchen.x=832;
@@ -131,19 +140,23 @@ package views.module4
 						peopleHolder.addChild(wenchen);
 						wenchen.touchable=false;
 
-						showHint(wen.x + 50, wen.y + 20, hintArr[index]);
+						dx=craw.x - 134;
+						TweenLite.to(craw, 1, {x: dx, onComplete: function():void {
+							wen.addEventListener(TouchEvent.TOUCH, onWenTouch);
+							showHint(wen.x + 200, wen.y + 20, hintArr[index]);
+						}});
 					}
 					break;
 				}
 
 				case 2:
 				{
-					if (!chancellor)
+					if (!wu)
 					{
 						wu=getImage("wu");
 						wu.x=peoplePosArr[index].x;
 						wu.y=peoplePosArr[index].y;
-						wu.addEventListener(TouchEvent.TOUCH, onWuTouch);
+
 						peopleHolder.addChild(wu);
 
 						var wuchen:Image=getImage("wuguan");
@@ -152,7 +165,12 @@ package views.module4
 						peopleHolder.addChild(wuchen);
 						wuchen.touchable=false;
 
-						showHint(wu.x + 50, wu.y + 20, hintArr[index]);
+						dx=craw.x + 130;
+						TweenLite.to(craw, 1, {x: dx, onComplete: function():void {
+							wu.addEventListener(TouchEvent.TOUCH, onWuTouch);
+							showHint(wu.x + 50, wu.y + 20, hintArr[index]);
+						}});
+
 					}
 					break;
 				}
@@ -168,7 +186,7 @@ package views.module4
 		{
 			var tc:Touch=e.getTouch(chancellor, TouchPhase.ENDED);
 			if (tc)
-				showHint(chancellor.x + 20, chancellor.y, hintArr[0]);
+				showHint(chancellor.x + 50, chancellor.y, hintArr[0]);
 		}
 
 		private function onWenTouch(e:TouchEvent):void

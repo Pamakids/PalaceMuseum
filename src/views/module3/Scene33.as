@@ -5,6 +5,7 @@ package views.module3
 	import models.SOService;
 
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
@@ -14,6 +15,7 @@ package views.module3
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.ElasticButton;
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
@@ -231,6 +233,7 @@ package views.module3
 		private var isHintReverse:Boolean;
 
 		private var lion:Image;
+		private var choosed:Boolean;
 
 		private function nextChat():void
 		{
@@ -292,8 +295,55 @@ package views.module3
 			kingHolder.addChild(chair);
 			kingHolder.addChild(kingSit);
 
-			TweenLite.to(cardHolder, 1, {x: 0});
-			TweenLite.to(foodHolder, 1, {x: 1024, onComplete: startChat});
+			Prompt.showTXT(200, 450, "把没吃完的菜赏赐下去吧", 20, addChooses);
+		}
+
+		private function addChooses():void
+		{
+			var gap:Number=142 + 16;
+			for (var i:int=0; i < 4; i++)
+			{
+				var btn:ElasticButton=new ElasticButton(getImage("choose" + (i + 1).toString()));
+				btn.shadow=getImage("choose" + (i + 1).toString() + "-down");
+				btn.index=i;
+				btn.x=380 + gap * i;
+				btn.y=580;
+				foodHolder.addChild(btn);
+				btn.addEventListener(ElasticButton.CLICK, onBtnClick);
+			}
+		}
+
+		private function onBtnClick(e:Event):void
+		{
+			if (choosed)
+				return;
+			var b:ElasticButton=e.currentTarget as ElasticButton;
+			if (b)
+			{
+				choosed=true;
+				if (b.index == 3)
+					showAchievement(20, moveTable);
+				else
+					moveTable();
+				for (var i:int=0; i < foodHolder.numChildren; i++)
+				{
+					var obj:DisplayObject=foodHolder.getChildAt(i);
+					if (obj is ElasticButton)
+					{
+						obj.addEventListener(ElasticButton.CLICK, onBtnClick);
+						obj.touchable=false;
+						TweenLite.to(obj, .3, {alpha: 0});
+					}
+				}
+			}
+		}
+
+		private function moveTable():void
+		{
+			TweenLite.delayedCall(1, function():void {
+				TweenLite.to(cardHolder, 1, {x: 0});
+				TweenLite.to(foodHolder, 1, {x: 1024, onComplete: startChat});
+			});
 		}
 
 		private function onGameRestart(e:Event):void

@@ -80,6 +80,10 @@ package views.module2
 			prism.x=834;
 			prism.y=380;
 			addChild(prism);
+
+			addCraw(new Point(174, 578));
+			addCraw(new Point(590, 632));
+			addCraw(new Point(908, 461));
 		}
 
 		private function addTouchs():void

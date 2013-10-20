@@ -3,18 +3,18 @@ package views.global.map
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.pamakids.manager.LoadManager;
-	
+
 	import flash.display.Bitmap;
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	
+
 	import controllers.MC;
-	
+
 	import models.Const;
 	import models.SOService;
-	
+
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -24,7 +24,7 @@ package views.global.map
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 	import starling.utils.formatString;
-	
+
 	import views.components.ElasticButton;
 	import views.components.FlipAnimation;
 	import views.components.LionMC;
@@ -80,7 +80,7 @@ package views.global.map
 		 * 地图上不同模块或场景对应的区域
 		 */
 		private var hotspots:Array;
-		
+
 		private static var assetManager:AssetManager;
 
 		private static var loaded:Boolean = false;
@@ -274,7 +274,7 @@ package views.global.map
 		{
 			removeEventListener(TouchEvent.TOUCH, touchHandler);
 			super.dispose();
-			trace('disposed');
+//			trace('disposed');
 		}
 
 		private function positionKing(kingPoint:Point=null):void
@@ -313,19 +313,24 @@ package views.global.map
 				resetSun();
 				TweenLite.to(flipAnimation, 5, {delay: 1, y: 0, ease: Cubic.easeOut});
 			};
-			if (flipAnimation.scaleX == 1)
-				comFunc();
-			else
-				TweenLite.to(flipAnimation, 1.5, {x: 0, scaleX: 1, scaleY: 1, onComplete: comFunc});
-			var i:int=to == -1 ? 0 : to;
-			if (!showFromCenter || mc.moduleIndex == -1)
+			var lionSay:Function=function():void
 			{
-				to=i;
-				trace('开始任务：' + tasks[i]);
-				LionMC.instance.say(tasks[i], 3);
-//				if (!sos.isModuleCompleted(i))
-				showTaskHint(i);
-			}
+				var i:int=to == -1 ? 0 : to;
+				if (!showFromCenter || mc.moduleIndex == -1)
+				{
+					to=i;
+					LionMC.instance.say(tasks[i], 3, 0, 0, comFunc);
+					showTaskHint(i);
+				}
+				else
+					comFunc();
+			};
+			if (flipAnimation.scaleX == 1)
+				lionSay();
+			else
+				TweenLite.to(flipAnimation, 1.5, {x: 0, scaleX: 1, scaleY: 1, onComplete: lionSay});
+
+//			lionSay();
 
 			if (!pathHolder)
 			{
@@ -418,7 +423,7 @@ package views.global.map
 						if (changing)
 							return;
 						upPoint=flipAnimation.globalToLocal(upPoint);
-						trace('up point:', upPoint);
+//						trace('up point:', upPoint);
 						for (var i:int; i < hotspots.length; i++)
 						{
 							var r:Rectangle=hotspots[i];
@@ -427,7 +432,7 @@ package views.global.map
 								drawRect(r);
 
 								item=mapData.hotspots[i];
-								trace('Contains:', item);
+//								trace('Contains:', item);
 
 								var targetIndex:int=item['goto'] ? item['goto'][0] : -1;
 								var crtIndex:int=MC.instance.moduleIndex;
@@ -767,6 +772,8 @@ package views.global.map
 //						path.graphics.lineTo(img.x, img.y);
 				}
 			}
+			if (king)
+				flipAnimation.setChildIndex(king, flipAnimation.numChildren - 1);
 		}
 	}
 }

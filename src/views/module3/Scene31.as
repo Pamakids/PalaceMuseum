@@ -79,6 +79,8 @@ package views.module3
 //			{
 //				addEventListener(TouchEvent.TOUCH, onTouch);
 //			}});
+
+			addCraw(new Point(443, 349));
 		}
 
 		private function addKing():void

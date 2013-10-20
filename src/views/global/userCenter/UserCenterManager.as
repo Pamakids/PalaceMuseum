@@ -2,15 +2,15 @@ package views.global.userCenter
 {
 	import flash.filesystem.File;
 	import flash.utils.Dictionary;
-	
+
 	import controllers.MC;
-	
+
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.LionMC;
 	import views.global.TopBar;
 	import views.global.map.Map;
@@ -114,6 +114,7 @@ package views.global.userCenter
 
 		private static function loadFunc():void
 		{
+			MC.instance.main.addMask(.1);
 			_assetsManager=new AssetManager();
 			_assetsManager.enqueue(
 				File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"),
@@ -125,6 +126,7 @@ package views.global.userCenter
 			{
 				if (ratio == 1.0)
 				{
+					MC.instance.main.removeMask();
 					removeLoadImage();
 					loaded=true;
 					showUserCenter(_index);
@@ -162,7 +164,7 @@ package views.global.userCenter
 		{
 			return _assetsManager.getTexture(name);
 		}
-		
+
 	}
 }
 

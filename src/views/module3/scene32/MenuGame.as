@@ -172,7 +172,7 @@ package views.module3.scene32
 
 			addEventListener(TouchEvent.TOUCH, onTouch);
 
-			time=new Timer(10);
+			time=new Timer(33);
 			time.addEventListener(TimerEvent.TIMER, onTimer);
 			time.start();
 		}
@@ -572,9 +572,9 @@ package views.module3.scene32
 
 		private function getStringFormTime(_count:int):String
 		{
-			var sectime:int=_count / 100;
+			var sectime:int=_count / 30;
 
-			var mm:int=(_count % 100);
+			var mm:int=(_count % 30);
 			var min:int=sectime % 3600 / 60;
 			var sec:int=sectime % 60;
 			var hour:int=sectime / 3600;

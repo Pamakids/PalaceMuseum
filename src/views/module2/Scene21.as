@@ -1,7 +1,6 @@
 package views.module2
 {
 	import com.greensock.TweenLite;
-	import com.greensock.easing.Elastic;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -19,7 +18,7 @@ package views.module2
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
-	import views.components.Lion;
+	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
@@ -72,6 +71,9 @@ package views.module2
 			addChild(map);
 			map.addEventListener(TouchEvent.TOUCH, onMapTouch);
 
+			addCraw(new Point(125, 686));
+			addCraw(new Point(501, 581));
+
 			playLion();
 		}
 
@@ -87,25 +89,31 @@ package views.module2
 
 		private function playLion():void
 		{
-			lion=new Lion();
-			lion.src=getImage("lion");
-			addChild(lion);
-
-			lion.x=-140;
-			lion.y=300;
-			lion.rotation=-Math.PI / 4;
-			TweenLite.to(lion, .8, {x: 30, y: 540, rotation: 0, ease: Elastic.easeOut, onComplete: function():void
+			LionMC.instance.say(hint31find, 0, 50, 520, function():void
 			{
-				lion.say(hint31find, function():void {
-					TweenLite.to(lion, .5, {x: -140, onComplete: function():void
-					{
-						ready=true;
-						if (SOService.instance.checkHintCount(shelfHintCount))
-							addEventListener(Event.ENTER_FRAME, onEnterFrame);
-					}
-						});
-				});
-			}});
+				ready=true;
+				if (SOService.instance.checkHintCount(shelfHintCount))
+					addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			}, 20, false);
+//			lion=new Lion();
+//			lion.src=getImage("lion");
+//			addChild(lion);
+//
+//			lion.x=-140;
+//			lion.y=300;
+//			lion.rotation=-Math.PI / 4;
+//			TweenLite.to(lion, .8, {x: 30, y: 540, rotation: 0, ease: Elastic.easeOut, onComplete: function():void
+//			{
+//				lion.say(hint31find, function():void {
+//					TweenLite.to(lion, .5, {x: -140, onComplete: function():void
+//					{
+//						ready=true;
+//						if (SOService.instance.checkHintCount(shelfHintCount))
+//							addEventListener(Event.ENTER_FRAME, onEnterFrame);
+//					}
+//						});
+//				});
+//			}});
 		}
 
 		private var shelfHintCount:String="shelfHintCount";
@@ -247,7 +255,7 @@ package views.module2
 		private var probability:Number=0;
 		private var ready:Boolean;
 
-		private var lion:Lion;
+//		private var lion:Lion;
 
 		private var shelfL:Sprite;
 

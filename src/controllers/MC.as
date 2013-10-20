@@ -12,10 +12,10 @@ package controllers
 	import starling.display.Sprite;
 
 	import views.Module1;
-	import views.Module3;
 	import views.Module2;
-	import views.Module5;
+	import views.Module3;
 	import views.Module4;
+	import views.Module5;
 	import views.components.Prompt;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
@@ -75,6 +75,18 @@ package controllers
 		public function removeChild(displayObject:flash.display.DisplayObject):void
 		{
 			stage.removeChild(displayObject);
+		}
+
+		public function addMC(mc:MovieClip):void
+		{
+			stage.addChild(mc);
+			mc.visible=(UserCenterManager.getCrtUserCenter() == null);
+		}
+
+		public function removeMC(mc:MovieClip):void
+		{
+			if (stage.contains(mc))
+				stage.removeChild(mc);
 		}
 
 		public function hideMC():void

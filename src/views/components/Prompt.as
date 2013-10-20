@@ -156,11 +156,11 @@ package views.components
 		 * @param isKnowledge 知识点背景
 		 * @return
 		 */
-		public static function showTXT(_x:Number, _y:Number, _content:String, _size:int=20, callBack:Function=null, _parent:Sprite=null, bgAlign:int=1, isKnowledge:Boolean=false):Prompt
+		public static function showTXT(_x:Number, _y:Number, _content:String, _size:int=20, callBack:Function=null, _parent:Sprite=null, bgAlign:int=1, isKnowledge:Boolean=false, hideDelay:Number=3):Prompt
 		{
 			var bgSize:String=checkLength(_content.length)
 			var bg:String="hint-bg" + (isKnowledge ? "-k" : "") + bgSize;
-			var delay:int=3 + Math.max(bgSize.length / 2 - 1, 0);
+			var delay:int=hideDelay == 0 ? 0 : hideDelay + Math.max(bgSize.length / 2 - 1, 0);
 			return show(_x, _y, bg, _content, 1, delay, callBack, _parent, false, _size, bgAlign);
 		}
 
@@ -174,7 +174,7 @@ package views.components
 
 		private function onTouch(e:TouchEvent):void
 		{
-			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
+			var tc:Touch=e.getTouch(this, TouchPhase.ENDED);
 			if (tc)
 			{
 				removeEventListener(TouchEvent.TOUCH, onTouch);
