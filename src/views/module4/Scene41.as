@@ -203,13 +203,9 @@ package views.module4
 				showHint(wu.x + 50, wu.y + 20, hintArr[2]);
 		}
 
-		private var p:Prompt;
-
 		private function showHint(_x:Number, _y:Number, content:String):void
 		{
-			if (p)
-				p.playHide();
-			p=Prompt.showTXT(_x, _y, content, 20, null, bgHolder, 1, true);
+			Prompt.showTXT(_x, _y, content, 20, null, bgHolder, 1, true);
 		}
 
 		private var chancellor:Image;

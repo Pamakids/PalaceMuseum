@@ -83,12 +83,12 @@ package views.global.map
 
 		private static var assetManager:AssetManager;
 
-		private static var loaded:Boolean = false;
-		
+		private static var loaded:Boolean=false;
+
 		public static function loadAssets():void
 		{
-			if(!assetManager)
-				assetManager = new AssetManager();
+			if (!assetManager)
+				assetManager=new AssetManager();
 			var f:File=File.applicationDirectory.resolvePath('assets/global/map');
 			var f2:File=File.applicationDirectory.resolvePath("assets/common");
 			assetManager.enqueue(f2, f, "json/map.json");
@@ -97,13 +97,13 @@ package views.global.map
 				if (ratio == 1)
 				{
 					trace("Map loaded!");
-					loaded = true;
-					if(map)
+					loaded=true;
+					if (map)
 						map.init();
 				}
 			});
 		}
-		
+
 		public function Map(from:int=-1, to:int=-1)
 		{
 			this.viewContainer=new Sprite();
@@ -111,13 +111,13 @@ package views.global.map
 			this.to=to;
 //			hotspots=[new Rectangle(333, 476, 64, 36), new Rectangle(314, 516, 104, 38)];
 //			points=[new Point(365, 495), new Point(365, 535)];
-			if(!Map.assetManager)
+			if (!Map.assetManager)
 				loadAssets();
 			super(Map.assetManager, Const.WIDTH, Const.HEIGHT);
 			sos=SOService.instance;
 			mc=MC.instance;
 			map=this;
-			if(loaded)
+			if (loaded)
 				init();
 		}
 
@@ -127,7 +127,7 @@ package views.global.map
 			parseData();
 			initFlipAnimation();
 		}
-		
+
 		private var centerPoint:Dictionary;
 		private var tasks:Dictionary;
 
@@ -146,6 +146,8 @@ package views.global.map
 				hotspots.push(rect);
 				var p:Point=getCenterFromRect(rect);
 				points.push(p);
+				if (hotspot["id"] == "9")
+					gardenPt=p;
 				var gt:Array=hotspot['goto'];
 				if (gt)
 				{
@@ -208,7 +210,8 @@ package views.global.map
 				msIndex=(to + 1).toString() + "1map";
 			else if (msIndex.lastIndexOf("map") < 0)
 				msIndex=msIndex + "map";
-			SOService.instance.setSO("lastScene", msIndex);
+			if (!fromCenter)
+				SOService.instance.setSO("lastScene", msIndex);
 			MC.instance.hideMC();
 			showFromCenter=fromCenter;
 			var ec:Boolean=true;
@@ -289,6 +292,8 @@ package views.global.map
 			flipAnimation.setChildIndex(king, flipAnimation.numChildren - 1);
 			if (kingPoint)
 			{
+				if (!showFromCenter && from == 3 && gardenPt)
+					kingPoint=gardenPt;
 				king.visible=true;
 				king.x=kingPoint.x;
 				king.y=kingPoint.y;
@@ -648,6 +653,7 @@ package views.global.map
 		private var lockHolder:Sprite;
 		private var pathHolder:Sprite;
 		private var sun:Image;
+		private var gardenPt:Point;
 
 		/**
 		 * 地图初始化后再次显示地图

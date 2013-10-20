@@ -73,7 +73,7 @@ package
 			}
 			var moduleIndex:int=int(lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(lastScene.charAt(1)) - 1;
-			if (moduleIndex < 0 || sceneIndex < 0)
+			if (moduleIndex < 0 || sceneIndex < -1)
 				Map.show();
 			else if (lastScene.lastIndexOf("map") < 0)
 				MC.instance.gotoModule(moduleIndex, sceneIndex);

@@ -26,7 +26,6 @@ package views.components.base
 	{
 		public var moduleName:String;
 		protected var assetManager:AssetManager;
-		protected var autoDispose:Boolean=true;
 		public var crtScene:PalaceScene;
 		protected var tfHolder:Sprite;
 		protected var skipIndex:int=-1;
@@ -110,7 +109,7 @@ package views.components.base
 			}
 		}
 
-		private function initScene(e:Event):void
+		protected function initScene(e:Event):void
 		{
 			tfHolder.removeFromParent(true);
 			var next:ElasticButton=e.currentTarget as ElasticButton;
@@ -183,11 +182,8 @@ package views.components.base
 
 		override public function dispose():void
 		{
-			if (autoDispose && assetManager)
-			{
+			if (assetManager)
 				assetManager.dispose();
-				Prompt.removeAssetManager(assetManager);
-			}
 			assetManager=null;
 			super.dispose();
 		}
