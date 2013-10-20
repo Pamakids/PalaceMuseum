@@ -1,17 +1,18 @@
 package states
 {
 	import com.greensock.TweenLite;
-
+	import com.pamakids.manager.SoundManager;
+	
 	import Firefly.Paper;
-
+	
 	import assets.BtnAssets;
 	import assets.ImgAssets;
-
+	
 	import controllers.MC;
-
+	
 	import models.Config;
 	import models.StateManager;
-
+	
 	import org.agony2d.Agony;
 	import org.agony2d.notify.AEvent;
 	import org.agony2d.notify.DataEvent;
@@ -229,7 +230,7 @@ package states
 
 		private function onTakePhoto(e:AEvent):void
 		{
-			MC.playSound("camera");
+			SoundManager.instance.play('camera');
 			this.doSetTranslateState(false)
 			Agony.process.dispatchDirectEvent(TAKE_PHOTO)
 		}

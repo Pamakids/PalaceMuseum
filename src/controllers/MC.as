@@ -2,18 +2,18 @@ package controllers
 {
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.Singleton;
-
+	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
-
+	
 	import feathers.core.PopUpManager;
-
+	
 	import sound.SoundAssets;
-
+	
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-
+	
 	import views.Module1;
 	import views.Module2;
 	import views.Module3;
@@ -40,17 +40,8 @@ package controllers
 
 		public function MC()
 		{
-			super();
-		}
-
-		public static function playSound(id:String, times=1):void
-		{
-			if (!SoundManager.instance.sounds[id])
-			{
-				var cls:Class=SoundAssets[id];
-				SoundManager.instance.addSound(id, new cls());
-			}
-			SoundManager.instance.play(id, times, true);
+			sm = SoundManager.instance;
+			SoundAssets.init();
 		}
 
 		private var _moduleIndex:int=-1;
@@ -62,6 +53,7 @@ package controllers
 
 		public var stage:PalaceMuseum;
 		private var topBarLayer:Sprite;
+		private var sm:SoundManager;
 
 		public function init(main:Container):void
 		{
@@ -79,7 +71,7 @@ package controllers
 
 			initLayers();
 
-			playSound("main", 999);
+			sm.play('main');
 		}
 
 		public function addChild(displayObject:flash.display.DisplayObject):void
