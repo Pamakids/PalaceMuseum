@@ -65,6 +65,7 @@ package views.components
 
 		private function onTouch(e:TouchEvent):void
 		{
+			e.stopImmediatePropagation();
 			var tc:Touch=e.getTouch(bird, TouchPhase.BEGAN);
 			if (tc)
 			{

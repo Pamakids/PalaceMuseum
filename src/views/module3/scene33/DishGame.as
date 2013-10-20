@@ -247,8 +247,10 @@ package views.module3.scene33
 			var img:Image=getImage("dish" + crtdataArr[i]);
 			dish.index=i;
 			dish.addContent(img);
+			dish.scoreCut=scoreCut;
 			dish.pt=posArr[i];
 			dish.isPoison=getPoison();
+			dish.countBG=getImage("body-countdown");
 			dish.fly=new MovieClip(flyVec, 18);
 			dishHolder.addChild(dish);
 
@@ -269,6 +271,11 @@ package views.module3.scene33
 				dish.addEventListener(TouchEvent.TOUCH, onDishTouch);
 				dishArr[i]=dish;
 			}
+		}
+
+		private function scoreCut():void
+		{
+			score-=100;
 		}
 
 		private var flyVec:Vector.<Texture>;
@@ -661,15 +668,15 @@ package views.module3.scene33
 				dy=kingArea.y + kingArea.height / 2 + 50;
 				isClassed=true;
 
-				if (_dish.tested && !_dish.isPoison)
-				{
-					score+=100;
-					playKing(3);
-				}
-				else
+				if (!_dish.tested || _dish.isPoison || _dish.isBad)
 				{
 					life--;
 					playKing(4);
+				}
+				else
+				{
+					score+=100;
+					playKing(3);
 				}
 			}
 			else if (jarArea.containsPoint(pt))
@@ -678,15 +685,23 @@ package views.module3.scene33
 				dy=jarArea.y + jarArea.height / 2;
 				isClassed=true;
 
-				if (_dish.tested && _dish.isPoison)
+				if (_dish.isBad)
 				{
-					score+=100;
+					score+=50;
 					playKing(0);
 				}
 				else
 				{
-					life--;
-					playKing(Math.random() > .5 ? 1 : 2);
+					if (_dish.tested && _dish.isPoison)
+					{
+						score+=100;
+						playKing(0);
+					}
+					else
+					{
+						life--;
+						playKing(Math.random() > .5 ? 1 : 2);
+					}
 				}
 			}
 			else if (!stageArea.containsPoint(pt))
