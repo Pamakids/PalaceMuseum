@@ -4,23 +4,24 @@ package
 	import flash.filesystem.File;
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
-
+	
 	import controllers.MC;
-
+	
 	import models.Const;
 	import models.FontVo;
 	import models.SOService;
-
+	
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-
+	
+	import views.Interlude;
 	import views.Module1;
 	import views.Module2;
-	import views.Module5;
 	import views.Module4;
+	import views.Module5;
 	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.Container;
@@ -55,15 +56,31 @@ package
 
 		override protected function init():void
 		{
-//			testFont();
-//			testUserCenter();
-//			Map.show();
-//			return;
-//			debugInit();
+			var lastScene:String=SOService.instance.getSO("lastScene") as String;
+			if(!lastScene)
+				initIntro();
+			else
+				startGame();
+		}
+		
+		private var inito:Interlude;
+		private function initIntro():void
+		{
+			inito = new Interlude("assets/intro/intro.mp4", false, (!Map.map)?Map.loadAssets:null, startGame);
+			Starling.current.nativeStage.addChild( inito );
+		}
+		
+		private function startGame():void
+		{
+			//testUserCenter();
+			//Map.show();
+			//debugInit();
+			if(inito)
+				inito.dispose();
 			var lastScene:String=SOService.instance.getSO("lastScene") as String;
 			parseMS(lastScene);
 		}
-
+		
 		private function parseMS(lastScene:String):void
 		{
 			if (!lastScene)
@@ -73,7 +90,7 @@ package
 			}
 			var moduleIndex:int=int(lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(lastScene.charAt(1)) - 1;
-			if (moduleIndex < 0 || sceneIndex < -1)
+			if (moduleIndex < 0 || sceneIndex < 0)
 				Map.show();
 			else if (lastScene.lastIndexOf("map") < 0)
 				MC.instance.gotoModule(moduleIndex, sceneIndex);
