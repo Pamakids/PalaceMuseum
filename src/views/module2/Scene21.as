@@ -54,8 +54,8 @@ package views.module2
 			can=getImage("can31");
 			can.y=291;
 			addChild(can);
-			can.touchable=false;
-			addEventListener(TouchEvent.TOUCH, onCanTouch);
+//			can.touchable=false;
+			can.addEventListener(TouchEvent.TOUCH, onCanTouch);
 
 			var curtainL:Image=getImage("curtain-l");
 			addChild(curtainL);
@@ -81,7 +81,7 @@ package views.module2
 		{
 			if (!ready)
 				return;
-			var tc:Touch=e.getTouch(this, TouchPhase.ENDED);
+			var tc:Touch=e.getTouch(can, TouchPhase.ENDED);
 			if (tc)
 				if (canArea.containsPoint(tc.getLocation(this)))
 					initFindGame();

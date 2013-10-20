@@ -7,6 +7,8 @@ package states
 	import assets.BtnAssets;
 	import assets.ImgAssets;
 
+	import controllers.MC;
+
 	import models.Config;
 	import models.StateManager;
 
@@ -227,6 +229,7 @@ package states
 
 		private function onTakePhoto(e:AEvent):void
 		{
+			MC.playSound("camera");
 			this.doSetTranslateState(false)
 			Agony.process.dispatchDirectEvent(TAKE_PHOTO)
 		}

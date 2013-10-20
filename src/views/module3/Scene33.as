@@ -274,9 +274,14 @@ package views.module3
 			if (game.isWin())
 			{
 				showCard("7", function():void {
-					showAchievement(18);
+					showAchievement(18, function():void {
+						Prompt.showTXT(200, 450, "把没吃完的菜赏赐下去吧", 20, addChooses);
+					});
 				});
 			}
+			else
+				Prompt.showTXT(200, 450, "把没吃完的菜赏赐下去吧", 20, addChooses);
+
 			game.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed)
 			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart)
 			game.removeChildren();
@@ -294,8 +299,6 @@ package views.module3
 
 			kingHolder.addChild(chair);
 			kingHolder.addChild(kingSit);
-
-			Prompt.showTXT(200, 450, "把没吃完的菜赏赐下去吧", 20, addChooses);
 		}
 
 		private function addChooses():void
