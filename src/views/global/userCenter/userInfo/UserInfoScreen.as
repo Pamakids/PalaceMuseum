@@ -34,6 +34,7 @@ package views.global.userCenter.userInfo
 		
 		override protected function initialize():void
 		{
+			super.initialize();
 			getGameDatas();
 			initBackgroundImage();
 			initCrtUserView();
@@ -275,17 +276,8 @@ package views.global.userCenter.userInfo
 		
 		private function initBackgroundImage():void
 		{
-			var texture:Texture =  UserCenterManager.getTexture("page_left");
+			var texture:Texture =  UserCenterManager.getTexture("line_long");
 			var image:Image = new Image( texture );
-			this.addChild( image );
-			image.touchable = false;
-			texture = UserCenterManager.getTexture("page_right")
-			image = new Image( texture );
-			image.x = width/2;
-			this.addChild( image );
-			image.touchable = false;
-			texture = UserCenterManager.getTexture("line_long");
-			image = new Image( texture );
 			image.x = 60;
 			image.y = 197;
 			this.addChild( image );

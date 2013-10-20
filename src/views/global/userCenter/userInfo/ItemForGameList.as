@@ -6,6 +6,7 @@ package views.global.userCenter.userInfo
 	import models.FontVo;
 	
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -40,7 +41,7 @@ package views.global.userCenter.userInfo
 		private var label:TextField;
 		private var gameIcon:Button;
 		private var lock:Image;
-		private var mask:Image;
+		private var mask:Quad;
 		public var isOpend:Boolean;
 		
 		override protected function initialize():void
@@ -89,10 +90,11 @@ package views.global.userCenter.userInfo
 			
 			if(!isOpend)
 			{
-				mask = new Image(UserCenterManager.getTexture("card_game_mask"));
-				mask.width = gameIcon.width;
-				mask.height = gameIcon.height;
+				mask = new Quad(194, 144, 0x9b4d51);
+				mask.alpha = .7;
 				this.addChild( mask );
+				mask.x = 7;
+				mask.y = 7;
 				lock = new Image(UserCenterManager.getTexture("icon_lock"));
 				lock.x = 15;
 				lock.y = 96;

@@ -25,11 +25,14 @@ package views.global.userCenter.handbook
 		private var _assetsManager:AssetManager;
 		
 		public var crtPage:int = 0;
+		private var isNew:Boolean = false;
+		
 		override protected function initialize():void
 		{
 			super.initialize();
 			_assetsManager=new AssetManager();
-			if(this.crtPage == 0)
+			isNew = UserCenterManager.getCrtUserCenter().aniable;	//用以区分是否是第几次打开手册
+			if(isNew)		
 			{
 				initImages();
 				loadPrevAndNext(crtPage);
@@ -56,9 +59,9 @@ package views.global.userCenter.handbook
 		private var cacheR:Image;
 		private function initImages():void
 		{
-			cacheL = new Image((crtPage == 0)?UserCenterManager.getTexture("content_page_1"):_assetsManager.getTexture("content_page_"+(crtPage*2+1)));
+			cacheL = new Image((isNew)?UserCenterManager.getTexture("content_page_1"):_assetsManager.getTexture("content_page_"+(crtPage*2+1)));
 			this.addChild(cacheL);
-			cacheR = new Image((crtPage == 0)?UserCenterManager.getTexture("content_page_2"):_assetsManager.getTexture("content_page_"+(crtPage*2+2)));
+			cacheR = new Image((isNew)?UserCenterManager.getTexture("content_page_2"):_assetsManager.getTexture("content_page_"+(crtPage*2+2)));
 			this.addChild( cacheR );
 			cacheR.x = viewWidth / 2;
 			cacheL.touchable = cacheR.touchable = false;

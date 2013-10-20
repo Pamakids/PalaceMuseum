@@ -2,16 +2,16 @@ package views.global.userCenter.map
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	import feathers.controls.Button;
-
+	
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
-
+	
 	import views.global.map.Map;
 	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenterManager;
@@ -40,7 +40,7 @@ package views.global.userCenter.map
 
 		override protected function initPages():void
 		{
-			var image:Image=new Image(UserCenterManager.getTexture("background_map"));
+			var image:Image=new Image(UserCenterManager.getTexture("background_1"));
 			this.addChild(image);
 			image.touchable=false;
 		}
@@ -49,22 +49,33 @@ package views.global.userCenter.map
 		{
 			cache=new Image(mapTexture);
 			this.addChild(cache);
-			cache.touchable=false;
 			cache.scaleX=cache.scaleY=mapButton.scaleX;
 			cache.x=mapButton.x;
 			cache.y=mapButton.y;
+			
+			imageL = new Image(UserCenterManager.getTexture("image_map_left"));
+			this.addChild( imageL );
+			imageL.x = 19;
+			imageL.y = 151;
+			
+			imageR = new Image(UserCenterManager.getTexture("image_map_right"));
+			this.addChild( imageR );
+			imageR.x = 685;
+			imageR.y = 144;
+			
+			cache.touchable=imageL.touchable=imageR.touchable=false;
 		}
 
+		private var imageL:Image;
+		private var imageR:Image;
+		
 		private function initMapButton():void
 		{
-			var texture:Texture=UserCenterManager.getTexture("mapBG");
-			mapTexture=Texture.fromTexture(texture, new Rectangle(0, 0, texture.width, texture.height / 4));
-
+			mapTexture=UserCenterManager.getTexture("button_map_skin");
 			mapButton=new Button();
 			mapButton.defaultSkin=new Image(mapTexture);
 			mapButton.x=70;
-			mapButton.y=320;
-			mapButton.scaleX=mapButton.scaleY=0.8;
+			mapButton.y=173;
 			addChild(mapButton);
 			mapButton.addEventListener(Event.TRIGGERED, onTriggered);
 		}
@@ -108,9 +119,16 @@ package views.global.userCenter.map
 		override public function dispose():void
 		{
 			if (mapButton)
-				mapButton.dispose();
+			{
+				mapButton.removeEventListener(Event.TRIGGERED, onTriggered);
+				mapButton.removeFromParent(true);
+			}
 			if (cache)
-				cache.dispose();
+				cache.removeFromParent(true);
+			if(imageL)
+				imageL.removeFromParent(true);
+			if(imageR)
+				imageR.removeFromParent(true);
 			if (mapTexture)
 				mapTexture.dispose();
 			super.dispose();
