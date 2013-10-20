@@ -1,57 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:2af680b937822c10c75a5d1a2725f580$ -->
+<!-- $TexturePacker:SmartUpdate:d12c38ecd56110f0c3b0bce7b26cd89a$ -->
 <TextureAtlas imagePath="m2s3.png">
-    <SubTexture name="card1" x="1269" y="1696" width="37" height="139"/>
-    <SubTexture name="card1b" x="469" y="1365" width="108" height="582"/>
-    <SubTexture name="card2" x="1304" y="1837" width="32" height="135"/>
-    <SubTexture name="card2b" x="359" y="1365" width="108" height="582"/>
-    <SubTexture name="card3" x="1269" y="1837" width="33" height="135"/>
-    <SubTexture name="card3b" x="249" y="1365" width="108" height="582"/>
-    <SubTexture name="card4" x="1308" y="1696" width="39" height="138"/>
-    <SubTexture name="card4b" x="603" y="962" width="108" height="582"/>
-    <SubTexture name="chair" x="579" y="1546" width="623" height="277" frameX="0" frameY="0" frameWidth="625" frameHeight="277"/>
-    <SubTexture name="choose1-down" x="1603" y="886" width="142" height="79"/>
-    <SubTexture name="choose1" x="1770" y="515" width="128" height="65" frameX="-7" frameY="-7" frameWidth="142" frameHeight="79"/>
-    <SubTexture name="choose2-down" x="1625" y="623" width="142" height="79"/>
-    <SubTexture name="choose2" x="1725" y="704" width="128" height="65" frameX="-7" frameY="-7" frameWidth="142" frameHeight="79"/>
-    <SubTexture name="choose3-down" x="1625" y="542" width="142" height="79"/>
-    <SubTexture name="choose3" x="2" y="1979" width="128" height="65" frameX="-7" frameY="-7" frameWidth="142" frameHeight="79"/>
-    <SubTexture name="choose4-down" x="419" y="1949" width="142" height="79"/>
-    <SubTexture name="choose4" x="1192" y="1974" width="128" height="65" frameX="-7" frameY="-7" frameWidth="142" frameHeight="79"/>
-    <SubTexture name="collection_card_7" x="1460" y="2" width="338" height="410"/>
-    <SubTexture name="dish-hand" x="1204" y="1483" width="108" height="211"/>
-    <SubTexture name="dish-hint" x="2" y="2" width="746" height="669"/>
-    <SubTexture name="dish-jar" x="713" y="962" width="296" height="256" frameX="-2" frameY="0" frameWidth="298" frameHeight="256"/>
-    <SubTexture name="dish-king" x="1413" y="1282" width="298" height="321"/>
-    <SubTexture name="dish-pin-poison" x="1204" y="1696" width="63" height="171"/>
-    <SubTexture name="dish-pin" x="1314" y="1483" width="63" height="171"/>
-    <SubTexture name="dish1" x="1662" y="1605" width="223" height="223"/>
-    <SubTexture name="dish2" x="1379" y="1605" width="281" height="212"/>
-    <SubTexture name="dish3" x="1349" y="1819" width="259" height="188"/>
-    <SubTexture name="dish4" x="1414" y="542" width="209" height="219"/>
-    <SubTexture name="dish5" x="2" y="1752" width="225" height="225"/>
-    <SubTexture name="dish6" x="815" y="1825" width="233" height="170"/>
-    <SubTexture name="dish7" x="579" y="1825" width="234" height="199"/>
-    <SubTexture name="dish8" x="1651" y="1830" width="243" height="207" frameX="-19" frameY="-8" frameWidth="281" frameHeight="225"/>
-    <SubTexture name="food" x="713" y="1282" width="698" height="199"/>
-    <SubTexture name="king23-sit" x="1028" y="568" width="384" height="712" frameX="-8" frameY="0" frameWidth="392" frameHeight="712"/>
-    <SubTexture name="lifeboard" x="750" y="568" width="198" height="81"/>
-    <SubTexture name="lifeicon-lost" x="764" y="1220" width="49" height="50"/>
-    <SubTexture name="lifeicon" x="713" y="1220" width="49" height="50"/>
-    <SubTexture name="lion23" x="2" y="1365" width="245" height="385" frameX="0" frameY="0" frameWidth="247" frameHeight="385"/>
-    <SubTexture name="lose-panel" x="750" y="2" width="708" height="430"/>
-    <SubTexture name="pin23" x="1776" y="414" width="88" height="70"/>
-    <SubTexture name="progress" x="1282" y="515" width="486" height="25" frameX="-14" frameY="-12" frameWidth="530" frameHeight="51"/>
-    <SubTexture name="progressbg" x="750" y="515" width="530" height="51"/>
-    <SubTexture name="pushbuttonhint" x="1610" y="1819" width="39" height="101"/>
-    <SubTexture name="record" x="1414" y="763" width="187" height="187"/>
-    <SubTexture name="restart-light" x="1050" y="1869" width="140" height="135"/>
-    <SubTexture name="restart" x="1603" y="763" width="120" height="121" frameX="-8" frameY="-6" frameWidth="140" frameHeight="135"/>
-    <SubTexture name="scorebg" x="750" y="434" width="1024" height="79"/>
-    <SubTexture name="scoreboard" x="229" y="1949" width="188" height="90"/>
-    <SubTexture name="star-grey" x="1769" y="582" width="76" height="71" frameX="0" frameY="-1" frameWidth="76" frameHeight="73"/>
-    <SubTexture name="star-red" x="950" y="568" width="76" height="73"/>
-    <SubTexture name="table23" x="2" y="673" width="1024" height="287"/>
-    <SubTexture name="win-panel" x="2" y="962" width="599" height="401"/>
+    <SubTexture name="card1" x="2007" y="1242" width="37" height="139"/>
+    <SubTexture name="card1b" x="957" y="1359" width="108" height="582"/>
+    <SubTexture name="card2" x="985" y="1220" width="32" height="135"/>
+    <SubTexture name="card2b" x="847" y="1359" width="108" height="582"/>
+    <SubTexture name="card3" x="678" y="1802" width="33" height="135"/>
+    <SubTexture name="card3b" x="737" y="1359" width="108" height="582"/>
+    <SubTexture name="card4" x="2007" y="999" width="39" height="138"/>
+    <SubTexture name="card4b" x="627" y="1166" width="108" height="582"/>
+    <SubTexture name="chair" x="2" y="1043" width="623" height="277" frameX="0" frameY="0" frameWidth="625" frameHeight="277"/>
+    <SubTexture name="choose1-down" x="1886" y="245" width="142" height="79"/>
+    <SubTexture name="choose1" x="1019" y="1220" width="128" height="65" frameX="-7" frameY="-7" frameWidth="142" frameHeight="79"/>
+    <SubTexture name="choose2-down" x="1886" y="164" width="142" height="79"/>
+    <SubTexture name="choose2" x="1024" y="1943" width="128" height="65" frameX="-7" frameY="-7" frameWidth="142" frameHeight="79"/>
+    <SubTexture name="choose3-down" x="1886" y="83" width="142" height="79"/>
+    <SubTexture name="choose3" x="1886" y="530" width="128" height="65" frameX="-7" frameY="-7" frameWidth="142" frameHeight="79"/>
+    <SubTexture name="choose4-down" x="1886" y="2" width="142" height="79"/>
+    <SubTexture name="choose4" x="1886" y="463" width="128" height="65" frameX="-7" frameY="-7" frameWidth="142" frameHeight="79"/>
+    <SubTexture name="collection_card_7" x="1707" y="597" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
+    <SubTexture name="dish-hand" x="1278" y="1794" width="108" height="211"/>
+    <SubTexture name="dish-hint" x="2" y="372" width="746" height="669"/>
+    <SubTexture name="dish-jar" x="1671" y="1322" width="296" height="256" frameX="-2" frameY="0" frameWidth="298" frameHeight="256"/>
+    <SubTexture name="dish-king-bg" x="1707" y="999" width="298" height="321"/>
+    <SubTexture name="dish-pin-poison" x="1969" y="1383" width="63" height="171"/>
+    <SubTexture name="dish-pin" x="613" y="1750" width="63" height="171"/>
+    <SubTexture name="dish-table" x="1028" y="2" width="856" height="583"/>
+    <SubTexture name="dish1" x="388" y="1721" width="223" height="223"/>
+    <SubTexture name="dish2" x="1671" y="1580" width="281" height="212"/>
+    <SubTexture name="dish3" x="750" y="372" width="259" height="188"/>
+    <SubTexture name="dish4" x="1067" y="1690" width="209" height="219"/>
+    <SubTexture name="dish5" x="388" y="1494" width="225" height="225"/>
+    <SubTexture name="dish6" x="388" y="1322" width="233" height="170"/>
+    <SubTexture name="dish7" x="749" y="1158" width="234" height="199"/>
+    <SubTexture name="dish8" x="750" y="949" width="243" height="207" frameX="-19" frameY="-8" frameWidth="281" frameHeight="225"/>
+    <SubTexture name="food" x="995" y="1019" width="698" height="199"/>
+    <SubTexture name="king23-sit" x="2" y="1322" width="384" height="712" frameX="-8" frameY="0" frameWidth="392" frameHeight="712"/>
+    <SubTexture name="lifeboard" x="578" y="1946" width="198" height="81"/>
+    <SubTexture name="lifeicon-lost" x="1019" y="1287" width="49" height="50"/>
+    <SubTexture name="lifeicon" x="678" y="1750" width="49" height="50"/>
+    <SubTexture name="lion23" x="750" y="562" width="245" height="385" frameX="0" frameY="0" frameWidth="247" frameHeight="385"/>
+    <SubTexture name="lose-panel" x="997" y="587" width="708" height="430"/>
+    <SubTexture name="pin23" x="934" y="1943" width="88" height="70"/>
+    <SubTexture name="progress" x="778" y="2018" width="486" height="25" frameX="-14" frameY="-12" frameWidth="530" frameHeight="51"/>
+    <SubTexture name="progressbg" x="1154" y="1220" width="530" height="51"/>
+    <SubTexture name="pushbuttonhint" x="2007" y="1139" width="39" height="101"/>
+    <SubTexture name="record" x="1388" y="1794" width="187" height="187"/>
+    <SubTexture name="restart-light" x="1886" y="326" width="140" height="135"/>
+    <SubTexture name="restart" x="627" y="1043" width="120" height="121" frameX="-8" frameY="-6" frameWidth="140" frameHeight="135"/>
+    <SubTexture name="scorebg" x="2" y="291" width="1024" height="79"/>
+    <SubTexture name="scoreboard" x="388" y="1946" width="188" height="90"/>
+    <SubTexture name="star-grey" x="856" y="1943" width="76" height="71" frameX="0" frameY="-1" frameWidth="76" frameHeight="73"/>
+    <SubTexture name="star-red" x="778" y="1943" width="76" height="73"/>
+    <SubTexture name="table23" x="2" y="2" width="1024" height="287"/>
+    <SubTexture name="win-panel" x="1070" y="1287" width="599" height="401"/>
 </TextureAtlas>

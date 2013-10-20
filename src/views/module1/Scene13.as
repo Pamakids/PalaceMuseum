@@ -1,9 +1,13 @@
 package views.module1
 {
 	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
+
+	import flash.geom.Point;
 
 	import feathers.core.PopUpManager;
 
+	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -11,7 +15,6 @@ package views.module1
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
-	import views.components.LionMC;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 	import views.module1.scene13.Clock;
@@ -70,14 +73,41 @@ package views.module1
 			bg.x=512;
 			addChild(bg);
 
-			bg.addChild(getImage("background13"));
+			bg.addChild(getImage("bg13"));
 			bg.pivotX=bg.width >> 1;
 
+			for (var i:int=0; i < 6; i++)
+			{
+				var pendant:Image=getImage("pendant" + (i + 1).toString());
+				pendant.addEventListener(TouchEvent.TOUCH, onPendantTouch);
+				addChild(pendant);
+				pendant.x=pendantPosArr[i].x;
+				pendant.y=pendantPosArr[i].y;
+				pendant.pivotX=offsetXArr[i];
+			}
 			addPlaque();
-//			addKing();
-//			addEunuch();
 			addClock();
-			addBook();
+			addCraw(new Point(661, 40));
+			addCraw(new Point(898, 360));
+		}
+
+		private var pendantPosArr:Array=[new Point(299, 226), new Point(390, 192),
+			new Point(484, 163), new Point(574, 164), new Point(635, 176), new Point(765, 227)];
+		private var offsetXArr:Array=[12, 9, 10, 8, 11, 4];
+
+		private function onPendantTouch(e:TouchEvent):void
+		{
+			var pendant:Image=e.currentTarget as Image;
+			if (!pendant)
+				return;
+			var tc:Touch=e.getTouch(pendant, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			pendant.touchable=false;
+			TweenMax.to(pendant, 3, {shake: {rotation: Math.PI / 15, numShakes: 3}, onComplete: function():void
+			{
+				pendant.touchable=true;
+			}});
 		}
 
 		private function addPlaque():void
@@ -172,15 +202,6 @@ package views.module1
 			}
 
 
-		}
-
-		private function addBook():void
-		{
-			var book:Sprite=new Sprite();
-			book.addChild(getImage("book"));
-			book.x=10;
-			book.y=10;
-			addChild(book);
 		}
 
 		private function onPlaqueTouch(e:TouchEvent):void

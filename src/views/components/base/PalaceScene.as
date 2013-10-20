@@ -11,6 +11,7 @@ package views.components.base
 	import com.greensock.TweenMax;
 	import com.pamakids.palace.utils.StringUtils;
 
+	import flash.geom.Point;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 
@@ -67,6 +68,15 @@ package views.components.base
 			bird.close=new ElasticButton(getImage("button_close"));
 			bird.fly();
 			addChild(bird);
+		}
+
+		protected function addCraw(pt:Point):void
+		{
+			var craw:Image=getImage("craw");
+			craw.x=pt.x;
+			craw.y=pt.y;
+			addChild(craw);
+			craw.touchable=false;
 		}
 
 		override protected function onStage(e:Event):void

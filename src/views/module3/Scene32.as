@@ -45,6 +45,8 @@ package views.module3
 			areaArr.push(new Rectangle(718, 272, 185, 300));
 
 			addEventListener(TouchEvent.TOUCH, onTouch);
+
+			addCraw(new Point(463, 461));
 		}
 
 		private function onTouch(e:TouchEvent):void

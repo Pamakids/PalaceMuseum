@@ -58,7 +58,7 @@ package states
 			// A
 			{
 				mBtnA=new ImageButton("btnEffect")
-				this.fusion.addElement(mBtnA, 93, 64)
+				this.fusion.addElement(mBtnA, 93, 50)
 				mBtnA.addEventListener(AEvent.CLICK, onTranslate)
 
 				{
