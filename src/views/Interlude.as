@@ -175,8 +175,6 @@ package views
 		
 		public function dispose():void
 		{
-			if(parent)
-				parent.removeChild(this);
 			if(connection)
 			{
 				connection.removeEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
@@ -188,7 +186,12 @@ package views
 			{
 				stream.removeEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
 				stream.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
-				stream.close();
+				stream.pause();
+			}
+			if(stageVideo)
+			{
+				stageVideo.viewPort = new Rectangle(0, 0, 0, 0);
+				stageVideo=null;
 			}
 			if(video)
 			{
@@ -196,14 +199,14 @@ package views
 				video.clear();
 				video=null;
 			}
-			if(stageVideo)
-				stageVideo=null;
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE, onRemove);
 			if(stopHandler)
 				stopHandler();
 			this.startHandler=null;
 			this.stopHandler=null;
+			if(parent)
+				parent.removeChild(this);
 		}
 	}
 }
