@@ -307,7 +307,7 @@ package views.global.map
 				initCloseButton();
 				closeButton.visible=showFromCenter;
 				addEventListener(TouchEvent.TOUCH, touchHandler);
-				resetSun();
+				positionSun(showFromCenter ? mc.moduleIndex : from);
 				TweenLite.to(flipAnimation, 5, {delay: 1, y: 0, ease: Cubic.easeOut});
 			};
 			var lionSay:Function=function():void
@@ -447,7 +447,7 @@ package views.global.map
 										}
 										else if (sos.isModuleCompleted(targetIndex))
 										{
-											resetSun(crtIndex, targetIndex);
+											moveSun(crtIndex, targetIndex);
 											changing=true;
 										}
 									}
@@ -455,7 +455,7 @@ package views.global.map
 									{
 										if (to == targetIndex)
 										{
-											resetSun(crtIndex, targetIndex);
+											moveSun(crtIndex, targetIndex);
 											changing=true;
 										}
 									}
@@ -673,7 +673,19 @@ package views.global.map
 				resetLockHolder();
 			if (closeButton)
 				closeButton.visible=showFromCenter;
-			resetSun();
+			positionSun(from);
+		}
+		
+		private function positionSun(_index:int):void
+		{
+			_index=_index>0?_index:0;
+			if (!sun)
+			{
+				sun=getImage("map-sun");
+				flipAnimation.addChild(sun);
+			}
+			sun.x=sunPosArr[_index].x;
+			sun.y=sunPosArr[_index].y;
 		}
 
 		/**
@@ -681,31 +693,16 @@ package views.global.map
 		 * 太阳移动
 		 *
 		 * */
-		private function resetSun(_from:int=-1, _to:int=0):void
+		private function moveSun(_from:int=-1, _to:int=0):void
 		{
-			if (!sun)
-			{
-				sun=getImage("map-sun");
-				flipAnimation.addChild(sun);
-				sun.x=sunPosArr[0].x;
-				sun.y=sunPosArr[0].y;
-			}
-//			sun.visible=!showFromCenter;
 			TweenLite.killTweensOf(sun);
-			var fp:Point=sunPosArr[Math.max(0, _from)]; //from
 			var tp:Point=sunPosArr[Math.max(0, _to)]; //to
-			if (fp.x == tp.x)
+			if (sun.x == tp.x)
 				return;
-			else if (fp.x > tp.x) //左移
-			{
-				sun.x=fp.x;
-				sun.y=fp.y;
+			else if (sun.x > tp.x) //左移
 				TweenLite.to(sun, 2.5, {x: tp.x, y: tp.y});
-			}
 			else //右移
 			{
-				sun.x=fp.x;
-				sun.y=fp.y;
 				var leftp:Point=sunPosArr[sunPosArr.length - 1];
 				TweenLite.to(sun, 1.3, {x: leftp.x, y: leftp.y, onComplete: function():void
 				{

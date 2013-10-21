@@ -10,24 +10,24 @@ package views.components.base
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.pamakids.palace.utils.StringUtils;
-
+	
 	import flash.geom.Point;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
-
+	
 	import feathers.core.PopUpManager;
-
+	
 	import models.AchieveVO;
 	import models.FontVo;
 	import models.SOService;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.CollectionCard;
 	import views.components.ElasticButton;
 	import views.components.PalaceBird;
@@ -42,7 +42,6 @@ package views.components.base
 		public function PalaceScene(am:AssetManager=null)
 		{
 			super();
-			sceneName=StringUtils.getClassName(this);
 			if (sceneName.indexOf("scene") == 0)
 			{
 				var str:String=sceneName.substr(5, 2);
@@ -158,7 +157,11 @@ package views.components.base
 		}
 
 		private var delayIndex:int;
-		public var sceneName:String;
+
+		public function get sceneName():String
+		{
+			return StringUtils.getClassName(this);
+		}
 
 		protected function showAchievement(_achieveIndex:int, _callback:Function=null):void
 		{

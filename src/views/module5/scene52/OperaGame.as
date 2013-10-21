@@ -3,16 +3,16 @@ package views.module5.scene52
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
-
+	
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
-
+	
 	import events.OperaSwitchEvent;
-
+	
 	import models.SOService;
-
+	
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -23,7 +23,7 @@ package views.module5.scene52
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
 	import views.module5.Scene52;
@@ -105,15 +105,15 @@ package views.module5.scene52
 			closeBtn.x=950;
 			closeBtn.y=60;
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
-//			closeBtn.visible=closeBtn.touchable=false;
 
 			TweenLite.delayedCall(.5, function():void {
 				if (!fromCenter) {
 					var e:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.OPEN);
-					scene.onOperaSwitch(e);}
+					onOperaSwitch(e);}
 			});
-//			dispatchEvent(e);
 		}
+		
+		public var onOperaSwitch:Function;
 
 		private function shakeNext():void
 		{
@@ -153,10 +153,10 @@ package views.module5.scene52
 		{
 			if (!fromCenter)
 			{
-				if (scene)
+				if (onOperaSwitch!=null)
 				{
 					var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE_OPEN, shureStart, initGame);
-					scene.onOperaSwitch(e1);
+					onOperaSwitch(e1,true);
 				}
 			}
 			else
@@ -529,7 +529,6 @@ package views.module5.scene52
 		private var gameOver:Boolean;
 
 		private var _score:int;
-		public var scene:Scene52;
 
 		private var xiyouBtn:Sprite;
 
@@ -652,14 +651,14 @@ package views.module5.scene52
 			else
 			{
 				var e:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE_OPEN, openCallback, closeCallBack);
-				scene.onOperaSwitch(e);
+				onOperaSwitch(e);
 			}
 		}
 
 		private function onNextShow(e:Event):void
 		{
 			var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE, null, nextGame);
-			scene.onOperaSwitch(e1);
+			onOperaSwitch(e1);
 		}
 
 		private function restartGame(e:Event=null):void
@@ -673,7 +672,7 @@ package views.module5.scene52
 				var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE_OPEN, null, function():void {
 					dispatchEvent(new Event(PalaceGame.GAME_RESTART));
 				});
-				scene.onOperaSwitch(e1);
+				onOperaSwitch(e1);
 			}
 		}
 
@@ -688,7 +687,7 @@ package views.module5.scene52
 				var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE_OPEN, null, function():void {
 					dispatchEvent(new Event(PalaceGame.GAME_OVER));
 				});
-				scene.onOperaSwitch(e1);
+				onOperaSwitch(e1);
 			}
 		}
 
