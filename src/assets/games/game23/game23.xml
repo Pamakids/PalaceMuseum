@@ -27,7 +27,7 @@
     <SubTexture name="record" x="1696" y="679" width="187" height="187"/>
     <SubTexture name="restart-light" x="1886" y="2" width="140" height="135"/>
     <SubTexture name="restart" x="1886" y="139" width="120" height="121" frameX="-8" frameY="-6" frameWidth="140" frameHeight="135"/>
-    <SubTexture name="scordbg" x="2" y="2" width="1024" height="79"/>
+    <SubTexture name="scorebg" x="2" y="2" width="1024" height="79"/>
     <SubTexture name="scoreboard" x="1696" y="587" width="188" height="90"/>
     <SubTexture name="star-grey" x="1964" y="475" width="76" height="71" frameX="0" frameY="-1" frameWidth="76" frameHeight="73"/>
     <SubTexture name="star-red" x="1886" y="475" width="76" height="73"/>

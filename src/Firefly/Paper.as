@@ -111,7 +111,7 @@
 			var touch:Touch
 
 			touch=e.touch
-			if (!this.hitTestPoint(touch.stageX, touch.stageY) || mIsTranslateState)
+			if (!bm.hitTestPoint(touch.stageX, touch.stageY) || mIsTranslateState)
 			{
 				return
 			}

@@ -66,7 +66,7 @@ package controllers
 		/**
 		 * 游戏数据名称集合
 		 */
-		private const classNames:Array=["menugame", "dishgame", "jigSawgame", "operagame"];
+		private const classNames:Array=["menugame", "dishgame", "jigsawgame", "operagame"];
 		private const gameNames:Array=["吉祥菜名", "银牌试毒", "地图拼图", "粉墨登场"];
 		/**
 		 * 游戏是否有难度区分:0 有， 1 没有
@@ -99,7 +99,8 @@ package controllers
 				{
 					if (SOService.instance.getSO(obj.className))
 					{
-						obj.resultEasy=SOService.instance.getSO(obj.className + "gameresult");
+						var res:int=SOService.instance.getSO(obj.className + "gameresult") as int;
+						obj.resultEasy=res?res.toString():"000000";
 						obj.resultHard="000000";
 					}
 					else
@@ -110,15 +111,18 @@ package controllers
 				}
 				else
 				{
-					if (SOService.instance.getSO(obj.className + 0))
-						obj.resultEasy=SOService.instance.getSO(obj.className + "gameresult" + 0);
+					if (SOService.instance.getSO(obj.className))
+					{
+						var res2:int=SOService.instance.getSO(obj.className + "gameresult0") as int;
+						obj.resultEasy=res2?res2.toString():"000000";
+						var res3:int=SOService.instance.getSO(obj.className + "gameresult1") as int;
+						obj.resultHard=res3?res3.toString():"000000";
+					}
 					else
+					{
 						obj.resultEasy="000000";
-
-					if (SOService.instance.getSO(obj.className + 1))
-						obj.resultHard=SOService.instance.getSO(obj.className + "gameresult" + 1);
-					else
 						obj.resultHard="000000";
+					}
 				}
 				delete obj.className;
 				datas.push(obj);

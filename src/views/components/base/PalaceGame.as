@@ -1,16 +1,16 @@
 package views.components.base
 {
 	import com.pamakids.palace.utils.StringUtils;
-
+	
 	import controllers.MC;
-
+	
 	import models.SOService;
-
+	
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
+	
 	import views.global.TopBar;
 
 	public class PalaceGame extends Container
@@ -20,11 +20,14 @@ package views.components.base
 
 		protected var assetManager:AssetManager;
 		public var fromCenter:Boolean=false;
-		public var gameName:String;
+
+		public function get gameName():String
+		{
+			return StringUtils.getClassName(this);;
+		}
 
 		public function PalaceGame(am:AssetManager=null)
 		{
-			gameName=StringUtils.getClassName(this);
 			SOService.instance.setSO(gameName, true);
 			assetManager=am;
 			super();

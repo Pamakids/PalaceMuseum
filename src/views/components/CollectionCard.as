@@ -1,7 +1,8 @@
 package views.components
 {
 	import com.greensock.TweenLite;
-
+	import com.greensock.easing.Quad;
+	
 	import starling.display.Sprite;
 
 	public class CollectionCard extends Sprite
@@ -24,7 +25,7 @@ package views.components
 
 		public function hide():void
 		{
-			TweenLite.to(this, .5, {scaleX: .1, scaleY: .1, x: -462, y: -334, alpha: .3, onComplete: callback});
+			TweenLite.to(this, .5, {scaleX: .1, scaleY: .1, x: -470, y: -320, alpha: .3, onComplete: callback,ease:Quad.easeIn});
 		}
 	}
 }
