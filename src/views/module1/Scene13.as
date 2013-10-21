@@ -157,7 +157,7 @@ package views.module1
 
 		private function initClock():void
 		{
-			clock=new Clock(assets);
+			clock=new Clock(assetManager);
 			clock.addEventListener("clockMatch", clockMatch);
 			clock.scaleX=clock.scaleY=1;
 			clock.x=50;
@@ -225,7 +225,7 @@ package views.module1
 				gameBG.pivotY=gameBG.height >> 1;
 				gameHolder.addChild(gameBG);
 
-				game=new TwisterGame(assets);
+				game=new TwisterGame(assetManager);
 //				game.addEventListener(PalaceGame.GAME_OVER, gameOver);
 				game.addEventListener(PalaceGame.GAME_OVER, closeGame);
 				gameHolder.addChild(game);

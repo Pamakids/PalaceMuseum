@@ -120,7 +120,7 @@ package views.module5
 
 		private function initGame():void
 		{
-			game=new OperaGame(assets);
+			game=new OperaGame(assetManager);
 			game.scene=this;
 			gameHolder.addChild(game);
 			game.addEventListener(PalaceGame.GAME_OVER, onGameOver);
@@ -144,6 +144,9 @@ package views.module5
 						showAchievement(29);
 					});
 			}
+			else
+				initGame2(lvl);
+
 			game.removeEventListener(PalaceGame.GAME_OVER, onGameOver);
 			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 			game.removeEventListener("nextGame", onPlayGame2);
@@ -154,7 +157,7 @@ package views.module5
 
 		private function initGame2(lvl:int):void
 		{
-			game2=new OpearaGame2(lvl, assets);
+			game2=new OpearaGame2(lvl, assetManager);
 			gameHolder.addChild(game2);
 			game2.scene=this;
 			game2.addEventListener(PalaceGame.GAME_OVER, onGame2Over);

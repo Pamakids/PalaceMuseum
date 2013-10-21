@@ -20,7 +20,6 @@ package views.components.base
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
-	import views.components.Prompt;
 
 	public class PalaceModule extends Container
 	{
@@ -183,7 +182,7 @@ package views.components.base
 		override public function dispose():void
 		{
 			if (assetManager)
-				assetManager.dispose();
+				assetManager.purge();
 			assetManager=null;
 			super.dispose();
 		}

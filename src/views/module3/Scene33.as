@@ -149,7 +149,7 @@ package views.module3
 			kingHolder=new Sprite();
 			addChild(kingHolder);
 
-			var kingHungry:MovieClip=new MovieClip(assets.getTextures("kingHungry"), 18);
+			var kingHungry:MovieClip=new MovieClip(assetManager.getTextures("kingHungry"), 18);
 			kingHolder.addChild(kingHungry);
 			Starling.juggler.add(kingHungry);
 			kingHungry.loop=-1;
@@ -263,7 +263,7 @@ package views.module3
 
 		private function initDishGame():void
 		{
-			game=new DishGame(assets);
+			game=new DishGame(assetManager);
 			game.addEventListener(PalaceGame.GAME_OVER, onGamePlayed)
 			game.addEventListener(PalaceGame.GAME_RESTART, onGameRestart)
 			addChild(game);
@@ -357,7 +357,7 @@ package views.module3
 			removeChild(game);
 			game=null;
 
-			game=new DishGame(assets);
+			game=new DishGame(assetManager);
 			addChild(game);
 			game.addEventListener(PalaceGame.GAME_OVER, onGamePlayed);
 			game.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);

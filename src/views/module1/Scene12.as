@@ -567,7 +567,7 @@ package views.module1
 			if (tc)
 			{
 				box.removeEventListener(TouchEvent.TOUCH, onClickBox);
-				var quiz:ClothPuzzle=new ClothPuzzle(assets);
+				var quiz:ClothPuzzle=new ClothPuzzle(assetManager);
 
 				var sx:Number=boxHolder.x + 50;
 				var sy:Number=boxHolder.y;

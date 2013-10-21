@@ -328,7 +328,7 @@ package views.module1
 				MC.instance.addMC(eunuch);
 				eunuch.play();
 				eunuch.addEventListener(Event.FRAME_CONSTRUCTED, onPlayMC);
-				TweenLite.to(eunuch, 6, {x: 780, onComplete: sceneOver});
+				TweenLite.to(eunuch, 5, {x: 780, onComplete: sceneOver});
 //				sceneOver();
 			}});
 		}
