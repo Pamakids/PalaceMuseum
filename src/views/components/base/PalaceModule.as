@@ -8,22 +8,26 @@
 package views.components.base
 {
 	import com.pamakids.palace.utils.StringUtils;
-
+	
 	import controllers.MC;
-
+	
 	import models.FontVo;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.ElasticButton;
 
 	public class PalaceModule extends Container
 	{
-		public var moduleName:String;
+		public function get moduleName():String
+		{
+			return StringUtils.getClassName(this);;
+		}
+
 		protected var assetManager:AssetManager;
 		public var crtScene:PalaceScene;
 		protected var tfHolder:Sprite;
@@ -37,7 +41,6 @@ package views.components.base
 
 		public function PalaceModule(am:AssetManager=null, width:Number=0, height:Number=0)
 		{
-			moduleName=StringUtils.getClassName(this);
 			assetManager=am;
 			super(width, height);
 //			LionMC.instance.hide();

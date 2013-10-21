@@ -43,7 +43,6 @@ package
 			//以免第一次初始化提示的时候卡顿
 			var label:TextField=new TextField(1, 1, '0', FontVo.PALACE_FONT, 16, 0x561a1a, true);
 			addChild(label);
-			label.removeFromParent(true);
 
 			var am:AssetManager=new AssetManager();
 			var f:File=File.applicationDirectory.resolvePath("assets/common");

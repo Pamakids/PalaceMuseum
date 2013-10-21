@@ -1,24 +1,25 @@
 package views.module5.scene52
 {
 	import com.greensock.TweenLite;
-
+	import com.pamakids.manager.SoundManager;
+	
 	import flash.geom.Point;
-
+	
 	import controllers.MC;
-
+	
 	import events.OperaSwitchEvent;
-
+	
 	import models.SOService;
-
+	
 	import particle.PalaceParticle;
-
+	
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
 	import views.global.TopBar;
@@ -305,6 +306,7 @@ package views.module5.scene52
 			}
 			else
 			{
+				SoundManager.instance.play("fire")
 				fireParticle=new PalaceParticle();
 				fireParticle.init(gameLevel);
 				moutainHolder.addChild(fireParticle);
@@ -325,6 +327,7 @@ package views.module5.scene52
 					ptc=null;
 				}});
 			}
+			SoundManager.instance.play("fire")
 			fireParticle=new PalaceParticle();
 			fireParticle.init(gameLevel);
 			boat.addChild(fireParticle);

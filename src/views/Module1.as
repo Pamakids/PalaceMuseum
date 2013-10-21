@@ -38,10 +38,7 @@ package views
 			{
 				if (ratio == 1.0)
 				{
-//					assetManager=assets;
 					isLoading=false;
-//					sceneIndex=0;
-//					loadScene(sceneIndex);
 					addNext();
 				}
 			});

@@ -21,18 +21,19 @@ package views
 			addQAS();
 			addLoading();
 
-			var assets:AssetManager=new AssetManager();
+			if (assetManager){
+				assetManager.purge();
+				assetManager=null;
+			}
+			assetManager=new AssetManager();
 			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName);
 			var f:File=File.applicationDirectory.resolvePath("assets/common");
-			assets.enqueue(file, f);
-			assets.loadQueue(function(ratio:Number):void
+			assetManager.enqueue(file, f);
+			assetManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)
 				{
 					isLoading=false;
-					assetManager=assets;
-//					sceneIndex=0;
-//					loadScene(sceneIndex);
 					addNext();
 				}
 			});

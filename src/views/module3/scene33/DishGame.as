@@ -134,7 +134,7 @@ package views.module3.scene33
 			gameSP.addChild(infoHolder);
 			infoHolder.touchable=false;
 
-			infoHolder.addChild(getImage("scordbg"));
+			infoHolder.addChild(getImage("scorebg"));
 			infoHolder.addChild(getImage("lifeboard"));
 			var scoreboard:Image=getImage("scoreboard");
 			scoreboard.x=1024 - scoreboard.width;
