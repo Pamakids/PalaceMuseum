@@ -33,6 +33,7 @@ package
 		{
 //			SOService.instance.clear();
 //			SOService.instance.init();
+//			SOService.instance.setSO("lastScene", "53map");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
@@ -73,7 +74,6 @@ package
 
 		private function startGame():void
 		{
-			SoundManager.instance.play('main');
 			var lastScene:String=SOService.instance.getSO("lastScene") as String;
 			parseMS(lastScene);
 		}

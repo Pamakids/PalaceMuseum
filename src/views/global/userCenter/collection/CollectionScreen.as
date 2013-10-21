@@ -45,6 +45,7 @@ package views.global.userCenter.collection
 			var image:Image;
 			var vo:CollectionVO;
 			var textureUn:Texture = UserCenterManager.getTexture("card_collection_unfinish");
+			itemWidth = textureUn.width;
 			
 			var texture:Texture;
 			for(var i:int = 0;i<max;i++)
@@ -88,16 +89,20 @@ package views.global.userCenter.collection
 		private var container:Sprite;
 		private var quad:Quad;
 		private var selectedVo:CollectionVO;
-		private var point:Point;
 		private var scale:Number = .3;
 		private var alpha:Number = 0;
+		private var itemWidth:int;
 		private var imageHeight:int;
+		private var beginX:int;
+		private var beginY:int;
+		private var targetX:int;
+		private var targetY:int;
 		
 		private function showImage():void
 		{
-			point = globalToLocal(new Point());
 			if(!card)
 			{
+				var point:Point = globalToLocal(new Point());
 				container = new Sprite();
 				this.addChild( container );
 				container.x = point.x;
@@ -115,16 +120,17 @@ package views.global.userCenter.collection
 			card.resetData(selectedVo);
 			container.visible = true;
 			move = true;
-			begin.localToGlobal(new Point(), point);
-			const X:int = 512;
-			const Y:int = 768-imageHeight >> 1;
+			targetX = 512;
+			targetY = 768-imageHeight >> 1;
+			beginX = begin.x + 28 + itemWidth/2;
+			beginY = begin.y + 89;
 			
 			card.scaleX = card.scaleY = scale;
 			card.alpha = alpha;
-			card.x = point.x + card.width/2;
-			card.y = point.y;
+			card.x = beginX
+			card.y = beginY;
 			
-			TweenLite.to(card, 0.3, {x: X, y: Y, scaleX: 1, scaleY: 1, alpha: 1, ease:Cubic.easeInOut, onComplete: function():void{ 
+			TweenLite.to(card, 0.3, {x: targetX, y: targetY, scaleX: 1, scaleY: 1, alpha: 1, ease:Cubic.easeInOut, onComplete: function():void{ 
 				move=false;
 			}});
 		}
@@ -138,7 +144,7 @@ package views.global.userCenter.collection
 			touch = e.getTouch(stage);
 			if(touch && touch.phase == TouchPhase.ENDED)
 			{
-				TweenLite.to(card, 0.3, {x: point.x+card.width*scale/2, y:point.y, scaleX: scale, scaleY: scale, alpha: alpha, ease:Cubic.easeOut, onComplete:function():void{
+				TweenLite.to(card, 0.3, {x: beginX, y:beginY, scaleX: scale, scaleY: scale, alpha: alpha, ease:Cubic.easeOut, onComplete:function():void{
 					container.visible = false;
 				}});
 			}

@@ -21,6 +21,7 @@ package controllers
 	import views.Module3;
 	import views.Module4;
 	import views.Module5;
+	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
@@ -179,13 +180,15 @@ package controllers
 			}
 			else			//gameover
 			{
-				moduleIndex=0;
 				var end:Interlude = new Interlude("assets/video/end.mp4", false, null, onEnd);
 				Starling.current.nativeStage.addChild( end );
+				LionMC.instance.hide();
 			}
 		}
 		private function onEnd():void
 		{
+//			moduleIndex = 0;
+			LionMC.instance.show();
 			//游戏结束动画播放完成后执行
 			MC.instance.clearCrtModule();
 			Map.show(null, -1, -1, true);

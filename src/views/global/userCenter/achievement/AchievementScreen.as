@@ -64,15 +64,18 @@ package views.global.userCenter.achievement
 		private var quad:Quad;
 		private var scale:Number = .3;
 		private var alpha:Number = 0;
-		private var imageHeight:int;
-		private var imageWidth:int;
-		private var point:Point;
+		private var imageHeight:int = 386;
+		private var imageWidth:int = 500;
+		private var beginX:int;
+		private var beginY:int;
+		private var targetX:int;
+		private var targetY:int;
 		
 		private function showImage():void
 		{
 			if(!image)
 			{
-				point = globalToLocal(new Point());
+				var point:Point = globalToLocal(new Point());
 				
 				container = new Sprite();
 				this.addChild( container );
@@ -86,24 +89,22 @@ package views.global.userCenter.achievement
 				
 				image = new AchieveIcon(1);
 				container.addChild( image );
-				imageWidth = image.width;
-				imageHeight = image.height;
-				
 			}
 			image.data = selectIcon.data;
 			container.visible = true;
 			
 			move = true;
-			selectIcon.localToGlobal(new Point(), point);
-			const X:int = 1024-imageWidth >> 1;
-			const Y:int = 768-imageHeight >> 1;
+			beginX = selectIcon.x + 28;
+			beginY = selectIcon.y + 89;
+			targetX = 1024-imageWidth >> 1;
+			targetY = 768-imageHeight >> 1;
 			
 			image.scaleX = image.scaleY = scale;
 			image.alpha = alpha;
-			image.x = point.x;
-			image.y = point.y;
+			image.x = beginX;
+			image.y = beginY;
 			
-			TweenLite.to(image, 0.3, {x: X, y: Y, scaleX: 1, scaleY: 1, alpha: 1, ease:Cubic.easeInOut, onComplete: function():void{ 
+			TweenLite.to(image, 0.3, {x: targetX, y: targetY, scaleX: 1, scaleY: 1, alpha: 1, ease:Cubic.easeInOut, onComplete: function():void{ 
 				move=false;
 			}});
 		}
@@ -117,7 +118,7 @@ package views.global.userCenter.achievement
 			touch = e.getTouch(stage);
 			if(touch && touch.phase == TouchPhase.ENDED)
 			{
-				TweenLite.to(image, 0.3, {x: point.x, y:point.y, scaleX: scale, scaleY: scale, alpha: alpha, ease:Cubic.easeOut, onComplete:function():void{
+				TweenLite.to(image, 0.3, {x: beginX, y:beginY, scaleX: scale, scaleY: scale, alpha: alpha, ease:Cubic.easeOut, onComplete:function():void{
 					container.visible = false;
 				}});
 			}

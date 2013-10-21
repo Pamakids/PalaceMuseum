@@ -1,5 +1,7 @@
 package views
 {
+	import com.pamakids.manager.SoundManager;
+	
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.AsyncErrorEvent;
@@ -60,7 +62,7 @@ package views
 		private function onAdded(e:Event):void
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
-//			Starling.current.context.configureBackBuffer(stage.stageWidth,stage.stageHeight, 4, false);
+			SoundManager.instance.stop("main");
 			Starling.current.stage3D.x = 0;
 			Starling.current.stage3D.y = -stage.stageHeight;
 			initialize();
@@ -172,7 +174,7 @@ package views
 		{
 			Starling.current.stage3D.x = 0;
 			Starling.current.stage3D.y = 0;
-			
+			SoundManager.instance.play("main");
 			if(connection)
 			{
 				connection.removeEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
