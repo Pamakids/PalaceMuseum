@@ -111,7 +111,7 @@ package views.module1.scene13
 
 		public function dispose2():void
 		{
-			this.assets=null;
+			this.assetManager=null;
 			removeChildren();
 			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}

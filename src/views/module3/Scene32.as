@@ -81,7 +81,7 @@ package views.module3
 		{
 //			removeEventListener(TouchEvent.TOUCH, onTouch);
 			inGame=true;
-			game=new MenuGame(assets);
+			game=new MenuGame(assetManager);
 			game.x=280;
 			game.y=514;
 			game.scaleX=game.scaleY=.01;
@@ -100,7 +100,7 @@ package views.module3
 			removeChild(game);
 			game=null;
 
-			game=new MenuGame(assets);
+			game=new MenuGame(assetManager);
 			addChild(game);
 			game.addEventListener(PalaceGame.GAME_OVER, onGamePlayed)
 			game.addEventListener(PalaceGame.GAME_RESTART, onGameRestart)

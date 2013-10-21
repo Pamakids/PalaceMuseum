@@ -81,7 +81,7 @@ package views.module1
 			super(am);
 			crtKnowledgeIndex=2;
 
-			json=assets.getObject("hint12").hint;
+			json=assetManager.getObject("hint12").hint;
 		}
 
 		override protected function init():void
@@ -187,7 +187,7 @@ package views.module1
 			circle=new ClothCircle();
 			circle.readyCallback=initMission;
 			circle.dataArr=dataArr;
-			circle.light=assets.getTexture("light");
+			circle.light=assetManager.getTexture("light");
 			addChild(circle);
 			circle.x=533;
 			circle.y=653;
@@ -221,7 +221,7 @@ package views.module1
 			if (tc)
 			{
 				box.removeEventListener(TouchEvent.TOUCH, onClickBox);
-				var quiz:ClothPuzzle=new ClothPuzzle(assets);
+				var quiz:ClothPuzzle=new ClothPuzzle(assetManager);
 
 				var sx:Number=boxHolder.x + 50;
 				var sy:Number=boxHolder.y;
@@ -417,7 +417,7 @@ package views.module1
 				kingHead=null;
 			}
 
-			kingHead=new MovieClip(assets.getTextures(expArr[expressionIndex]), 18);
+			kingHead=new MovieClip(assetManager.getTextures(expArr[expressionIndex]), 18);
 			kingHead.loop=0;
 			kingHead.play();
 			Starling.juggler.add(kingHead);

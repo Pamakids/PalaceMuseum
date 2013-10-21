@@ -70,6 +70,8 @@ package views.module5
 				if (b)
 					count++;
 			}
+			if (count == 5)
+				showAchievement(26);
 			if (count == 3)
 				sceneOver();
 		}

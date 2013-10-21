@@ -152,7 +152,7 @@ package views.module2
 
 		private function initTelescope():void
 		{
-			teleGame=new Telescope(assets)
+			teleGame=new Telescope(assetManager)
 			addChild(teleGame);
 			teleGame.addEventListener(PalaceGame.GAME_OVER, onTelePlayed)
 		}
@@ -169,7 +169,7 @@ package views.module2
 
 		private function initPrism():void
 		{
-			prismGame=new TriangularPrism(assets);
+			prismGame=new TriangularPrism(assetManager);
 			addChild(prismGame);
 			prismGame.addEventListener(PalaceGame.GAME_OVER, onPrismPlayed)
 			prismGame.addEventListener("addCard", onPrismAddCard)
@@ -193,7 +193,7 @@ package views.module2
 
 		private function initThermo():void
 		{
-			thermoGame=new ThermoMeter(assets);
+			thermoGame=new ThermoMeter(assetManager);
 			addChild(thermoGame);
 			thermoGame.addEventListener(PalaceGame.GAME_OVER, onThermoPlayed)
 		}

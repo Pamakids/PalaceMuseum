@@ -134,7 +134,7 @@ package views.module3.scene33
 			gameSP.addChild(infoHolder);
 			infoHolder.touchable=false;
 
-			infoHolder.addChild(getImage("scorebg"));
+			infoHolder.addChild(getImage("scordbg"));
 			infoHolder.addChild(getImage("lifeboard"));
 			var scoreboard:Image=getImage("scoreboard");
 			scoreboard.x=1024 - scoreboard.width;
@@ -225,7 +225,7 @@ package views.module3.scene33
 				setOneData(j);
 			}
 
-			flyVec=assets.getTextures("flyMC");
+			flyVec=assetManager.getTextures("flyMC");
 
 			for (var i:int=0; i < dishNum; i++)
 			{
@@ -811,7 +811,7 @@ package views.module3.scene33
 				king.removeFromParent(true);
 				king=null;
 			}
-			king=new MovieClip(assets.getTextures(expArr[index]), 18);
+			king=new MovieClip(assetManager.getTextures(expArr[index]), 18);
 			king.x=kingArea.x + 50;
 			king.y=kingArea.y + 30;
 			kingHolder.addChild(king);

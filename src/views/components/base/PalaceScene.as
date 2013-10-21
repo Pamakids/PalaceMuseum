@@ -36,7 +36,7 @@ package views.components.base
 
 	public class PalaceScene extends Container
 	{
-		protected var assets:AssetManager;
+		protected var assetManager:AssetManager;
 		public var crtKnowledgeIndex:int=-1;
 
 		public function PalaceScene(am:AssetManager=null)
@@ -49,7 +49,7 @@ package views.components.base
 				SOService.instance.setSO("lastScene", str);
 			}
 			Prompt.parent=this;
-			this.assets=am;
+			assetManager=am;
 
 			if (Math.random() < 0.2)
 				TweenLite.delayedCall(3, function():void {
@@ -96,6 +96,7 @@ package views.components.base
 				TweenLite.killDelayedCallsTo(this);
 				TweenMax.killTweensOf(nextButton);
 			}
+			assetManager=null;
 			removeChildren();
 			super.dispose();
 			TopBar.hide();
@@ -103,9 +104,9 @@ package views.components.base
 
 		protected function getImage(name:String):Image
 		{
-			if (assets)
+			if (assetManager)
 			{
-				var t:Texture=assets.getTexture(name);
+				var t:Texture=assetManager.getTexture(name);
 				if (t)
 					return new Image(t);
 				else

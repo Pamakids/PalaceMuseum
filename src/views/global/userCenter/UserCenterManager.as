@@ -37,8 +37,8 @@ package views.global.userCenter
 
 		public static function showUserCenter(index:int=-1):void
 		{
-			if(index < 0)
-				index = 0;
+			if (index < 0)
+				index=0;
 			if (!loaded)
 			{
 				loadAssets();
@@ -48,6 +48,7 @@ package views.global.userCenter
 			{
 				if (_userCenter && _userCenter.parent)
 					return;
+				MC.instance.main.removeMask();
 				if (!_userCenter)
 					_userCenter=new UserCenter(index);
 				_userCenterContainer.addChild(_userCenter);
@@ -64,6 +65,7 @@ package views.global.userCenter
 			_userCenter=null;
 			MC.instance.showMC();
 			TopBar.enable=true;
+			TopBar.show();
 		}
 
 
@@ -114,7 +116,6 @@ package views.global.userCenter
 
 		private static function loadFunc():void
 		{
-			MC.instance.main.addMask(.1);
 			_assetsManager=new AssetManager();
 			_assetsManager.enqueue(
 				File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"),
@@ -126,13 +127,12 @@ package views.global.userCenter
 			{
 				if (ratio == 1.0)
 				{
-					MC.instance.main.removeMask();
 					removeLoadImage();
 					loaded=true;
 					showUserCenter(_index);
-					
+
 //					加载地图资源
-					if(!Map.map)
+					if (!Map.map)
 						Map.loadAssets();
 				}
 			});
