@@ -64,6 +64,7 @@ package views.global.userCenter
 				_userCenter.removeFromParent(true);
 			_userCenter=null;
 			MC.instance.showMC();
+			LionMC.instance.show();
 			TopBar.enable=true;
 			TopBar.show();
 		}
