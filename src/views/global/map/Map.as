@@ -2,19 +2,17 @@ package views.global.map
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	import com.pamakids.manager.LoadManager;
-
-	import flash.display.Bitmap;
+	
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-
+	
 	import controllers.MC;
-
+	
 	import models.Const;
 	import models.SOService;
-
+	
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -23,14 +21,12 @@ package views.global.map
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-	import starling.utils.formatString;
-
+	
 	import views.components.ElasticButton;
 	import views.components.FlipAnimation;
 	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceModule;
-	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
 
 	/**
@@ -81,7 +77,7 @@ package views.global.map
 		 */
 		private var hotspots:Array;
 
-		private static var assetManager:AssetManager;
+		public static var assetManager:AssetManager;
 
 		private static var loaded:Boolean=false;
 		
@@ -104,38 +100,12 @@ package views.global.map
 			});
 		}
 
-		private function loadAssets2():void
-		{
-			addLoading();
-			if (!assetManager)
-				assetManager=new AssetManager();
-			var f:File=File.applicationDirectory.resolvePath('assets/global/map');
-			var f2:File=File.applicationDirectory.resolvePath("assets/common");
-			assetManager.enqueue(f2, f, "json/map.json");
-			assetManager.loadQueue(function(ratio:Number):void
-			{
-				if (ratio == 1)
-				{
-					trace("Map loaded!");
-					loaded=true;
-					if(load)
-						load.removeFromParent(true);
-					if (map)
-						map.init();
-				}
-			});
-		}
-
 		public function Map(from:int=-1, to:int=-1)
 		{
 			this.viewContainer=new Sprite();
 			this.from=from;
 			this.to=to;
-//			hotspots=[new Rectangle(333, 476, 64, 36), new Rectangle(314, 516, 104, 38)];
-//			points=[new Point(365, 495), new Point(365, 535)];
 			super(Map.assetManager, Const.WIDTH, Const.HEIGHT);
-			if (!Map.assetManager)
-				loadAssets2();
 			sos=SOService.instance;
 			mc=MC.instance;
 			map=this;
