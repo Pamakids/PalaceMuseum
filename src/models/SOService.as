@@ -221,7 +221,11 @@ package models
 		{
 			//			return false;
 			var arr:Array=getSO('completedModules') as Array;
-			return arr && arr.indexOf(index) != -1;
+			if (!arr){
+				arr=[-1];
+				setSO('completedModules', arr);
+			}
+			return arr.indexOf(index-1) != -1;
 		}
 
 		/**
@@ -231,7 +235,7 @@ package models
 		{
 			var arr:Array=getSO('completedModules') as Array;
 			if (!arr)
-				arr=[];
+				arr=[-1];
 			if (arr.indexOf(value) == -1)
 				arr.push(value);
 			setSO('completedModules', arr);

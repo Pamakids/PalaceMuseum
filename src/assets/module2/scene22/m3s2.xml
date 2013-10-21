@@ -24,7 +24,7 @@
     <SubTexture name="scene22-bird" x="1024" y="2" width="779" height="406"/>
     <SubTexture name="tele-arm" x="1347" y="1081" width="128" height="151"/>
     <SubTexture name="tele-king" x="1534" y="410" width="261" height="329" frameX="-20" frameY="0" frameWidth="281" frameHeight="329"/>
-    <SubTexture name="tele-mask" x="1020" y="410" width="512" height="512"/>
+    <SubTexture name="tele-maskxx" x="1020" y="410" width="512" height="512"/>
     <SubTexture name="tele-ring-in" x="1534" y="853" width="509" height="509" frameX="-17" frameY="-17" frameWidth="543" frameHeight="543"/>
     <SubTexture name="tele-ring-out" x="2" y="391" width="543" height="543"/>
     <SubTexture name="tele1" x="974" y="129" width="37" height="126" frameX="0" frameY="0" frameWidth="39" frameHeight="126"/>

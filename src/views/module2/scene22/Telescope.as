@@ -210,7 +210,7 @@ package views.module2.scene22
 			addChild(view);
 			view.img1=getImage("view1");
 			view.img2=getImage("view2");
-			view.viewPortHeight=view.viewPortWidth=430;
+			view.viewPortHeight=view.viewPortWidth=440;
 			view.x=view.pivotX=centerPT.x;
 			view.y=view.pivotY=centerPT.y;
 			view.scale=.1;
