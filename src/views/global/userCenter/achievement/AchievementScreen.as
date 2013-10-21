@@ -1,5 +1,8 @@
 package views.global.userCenter.achievement
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Cubic;
+	
 	import flash.geom.Point;
 	
 	import controllers.DC;
@@ -24,55 +27,52 @@ package views.global.userCenter.achievement
 		{
 			super.initialize();
 			initDatas();
-			initContainer();
 			initIcons();
 		}
 		
+		private var vecIcon:Vector.<AchieveIcon>;
 		private function initIcons():void
 		{
+			var icon:AchieveIcon;
+			vecIcon = new Vector.<AchieveIcon>(maxNum);
 			for(var i:int = 0;i<maxNum;i++)
 			{
-				var iconL:AchieveIcon = iconFactory(i)
-				var iconR:AchieveIcon = iconFactory(i, false)
+				icon = new AchieveIcon();
+				icon.data = datas[0][i];
+				this.addChild( icon );
+				icon.x = int( paddingLeft + Math.floor(i/9) * this.viewWidth/2 + (i%3) * (horizontalGap + icon.width) );
+				icon.y = int( paddingTop + Math.floor( (i%9)/3 ) * (verticalGap + icon.height) );
+				icon.addEventListener(Event.TRIGGERED, onTriggered);
+				vecIcon[i] = icon;
 			}
 		}
-		private function iconFactory(index:int, left:Boolean=true):AchieveIcon
-		{
-			var icon:AchieveIcon = new AchieveIcon();
-			icon.data = left?datas[0][index]:((datas[1])?datas[1][index]:null);
-			left?containerL.addChild(icon):containerR.addChild( icon );
-			icon.x = 20 + (icon.width + 10)*(index%3);
-			icon.y = 90 + (icon.height + 60) * Math.floor( index/3 );
-			icon.addEventListener(Event.TRIGGERED, onTriggered);
-			return icon;
-		}
 		
+		private var paddingLeft:int = 20;
+		private var paddingTop:int = 90;
+		private var horizontalGap:int = 10;
+		private var verticalGap:int = 60;
+		
+		private var selectIcon:AchieveIcon;
 		private function onTriggered(e:Event):void
 		{
-			showImage((e.currentTarget as AchieveIcon).data);
+			selectIcon = e.currentTarget as AchieveIcon;
+			showImage();
 		}
-		
-		private function initContainer():void
-		{
-			containerL = new Sprite();
-			this.addChild( containerL );
-			
-			containerR = new Sprite();
-			containerR.x = viewWidth / 2;
-			this.addChild( containerR );
-		}
-		
-		private var containerL:Sprite;
-		private var containerR:Sprite;
 		
 		private var image:AchieveIcon;
 		private var container:Sprite;
 		private var quad:Quad;
-		private function showImage(data:Object):void
+		private var scale:Number = .3;
+		private var alpha:Number = 0;
+		private var imageHeight:int;
+		private var imageWidth:int;
+		private var point:Point;
+		
+		private function showImage():void
 		{
 			if(!image)
 			{
-				var point:Point = globalToLocal(new Point());
+				point = globalToLocal(new Point());
 				
 				container = new Sprite();
 				this.addChild( container );
@@ -86,24 +86,45 @@ package views.global.userCenter.achievement
 				
 				image = new AchieveIcon(1);
 				container.addChild( image );
-				image.x = 1024 - image.width  >> 1;
-				image.y = 768 - image.height >> 1;
+				imageWidth = image.width;
+				imageHeight = image.height;
+				
 			}
-			image.data = data;
+			image.data = selectIcon.data;
 			container.visible = true;
+			
+			move = true;
+			selectIcon.localToGlobal(new Point(), point);
+			const X:int = 1024-imageWidth >> 1;
+			const Y:int = 768-imageHeight >> 1;
+			
+			image.scaleX = image.scaleY = scale;
+			image.alpha = alpha;
+			image.x = point.x;
+			image.y = point.y;
+			
+			TweenLite.to(image, 0.3, {x: X, y: Y, scaleX: 1, scaleY: 1, alpha: 1, ease:Cubic.easeInOut, onComplete: function():void{ 
+				move=false;
+			}});
 		}
 		
+		private var move:Boolean =false;
 		private function onTouchPop(e:TouchEvent):void
 		{
-			var touch:Touch = e.getTouch(stage);
+			if(move)
+				return;
+			var touch:Touch;
+			touch = e.getTouch(stage);
 			if(touch && touch.phase == TouchPhase.ENDED)
 			{
-				container.visible = false;
+				TweenLite.to(image, 0.3, {x: point.x, y:point.y, scaleX: scale, scaleY: scale, alpha: alpha, ease:Cubic.easeOut, onComplete:function():void{
+					container.visible = false;
+				}});
 			}
 		}
 		
 		/**单页显示数量*/		
-		private var maxNum:int = 9;
+		private var maxNum:int = 18;
 		private var datas:Array;
 		private function initDatas():void
 		{
@@ -124,16 +145,13 @@ package views.global.userCenter.achievement
 			{
 				datas.push( tempdatas.splice(0, maxNum) );
 			}
-			
-			this.maxPage = Math.ceil( datas.length/2 );
+			maxPage = pageNum;
 		}
+		
+		public var maxPage:int;
 		
 		override public function dispose():void
 		{
-			if(containerL)
-				containerL.removeFromParent(true);
-			if(containerR)
-				containerR.removeFromParent(true);
 			if(image)
 				image.dispose();
 			if(quad)
@@ -143,20 +161,21 @@ package views.global.userCenter.achievement
 			}
 			if(container)
 				container.removeFromParent(true);
+			for each(var icon:AchieveIcon in vecIcon)
+			{
+				icon.removeEventListener(Event.TRIGGERED, onTriggered);
+				icon.removeFromParent(true);
+			}
 			super.dispose();
 		}
 		
-		public var maxPage:int;
 		public function updateView(pageIndex:int):void
 		{
 			var arr:Array;
 			for(var i:int = 0;i<maxNum;i++)
 			{
-				arr = datas[pageIndex*2];
-				(containerL.getChildAt(i) as AchieveIcon).data = arr[i];
-				
-				arr = datas[pageIndex*2+1];
-				(containerR.getChildAt(i) as AchieveIcon).data = (arr)?arr[i]:null;
+				arr = datas[pageIndex];
+				vecIcon[i].data = arr[i];
 			}
 			this.validate();
 		}
