@@ -12,8 +12,6 @@ package
 	
 	import controllers.MC;
 	
-	import org.agony2d.map.astar.Main;
-	
 	import starling.core.Starling;
 
 	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x333333")]
