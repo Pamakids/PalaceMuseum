@@ -4,6 +4,7 @@ package views
 	import flash.display.Sprite;
 	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.NetStatusEvent;
 	import flash.events.SecurityErrorEvent;
@@ -12,6 +13,7 @@ package views
 	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
+	import flash.system.Capabilities;
 	
 	import controllers.MC;
 	
@@ -66,6 +68,12 @@ package views
 //			Starling.current.stage3D.visible = false;
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			initialize();
+			if(Capabilities.isDebugger)
+			{
+				stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent):void{
+					stopHandler();
+				});
+			}
 		}
 		
 		private function initialize():void
@@ -144,7 +152,7 @@ package views
 			stageVideo = stage.stageVideos[0];
 			stageVideo.attachNetStream( stream );
 			stream.play( videoURL );
-			stageVideo.viewPort = new Rectangle(0, 0 ,viewWidth,viewHeight);
+			stageVideo.viewPort = new Rectangle(0, 0 ,stage.stageWidth,stage.stageHeight);
 			
 //			video = new Video(viewWidth, viewHeight);
 //			video.attachNetStream( stream );

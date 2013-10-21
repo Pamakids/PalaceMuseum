@@ -84,7 +84,7 @@ package views.global.map
 		private static var assetManager:AssetManager;
 
 		private static var loaded:Boolean=false;
-
+		
 		public static function loadAssets():void
 		{
 			if (!assetManager)
@@ -104,6 +104,27 @@ package views.global.map
 			});
 		}
 
+		private function loadAssets():void
+		{
+			addLoading();
+			if (!assetManager)
+				assetManager=new AssetManager();
+			var f:File=File.applicationDirectory.resolvePath('assets/global/map');
+			var f2:File=File.applicationDirectory.resolvePath("assets/common");
+			assetManager.enqueue(f2, f, "json/map.json");
+			assetManager.loadQueue(function(ratio:Number):void
+			{
+				if (ratio == 1)
+				{
+					trace("Map loaded!");
+					loaded=true;
+					load.removeFromParent(true);
+					if (map)
+						map.init();
+				}
+			});
+		}
+
 		public function Map(from:int=-1, to:int=-1)
 		{
 			this.viewContainer=new Sprite();
@@ -111,7 +132,7 @@ package views.global.map
 			this.to=to;
 //			hotspots=[new Rectangle(333, 476, 64, 36), new Rectangle(314, 516, 104, 38)];
 //			points=[new Point(365, 495), new Point(365, 535)];
-			if (!Map.assetManager)
+//			if (!Map.assetManager)
 				loadAssets();
 			super(Map.assetManager, Const.WIDTH, Const.HEIGHT);
 			sos=SOService.instance;

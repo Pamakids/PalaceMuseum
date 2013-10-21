@@ -30,7 +30,6 @@ package
 				initIntro();
 			else
 				startGame();
-			
 		}
 		
 		private function startGame():void
@@ -55,7 +54,7 @@ package
 		private var inito:Interlude;
 		private function initIntro():void
 		{
-			inito = new Interlude("assets/intro/intro.m4v", false, null, startGame);
+			inito = new Interlude("assets/intro/intro.mp4", false, null, startGame);
 			this.addChild( inito );
 		}
 	}
