@@ -73,9 +73,9 @@ package views.module1
 			TweenLite.to(king, 3, {x: pos1.x, y: pos1.y, onComplete: sceneOver});
 		}
 
-		private var txt1:String="皇帝：母后，孩儿给您请安";
-		private var txt2:String="皇太后：你政务繁忙，就早点回去吧。";
-		private var txt3:String="皇帝：孩儿告退";
+		private var txt1:String="母后，孩儿给您请安";
+		private var txt2:String="你政务繁忙，就早点回去吧。";
+		private var txt3:String="孩儿告退";
 
 		private var pos1:Point=new Point(747, 275);
 		private var pos2:Point=new Point(527, 492);

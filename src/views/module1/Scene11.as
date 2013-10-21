@@ -2,22 +2,23 @@ package views.module1
 {
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
+	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.SPUtils;
-
+	
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-
+	
 	import controllers.MC;
-
+	
 	import starling.display.Sprite;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 
@@ -189,7 +190,10 @@ package views.module1
 					return;
 				effComplete=false;
 				if (!isShadowShow)
+				{
+					SoundManager.instance.play("lighton");
 					TweenLite.to(w0l, 1, {alpha: 1, onComplete: showShadow});
+				}
 				else
 					TweenLite.to(w0s, 1, {alpha: 0, onComplete: showShadow});
 			}
@@ -274,6 +278,7 @@ package views.module1
 			sp.touchable=false;
 			if (sp.x == windowXPosArr[windowIndex])
 			{
+				SoundManager.instance.play("opendoor")
 				crtWinSelected=true;
 				showAchievement(1);
 				okEff=new Sprite();
@@ -329,13 +334,12 @@ package views.module1
 				eunuch.play();
 				eunuch.addEventListener(Event.FRAME_CONSTRUCTED, onPlayMC);
 				TweenLite.to(eunuch, 5, {x: 780, onComplete: sceneOver});
-//				sceneOver();
 			}});
 		}
 
 		protected function onPlayMC(event:Event):void
 		{
-			if (eunuch.currentFrame == eunuch.totalFrames)
+			if (eunuch && eunuch.currentFrame == eunuch.totalFrames)
 			{
 				eunuch.stop();
 				eunuch.removeEventListener(Event.FRAME_CONSTRUCTED, onPlayMC);

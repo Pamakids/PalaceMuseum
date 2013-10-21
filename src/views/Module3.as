@@ -36,18 +36,19 @@ package views
 			addQAS();
 			addLoading();
 
-			if (assetManager)
-				assetManager.dispose();
-			var assets:AssetManager=new AssetManager();
+			if (assetManager){
+				assetManager.purge();
+				assetManager=null;
+			}
+			assetManager=new AssetManager();
 			var file1:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/scene30");
 			var file2:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/scene31");
 			var f:File=File.applicationDirectory.resolvePath("assets/common");
-			assets.enqueue(file1, file2, f);
-			assets.loadQueue(function(ratio:Number):void
+			assetManager.enqueue(file1, file2, f);
+			assetManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)
 				{
-					assetManager=assets;
 					isLoading=false;
 					addNext();
 				}
@@ -63,18 +64,20 @@ package views
 			addQAS();
 			addLoading();
 
-			if (assetManager)
-				assetManager.dispose();
-			var assets:AssetManager=new AssetManager();
+			if (assetManager){
+				assetManager.purge();
+				assetManager=null;
+			}
+			assetManager=new AssetManager();
 			var file1:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/scene32");
 			var file2:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/scene33");
 			var f:File=File.applicationDirectory.resolvePath("assets/common");
-			assets.enqueue(file1, file2, f);
-			assets.loadQueue(function(ratio:Number):void
+			assetManager.enqueue(file1, file2, f);
+			assetManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)
 				{
-					assetManager=assets;
+					assetManager=assetManager;
 					isLoading=false;
 					addNext2();
 				}

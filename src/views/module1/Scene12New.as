@@ -2,13 +2,13 @@ package views.module1
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Elastic;
+	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.DPIUtil;
-
+	
 	import flash.geom.Point;
-
+	
 	import models.FontVo;
-
-	import starling.animation.Tween;
+	
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -20,7 +20,7 @@ package views.module1
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 	import views.module1.scene12.Cloth2;
@@ -284,6 +284,7 @@ package views.module1
 			showKnowledge(type);
 			if (type == clothArr[taskType])
 			{
+				SoundManager.instance.play("happy");
 				playKing(0);
 				showCard("0", function():void {
 					showAchievement(2);
@@ -292,6 +293,7 @@ package views.module1
 			}
 			else
 			{
+				SoundManager.instance.play("sad");
 				var _index:int=Math.random() > .6 ? 1 : (Math.random() > .5 ? 2 : 3);
 				playKing(_index);
 				hideNext();
