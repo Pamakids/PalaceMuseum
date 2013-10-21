@@ -12,13 +12,9 @@ package views
 	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
-	
-	import controllers.MC;
+	import flash.system.Capabilities;
 	
 	import models.Const;
-	
-	import starling.core.Starling;
-	import starling.events.TouchEvent;
 
 	/**
 	 * 引子
@@ -66,6 +62,12 @@ package views
 //			Starling.current.stage3D.visible = false;
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			initialize();
+			if(Capabilities.isDebugger)
+			{
+				stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent):void{
+					dispose();
+				});
+			}
 		}
 		
 		private function initialize():void
@@ -126,8 +128,7 @@ package views
 					break;
 				case "NetStream.Play.Stop":
 					trace("NetStream.Play.Stop");
-					if(stopHandler)
-						stopHandler();
+					dispose();
 					break;
 			}
 		}
@@ -144,7 +145,7 @@ package views
 			stageVideo = stage.stageVideos[0];
 			stageVideo.attachNetStream( stream );
 			stream.play( videoURL );
-			stageVideo.viewPort = new Rectangle(0, 0 ,viewWidth,viewHeight);
+			stageVideo.viewPort = new Rectangle(0, 0 ,stage.stageWidth,stage.stageHeight);
 			
 //			video = new Video(viewWidth, viewHeight);
 //			video.attachNetStream( stream );
@@ -168,14 +169,12 @@ package views
 		protected function onRemove(event:Event):void
 		{
 //			Starling.current.stage.visible = true;
-			Starling.current.stage3D.visible = true;
+//			Starling.current.stage3D.visible = true;
 		}
 		
 		
 		public function dispose():void
 		{
-			if(parent)
-				parent.removeChild(this);
 			if(connection)
 			{
 				connection.removeEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
@@ -187,7 +186,12 @@ package views
 			{
 				stream.removeEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
 				stream.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
-				stream.close();
+				stream.pause();
+			}
+			if(stageVideo)
+			{
+				stageVideo.viewPort = new Rectangle(0, 0, 0, 0);
+				stageVideo=null;
 			}
 			if(video)
 			{
@@ -195,12 +199,14 @@ package views
 				video.clear();
 				video=null;
 			}
-			if(stageVideo)
-				stageVideo=null;
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE, onRemove);
+			if(stopHandler)
+				stopHandler();
 			this.startHandler=null;
 			this.stopHandler=null;
+			if(parent)
+				parent.removeChild(this);
 		}
 	}
 }
