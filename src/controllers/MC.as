@@ -71,7 +71,6 @@ package controllers
 
 			initLayers();
 
-			sm.play('main');
 		}
 
 		public function addChild(displayObject:flash.display.DisplayObject):void

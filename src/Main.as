@@ -1,5 +1,7 @@
 package
 {
+	import com.pamakids.manager.SoundManager;
+	
 	import flash.filesystem.File;
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
@@ -70,6 +72,7 @@ package
 
 		private function startGame():void
 		{
+			SoundManager.instance.play('main');
 			var lastScene:String=SOService.instance.getSO("lastScene") as String;
 			parseMS(lastScene);
 		}
