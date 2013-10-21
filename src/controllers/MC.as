@@ -196,5 +196,11 @@ package controllers
 		{
 			contentLayer.touchable=value;
 		}
+		
+		public function restartGame():void
+		{
+			// TODO Auto Generated method stub
+			
+		}
 	}
 }

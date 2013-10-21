@@ -52,7 +52,7 @@ package views.module3.scene33
 			addChild(countBG);
 			countBG.touchable=false;
 
-			countDownTxt=new TextField(countBG.width, countBG.height, "8", FontVo.PALACE_FONT, 24, 0x5d2025);
+			countDownTxt=new TextField(countBG.width, countBG.height, "12", FontVo.PALACE_FONT, 24, 0x5d2025);
 			countDownTxt.x=countBG.x;
 			countDownTxt.y=countBG.y;
 			addChild(countDownTxt);
@@ -128,7 +128,7 @@ package views.module3.scene33
 			img.pivotY=img.height >> 1;
 		}
 
-		private var timeCount:int=240;
+		private var timeCount:int=360;
 
 		public function countDown():void
 		{
