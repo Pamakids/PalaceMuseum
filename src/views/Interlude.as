@@ -15,6 +15,8 @@ package views
 	import flash.system.Capabilities;
 	
 	import models.Const;
+	
+	import starling.core.Starling;
 
 	/**
 	 * 引子
@@ -53,14 +55,14 @@ package views
 			this.viewWidth = width;
 			this.viewHeight = height;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAdded);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, onRemove);
 		}
 		
 		private function onAdded(e:Event):void
 		{
-//			Starling.current.stage.visible = false;
-//			Starling.current.stage3D.visible = false;
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
+//			Starling.current.context.configureBackBuffer(stage.stageWidth,stage.stageHeight, 4, false);
+			Starling.current.stage3D.x = 0;
+			Starling.current.stage3D.y = -stage.stageHeight;
 			initialize();
 			if(Capabilities.isDebugger)
 			{
@@ -166,15 +168,11 @@ package views
 		}
 		
 		
-		protected function onRemove(event:Event):void
-		{
-//			Starling.current.stage.visible = true;
-//			Starling.current.stage3D.visible = true;
-		}
-		
-		
 		public function dispose():void
 		{
+			Starling.current.stage3D.x = 0;
+			Starling.current.stage3D.y = 0;
+			
 			if(connection)
 			{
 				connection.removeEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
@@ -200,7 +198,6 @@ package views
 				video=null;
 			}
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
-			this.removeEventListener(Event.REMOVED_FROM_STAGE, onRemove);
 			if(stopHandler)
 				stopHandler();
 			this.startHandler=null;

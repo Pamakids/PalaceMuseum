@@ -130,10 +130,6 @@ package views.global.userCenter
 					removeLoadImage();
 					loaded=true;
 					showUserCenter(_index);
-
-//					加载地图资源
-					if (!Map.map)
-						Map.loadAssets();
 				}
 			});
 		}
