@@ -85,7 +85,7 @@ package views.module3
 
 		private function addKing():void
 		{
-			king=new MovieClip(assets.getTextures("kingDrag"), 18);
+			king=new MovieClip(assetManager.getTextures("kingDrag"), 18);
 			addChild(king);
 			king.loop=0;
 			Starling.juggler.add(king);
@@ -100,7 +100,7 @@ package views.module3
 
 		private function addChief():void
 		{
-			chef=new MovieClip(assets.getTextures("chief"), 18);
+			chef=new MovieClip(assetManager.getTextures("chief"), 18);
 			chef.addEventListener(Event.COMPLETE, onChiefPlayed);
 			Starling.juggler.add(chef);
 			chef.loop=0;

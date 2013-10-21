@@ -282,7 +282,7 @@ package views.module2.scene22
 
 		private function addEye():void
 		{
-			eye=new MovieClip(assets.getTextures("eye"), 30);
+			eye=new MovieClip(assetManager.getTextures("eye"), 30);
 			eye.loop=1;
 			eye.play();
 			Starling.juggler.add(eye);

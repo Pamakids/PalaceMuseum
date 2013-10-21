@@ -74,7 +74,7 @@ package views.module2.scene21
 
 		private function addBugS():void
 		{
-			bugS=new MovieClip(assets.getTextures("bugS"), 30);
+			bugS=new MovieClip(assetManager.getTextures("bugS"), 30);
 			bugS.x=originPosArr[2].x;
 			bugS.y=originPosArr[2].y;
 			bugS.stop();
@@ -122,7 +122,7 @@ package views.module2.scene21
 
 			if (!bugB)
 			{
-				bugB=new MovieClip(assets.getTextures("bugB"), 30);
+				bugB=new MovieClip(assetManager.getTextures("bugB"), 30);
 				bugB.loop=3;
 				Starling.juggler.add(bugB);
 				addChild(bugB);

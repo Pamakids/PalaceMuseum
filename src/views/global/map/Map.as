@@ -104,7 +104,7 @@ package views.global.map
 			});
 		}
 
-		private function loadAssets():void
+		private function loadAssets2():void
 		{
 			addLoading();
 			if (!assetManager)
@@ -118,7 +118,8 @@ package views.global.map
 				{
 					trace("Map loaded!");
 					loaded=true;
-					load.removeFromParent(true);
+					if(load)
+						load.removeFromParent(true);
 					if (map)
 						map.init();
 				}
@@ -132,9 +133,9 @@ package views.global.map
 			this.to=to;
 //			hotspots=[new Rectangle(333, 476, 64, 36), new Rectangle(314, 516, 104, 38)];
 //			points=[new Point(365, 495), new Point(365, 535)];
-//			if (!Map.assetManager)
-				loadAssets();
 			super(Map.assetManager, Const.WIDTH, Const.HEIGHT);
+			if (!Map.assetManager)
+				loadAssets2();
 			sos=SOService.instance;
 			mc=MC.instance;
 			map=this;

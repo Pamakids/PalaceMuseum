@@ -18,7 +18,7 @@ package views.components.base
 		public static const GAME_OVER:String="gameOver";
 		public static const GAME_RESTART:String="gameRestart";
 
-		protected var assets:AssetManager;
+		protected var assetManager:AssetManager;
 		public var fromCenter:Boolean=false;
 		public var gameName:String;
 
@@ -26,7 +26,7 @@ package views.components.base
 		{
 			gameName=StringUtils.getClassName(this);
 			SOService.instance.setSO(gameName, true);
-			this.assets=am;
+			assetManager=am;
 			super();
 		}
 
@@ -49,9 +49,9 @@ package views.components.base
 		override public function dispose():void
 		{
 			if (fromCenter)
-				assets.dispose()
+				assetManager.dispose()
 			else
-				this.assets=null;
+				assetManager=null;
 			super.dispose();
 			TopBar.show();
 			MC.instance.showMC();
@@ -59,9 +59,9 @@ package views.components.base
 
 		protected function getImage(name:String):Image
 		{
-			if (assets)
+			if (assetManager)
 			{
-				var t:Texture=assets.getTexture(name);
+				var t:Texture=assetManager.getTexture(name);
 				if (t)
 					return new Image(t);
 				else

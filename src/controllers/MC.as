@@ -2,18 +2,18 @@ package controllers
 {
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.Singleton;
-	
+
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
-	
+
 	import feathers.core.PopUpManager;
-	
+
 	import sound.SoundAssets;
-	
+
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-	
+
 	import views.Module1;
 	import views.Module2;
 	import views.Module3;
@@ -40,7 +40,7 @@ package controllers
 
 		public function MC()
 		{
-			sm = SoundManager.instance;
+			sm=SoundManager.instance;
 			SoundAssets.init();
 		}
 

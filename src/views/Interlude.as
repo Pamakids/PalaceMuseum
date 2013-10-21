@@ -4,7 +4,6 @@ package views
 	import flash.display.Sprite;
 	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
-	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.NetStatusEvent;
 	import flash.events.SecurityErrorEvent;
@@ -15,12 +14,7 @@ package views
 	import flash.net.NetStream;
 	import flash.system.Capabilities;
 	
-	import controllers.MC;
-	
 	import models.Const;
-	
-	import starling.core.Starling;
-	import starling.events.TouchEvent;
 
 	/**
 	 * 引子
@@ -71,7 +65,7 @@ package views
 			if(Capabilities.isDebugger)
 			{
 				stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent):void{
-					stopHandler();
+					dispose();
 				});
 			}
 		}
@@ -134,8 +128,7 @@ package views
 					break;
 				case "NetStream.Play.Stop":
 					trace("NetStream.Play.Stop");
-					if(stopHandler)
-						stopHandler();
+					dispose();
 					break;
 			}
 		}
@@ -176,7 +169,7 @@ package views
 		protected function onRemove(event:Event):void
 		{
 //			Starling.current.stage.visible = true;
-			Starling.current.stage3D.visible = true;
+//			Starling.current.stage3D.visible = true;
 		}
 		
 		
@@ -207,6 +200,8 @@ package views
 				stageVideo=null;
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE, onRemove);
+			if(stopHandler)
+				stopHandler();
 			this.startHandler=null;
 			this.stopHandler=null;
 		}

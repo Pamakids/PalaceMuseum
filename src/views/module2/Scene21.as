@@ -375,7 +375,7 @@ package views.module2
 
 		private function initGame():void
 		{
-			mapGame=new JigsawGame(assets);
+			mapGame=new JigsawGame(assetManager);
 			mapGame.addEventListener(PalaceGame.GAME_OVER, onGamePlayed)
 			mapGame.addEventListener(PalaceGame.GAME_RESTART, onGameRestart)
 			addChild(mapGame);
@@ -403,7 +403,7 @@ package views.module2
 
 		private function initFindGame():void
 		{
-			findGame=new FindGame(assets);
+			findGame=new FindGame(assetManager);
 			findGame.addEventListener(PalaceGame.GAME_OVER, onFindGamePlayed)
 			addChild(findGame);
 			inGame=true;
@@ -433,7 +433,7 @@ package views.module2
 			removeChild(mapGame);
 			mapGame=null;
 
-			mapGame=new JigsawGame(assets);
+			mapGame=new JigsawGame(assetManager);
 			addChild(mapGame);
 			mapGame.addEventListener(PalaceGame.GAME_OVER, onGamePlayed);
 			mapGame.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);

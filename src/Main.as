@@ -11,18 +11,12 @@ package
 	import models.FontVo;
 	import models.SOService;
 	
-	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 	
-	import views.Interlude;
 	import views.Module1;
-	import views.Module2;
-	import views.Module4;
-	import views.Module5;
-	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.Container;
 	import views.global.map.Map;
@@ -43,6 +37,7 @@ package
 			//以免第一次初始化提示的时候卡顿
 			var label:TextField=new TextField(1, 1, '0', FontVo.PALACE_FONT, 16, 0x561a1a, true);
 			addChild(label);
+			label.removeFromParent(true);
 
 			var am:AssetManager=new AssetManager();
 			var f:File=File.applicationDirectory.resolvePath("assets/common");
@@ -56,27 +51,15 @@ package
 
 		override protected function init():void
 		{
-				startGame();
+			startGame();
 		}
-		
-		private var inito:Interlude;
-		private function initIntro():void
-		{
-			inito = new Interlude("assets/intro/intro.m4v", false, null, startGame);
-			Starling.current.nativeStage.addChild( inito );
-		}
-		
+
 		private function startGame():void
 		{
-			//testUserCenter();
-			//Map.show();
-			//debugInit();
-			if(inito)
-				inito.dispose();
 			var lastScene:String=SOService.instance.getSO("lastScene") as String;
 			parseMS(lastScene);
 		}
-		
+
 		private function parseMS(lastScene:String):void
 		{
 			if (!lastScene)
