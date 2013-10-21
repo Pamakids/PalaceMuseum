@@ -1,5 +1,8 @@
 package views.global.userCenter.collection
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Cubic;
+	
 	import flash.geom.Point;
 	
 	import controllers.DC;
@@ -41,15 +44,17 @@ package views.global.userCenter.collection
 			vecImage = new Vector.<Image>(max);
 			var image:Image;
 			var vo:CollectionVO;
+			var textureUn:Texture = UserCenterManager.getTexture("card_collection_unfinish");
+			
 			var texture:Texture;
 			for(var i:int = 0;i<max;i++)
 			{
 				vo = source[i];
-				texture = vo.isCollected?UserCenterManager.getTexture("card_collection_"+vo.id):UserCenterManager.getTexture("card_collection_unfinish");
+				texture = vo.isCollected?UserCenterManager.getTexture("card_collection_"+vo.id):textureUn;
 				image = new Image(texture);
 				image.scaleX = image.scaleY = .8;
-				image.x = paddingLeft + Math.floor(i/6) * this.viewWidth/2 + (i%3) * (horizontalGap + image.width);
-				image.y = paddingTop + Math.floor( (i%6)/3 ) * (verticalGap + image.height);
+				image.x = int( paddingLeft + Math.floor(i/6) * this.viewWidth/2 + (i%3) * (horizontalGap + image.width) );
+				image.y = int( paddingTop + Math.floor( (i%6)/3 ) * (verticalGap + image.height) );
 				this.addChild( image );
 				vecImage[i] = image;
 				image.addEventListener(TouchEvent.TOUCH, onTouch);
@@ -65,7 +70,7 @@ package views.global.userCenter.collection
 					case TouchPhase.MOVED:
 						return;
 					case TouchPhase.BEGAN:
-						begin = e.currentTarget;
+						begin = e.currentTarget as Image;
 						break;
 					case TouchPhase.ENDED:
 						if(begin == e.currentTarget)
@@ -77,75 +82,22 @@ package views.global.userCenter.collection
 				}
 			}
 		}
-		private var begin:Object;
-		
-//		private var crtPage:int = 0;
+		private var begin:Image;
 		private var max:int;
-//		private var maxNum:int = 6;
-		
-//		private var listLeft:List;
-//		private var listRight:List;
-//		private function listFactory():List
-//		{
-//			var list:List = new List();
-//			list.itemRendererFactory = function():IListItemRenderer
-//			{
-//				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-//				renderer.iconSourceField = "thumbnail";
-//				renderer.name = "id";
-//				renderer.width = 147;
-//				renderer.height = 155;
-//				renderer.scaleX = renderer.scaleY = 0.8;
-//				renderer.addEventListener(Event.TRIGGERED, onTriggered);
-//				return renderer;
-//			};
-//			list.layout = layoutFactory();
-//			return list;
-//		}
-		
-//		private function onTriggered(e:Event):void
-//		{
-//			trace(e.currentTarget);
-//			var i:int = int((e.currentTarget as DefaultListItemRenderer).data.id);
-//			selectedVo = source[i];
-//			showImage();
-//		}
-//		private function layoutFactory():ILayout
-//		{
-//			var layout:TiledRowsLayout = new TiledRowsLayout();
-//			layout.paddingTop = 150;
-//			layout.paddingLeft = 10;
-//			layout.horizontalGap = 15;
-//			layout.verticalGap = 90;
-//			layout.useVirtualLayout = true;
-//			layout.verticalAlign = TiledRowsLayout.VERTICAL_ALIGN_TOP;
-//			return layout;
-//		}
-//		private function initList():void
-//		{
-//			listLeft = listFactory();
-//			listLeft.dataProvider = new ListCollection( pageDatas[0] );
-//			this.addChild( listLeft );
-//			listLeft.width = width / 2;
-//			listLeft.height = height;
-//			
-//			listRight = listFactory();
-//			this.addChild(listRight);
-//			listRight.width = width / 2;
-//			listRight.height = height;
-//			listRight.x = width / 2;
-//			listRight.dataProvider = new ListCollection( pageDatas[1] );
-//		}
-		
 		private var card:CollectionShow;
 		private var container:Sprite;
 		private var quad:Quad;
 		private var selectedVo:CollectionVO;
+		private var point:Point;
+		private var scale:Number = .3;
+		private var alpha:Number = 0;
+		private var imageHeight:int;
+		
 		private function showImage():void
 		{
+			point = globalToLocal(new Point());
 			if(!card)
 			{
-				var point:Point = globalToLocal(new Point());
 				container = new Sprite();
 				this.addChild( container );
 				container.x = point.x;
@@ -157,25 +109,41 @@ package views.global.userCenter.collection
 				quad.addEventListener(TouchEvent.TOUCH, onTouchPop);
 				
 				card = new CollectionShow();
-				card.x = 1024  >> 1;
-				card.y = 768 - card.height >> 1;
 				container.addChild( card );
+				imageHeight = card.height;
 			}
 			card.resetData(selectedVo);
 			container.visible = true;
+			move = true;
+			begin.localToGlobal(new Point(), point);
+			const X:int = 512;
+			const Y:int = 768-imageHeight >> 1;
+			
+			card.scaleX = card.scaleY = scale;
+			card.alpha = alpha;
+			card.x = point.x + card.width/2;
+			card.y = point.y;
+			
+			TweenLite.to(card, 0.3, {x: X, y: Y, scaleX: 1, scaleY: 1, alpha: 1, ease:Cubic.easeInOut, onComplete: function():void{ 
+				move=false;
+			}});
 		}
+		private var move:Boolean = false;
 		
 		private function onTouchPop(e:TouchEvent):void
 		{
-			var touch:Touch = e.getTouch(stage);
+			if(move)
+				return;
+			var touch:Touch;
+			touch = e.getTouch(stage);
 			if(touch && touch.phase == TouchPhase.ENDED)
 			{
-				container.visible = false;
+				TweenLite.to(card, 0.3, {x: point.x+card.width*scale/2, y:point.y, scaleX: scale, scaleY: scale, alpha: alpha, ease:Cubic.easeOut, onComplete:function():void{
+					container.visible = false;
+				}});
 			}
 		}
 		
-//		private var finishCount:uint = 10;
-//		private var unfinishCount:uint = 5;
 		private var source:Vector.<CollectionVO>;
 		private function initDatas():void
 		{
@@ -193,32 +161,11 @@ package views.global.userCenter.collection
 				vo.isCollected = DC.instance.testCollectionIsOpend(vo.id);
 				source[i] = vo;
 			}
-			
-//			//list数据源
-//			var tempdatas:Array = [];
-//			var obj:Object;
-//			for(i = 0;i<max;i++)
-//			{
-//				obj = { id: source[i].id, finished: source[i].isCollected };
-//				if(!obj.finished)
-//					obj.thumbnail = UserCenterManager.getTexture("card_collection_unfinish");
-//				else
-//					obj.thumbnail = UserCenterManager.getTexture("card_collection_" + obj.id);
-//				tempdatas.push( obj );
-//			}
-//			
-//			//分页处理
-//			pageDatas = [];
-//			const pageNum:int = Math.ceil(max / maxNum );
-//			for(i = 0;i<pageNum;i++)
-//			{
-//				pageDatas.push( tempdatas.splice(0, maxNum) );
-//			}
 		}
-//		private var pageDatas:Array;
-		
+			
 		override public function dispose():void
 		{
+			begin=null;
 			if(card)
 				card.removeFromParent(true);
 			if(quad)
@@ -235,10 +182,6 @@ package views.global.userCenter.collection
 				image.removeFromParent(true);
 			}
 			vecImage=null;
-//			if(listLeft)
-//				listLeft.removeFromParent(true);
-//			if(listRight)
-//				listRight.removeFromParent(true);
 			super.dispose();
 		}
 		

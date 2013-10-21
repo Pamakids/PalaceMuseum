@@ -24,7 +24,7 @@ package views
 	 */	
 	public class Interlude extends Sprite
 	{
-		[Embed(source="../assets/intro/pass.png")]
+		[Embed(source="../assets/video/pass.png")]
 		private static const BtnSkin:Class;
 		
 		private var videoURL:String;

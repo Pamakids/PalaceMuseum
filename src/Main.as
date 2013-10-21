@@ -58,6 +58,7 @@ package
 		override protected function init():void
 		{
 			var lastScene:String=SOService.instance.getSO("lastScene") as String;
+			trace(lastScene);
 			if(!lastScene)
 				initIntro();
 			else
@@ -66,7 +67,7 @@ package
 		
 		private function initIntro():void
 		{
-			inito = new Interlude("assets/intro/intro.mp4", false, null, startGame);
+			inito = new Interlude("assets/video/intro.mp4", false, null, startGame);
 			Starling.current.nativeStage.addChild( inito );
 		}
 

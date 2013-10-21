@@ -51,14 +51,16 @@ package controllers
 		 */
 		public function getAchievementData():Array
 		{
+			var t:Array;
 			var _achidatas:Array=[];
 			var arr:Array=AchieveVO.achieveList;
 			const max:int=arr.length;
 			var i:int;
 			for (i=0; i < max; i++)
 			{
-				if(arr[i])
-					_achidatas.push([arr[i][0], arr[i][1], (SOService.instance.getSO(i + "_achieve")) ? 1 : 0])
+				t = arr[i];
+				if(t)
+					_achidatas.push([t[0], t[1], (SOService.instance.getSO(i + "_achieve")) ? 1 : 0])
 			}
 			return _achidatas;
 		}

@@ -2,18 +2,20 @@ package controllers
 {
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.Singleton;
-
+	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
-
+	
 	import feathers.core.PopUpManager;
-
+	
 	import sound.SoundAssets;
-
+	
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-
+	
+	import views.Interlude;
 	import views.Module1;
 	import views.Module2;
 	import views.Module3;
@@ -172,11 +174,23 @@ package controllers
 		public function nextModule():void
 		{
 			if (moduleIndex < modules.length - 1)
+			{
 				moduleIndex++;
-			else
+			}
+			else			//gameover
+			{
 				moduleIndex=0;
+				var end:Interlude = new Interlude("assets/video/end.mp4", false, null, onEnd);
+				Starling.current.nativeStage.addChild( end );
+			}
 		}
-
+		private function onEnd():void
+		{
+			//游戏结束动画播放完成后执行
+			MC.instance.clearCrtModule();
+			Map.show(null, -1, -1, true);
+		}
+		
 		public function preModule():void
 		{
 			if (moduleIndex > 0)
