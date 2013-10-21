@@ -168,5 +168,12 @@ package views.components
 			if (p)
 				p.visible=false;
 		}
+		
+		public function show():void
+		{
+			visible=true;
+			if (p)
+				p.visible=true;
+		}
 	}
 }
