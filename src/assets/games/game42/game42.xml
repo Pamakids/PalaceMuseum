@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:5f554bf1f099125aaad5802c7aa5d55e$ -->
+<!-- $TexturePacker:SmartUpdate:66fd917b36e8d064bcd7ee38ba4e4b08$ -->
 <TextureAtlas imagePath="game42.png">
     <SubTexture name="bg-opera" x="2" y="2" width="1024" height="768"/>
     <SubTexture name="body-countdown" x="1988" y="106" width="42" height="42"/>

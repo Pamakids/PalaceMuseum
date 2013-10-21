@@ -23,11 +23,9 @@ package views.module5.scene52
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
 	import views.global.TopBar;
-	import views.module5.Scene52;
 
 	public class OpearaGame2 extends PalaceGame
 	{
-		public var scene:Scene52;
 		private var crtOperaName:String;
 		private var operaArr:Array=["xiyou", "sanguo"];
 		private var gameLevel:int=0;
@@ -74,13 +72,15 @@ package views.module5.scene52
 
 			TweenLite.delayedCall(.5, function():void {
 				var e:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.OPEN);
-				scene.onOperaSwitch(e);
+				onOperaSwitch(e);
 			});
 
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			if (SOService.instance.checkHintCount(silverCardClickHint))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame2);
 		}
+		
+		public var onOperaSwitch:Function;
 
 		override protected function onStage(e:Event):void
 		{
