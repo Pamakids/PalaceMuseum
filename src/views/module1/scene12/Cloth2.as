@@ -7,6 +7,7 @@ package views.module1.scene12
 
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.filters.BlurFilter;
 
 	public class Cloth2 extends Sprite
 	{
@@ -31,10 +32,30 @@ package views.module1.scene12
 			_offset=1 - Math.max(0, Math.min(1, (value * 10 - 4) / 6));
 			hat.y=hatY + _offset * 100;
 			hat.scaleX=hat.scaleY=Math.max(.5, Math.min(1, (value * 10 - 4) / 6));
-//			if (this.scaleX > .9)
-//			{
-//				hat.scaleX=scaleX * 1.05
-//			}
+			blur=(1 - value) * 4;
+			var c:uint=getColor(value);
+			hat.color=c;
+			cloth.color=c;
+		}
+
+		private function getColor(value:Number):uint
+		{
+			if (value == 1)
+				value=0.9999;
+			var rbg:uint=uint(value * 192 + 64);
+			return rbg * 256 * 256 + rbg * 256 + rbg;
+		}
+
+		private function set blur(value:Number):void
+		{
+			value=Math.max(0, Math.min(value, 4))
+			if (!this.filter)
+			{
+				blurF=new BlurFilter(value, value);
+				filter=blurF;
+			}
+			else
+				blurF.blurX=blurF.blurY=value;
 		}
 
 		private var hatY:Number=-395;
@@ -42,6 +63,7 @@ package views.module1.scene12
 
 		public var index:int;
 		public var type:String;
+		private var blurF:BlurFilter;
 
 		public function initCloth():void
 		{

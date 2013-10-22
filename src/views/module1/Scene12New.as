@@ -4,11 +4,11 @@ package views.module1
 	import com.greensock.easing.Elastic;
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.DPIUtil;
-	
+
 	import flash.geom.Point;
-	
+
 	import models.FontVo;
-	
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -20,7 +20,7 @@ package views.module1
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 	import views.module1.scene12.Cloth2;

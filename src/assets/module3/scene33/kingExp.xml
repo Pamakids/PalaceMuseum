@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:7365081b451e621082bfdcc1e716e6e5$ -->
+<TextureAtlas imagePath="kingExp.png">
+    <SubTexture name="中毒0001" x="883" y="2" width="218" height="256" frameX="0" frameY="-8" frameWidth="236" frameHeight="264"/>
+    <SubTexture name="中毒0002" x="442" y="775" width="218" height="256" frameX="0" frameY="-8" frameWidth="236" frameHeight="264"/>
+    <SubTexture name="中毒0003" x="222" y="775" width="218" height="256" frameX="0" frameY="-8" frameWidth="236" frameHeight="264"/>
+    <SubTexture name="中毒0004" x="2" y="775" width="218" height="256" frameX="0" frameY="-8" frameWidth="236" frameHeight="264"/>
+    <SubTexture name="中毒0005" x="663" y="518" width="218" height="256" frameX="-2" frameY="-8" frameWidth="236" frameHeight="264"/>
+    <SubTexture name="中毒0006" x="663" y="260" width="218" height="256" frameX="-5" frameY="-8" frameWidth="236" frameHeight="264"/>
+    <SubTexture name="中毒0007" x="663" y="2" width="218" height="256" frameX="-7" frameY="-8" frameWidth="236" frameHeight="264"/>
+    <SubTexture name="中毒0008" x="222" y="517" width="218" height="256" frameX="-5" frameY="-8" frameWidth="236" frameHeight="264"/>
+    <SubTexture name="中毒0009" x="2" y="517" width="218" height="256" frameX="-3" frameY="-8" frameWidth="236" frameHeight="264"/>
+    <SubTexture name="中毒0010" x="443" y="260" width="218" height="256" frameX="-2" frameY="-8" frameWidth="236" frameHeight="264"/>
+    <SubTexture name="中毒0011" x="443" y="2" width="218" height="256" frameX="0" frameY="-8" frameWidth="236" frameHeight="264"/>
+    <SubTexture name="中毒0012" x="2" y="259" width="218" height="256" frameX="0" frameY="-8" frameWidth="236" frameHeight="264"/>
+    <SubTexture name="中毒0013" x="223" y="2" width="218" height="256" frameX="0" frameY="-8" frameWidth="236" frameHeight="264"/>
+    <SubTexture name="吃饭0001" x="222" y="1033" width="218" height="255"/>
+    <SubTexture name="吃饭0002" x="2" y="1033" width="218" height="255"/>
+    <SubTexture name="吃饭0003" x="883" y="1031" width="218" height="255"/>
+    <SubTexture name="吃饭0004" x="658" y="1547" width="216" height="255" frameX="-1" frameY="0" frameWidth="218" frameHeight="255"/>
+    <SubTexture name="吃饭0005" x="440" y="1547" width="216" height="255" frameX="-1" frameY="0" frameWidth="218" frameHeight="255"/>
+    <SubTexture name="吃饭0006" x="876" y="1545" width="216" height="255" frameX="-1" frameY="0" frameWidth="218" frameHeight="255"/>
+    <SubTexture name="吃饭0007" x="658" y="1290" width="216" height="255" frameX="-1" frameY="0" frameWidth="218" frameHeight="255"/>
+    <SubTexture name="吃饭0008" x="876" y="1545" width="216" height="255" frameX="-1" frameY="0" frameWidth="218" frameHeight="255"/>
+    <SubTexture name="吃饭0009" x="440" y="1547" width="216" height="255" frameX="-1" frameY="0" frameWidth="218" frameHeight="255"/>
+    <SubTexture name="吃饭0010" x="440" y="1290" width="216" height="255" frameX="-1" frameY="0" frameWidth="218" frameHeight="255"/>
+    <SubTexture name="吃饭0011" x="883" y="774" width="218" height="255"/>
+    <SubTexture name="吃饭0012" x="883" y="517" width="218" height="255"/>
+    <SubTexture name="吃饭0013" x="883" y="260" width="218" height="255"/>
+    <SubTexture name="吃饭0014" x="222" y="1033" width="218" height="255"/>
+    <SubTexture name="平时0001" x="1760" y="1026" width="217" height="254"/>
+    <SubTexture name="平时0002" x="1760" y="770" width="217" height="254"/>
+    <SubTexture name="平时0003" x="1760" y="770" width="217" height="254"/>
+    <SubTexture name="平时0004" x="1760" y="514" width="217" height="254"/>
+    <SubTexture name="平时0005" x="1760" y="258" width="217" height="254"/>
+    <SubTexture name="平时0006" x="1760" y="2" width="217" height="254"/>
+    <SubTexture name="平时0007" x="1756" y="1538" width="217" height="254"/>
+    <SubTexture name="平时0008" x="1756" y="1538" width="217" height="254"/>
+    <SubTexture name="平时0009" x="1760" y="2" width="217" height="254"/>
+    <SubTexture name="平时0010" x="1760" y="2" width="217" height="254"/>
+    <SubTexture name="平时0011" x="1760" y="770" width="217" height="254"/>
+    <SubTexture name="无聊0001" x="1760" y="1026" width="217" height="254"/>
+    <SubTexture name="无聊0002" x="1756" y="1282" width="217" height="254"/>
+    <SubTexture name="无聊0003" x="1541" y="1026" width="217" height="254"/>
+    <SubTexture name="无聊0004" x="1541" y="770" width="217" height="254"/>
+    <SubTexture name="无聊0005" x="1541" y="514" width="217" height="254"/>
+    <SubTexture name="无聊0006" x="1541" y="258" width="217" height="254"/>
+    <SubTexture name="无聊0007" x="1541" y="2" width="217" height="254"/>
+    <SubTexture name="无聊0008" x="1537" y="1538" width="217" height="254"/>
+    <SubTexture name="无聊0009" x="1537" y="1282" width="217" height="254"/>
+    <SubTexture name="无聊0010" x="1322" y="1026" width="217" height="254"/>
+    <SubTexture name="无聊0011" x="1322" y="770" width="217" height="254"/>
+    <SubTexture name="无聊0012" x="1322" y="514" width="217" height="254"/>
+    <SubTexture name="无聊0013" x="1322" y="258" width="217" height="254"/>
+    <SubTexture name="无聊0014" x="1322" y="2" width="217" height="254"/>
+    <SubTexture name="无聊0015" x="1318" y="1538" width="217" height="254"/>
+    <SubTexture name="无聊0016" x="1318" y="1282" width="217" height="254"/>
+    <SubTexture name="无聊0017" x="1103" y="1026" width="217" height="254"/>
+    <SubTexture name="无聊0018" x="1103" y="770" width="217" height="254"/>
+    <SubTexture name="无聊0019" x="1103" y="514" width="217" height="254"/>
+    <SubTexture name="无聊0020" x="1103" y="258" width="217" height="254"/>
+    <SubTexture name="无聊0021" x="1103" y="2" width="217" height="254"/>
+    <SubTexture name="无聊0022" x="221" y="1547" width="217" height="254"/>
+    <SubTexture name="无聊0023" x="2" y="1547" width="217" height="254"/>
+    <SubTexture name="无聊0024" x="1099" y="1544" width="217" height="254"/>
+    <SubTexture name="无聊0025" x="1099" y="1544" width="217" height="254"/>
+    <SubTexture name="无聊0026" x="1099" y="1288" width="217" height="254"/>
+    <SubTexture name="高兴0001" x="221" y="1290" width="217" height="255" frameX="0" frameY="-8" frameWidth="235" frameHeight="263"/>
+    <SubTexture name="高兴0002" x="221" y="1290" width="217" height="255" frameX="0" frameY="-8" frameWidth="235" frameHeight="263"/>
+    <SubTexture name="高兴0003" x="221" y="1290" width="217" height="255" frameX="0" frameY="-8" frameWidth="235" frameHeight="263"/>
+    <SubTexture name="高兴0004" x="2" y="1290" width="217" height="255" frameX="0" frameY="-8" frameWidth="235" frameHeight="263"/>
+    <SubTexture name="高兴0005" x="662" y="776" width="219" height="255" frameX="-1" frameY="-8" frameWidth="235" frameHeight="263"/>
+    <SubTexture name="高兴0006" x="442" y="518" width="219" height="255" frameX="-4" frameY="-8" frameWidth="235" frameHeight="263"/>
+    <SubTexture name="高兴0007" x="880" y="1288" width="217" height="255" frameX="-8" frameY="-8" frameWidth="235" frameHeight="263"/>
+    <SubTexture name="高兴0008" x="222" y="260" width="219" height="255" frameX="-4" frameY="-8" frameWidth="235" frameHeight="263"/>
+    <SubTexture name="高兴0009" x="2" y="2" width="219" height="255" frameX="-1" frameY="-8" frameWidth="235" frameHeight="263"/>
+    <SubTexture name="高兴0010" x="2" y="1290" width="217" height="255" frameX="0" frameY="-8" frameWidth="235" frameHeight="263"/>
+    <SubTexture name="高兴0011" x="661" y="1033" width="217" height="255" frameX="0" frameY="-8" frameWidth="235" frameHeight="263"/>
+    <SubTexture name="高兴0012" x="661" y="1033" width="217" height="255" frameX="0" frameY="-8" frameWidth="235" frameHeight="263"/>
+    <SubTexture name="高兴0013" x="442" y="1033" width="217" height="255" frameX="0" frameY="-8" frameWidth="235" frameHeight="263"/>
+    <SubTexture name="高兴0014" x="442" y="1033" width="217" height="255" frameX="0" frameY="-8" frameWidth="235" frameHeight="263"/>
+    <SubTexture name="高兴0015" x="221" y="1290" width="217" height="255" frameX="0" frameY="-8" frameWidth="235" frameHeight="263"/>
+</TextureAtlas>

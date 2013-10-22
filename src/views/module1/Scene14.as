@@ -37,8 +37,21 @@ package views.module1
 			TweenLite.delayedCall(1, moveKing);
 		}
 
+		override public function dispose():void
+		{
+			if (king)
+			{
+				TweenLite.killTweensOf(king);
+				king.removeFromParent(true);
+				king=null;
+			}
+			super.dispose();
+		}
+
 		private function moveKing():void
 		{
+			if (!king)
+				return;
 			king.startShakeHead(Math.PI / 20, 3);
 			king.startShakeBody(Math.PI / 30, 3);
 			TweenLite.to(king, 3, {x: pos2.x, y: pos2.y, onComplete: kingSay});
@@ -46,12 +59,12 @@ package views.module1
 
 		private function onEnterFrame(e:Event):void
 		{
-			king.shake();
+			if (king)
+				king.shake();
 		}
 
 		private function kingSay():void
 		{
-//			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			Prompt.showTXT(pos2.x + 10, pos2.y - 20, txt1, 20, momSay);
 		}
 
@@ -67,7 +80,8 @@ package views.module1
 
 		private function moveKingBack():void
 		{
-//			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			if (!king)
+				return;
 			king.startShakeHead(Math.PI / 20, 3);
 			king.startShakeBody(Math.PI / 30, 3);
 			TweenLite.to(king, 3, {x: pos1.x, y: pos1.y, onComplete: sceneOver});

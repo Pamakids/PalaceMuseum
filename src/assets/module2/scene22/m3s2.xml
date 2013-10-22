@@ -1,53 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:515235d262e497de4d6dee662dc42fe9$ -->
+<!-- $TexturePacker:SmartUpdate:5a4985716baa3b2ac4878f75129ab0e3$ -->
 <TextureAtlas imagePath="m3s2.png">
-    <SubTexture name="brushpot" x="1095" y="1364" width="118" height="191"/>
-    <SubTexture name="collection_card_5" x="2" y="936" width="338" height="410"/>
+    <SubTexture name="brushpot" x="1406" y="921" width="118" height="191"/>
+    <SubTexture name="collection_card_5" x="161" y="1516" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
+    <SubTexture name="eye0001" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0002" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0003" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0004" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0005" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0006" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0007" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0008" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0009" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0010" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0011" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0012" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0013" x="974" y="43" width="48" height="25" frameX="-5" frameY="-9" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0014" x="974" y="43" width="48" height="25" frameX="-5" frameY="-9" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0015" x="974" y="156" width="44" height="19" frameX="-2" frameY="-13" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0016" x="974" y="156" width="44" height="19" frameX="-2" frameY="-13" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0017" x="974" y="43" width="48" height="25" frameX="-5" frameY="-9" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0018" x="974" y="43" width="48" height="25" frameX="-5" frameY="-9" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0019" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0020" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0021" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0022" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0023" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0024" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0025" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0026" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0027" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0028" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0029" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0030" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0031" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0032" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0033" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0034" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0035" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0036" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0037" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0038" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0039" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0040" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0041" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0042" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0043" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0044" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0045" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
+    <SubTexture name="eye0046" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
     <SubTexture name="hint32" x="547" y="391" width="137" height="58"/>
-    <SubTexture name="inkstone" x="1269" y="1554" width="208" height="137"/>
+    <SubTexture name="inkstone" x="746" y="1032" width="208" height="137"/>
     <SubTexture name="light-input" x="2" y="2" width="1020" height="39"/>
     <SubTexture name="light-out" x="2" y="43" width="688" height="346"/>
-    <SubTexture name="light-prism" x="1052" y="1766" width="194" height="169"/>
-    <SubTexture name="light-sign" x="2" y="1364" width="369" height="578"/>
+    <SubTexture name="light-prism" x="1202" y="1099" width="194" height="169"/>
+    <SubTexture name="light-sign" x="2" y="936" width="369" height="578"/>
     <SubTexture name="paper" x="547" y="647" width="435" height="383"/>
-    <SubTexture name="part0" x="806" y="1610" width="243" height="237"/>
-    <SubTexture name="part1" x="844" y="1364" width="249" height="200"/>
-    <SubTexture name="part2" x="1797" y="574" width="228" height="194"/>
-    <SubTexture name="part3" x="1051" y="1566" width="216" height="198"/>
+    <SubTexture name="part0" x="501" y="1755" width="243" height="237"/>
+    <SubTexture name="part1" x="1531" y="741" width="249" height="200"/>
+    <SubTexture name="part2" x="1794" y="574" width="228" height="194"/>
+    <SubTexture name="part3" x="984" y="921" width="216" height="198"/>
     <SubTexture name="part4" x="692" y="339" width="273" height="218"/>
     <SubTexture name="part5" x="1805" y="397" width="231" height="175"/>
-    <SubTexture name="part6" x="373" y="1868" width="202" height="176"/>
+    <SubTexture name="part6" x="1202" y="921" width="202" height="176"/>
     <SubTexture name="part7" x="1805" y="205" width="234" height="190"/>
-    <SubTexture name="part8" x="577" y="1860" width="249" height="185"/>
-    <SubTexture name="prism32" x="746" y="1364" width="96" height="244"/>
+    <SubTexture name="part8" x="1782" y="770" width="249" height="185"/>
+    <SubTexture name="prism32" x="499" y="1137" width="96" height="244"/>
     <SubTexture name="scene22-bird" x="1024" y="2" width="779" height="406"/>
-    <SubTexture name="tele-arm" x="1347" y="1081" width="128" height="151"/>
-    <SubTexture name="tele-king" x="1534" y="410" width="261" height="329" frameX="-20" frameY="0" frameWidth="281" frameHeight="329"/>
-    <SubTexture name="tele-maskxx" x="1020" y="410" width="512" height="512"/>
-    <SubTexture name="tele-ring-in" x="1534" y="853" width="509" height="509" frameX="-17" frameY="-17" frameWidth="543" frameHeight="543"/>
+    <SubTexture name="tele-arm" x="909" y="1374" width="128" height="151"/>
+    <SubTexture name="tele-king" x="1531" y="410" width="261" height="329" frameX="-20" frameY="0" frameWidth="281" frameHeight="329"/>
+    <SubTexture name="tele-ring-in" x="1020" y="410" width="509" height="509" frameX="-17" frameY="-17" frameWidth="543" frameHeight="543"/>
     <SubTexture name="tele-ring-out" x="2" y="391" width="543" height="543"/>
-    <SubTexture name="tele1" x="974" y="129" width="37" height="126" frameX="0" frameY="0" frameWidth="39" frameHeight="126"/>
-    <SubTexture name="tele2" x="974" y="43" width="47" height="84"/>
+    <SubTexture name="tele1" x="974" y="177" width="37" height="126" frameX="0" frameY="0" frameWidth="39" frameHeight="126"/>
+    <SubTexture name="tele2" x="974" y="70" width="47" height="84"/>
     <SubTexture name="tele3" x="967" y="339" width="51" height="80" frameX="0" frameY="0" frameWidth="51" frameHeight="96"/>
     <SubTexture name="tele32" x="692" y="43" width="280" height="294"/>
-    <SubTexture name="thermo-body-shadow" x="940" y="1849" width="110" height="194"/>
-    <SubTexture name="thermo-body" x="828" y="1849" width="110" height="194"/>
+    <SubTexture name="thermo-body-shadow" x="797" y="1374" width="110" height="194"/>
+    <SubTexture name="thermo-body" x="685" y="1374" width="110" height="194"/>
     <SubTexture name="thermo-boiling-shadow" x="373" y="936" width="168" height="199" frameX="-3" frameY="0" frameWidth="174" frameHeight="201"/>
-    <SubTexture name="thermo-boiling" x="342" y="1137" width="174" height="201"/>
-    <SubTexture name="thermo-halo" x="620" y="1676" width="184" height="181"/>
-    <SubTexture name="thermo-ice-shadow" x="1534" y="770" width="199" height="78" frameX="-3" frameY="-3" frameWidth="205" frameHeight="84"/>
+    <SubTexture name="thermo-boiling" x="746" y="1171" width="174" height="201"/>
+    <SubTexture name="thermo-halo" x="956" y="1121" width="184" height="181"/>
+    <SubTexture name="thermo-ice-shadow" x="161" y="1918" width="199" height="78" frameX="-3" frameY="-3" frameWidth="205" frameHeight="84"/>
     <SubTexture name="thermo-ice" x="685" y="559" width="205" height="84"/>
-    <SubTexture name="thermo-light" x="1534" y="754" width="244" height="11" frameX="-3" frameY="-1" frameWidth="250" frameHeight="15"/>
-    <SubTexture name="thermo-line" x="1534" y="741" width="244" height="11" frameX="-3" frameY="-1" frameWidth="250" frameHeight="15"/>
+    <SubTexture name="thermo-light" x="2" y="2033" width="244" height="11" frameX="-3" frameY="-1" frameWidth="250" frameHeight="15"/>
+    <SubTexture name="thermo-line" x="2" y="2020" width="244" height="11" frameX="-3" frameY="-1" frameWidth="250" frameHeight="15"/>
     <SubTexture name="thermo-mercury" x="2038" y="397" width="6" height="454"/>
-    <SubTexture name="thermo-pan" x="1347" y="924" width="154" height="155" frameX="-11" frameY="-10" frameWidth="184" frameHeight="181"/>
-    <SubTexture name="thermo-snowman-shadow" x="1215" y="1364" width="130" height="188" frameX="-3" frameY="-3" frameWidth="136" frameHeight="194"/>
+    <SubTexture name="thermo-pan" x="1526" y="943" width="154" height="155" frameX="-11" frameY="-10" frameWidth="184" frameHeight="181"/>
+    <SubTexture name="thermo-snowman-shadow" x="746" y="1732" width="130" height="188" frameX="-3" frameY="-3" frameWidth="136" frameHeight="194"/>
     <SubTexture name="thermo-snowman" x="547" y="451" width="136" height="194"/>
-    <SubTexture name="thermo-tea-shadow" x="1248" y="1766" width="109" height="158" frameX="-3" frameY="0" frameWidth="115" frameHeight="160"/>
-    <SubTexture name="thermo-tea" x="1347" y="1234" width="115" height="160"/>
-    <SubTexture name="thermo" x="532" y="1137" width="86" height="721"/>
-    <SubTexture name="thermometer32" x="373" y="1364" width="157" height="502"/>
+    <SubTexture name="thermo-tea-shadow" x="802" y="1570" width="109" height="158" frameX="-3" frameY="0" frameWidth="115" frameHeight="160"/>
+    <SubTexture name="thermo-tea" x="685" y="1570" width="115" height="160"/>
+    <SubTexture name="thermo" x="597" y="1032" width="86" height="721"/>
+    <SubTexture name="thermometer32" x="2" y="1516" width="157" height="502"/>
     <SubTexture name="waterpot" x="1805" y="2" width="235" height="201"/>
-    <SubTexture name="writingbrush" x="620" y="1364" width="124" height="310"/>
+    <SubTexture name="writingbrush" x="373" y="1137" width="124" height="310"/>
 </TextureAtlas>
