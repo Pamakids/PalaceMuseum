@@ -7,12 +7,15 @@ package views.global.userCenter.achievement
 	
 	import controllers.DC;
 	
+	import models.FontVo;
+	
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
 	
 	import views.global.userCenter.BaseScreen;
 	
@@ -28,6 +31,27 @@ package views.global.userCenter.achievement
 			super.initialize();
 			initDatas();
 			initIcons();
+			initPageNums();
+		}
+		
+		private var page_0:TextField;
+		private var page_1:TextField;
+		private function initPageNums():void
+		{
+			var n:int = maxPage * 2;
+			page_0 = new TextField(100, 40, "1 / "+n.toString(), FontVo.PALACE_FONT, 22, 0x932720);
+			page_1 = new TextField(100, 40, "2 / "+n.toString(), FontVo.PALACE_FONT, 22, 0x932720);
+			page_0.touchable = page_1.touchable = false;
+//			page_0.x = 20;
+//			page_1.x = 848;
+			page_0.x = 196;
+			page_1.x = 680;
+			page_0.y = page_1.y = 590;
+			this.addChild( page_0 );
+			this.addChild( page_1 );
+			
+//			page_0.border = page_1.border = true;
+			
 		}
 		
 		private var vecIcon:Vector.<AchieveIcon>;
@@ -160,6 +184,10 @@ package views.global.userCenter.achievement
 				quad.removeEventListener(TouchEvent.TOUCH, onTouchPop);
 				quad.removeFromParent(true);
 			}
+			if(page_0)
+				page_0.removeFromParent(true);
+			if(page_1)
+				page_1.removeFromParent(true);
 			if(container)
 				container.removeFromParent(true);
 			for each(var icon:AchieveIcon in vecIcon)
@@ -178,6 +206,8 @@ package views.global.userCenter.achievement
 				arr = datas[pageIndex];
 				vecIcon[i].data = arr[i];
 			}
+			page_0.text = (pageIndex*2+1).toString() + " / " + String(maxPage*2);
+			page_1.text = (pageIndex*2+2).toString() + " / " + String(maxPage*2);
 			this.validate();
 		}
 	}
