@@ -2,18 +2,18 @@ package views.module5
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Bounce;
-	
+
 	import events.OperaSwitchEvent;
-	
+
 	import models.FontVo;
-	
+
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.FlipImage;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
@@ -59,7 +59,7 @@ package views.module5
 			initGame();
 		}
 
-		public function onOperaSwitch(e:OperaSwitchEvent,forceInit:Boolean=false):void
+		public function onOperaSwitch(e:OperaSwitchEvent, forceInit:Boolean=false):void
 		{
 			TweenLite.killDelayedCallsTo(this);
 			TweenLite.killTweensOf(curtainL);
@@ -99,8 +99,8 @@ package views.module5
 							openCurtains(e.openCallback);
 						});
 					}
-					if(forceInit)
-						closeCurtains(function():void{
+					if (forceInit)
+						closeCurtains(function():void {
 							playEnter(cb);
 						});
 					else
@@ -114,12 +114,12 @@ package views.module5
 				}
 			}
 		}
-		
+
 		private function playEnter(callback:Function):void
 		{
 			var holder:Sprite=new Sprite();
 			addChild(holder);
-			var arr:Array = this["bodyArr"+game.gamelevel.toString()];
+			var arr:Array=this["bodyArr" + game.gamelevel.toString()];
 			var delay:Number;
 			var sy:Number=-300;
 			var dy:Number=500;
@@ -132,45 +132,45 @@ package views.module5
 				var txt:TextField=getTF(t);
 				holder.addChild(txt);
 				txt.alpha=0;
-				txt.x=sx+dx*index-100;
-				txt.y=dy+30;
+				txt.x=sx + dx * index - 100;
+				txt.y=dy + 30;
 				var body:Image=getImage(t);
-				body.pivotX=body.width>>1;
+				body.pivotX=body.width >> 1;
 				body.pivotY=body.height;
 				holder.addChild(body);
-				body.x=sx+dx*index;
+				body.x=sx + dx * index;
 				body.y=sy;
-				delay=Math.random()*1.5;
-				TweenLite.delayedCall(delay,function():void{
-				TweenLite.to(body,.5,{y:dy,ease:Bounce.easeOut,onComplete:function():void{
-					TweenLite.to(txt,.5,{alpha:1,onComplete:function():void{
-						TweenLite.delayedCall(2,function():void{
-						TweenLite.to(body,.5,{y:sy,ease:Bounce.easeIn});
-						TweenLite.to(txt,.5,{alpha:0});})
-					}});
-				}});});
+				delay=Math.random() * 1.5;
+				TweenLite.delayedCall(delay, function():void {
+					TweenLite.to(body, .5, {y: dy, ease: Bounce.easeOut, onComplete: function():void {
+						TweenLite.to(txt, .5, {alpha: 1, onComplete: function():void {
+							TweenLite.delayedCall(2, function():void {
+								TweenLite.to(body, .5, {y: sy, ease: Bounce.easeIn});
+								TweenLite.to(txt, .5, {alpha: 0});})
+						}});
+					}});});
 				index++;
 			}
-			for (var i:int = 0; i < arr.length; i++) 
+			for (var i:int=0; i < arr.length; i++)
 			{
 				initBody();
 			}
-			
-			TweenLite.delayedCall(5,function():void{
-				if(callback!=null)
+
+			TweenLite.delayedCall(5, function():void {
+				if (callback != null)
 					callback();
 				holder.removeFromParent(true);
 			});
 		}
-		
+
 		private function getTF(t:String):TextField
 		{
-			return new TextField(150,100,t,FontVo.PALACE_FONT,34,0xffffff);
+			return new TextField(150, 100, t, FontVo.PALACE_FONT, 34, 0xffffff);
 		}
-		
-		private var bodyArr0:Array=["沙僧","唐僧","猪八戒","孙悟空","牛魔王","铁扇公主"];
-		private var bodyArr1:Array=["诸葛亮","张飞","关羽","孙尚香","周瑜","曹操"];
-		
+
+		private var bodyArr0:Array=["沙僧", "唐僧", "猪八戒", "孙悟空", "牛魔王", "铁扇公主"];
+		private var bodyArr1:Array=["诸葛亮", "张飞", "关羽", "孙尚香", "周瑜", "曹操"];
+
 		private function closeCurtains(closeCallback:Function=null):void
 		{
 			TweenLite.to(curtainL, 1, {x: 0});

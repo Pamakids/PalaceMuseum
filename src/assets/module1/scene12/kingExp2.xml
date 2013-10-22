@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:8d0bb3b7be19cb04cc19977903105988$ -->
+<TextureAtlas imagePath="kingExp2.png">
+    <SubTexture name="kingStrange0001" x="907" y="1568" width="224" height="259"/>
+    <SubTexture name="kingStrange0002" x="907" y="1307" width="224" height="259"/>
+    <SubTexture name="kingStrange0003" x="682" y="1046" width="224" height="259"/>
+    <SubTexture name="kingStrange0004" x="682" y="785" width="224" height="259"/>
+    <SubTexture name="kingStrange0005" x="682" y="524" width="224" height="259"/>
+    <SubTexture name="kingStrange0006" x="682" y="263" width="224" height="259"/>
+    <SubTexture name="kingStrange0007" x="681" y="1568" width="224" height="259"/>
+    <SubTexture name="kingStrange0008" x="681" y="1307" width="224" height="259"/>
+    <SubTexture name="kingStrange0009" x="456" y="1046" width="224" height="259"/>
+    <SubTexture name="kingStrange0010" x="456" y="785" width="224" height="259"/>
+    <SubTexture name="kingStrange0011" x="456" y="1046" width="224" height="259"/>
+    <SubTexture name="kingStrange0012" x="681" y="1307" width="224" height="259"/>
+    <SubTexture name="kingStrange0013" x="681" y="1568" width="224" height="259"/>
+    <SubTexture name="kingStrange0014" x="682" y="263" width="224" height="259"/>
+    <SubTexture name="kingStrange0015" x="681" y="1568" width="224" height="259"/>
+    <SubTexture name="kingStrange0016" x="681" y="1307" width="224" height="259"/>
+    <SubTexture name="kingStrange0017" x="456" y="1046" width="224" height="259"/>
+    <SubTexture name="kingStrange0018" x="456" y="785" width="224" height="259"/>
+    <SubTexture name="kingStrange0019" x="456" y="1046" width="224" height="259"/>
+    <SubTexture name="kingStrange0020" x="681" y="1307" width="224" height="259"/>
+    <SubTexture name="kingStrange0021" x="681" y="1568" width="224" height="259"/>
+    <SubTexture name="kingStrange0022" x="682" y="263" width="224" height="259"/>
+    <SubTexture name="kingStrange0023" x="456" y="524" width="224" height="259"/>
+    <SubTexture name="kingStrange0024" x="456" y="263" width="224" height="259"/>
+    <SubTexture name="kingStrange0025" x="455" y="1568" width="224" height="259"/>
+    <SubTexture name="kingStrange0026" x="455" y="1307" width="224" height="259"/>
+    <SubTexture name="kingStrange0027" x="229" y="1568" width="224" height="259"/>
+    <SubTexture name="kingStrange0028" x="229" y="1307" width="224" height="259"/>
+    <SubTexture name="kingStrange0029" x="907" y="1568" width="224" height="259"/>
+    <SubTexture name="kingWrong0001" x="229" y="1046" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0002" x="229" y="785" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0003" x="229" y="524" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0004" x="229" y="263" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0005" x="1818" y="2" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0006" x="1591" y="2" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0007" x="1364" y="2" width="225" height="259" frameX="-1" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0008" x="1137" y="2" width="225" height="259" frameX="0" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0009" x="910" y="2" width="225" height="259" frameX="-1" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0010" x="1591" y="2" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0011" x="683" y="2" width="225" height="259" frameX="-6" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0012" x="456" y="2" width="225" height="259" frameX="-8" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0013" x="229" y="2" width="225" height="259" frameX="-6" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0014" x="1591" y="2" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0015" x="1364" y="2" width="225" height="259" frameX="-1" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0016" x="1137" y="2" width="225" height="259" frameX="0" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0017" x="910" y="2" width="225" height="259" frameX="-1" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0018" x="1591" y="2" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0019" x="2" y="1568" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0020" x="2" y="1307" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0021" x="2" y="1046" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0022" x="2" y="785" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0023" x="2" y="524" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0024" x="2" y="263" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0025" x="2" y="2" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+    <SubTexture name="kingWrong0026" x="2" y="2" width="225" height="259" frameX="-3" frameY="0" frameWidth="233" frameHeight="259"/>
+</TextureAtlas>

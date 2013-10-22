@@ -1,13 +1,16 @@
 package views.module5
 {
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
+	import com.greensock.TweenLite;
 
+	import flash.geom.Point;
+
+	import starling.display.Image;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 
@@ -18,16 +21,20 @@ package views.module5
 	 */
 	public class Scene51 extends PalaceScene
 	{
-//		private var avatarTypeArr:Array=["chancellor", "maid", "empressdowager"];
-		private var txtArr:Array=["大臣：希望这次的座位别排在柱子后面",
-			"大臣：唉，跪着听戏真不好受",
+		private var txtArr:Array=[
 			"大臣：幸亏我年纪一把，能有个椅子坐",
-			"宫女：今儿皇上听戏倒是积极",
+			"大臣：希望这次的座位别排在柱子后面",
 			"太后：今演好了，重重有赏！"];
 
-		private var count:int=0;
-		private var areaArr:Array=[new Rectangle(247, 567, 43, 48), new Rectangle(280, 626, 44, 59),
-			new Rectangle(368, 685, 44, 59), new Rectangle(696, 564, 29, 61), new Rectangle(771, 553, 45, 76)];
+		private var pArr:Array=["dachen1", "dachen2", "taihou"];
+		private var posArr:Array=[new Point(228, 562),
+			new Point(836, 414), new Point(624, 517)];
+		private var movArr:Array=[new Point(-25, 25),
+			new Point(-5, -60), new Point(30, 5)];
+		private var txtOffset:Array=[new Point(65, 60),
+			new Point(17, 15), new Point(147, 62)];
+		private var imgArr:Array=[];
+
 		private var checkArr:Vector.<Boolean>=new Vector.<Boolean>(5);
 
 		public function Scene51(am:AssetManager=null)
@@ -36,44 +43,62 @@ package views.module5
 			crtKnowledgeIndex=12;
 			addChild(getImage("bg51"));
 
-			addEventListener(TouchEvent.TOUCH, onTouch);
+			addPeople();
+
+			LionMC.instance.say("等大家入座，演出就开始了。", 0, 200, 500, function():void {
+				ready=true;
+			}, 20, false);
 		}
 
-		private function onTouch(e:TouchEvent):void
+		private function addPeople():void
 		{
-			var tc:Touch=e.getTouch(this, TouchPhase.ENDED);
-			if (!tc)
-				return;
-
-			for (var i:int=0; i < areaArr.length; i++)
+			for (var i:int=0; i < pArr.length; i++)
 			{
-				var rect:Rectangle=areaArr[i];
-				if (rect && rect.containsPoint(tc.getLocation(this)))
-				{
-					checkArr[i]=true;
-					if (p)
-						p.playHide();
-					p=Prompt.showTXT(rect.x + rect.width - 20, rect.y, txtArr[i]);
-					checkAll();
-					return;
-				}
+				var img:Image=getImage(pArr[i]);
+				img.x=posArr[i].x;
+				img.y=posArr[i].y;
+				addChild(img);
+				img.addEventListener(TouchEvent.TOUCH, onClick);
+				imgArr.push(img);
 			}
 		}
 
-		private var p:Prompt;
-
-		private function checkAll():void
+		private function onClick(e:TouchEvent):void
 		{
+			if (!ready)
+				return;
+			var img:Image=e.currentTarget as Image;
+			if (!img)
+				return;
+			var tc:Touch=e.getTouch(img, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			var index:int=imgArr.indexOf(img);
+			img.removeEventListener(TouchEvent.TOUCH, onClick);
+			var dx:Number=img.x + movArr[index].x;
+			var dy:Number=img.y + movArr[index].y;
+			var cb:Function=function():void {
+				TweenLite.to(img, 1.5, {x: dx, y: dy, onComplete: function():void {
+					TweenLite.to(img, .5, {alpha: 0});
+					checkAll(index);
+				}});}
+			Prompt.showTXT(img.x + txtOffset[index].x,
+				img.y + txtOffset[index].y, txtArr[index], 20, cb);
+		}
+
+		private var ready:Boolean;
+
+		private function checkAll(index:int):void
+		{
+			checkArr[index]=true;
 			var count:int=0;
 			for each (var b:Boolean in checkArr)
 			{
 				if (b)
 					count++;
 			}
-			if (count == 5)
-				showAchievement(26);
 			if (count == 3)
-				sceneOver();
+				showAchievement(26, sceneOver);
 		}
 	}
 }
