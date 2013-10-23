@@ -177,10 +177,7 @@ package views.components
 			e.stopImmediatePropagation();
 			var tc:Touch=e.getTouch(this, TouchPhase.ENDED);
 			if (tc)
-			{
-				removeEventListener(TouchEvent.TOUCH, onTouch);
 				playHide();
-			}
 		}
 
 		private function get hideEffect():Object
@@ -214,6 +211,7 @@ package views.components
 		 */
 		public function playHide():void
 		{
+			removeEventListener(TouchEvent.TOUCH, onTouch);
 			if (!this.parent)
 				return;
 			TweenLite.killDelayedCallsTo(playHide);
