@@ -25,7 +25,8 @@ package views.module3
 		{
 			crtKnowledgeIndex=7;
 			super(am);
-			addChild(getImage("bg30"));
+			addBG("bg30");
+//			addChild(getImage("bg30"));
 
 			ptcl=new PalaceParticle();
 			ptcl.init(2);

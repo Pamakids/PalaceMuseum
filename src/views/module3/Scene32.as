@@ -38,7 +38,8 @@ package views.module3
 			crtKnowledgeIndex=8;
 			scale=DPIUtil.getDPIScale();
 
-			addChild(getImage("bg-22"));
+			addBG("bg-22");
+//			addChild(getImage("bg-22"));
 
 			areaArr.push(new Rectangle(316, 238, 182, 342));
 			areaArr.push(new Rectangle(148, 326, 205, 288));

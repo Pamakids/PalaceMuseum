@@ -11,17 +11,15 @@ package views.global.userCenter.userInfo
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceGame;
+	import views.components.base.PalaceModule;
 	import views.components.base.PalaceScene;
+	import views.module2.scene21.JigsawGame;
 	import views.module3.scene32.MenuGame;
 	import views.module3.scene33.DishGame;
-	import views.module2.scene21.JigsawGame;
 	import views.module5.scene52.OperaGame;
 
 	public class GameScene extends PalaceScene
 	{
-		[Embed(source="/assets/common/loading.png")]
-		private static const Loading:Class
-
 		private var gamePathArr:Array=["22", "23", "31", "42"];
 		private var gameArr:Array=[MenuGame, DishGame, JigsawGame, OperaGame];
 
@@ -68,7 +66,7 @@ package views.global.userCenter.userInfo
 
 		private static function initLoadImage():void
 		{
-			_loadImage=new Image(Texture.fromBitmap(new Loading()));
+			_loadImage=new Image(Texture.fromBitmap(new PalaceModule.Loading()));
 			_loadImage.pivotX=_loadImage.width >> 1;
 			_loadImage.pivotY=_loadImage.height >> 1;
 			_loadImage.x=1024 - 100;

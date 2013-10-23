@@ -1,7 +1,6 @@
 package views.global.userCenter
 {
 	import flash.filesystem.File;
-	import flash.utils.Dictionary;
 
 	import controllers.MC;
 
@@ -12,8 +11,8 @@ package views.global.userCenter
 	import starling.utils.AssetManager;
 
 	import views.components.LionMC;
+	import views.components.base.PalaceModule;
 	import views.global.TopBar;
-	import views.global.map.Map;
 
 	/**
 	 * 用户中心管理类
@@ -21,9 +20,6 @@ package views.global.userCenter
 	 */
 	public class UserCenterManager
 	{
-		[Embed(source="/assets/common/loading.png")]
-		private static const Loading:Class
-
 		private static var loaded:Boolean=false;
 		private static var _instance:UserCenterManager;
 
@@ -102,7 +98,7 @@ package views.global.userCenter
 
 		private static function initLoadImage():void
 		{
-			_loadImage=new Image(Texture.fromBitmap(new Loading()));
+			_loadImage=new Image(Texture.fromBitmap(new PalaceModule.Loading()));
 			_loadImage.pivotX=_loadImage.width >> 1;
 			_loadImage.pivotY=_loadImage.height >> 1;
 			_userCenterContainer.addChild(_loadImage);

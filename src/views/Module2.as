@@ -38,9 +38,6 @@ package views
 				{
 					isLoading=false;
 					addNext();
-
-//					sceneIndex=0;
-//					loadScene(sceneIndex);
 				}
 			});
 		}

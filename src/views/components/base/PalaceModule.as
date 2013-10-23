@@ -8,24 +8,25 @@
 package views.components.base
 {
 	import com.pamakids.palace.utils.StringUtils;
-	
+
 	import controllers.MC;
-	
+
 	import models.FontVo;
-	
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.ElasticButton;
 
 	public class PalaceModule extends Container
 	{
 		public function get moduleName():String
 		{
-			return StringUtils.getClassName(this);;
+			return StringUtils.getClassName(this);
+			;
 		}
 
 		protected var assetManager:AssetManager;
@@ -34,10 +35,10 @@ package views.components.base
 		protected var skipIndex:int=-1;
 
 		[Embed(source="/assets/common/loading.png")]
-		protected static var loading:Class
+		public static var loading:Class
 
 		[Embed(source="/assets/common/gamebg.jpg")]
-		protected static var loadingBG:Class
+		public static var gameBG:Class
 
 		public function PalaceModule(am:AssetManager=null, width:Number=0, height:Number=0)
 		{
@@ -60,7 +61,7 @@ package views.components.base
 			tfHolder=new Sprite();
 			addChild(tfHolder);
 			tfHolder.touchable=false;
-			var bg:Image=Image.fromBitmap(new loadingBG());
+			var bg:Image=Image.fromBitmap(new gameBG());
 			tfHolder.addChild(bg);
 
 			var tfQ1:TextField=new TextField(600, 100, Q1, FontVo.PALACE_FONT, 32, 0xffffff, true);

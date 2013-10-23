@@ -3,16 +3,16 @@ package views.module5.scene52
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
-	
+
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
-	
+
 	import events.OperaSwitchEvent;
-	
+
 	import models.SOService;
-	
+
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -23,17 +23,16 @@ package views.module5.scene52
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
-	import views.module5.Scene52;
 
 	public class OperaGame extends PalaceGame
 	{
 		public function OperaGame(am:AssetManager=null)
 		{
 			super(am);
-			addChild(getImage("gamebg"));
+			addBG();
 			initStart();
 		}
 
@@ -112,7 +111,7 @@ package views.module5.scene52
 					onOperaSwitch(e);}
 			});
 		}
-		
+
 		public var onOperaSwitch:Function;
 
 		private function shakeNext():void
@@ -153,10 +152,10 @@ package views.module5.scene52
 		{
 			if (!fromCenter)
 			{
-				if (onOperaSwitch!=null)
+				if (onOperaSwitch != null)
 				{
 					var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE_OPEN, shureStart, initGame);
-					onOperaSwitch(e1,true);
+					onOperaSwitch(e1, true);
 				}
 			}
 			else

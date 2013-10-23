@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:0de35f80d685420ab016ff981e276d52$ -->
+<!-- $TexturePacker:SmartUpdate:2f776aa87f0cc1e81e1760136fc62529$ -->
 <TextureAtlas imagePath="common.png">
-    <SubTexture name="acheivebar" x="2" y="772" width="555" height="162"/>
-    <SubTexture name="bird" x="861" y="900" width="119" height="114"/>
-    <SubTexture name="birdBG" x="1028" y="664" width="848" height="522"/>
-    <SubTexture name="book" x="1928" y="2" width="91" height="93"/>
-    <SubTexture name="button_close" x="1928" y="97" width="80" height="81"/>
-    <SubTexture name="craw" x="2010" y="97" width="35" height="33"/>
-    <SubTexture name="game-start-down" x="255" y="1119" width="174" height="171"/>
-    <SubTexture name="game-start" x="1878" y="921" width="146" height="147" frameX="-11" frameY="-8" frameWidth="174" frameHeight="171"/>
-    <SubTexture name="gamebg" x="2" y="2" width="1024" height="768"/>
-    <SubTexture name="halo" x="1028" y="2" width="898" height="660"/>
-    <SubTexture name="hint-bg-k-large" x="559" y="772" width="300" height="255"/>
-    <SubTexture name="hint-bg-k-mid" x="255" y="936" width="212" height="181"/>
-    <SubTexture name="hint-bg-k" x="1878" y="795" width="147" height="124"/>
-    <SubTexture name="hint-bg-large" x="2" y="936" width="251" height="202"/>
-    <SubTexture name="hint-bg-mid" x="469" y="1029" width="206" height="166"/>
-    <SubTexture name="hint-bg" x="1878" y="664" width="161" height="129"/>
-    <SubTexture name="lion" x="1878" y="1070" width="138" height="213"/>
-    <SubTexture name="loading" x="861" y="772" width="126" height="126" frameX="-1" frameY="-1" frameWidth="128" frameHeight="128"/>
-    <SubTexture name="nextButton" x="1928" y="180" width="48" height="48"/>
+    <SubTexture name="acheivebar" x="2" y="1188" width="555" height="162"/>
+    <SubTexture name="bird" x="902" y="2" width="119" height="114"/>
+    <SubTexture name="birdBG" x="2" y="664" width="848" height="522"/>
+    <SubTexture name="button_close" x="902" y="118" width="80" height="81"/>
+    <SubTexture name="craw" x="984" y="118" width="35" height="33"/>
+    <SubTexture name="game-start-down" x="518" y="1392" width="174" height="171"/>
+    <SubTexture name="game-start" x="852" y="921" width="146" height="147" frameX="-11" frameY="-8" frameWidth="174" frameHeight="171"/>
+    <SubTexture name="halo" x="2" y="2" width="898" height="660"/>
+    <SubTexture name="hint-bg-k-large" x="2" y="1352" width="300" height="255"/>
+    <SubTexture name="hint-bg-k-mid" x="304" y="1352" width="212" height="181"/>
+    <SubTexture name="hint-bg-k" x="852" y="795" width="147" height="124"/>
+    <SubTexture name="hint-bg-large" x="559" y="1188" width="251" height="202"/>
+    <SubTexture name="hint-bg-mid" x="812" y="1285" width="206" height="166"/>
+    <SubTexture name="hint-bg" x="852" y="664" width="161" height="129"/>
+    <SubTexture name="lion" x="852" y="1070" width="138" height="213"/>
+    <SubTexture name="nextButton" x="902" y="201" width="48" height="48"/>
 </TextureAtlas>

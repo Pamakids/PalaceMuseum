@@ -61,7 +61,8 @@ package views.module3
 			super(am);
 			crtKnowledgeIndex=9;
 
-			addBG();
+			addBG("bg23");
+			addKing();
 			addFood();
 			addCards();
 
@@ -142,14 +143,12 @@ package views.module3
 			foodHolder.addChild(pin);
 		}
 
-		private function addBG():void
+		private function addKing():void
 		{
-			addChild(getImage("bg23"))
-
 			kingHolder=new Sprite();
 			addChild(kingHolder);
 
-			var kingHungry:MovieClip=new MovieClip(assetManager.getTextures("kingHungry"), 18);
+			kingHungry=new MovieClip(assetManager.getTextures("kingHungry"), 12);
 			kingHolder.addChild(kingHungry);
 			Starling.juggler.add(kingHungry);
 			kingHungry.loop=-1;
@@ -235,6 +234,10 @@ package views.module3
 		private var lion:Image;
 		private var choosed:Boolean;
 
+		private var kingHungry:MovieClip;
+
+		private var kingFull:MovieClip;
+
 		private function nextChat():void
 		{
 			chatIndex++;
@@ -271,7 +274,45 @@ package views.module3
 
 		private function onGamePlayed(e:Event):void
 		{
-			if (game.isWin())
+			var win:Boolean=game.isWin();
+
+			game.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed)
+			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart)
+			game.removeChildren();
+			removeChild(game);
+			game=null;
+
+			if (kingHungry)
+			{
+				kingHungry.stop();
+				Starling.juggler.remove(kingHungry);
+			}
+			kingHolder.removeChildren();
+			var chair:Image=getImage("chair");
+			chair.x=(1024 - chair.width) / 2;
+			chair.y=(768 - chair.height) / 2;
+			kingHolder.addChild(chair);
+
+//			var kingSit:Image=getImage("king23-sit");
+//			kingSit.x=(1024 - kingSit.width) / 2;
+//			kingSit.y=(768 - kingSit.height) / 2;
+//			kingHolder.addChild(kingSit);
+
+			var kingSit:Image=getImage("kingBody");
+			kingSit.x=316;
+			kingSit.y=338;
+			trace(kingSit.x, kingSit.y);
+			kingHolder.addChild(kingSit);
+
+			kingFull=new MovieClip(assetManager.getTextures("kingFull"), 18);
+			kingHolder.addChild(kingFull);
+			Starling.juggler.add(kingFull);
+			kingFull.play();
+			kingFull.loop=-1;
+			kingFull.x=342;
+			kingFull.y=28;
+
+			if (win)
 			{
 				showCard("7", function():void {
 					showAchievement(18, function():void {
@@ -281,28 +322,14 @@ package views.module3
 			}
 			else
 				Prompt.showTXT(200, 450, "把没吃完的菜赏赐下去吧", 20, addChooses);
-
-			game.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed)
-			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart)
-			game.removeChildren();
-			removeChild(game);
-			game=null;
-
-			kingHolder.removeChildren();
-			var chair:Image=getImage("chair");
-			chair.x=(1024 - chair.width) / 2;
-			chair.y=(768 - chair.height) / 2;
-
-			var kingSit:Image=getImage("king23-sit");
-			kingSit.x=(1024 - kingSit.width) / 2;
-			kingSit.y=(768 - kingSit.height) / 2;
-
-			kingHolder.addChild(chair);
-			kingHolder.addChild(kingSit);
 		}
 
 		private function addChooses():void
 		{
+			kingFull.addEventListener(Event.COMPLETE, function(e:Event):void {
+				kingFull.pause();
+				Starling.juggler.remove(kingFull);
+			});
 			var gap:Number=142 + 16;
 			for (var i:int=0; i < 4; i++)
 			{

@@ -27,8 +27,6 @@ package views.module1
 	 */
 	public class Scene13 extends PalaceScene
 	{
-		private var bg:Sprite;
-
 		private var gameHolder:Sprite;
 
 		private var game:TwisterGame;
@@ -69,12 +67,7 @@ package views.module1
 
 		override protected function init():void
 		{
-			bg=new Sprite();
-			bg.x=512;
-			addChild(bg);
-
-			bg.addChild(getImage("bg13"));
-			bg.pivotX=bg.width >> 1;
+			addBG("bg13");
 
 			for (var i:int=0; i < 6; i++)
 			{

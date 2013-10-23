@@ -41,7 +41,8 @@ package views.module2
 		{
 			super(am);
 			crtKnowledgeIndex=5;
-			addChild(getImage("bg31"));
+			addBG("bg31")
+//			addChild(getImage("bg31"));
 
 			addShelfs();
 

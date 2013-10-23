@@ -4,8 +4,6 @@ package views.module4
 
 	import flash.geom.Point;
 
-	import controllers.MC;
-
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 
@@ -21,7 +19,8 @@ package views.module4
 		{
 			super(am);
 			crtKnowledgeIndex=11;
-			addChild(getImage("bg43"));
+			addBG("bg43");
+//			addChild(getImage("bg43"));
 
 			king=new OperaBody();
 			king.body=getImage("kingbody");

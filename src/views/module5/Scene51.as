@@ -41,7 +41,8 @@ package views.module5
 		{
 			super(am);
 			crtKnowledgeIndex=12;
-			addChild(getImage("bg51"));
+			addBG("bg51");
+//			addChild(getImage("bg51"));
 
 			addPeople();
 

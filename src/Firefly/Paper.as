@@ -7,8 +7,6 @@
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.events.MouseEvent;
 	import flash.filters.BlurFilter;
 
 	import org.agony2d.Agony;
@@ -18,7 +16,6 @@
 	import org.agony2d.notify.AEvent;
 	import org.agony2d.notify.DataEvent;
 
-	import states.GameSceneAUIState;
 	import states.GameTopAUIState;
 
 	public class Paper extends MovieClip

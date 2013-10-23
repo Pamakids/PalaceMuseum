@@ -72,7 +72,7 @@ package views.module3.scene32
 			super(am);
 
 			scale=DPIUtil.getDPIScale();
-			addChild(getImage("gamebg"));
+			addBG();
 
 			closeBtn=new ElasticButton(getImage("button_close"));
 			addChild(closeBtn);

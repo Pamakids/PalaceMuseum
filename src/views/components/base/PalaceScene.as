@@ -10,24 +10,25 @@ package views.components.base
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.pamakids.palace.utils.StringUtils;
-	
+
 	import flash.geom.Point;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
-	
+
 	import feathers.core.PopUpManager;
-	
+
 	import models.AchieveVO;
 	import models.FontVo;
 	import models.SOService;
-	
+
+	import starling.display.BlendMode;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.CollectionCard;
 	import views.components.ElasticButton;
 	import views.components.PalaceBird;
@@ -56,6 +57,14 @@ package views.components.base
 					if (img)
 						initBird(img);
 				});
+		}
+
+		protected function addBG(src:String):void
+		{
+			var bg:Image=getImage(src);
+			bg.blendMode=BlendMode.NONE;
+			addChild(bg);
+			bg.touchable=false;
 		}
 
 		private function initBird(img:Image):void
