@@ -2,17 +2,17 @@ package views.global.map
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
+
 	import flash.filesystem.File;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	
+
 	import controllers.MC;
-	
+
 	import models.Const;
 	import models.SOService;
-	
+
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -21,7 +21,7 @@ package views.global.map
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.ElasticButton;
 	import views.components.FlipAnimation;
 	import views.components.LionMC;
@@ -80,7 +80,7 @@ package views.global.map
 		public static var assetManager:AssetManager;
 
 		private static var loaded:Boolean=false;
-		
+
 		public static function loadAssets():void
 		{
 			if (!assetManager)
@@ -486,7 +486,7 @@ package views.global.map
 												MC.instance.gotoModule(targetIndex);
 											});
 									else
-										showHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 900 ? 3 : 1,
+										showHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 800 ? 3 : 1,
 											function():void
 											{
 												delete showingHint[item.tip];
@@ -675,10 +675,10 @@ package views.global.map
 				closeButton.visible=showFromCenter;
 			positionSun(from);
 		}
-		
+
 		private function positionSun(_index:int):void
 		{
-			_index=_index>0?_index:0;
+			_index=_index > 0 ? _index : 0;
 			if (!sun)
 			{
 				sun=getImage("map-sun");

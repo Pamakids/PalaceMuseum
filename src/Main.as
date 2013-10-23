@@ -1,23 +1,21 @@
 package
 {
-	import com.pamakids.manager.SoundManager;
-	
 	import flash.filesystem.File;
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
-	
+
 	import controllers.MC;
-	
+
 	import models.Const;
 	import models.FontVo;
 	import models.SOService;
-	
+
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-	
+
 	import views.Interlude;
 	import views.Module1;
 	import views.components.Prompt;
@@ -50,26 +48,26 @@ package
 				if (ratio == 1.0)
 					Prompt.addAssetManager(am);
 			});
-			
+
 			Map.loadAssets();
 		}
 
 		private var inito:Interlude;
-		
+
 		override protected function init():void
 		{
 			var lastScene:String=SOService.instance.getSO("lastScene") as String;
 			trace(lastScene);
-			if(!lastScene)
+			if (!lastScene)
 				initIntro();
 			else
 				startGame();
 		}
-		
+
 		private function initIntro():void
 		{
-			inito = new Interlude("assets/video/intro.mp4", false, null, startGame);
-			Starling.current.nativeStage.addChild( inito );
+			inito=new Interlude("assets/video/intro.mp4", false, null, startGame);
+			Starling.current.nativeStage.addChild(inito);
 		}
 
 		private function startGame():void
