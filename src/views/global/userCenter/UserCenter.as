@@ -193,7 +193,7 @@ package views.global.userCenter
 		private function initAnimation():void
 		{
 			animation = new SoftPaperAnimation(contentWidth, contentHeight);
-			animation.setFixPageTexture(UserCenterManager.getTexture("content_page_1"), UserCenterManager.getTexture("content_page_2"));
+//			animation.setFixPageTexture(UserCenterManager.getTexture("content_page_1"), UserCenterManager.getTexture("content_page_2"));
 			this.addChild( animation );
 			animation.addEventListener(Event.COMPLETE, playedAnimation);
 			animation.visible = false;
