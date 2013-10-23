@@ -15,11 +15,8 @@ package
 	import starling.utils.AssetManager;
 
 	import views.Module1;
-	import views.Module4;
-	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.Container;
-	import views.global.map.Map;
 	import views.global.userCenter.UserCenterManager;
 
 	public class Test extends Container

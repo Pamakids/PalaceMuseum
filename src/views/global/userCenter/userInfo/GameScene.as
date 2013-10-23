@@ -2,14 +2,14 @@ package views.global.userCenter.userInfo
 {
 	import flash.filesystem.File;
 	import flash.system.System;
-	
+
 	import feathers.core.PopUpManager;
-	
+
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceModule;
 	import views.components.base.PalaceScene;
@@ -66,7 +66,7 @@ package views.global.userCenter.userInfo
 
 		private static function initLoadImage():void
 		{
-			_loadImage=new Image(Texture.fromBitmap(new PalaceModule.loading()));
+			_loadImage=new Image(Texture.fromBitmap(new PalaceModule.Loading()));
 			_loadImage.pivotX=_loadImage.width >> 1;
 			_loadImage.pivotY=_loadImage.height >> 1;
 			_loadImage.x=1024 - 100;

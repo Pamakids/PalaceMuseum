@@ -22,7 +22,8 @@ package views
 			addQAS();
 			addLoading();
 
-			if (assetManager){
+			if (assetManager)
+			{
 				assetManager.purge();
 				assetManager=null;
 			}
@@ -35,8 +36,6 @@ package views
 				if (ratio == 1.0)
 				{
 					isLoading=false;
-//					sceneIndex=0;
-//					loadScene(sceneIndex);
 					addNext();
 				}
 			});

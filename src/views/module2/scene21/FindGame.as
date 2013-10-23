@@ -26,7 +26,7 @@ package views.module2.scene21
 		{
 			super(am);
 
-			addChild(getImage("gamebg"));
+			addBG();
 			var art:Image=getImage("find-bg");
 			art.x=10;
 			art.y=105;

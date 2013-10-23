@@ -3,14 +3,14 @@ package views.module3.scene33
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
-	
+
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
-	
+
 	import models.SOService;
-	
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -22,29 +22,29 @@ package views.module3.scene33
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
-	
+
 	public class DishGame extends PalaceGame
 	{
 		private var dishNum:int=6;
-		
+
 		private var posArr:Vector.<Point>=new Vector.<Point>(dishNum);
 		private var areaArr:Vector.<Rectangle>=new Vector.<Rectangle>(dishNum);
-		
+
 		private var kingArea:Rectangle;
 		private var jarArea:Rectangle;
 		private var stageArea:Rectangle=new Rectangle(0, 0, 1024, 768);
-		
+
 		private var dishW:Number=166;
 		private var dishH:Number=138;
-		
+
 		private var dataArr:Array=["1", "2", "3", "4", "5", "6", "7", "8"];
 		private var crtdataArr:Vector.<String>=new Vector.<String>(dishNum);
 		private var dishArr:Vector.<Dish>=new Vector.<Dish>(dishNum);
 		private var dishHolder:Sprite;
-		
+
 		private var pin:Sprite;
 		private var pinMove:Boolean;
 		private var pinNormal:Image;
@@ -55,37 +55,37 @@ package views.module3.scene33
 		private var speedY:Number;
 		private var upHand:Sprite;
 		private var downHand:Sprite;
-		
+
 		public function get poisonTest():Boolean
 		{
 			return _poisonTest;
 		}
-		
+
 		public function set poisonTest(value:Boolean):void
 		{
 			_poisonTest=value;
 			pinNormal.visible=!value;
 			pinPoison.visible=value;
 		}
-		
+
 		private var startSP:Sprite=new Sprite();
 		private var gameSP:Sprite=new Sprite();
 		private var endSP:Sprite=new Sprite();
-		
+
 		public function DishGame(am:AssetManager=null)
 		{
 			super(am);
-			addChild(getImage("gamebg"))
-			
+			addBG();
+
 			initStart();
-			
+
 			closeBtn=new ElasticButton(getImage("button_close"));
 			addChild(closeBtn);
 			closeBtn.x=950;
 			closeBtn.y=60;
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
 		}
-		
+
 		private function initStart():void
 		{
 			addChild(startSP);
@@ -93,7 +93,7 @@ package views.module3.scene33
 			hint.x=46;
 			hint.y=51;
 			startSP.addChild(hint);
-			
+
 			startBtn=new ElasticButton(getImage("game-start"));
 			startBtn.shadow=getImage("game-start-down")
 			startSP.addChild(startBtn);
@@ -101,7 +101,7 @@ package views.module3.scene33
 			startBtn.y=665;
 			startBtn.addEventListener(ElasticButton.CLICK, onStart);
 			shakeNext();
-			
+
 			var sbHolder:Sprite=new Sprite();
 			sBtn=getImage("menu-simple");
 			sBtnD=getImage("menu-simple-down");
@@ -111,7 +111,7 @@ package views.module3.scene33
 			sbHolder.addChild(sBtnD);
 			startSP.addChild(sbHolder);
 			sbHolder.addEventListener(TouchEvent.TOUCH, onSBTouch);
-			
+
 			var hbHolder:Sprite=new Sprite();
 			hBtn=getImage("menu-hard");
 			hBtnD=getImage("menu-hard-down");
@@ -121,29 +121,29 @@ package views.module3.scene33
 			hbHolder.addChild(hBtnD);
 			startSP.addChild(hbHolder);
 			hbHolder.addEventListener(TouchEvent.TOUCH, onHBTouch);
-			
+
 			gamelevel=0;
 		}
-		
+
 		private function onHBTouch(e:TouchEvent):void
 		{
 			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED)
 			if (tc)
 				gamelevel=1;
 		}
-		
+
 		private function onSBTouch(e:TouchEvent):void
 		{
 			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED)
 			if (tc)
 				gamelevel=0;
 		}
-		
+
 		public function get gamelevel():int
 		{
 			return _gamelevel;
 		}
-		
+
 		public function set gamelevel(value:int):void
 		{
 			_gamelevel=value;
@@ -157,21 +157,21 @@ package views.module3.scene33
 					sBtnD.visible=hBtn.visible=true;
 					break;
 				}
-					
+
 				case 1:
 				{
 					sBtn.visible=hBtnD.visible=true;
 					sBtnD.visible=hBtn.visible=false;
 					break;
 				}
-					
+
 				default:
 				{
 					break;
 				}
 			}
 		}
-		
+
 		private function shakeNext():void
 		{
 			if (startBtn)
@@ -180,14 +180,14 @@ package views.module3.scene33
 					TweenLite.delayedCall(5, shakeNext);
 				}});
 		}
-		
+
 		private function onStart(e:Event):void
 		{
 			closeBtn.visible=closeBtn.touchable=false;
 			startBtn.touchable=false;
 			startGame();
 		}
-		
+
 		public function startGame():void
 		{
 			startBtn.removeEventListener(ElasticButton.CLICK, onStart);
@@ -198,22 +198,22 @@ package views.module3.scene33
 			initDishes();
 			initPin();
 			initInfo();
-			
+
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
-		
+
 		private function initInfo():void
 		{
 			infoHolder=new Sprite();
 			gameSP.addChild(infoHolder);
 			infoHolder.touchable=false;
-			
+
 			infoHolder.addChild(getImage("scorebg"));
 			infoHolder.addChild(getImage("lifeboard"));
 			var scoreboard:Image=getImage("scoreboard");
 			scoreboard.x=1024 - scoreboard.width;
 			infoHolder.addChild(scoreboard);
-			
+
 			var timebg:Image=getImage("progressbg");
 			timeprogress=new Sprite();
 			timeprogress.addChild(getImage("progress"));
@@ -222,17 +222,17 @@ package views.module3.scene33
 			infoHolder.addChild(timebg);
 			infoHolder.addChild(timeprogress);
 			timeprogress.clipRect=new Rectangle(30, 0, 470, 51);
-			
+
 			initScore();
 			initTime();
 		}
-		
+
 		private var maxtime:int=30;
 		private var hz:int=30;
 		private var totalTime:int=maxtime * hz;
-		
+
 		private var lifeIconArr:Array=[];
-		
+
 		private function initScore():void
 		{
 			for (var i:int=0; i < 3; i++)
@@ -243,7 +243,7 @@ package views.module3.scene33
 				lifeIconArr.push(lifeIcon);
 				infoHolder.addChild(lifeIcon);
 			}
-			
+
 			scoreTF=new TextField(100, 40, "");
 			scoreTF.fontSize=24;
 			scoreTF.color=0xb83d00;
@@ -254,14 +254,14 @@ package views.module3.scene33
 			life=3;
 			score=0;
 		}
-		
+
 		private function initTime():void
 		{
 			timer=new Timer(1000 / hz);
 			timer.addEventListener(TimerEvent.TIMER, onTimer);
 			timer.start();
 		}
-		
+
 		protected function onTimer(event:TimerEvent):void
 		{
 			totalTime--;
@@ -272,18 +272,18 @@ package views.module3.scene33
 				gameOverHandler();
 			}
 		}
-		
+
 		private function initPin():void
 		{
 			pin=new Sprite();
 			pinNormal=getImage("dish-pin");
 			pinPoison=getImage("dish-pin-poison");
-			
+
 			pin.addChild(pinNormal);
 			pin.addChild(pinPoison);
-			
+
 			poisonTest=false;
-			
+
 			pin.pivotX=pinNormal.width >> 1;
 			pin.pivotY=pinNormal.height >> 1;
 			gameSP.addChild(pin);
@@ -291,22 +291,22 @@ package views.module3.scene33
 			pin.y=200;
 			pin.addEventListener(TouchEvent.TOUCH, onPinTouch);
 		}
-		
+
 		private function initDishes():void
 		{
 			for (var j:int=0; j < dishNum; j++)
 			{
 				setOneData(j);
 			}
-			
+
 			flyVec=assetManager.getTextures("flyMC");
-			
+
 			for (var i:int=0; i < dishNum; i++)
 			{
 				addOneDish(i);
 			}
 		}
-		
+
 		private function setOneData(j:int):void
 		{
 			var length:int=dataArr.length
@@ -314,7 +314,7 @@ package views.module3.scene33
 			var data:String=dataArr.splice(index, 1)[0];
 			crtdataArr[j]=data;
 		}
-		
+
 		private function addOneDish(i:int, isHand=false):void
 		{
 			var dish:Dish=new Dish();
@@ -323,21 +323,21 @@ package views.module3.scene33
 			dish.addContent(img);
 			dish.pt=posArr[i];
 			dish.isPoison=getPoison();
-			if(gamelevel==1)
+			if (gamelevel == 1)
 			{
 				dish.scoreCut=scoreCut;
 				dish.countBG=getImage("body-countdown");
 				dish.fly=new MovieClip(flyVec, 18);
 			}
 			dishHolder.addChild(dish);
-			
+
 			if (isHand)
 			{
 				dish.y=dish.y + (i >= 3 ? 384 : -384);
 				playHand(i);
-				
+
 				dish.tweenMove(function():void {
-					if(gamelevel==1)
+					if (gamelevel == 1)
 						dish.addCount();
 					dishArr[i]=dish;
 					dish.addEventListener(TouchEvent.TOUCH, onDishTouch);
@@ -345,20 +345,20 @@ package views.module3.scene33
 			}
 			else
 			{
-				if(gamelevel==1)
+				if (gamelevel == 1)
 					dish.addCount();
 				dish.addEventListener(TouchEvent.TOUCH, onDishTouch);
 				dishArr[i]=dish;
 			}
 		}
-		
+
 		private function scoreCut():void
 		{
 			score-=100;
 		}
-		
+
 		private var flyVec:Vector.<Texture>;
-		
+
 		private function playHand(index:int):void
 		{
 			var rect:Rectangle=areaArr[index];
@@ -369,7 +369,7 @@ package views.module3.scene33
 				TweenLite.killTweensOf(upHand);
 				upHand.x=dx;
 				upHand.y=upY;
-				
+
 				TweenLite.to(upHand, .3, {y: upDY, onComplete: function():void {
 					TweenLite.to(upHand, .3, {y: upY});
 				}});
@@ -380,35 +380,35 @@ package views.module3.scene33
 				TweenLite.killTweensOf(downHand);
 				downHand.x=dx;
 				downHand.y=downY;
-				
+
 				TweenLite.to(downHand, .3, {y: downDY, onComplete: function():void {
 					TweenLite.to(downHand, .3, {y: downY});
 				}});
 			}
-			
-			
+
+
 		}
-		
+
 		private function getPoison():Boolean
 		{
 			return Math.random() > .8;
 		}
-		
+
 		private function onDishTouch(e:TouchEvent):void
 		{
 			if (gameOver)
 				return;
 			var dish:Dish=e.currentTarget as Dish;
-			
+
 			if (!dish)
 				return;
-			
+
 			var tc:Touch=e.getTouch(dish);
 			if (!tc)
 				return;
-			
+
 			var pt:Point=tc.getLocation(this);
-			
+
 			switch (tc.phase)
 			{
 				case TouchPhase.BEGAN:
@@ -421,7 +421,7 @@ package views.module3.scene33
 					}
 					break;
 				}
-					
+
 				case TouchPhase.MOVED:
 				{
 					if (crtDish)
@@ -434,7 +434,7 @@ package views.module3.scene33
 					}
 					break;
 				}
-					
+
 				case TouchPhase.ENDED:
 				{
 					if (crtDish)
@@ -462,21 +462,21 @@ package views.module3.scene33
 							}
 						}
 					}
-					
+
 					//reset
 					speedX=0;
 					speedY=0;
 					crtDish=null;
 					break;
 				}
-					
+
 				default:
 				{
 					break;
 				}
 			}
 		}
-		
+
 		private function onEnterFrame(e:Event):void
 		{
 			if (gameOver)
@@ -502,7 +502,7 @@ package views.module3.scene33
 				if (crtIndex < 0)
 					poisonTest=false;
 			}
-			
+
 			for each (var _dish:Dish in dishArr)
 			{
 				if (_dish)
@@ -513,12 +513,12 @@ package views.module3.scene33
 						_dish.y+=_dish.speedY;
 						checkArea(_dish);
 					}
-					else if(gamelevel==1)
+					else if (gamelevel == 1)
 						_dish.countDown();
 				}
 			}
 		}
-		
+
 		private function onPinTouch(e:TouchEvent):void
 		{
 			var tc:Touch=e.getTouch(pin);
@@ -526,7 +526,7 @@ package views.module3.scene33
 				return;
 			e.stopImmediatePropagation();
 			var pt:Point=tc.getLocation(this);
-			
+
 			switch (tc.phase)
 			{
 				case TouchPhase.BEGAN:
@@ -536,7 +536,7 @@ package views.module3.scene33
 					pinMove=true;
 					break;
 				}
-					
+
 				case TouchPhase.MOVED:
 				{
 					if (pinMove)
@@ -546,7 +546,7 @@ package views.module3.scene33
 					}
 					break;
 				}
-					
+
 				case TouchPhase.ENDED:
 				{
 					if (pinMove)
@@ -557,35 +557,35 @@ package views.module3.scene33
 					poisonTest=false;
 					break;
 				}
-					
+
 				default:
 				{
 					break;
 				}
 			}
 		}
-		
+
 		private var _life:int;
-		
+
 		public function get life():int
 		{
 			return _life;
 		}
-		
+
 		public function set life(value:int):void
 		{
 			_life=value;
 			if (value < lifeIconArr.length)
 			{
 				var img:Image=lifeIconArr[value] as Image;
-				
+
 				var newImg:Image=getImage("lifeicon-lost");
 				newImg.x=img.x;
 				newImg.y=img.y;
-				
+
 				if (value == 0)
 					gameOver=true;
-				
+
 				TweenMax.to(img, 1, {shake: {rotation: .2, numShakes: 4}});
 				TweenLite.delayedCall(.21, function():void {
 					infoHolder.removeChild(img);
@@ -594,22 +594,22 @@ package views.module3.scene33
 				})
 			}
 		}
-		
+
 		private var gameOver:Boolean;
-		
+
 		private function gameOverHandler():void
 		{
 			gameOver=true;
 			timer.stop();
-			
+
 			TweenLite.delayedCall(.5, initResult);
 		}
-		
+
 		public function isWin():Boolean
 		{
 			return life > 0 && score > 0;
 		}
-		
+
 		private function initResult():void
 		{
 			addChild(endSP);
@@ -623,7 +623,7 @@ package views.module3.scene33
 				endSP.addChild(win);
 				win.x=222;
 				win.y=30;
-				
+
 				for (var i:int=0; i < life; i++)
 				{
 					var star1:Image=getImage("star-red");
@@ -631,7 +631,7 @@ package views.module3.scene33
 					star1.y=214;
 					endSP.addChild(star1);
 				}
-				
+
 				for (var j:int=life; j < 3; j++)
 				{
 					var star2:Image=getImage("star-grey");
@@ -639,10 +639,10 @@ package views.module3.scene33
 					star2.y=214;
 					endSP.addChild(star2);
 				}
-				
+
 				var gameResultlvl:String=gameResult + gamelevel.toString();
 				var dishgameresult:int=SOService.instance.getSO(gameResultlvl) as int;
-				
+
 				var scoreTXT:TextField=new TextField(300, 80, "");
 				scoreTXT.fontSize=48;
 				scoreTXT.color=0xb83d00;
@@ -650,14 +650,14 @@ package views.module3.scene33
 				scoreTXT.y=280;
 				scoreTXT.vAlign="top"
 				endSP.addChild(scoreTXT);
-				
+
 				var recordTXT:TextField=new TextField(100, 40, "");
 				recordTXT.fontSize=24;
 				recordTXT.color=0xb83d00;
 				recordTXT.x=520;
 				recordTXT.y=370;
 				endSP.addChild(recordTXT);
-				
+
 				if (!dishgameresult || dishgameresult < score)
 				{
 					scoreTXT.text=recordTXT.text=score.toString();
@@ -677,15 +677,15 @@ package views.module3.scene33
 				lose.x=(1024 - lose.width) / 2;
 				lose.y=0;
 			}
-			
+
 			rsBtn=new ElasticButton(getImage("restart"));
 			rsBtn.shadow=getImage("restart-light");
 			rsBtn.x=512;
 			rsBtn.y=512;
 			endSP.addChild(rsBtn);
-			
+
 			TweenLite.to(gameSP, .5, {x: 1024});
-			
+
 			TweenLite.to(endSP, .5, {x: 0, onComplete: function():void {
 				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
 				closeBtn.visible=closeBtn.touchable=true;
@@ -693,7 +693,7 @@ package views.module3.scene33
 					showRecord();
 			}});
 		}
-		
+
 		private function showRecord():void
 		{
 			var recordIcon:Image=getImage("record");
@@ -703,36 +703,36 @@ package views.module3.scene33
 			recordIcon.scaleX=recordIcon.scaleY=3;
 			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut});
 		}
-		
+
 		private function onCloseTouch(e:Event):void
 		{
 			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseTouch);
 			closeGame();
 		}
-		
+
 		private function closeGame():void
 		{
 			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
-		
+
 		private function restartGame(e:Event=null):void
 		{
 			dispatchEvent(new Event(PalaceGame.GAME_RESTART));
 		}
-		
+
 		private var _score:int;
-		
+
 		public function get score():int
 		{
 			return _score;
 		}
-		
+
 		public function set score(value:int):void
 		{
 			_score=value;
 			scoreTF.text=_score.toString();
 		}
-		
+
 		private function checkArea(_dish:Dish):Boolean
 		{
 			//king,jar,out
@@ -747,7 +747,7 @@ package views.module3.scene33
 				dx=kingArea.x + kingArea.width / 2 + 10;
 				dy=kingArea.y + kingArea.height / 2 + 50;
 				isClassed=true;
-				
+
 				if (!_dish.tested || _dish.isPoison || _dish.isBad)
 				{
 					life--;
@@ -764,7 +764,7 @@ package views.module3.scene33
 				dx=jarArea.x + jarArea.width / 2;
 				dy=jarArea.y + jarArea.height / 2;
 				isClassed=true;
-				
+
 				if (_dish.isBad)
 				{
 					score+=50;
@@ -790,7 +790,7 @@ package views.module3.scene33
 				life--;
 				playKing(Math.random() > .5 ? 1 : 2);
 			}
-			
+
 			if (isClassed)
 			{
 				_dish.isFlying=false;
@@ -836,13 +836,13 @@ package views.module3.scene33
 			else
 				return false;
 		}
-		
+
 		private function initBG():void
 		{
 			var table:Image=getImage("dish-table");
 			table.y=132;
 			gameSP.addChild(table);
-			
+
 			kingHolder=new Sprite();
 			var kingBG:Image=getImage("dish-king-bg");
 			kingBG.x=1024 - kingBG.width;
@@ -850,35 +850,35 @@ package views.module3.scene33
 			gameSP.addChild(kingHolder);
 			kingHolder.addChild(kingBG);
 			kingArea=new Rectangle(kingBG.x, kingBG.y, kingBG.width, kingBG.height);
-			
+
 			playKing(Math.random() > .5 ? 0 : 2);
-			
+
 			var jar:Image=getImage("dish-jar");
 			jar.x=1024 - jar.width;
 			jar.y=768 - jar.height;
 			gameSP.addChild(jar);
-			
+
 			jarArea=new Rectangle(jar.x, jar.y, jar.width, jar.height);
-			
+
 			upHand=new Sprite();
 			upHand.addChild(getImage("dish-hand"));
 			upHand.y=upY;
 			gameSP.addChild(upHand);
 			upHand.rotation=Math.PI;
 			upHand.touchable=false;
-			
+
 			downHand=new Sprite();
 			downHand.addChild(getImage("dish-hand"));
 			downHand.y=downY;
 			gameSP.addChild(downHand);
 			downHand.touchable=false;
-			
+
 			dishHolder=new Sprite();
 			gameSP.addChild(dishHolder);
 		}
-		
+
 		private var expArr:Array=["高兴", "无聊", "平时", "吃饭", "中毒"];
-		
+
 		/**
 		 * @param 0:高兴,1:无聊,2:平时,3:吃饭,4:中毒
 		 * */
@@ -899,35 +899,35 @@ package views.module3.scene33
 			king.loop=0;
 			king.play();
 		}
-		
+
 		private var upY:Number=0;
 		private var upDY:Number=211;
-		
+
 		private var downY:Number=768;
 		private var downDY:Number=557;
-		
+
 		private var scoreTF:TextField;
-		
+
 		private var startBtn:ElasticButton;
-		
+
 		private var closeBtn:ElasticButton;
-		
+
 		private var infoHolder:Sprite;
-		
+
 		private var timeprogress:Sprite;
-		
+
 		private var timer:Timer;
 		private var rsBtn:ElasticButton;
-		
+
 		private var king:MovieClip;
-		
+
 		private var kingHolder:Sprite;
 		private var sBtn:Image;
 		private var sBtnD:Image;
 		private var hBtn:Image;
 		private var hBtnD:Image;
 		private var _gamelevel:int;
-		
+
 		private function initAreas():void
 		{
 			for (var i:int=0; i < dishNum; i++)

@@ -2,17 +2,14 @@ package views.components
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.geom.Point;
+
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	
+
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
-	
+
 	import views.components.base.Container;
 
 	[Event(name="completed", type="starling.events.Event")]
@@ -55,12 +52,12 @@ package views.components
 			contentHeight=result.height;
 			interval=horizontal ? contentWidth / slices : contentHeight / slices;
 			textures=new Vector.<Texture>;
-			
-			var rect:Rectangle = new Rectangle(0, 0, (horizontal?interval:contentWidth), (horizontal?contentHeight:interval));
-			for(var i:int = 0;i<slices;i++)
+
+			var rect:Rectangle=new Rectangle(0, 0, (horizontal ? interval : contentWidth), (horizontal ? contentHeight : interval));
+			for (var i:int=0; i < slices; i++)
 			{
-				horizontal ? rect.x = interval * i : rect.y = interval * i;
-				textures[i] = Texture.fromTexture(texture, rect);
+				horizontal ? rect.x=interval * i : rect.y=interval * i;
+				textures[i]=Texture.fromTexture(texture, rect);
 			}
 			doScale();
 		}
@@ -251,11 +248,12 @@ package views.components
 		private var flipingImage:FlipImage;
 
 		private var _backcover:Texture;
+
 		public function set backcover(value:Texture):void
 		{
-			if(_backcover && _backcover == value)
+			if (_backcover && _backcover == value)
 				return;
-			_backcover = value;
+			_backcover=value;
 //			if(!backcovers)
 //				backcovers = new Vector.<Texture>(this.slices);
 //			var rect:Rectangle = new Rectangle(0, 0, (horizontal?interval:contentWidth), (horizontal?contentHeight:interval));

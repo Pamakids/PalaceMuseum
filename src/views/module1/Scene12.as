@@ -35,8 +35,6 @@ package views.module1
 	 */
 	public class Scene12 extends PalaceScene
 	{
-		private var bg:Sprite;
-
 		private var kingHolder:Sprite;
 		private var boxHolder:Sprite;
 
@@ -129,21 +127,17 @@ package views.module1
 			super(am);
 			crtKnowledgeIndex=2;
 
-			json=assets.getObject("hint12").hint;
+			json=assetManager.getObject("hint12").hint;
 		}
 
 		override protected function init():void
 		{
-			bg=new Sprite();
-			addChild(bg);
-
-			bg.addChild(getImage("background12"));
+			addBG("background12");
 
 			addKing();
 			addBox();
 			addShelf();
 			addLion();
-//			addHints();
 
 			addEventListener(TouchEvent.TOUCH, onTouch);
 		}

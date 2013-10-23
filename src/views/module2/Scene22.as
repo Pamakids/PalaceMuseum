@@ -52,7 +52,8 @@ package views.module2
 			super(am);
 			hintArr=[hint0, hint1, hint2, hint3, hint4]
 			crtKnowledgeIndex=6;
-			addChild(getImage("bg32"));
+			addBG("bg32");
+//			addChild(getImage("bg32"));
 
 			for (var i:int=0; i < itemNameArr.length; i++)
 			{

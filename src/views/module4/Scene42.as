@@ -30,7 +30,8 @@ package views.module4
 		{
 			super(am);
 			crtKnowledgeIndex=11;
-			addChild(getImage("bg52"));
+			addBG("bg52");
+//			addChild(getImage("bg52"));
 
 			hand=getImage("memorial-hand");
 			addChild(hand);

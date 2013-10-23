@@ -1,13 +1,10 @@
 package views.module1.scene13
 {
 	import com.greensock.TweenLite;
-	import com.greensock.TweenMax;
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
-	import feathers.core.PopUpManager;
 
 	import models.SOService;
 

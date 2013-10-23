@@ -22,7 +22,8 @@ package views.module1
 		{
 			super(am);
 			crtKnowledgeIndex=4;
-			addChild(getImage("bg14"));
+			addBG("bg14");
+//			addChild(getImage("bg14"));
 
 			king=new OperaBody();
 			king.body=getImage("kingbody");

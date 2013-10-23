@@ -51,7 +51,8 @@ package views.module3
 		{
 			super(am);
 			crtKnowledgeIndex=7;
-			addChild(getImage("bg21"));
+			addBG("bg21");
+//			addChild(getImage("bg21"));
 
 			addChief();
 //			chefB=getImage("chef-back");

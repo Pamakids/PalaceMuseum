@@ -54,7 +54,7 @@ package views.module2.scene22
 			itemsStrArr.reverse();
 			tempArr.reverse();
 
-			addChild(getImage("gamebg"));
+			addBG();
 
 			addLines();
 			addLights();
