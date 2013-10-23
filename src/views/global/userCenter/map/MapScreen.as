@@ -4,7 +4,6 @@ package views.global.userCenter.map
 	import com.greensock.easing.Cubic;
 	
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	
 	import feathers.controls.Button;
 	
@@ -14,6 +13,7 @@ package views.global.userCenter.map
 	
 	import views.global.map.Map;
 	import views.global.userCenter.BaseScreen;
+	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
 
 	/**
@@ -36,6 +36,8 @@ package views.global.userCenter.map
 			super.initialize();
 			initMapButton();
 			initCacheImage();
+			
+			dispatchEventWith(UserCenter.InitViewPlayed);
 		}
 
 		override protected function initPages():void

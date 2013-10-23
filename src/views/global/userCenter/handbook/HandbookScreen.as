@@ -1,14 +1,19 @@
 package views.global.userCenter.handbook
 {
+	import feathers.core.PopUpManager;
+	
 	import starling.display.Image;
+	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 	
 	import views.global.userCenter.BaseScreen;
+	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
 
 	/**
-	 * 用户中心速成手册场景
+	 * 用户中心速成手册场景<p>
+	 * 只在最初初始化时可以为handbook指定一个页面索引，其他时间使用pageUp与pageDown方法改变内容
 	 * @author Administrator
 	 */
 	public class HandbookScreen extends BaseScreen
@@ -20,126 +25,123 @@ package views.global.userCenter.handbook
 		
 		public function HandbookScreen()
 		{
+			_assetsManager=new AssetManager();
 		}
 
 		private var _assetsManager:AssetManager;
-		
-		public var crtPage:int = 0;
-		private var isNew:Boolean = false;
-		
+		private var crtPage:int;
 		override protected function initialize():void
 		{
 			super.initialize();
-			_assetsManager=new AssetManager();
-			isNew = UserCenterManager.getCrtUserCenter().aniable;	//用以区分是否是第几次打开手册
-			if(isNew)		
+			initLoad();
+			dispatchEventWith(UserCenter.Initialized);
+		}
+		
+		private var load:Image;
+		private function initLoad():void
+		{
+			load = new Image(Texture.fromBitmap(new UserCenterManager.Loading()));
+			load.pivotX=load.width >> 1;
+			load.pivotY=load.height >> 1;
+			load.x=1024 - 100;
+			load.y=768 - 100;
+			load.scaleX=load.scaleY=.5;
+			PopUpManager.addPopUp( load );
+			load.addEventListener(Event.ENTER_FRAME, function(e:Event):void
 			{
-				initImages();
-				loadPrevAndNext(crtPage);
-				_assetsManager.loadQueue(function(r:Number):void{});
-			}
-			else
-			{
-				_assetsManager.enqueue(
-					"assets/global/userCenter/content_page_"+(crtPage*2+1)+".png",
-					"assets/global/userCenter/content_page_"+(crtPage*2+2)+".png"
-				);
-				_assetsManager.loadQueue(function(ratio:Number):void{
-					if(ratio == 1)
+				load.rotation+=0.2;
+			});
+		}
+		private function removeLoad():void
+		{
+			if(PopUpManager.isPopUp(load))
+				PopUpManager.removePopUp(load,true);
+		}
+		
+		/**
+		 * 初始化显示，需手动调用
+		 */		
+		public function initView(pageIndex:int):void
+		{
+			crtPage = pageIndex;
+			_assetsManager.enqueue(
+				"assets/global/userCenter/content_page_"+(crtPage*2+1)+".png",
+				"assets/global/userCenter/content_page_"+(crtPage*2+2)+".png"
+			);
+			_assetsManager.loadQueue(function(ratio:Number):void{
+				if(ratio == 1)
+				{
+					if(crtPage>0)
 					{
-						initImages();
-						loadPrevAndNext(crtPage);
-						_assetsManager.loadQueue(function(r:Number):void{});
+						_assetsManager.enqueue(
+							"assets/global/userCenter/content_page_" + String((pageIndex-1)*2+1) + ".png", 
+							"assets/global/userCenter/content_page_" + String((pageIndex-1)*2+2) + ".png"
+						);
 					}
-				});
-			}
+					if(crtPage < HandbookScreen.MAX_NUM-1)
+					{
+						_assetsManager.enqueue(
+							"assets/global/userCenter/content_page_" + String((pageIndex+1)*2+1) + ".png", 
+							"assets/global/userCenter/content_page_" + String((pageIndex+1)*2+2) + ".png"
+						);
+					}
+					_assetsManager.loadQueue(function(r:Number):void{});
+					initImages();
+					removeLoad();
+					dispatchEventWith(UserCenter.InitViewPlayed);
+					
+				}
+			});
 		}
 		
 		private var cacheL:Image;
 		private var cacheR:Image;
 		private function initImages():void
 		{
-			cacheL = new Image((isNew)?UserCenterManager.getTexture("content_page_1"):_assetsManager.getTexture("content_page_"+(crtPage*2+1)));
+			cacheL = new Image(_assetsManager.getTexture("content_page_"+(crtPage*2+1)));
 			this.addChild(cacheL);
-			cacheR = new Image((isNew)?UserCenterManager.getTexture("content_page_2"):_assetsManager.getTexture("content_page_"+(crtPage*2+2)));
+			cacheR = new Image(_assetsManager.getTexture("content_page_"+(crtPage*2+2)));
 			this.addChild( cacheR );
 			cacheR.x = viewWidth / 2;
 			cacheL.touchable = cacheR.touchable = false;
-			UserCenterManager.getCrtUserCenter().initialized = true;
-		}
-		
-		override public function dispose():void
-		{
-			if(cacheL)
-				cacheL.removeFromParent(true);
-			if(cacheR)
-				cacheR.removeFromParent(true);
-			_assetsManager.dispose();
 		}
 		
 		/**
-		 * 检测是否拥有某一页纹理资源
+		 * 上翻一页，翻页失败会派发UserCenter.ViewUpdateFail事件
+		 */		
+		public function pageUp():void
+		{
+			if(crtPage<=0)
+			{
+				dispatchEventWith(UserCenter.ViewUpdateFail);
+				return;
+			}
+			loadByPageIndex(crtPage-2);
+			clearByPageIndex(crtPage+1);
+			this.crtPage -= 1;
+			updateView();
+		}
+		/**
+		 * 下翻一页，翻页失败会派发UserCenter.ViewUpdateFail事件
+		 */		
+		public function pageDown():void
+		{
+			if(crtPage>=MAX_NUM-1)
+			{
+				dispatchEventWith(UserCenter.ViewUpdateFail);
+				return;
+			}
+			clearByPageIndex(crtPage-1);
+			loadByPageIndex(crtPage+2);
+			this.crtPage += 1;
+			updateView();
+		}
+		
+		/**
+		 * 清除纹理以释放资源
 		 * @param pageIndex
-		 * @return 
-		 * 
 		 */		
-		private function testHasAssets(pageIndex:int):Boolean
-		{
-			if( _assetsManager.getTexture("content_page_" + String(pageIndex*2+1)) )
-			{
-				return true;
-			}
-			return false;
-		}
-		
-		/**
-		 * 检测是否有某页纹理
-		 * @return 
-		 */		
-		public function hasAssets(pageIndex:int):Boolean
-		{
-			if( testHasAssets(pageIndex) )
-			{
-				//加载前后页纹理
-				loadPrevAndNext(pageIndex);
-				_assetsManager.loadQueue(function(ratio:Number):void{});
-				return true;
-			}
-			else
-			{
-				//加载当前页及其前后页纹理
-				loadPrevAndNext(pageIndex);
-				_assetsManager.enqueue(
-					"assets/global/userCenter/content_page_" + String(pageIndex*2+1) + ".png", 
-					"assets/global/userCenter/content_page_" + String(pageIndex*2+2) + ".png"
-				);
-				_assetsManager.loadQueue(function(ratio:Number):void
-				{
-					if (ratio == 1.0)
-						loadAssetsComplete();
-				});
-				return false;
-			}
-		}
-		/**加载当前页前后页纹理*/		
-		private function loadPrevAndNext(pageIndex:int):void
-		{
-			if(pageIndex > 0)
-				if(!testHasAssets(pageIndex-1))
-					_assetsManager.enqueue(
-						"assets/global/userCenter/content_page_" + String((pageIndex-1)*2+1) + ".png", 
-						"assets/global/userCenter/content_page_" + String((pageIndex-1)*2+2) + ".png"
-					);
-			if(pageIndex < MAX_NUM-1)
-				if(!testHasAssets(pageIndex+1))
-					_assetsManager.enqueue(
-						"assets/global/userCenter/content_page_" + String((pageIndex+1)*2+1) + ".png", 
-						"assets/global/userCenter/content_page_" + String((pageIndex+1)*2+2) + ".png"
-					);
-		}
-		
-		public var loadAssetsComplete:Function;
-		public function clearByPageIndex(pageIndex:int):void
+		private function clearByPageIndex(pageIndex:int):void
 		{
 			var name:String = "content_page_"+String(pageIndex*2+1);
 			var texture:Texture = _assetsManager.getTexture(name);
@@ -150,16 +152,40 @@ package views.global.userCenter.handbook
 			if(texture)
 				_assetsManager.removeTexture(name, true);
 		}
+		/**
+		 * 动态加载纹理
+		 * @param pageIndex
+		 */		
+		private function loadByPageIndex(pageIndex:int):void
+		{
+			if(pageIndex < 0 || pageIndex > HandbookScreen.MAX_NUM - 1)
+				return;
+			_assetsManager.enqueue(
+				"assets/global/userCenter/content_page_" + String(pageIndex*2+1) + ".png", 
+				"assets/global/userCenter/content_page_" + String(pageIndex*2+2) + ".png"
+			);
+			_assetsManager.loadQueue(function(ratio:Number):void{
+				if(ratio == 1)
+					trace("资源加载完成");
+			});
+		}
 		
 		/**
-		 * 更新页面
-		 * @param pageIndex
-		 * @return 
+		 * 更新显示内容
 		 */		
-		public function updateView(pageIndex:int):void
+		private function updateView():void
 		{
-			cacheL.texture = _assetsManager.getTexture("content_page_" + String(pageIndex*2+1));
-			cacheR.texture = _assetsManager.getTexture("content_page_" + String(pageIndex*2+2));
+			cacheL.texture = _assetsManager.getTexture("content_page_" + String(crtPage*2+1));
+			cacheR.texture = _assetsManager.getTexture("content_page_" + String(crtPage*2+2));
+			dispatchEventWith(UserCenter.ViewUpdated);
+		}
+		override public function dispose():void
+		{
+			if(cacheL)
+				cacheL.removeFromParent(true);
+			if(cacheR)
+				cacheR.removeFromParent(true);
+			_assetsManager.dispose();
 		}
 	}
 }

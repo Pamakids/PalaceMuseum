@@ -18,6 +18,7 @@ package views.global.userCenter.collection
 	import starling.textures.Texture;
 	
 	import views.global.userCenter.BaseScreen;
+	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
 	
 	public class CollectionScreen extends BaseScreen
@@ -31,6 +32,8 @@ package views.global.userCenter.collection
 			super.initialize();
 			initDatas();
 			initImages();
+			
+			dispatchEventWith(UserCenter.InitViewPlayed);
 		}
 		
 		private var vecImage:Vector.<Image>;

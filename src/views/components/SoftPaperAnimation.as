@@ -38,21 +38,21 @@ package views.components
 			
 			maxHeight = Math.ceil( Math.sqrt(bookWidth*bookWidth + bookHeight*bookHeight) );
 			
-			initCacheImage();
+//			initCacheImage();
 			initSoftImage();
 			
 			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
-		private function initCacheImage():void
-		{
-			cacheImageL = new Image(page_1);
-			this.addChild( cacheImageL );
-			cacheImageR = new Image(page_2);
-			this.addChild( cacheImageR );
-			cacheImageR.x = bookWidth/2;
-			cacheImageL.touchable = cacheImageR.touchable  =false;
-		}
+//		private function initCacheImage():void
+//		{
+//			cacheImageL = new Image(page_1);
+//			this.addChild( cacheImageL );
+//			cacheImageR = new Image(page_2);
+//			this.addChild( cacheImageR );
+//			cacheImageR.x = bookWidth/2;
+//			cacheImageL.touchable = cacheImageR.touchable  =false;
+//		}
 		private function initSoftImage():void
 		{
 			softImage = new SoftPageImage(bookWidth, bookHeight);
@@ -165,12 +165,26 @@ package views.components
 				page_1 = page_L;
 				if(cacheImageL)
 					cacheImageL.texture = page_1;
+				else
+				{
+					cacheImageL = new Image(page_1);
+					this.addChildAt( cacheImageL, 0 );
+					cacheImageL.touchable = false;
+				}
 			}
 			if(!page_2 || (page_2 && page_2 != page_R))
 			{
 				page_2 = page_R;
 				if(cacheImageR)
 					cacheImageR.texture = page_2;
+				else
+				{
+					cacheImageR = new Image(page_2);
+					cacheImageR.x = this.bookWidth/2;
+					this.addChildAt( cacheImageR, 0 );
+					cacheImageR.touchable = false;
+					
+				}
 			}
 		}
 		
