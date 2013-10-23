@@ -79,7 +79,6 @@ package views.global.userCenter
 			initBackgroud();
 			initTabBar();
 			initBackButton();
-			initContainer();
 			initNavigator();
 			initAnimation();
 			initRender();
@@ -134,15 +133,6 @@ package views.global.userCenter
 			_backButton.y=10;
 			_backButton.addEventListener(Event.TRIGGERED, onTriggered);
 		}
-		private var container:Sprite;
-		private function initContainer():void
-		{
-			container = new Sprite();
-			container.x = 28;
-			container.y = 89;
-			this.addChild( container );
-			container.addEventListener(TouchEvent.TOUCH, onTouch);
-		}
 		private var _navigator:ScreenNavigator;
 		private function initNavigator():void
 		{
@@ -192,8 +182,12 @@ package views.global.userCenter
 					width: contentWidth, height: contentHeight,
 					viewWidth: contentWidth, viewHeight: contentHeight
 				}));
-			container.addChild(_navigator);
+			_navigator.x = 28;
+			_navigator.y = 89;
+			this.addChild(_navigator);
 			_navigator.showScreen(HANDBOOK);
+			
+			_navigator.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 		private var animation:SoftPaperAnimation;
 		private function initAnimation():void
@@ -225,16 +219,8 @@ package views.global.userCenter
 		{
 			switch(getClassName(e.currentTarget))
 			{
-				case MAP:
-					break;
-				case USERINFO:
-					break;
 				case HANDBOOK:
 					(_navigator.activeScreen as HandbookScreen).initView(crtPage_Handbook);
-					break;
-				case ACHIEVEMENT:
-					break;
-				case COLLECTION:
 					break;
 			}
 		}
@@ -250,17 +236,11 @@ package views.global.userCenter
 		{
 			switch(getClassName(e.currentTarget))
 			{
-				case MAP:
-					break;
-				case USERINFO:
-					break;
 				case HANDBOOK:
 					crtPage_Handbook += (pageUp)?-1:1;		//记录
 				case ACHIEVEMENT:
 					getTarTexture();
 					startAnimation(pageUp);
-					break;
-				case COLLECTION:
 					break;
 			}
 		}
@@ -269,17 +249,11 @@ package views.global.userCenter
 		{
 			switch(getClassName(e.currentTarget))
 			{
-				case MAP:
-					break;
-				case USERINFO:
-					break;
 				case HANDBOOK:
 					hideAnimation();
 					break;
 				case ACHIEVEMENT:
 					hideAnimation();
-					break;
-				case COLLECTION:
 					break;
 			}
 		}

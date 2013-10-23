@@ -1,7 +1,5 @@
 package views.global.userCenter.handbook
 {
-	import com.greensock.TweenLite;
-	
 	import feathers.core.PopUpManager;
 	
 	import starling.display.Image;
@@ -88,10 +86,7 @@ package views.global.userCenter.handbook
 							"assets/global/userCenter/content_page_" + String((pageIndex+1)*2+2) + ".png"
 						);
 					}
-					_assetsManager.loadQueue(function(r:Number):void{
-						if(r==1)
-							trace("前后页加载完成");
-					});
+					_assetsManager.loadQueue(function(r:Number):void{});
 					initImages();
 					removeLoad();
 					dispatchEventWith(UserCenter.InitViewPlayed);

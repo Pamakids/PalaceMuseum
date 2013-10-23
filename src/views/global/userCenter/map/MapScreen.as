@@ -4,7 +4,6 @@ package views.global.userCenter.map
 	import com.greensock.easing.Cubic;
 	
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	
 	import feathers.controls.Button;
 	
