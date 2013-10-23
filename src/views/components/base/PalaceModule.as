@@ -34,7 +34,7 @@ package views.components.base
 		protected var skipIndex:int=-1;
 
 		[Embed(source="/assets/common/loading.png")]
-		protected static var loading:Class
+		public static var loading:Class
 
 		[Embed(source="/assets/common/gamebg.jpg")]
 		protected static var loadingBG:Class

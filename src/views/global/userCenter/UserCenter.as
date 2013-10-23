@@ -56,9 +56,6 @@ package views.global.userCenter
 		private static const HANDBOOK:String="HandbookScreen";
 		private static const USERINFO:String="UserInfoScreen";
 		
-		[Embed(source="/assets/common/loading.png")]
-		private var loading:Class
-		
 		private var screenNames:Array;
 
 		private const contentWidth:Number=968;

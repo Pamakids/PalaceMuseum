@@ -11,6 +11,7 @@ package views.global.userCenter
 	import starling.utils.AssetManager;
 	
 	import views.components.LionMC;
+	import views.components.base.PalaceModule;
 	import views.global.TopBar;
 
 	/**
@@ -19,9 +20,6 @@ package views.global.userCenter
 	 */
 	public class UserCenterManager
 	{
-		[Embed(source="/assets/common/loading.png")]
-		public static const Loading:Class
-
 		private static var loaded:Boolean=false;
 		private static var _instance:UserCenterManager;
 
@@ -100,7 +98,7 @@ package views.global.userCenter
 
 		private static function initLoadImage():void
 		{
-			_loadImage=new Image(Texture.fromBitmap(new Loading()));
+			_loadImage=new Image(Texture.fromBitmap(new PalaceModule.loading()));
 			_loadImage.pivotX=_loadImage.width >> 1;
 			_loadImage.pivotY=_loadImage.height >> 1;
 			_userCenterContainer.addChild(_loadImage);
