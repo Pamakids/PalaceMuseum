@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:6d4089fcbf02c55f86166202d58aa6ce$ -->
+<!-- $TexturePacker:SmartUpdate:ce4b8a499012156bb3f2aebf5062f4e9$ -->
 <TextureAtlas imagePath="assets.png">
     <SubTexture name="achievement_card_finish" x="160" y="1545" width="137" height="106"/>
     <SubTexture name="achievement_card_finish_big" x="2" y="247" width="497" height="387"/>
-    <SubTexture name="achievement_card_unfinish" x="2" y="1918" width="138" height="106"/>
+    <SubTexture name="achievement_card_unfinish" x="123" y="1913" width="138" height="106"/>
     <SubTexture name="achievement_card_unfinish_big" x="1456" y="168" width="501" height="386"/>
-    <SubTexture name="achievement_down" x="144" y="1897" width="156" height="142"/>
+    <SubTexture name="achievement_down" x="264" y="1897" width="156" height="142"/>
     <SubTexture name="achievement_up" x="2" y="1530" width="156" height="142"/>
     <SubTexture name="background_collection_0" x="1447" y="556" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
     <SubTexture name="background_collection_1" x="2" y="679" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
@@ -38,18 +38,18 @@
     <SubTexture name="button_ok_up" x="588" y="1396" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
     <SubTexture name="button_start_down" x="385" y="636" width="110" height="61"/>
     <SubTexture name="button_start_up" x="698" y="1298" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
-    <SubTexture name="card_collection_0" x="861" y="1612" width="147" height="155"/>
-    <SubTexture name="card_collection_1" x="749" y="1833" width="147" height="155"/>
-    <SubTexture name="card_collection_10" x="765" y="1455" width="147" height="155"/>
-    <SubTexture name="card_collection_11" x="712" y="1612" width="147" height="155"/>
-    <SubTexture name="card_collection_2" x="600" y="1833" width="147" height="155"/>
-    <SubTexture name="card_collection_3" x="616" y="1455" width="147" height="155"/>
-    <SubTexture name="card_collection_4" x="563" y="1617" width="147" height="155"/>
-    <SubTexture name="card_collection_5" x="467" y="1460" width="147" height="155"/>
-    <SubTexture name="card_collection_6" x="414" y="1617" width="147" height="155"/>
-    <SubTexture name="card_collection_7" x="318" y="1460" width="147" height="155"/>
-    <SubTexture name="card_collection_8" x="451" y="1873" width="147" height="155"/>
-    <SubTexture name="card_collection_9" x="302" y="1873" width="147" height="155"/>
+    <SubTexture name="card_collection_0" x="914" y="1439" width="147" height="155"/>
+    <SubTexture name="card_collection_1" x="861" y="1612" width="147" height="155"/>
+    <SubTexture name="card_collection_10" x="720" y="1833" width="147" height="155"/>
+    <SubTexture name="card_collection_11" x="765" y="1455" width="147" height="155"/>
+    <SubTexture name="card_collection_2" x="712" y="1612" width="147" height="155"/>
+    <SubTexture name="card_collection_3" x="571" y="1833" width="147" height="155"/>
+    <SubTexture name="card_collection_4" x="616" y="1455" width="147" height="155"/>
+    <SubTexture name="card_collection_5" x="563" y="1617" width="147" height="155"/>
+    <SubTexture name="card_collection_6" x="467" y="1460" width="147" height="155"/>
+    <SubTexture name="card_collection_7" x="414" y="1617" width="147" height="155"/>
+    <SubTexture name="card_collection_8" x="318" y="1460" width="147" height="155"/>
+    <SubTexture name="card_collection_9" x="422" y="1873" width="147" height="155"/>
     <SubTexture name="card_collection_unfinish" x="265" y="1653" width="147" height="155"/>
     <SubTexture name="card_game_0" x="500" y="958" width="303" height="235"/>
     <SubTexture name="card_game_1" x="500" y="721" width="303" height="235"/>
@@ -59,6 +59,7 @@
     <SubTexture name="collection_up" x="2" y="1386" width="156" height="142"/>
     <SubTexture name="handbook_down" x="1285" y="1085" width="156" height="142"/>
     <SubTexture name="handbook_up" x="1285" y="941" width="156" height="142"/>
+    <SubTexture name="icon_bird" x="2" y="1918" width="119" height="114"/>
     <SubTexture name="icon_collection_0" x="805" y="1110" width="239" height="188"/>
     <SubTexture name="icon_collection_1" x="805" y="1009" width="269" height="99"/>
     <SubTexture name="icon_collection_10" x="1288" y="546" width="157" height="249"/>
@@ -74,15 +75,15 @@
     <SubTexture name="icon_lock" x="1959" y="349" width="70" height="48"/>
     <SubTexture name="icon_star_gray" x="1959" y="456" width="59" height="55"/>
     <SubTexture name="icon_star_red" x="1959" y="399" width="59" height="55"/>
-    <SubTexture name="icon_userhead_0" x="898" y="1769" width="137" height="137"/>
-    <SubTexture name="icon_userhead_1" x="937" y="1300" width="137" height="137"/>
-    <SubTexture name="icon_userhead_2" x="914" y="1439" width="137" height="137"/>
+    <SubTexture name="icon_userhead_0" x="869" y="1908" width="137" height="137"/>
+    <SubTexture name="icon_userhead_1" x="869" y="1769" width="137" height="137"/>
+    <SubTexture name="icon_userhead_2" x="937" y="1300" width="137" height="137"/>
     <SubTexture name="icon_userhead_3" x="798" y="1300" width="137" height="137"/>
     <SubTexture name="image_map_left" x="2" y="1202" width="262" height="119"/>
     <SubTexture name="image_map_right" x="1787" y="612" width="255" height="118"/>
     <SubTexture name="line_long" x="2" y="636" width="381" height="14"/>
     <SubTexture name="line_other" x="266" y="1248" width="196" height="19"/>
-    <SubTexture name="line_short" x="2" y="2026" width="140" height="14"/>
+    <SubTexture name="line_short" x="122" y="1897" width="140" height="14"/>
     <SubTexture name="map_down" x="342" y="987" width="156" height="142"/>
     <SubTexture name="map_up" x="1288" y="797" width="156" height="142"/>
     <SubTexture name="userinfo_down" x="342" y="843" width="156" height="142"/>

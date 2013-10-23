@@ -9,6 +9,7 @@ package views.global.userCenter.userInfo
 	import feathers.controls.Button;
 	import feathers.core.PopUpManager;
 	
+	import models.FontVo;
 	import models.SOService;
 	
 	import starling.display.DisplayObject;
@@ -17,9 +18,11 @@ package views.global.userCenter.userInfo
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
 	import starling.textures.Texture;
 	
 	import views.global.userCenter.BaseScreen;
+	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
 
 	/**
@@ -40,8 +43,33 @@ package views.global.userCenter.userInfo
 			initCrtUserView();
 			initButton();
 			initGameList();
+			initBirdView();
+			
+			TweenLite.delayedCall(0.1, dispatchEventWith, [UserCenter.InitViewPlayed]);
 		}
 		
+		private function initBirdView():void
+		{
+			var image:Image = new Image(UserCenterManager.getTexture("icon_bird"));
+//			image.x = 875;
+//			image.y = 138;
+			image.x = 642;
+			image.y = 65;
+			this.addChild( image );
+			image.touchable = false;
+//			image.scaleX = image.scaleY = .5;
+			
+			var num:String = int(SOService.instance.getSO("bird_count")).toString();
+			var text:TextField = new TextField(200, 40, "x "+num, FontVo.PALACE_FONT, 26, 0x932720);
+//			var text:TextField = new TextField(160, 40, "x 123", FontVo.PALACE_FONT, 26, 0x932720);
+			text.hAlign = "left";
+			text.vAlign = "center";
+			this.addChild(text);
+			text.x = 750;
+			text.y = 140;
+			text.touchable = false;
+//			text.border = true;
+		}		
 		
 		/**
 		 * 游戏数据
@@ -154,7 +182,7 @@ package views.global.userCenter.userInfo
 			button_change.defaultSkin = new Image( UserCenterManager.getTexture("button_changeUser_up") );
 			button_change.downSkin = new Image( UserCenterManager.getTexture("button_changeUser_down") );
 			this.addChild( button_change );
-			button_change.x = 814;
+			button_change.x = 346;
 			button_change.y = 143;
 			button_change.addEventListener( TouchEvent.TOUCH, onTouch );
 		}
