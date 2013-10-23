@@ -68,10 +68,13 @@ package views
 			initialize();
 			if(Capabilities.isDebugger)
 			{
-				stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent):void{
-					dispose();
-				});
+				stage.addEventListener(MouseEvent.MOUSE_DOWN, onStage);
 			}
+		}
+		private function onStage(e:MouseEvent):void
+		{
+			stage.removeEventListener(MouseEvent.MOUSE_DOWN, onStage);
+			dispose();
 		}
 		
 		private function initialize():void

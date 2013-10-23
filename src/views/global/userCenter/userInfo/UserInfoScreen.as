@@ -22,6 +22,7 @@ package views.global.userCenter.userInfo
 	import starling.textures.Texture;
 	
 	import views.global.userCenter.BaseScreen;
+	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
 
 	/**
@@ -43,6 +44,8 @@ package views.global.userCenter.userInfo
 			initButton();
 			initGameList();
 			initBirdView();
+			
+			TweenLite.delayedCall(0.1, dispatchEventWith, [UserCenter.InitViewPlayed]);
 		}
 		
 		private function initBirdView():void

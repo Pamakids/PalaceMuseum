@@ -18,12 +18,12 @@ package views.global.userCenter.achievement
 	import starling.text.TextField;
 	
 	import views.global.userCenter.BaseScreen;
+	import views.global.userCenter.UserCenter;
 	
 	public class AchievementScreen extends BaseScreen
 	{
 		public function AchievementScreen()
 		{
-			super();
 		}
 		
 		override protected function initialize():void
@@ -32,26 +32,46 @@ package views.global.userCenter.achievement
 			initDatas();
 			initIcons();
 			initPageNums();
+			
+			TweenLite.delayedCall(0.1, dispatchEventWith, [UserCenter.InitViewPlayed]);
 		}
-		
+		/**单页显示数量*/		
+		private var maxNum:int = 18;
+		private var datas:Array;
+		private function initDatas():void
+		{
+			datas = [];
+			var arr:Array = DC.instance.getAchievementData();
+			const max:int = arr.length;
+			var tempdatas:Array = [];
+			var obj:Object;
+			for(var i:int = 0;i<max;i++)
+			{
+				obj = { id: arr[i][0], achidata: arr[i] };
+				tempdatas.push( obj );
+			}
+			
+			//分页处理，每页显示9个数据
+			const pageNum:int = Math.ceil( tempdatas.length / maxNum );
+			for(i = 0;i<pageNum;i++)
+			{
+				datas.push( tempdatas.splice(0, maxNum) );
+			}
+			pageCount = pageNum;
+		}
 		private var page_0:TextField;
 		private var page_1:TextField;
 		private function initPageNums():void
 		{
-			var n:int = maxPage * 2;
+			var n:int = pageCount * 2;
 			page_0 = new TextField(100, 40, "1 / "+n.toString(), FontVo.PALACE_FONT, 22, 0x932720);
 			page_1 = new TextField(100, 40, "2 / "+n.toString(), FontVo.PALACE_FONT, 22, 0x932720);
 			page_0.touchable = page_1.touchable = false;
-//			page_0.x = 20;
-//			page_1.x = 848;
 			page_0.x = 196;
 			page_1.x = 680;
 			page_0.y = page_1.y = 590;
 			this.addChild( page_0 );
 			this.addChild( page_1 );
-			
-//			page_0.border = page_1.border = true;
-			
 		}
 		
 		private var vecIcon:Vector.<AchieveIcon>;
@@ -148,32 +168,8 @@ package views.global.userCenter.achievement
 			}
 		}
 		
-		/**单页显示数量*/		
-		private var maxNum:int = 18;
-		private var datas:Array;
-		private function initDatas():void
-		{
-			datas = [];
-			var arr:Array = DC.instance.getAchievementData();
-			const max:int = arr.length;
-			var tempdatas:Array = [];
-			var obj:Object;
-			for(var i:int = 0;i<max;i++)
-			{
-				obj = { id: arr[i][0], achidata: arr[i] };
-				tempdatas.push( obj );
-			}
-			
-			//分页处理，每页显示9个数据
-			const pageNum:int = Math.ceil( tempdatas.length / maxNum );
-			for(i = 0;i<pageNum;i++)
-			{
-				datas.push( tempdatas.splice(0, maxNum) );
-			}
-			maxPage = pageNum;
-		}
-		
-		public var maxPage:int;
+		//页数
+		private var pageCount:int;
 		
 		override public function dispose():void
 		{
@@ -197,18 +193,46 @@ package views.global.userCenter.achievement
 			}
 			super.dispose();
 		}
-		
-		public function updateView(pageIndex:int):void
+		private var crtPage:int = 0;
+		/**
+		 * 上翻一页，翻页失败会派发UserCenter.ViewUpdateFail事件
+		 */	
+		public function pageUp():void
 		{
-			var arr:Array;
+			if(crtPage <= 0)
+			{
+				dispatchEventWith(UserCenter.ViewUpdateFail);
+				trace("更新失败");
+				return;
+			}
+			crtPage -= 1;
+			updateView();
+		}
+		/**
+		 * 下翻一页，翻页失败会派发UserCenter.ViewUpdateFail事件
+		 */
+		public function pageDown():void
+		{
+			if(crtPage >= pageCount-1)
+			{
+				dispatchEventWith(UserCenter.ViewUpdateFail, true);
+				return;
+			}
+			crtPage += 1;
+			updateView();
+		}
+		
+		private function updateView():void
+		{
+			var arr:Array = datas[crtPage];
 			for(var i:int = 0;i<maxNum;i++)
 			{
-				arr = datas[pageIndex];
 				vecIcon[i].data = arr[i];
 			}
-			page_0.text = (pageIndex*2+1).toString() + " / " + String(maxPage*2);
-			page_1.text = (pageIndex*2+2).toString() + " / " + String(maxPage*2);
+			page_0.text = (crtPage*2+1).toString() + " / " + String(pageCount*2);
+			page_1.text = (crtPage*2+2).toString() + " / " + String(pageCount*2);
 			this.validate();
+			TweenLite.delayedCall(0.1, dispatchEventWith, [UserCenter.ViewUpdated]);
 		}
 	}
 }

@@ -1,7 +1,5 @@
 package views.global.userCenter
 {
-	import com.greensock.TweenLite;
-	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
@@ -10,6 +8,8 @@ package views.global.userCenter
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
+	
+	import org.agony2d.utils.getClassName;
 	
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -33,33 +33,36 @@ package views.global.userCenter
 	 */	
 	public class UserCenter extends Sprite
 	{
+		/**
+		 * 子场景初始化完成后派发该事件
+		 */		
+		public static const Initialized:String = "initialized";
+		/**
+		 * 子场景初始化显示完成，此事件在Initialized之后派发，用以确定场景所有元素及素材加载工作完成，主要用于场景之间的切换
+		 */		
+		public static var InitViewPlayed:String = "initViewPlayed";
+		/**
+		 * 在当前Tab场景内部显示内容更新后派发（如页码变更）
+		 */		
+		public static const ViewUpdated:String = "viewUpdated";
+		/**
+		 * 场景内纹理更新失败，通常原因为已经达到最后一页或处于第一页
+		 */		
+		public static const ViewUpdateFail:String = "viewUpdateFail";
+		
+		private static const MAP:String="MapScreen";
+		private static const ACHIEVEMENT:String="AchievementScreen";
+		private static const COLLECTION:String="CollectionScreen";
+		private static const HANDBOOK:String="HandbookScreen";
+		private static const USERINFO:String="UserInfoScreen";
+		
 		[Embed(source="/assets/common/loading.png")]
 		private var loading:Class
-		/**
-		 * 场景
-		 */
-		public static const MAP:String="map";
-		public static const ACHIEVEMENT:String="achievement";
-		public static const COLLECTION:String="collection";
-		public static const HANDBOOK:String="handbook";
-		public static const USERINFO:String="userinfo";
+		
 		private var screenNames:Array;
 
 		private const contentWidth:Number=968;
 		private const contentHeight:Number=664;
-
-		/**
-		 * 导航
-		 */
-		private var _navigator:ScreenNavigator;
-		private var _container:Sprite;
-		private var _backButton:Button;
-		private var _tabBar:TabBar;
-
-		/**
-		 * 背景
-		 */
-		private var backgroundImage:Image;
 
 		public function UserCenter(index:int)
 		{
@@ -69,7 +72,6 @@ package views.global.userCenter
 		
 		
 //initialize--------------------------------------------------------------------------------------
-		public var aniable:Boolean = false;
 		private function init():void
 		{
 			this.screenNames=[MAP, USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION];
@@ -82,23 +84,13 @@ package views.global.userCenter
 			initAnimation();
 			initRender();
 		}
-		
-		//render
-		private var crtRender:RenderTexture;
-		private var targetRender:RenderTexture;
-		private function initRender():void
-		{
-			crtRender = new RenderTexture(this.contentWidth, this.contentHeight, false);
-			targetRender = new RenderTexture(this.contentWidth, this.contentHeight, false);
-		}
-		
 		private function initBackgroud():void
 		{
-			this.backgroundImage=new Image(UserCenterManager.getTexture("main_background"));
-			this.addChild(this.backgroundImage);
-			this.backgroundImage.touchable=false;
+			var image:Image=new Image(UserCenterManager.getTexture("main_background"));
+			this.addChild(image);
+			image.touchable=false;
 		}
-
+		private var _tabBar:TabBar;
 		private function initTabBar():void
 		{
 			_tabBar=new TabBar();
@@ -123,16 +115,16 @@ package views.global.userCenter
 					defaultIcon: new Image(UserCenterManager.getTexture("collection_up")),
 					selectedUpIcon: new Image(UserCenterManager.getTexture("collection_down"))
 				}
-				]);
+			]);
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;
-			this.addChild(_tabBar);
+			_tabBar.selectedIndex=2;
 			_tabBar.gap=2;
 			_tabBar.x=45;
 			_tabBar.y=36;
-			_tabBar.selectedIndex=2;
+			this.addChild(_tabBar);
 			_tabBar.addEventListener(Event.CHANGE, tabs_changeHandler);
 		}
-
+		private var _backButton:Button;
 		private function initBackButton():void
 		{
 			_backButton=new Button();
@@ -142,12 +134,22 @@ package views.global.userCenter
 			_backButton.y=10;
 			_backButton.addEventListener(Event.TRIGGERED, onTriggered);
 		}
-
+		private var container:Sprite;
+		private function initContainer():void
+		{
+			container = new Sprite();
+			container.x = 28;
+			container.y = 89;
+			this.addChild( container );
+			container.addEventListener(TouchEvent.TOUCH, onTouch);
+		}
+		private var _navigator:ScreenNavigator;
 		private function initNavigator():void
 		{
 			_navigator=new ScreenNavigator();
 			_navigator.addScreen(MAP, new ScreenNavigatorItem(MapScreen,
 				{
+					initViewPlayed:	onInitViewPlayed
 				},
 				{
 					width: contentWidth, height: contentHeight,
@@ -155,15 +157,18 @@ package views.global.userCenter
 				}));
 			_navigator.addScreen(HANDBOOK, new ScreenNavigatorItem(HandbookScreen,
 				{
+					initialized: 	onInitialized,
+					viewUpdated:	onViewUpdated,
+					viewUpdateFail:	onViewUpdateFail,
+					initViewPlayed:	onInitViewPlayed
 				},
 				{
 					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight,
-					loadAssetsComplete: loadComplete,
-					crtPage: crtPage_Handbook
+					viewWidth: contentWidth, viewHeight: contentHeight
 				}));
 			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen,
 				{
+					initViewPlayed:	onInitViewPlayed
 				},
 				{
 					width: contentWidth, height: contentHeight,
@@ -171,6 +176,9 @@ package views.global.userCenter
 				}));
 			_navigator.addScreen(ACHIEVEMENT, new ScreenNavigatorItem(AchievementScreen,
 				{
+					viewUpdated:	onViewUpdated,
+					viewUpdateFail:	onViewUpdateFail,
+					initViewPlayed:	onInitViewPlayed
 				},
 				{
 					width: contentWidth, height: contentHeight,
@@ -178,46 +186,140 @@ package views.global.userCenter
 				}));
 			_navigator.addScreen(COLLECTION, new ScreenNavigatorItem(CollectionScreen,
 				{
+					initViewPlayed:	onInitViewPlayed
 				},
 				{
 					width: contentWidth, height: contentHeight,
 					viewWidth: contentWidth, viewHeight: contentHeight
 				}));
-			this._container.addChild(_navigator);
+			container.addChild(_navigator);
 			_navigator.showScreen(HANDBOOK);
 		}
-
-		private function initContainer():void
-		{
-			_container=new Sprite();
-			this.addChild(_container);
-			_container.x=28;
-			_container.y=89;
-			_container.addEventListener(TouchEvent.TOUCH, onTouch);
-		}
+		private var animation:SoftPaperAnimation;
 		private function initAnimation():void
 		{
 			animation = new SoftPaperAnimation(contentWidth, contentHeight);
 			animation.setFixPageTexture(UserCenterManager.getTexture("content_page_1"), UserCenterManager.getTexture("content_page_2"));
 			this.addChild( animation );
-			animation.addEventListener(Event.COMPLETE, animationCompleted);
+			animation.addEventListener(Event.COMPLETE, playedAnimation);
 			animation.visible = false;
 			animation.touchable = false;
 			animation.x = 28;
 			animation.y = 89;
 		}
+		private var textureL:Texture;		//初始页左侧纹理
+		private var textureR:Texture;		//初始页右侧纹理
+		private var targetL:Texture;		//目标页左侧纹理
+		private var targetR:Texture;		//目标页右侧纹理
+		private var crtRender:RenderTexture;		//当前页纹理数据源
+		private var targetRender:RenderTexture;		//当前页纹理数据源
+		private function initRender():void
+		{
+			crtRender = new RenderTexture(this.contentWidth, this.contentHeight, false);
+			targetRender = new RenderTexture(this.contentWidth, this.contentHeight, false);
+		}
 		
-//logical----------------------------------------------------------------------------
-
-		private var animation:SoftPaperAnimation;
-		private var prevIndex:int = 2;
-
-		//初始页纹理
-		private var textureL:Texture;
-		private var textureR:Texture;
-		//目标页纹理
-		private var targetL:Texture;
-		private var targetR:Texture;
+//eventListener----------------------------------------------------------------------------
+		
+		private function onInitialized(e:Event):void
+		{
+			switch(getClassName(e.currentTarget))
+			{
+				case MAP:
+					break;
+				case USERINFO:
+					break;
+				case HANDBOOK:
+					(_navigator.activeScreen as HandbookScreen).initView(crtPage_Handbook);
+					break;
+				case ACHIEVEMENT:
+					break;
+				case COLLECTION:
+					break;
+			}
+		}
+		private function onInitViewPlayed(e:Event):void
+		{
+			if(!animation.visible)
+				return;
+			getTarTexture();
+			startAnimation(pageUp);
+			prevIndex = tarIndex;
+		}
+		private function onViewUpdated(e:Event):void
+		{
+			switch(getClassName(e.currentTarget))
+			{
+				case MAP:
+					break;
+				case USERINFO:
+					break;
+				case HANDBOOK:
+					crtPage_Handbook += (pageUp)?-1:1;		//记录
+				case ACHIEVEMENT:
+					getTarTexture();
+					startAnimation(pageUp);
+					break;
+				case COLLECTION:
+					break;
+			}
+		}
+		
+		private function onViewUpdateFail(e:Event):void
+		{
+			switch(getClassName(e.currentTarget))
+			{
+				case MAP:
+					break;
+				case USERINFO:
+					break;
+				case HANDBOOK:
+					hideAnimation();
+					break;
+				case ACHIEVEMENT:
+					hideAnimation();
+					break;
+				case COLLECTION:
+					break;
+			}
+		}
+		
+		private function onTriggered(e:Event):void
+		{
+			UserCenterManager.closeUserCenter();
+		}
+		
+		private function onTouch(e:TouchEvent):void
+		{
+			var index:int = _tabBar.selectedIndex;
+			if((index != 2 && index != 3) || animation.visible)		//速成手册 or 成就
+				return;
+			var touch:Touch = e.getTouch(this);
+			var point:Point;
+			if(!touch)
+				return;
+			point = touch.getLocation(this);
+			switch(touch.phase)
+			{
+				case TouchPhase.BEGAN:
+					beginX = point.x;
+					break;
+				case TouchPhase.ENDED:
+					if( Math.abs( point.x - beginX ) < standardLength )
+						return;
+					pageUp = (beginX < point.x);	//方向
+					showAnimation();
+					if(_navigator.activeScreen is HandbookScreen)					//用户手册页面
+					{
+						pageUp?(_navigator.activeScreen as HandbookScreen).pageUp():(_navigator.activeScreen as HandbookScreen).pageDown();
+					}
+					else if(_navigator.activeScreen is AchievementScreen)				//成就页面
+					{
+						pageUp?(_navigator.activeScreen as AchievementScreen).pageUp():(_navigator.activeScreen as AchievementScreen).pageDown();
+					}
+					break;
+			}
+		}
 		
 		private function tabs_changeHandler():void
 		{
@@ -226,111 +328,52 @@ package views.global.userCenter
 				aniable = true;
 				return;
 			}
-			if(animation.isRunning() || !initialized)
+			if(animation.visible)
 			{
 				_tabBar.selectedIndex = prevIndex;
 				return;
 			}
-			
-			var target:int = _tabBar.selectedIndex;
-			//从原场景中获取纹理
+			tarIndex =  _tabBar.selectedIndex;
+			pageUp = prevIndex >  tarIndex;
+			showAnimation();
+			_navigator.showScreen(screenNames[tarIndex]);
+		}
+		private function showAnimation():void
+		{
 			getCrtTexture();
 			animation.setFixPageTexture(textureL, textureR);
 			animation.visible = true;
-			//使动画可见以遮挡目标页面
-			_navigator.showScreen(screenNames[target]);
-			//将目标场景加载至舞台，加载完成后获取纹理
-			getTarTexture();
-			pageUp = prevIndex > target;
-			//根据动画方向重新设置四个纹理顺序
-			if(pageUp)
-				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
-			else
-				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
-			animation.start( pageUp );
-			//修改prevIndex
-			prevIndex = target;
-			if(prevIndex == 3)		//成就
-			{
-				crtPage_Achieve = 0;
-			}
 		}
-		
-		private function animationCompleted():void
+		private function hideAnimation():void
 		{
 			animation.visible = false;
 		}
-		
-		private function onTriggered(e:Event):void
+		private function startAnimation(pageUp:Boolean):void
 		{
-			UserCenterManager.closeUserCenter();
+			if(pageUp)					//pageUp
+				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
+			else						//pageDown
+				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
+			animation.start( pageUp );
+		}
+		private function playedAnimation():void
+		{
+			hideAnimation();
 		}
 		
+		/**
+		 * 用来屏蔽第一次tabBar的Change事件
+		 */		
+		public var aniable:Boolean = false;
+		private var prevIndex:int = 2;
+		private var tarIndex:int;
 		private var pageUp:Boolean = false;
 		
 		//子场景翻页控制
 		private var beginX:Number;
 		private const standardLength:Number = 50;	//翻页有效拖拽距离
-		//用户手册场景
 		private var crtPage_Handbook:int = 0;
-		//成就场景
-		private var crtPage_Achieve:int = 0;
-		
-		private function onTouch(e:TouchEvent):void
-		{
-			if(!initialized)
-				return;
-			var index:int = _tabBar.selectedIndex;
-			if(index != 2 && index != 3)		//速成手册 or 成就
-				return;
-			if(animation.isRunning())
-				return;
-			var touch:Touch = e.getTouch(this);
-			var point:Point;
-			if(touch)
-			{
-				point = touch.getLocation(this);
-				switch(touch.phase)
-				{
-					case TouchPhase.BEGAN:
-						beginX = point.x;
-						break;
-					case TouchPhase.ENDED:
-						if( Math.abs( point.x - beginX ) < standardLength )
-							return;
-						//方向
-						pageUp = (beginX < point.x);
-						if(index==2)					//用户手册页面
-						{
-							//检测页面范围
-							if(pageUp && crtPage_Handbook == 0)
-								return;
-							if(!pageUp && crtPage_Handbook >= HandbookScreen.MAX_NUM-1)
-								return;
-							//清理多余纹理，释放内存
-							if(pageUp)
-								(_navigator.activeScreen as HandbookScreen).clearByPageIndex(crtPage_Handbook+1);
-							else
-								(_navigator.activeScreen as HandbookScreen).clearByPageIndex(crtPage_Handbook-1);
-							crtPage_Handbook += (pageUp?-1:1);
-							handbookTurnToPage(crtPage_Handbook);
-						}
-						else if(index == 3)				//成就页面
-						{
-							var maxPage_Achieve:int = (_navigator.activeScreen as AchievementScreen).maxPage;
-							//检测页面范围
-							if(pageUp && crtPage_Achieve == 0)
-								return;
-							if(!pageUp && crtPage_Achieve >= maxPage_Achieve-1)
-								return;
-							crtPage_Achieve += (pageUp?-1:1);
-							achieveTurnToPage(crtPage_Achieve);
-						}
-						break;
-				}
-			}
-		}
-		
+
 		private function getCrtTexture():void
 		{
 			crtRender.draw(_navigator.activeScreen);
@@ -345,72 +388,14 @@ package views.global.userCenter
 			targetR = Texture.fromTexture(targetRender, new Rectangle(contentWidth/2, 0, contentWidth/2, contentHeight));
 		}
 		
-		//速成手册翻页
-		private function handbookTurnToPage(pageIndex:int):void
-		{
-			getCrtTexture();
-			animation.setFixPageTexture(textureL, textureR);
-			animation.visible = true;
-			
-			if(!(_navigator.activeScreen as HandbookScreen).hasAssets(pageIndex))
-			{
-				return;
-			}else
-			{
-				loadComplete()
-			}
-		}
-		
-		private function loadComplete():void
-		{
-			(_navigator.activeScreen as HandbookScreen).updateView(crtPage_Handbook);
-			//将目标场景加载至舞台，加载完成后获取纹理
-			getTarTexture();
-			
-			if(pageUp)		//pageUp
-				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
-			else						//pageDown
-				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
-			animation.start( pageUp );
-		}
-		
-		//成就翻页
-		private function achieveTurnToPage(pageIndex:int):void
-		{
-			getCrtTexture();
-			animation.setFixPageTexture(textureL, textureR);
-			animation.visible = true;
-			(_navigator.activeScreen as AchievementScreen).updateView(crtPage_Achieve);
-			
-			TweenLite.delayedCall(0.1, onComplete);
-		}
-		private function onComplete():void
-		{
-			if(!_navigator.activeScreen is AchievementScreen)
-				return;
-			getTarTexture();
-			if(pageUp)		//pageUp
-				animation.setSoftPageTexture(targetL, targetR, textureL, textureR);
-			else			//pageDown
-				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
-			animation.start( pageUp );
-		}
-		
-
-		public var initialized:Boolean = false;
-		
 		override public function dispose():void
 		{
-			if (_tabBar)
+			if(_tabBar)
 				_tabBar.removeFromParent(true);
-			if (backgroundImage)
-				backgroundImage.removeFromParent(true);
-			if (_navigator)
+			if(_navigator)
 				_navigator.removeFromParent(true);
 			if (_backButton)
 				_backButton.removeFromParent(true);
-			if (_container)
-				_container.removeFromParent(true);
 			if(animation)
 				animation.removeFromParent(true);
 			if(crtRender)
