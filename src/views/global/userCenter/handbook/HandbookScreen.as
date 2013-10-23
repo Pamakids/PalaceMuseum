@@ -1,7 +1,5 @@
 package views.global.userCenter.handbook
 {
-	import com.greensock.TweenLite;
-	
 	import feathers.core.PopUpManager;
 	
 	import starling.display.Image;
@@ -11,6 +9,7 @@ package views.global.userCenter.handbook
 	
 	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenter;
+	import views.global.userCenter.UserCenterManager;
 
 	/**
 	 * 用户中心速成手册场景<p>
@@ -19,8 +18,6 @@ package views.global.userCenter.handbook
 	 */
 	public class HandbookScreen extends BaseScreen
 	{
-		[Embed(source="/assets/common/loading.png")]
-		private const Loading:Class
 		/**
 		 * 手册总页数（左右为1页）
 		 */		
@@ -43,7 +40,7 @@ package views.global.userCenter.handbook
 		private var load:Image;
 		private function initLoad():void
 		{
-			load = new Image(Texture.fromBitmap(new Loading()));
+			load = new Image(Texture.fromBitmap(new UserCenterManager.Loading()));
 			load.pivotX=load.width >> 1;
 			load.pivotY=load.height >> 1;
 			load.x=1024 - 100;
@@ -88,10 +85,7 @@ package views.global.userCenter.handbook
 							"assets/global/userCenter/content_page_" + String((pageIndex+1)*2+2) + ".png"
 						);
 					}
-					_assetsManager.loadQueue(function(r:Number):void{
-						if(r==1)
-							trace("前后页加载完成");
-					});
+					_assetsManager.loadQueue(function(r:Number):void{});
 					initImages();
 					removeLoad();
 					dispatchEventWith(UserCenter.InitViewPlayed);

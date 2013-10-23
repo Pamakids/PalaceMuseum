@@ -1,19 +1,18 @@
 package views.global.userCenter
 {
 	import flash.filesystem.File;
-	import flash.utils.Dictionary;
-
+	
 	import controllers.MC;
-
+	
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.LionMC;
+	import views.components.base.PalaceModule;
 	import views.global.TopBar;
-	import views.global.map.Map;
 
 	/**
 	 * 用户中心管理类
@@ -21,9 +20,6 @@ package views.global.userCenter
 	 */
 	public class UserCenterManager
 	{
-		[Embed(source="/assets/common/loading.png")]
-		private static const Loading:Class
-
 		private static var loaded:Boolean=false;
 		private static var _instance:UserCenterManager;
 
@@ -102,7 +98,7 @@ package views.global.userCenter
 
 		private static function initLoadImage():void
 		{
-			_loadImage=new Image(Texture.fromBitmap(new Loading()));
+			_loadImage=new Image(Texture.fromBitmap(new PalaceModule.loading()));
 			_loadImage.pivotX=_loadImage.width >> 1;
 			_loadImage.pivotY=_loadImage.height >> 1;
 			_userCenterContainer.addChild(_loadImage);
@@ -119,11 +115,9 @@ package views.global.userCenter
 		{
 			_assetsManager=new AssetManager();
 			_assetsManager.enqueue(
-				File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"),
-				"assets/global/userCenter/content_page_1.png",
-				"assets/global/userCenter/content_page_2.png",
+				File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"), 
 				"json/collection.json"
-				);
+			);
 			_assetsManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)
