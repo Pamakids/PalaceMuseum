@@ -10,10 +10,10 @@ package views.module2.scene21
 		public var tx:Number;
 		public var ty:Number;
 
-		public function Cell(i:int, j:int, bp:Bitmap)
+		public function Cell(i:int, j:int, img:Image)
 		{
 			super();
-			addChild(Image.fromBitmap(bp));
+			addChild(img);
 		}
 	}
 }

@@ -178,7 +178,6 @@ package views.module1
 								function():void
 								{
 									showAchievement(4, checkAcheive5);
-//									LionMC.instance.say("请皇上去给太后请安", 0, 100, 500, null, 20, false);
 								}
 								);
 							clockMatched=true;

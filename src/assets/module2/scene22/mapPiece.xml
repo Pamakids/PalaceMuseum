@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:913012fd871e6558ff866e22ae452745$ -->
+<TextureAtlas imagePath="mapPiece.png">
+    <SubTexture name="easy00" x="668" y="410" width="162" height="158" frameX="-48" frameY="-36" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy01" x="504" y="410" width="162" height="158" frameX="-48" frameY="-36" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy02" x="638" y="286" width="210" height="122" frameX="-48" frameY="-36" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy03" x="340" y="410" width="162" height="158" frameX="-48" frameY="0" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy10" x="214" y="162" width="210" height="158" frameX="0" frameY="-36" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy11" x="426" y="286" width="210" height="122" frameX="0" frameY="-36" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy12" x="176" y="406" width="162" height="194" frameX="-48" frameY="0" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy13" x="638" y="162" width="210" height="122" frameX="0" frameY="-36" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy20" x="262" y="2" width="258" height="158" frameX="0" frameY="-36" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy21" x="2" y="162" width="210" height="158" frameX="0" frameY="-36" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy22" x="426" y="162" width="210" height="122" frameX="0" frameY="-36" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy23" x="2" y="2" width="258" height="158" frameX="0" frameY="0" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy30" x="2" y="490" width="162" height="158" frameX="-48" frameY="-36" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy31" x="734" y="2" width="210" height="158" frameX="0" frameY="-36" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy32" x="522" y="2" width="210" height="158" frameX="0" frameY="-36" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="easy33" x="832" y="486" width="162" height="122" frameX="-48" frameY="-36" frameWidth="258" frameHeight="194"/>
+    <SubTexture name="hard00" x="2" y="782" width="140" height="106" frameX="-32" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard01" x="758" y="910" width="108" height="106" frameX="-32" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard02" x="734" y="826" width="140" height="82" frameX="-32" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard03" x="482" y="570" width="140" height="130" frameX="-32" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard04" x="396" y="978" width="108" height="82" frameX="-32" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard05" x="144" y="734" width="140" height="106" frameX="-32" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard10" x="648" y="910" width="108" height="106" frameX="-32" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard11" x="308" y="702" width="140" height="106" frameX="0" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard12" x="868" y="982" width="108" height="82" frameX="-32" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard13" x="2" y="650" width="140" height="130" frameX="-32" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard14" x="2" y="406" width="172" height="82" frameX="0" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard15" x="538" y="870" width="108" height="106" frameX="-32" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard20" x="592" y="786" width="140" height="82" frameX="0" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard21" x="766" y="718" width="140" height="106" frameX="0" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard22" x="624" y="678" width="140" height="106" frameX="0" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard23" x="908" y="742" width="108" height="130" frameX="-32" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard24" x="2" y="890" width="140" height="82" frameX="-32" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard25" x="850" y="378" width="172" height="106" frameX="0" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard30" x="144" y="842" width="140" height="82" frameX="0" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard31" x="850" y="270" width="172" height="106" frameX="0" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard32" x="166" y="602" width="140" height="130" frameX="0" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard33" x="286" y="810" width="140" height="82" frameX="0" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard34" x="2" y="974" width="108" height="106" frameX="-32" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard35" x="766" y="610" width="140" height="106" frameX="-32" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard40" x="176" y="322" width="172" height="82" frameX="0" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard41" x="144" y="926" width="108" height="106" frameX="-32" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard42" x="340" y="570" width="140" height="130" frameX="0" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard43" x="2" y="322" width="172" height="82" frameX="0" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard44" x="850" y="162" width="172" height="106" frameX="0" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard45" x="286" y="894" width="108" height="106" frameX="-32" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard50" x="428" y="870" width="108" height="106" frameX="-32" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard51" x="624" y="570" width="140" height="106" frameX="0" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard52" x="450" y="786" width="140" height="82" frameX="0" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard53" x="908" y="610" width="108" height="130" frameX="-32" frameY="0" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard54" x="876" y="874" width="108" height="106" frameX="-32" frameY="-24" frameWidth="172" frameHeight="130"/>
+    <SubTexture name="hard55" x="450" y="702" width="140" height="82" frameX="0" frameY="-24" frameWidth="172" frameHeight="130"/>
+</TextureAtlas>

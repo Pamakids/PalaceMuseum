@@ -66,7 +66,7 @@ package views.global.userCenter.userInfo
 
 		private static function initLoadImage():void
 		{
-			_loadImage=new Image(Texture.fromBitmap(new PalaceModule.Loading()));
+			_loadImage=new Image(Texture.fromBitmap(new PalaceModule.loading()));
 			_loadImage.pivotX=_loadImage.width >> 1;
 			_loadImage.pivotY=_loadImage.height >> 1;
 			_loadImage.x=1024 - 100;

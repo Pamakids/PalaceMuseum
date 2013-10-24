@@ -137,7 +137,7 @@ package views.module3
 
 		private function onTouch(e:TouchEvent):void
 		{
-			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
+			var tc:Touch=e.getTouch(this, TouchPhase.ENDED);
 			if (tc)
 			{
 				var pt:Point=tc.getLocation(this);

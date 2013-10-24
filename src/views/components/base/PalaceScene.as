@@ -30,6 +30,7 @@ package views.components.base
 	import starling.utils.AssetManager;
 
 	import views.components.CollectionCard;
+	import views.components.Craw;
 	import views.components.ElasticButton;
 	import views.components.PalaceBird;
 	import views.components.Prompt;
@@ -64,7 +65,7 @@ package views.components.base
 			var bg:Image=getImage(src);
 			bg.blendMode=BlendMode.NONE;
 			addChild(bg);
-			bg.touchable=false;
+//			bg.touchable=false;
 		}
 
 		private function initBird(img:Image):void
@@ -80,9 +81,11 @@ package views.components.base
 
 		protected function addCraw(pt:Point):void
 		{
-			var craw:Image=getImage("craw");
-			craw.x=pt.x;
-			craw.y=pt.y;
+			var craw:Craw=new Craw(assetManager.getTexture("craw"));
+			craw.pivotX=20;
+			craw.pivotY=20;
+			craw.x=pt.x + 20;
+			craw.y=pt.y + 20;
 			addChild(craw);
 			craw.touchable=false;
 		}

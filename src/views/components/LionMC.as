@@ -6,9 +6,12 @@ package views.components
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Stage;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 
 	import controllers.MC;
+
+	import views.global.TailBar;
 
 	/**
 	 *
@@ -42,30 +45,57 @@ package views.components
 			mcWidth=lion.width * .5;
 			mcHeight=lion.height * .5;
 			lion.stop();
-			trace(lion.width, lion.height)
 			addChild(lion);
-//			lion.addEventListener(Event.FRAME_CONSTRUCTED, onMCPlaying);
+			visible=true;
 		}
 
-//		protected function onMCPlaying(event:Event):void
-//		{
-//			if (isSayingOver && lion.currentFrame == lion.totalFrames)
-//			{
-//				lion.stop();
-//				isSayingOver=false;
-//				playHide();
-//			}
-//		}
+		public function replay():void
+		{
+			say(lastContent, lastType, lastX, lastY, function():void {
+				if (lastFunc != null) {
+					lastFunc();
+				}
+			}, 20, lastMask);
+		}
+
+		public function play(type:int=0, _x:Number=0, _y:Number=0, needMask:Boolean=true):void
+		{
+			showLion(type);
+			if (!_x && !_y)
+			{
+				var s:Stage=MC.instance.stage.stage;
+				var sc:Number=DPIUtil.getDPIScale();
+				_x=(s.fullScreenWidth / sc - mcWidth) / 2;
+				_y=(s.fullScreenHeight / sc - mcHeight) / 2;
+			}
+			x=_x < 512 ? -100 - mcWidth * 2 : 1124 + mcWidth;
+			y=_y - 200;
+			if (needMask)
+				MC.instance.main.addMask();
+			tl=TweenMax.to(this, .5, {x: _x, y: _y, motionBlur: true, onComplete: function():void
+			{
+				lion.gotoAndPlay(1);
+				var compFunc:Function=function(e:Event):void {
+					if (lion.currentFrame == lion.totalFrames) {
+						lion.removeEventListener(Event.FRAME_CONSTRUCTED, compFunc);
+						isSayingOver=true;
+						if (callBack != null) {
+							callBack();
+							callBack=null;
+						}
+						if (needMask)
+							MC.instance.main.removeMask();
+					}
+				}
+				lion.addEventListener(Event.FRAME_CONSTRUCTED, compFunc);
+			}});
+
+		}
 
 		private function playHide():void
 		{
 			if (tl)
 				tl.reverse();
-//			TweenLite.to(this, .7, {alpha: 0, onComplete: function():void {
-//				if (callBack != null)
-//					callBack();
-//				callBack=null;
-//			}});
 		}
 
 		private static var _instance:LionMC;
@@ -110,6 +140,13 @@ package views.components
 		private var mcHeight:Number;
 		private var mcArr:Array=[LionTalk, LionHappy, LionUnHappy, LionNaughty];
 
+		private var lastType:int;
+		private var lastX:Number;
+		private var lastY:Number;
+		private var lastContent:String;
+		private var lastFunc:Function;
+		private var lastMask:Boolean;
+
 		/**
 		 *
 		 * @param content
@@ -121,9 +158,14 @@ package views.components
 		 */
 		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20, needMask:Boolean=true):void
 		{
+			lastType=_type;
+			lastX=_x;
+			lastY=_y;
+			lastContent=content;
+			lastFunc=_callBack;
+			lastMask=needMask;
+
 			showLion(_type);
-			trace('lion say:', content);
-			visible=true;
 			if (!_x && !_y)
 			{
 				var s:Stage=MC.instance.stage.stage;
@@ -168,7 +210,7 @@ package views.components
 			if (p)
 				p.visible=false;
 		}
-		
+
 		public function show():void
 		{
 			visible=true;
