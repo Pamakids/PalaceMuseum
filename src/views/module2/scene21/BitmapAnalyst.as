@@ -17,6 +17,7 @@ package views.module2.scene21
 
 	public class BitmapAnalyst extends Sprite
 	{
+		public var level:String="easy";
 		private var dataArr:Array;
 		private var bpArr:Array;
 
@@ -135,7 +136,7 @@ package views.module2.scene21
 			var image:Bitmap=new Bitmap(bpd);
 			image.smoothing=true;
 
-			//			savePNG(bpd, tx.toString() + ty.toString());
+			savePNG(bpd, tx.toString() + ty.toString());
 
 			return image;
 		}
@@ -145,7 +146,7 @@ package views.module2.scene21
 			var pngEc:PNGEncoder=new PNGEncoder();
 			//encode the bitmapdata object and keep the encoded ByteArray
 			var imgByteArray:ByteArray=pngEc.encode(bp);
-			var file:File=File.desktopDirectory.resolvePath(_name + ".png");
+			var file:File=File.desktopDirectory.resolvePath("cut/" + level + _name + ".png");
 			//Use a FileStream to save the bytearray as bytes to the new file
 			var fs:FileStream=new FileStream();
 			try

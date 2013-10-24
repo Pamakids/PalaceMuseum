@@ -226,7 +226,7 @@ package views.module2.scene21
 
 		private var _gamelevel:int;
 
-		private var bpArr:Array=[];
+//		private var bpArr:Array=[];
 
 		private var cellArr:Vector.<Cell>=new Vector.<Cell>();
 
@@ -254,17 +254,26 @@ package views.module2.scene21
 		private var timeHolder:Sprite;
 		private var lbl:TextField;
 
-		private var analyst:BitmapAnalyst;
+//		private var analyst:BitmapAnalyst;
 		public var isFinished:Boolean;
+
+		private var num:int;
 
 		public function initData(lvl:int):void
 		{
 			var map:Bitmap=new img();
-			analyst=new BitmapAnalyst(map, 4 + lvl * DPIUtil.getDPIScale(), 4 + lvl * DPIUtil.getDPIScale());
-			analyst.initAnalyst();
-			bpArr=analyst.getBpArr();
-			piv=analyst.getPivot();
-			size=analyst.getSize();
+			num=4 + lvl * 2;
+			var maxW:Number=map.width;
+			var maxH:Number=map.height;
+//			analyst=new BitmapAnalyst(map, num, num);
+//			analyst.level=gamelevel == 0 ? "easy" : "hard"
+//			analyst.initAnalyst();
+//			bpArr=analyst.getBpArr();
+//			piv=analyst.getPivot();
+//			size=analyst.getSize();
+
+			piv=new Point(lvl ? 172 : 258, lvl ? 130 : 194);
+			size=new Point(maxW / num, maxH / num);
 		}
 
 		public function startGame():void
@@ -283,13 +292,29 @@ package views.module2.scene21
 			playground.x=px;
 			playground.y=py;
 
-			for (var i:int=0; i < bpArr.length; i++)
+//			for (var i:int=0; i < bpArr.length; i++)
+//			{
+//				var arr:Array=bpArr[i];
+//				for (var j:int=0; j < arr.length; j++)
+//				{
+//					var bp:Bitmap=arr[j];
+//					var cell:Cell=new Cell(i, j, Image.fromBitmap(bp));
+//					cell.pivotX=piv.x >> 1;
+//					cell.pivotY=piv.y >> 1;
+//					playground.addChild(cell);
+//					cell.tx=size.x * i + size.x / 2;
+//					cell.ty=size.y * j + size.y / 2;
+//					cell.x=cell.tx;
+//					cell.y=cell.ty;
+//					cell.addEventListener(TouchEvent.TOUCH, onCellTouch);
+//					cellArr.push(cell);
+//				}
+//			}
+			for (var i:int=0; i < num; i++)
 			{
-				var arr:Array=bpArr[i];
-				for (var j:int=0; j < arr.length; j++)
+				for (var j:int=0; j < num; j++)
 				{
-					var bp:Bitmap=arr[j];
-					var cell:Cell=new Cell(i, j, bp);
+					var cell:Cell=new Cell(i, j, getImage((gamelevel == 0 ? "easy" : "hard") + i.toString() + j.toString()));
 					cell.pivotX=piv.x >> 1;
 					cell.pivotY=piv.y >> 1;
 					playground.addChild(cell);
@@ -301,6 +326,7 @@ package views.module2.scene21
 					cellArr.push(cell);
 				}
 			}
+
 		}
 
 		private function shuffle():void
@@ -532,13 +558,13 @@ package views.module2.scene21
 			okHolder.touchable=false;
 		}
 
-		override public function dispose():void
-		{
-			bpArr=null;
-			if (analyst)
-				analyst.dispose();
-			analyst=null;
-			super.dispose();
-		}
+//		override public function dispose():void
+//		{
+//			bpArr=null;
+//			if (analyst)
+//				analyst.dispose();
+//			analyst=null;
+//			super.dispose();
+//		}
 	}
 }

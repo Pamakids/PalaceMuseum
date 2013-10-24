@@ -16,6 +16,7 @@ package views.module4
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.Craw;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 
@@ -71,9 +72,11 @@ package views.module4
 			bgHolder.addChild(peopleHolder);
 			for (var i:int=0; i < crawPosArr.length; i++)
 			{
-				var craw:Image=getImage("craw");
-				craw.x=crawPosArr[i].x;
-				craw.y=crawPosArr[i].y;
+				var craw:Craw=new Craw(assetManager.getTexture("craw"));
+				craw.pivotX=20;
+				craw.pivotY=20;
+				craw.x=crawPosArr[i].x + 20;
+				craw.y=crawPosArr[i].y + 20;
 				bgHolder.addChild(craw);
 				craw.addEventListener(TouchEvent.TOUCH, onCrowTouch);
 				crawArr.push(craw);
@@ -87,7 +90,7 @@ package views.module4
 
 		private function onCrowTouch(e:TouchEvent):void
 		{
-			var craw:Image=e.currentTarget as Image;
+			var craw:Craw=e.currentTarget as Craw;
 			if (!craw)
 				return;
 			var tc:Touch=e.getTouch(craw, TouchPhase.ENDED);
@@ -98,10 +101,11 @@ package views.module4
 
 		}
 
-		private function showChancellor(craw:Image):void
+		private function showChancellor(craw:Craw):void
 		{
 			var index:int=crawArr.indexOf(craw);
 			craw.removeEventListener(TouchEvent.TOUCH, onCrowTouch);
+			craw.deActive();
 			craw.touchable=false;
 			checkArr[index]=true;
 			var dx:Number;

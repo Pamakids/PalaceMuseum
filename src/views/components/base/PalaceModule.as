@@ -26,7 +26,6 @@ package views.components.base
 		public function get moduleName():String
 		{
 			return StringUtils.getClassName(this);
-			;
 		}
 
 		protected var assetManager:AssetManager;
