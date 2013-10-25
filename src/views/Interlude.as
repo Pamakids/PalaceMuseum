@@ -147,7 +147,6 @@ package views
 					trace("NetStream.Play.Start");
 					TweenLite.to(shape, 1.5, {alpha: 0, onComplete: function():void{
 						shape.graphics.clear();
-						this.removeChild( shape );
 						shape=null;
 					}});
 					if(startHandler)
