@@ -55,22 +55,9 @@ package views.global.userCenter.map
 			cache.x=mapButton.x;
 			cache.y=mapButton.y;
 			
-			imageL = new Image(UserCenterManager.getTexture("image_map_left"));
-			this.addChild( imageL );
-			imageL.x = 19;
-			imageL.y = 151;
-			
-			imageR = new Image(UserCenterManager.getTexture("image_map_right"));
-			this.addChild( imageR );
-			imageR.x = 685;
-			imageR.y = 144;
-			
-			cache.touchable=imageL.touchable=imageR.touchable=false;
+			cache.touchable=false;
 		}
 
-		private var imageL:Image;
-		private var imageR:Image;
-		
 		private function initMapButton():void
 		{
 			mapTexture=UserCenterManager.getTexture("button_map_skin");
@@ -96,7 +83,7 @@ package views.global.userCenter.map
 
 				var point:Point=this.globalToLocal(new Point(0, 0));
 				UserCenterManager.disable();
-				TweenLite.to(cache, 0.5, {x: point.x + 12, y: -cache.height + point.y - 88, scaleX: 1, scaleY: 1, ease: Cubic.easeOut, onComplete: function():void
+				TweenLite.to(cache, 0.5, {y: -cache.height + point.y - 88, ease: Cubic.easeOut, onComplete: function():void
 				{
 					Map.show(function(status:int):void
 					{
@@ -127,10 +114,6 @@ package views.global.userCenter.map
 			}
 			if (cache)
 				cache.removeFromParent(true);
-			if(imageL)
-				imageL.removeFromParent(true);
-			if(imageR)
-				imageR.removeFromParent(true);
 			if (mapTexture)
 				mapTexture.dispose();
 			super.dispose();

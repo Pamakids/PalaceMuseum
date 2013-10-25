@@ -1,8 +1,10 @@
 package views
 {
+	import com.greensock.TweenLite;
 	import com.pamakids.manager.SoundManager;
 	
 	import flash.display.Bitmap;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
@@ -59,6 +61,7 @@ package views
 			this.addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 		
+		private var shape:Shape;
 		private function onAdded(e:Event):void
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
@@ -79,8 +82,18 @@ package views
 		
 		private function initialize():void
 		{
+			initShape();
 			initButton();
 			initConnection();
+		}
+		
+		private function initShape():void
+		{
+			shape = new Shape();
+			this.addChild( shape );
+			shape.graphics.beginFill(stage.color);
+			shape.graphics.drawRect(0,0,stage.stageWidth, stage.stageHeight);
+			shape.graphics.endFill();
 		}
 		
 		private function initButton():void
@@ -130,6 +143,11 @@ package views
 					break;
 				case "NetStream.Play.Start":
 					trace("NetStream.Play.Start");
+					TweenLite.to(shape, 1.5, {alpha: 0, onComplete: function():void{
+						shape.graphics.clear();
+						this.removeChild( shape );
+						shape=null;
+					}});
 					if(startHandler)
 						startHandler();
 					break;
@@ -151,8 +169,8 @@ package views
 			
 			stageVideo = stage.stageVideos[0];
 			stageVideo.attachNetStream( stream );
-			stream.play( videoURL );
 			stageVideo.viewPort = new Rectangle(0, 0 ,stage.stageWidth,stage.stageHeight);
+			stream.play( videoURL );
 			
 //			video = new Video(viewWidth, viewHeight);
 //			video.attachNetStream( stream );
@@ -178,6 +196,7 @@ package views
 			Starling.current.stage3D.x = 0;
 			Starling.current.stage3D.y = 0;
 			SoundManager.instance.play("main");
+			TweenLite.killTweensOf(shape);
 			if(connection)
 			{
 				connection.removeEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
