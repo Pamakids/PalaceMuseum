@@ -15,17 +15,19 @@ package views.global
 	import starling.textures.Texture;
 
 	import views.components.LionMC;
-	import views.global.userCenter.UserCenterManager;
 
 	public class TailBar extends Sprite
 	{
 		public function TailBar()
 		{
+			if (parent)
+				parent.addChild(this);
 			LoadManager.instance.loadImage('assets/common/tail.png', loadedHandler);
 		}
 
-		private var dx:Number;
+		private static var dx:Number;
 		private static var _instance:TopBar;
+		public static var parent:Sprite;
 
 		public static function get instance():TopBar
 		{
@@ -46,12 +48,12 @@ package views.global
 			visible=false;
 		}
 
-		public function hide():void
+		public static function hide():void
 		{
 			instance.visible=false;
 		}
 
-		public function show():void
+		public static function show():void
 		{
 			instance.visible=true;
 			instance.x=-dx;

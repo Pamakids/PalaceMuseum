@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:75e465791609f73efeafee43545d962e$ -->
+<TextureAtlas imagePath="m4s1.png">
+    <SubTexture name="chancellor" x="498" y="234" width="100" height="102"/>
+    <SubTexture name="pillar" x="498" y="2" width="1539" height="168"/>
+    <SubTexture name="shakehint" x="2" y="2" width="432" height="267"/>
+    <SubTexture name="wen" x="250" y="271" width="246" height="197"/>
+    <SubTexture name="wenguan" x="569" y="172" width="131" height="60"/>
+    <SubTexture name="wu" x="2" y="271" width="246" height="197"/>
+    <SubTexture name="wuguan" x="436" y="172" width="131" height="60"/>
+</TextureAtlas>

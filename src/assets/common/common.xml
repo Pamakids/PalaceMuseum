@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:2f776aa87f0cc1e81e1760136fc62529$ -->
+<!-- $TexturePacker:SmartUpdate:f7a61e062d86570ae05a1f9d45bcf065$ -->
 <TextureAtlas imagePath="common.png">
     <SubTexture name="acheivebar" x="2" y="1188" width="555" height="162"/>
     <SubTexture name="bird" x="902" y="2" width="119" height="114"/>
     <SubTexture name="birdBG" x="2" y="664" width="848" height="522"/>
     <SubTexture name="button_close" x="902" y="118" width="80" height="81"/>
+    <SubTexture name="craw-light" x="984" y="153" width="35" height="33"/>
     <SubTexture name="craw" x="984" y="118" width="35" height="33"/>
     <SubTexture name="game-start-down" x="518" y="1392" width="174" height="171"/>
     <SubTexture name="game-start" x="852" y="921" width="146" height="147" frameX="-11" frameY="-8" frameWidth="174" frameHeight="171"/>

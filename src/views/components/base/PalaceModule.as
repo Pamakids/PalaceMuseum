@@ -20,6 +20,7 @@ package views.components.base
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
+	import views.global.TopBar;
 
 	public class PalaceModule extends Container
 	{
@@ -43,7 +44,12 @@ package views.components.base
 		{
 			assetManager=am;
 			super(width, height);
-//			LionMC.instance.hide();
+		}
+
+		override protected function init():void
+		{
+			MC.isTopBarShow=false;
+			TopBar.hide();
 		}
 
 		protected var load:Sprite;
@@ -69,7 +75,7 @@ package views.components.base
 			tfQ1.hAlign="left";
 			tfQ1.vAlign="top";
 			tfHolder.addChild(tfQ1);
-			var tfA1:TextField=new TextField(600, 150, A1, FontVo.PALACE_FONT, 28, 0xffffff, true);
+			var tfA1:TextField=new TextField(600, 200, A1, FontVo.PALACE_FONT, 28, 0xffffff, true);
 			tfA1.x=220;
 			tfA1.y=isSingle ? 350 : 180;
 			tfA1.hAlign="left";
@@ -81,7 +87,7 @@ package views.components.base
 			tfQ2.hAlign="left";
 			tfQ2.vAlign="top";
 			tfHolder.addChild(tfQ2);
-			var tfA2:TextField=new TextField(600, 150, A2, FontVo.PALACE_FONT, 28, 0xffffff, true);
+			var tfA2:TextField=new TextField(600, 200, A2, FontVo.PALACE_FONT, 28, 0xffffff, true);
 			tfA2.x=220;
 			tfA2.y=480;
 			tfA2.hAlign="left";

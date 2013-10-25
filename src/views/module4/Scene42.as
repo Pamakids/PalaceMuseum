@@ -91,6 +91,7 @@ package views.module4
 
 		private function initDraw():void
 		{
+			MC.isTopBarShow=false;
 			TopBar.hide();
 			drawScene=new palace_paper(crtIndex, removeMemorial);
 			MC.instance.stage.addChild(drawScene);
@@ -98,6 +99,7 @@ package views.module4
 
 		private function removeMemorial():void
 		{
+			MC.isTopBarShow=true;
 			TopBar.show();
 			TweenLite.to(hand, .5, {y: handPosY, onComplete: function():void {
 

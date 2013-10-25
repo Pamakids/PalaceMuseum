@@ -4,16 +4,23 @@ package views.components
 	import com.greensock.TweenMax;
 
 	import starling.display.Image;
-	import starling.textures.Texture;
+	import starling.display.Sprite;
 
-	public class Craw extends Image
+	public class Craw extends Sprite
 	{
 		private var delay:Number;
 		private var tw:TweenLite;
+		private var img0:Image;
+		private var img1:Image;
 
-		public function Craw(texture:Texture)
+		public function Craw(_img0:Image, _img1:Image, pr:Sprite)
 		{
-			super(texture);
+			pr.addChild(this);
+			img0=_img0;
+			img1=_img1;
+			addChild(img0);
+			addChild(img1);
+			img1.visible=false;
 			active();
 		}
 
@@ -25,13 +32,16 @@ package views.components
 
 		private function shake():void
 		{
-			TweenMax.to(this, 3, {shake: {rotation: Math.PI / 36, numShakes: 6}, onComplete: function():void
+			img1.visible=true;
+			TweenMax.to(this, 3, {shake: {rotation: Math.PI / 12, numShakes: 6}, onComplete: function():void
 			{
+				img1.visible=false;
 				tw=TweenLite.delayedCall(delay, shake);
 			}});
 		}
 
 		private var _da:Number=1.0;
+		public var index:int;
 
 		public function get da():Number
 		{
@@ -47,6 +57,7 @@ package views.components
 		public function deActive():void
 		{
 			this.alpha=1;
+			img1.visible=false;
 			TweenLite.killTweensOf(this);
 			if (tw)
 				TweenLite.killDelayedCallsTo(tw);

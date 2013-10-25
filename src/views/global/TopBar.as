@@ -50,6 +50,12 @@ package views.global
 
 		public static function show():void
 		{
+			if (!MC.isTopBarShow)
+			{
+				hide();
+				return;
+			}
+			trace("show")
 			if (!bar)
 			{
 				bar=new TopBar();
@@ -59,10 +65,17 @@ package views.global
 			bar.visible=true;
 			bar.x=dx;
 			bar.y=10;
+			enable=true;
 		}
 
 		public static function hide():void
 		{
+			if (MC.isTopBarShow)
+			{
+				show();
+				return;
+			}
+			trace("hide")
 			if (bar)
 			{
 				bar.x=dx;

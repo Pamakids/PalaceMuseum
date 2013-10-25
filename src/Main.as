@@ -1,8 +1,6 @@
 package
 {
 	import flash.filesystem.File;
-	import flash.system.Capabilities;
-	import flash.ui.Keyboard;
 
 	import controllers.MC;
 
@@ -11,8 +9,11 @@ package
 	import models.SOService;
 
 	import starling.core.Starling;
+	import starling.display.Image;
 	import starling.display.Sprite;
-	import starling.events.KeyboardEvent;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
@@ -20,6 +21,7 @@ package
 	import views.Module1;
 	import views.components.Prompt;
 	import views.components.base.Container;
+	import views.components.base.PalaceModule;
 	import views.global.map.Map;
 
 	public class Main extends Container
@@ -54,14 +56,52 @@ package
 
 		private var inito:Interlude;
 
+		private var startHolder:Sprite;
+
+		public function get lastScene():String
+		{
+			return SOService.instance.getSO("lastScene") as String;
+		}
+
 		override protected function init():void
 		{
-			var lastScene:String=SOService.instance.getSO("lastScene") as String;
-			trace(lastScene);
 			if (!lastScene)
-				initIntro();
+				showStart();
 			else
 				startGame();
+		}
+
+		[Embed(source="/assets/common/title.png")]
+		public static var Title:Class
+
+		public function showStart():void
+		{
+			startHolder=new Sprite();
+			startHolder.addChild(Image.fromBitmap(new PalaceModule.gameBG()));
+			var title:Image=Image.fromBitmap(new Title());
+			title.x=1024 - title.width >> 1;
+			title.y=768 - title.height >> 1;
+			startHolder.addChild(title);
+			addChild(startHolder);
+			startHolder.addEventListener(TouchEvent.TOUCH, onStart);
+		}
+
+		private function onStart(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(startHolder, TouchPhase.ENDED)
+			if (tc)
+			{
+				startHolder.removeFromParent(true);
+				if (!lastScene)
+					initIntro();
+				else
+					startGame();
+			}
+		}
+
+		override public function restart():void
+		{
+			showStart();
 		}
 
 		private function initIntro():void
@@ -72,54 +112,24 @@ package
 
 		private function startGame():void
 		{
-			var lastScene:String=SOService.instance.getSO("lastScene") as String;
 			parseMS(lastScene);
 		}
 
-		private function parseMS(lastScene:String):void
+		private function parseMS(_lastScene:String):void
 		{
-			if (!lastScene)
+			if (!_lastScene)
 			{
 				Map.show();
 				return;
 			}
-			var moduleIndex:int=int(lastScene.charAt(0)) - 1;
-			var sceneIndex:int=int(lastScene.charAt(1)) - 1;
+			var moduleIndex:int=int(_lastScene.charAt(0)) - 1;
+			var sceneIndex:int=int(_lastScene.charAt(1)) - 1;
 			if (moduleIndex < 0 || sceneIndex < 0)
 				Map.show();
-			else if (lastScene.lastIndexOf("map") < 0)
+			else if (_lastScene.lastIndexOf("map") < 0)
 				MC.instance.gotoModule(moduleIndex, sceneIndex);
 			else
 				Map.show(null, moduleIndex - 1, moduleIndex);
-		}
-
-		private function debugInit():void
-		{
-			if (Capabilities.isDebugger)
-			{
-				stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void
-				{
-					if (e.keyCode == Keyboard.ENTER)
-					{
-						if (testingModule)
-						{
-							removeChild(testingModule);
-							testingModule=null;
-						}
-						else
-						{
-							testingModule=new testingModuleClass();
-							addChild(testingModule);
-						}
-					}
-					else if (e.keyCode == Keyboard.RIGHT)
-					{
-//						LionMC.instance.say(Math.random().toString());
-						MC.instance.nextModule();
-					}
-				});
-				return;
-			}
 		}
 	}
 }

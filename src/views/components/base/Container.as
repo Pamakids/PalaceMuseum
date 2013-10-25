@@ -78,5 +78,11 @@ package views.components.base
 				mask=null;
 			}
 		}
+
+		public function restart():void
+		{
+			// TODO Auto Generated method stub
+
+		}
 	}
 }

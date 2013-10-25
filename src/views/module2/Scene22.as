@@ -2,6 +2,8 @@ package views.module2
 {
 	import flash.geom.Point;
 
+	import models.SOService;
+
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -53,7 +55,6 @@ package views.module2
 			hintArr=[hint0, hint1, hint2, hint3, hint4]
 			crtKnowledgeIndex=6;
 			addBG("bg32");
-//			addChild(getImage("bg32"));
 
 			for (var i:int=0; i < itemNameArr.length; i++)
 			{
@@ -71,20 +72,49 @@ package views.module2
 			thermo.x=45;
 			thermo.y=246;
 			addChild(thermo);
+			if (checkClicked(0))
+				addLabel(0);
 
 			tele=getImage("tele32");
 			tele.x=474;
 			tele.y=453;
 			addChild(tele);
+			if (checkClicked(1))
+				addLabel(1);
 
 			prism=getImage("prism32");
 			prism.x=834;
 			prism.y=380;
 			addChild(prism);
+			if (checkClicked(2))
+				addLabel(2);
 
 			addCraw(new Point(174, 578));
 			addCraw(new Point(590, 632));
 			addCraw(new Point(908, 461));
+		}
+
+		private var nameArr:Array=["thermo", "tele", "prism"];
+		private var labelPosArr:Array=[new Point(198, 552),
+			new Point(563, 696), new Point(902, 630)];
+
+		private function checkClicked(index:int):Boolean
+		{
+			return SOService.instance.getSO(nameArr[index] + "clicked");
+		}
+
+		private function setClicked(index:int):void
+		{
+			SOService.instance.setSO(nameArr[index] + "clicked", true);
+		}
+
+		private function addLabel(index:int):void
+		{
+			var label:Image=getImage("label-" + nameArr[index]);
+			label.x=labelPosArr[index].x;
+			label.y=labelPosArr[index].y;
+			addChild(label);
+			label.touchable=false;
 		}
 
 		private function addTouchs():void
@@ -160,6 +190,11 @@ package views.module2
 
 		private function onTelePlayed(e:Event):void
 		{
+			if (!checkClicked(1))
+			{
+				addLabel(1);
+				setClicked(1);
+			}
 			if (teleGame.finished)
 				showAchievement(13);
 			teleGame.removeEventListener(PalaceGame.GAME_OVER, onTelePlayed)
@@ -185,6 +220,11 @@ package views.module2
 
 		private function onPrismPlayed(e:Event):void
 		{
+			if (!checkClicked(2))
+			{
+				addLabel(2);
+				setClicked(2);
+			}
 			prismGame.removeEventListener(PalaceGame.GAME_OVER, onPrismPlayed)
 			prismGame.removeEventListener("addCard", onPrismAddCard)
 			prismGame.removeChildren();
@@ -201,6 +241,11 @@ package views.module2
 
 		private function onThermoPlayed(e:Event):void
 		{
+			if (!checkClicked(0))
+			{
+				addLabel(0);
+				setClicked(0);
+			}
 			showAchievement(11);
 			thermoGame.removeEventListener(PalaceGame.GAME_OVER, onThermoPlayed)
 			thermoGame.removeChildren();
