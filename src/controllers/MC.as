@@ -2,19 +2,21 @@ package controllers
 {
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.Singleton;
-	
+
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
-	
+
 	import feathers.core.PopUpManager;
-	
+
+	import models.SOService;
+
 	import sound.SoundAssets;
-	
+
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-	
+
 	import views.Interlude;
 	import views.Module1;
 	import views.Module2;
@@ -25,6 +27,7 @@ package controllers
 	import views.components.Prompt;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
+	import views.global.TailBar;
 	import views.global.TopBar;
 	import views.global.map.Map;
 	import views.global.userCenter.UserCenterManager;
@@ -57,14 +60,14 @@ package controllers
 		public var stage:PalaceMuseum;
 		private var topBarLayer:Sprite;
 		private var sm:SoundManager;
+		private var centerLayer:Sprite;
+		private var mapLayer:Sprite;
 
 		public function init(main:Container):void
 		{
 			this.main=main;
 			Prompt.parent=main;
-			Map.parent=main;
 			PopUpManager.root=main;
-			UserCenterManager.userCenterContainer=main;
 			PopUpManager.overlayFactory=function defaultOverlayFactory():starling.display.DisplayObject
 			{
 				const quad:Quad=new Quad(1024, 768, 0x000000);
@@ -178,22 +181,36 @@ package controllers
 			{
 				moduleIndex++;
 			}
-			else			//gameover
+			else //gameover
 			{
-				var end:Interlude = new Interlude("assets/video/end.mp4", false, null, onEnd);
-				Starling.current.nativeStage.addChild( end );
+				var end:Interlude=new Interlude("assets/video/end.mp4", false, null, onEnd);
+				Starling.current.nativeStage.addChild(end);
 				LionMC.instance.hide();
 			}
 		}
+
 		private function onEnd():void
 		{
-//			moduleIndex = 0;
-			LionMC.instance.show();
-			//游戏结束动画播放完成后执行
-			MC.instance.clearCrtModule();
-			Map.show(null, -1, -1, true);
+			restart();
 		}
-		
+
+		public static var isTopBarShow:Boolean=true;
+
+		public function restart():void
+		{
+			SoundManager.instance.stop("main");
+			SOService.instance.init();
+			LionMC.instance.show();
+			clearCrtModule();
+			MC.isTopBarShow=false;
+			TopBar.hide();
+			TailBar.hide();
+			UserCenterManager.closeUserCenter();
+			if (Map.map)
+				Map.map.clear(0);
+			main.restart();
+		}
+
 		public function preModule():void
 		{
 			if (moduleIndex > 0)
@@ -203,21 +220,57 @@ package controllers
 		private function initLayers():void
 		{
 			contentLayer=new Sprite();
+			centerLayer=new Sprite();
+			mapLayer=new Sprite();
 			topBarLayer=new Sprite();
+
 			main.addChild(contentLayer);
+			main.addChild(centerLayer);
+			main.addChild(mapLayer);
 			main.addChild(topBarLayer);
+
+			UserCenterManager.userCenterContainer=centerLayer;
+			Map.parent=mapLayer;
 			TopBar.parent=topBarLayer;
+			TailBar.parent=topBarLayer;
 		}
 
 		public function set contentEnable(value:Boolean):void
 		{
 			contentLayer.touchable=value;
 		}
-		
-		public function restartGame():void
+
+		public function switchLayer(isMap:Boolean):void
 		{
-			// TODO Auto Generated method stub
-			
+			var index1:int=main.getChildIndex(centerLayer);
+			var index2:int=main.getChildIndex(mapLayer);
+			var i1:int=Math.min(index1, index2);
+			var i2:int=Math.max(index1, index2);
+			if (isMap)
+			{
+				main.setChildIndex(centerLayer, i1);
+				main.setChildIndex(mapLayer, i2);
+				MC.isTopBarShow=true;
+				TopBar.show();
+			}
+			else
+			{
+				main.setChildIndex(mapLayer, i1);
+				main.setChildIndex(centerLayer, i2);
+				isTopBarShow=(UserCenterManager.getCrtUserCenter() == null);
+				TopBar.hide();
+				UserCenterManager.enable();
+			}
+		}
+
+		public function switchWOTB():void
+		{
+			var index1:int=main.getChildIndex(centerLayer);
+			var index2:int=main.getChildIndex(mapLayer);
+			var i1:int=Math.min(index1, index2);
+			var i2:int=Math.max(index1, index2);
+			main.setChildIndex(centerLayer, i1);
+			main.setChildIndex(mapLayer, i2);
 		}
 	}
 }

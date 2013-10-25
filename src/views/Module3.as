@@ -36,7 +36,8 @@ package views
 			addQAS();
 			addLoading();
 
-			if (assetManager){
+			if (assetManager)
+			{
 				assetManager.purge();
 				assetManager=null;
 			}
@@ -64,7 +65,8 @@ package views
 			addQAS();
 			addLoading();
 
-			if (assetManager){
+			if (assetManager)
+			{
 				assetManager.purge();
 				assetManager=null;
 			}

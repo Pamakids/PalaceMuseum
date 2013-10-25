@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:3bb21d980c4ad769aba1c6ee6a15d922$ -->
+<!-- $TexturePacker:SmartUpdate:800743b49dab7fb2e35fba67066c6cce$ -->
 <TextureAtlas imagePath="m5s1.png">
     <SubTexture name="dachen1" x="786" y="2" width="230" height="165"/>
     <SubTexture name="dachen2" x="177" y="329" width="112" height="93"/>
+    <SubTexture name="label0" x="72" y="471" width="68" height="36"/>
+    <SubTexture name="label1" x="2" y="471" width="68" height="36"/>
     <SubTexture name="scene51-bird" x="2" y="2" width="782" height="325"/>
     <SubTexture name="taihou" x="2" y="329" width="173" height="140"/>
 </TextureAtlas>

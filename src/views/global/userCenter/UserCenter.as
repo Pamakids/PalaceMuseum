@@ -3,6 +3,8 @@ package views.global.userCenter
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
+	import controllers.MC;
+
 	import feathers.controls.Button;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
@@ -21,6 +23,7 @@ package views.global.userCenter
 	import starling.textures.Texture;
 
 	import views.components.SoftPaperAnimation;
+	import views.global.TopBar;
 	import views.global.userCenter.achievement.AchievementScreen;
 	import views.global.userCenter.collection.CollectionScreen;
 	import views.global.userCenter.handbook.HandbookScreen;
@@ -71,6 +74,8 @@ package views.global.userCenter
 //initialize--------------------------------------------------------------------------------------
 		private function init():void
 		{
+			MC.isTopBarShow=false;
+			TopBar.hide();
 			this.screenNames=[MAP, USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION];
 
 			initBackgroud();

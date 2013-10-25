@@ -42,7 +42,6 @@ package views.module5
 			super(am);
 			crtKnowledgeIndex=12;
 			addBG("bg51");
-//			addChild(getImage("bg51"));
 
 			addPeople();
 
@@ -61,8 +60,19 @@ package views.module5
 				addChild(img);
 				img.addEventListener(TouchEvent.TOUCH, onClick);
 				imgArr.push(img);
+
+				var label:Image=getImage("label" + (i < 2 ? 0 : 1).toString());
+				label.touchable=false;
+				label.x=labelPosArr[i].x;
+				label.y=labelPosArr[i].y;
+				addChild(label);
+				labelArr.push(label);
 			}
 		}
+
+		private var labelPosArr:Array=[new Point(352, 574),
+			new Point(891, 391), new Point(818, 560)];
+		private var labelArr:Array=[];
 
 		private function onClick(e:TouchEvent):void
 		{
@@ -81,6 +91,7 @@ package views.module5
 			var cb:Function=function():void {
 				TweenLite.to(img, 1.5, {x: dx, y: dy, onComplete: function():void {
 					TweenLite.to(img, .5, {alpha: 0});
+					TweenLite.to(labelArr[index], .5, {alpha: 0});
 					checkAll(index);
 				}});}
 			Prompt.showTXT(img.x + txtOffset[index].x,

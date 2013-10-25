@@ -2,15 +2,17 @@ package views.global.userCenter.map
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
+
 	import flash.geom.Point;
-	
+
+	import controllers.MC;
+
 	import feathers.controls.Button;
-	
+
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
-	
+
 	import views.global.map.Map;
 	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenter;
@@ -36,7 +38,7 @@ package views.global.userCenter.map
 			super.initialize();
 			initMapButton();
 			initCacheImage();
-			
+
 			dispatchEventWith(UserCenter.InitViewPlayed);
 		}
 
@@ -72,7 +74,12 @@ package views.global.userCenter.map
 
 		private function onTriggered():void
 		{
-			mapButton.visible=false;
+			UserCenterManager.disable();
+			if (Map.map && Map.map.visible)
+			{
+				MC.instance.switchLayer(true);
+				return;
+			}
 
 			if (cache)
 			{
@@ -82,7 +89,6 @@ package views.global.userCenter.map
 				cache.visible=true;
 
 				var point:Point=this.globalToLocal(new Point(0, 0));
-				UserCenterManager.disable();
 				TweenLite.to(cache, 0.5, {y: -cache.height + point.y - 88, ease: Cubic.easeOut, onComplete: function():void
 				{
 					Map.show(function(status:int):void
@@ -98,7 +104,6 @@ package views.global.userCenter.map
 			}
 			else
 			{
-				UserCenterManager.disable();
 				Map.show(function():void {
 					UserCenterManager.enable();
 				}, -1, -1, true);
