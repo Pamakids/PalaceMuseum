@@ -103,7 +103,7 @@ package views
 		//跳过
 		protected function passHandler(event:Event):void
 		{
-			trace("哎呦");
+			this.dispose();
 		}
 		
 		private function initConnection():void
