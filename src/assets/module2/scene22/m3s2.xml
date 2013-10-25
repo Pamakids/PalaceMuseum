@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:5a4985716baa3b2ac4878f75129ab0e3$ -->
+<!-- $TexturePacker:SmartUpdate:059eb96a64d6d30f08fff580958404c3$ -->
 <TextureAtlas imagePath="m3s2.png">
     <SubTexture name="brushpot" x="1406" y="921" width="118" height="191"/>
     <SubTexture name="collection_card_5" x="161" y="1516" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
@@ -52,6 +52,9 @@
     <SubTexture name="eye0046" x="967" y="421" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
     <SubTexture name="hint32" x="547" y="391" width="137" height="58"/>
     <SubTexture name="inkstone" x="746" y="1032" width="208" height="137"/>
+    <SubTexture name="label-prism" x="341" y="1998" width="91" height="47"/>
+    <SubTexture name="label-tele" x="248" y="1998" width="91" height="47"/>
+    <SubTexture name="label-thermo" x="892" y="559" width="91" height="47"/>
     <SubTexture name="light-input" x="2" y="2" width="1020" height="39"/>
     <SubTexture name="light-out" x="2" y="43" width="688" height="346"/>
     <SubTexture name="light-prism" x="1202" y="1099" width="194" height="169"/>

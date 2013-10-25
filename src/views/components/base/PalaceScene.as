@@ -15,6 +15,8 @@ package views.components.base
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 
+	import controllers.MC;
+
 	import feathers.core.PopUpManager;
 
 	import models.AchieveVO;
@@ -25,6 +27,7 @@ package views.components.base
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.TouchEvent;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
@@ -79,20 +82,24 @@ package views.components.base
 			addChild(bird);
 		}
 
-		protected function addCraw(pt:Point):void
+		protected function addCraw(pt:Point, clickFunc:Function=null, pr:Sprite=null, index:int=0):void
 		{
-			var craw:Craw=new Craw(assetManager.getTexture("craw"));
+			var craw:Craw=new Craw(getImage("craw"), getImage("craw-light"), pr ? pr : this);
 			craw.pivotX=20;
 			craw.pivotY=20;
 			craw.x=pt.x + 20;
 			craw.y=pt.y + 20;
-			addChild(craw);
-			craw.touchable=false;
+			craw.index=index;
+			if (clickFunc != null)
+				craw.addEventListener(TouchEvent.TOUCH, clickFunc);
+			else
+				craw.touchable=false;
 		}
 
 		override protected function onStage(e:Event):void
 		{
 			super.onStage(e);
+			MC.isTopBarShow=true;
 			TopBar.show();
 		}
 
@@ -110,6 +117,7 @@ package views.components.base
 			assetManager=null;
 			removeChildren();
 			super.dispose();
+			MC.isTopBarShow=false;
 			TopBar.hide();
 		}
 

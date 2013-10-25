@@ -60,7 +60,7 @@ package views.module4
 		}
 
 		private var crawPosArr:Array=[new Point(1278, 708), new Point(1064, 490), new Point(1488, 490)];
-		private var crawArr:Array=[];
+//		private var crawArr:Array=[];
 		private var peoplePosArr:Array=[new Point(1241, 641), new Point(911, 416), new Point(1421, 416)];
 
 		private var hintArr:Array=["大臣们奏事时，依次来到皇帝的龙案前跪下，汇报工作，接受指令",
@@ -72,14 +72,15 @@ package views.module4
 			bgHolder.addChild(peopleHolder);
 			for (var i:int=0; i < crawPosArr.length; i++)
 			{
-				var craw:Craw=new Craw(assetManager.getTexture("craw"));
-				craw.pivotX=20;
-				craw.pivotY=20;
-				craw.x=crawPosArr[i].x + 20;
-				craw.y=crawPosArr[i].y + 20;
-				bgHolder.addChild(craw);
-				craw.addEventListener(TouchEvent.TOUCH, onCrowTouch);
-				crawArr.push(craw);
+				addCraw(crawPosArr[i], onCrowTouch, bgHolder, i);
+//				var craw:Craw=new Craw(assetManager.getTexture("craw"));
+//				craw.pivotX=20;
+//				craw.pivotY=20;
+//				craw.x=crawPosArr[i].x + 20;
+//				craw.y=crawPosArr[i].y + 20;
+//				bgHolder.addChild(craw);
+//				craw.addEventListener(TouchEvent.TOUCH, onCrowTouch);
+//				crawArr.push(craw);
 			}
 			var pillar:Image=getImage("pillar");
 			bgHolder.addChild(pillar);
@@ -103,7 +104,8 @@ package views.module4
 
 		private function showChancellor(craw:Craw):void
 		{
-			var index:int=crawArr.indexOf(craw);
+			var index:int=craw.index;
+//			crawArr.indexOf(craw);
 			craw.removeEventListener(TouchEvent.TOUCH, onCrowTouch);
 			craw.deActive();
 			craw.touchable=false;

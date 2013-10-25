@@ -1,15 +1,15 @@
 package views.global.userCenter
 {
 	import flash.filesystem.File;
-	
+
 	import controllers.MC;
-	
+
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.LionMC;
 	import views.components.base.PalaceModule;
 	import views.global.TopBar;
@@ -42,8 +42,13 @@ package views.global.userCenter
 			}
 			else
 			{
+				MC.instance.switchLayer(false);
 				if (_userCenter && _userCenter.parent)
+				{
+					MC.instance.main.removeMask();
+					enable();
 					return;
+				}
 				MC.instance.main.removeMask();
 				if (!_userCenter)
 					_userCenter=new UserCenter(index);
@@ -60,9 +65,9 @@ package views.global.userCenter
 				_userCenter.removeFromParent(true);
 			_userCenter=null;
 			MC.instance.showMC();
+			MC.instance.switchLayer(true);
 			LionMC.instance.show();
 			TopBar.enable=true;
-			TopBar.show();
 		}
 
 
@@ -115,9 +120,9 @@ package views.global.userCenter
 		{
 			_assetsManager=new AssetManager();
 			_assetsManager.enqueue(
-				File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"), 
+				File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"),
 				"json/collection.json"
-			);
+				);
 			_assetsManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)

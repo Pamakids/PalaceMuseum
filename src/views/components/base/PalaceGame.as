@@ -51,6 +51,7 @@ package views.components.base
 		override protected function onStage(e:Event):void
 		{
 			super.onStage(e);
+			MC.isTopBarShow=false;
 			TopBar.hide();
 			MC.instance.hideMC();
 		}
@@ -66,6 +67,7 @@ package views.components.base
 			else
 				assetManager=null;
 			super.dispose();
+			MC.isTopBarShow=true;
 			TopBar.show();
 			MC.instance.showMC();
 		}

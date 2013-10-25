@@ -27,6 +27,7 @@ package views.global.map
 	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceModule;
+	import views.global.TopBar;
 	import views.global.userCenter.UserCenterManager;
 
 	/**
@@ -205,6 +206,7 @@ package views.global.map
 			if (!fromCenter)
 				SOService.instance.setSO("lastScene", msIndex);
 			MC.instance.hideMC();
+			MC.instance.switchWOTB();
 			showFromCenter=fromCenter;
 			var ec:Boolean=true;
 			if (from || to || callback == null)
@@ -231,7 +233,7 @@ package views.global.map
 			clear(1);
 		}
 
-		private function clear(status:int):void
+		public function clear(status:int):void
 		{
 			var msIndex:String=SOService.instance.getSO("lastScene") as String;
 			if (msIndex && msIndex.lastIndexOf("map") >= 0)
@@ -240,12 +242,22 @@ package views.global.map
 			visible=false;
 			closeButton.visible=false;
 			changing=false;
+			if (UserCenterManager.getCrtUserCenter() != null)
+				MC.instance.switchLayer(false);
+			else
+			{
+				MC.isTopBarShow=true;
+				TopBar.show();
+			}
 			if (!callback)
 				return;
-			if (callback.length)
-				callback(status);
-			else
-				callback();
+			if (status)
+			{
+				if (callback.length)
+					callback(status);
+				else
+					callback();
+			}
 			callback=null;
 			king.visible=false;
 			for (var key:* in showingHint)
@@ -305,6 +317,7 @@ package views.global.map
 			var comFunc:Function=function():void
 			{
 				initCloseButton();
+				MC.instance.switchLayer(true);
 				closeButton.visible=showFromCenter;
 				addEventListener(TouchEvent.TOUCH, touchHandler);
 				positionSun(showFromCenter ? mc.moduleIndex : from);
