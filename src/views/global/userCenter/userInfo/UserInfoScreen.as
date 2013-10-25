@@ -280,15 +280,6 @@ package views.global.userCenter.userInfo
 				w_chooseUser.invalidate(INVALIDATION_FLAG_ALL);
 		}
 		
-		/**
-		 * 变更角色
-		 * @param userdata
-		 * 
-		 */		
-		private function changeHandler(userdata:Object):void
-		{
-		}
-		
 		private var crtUserData:Object;
 		private var crtUserView:CurrentUserView;
 		private function initCrtUserView():void
