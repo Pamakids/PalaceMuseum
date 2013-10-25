@@ -1,16 +1,15 @@
 package views.global.userCenter.handbook
 {
 	import feathers.core.PopUpManager;
-
+	
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.base.PalaceModule;
 	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenter;
-	import views.global.userCenter.UserCenterManager;
 
 	/**
 	 * 用户中心速成手册场景<p>
