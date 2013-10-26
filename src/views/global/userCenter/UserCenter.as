@@ -405,9 +405,9 @@ package views.global.userCenter
 		{
 			aniable = false;
 			prevIndex = screen;
-			_tabBar.selectedIndex=screen;
 			if (screen == 2)
 				crtPage_Handbook=page;
+			_tabBar.selectedIndex=screen;
 			_navigator.showScreen(screenNames[screen]);
 		}
 	}
