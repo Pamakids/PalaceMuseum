@@ -403,9 +403,11 @@ package views.global.userCenter
 		 */
 		public function turnTo(screen:int, page:int=0):void
 		{
-			_tabBar.selectedIndex=screen;
+			aniable = false;
+			prevIndex = screen;
 			if (screen == 2)
 				crtPage_Handbook=page;
+			_tabBar.selectedIndex=screen;
 			_navigator.showScreen(screenNames[screen]);
 		}
 	}
