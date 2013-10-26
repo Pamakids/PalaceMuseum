@@ -133,14 +133,7 @@ package controllers
 			if (value != _moduleIndex)
 			{
 				DC.instance.completeModule();
-				Map.show(function(status:int):void
-				{
-					if (!status)
-					{
-						_moduleIndex=value;
-						showModule();
-					}
-				}, _moduleIndex, value);
+				Map.show(null, _moduleIndex, value);
 			}
 			else
 			{
@@ -183,11 +176,16 @@ package controllers
 			}
 			else //gameover
 			{
+				if (Map.map)
+					Map.map.clear(1);
+				MC.isTopBarShow=false;
+				TopBar.hide();
+				TailBar.hide();
 				clearCrtModule();
+				LionMC.instance.hide();
 				SOService.instance.setSO("lastScene", "end");
 				var end:Interlude=new Interlude("assets/video/end.mp4", false, null, onEnd);
 				Starling.current.nativeStage.addChild(end);
-				LionMC.instance.hide();
 			}
 		}
 
@@ -203,13 +201,10 @@ package controllers
 			SoundManager.instance.stop("main");
 			SOService.instance.init();
 			LionMC.instance.show();
-			clearCrtModule();
+			_moduleIndex=-1;
 			MC.isTopBarShow=false;
 			TopBar.hide();
 			TailBar.hide();
-			UserCenterManager.closeUserCenter();
-			if (Map.map)
-				Map.map.clear(0);
 			main.restart();
 		}
 
@@ -234,7 +229,7 @@ package controllers
 			UserCenterManager.userCenterContainer=centerLayer;
 			Map.parent=mapLayer;
 			TopBar.parent=topBarLayer;
-			TailBar.parent=topBarLayer;
+			TailBar._parent=topBarLayer;
 		}
 
 		public function set contentEnable(value:Boolean):void
@@ -254,9 +249,11 @@ package controllers
 				main.setChildIndex(mapLayer, i2);
 				MC.isTopBarShow=true;
 				TopBar.show();
+				TailBar.show();
 			}
 			else
 			{
+				TailBar.hide();
 				main.setChildIndex(mapLayer, i1);
 				main.setChildIndex(centerLayer, i2);
 				isTopBarShow=(UserCenterManager.getCrtUserCenter() == null);

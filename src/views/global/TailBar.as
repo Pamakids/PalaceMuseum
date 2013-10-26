@@ -18,54 +18,51 @@ package views.global
 
 	public class TailBar extends Sprite
 	{
+		[Embed(source="/assets/common/tail.png")]
+		public static var tail:Class
+
 		public function TailBar()
 		{
-			if (parent)
-				parent.addChild(this);
-			LoadManager.instance.loadImage('assets/common/tail.png', loadedHandler);
+			if (_parent)
+				_parent.addChild(this);
+			var book:Button=new Button();
+			book.defaultIcon=Image.fromBitmap(new tail());
+			book.addEventListener(Event.TRIGGERED, tailClickedHandler);
+			addChild(book);
+			dx=73;
+			x=-dx;
+			y=768 - 85;
+			touchable=false;
 		}
 
 		private static var dx:Number;
-		private static var _instance:TopBar;
-		public static var parent:Sprite;
+		private static var _instance:TailBar;
+		public static var _parent:Sprite;
 
-		public static function get instance():TopBar
+		public static function get instance():TailBar
 		{
 			if (!_instance)
-				_instance=new TopBar();
+				_instance=new TailBar();
 			return _instance;
-		}
-
-		private function loadedHandler(b:Bitmap):void
-		{
-			dx=b.width;
-			var book:Button=new Button();
-			book.defaultIcon=new Image(Texture.fromBitmap(b));
-			book.addEventListener(Event.TRIGGERED, tailClickedHandler);
-			addChild(book);
-			x=-dx / 2
-			y=768 - b.height;
-			visible=false;
 		}
 
 		public static function hide():void
 		{
-			instance.visible=false;
+			instance.touchable=false;
+			TweenLite.to(instance, .2, {x: -dx});
 		}
 
 		public static function show():void
 		{
-			instance.visible=true;
 			instance.x=-dx;
-			TweenLite.to(instance, .5, {x: -dx / 2});
+			TweenLite.to(instance, 1, {x: -10, onComplete: function():void {
+				instance.touchable=true;
+			}});
 		}
 
 		private function tailClickedHandler():void
 		{
-			MC.instance.main.addMask(0);
-			TweenLite.to(instance, 1, {x: -dx, onComplete: function():void {
-				LionMC.instance.play();
-			}});
+			LionMC.instance.replay();
 		}
 	}
 }

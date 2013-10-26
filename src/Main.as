@@ -129,9 +129,7 @@ package
 			var moduleIndex:int=int(_lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(_lastScene.charAt(1)) - 1;
 			if (lastScene.indexOf("end") >= 0)
-				Map.show(function():void {
-					MC.instance.gotoModule(0, 0);
-				}, 4, 0, true);
+				Map.show(null, 4, 0, true);
 			else if (moduleIndex < 0 || sceneIndex < 0)
 				Map.show();
 			else if (_lastScene.lastIndexOf("map") < 0)

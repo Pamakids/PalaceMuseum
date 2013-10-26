@@ -35,8 +35,10 @@ package views.components.base
 	import views.components.CollectionCard;
 	import views.components.Craw;
 	import views.components.ElasticButton;
+	import views.components.LionMC;
 	import views.components.PalaceBird;
 	import views.components.Prompt;
+	import views.global.TailBar;
 	import views.global.TopBar;
 
 	public class PalaceScene extends Container
@@ -119,6 +121,8 @@ package views.components.base
 			super.dispose();
 			MC.isTopBarShow=false;
 			TopBar.hide();
+			TailBar.hide();
+			LionMC.instance.clear();
 		}
 
 		protected function getImage(name:String):Image

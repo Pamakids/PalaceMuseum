@@ -20,6 +20,8 @@ package views.components.base
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
+	import views.components.LionMC;
+	import views.global.TailBar;
 	import views.global.TopBar;
 
 	public class PalaceModule extends Container
@@ -50,6 +52,8 @@ package views.components.base
 		{
 			MC.isTopBarShow=false;
 			TopBar.hide();
+			TailBar.hide();
+			LionMC.instance.clear();
 		}
 
 		protected var load:Sprite;
@@ -168,12 +172,12 @@ package views.components.base
 			{
 				removeChild(crtScene);
 				crtScene.dispose();
+				crtScene=null;
 			}
 
 			if (index <= sceneArr.length - 1)
 			{
 				var scene:Class=sceneArr[index] as Class;
-				var sceneName:String=StringUtils.getClassName(scene);
 
 				crtScene=new scene(assetManager);
 				addChild(crtScene);

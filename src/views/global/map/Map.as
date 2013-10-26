@@ -13,7 +13,9 @@ package views.global.map
 	import models.Const;
 	import models.SOService;
 
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Shape;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -181,7 +183,6 @@ package views.global.map
 		}
 
 		public static var map:Map;
-		public static var callback:Function;
 		public static var parent:Sprite;
 		public var from:int;
 		public var to:int;
@@ -211,7 +212,6 @@ package views.global.map
 			var ec:Boolean=true;
 			if (from || to || callback == null)
 				ec=false;
-			Map.callback=callback;
 			if (map)
 			{
 				map.from=from;
@@ -230,11 +230,28 @@ package views.global.map
 
 		private function closeTriggeredHandler(e:Event):void
 		{
-			clear(1);
+			clear(0);
 		}
 
-		public function clear(status:int):void
+		/**
+		 * @param 0:关闭地图 1:关闭地图和用户中心 2:关闭地图和用户中心,切换模块
+		 *
+		 * */
+		public function clear(status:int=0):void
 		{
+			if (preSky)
+			{
+				TweenLite.killTweensOf(preSky);
+				preSky.removeFromParent(true);
+				preSky=null;
+			}
+			if (desSky)
+			{
+				TweenLite.killTweensOf(desSky);
+				desSky.removeFromParent(true);
+				desSky=null;
+			}
+
 			var msIndex:String=SOService.instance.getSO("lastScene") as String;
 			if (msIndex && msIndex.lastIndexOf("map") >= 0)
 				SOService.instance.setSO("lastScene", msIndex.substr(0, 2));
@@ -249,16 +266,32 @@ package views.global.map
 				MC.isTopBarShow=true;
 				TopBar.show();
 			}
-			if (!callback)
-				return;
-			if (status)
+			switch (status)
 			{
-				if (callback.length)
-					callback(status);
-				else
-					callback();
+				case 0:
+				{
+					if (mc.currentModule == null && UserCenterManager.getCrtUserCenter() == null)
+						mc.gotoModule(0, -1);
+					break;
+				}
+
+				case 1:
+				{
+					UserCenterManager.closeUserCenter();
+					break;
+				}
+
+				case 2:
+				{
+					UserCenterManager.closeUserCenter();
+					break;
+				}
+
+				default:
+				{
+					break;
+				}
 			}
-			callback=null;
 			king.visible=false;
 			for (var key:* in showingHint)
 			{
@@ -279,9 +312,14 @@ package views.global.map
 
 		override public function dispose():void
 		{
+			if (sun)
+			{
+				sun.stop();
+				sun.removeFromParent(true);
+				Starling.juggler.remove(sun);
+			}
 			removeEventListener(TouchEvent.TOUCH, touchHandler);
-			super.dispose();
-//			trace('disposed');
+//			super.dispose();
 		}
 
 		private function positionKing(kingPoint:Point=null):void
@@ -357,13 +395,6 @@ package views.global.map
 				lockHolder.touchable=false;
 			}
 			resetLockHolder();
-
-			if (!callback)
-				return;
-			if (callback.length)
-				callback(0);
-			else
-				callback();
 		}
 
 		/**
@@ -454,8 +485,7 @@ package views.global.map
 									{
 										if (targetIndex == crtIndex)
 										{
-											clear(2);
-											UserCenterManager.closeUserCenter();
+											clear(1);
 											return;
 										}
 										else if (sos.isModuleCompleted(targetIndex))
@@ -491,7 +521,7 @@ package views.global.map
 								if (!showingHint[item.tip])
 								{
 									if (changing)
-										showFinalHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 900 ? 3 : 1,
+										showFinalHint(upPoint.x, upPoint.y < 156 ? 156 : upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 800 ? 3 : 1,
 											function():void
 											{
 												delete showingHint[item.tip];
@@ -499,7 +529,7 @@ package views.global.map
 												MC.instance.gotoModule(targetIndex);
 											});
 									else
-										showHint(upPoint.x, upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 800 ? 3 : 1,
+										showHint(upPoint.x, upPoint.y < 156 ? 156 : upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 800 ? 3 : 1,
 											function():void
 											{
 												delete showingHint[item.tip];
@@ -657,7 +687,7 @@ package views.global.map
 		private var typeHolder:Sprite;
 		private var lockHolder:Sprite;
 		private var pathHolder:Sprite;
-		private var sun:Image;
+		private var sun:MovieClip;
 		private var gardenPt:Point;
 
 		/**
@@ -694,12 +724,26 @@ package views.global.map
 			_index=_index > 0 ? _index : 0;
 			if (!sun)
 			{
-				sun=getImage("map-sun");
+				sun=new MovieClip(assetManager.getTextures("sun"), 2);
+				sun.play();
+				Starling.juggler.add(sun);
 				flipAnimation.addChild(sun);
 			}
 			sun.x=sunPosArr[_index].x;
 			sun.y=sunPosArr[_index].y;
+
+			if (preSky)
+			{
+				TweenLite.killTweensOf(preSky);
+				preSky.removeFromParent(true);
+				preSky=null;
+			}
+			preSky=getImage("sky" + (_index + 1).toString());
+			flipAnimation.skyHolder.addChild(preSky);
 		}
+
+		private var preSky:Image;
+		private var desSky:Image;
 
 		/**
 		 *
@@ -708,6 +752,20 @@ package views.global.map
 		 * */
 		private function moveSun(_from:int=-1, _to:int=0):void
 		{
+			if (desSky)
+			{
+				TweenLite.killTweensOf(desSky);
+				desSky.removeFromParent(true);
+				desSky=null;
+			}
+			if (preSky)
+				TweenLite.to(preSky, 2.3, {alpha: 0});
+
+			desSky=getImage("sky" + (Math.max(0, _to) + 1).toString());
+			flipAnimation.skyHolder.addChild(desSky);
+			desSky.alpha=0;
+			TweenLite.to(desSky, 2.3, {alpha: 1});
+
 			TweenLite.killTweensOf(sun);
 			var tp:Point=sunPosArr[Math.max(0, _to)]; //to
 			if (sun.x == tp.x)

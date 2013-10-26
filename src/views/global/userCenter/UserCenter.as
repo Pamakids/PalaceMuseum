@@ -403,8 +403,8 @@ package views.global.userCenter
 		 */
 		public function turnTo(screen:int, page:int=0):void
 		{
-			aniable = false;
-			prevIndex = screen;
+			aniable=false;
+			prevIndex=screen;
 			if (screen == 2)
 				crtPage_Handbook=page;
 			_tabBar.selectedIndex=screen;

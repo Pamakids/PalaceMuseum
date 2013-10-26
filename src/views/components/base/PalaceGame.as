@@ -12,6 +12,7 @@ package views.components.base
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
+	import views.global.TailBar;
 	import views.global.TopBar;
 
 	public class PalaceGame extends Container
@@ -53,6 +54,7 @@ package views.components.base
 			super.onStage(e);
 			MC.isTopBarShow=false;
 			TopBar.hide();
+			TailBar.hide();
 			MC.instance.hideMC();
 		}
 
