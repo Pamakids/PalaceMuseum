@@ -183,6 +183,8 @@ package controllers
 			}
 			else //gameover
 			{
+				clearCrtModule();
+				SOService.instance.setSO("lastScene", "end");
 				var end:Interlude=new Interlude("assets/video/end.mp4", false, null, onEnd);
 				Starling.current.nativeStage.addChild(end);
 				LionMC.instance.hide();

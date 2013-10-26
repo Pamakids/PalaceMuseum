@@ -643,12 +643,13 @@ package views.module3.scene33
 				var gameResultlvl:String=gameResult + gamelevel.toString();
 				var dishgameresult:int=SOService.instance.getSO(gameResultlvl) as int;
 
-				var scoreTXT:TextField=new TextField(300, 80, "");
+				var scoreTXT:TextField=new TextField(400, 80, "");
 				scoreTXT.fontSize=48;
 				scoreTXT.color=0xb83d00;
 				scoreTXT.x=420;
 				scoreTXT.y=280;
 				scoreTXT.vAlign="top"
+				scoreTXT.hAlign="left";
 				endSP.addChild(scoreTXT);
 
 				var recordTXT:TextField=new TextField(100, 40, "");

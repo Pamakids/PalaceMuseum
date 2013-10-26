@@ -32,6 +32,8 @@ package views.components
 				p.playHide();
 		}
 
+		public static var scale:Number=.5;
+
 		private function showLion(type:int=0):void
 		{
 			if (lion)
@@ -41,9 +43,9 @@ package views.components
 				lion=null;
 			}
 			lion=new mcArr[type];
-			lion.scaleX=lion.scaleY=.5;
-			mcWidth=lion.width * .5;
-			mcHeight=lion.height * .5;
+			lion.scaleX=lion.scaleY=scale;
+			mcWidth=lion.width * scale;
+			mcHeight=lion.height * scale;
 			lion.stop();
 			addChild(lion);
 			visible=true;

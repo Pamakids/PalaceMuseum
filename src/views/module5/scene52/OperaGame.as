@@ -575,12 +575,13 @@ package views.module5.scene52
 
 				var operagameresult:int=SOService.instance.getSO(gameResult + gamelevel.toString()) as int;
 
-				var scoreTXT:TextField=new TextField(300, 100, "");
+				var scoreTXT:TextField=new TextField(400, 100, "");
 				scoreTXT.fontSize=48;
 				scoreTXT.color=0xb83d00;
 				scoreTXT.x=420;
 				scoreTXT.y=285;
 				scoreTXT.vAlign="top";
+				scoreTXT.hAlign="left";
 				endHolder.addChild(scoreTXT);
 
 				var recordTXT:TextField=new TextField(100, 40, "");
