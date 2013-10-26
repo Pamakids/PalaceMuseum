@@ -498,12 +498,13 @@ package views.module2.scene21
 			}
 			endSP.addChild(getImage("menu-end"));
 
-			var resultTF:TextField=new TextField(300, 100, resultTXT);
+			var resultTF:TextField=new TextField(400, 100, resultTXT);
 			resultTF.fontSize=48;
 			resultTF.color=0xb83d00;
 			resultTF.x=305;
 			resultTF.y=255;
 			resultTF.vAlign="top";
+			resultTF.hAlign="left";
 			endSP.addChild(resultTF);
 
 			var recordTF:TextField=new TextField(150, 40, recordTXT);

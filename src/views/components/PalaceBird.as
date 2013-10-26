@@ -4,6 +4,8 @@ package views.components
 
 	import feathers.core.PopUpManager;
 
+	import models.SOService;
+
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -78,6 +80,13 @@ package views.components
 
 		private function open():void
 		{
+			var num:Object=SOService.instance.getSO("bird_count");
+			if (!num)
+				num=1;
+			else
+				num=int(num) + 1;
+			SOService.instance.setSO("bird_count", num);
+
 			PopUpManager.addPopUp(this, true, false);
 			TweenLite.to(bird, 1, {x: 440, y: 39, rotation: 0});
 

@@ -217,7 +217,7 @@ package views.global.map
 				map.from=from;
 				map.to=to;
 				map.show(ec, !(from || to), fromCenter);
-				parent.setChildIndex(map, parent.numChildren - 1);
+//				parent.setChildIndex(map, parent.numChildren - 1);
 			}
 			else
 			{
@@ -326,7 +326,7 @@ package views.global.map
 			var lionSay:Function=function():void
 			{
 				var i:int=to == -1 ? 0 : to;
-				if (!showFromCenter || mc.moduleIndex == -1)
+				if (!showFromCenter)
 				{
 					to=i;
 					LionMC.instance.say(tasks[i], 3, 0, 0, comFunc);

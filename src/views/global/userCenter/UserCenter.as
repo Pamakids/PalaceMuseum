@@ -2,17 +2,17 @@ package views.global.userCenter
 {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
+
 	import controllers.MC;
-	
+
 	import feathers.controls.Button;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
-	
+
 	import org.agony2d.utils.getClassName;
-	
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -21,7 +21,7 @@ package views.global.userCenter
 	import starling.events.TouchPhase;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
-	
+
 	import views.components.SoftPaperAnimation;
 	import views.global.TopBar;
 	import views.global.userCenter.achievement.AchievementScreen;
@@ -317,6 +317,8 @@ package views.global.userCenter
 				return;
 			}
 			tarIndex=_tabBar.selectedIndex;
+			if (tarIndex == prevIndex)
+				return;
 			pageUp=prevIndex > tarIndex;
 			showAnimation();
 			_navigator.showScreen(screenNames[tarIndex]);
@@ -392,18 +394,18 @@ package views.global.userCenter
 				targetRender.dispose();
 			super.dispose();
 		}
-		
+
 		/**
 		 * 手册默认显示某一页
 		 * @param screen
 		 * @param page
-		 * 
-		 */		
+		 *
+		 */
 		public function turnTo(screen:int, page:int=0):void
 		{
-			_tabBar.selectedIndex = screen;
-			if(screen == 2)
-				crtPage_Handbook = page;
+			_tabBar.selectedIndex=screen;
+			if (screen == 2)
+				crtPage_Handbook=page;
 			_navigator.showScreen(screenNames[screen]);
 		}
 	}

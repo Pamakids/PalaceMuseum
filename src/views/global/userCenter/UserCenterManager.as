@@ -1,15 +1,15 @@
 package views.global.userCenter
 {
 	import flash.filesystem.File;
-	
+
 	import controllers.MC;
-	
+
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.LionMC;
 	import views.components.base.PalaceModule;
 	import views.global.TopBar;
@@ -31,24 +31,28 @@ package views.global.userCenter
 
 		private static var _page:int;
 		private static var _screen:int;
+
 		public static function showUserCenter(screen:int=1, page:int=0):void
 		{
-			_screen = screen;
-			_page = page;
+			_screen=screen;
+			_page=page;
 			if (!loaded)
 				loadAssets();
 			else
 				showHandler();
 		}
+
 		private static function showHandler():void
 		{
 			MC.instance.switchLayer(false);
-			if (_userCenter && _userCenter.parent)
-			{
-				MC.instance.main.removeMask();
-				enable();
-				return;
-			}
+//			if (_userCenter && _userCenter.parent)
+//			{
+//				MC.instance.main.removeMask();
+//				enable();
+//				MC.instance.hideMC();
+//				LionMC.instance.hide();
+//				return;
+//			}
 			MC.instance.main.removeMask();
 			if (!_userCenter)
 				_userCenter=new UserCenter();

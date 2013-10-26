@@ -2,18 +2,18 @@ package views.global
 {
 	import com.greensock.TweenLite;
 	import com.pamakids.manager.LoadManager;
-	
+
 	import flash.display.Bitmap;
-	
+
 	import controllers.MC;
-	
+
 	import feathers.controls.Button;
-	
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.Texture;
-	
+
 	import views.global.map.Map;
 	import views.global.userCenter.UserCenterManager;
 
@@ -42,9 +42,9 @@ package views.global
 				var index:int=-1;
 				if (MC.instance.currentModule && MC.instance.currentModule.crtScene)
 					index=MC.instance.currentModule.crtScene.crtKnowledgeIndex - 1;
-				if(Map.map && Map.map.visible)
-					index = -1;
-				if(index == -1)
+				if (Map.map && Map.map.visible)
+					index=-1;
+				if (index == -1)
 					UserCenterManager.showUserCenter();
 				else
 					UserCenterManager.showUserCenter(2, index);
