@@ -2,17 +2,17 @@ package views.global.userCenter
 {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	import controllers.MC;
-
+	
 	import feathers.controls.Button;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
-
+	
 	import org.agony2d.utils.getClassName;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -21,7 +21,7 @@ package views.global.userCenter
 	import starling.events.TouchPhase;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
-
+	
 	import views.components.SoftPaperAnimation;
 	import views.global.TopBar;
 	import views.global.userCenter.achievement.AchievementScreen;
@@ -64,9 +64,8 @@ package views.global.userCenter
 		private const contentWidth:Number=968;
 		private const contentHeight:Number=664;
 
-		public function UserCenter(index:int)
+		public function UserCenter()
 		{
-			this.crtPage_Handbook=index;
 			init();
 		}
 
@@ -120,7 +119,7 @@ package views.global.userCenter
 				}
 				]);
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;
-			_tabBar.selectedIndex=2;
+//			_tabBar.selectedIndex=2;
 			_tabBar.gap=2;
 			_tabBar.x=45;
 			_tabBar.y=36;
@@ -191,7 +190,7 @@ package views.global.userCenter
 			_navigator.x=28;
 			_navigator.y=89;
 			this.addChild(_navigator);
-			_navigator.showScreen(HANDBOOK);
+//			_navigator.showScreen(HANDBOOK);
 
 			_navigator.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
@@ -392,6 +391,20 @@ package views.global.userCenter
 			if (targetRender)
 				targetRender.dispose();
 			super.dispose();
+		}
+		
+		/**
+		 * 手册默认显示某一页
+		 * @param screen
+		 * @param page
+		 * 
+		 */		
+		public function turnTo(screen:int, page:int=0):void
+		{
+			_tabBar.selectedIndex = screen;
+			if(screen == 2)
+				crtPage_Handbook = page;
+			_navigator.showScreen(screenNames[screen]);
 		}
 	}
 }
