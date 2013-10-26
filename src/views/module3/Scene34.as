@@ -23,8 +23,8 @@ package views.module3
 
 		public function Scene34(am:AssetManager=null)
 		{
-			crtKnowledgeIndex=7;
 			super(am);
+			crtKnowledgeIndex=7;
 			addBG("bg30");
 //			addChild(getImage("bg30"));
 

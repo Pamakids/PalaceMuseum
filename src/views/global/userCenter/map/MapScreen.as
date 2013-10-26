@@ -56,7 +56,7 @@ package views.global.userCenter.map
 			cache.scaleX=cache.scaleY=mapButton.scaleX;
 			cache.x=mapButton.x;
 			cache.y=mapButton.y;
-			
+
 			cache.touchable=false;
 		}
 
@@ -87,26 +87,18 @@ package views.global.userCenter.map
 				cache.x=mapButton.x;
 				cache.y=mapButton.y;
 				cache.visible=true;
-
+				mapButton.visible=false;
 				var point:Point=this.globalToLocal(new Point(0, 0));
 				TweenLite.to(cache, 0.5, {y: -cache.height + point.y - 88, ease: Cubic.easeOut, onComplete: function():void
 				{
-					Map.show(function(status:int):void
-					{
-						UserCenterManager.enable();
-						if (status == 1)
-							mapButton.visible=true;
-						else if (status == 2)
-							UserCenterManager.closeUserCenter();
-					}, -1, -1, true);
+					mapButton.visible=true;
 					cache.visible=false;
+					Map.show(null, -1, -1, true);
 				}});
 			}
 			else
 			{
-				Map.show(function():void {
-					UserCenterManager.enable();
-				}, -1, -1, true);
+				Map.show(null, -1, -1, true);
 			}
 		}
 

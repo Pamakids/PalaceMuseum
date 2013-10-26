@@ -7,6 +7,7 @@ package views.components
 	import flash.utils.Dictionary;
 
 	import starling.display.Image;
+	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.Texture;
 
@@ -31,6 +32,8 @@ package views.components
 		private var slices:int;
 
 		private var result:Image;
+
+		public var skyHolder:Sprite=new Sprite();
 
 		/**
 		 * @param texture 折叠素材
@@ -189,6 +192,12 @@ package views.components
 				result.y=height / 2 - contentHeight / 2;
 			}
 			addChildAt(result, 0);
+			trace(result.x, result.y)
+			skyHolder.x=result.x;
+			skyHolder.y=result.y;
+			addChild(skyHolder);
+			skyHolder.touchable=false;
+
 			removeSlices();
 			flipingImage=null;
 			result.visible=true;

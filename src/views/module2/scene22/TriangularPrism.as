@@ -13,6 +13,8 @@ package views.module2.scene22
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 
+	import starling.animation.Tween;
+	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -23,7 +25,6 @@ package views.module2.scene22
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
-	import views.components.CollectionCard;
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
 
@@ -39,14 +40,7 @@ package views.module2.scene22
 		{
 			super(am);
 
-//			var sp:Shape=new Shape();
-//			sp.graphics.beginFill(0);
-//			sp.graphics.drawRect(0, 0, 1024, 768);
-//			sp.graphics.endFill();
-//			addChild(sp);
-
 			var bg:Image=getImage("prism-bg");
-//			bg.alpha=.5;
 			addChild(bg);
 
 			addArea();
@@ -68,7 +62,7 @@ package views.module2.scene22
 		private function onKeyDown(e:KeyboardEvent):void
 		{
 			if (e.keyCode == Keyboard.C)
-				trace(crtRotation);
+				trace(crtRotation.toFixed(2) + ",");
 		}
 
 		private function onPrimsTouch(e:TouchEvent):void
@@ -88,7 +82,7 @@ package views.module2.scene22
 		{
 			for (var i:int=0; i < posArr.length; i++)
 			{
-				var img:Image=getImage("part" + i.toString());
+				var img:Image=getImage("part" + (i + 1).toString());
 				img.alpha=0;
 				img.x=posArr[i].x;
 				img.y=posArr[i].y;
@@ -97,9 +91,10 @@ package views.module2.scene22
 			}
 		}
 
-		private var posArr:Array=[new Point(750, 34), new Point(749, 301), new Point(682, 529),
-			new Point(408, 549), new Point(63, 506), new Point(29, 313),
-			new Point(29, 87), new Point(262, 3), new Point(539, 7)]
+		private var posArr:Array=[new Point(376, 10), new Point(631, 34),
+			new Point(778, 206), new Point(761, 410), new Point(527, 560),
+			new Point(250, 551), new Point(25, 428), new Point(18, 225),
+			new Point(141, 34)]
 
 		private function addPrism2():void
 		{
@@ -131,7 +126,6 @@ package views.module2.scene22
 		private function onEnterFrame(e:Event):void
 		{
 			lightIn.rotation=Math.PI + crtRotation;
-//			prism.rotation+=.01;
 			lightOut.rotation=applyAngle2(crtRotation, prism.rotation);
 
 			if (lightOut.alpha == 1)
@@ -140,8 +134,24 @@ package views.module2.scene22
 			}
 		}
 
-		private var angleArr:Array=[-0.701, -0.328, -0.211, 0.326, 0.450, 0.953, 1.192, 1.941,
-			2.237, 2.771, 2.869, -2.97, -2.81, -2.44, -2.30, -1.68, -1.40, -0.84];
+		private var angleArr:Array=[-1.94,
+			-1.37,
+			-1.10,
+			-0.61,
+			-0.41,
+			-0.04,
+			0.16,
+			0.50,
+			0.82,
+			1.35,
+			1.88,
+			2.34,
+			2.61,
+			2.94,
+			-3.11,
+			-2.81,
+			-2.58,
+			-2.20];
 
 		private function addColor(_rotation:Number):void
 		{
@@ -322,8 +332,14 @@ package views.module2.scene22
 		{
 			_count=value;
 			if (_count == 9)
+			{
+				closeBtn.visible=false;
+				removeEventListener(TouchEvent.TOUCH, onTouch);
+				prism.removeEventListener(TouchEvent.TOUCH, onPrimsTouch);
+				TweenLite.to(lightIn, 1, {alpha: 0});
+				TweenLite.to(lightOut, .5, {alpha: 0});
 				dispatchEvent(new Event("addCard"));
-//				addCard("card-dragon")
+			}
 		}
 
 		public function get crtAreaIndex():int
@@ -374,6 +390,49 @@ package views.module2.scene22
 			}
 			else
 				return -1;
+		}
+
+		public function addDragonWall():void
+		{
+			for (var i:int=0; i < areaArr.length; i++)
+			{
+				var img:Image=areaArr[i] as Image;
+				playEff(i * .3, img);
+			}
+			TweenLite.delayedCall(areaArr.length * .3, showWall);
+		}
+
+		private function playEff(delay:Number, _img:DisplayObject, show:Boolean=false):void
+		{
+			TweenLite.delayedCall(delay, function():void {
+				TweenLite.to(_img, .5 + .5, {alpha: show ? 1 : 0});
+			});
+		}
+
+		private var wallPosArr:Array=[new Point(454, 32), new Point(349, 31),
+			new Point(563, 34), new Point(234, 33), new Point(660, 32),
+			new Point(121, 34), new Point(778, 32), new Point(13, 30),
+			new Point(865, 26)];
+
+		private function showWall():void
+		{
+			var wall:Sprite=new Sprite();
+			wall.addChild(getImage("wall"));
+			wall.x=1024 - wall.width >> 1;
+			wall.y=768 - wall.height >> 1;
+			addChild(wall);
+			for (var i:int=0; i < wallPosArr.length; i++)
+			{
+				var dragon:Image=getImage("dragon" + (i + 1).toString());
+				dragon.x=wallPosArr[i].x;
+				dragon.y=wallPosArr[i].y;
+				wall.addChild(dragon);
+				dragon.alpha=0;
+				playEff(i * .3, dragon, true);
+			}
+			TweenLite.delayedCall(wallPosArr.length * .3 + .5, function():void {
+				closeBtn.visible=true;
+			});
 		}
 	}
 }

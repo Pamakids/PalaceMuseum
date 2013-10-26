@@ -13,6 +13,7 @@ package views.global.userCenter
 	import views.components.LionMC;
 	import views.components.base.PalaceModule;
 	import views.global.TopBar;
+	import views.global.map.Map;
 
 	/**
 	 * 用户中心管理类
@@ -72,8 +73,9 @@ package views.global.userCenter
 			MC.instance.switchLayer(true);
 			LionMC.instance.show();
 			TopBar.enable=true;
+			if ((!Map.map || !Map.map.visible) && MC.instance.currentModule == null)
+				MC.instance.gotoModule(0, -1);
 		}
-
 
 		private static var _userCenter:UserCenter;
 

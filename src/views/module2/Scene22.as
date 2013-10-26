@@ -214,7 +214,9 @@ package views.module2
 		private function onPrismAddCard(e:Event):void
 		{
 			showCard("5", function():void {
-				showAchievement(12)
+				showAchievement(12, function():void {
+					prismGame.addDragonWall();
+				})
 			});
 		}
 

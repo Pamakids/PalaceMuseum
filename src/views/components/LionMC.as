@@ -53,15 +53,12 @@ package views.components
 
 		public function replay():void
 		{
-			say(lastContent, lastType, lastX, lastY, function():void {
-				if (lastFunc != null) {
-					lastFunc();
-				}
-			}, 20, lastMask);
+			say(lastContent, lastType, lastX, lastY, null, 20, true);
 		}
 
 		public function play(type:int=0, _x:Number=0, _y:Number=0, needMask:Boolean=true):void
 		{
+			TailBar.hide();
 			showLion(type);
 			if (!_x && !_y)
 			{
@@ -79,6 +76,7 @@ package views.components
 				lion.gotoAndPlay(1);
 				var compFunc:Function=function(e:Event):void {
 					if (lion.currentFrame == lion.totalFrames) {
+						TailBar.show();
 						lion.removeEventListener(Event.FRAME_CONSTRUCTED, compFunc);
 						isSayingOver=true;
 						if (callBack != null) {
@@ -146,7 +144,6 @@ package views.components
 		private var lastX:Number;
 		private var lastY:Number;
 		private var lastContent:String;
-		private var lastFunc:Function;
 		private var lastMask:Boolean;
 
 		/**
@@ -160,11 +157,11 @@ package views.components
 		 */
 		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20, needMask:Boolean=true):void
 		{
+			TailBar.hide();
 			lastType=_type;
 			lastX=_x;
 			lastY=_y;
 			lastContent=content;
-			lastFunc=_callBack;
 			lastMask=needMask;
 
 			showLion(_type);
@@ -192,6 +189,7 @@ package views.components
 				lion.gotoAndPlay(1);
 				p=Prompt.showTXT(x + mcWidth - 10, y + 10, content, fontSize, function():void
 				{
+					TailBar.show();
 					isSayingOver=true;
 					if (callBack != null) {
 						callBack();
@@ -199,7 +197,7 @@ package views.components
 					}
 					if (needMask)
 						MC.instance.main.removeMask();
-				}, MC.instance.main, 1, false, 0);
+				}, MC.instance.main, 1, false);
 			}});
 		}
 
@@ -218,6 +216,15 @@ package views.components
 			visible=true;
 			if (p)
 				p.visible=true;
+		}
+
+		public function clear():void
+		{
+			lastType=0;
+			lastX=0;
+			lastY=0;
+			lastContent="";
+			lastMask=false;
 		}
 	}
 }
