@@ -29,6 +29,7 @@ package views.global.map
 	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceModule;
+	import views.global.TailBar;
 	import views.global.TopBar;
 	import views.global.userCenter.UserCenterManager;
 
@@ -89,8 +90,8 @@ package views.global.map
 			if (!assetManager)
 				assetManager=new AssetManager();
 			var f:File=File.applicationDirectory.resolvePath('assets/global/map');
-			var f2:File=File.applicationDirectory.resolvePath("assets/common");
-			assetManager.enqueue(f2, f, "json/map.json");
+//			var f2:File=File.applicationDirectory.resolvePath("assets/common");
+			assetManager.enqueue(f, "json/map.json");
 			assetManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1)
@@ -179,7 +180,7 @@ package views.global.map
 				closeButton.x=width - closeButton.width / 2 - 10;
 				closeButton.y=closeButton.height / 2 + 10;
 			}
-			closeButton.visible=showFromCenter;
+			closeButton.visible=showFromCenter && !forceHideClose;
 		}
 
 		public static var map:Map;
@@ -188,6 +189,7 @@ package views.global.map
 		public var to:int;
 		public var points:Array;
 		private var labels:Array;
+		private static var forceHideClose:Boolean;
 
 		/**
 		 * 显示地图
@@ -195,8 +197,9 @@ package views.global.map
 		 * @param from 	   当前模块
 		 * @param to   	   转向模块
 		 */
-		public static function show(callback:Function=null, from:int=-1, to:int=-1, fromCenter:Boolean=false):void
+		public static function show(callback:Function=null, from:int=-1, to:int=-1, fromCenter:Boolean=false, _forceHideClose:Boolean=false):void
 		{
+			forceHideClose=_forceHideClose;
 			var msIndex:String=SOService.instance.getSO("lastScene") as String;
 			if (!msIndex)
 				msIndex="00map";
@@ -230,6 +233,8 @@ package views.global.map
 
 		private function closeTriggeredHandler(e:Event):void
 		{
+			if (changing)
+				return;
 			clear(0);
 		}
 
@@ -356,7 +361,9 @@ package views.global.map
 			{
 				initCloseButton();
 				MC.instance.switchLayer(true);
-				closeButton.visible=showFromCenter;
+				closeButton.visible=showFromCenter && !forceHideClose;
+				if (showCenterBtn != null)
+					showCenterBtn();
 				addEventListener(TouchEvent.TOUCH, touchHandler);
 				positionSun(showFromCenter ? mc.moduleIndex : from);
 				TweenLite.to(flipAnimation, 5, {delay: 1, y: 0, ease: Cubic.easeOut});
@@ -367,7 +374,7 @@ package views.global.map
 				if (!showFromCenter)
 				{
 					to=i;
-					LionMC.instance.say(tasks[i], 3, 0, 0, comFunc);
+					LionMC.instance.say(tasks[i], 3, 0, 0, comFunc, 20);
 					showTaskHint(i);
 				}
 				else
@@ -505,6 +512,10 @@ package views.global.map
 
 									if (changing)
 									{
+										closeButton.visible=false;
+										MC.isTopBarShow=false;
+										TopBar.hide();
+										TailBar.hide();
 										if (king.visible)
 										{
 											flipAnimation.setChildIndex(king, flipAnimation.numChildren - 1);
@@ -639,6 +650,7 @@ package views.global.map
 				flipAnimation.addChild(rectHolder);
 				rectHolder.touchable=false;
 			}
+			flipAnimation.setChildIndex(rectHolder, flipAnimation.numChildren - 1);
 			TweenLite.killTweensOf(rectHolder);
 			rectHolder.alpha=1;
 			rectHolder.graphics.clear();
@@ -715,8 +727,8 @@ package views.global.map
 			if (lockHolder)
 				resetLockHolder();
 			if (closeButton)
-				closeButton.visible=showFromCenter;
-			positionSun(from);
+				closeButton.visible=showFromCenter && !forceHideClose;
+//			positionSun(from);
 		}
 
 		private function positionSun(_index:int):void
@@ -726,9 +738,11 @@ package views.global.map
 			{
 				sun=new MovieClip(assetManager.getTextures("sun"), 2);
 				sun.play();
+				sun.touchable=false;
 				Starling.juggler.add(sun);
 				flipAnimation.addChild(sun);
 			}
+			flipAnimation.setChildIndex(sun, flipAnimation.numChildren - 1);
 			sun.x=sunPosArr[_index].x;
 			sun.y=sunPosArr[_index].y;
 
@@ -739,11 +753,14 @@ package views.global.map
 				preSky=null;
 			}
 			preSky=getImage("sky" + (_index + 1).toString());
+			preSky.alpha=0;
+			TweenLite.to(preSky, .3, {alpha: 1});
 			flipAnimation.skyHolder.addChild(preSky);
 		}
 
 		private var preSky:Image;
 		private var desSky:Image;
+		public static var showCenterBtn:Function;
 
 		/**
 		 *

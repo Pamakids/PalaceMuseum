@@ -1,18 +1,12 @@
 package views.global
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.manager.LoadManager;
-
-	import flash.display.Bitmap;
-
-	import controllers.MC;
 
 	import feathers.controls.Button;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.textures.Texture;
 
 	import views.components.LionMC;
 
@@ -29,9 +23,9 @@ package views.global
 			book.defaultIcon=Image.fromBitmap(new tail());
 			book.addEventListener(Event.TRIGGERED, tailClickedHandler);
 			addChild(book);
-			dx=73;
+			dx=163;
 			x=-dx;
-			y=768 - 85;
+			y=768 - 35;
 			touchable=false;
 		}
 
@@ -55,7 +49,7 @@ package views.global
 		public static function show():void
 		{
 			instance.x=-dx;
-			TweenLite.to(instance, 1, {x: -10, onComplete: function():void {
+			TweenLite.to(instance, 1, {x: -dx / 3, onComplete: function():void {
 				instance.touchable=true;
 			}});
 		}

@@ -19,9 +19,8 @@ package views.module1.scene13
 
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
-	import views.components.base.PalaceScene;
 
-	public class TwisterGame extends PalaceScene
+	public class TwisterGame extends PalaceGame
 	{
 		public var size:uint=3;
 
@@ -60,7 +59,7 @@ package views.module1.scene13
 					hintShow.removeFromParent(true);
 				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			}
-			if (count < 30 * 8)
+			if (count < 30 * 5)
 				count++;
 			else
 			{

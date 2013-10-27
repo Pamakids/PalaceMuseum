@@ -76,7 +76,7 @@ package views.module5.scene52
 			});
 
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			if (SOService.instance.checkHintCount(silverCardClickHint))
+			if (SOService.instance.checkHintCount(operaClickHint))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame2);
 		}
 
@@ -90,7 +90,7 @@ package views.module5.scene52
 			MC.instance.hideMC();
 		}
 
-		private var silverCardClickHint:String="silverCardClickHint";
+		private var operaClickHint:String="operaClickHint";
 		private var isMoved:Boolean;
 		private var hintShow:Sprite;
 		private var count:int=0;
@@ -354,6 +354,8 @@ package views.module5.scene52
 			TweenLite.to(mountain, .5, {scaleX: _scale, scaleY: _scale});
 		}
 
+		private var clickCount:int=0;
+
 		private function onBtnClick(e:Event):void
 		{
 			var btn:ElasticButton=e.currentTarget as ElasticButton;
@@ -368,7 +370,12 @@ package views.module5.scene52
 				if (body.ready)
 					body.playExit();
 				else
+				{
 					body.playEnter(false);
+					clickCount++;
+					if (clickCount < 3)
+						body.swing(Math.PI / 20, 3);
+				}
 			}
 		}
 

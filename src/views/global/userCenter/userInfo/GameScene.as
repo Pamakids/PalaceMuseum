@@ -37,8 +37,8 @@ package views.global.userCenter.userInfo
 			var _assets:AssetManager=new AssetManager();
 			var _name:String=gamePathArr[gameIndex];
 			var file:File=File.applicationDirectory.resolvePath("assets/" + "games/game" + _name);
-			var f:File=File.applicationDirectory.resolvePath("assets/common");
-			_assets.enqueue(file, f);
+//			var f:File=File.applicationDirectory.resolvePath("assets/common");
+			_assets.enqueue(file);
 			_assets.loadQueue(function(ratio:Number):void
 			{
 				trace(ratio)

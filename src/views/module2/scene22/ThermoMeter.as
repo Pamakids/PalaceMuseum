@@ -153,7 +153,6 @@ package views.module2.scene22
 			closeBtn.x=950;
 			closeBtn.y=60;
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
-			closeBtn.visible=closeBtn.touchable=false;
 		}
 
 		private function addThermo():void
@@ -245,8 +244,10 @@ package views.module2.scene22
 		{
 			_count=value;
 			if (_count == tempArr.length)
-				closeBtn.visible=closeBtn.touchable=true;
+				isWin=true;
 		}
+
+		public var isWin:Boolean;
 
 
 		public function get temp():Number

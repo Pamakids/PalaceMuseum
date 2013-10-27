@@ -6,8 +6,6 @@ package views.module1.scene13
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import feathers.core.PopUpManager;
-
 	import models.SOService;
 
 	import starling.display.Image;
@@ -19,9 +17,9 @@ package views.module1.scene13
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
-	import views.components.base.PalaceScene;
+	import views.components.base.PalaceGame;
 
-	public class Clock extends PalaceScene
+	public class Clock extends PalaceGame
 	{
 		private var hour:Image;
 
@@ -35,7 +33,6 @@ package views.module1.scene13
 		public function Clock(am:AssetManager)
 		{
 			super(am);
-
 
 			scale=DPIUtil.getDPIScale();
 			var bg:Image=getImage("clock-bg");
@@ -76,7 +73,7 @@ package views.module1.scene13
 					hintShow.removeFromParent(true);
 				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			}
-			if (count < 30 * 8)
+			if (count < 30 * 5)
 				count++;
 			else
 			{
@@ -111,16 +108,7 @@ package views.module1.scene13
 
 		private function onCloseClick(e:Event):void
 		{
-			if (ended)
-				return;
-			PopUpManager.removePopUp(this, true);
-		}
-
-		override public function dispose():void
-		{
-			this.assetManager=null;
-			removeChildren();
-			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
 		private function onTouch(e:TouchEvent):void
@@ -186,7 +174,7 @@ package views.module1.scene13
 		private var hotarea:Rectangle=new Rectangle(283, 318, 435, 188);
 		private var _crtTime:int;
 		private var isDown:Boolean;
-		private var ended:Boolean;
+		public var ended:Boolean;
 
 		private var clock:Sprite;
 
@@ -208,17 +196,22 @@ package views.module1.scene13
 				min.rotation=Math.PI / 180 * (1800);
 				hour.rotation=Math.PI / 180 * (1800 / 12);
 				ended=true;
-
 				TweenLite.to(clock, 1, {scaleX: 1.5, scaleY: 1.5, onComplete: function():void
 				{
-					TweenLite.to(clock, 1, {scaleX: 1, scaleY: 1});
+					TweenLite.to(clock, 1, {scaleX: 1, scaleY: 1, onComplete: function():void {
+						var info:Image=getImage("clockInfo");
+						addChild(info);
+						info.x=146 - 50;
+						info.y=67 - 25;
+						info.alpha=0;
+						TweenLite.to(info, .5, {alpha: 1})
+						setChildIndex(close, numChildren - 1);
+					}});
 				}});
-				TweenLite.delayedCall(2, function():void
-				{
-					dispatchEvent(new Event("clockMatch"));
-				});
 			}
 		}
+
+		public var isWin:Boolean;
 
 		private function addWheel():void
 		{
@@ -234,7 +227,6 @@ package views.module1.scene13
 				lace.addChild(getImage("clock-lace"));
 				lace.x=i % 3 * LACE_WIDTH;
 				lace.y=i < 3 ? 0 : 143;
-//				lace.clipRect=new Rectangle(0.1, 0, lace.width - .2, lace.height);
 				wheel.addChild(lace);
 				laceArr.push(lace);
 			}
@@ -252,7 +244,6 @@ package views.module1.scene13
 			mask.x=436;
 			mask.y=312;
 			addChild(mask);
-//			mask.height=181;
 		}
 
 		private const LACE_WIDTH:int=72;

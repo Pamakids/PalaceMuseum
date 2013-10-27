@@ -127,15 +127,15 @@ package views.components.base
 
 		protected function getImage(name:String):Image
 		{
-			if (assetManager)
-			{
-				var t:Texture=assetManager.getTexture(name);
-				if (t)
-					return new Image(t);
-				else
-					return null;
-			}
-			return null;
+			var t:Texture
+			if (MC.assetManager)
+				t=MC.assetManager.getTexture(name);
+			if (!t && assetManager)
+				t=assetManager.getTexture(name)
+			if (t)
+				return new Image(t);
+			else
+				return null;
 		}
 
 		protected var nextButton:ElasticButton;
@@ -150,6 +150,8 @@ package views.components.base
 			{
 				nextButton=new ElasticButton(getImage("nextButton"));
 				addChild(nextButton);
+				nextButton.pivotX=nextButton.width >> 1;
+				nextButton.pivotY=33;
 				nextButton.x=1024 - 100;
 				nextButton.y=768 - 100;
 				nextButton.addEventListener(ElasticButton.CLICK, nextScene);
@@ -157,6 +159,7 @@ package views.components.base
 			}
 			else
 				nextButton.visible=true;
+			TailBar.hide();
 		}
 
 		protected function hideNext():void
@@ -167,15 +170,15 @@ package views.components.base
 
 		private function shakeNext():void
 		{
-			TweenMax.to(nextButton, 1, {shake: {x: 5, numShakes: 4}, onComplete: function():void
+			TweenMax.to(nextButton, 1, {shake: {rotation: Math.PI / 12, numShakes: 4}, onComplete: function():void
 			{
-//				setChildIndex(nextButton, numChildren - 1);
 				TweenLite.delayedCall(5, shakeNext);
 			}});
 		}
 
 		protected function nextScene(e:Event=null):void
 		{
+			TopBar.enable=false;
 			nextButton.removeEventListener(ElasticButton.CLICK, nextScene);
 			dispatchEvent(new Event("gotoNext", true));
 		}

@@ -34,6 +34,9 @@ package views.module4
 		private var rightHit:Boolean;
 		private var acc:Accelerometer;
 
+		private var cardArr:Array=[new Point(571, 146), new Point(1890, 151),
+			new Point(122, 113), new Point(2333, 114), new Point(1215, 111)];
+
 		public function Scene41(am:AssetManager=null)
 		{
 			super(am);
@@ -47,6 +50,16 @@ package views.module4
 			bgW=bgHolder.width;
 			bgHolder.x=(1024 - bgW) / 2;
 			addChild(bgHolder);
+
+			for (var i:int=0; i < cardArr.length; i++)
+			{
+				var card:Image=getImage((i + 1).toString());
+				card.x=cardArr[i].x;
+				card.y=cardArr[i].y;
+				card.scaleX=card.scaleY=(i == 4 ? 130 : 78) / card.width;
+				bgHolder.addChild(card);
+			}
+
 
 			addCraws();
 

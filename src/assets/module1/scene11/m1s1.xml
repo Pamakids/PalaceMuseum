@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:df66533f3db35b854e269d52035b6ecc:1/1$ -->
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:4b32c8fbe40345554d38ecc248e6c9fe$ -->
 <TextureAtlas imagePath="m1s1.png">
-    <SubTexture name="eunuch11" x="1" y="1" width="275" height="380"/>
-    <SubTexture name="hint0" x="277" y="307" width="161" height="129"/>
-    <SubTexture name="hint1" x="993" y="131" width="161" height="129"/>
-    <SubTexture name="hint2" x="831" y="131" width="161" height="129"/>
-    <SubTexture name="hint3" x="993" y="1" width="161" height="129"/>
-    <SubTexture name="hint4" x="831" y="1" width="161" height="129"/>
-    <SubTexture name="king11" x="584" y="1" width="246" height="251"/>
-    <SubTexture name="ok-effect" x="277" y="1" width="306" height="305"/>
-    <SubTexture name="window0-light" x="1024" y="261" width="140" height="134"/>
-    <SubTexture name="window0-shadow" x="1" y="382" width="68" height="112" frameX="-38" frameY="-14" frameWidth="140" frameHeight="134"/>
-    <SubTexture name="window1" x="439" y="307" width="145" height="141"/>
-    <SubTexture name="window2" x="879" y="261" width="144" height="135"/>
-    <SubTexture name="window3" x="585" y="253" width="147" height="137"/>
-    <SubTexture name="window4" x="733" y="261" width="145" height="135"/>
+    <SubTexture name="king11" x="308" y="1" width="246" height="251"/>
+    <SubTexture name="ok-effect" x="1" y="1" width="306" height="305"/>
+    <SubTexture name="window0-light" x="846" y="143" width="140" height="134"/>
+    <SubTexture name="window0-shadow" x="849" y="1" width="68" height="112" frameX="-38" frameY="-14" frameWidth="140" frameHeight="134"/>
+    <SubTexture name="window1" x="703" y="1" width="145" height="141"/>
+    <SubTexture name="window2" x="701" y="143" width="144" height="135"/>
+    <SubTexture name="window3" x="555" y="1" width="147" height="137"/>
+    <SubTexture name="window4" x="555" y="139" width="145" height="135"/>
 </TextureAtlas>

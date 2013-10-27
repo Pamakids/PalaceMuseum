@@ -204,7 +204,7 @@ package views.module3
 					hintShow.removeFromParent(true);
 				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			}
-			if (count < 30 * 8)
+			if (count < 30 * 5)
 				count++;
 			else
 			{
@@ -215,7 +215,8 @@ package views.module3
 					hintFinger.x=262;
 					hintFinger.y=408;
 					hintShow.addChild(hintFinger);
-					addChild(hintShow);
+					var index:int=getChildIndex(pin) + 1;
+					addChildAt(hintShow, index);
 					hintShow.touchable=false;
 				}
 				else

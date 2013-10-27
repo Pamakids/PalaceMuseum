@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:92bd1bdaddacfa940557974887d59f69$ -->
+<!-- $TexturePacker:SmartUpdate:88589f442cad7d108538f79b6a0e46af$ -->
 <TextureAtlas imagePath="m1s2.png">
     <SubTexture name="background12" x="1" y="1" width="1024" height="768"/>
     <SubTexture name="bgquiz" x="1026" y="1" width="994" height="657" frameX="-12" frameY="-24" frameWidth="1024" frameHeight="699"/>
     <SubTexture name="bgquizshadow" x="1" y="770" width="1024" height="699"/>
-    <SubTexture name="box" x="1763" y="1468" width="282" height="189" frameX="-1" frameY="-2" frameWidth="284" frameHeight="191"/>
-    <SubTexture name="boxcell" x="1336" y="1391" width="224" height="223" frameX="-23" frameY="0" frameWidth="284" frameHeight="223"/>
-    <SubTexture name="boxcover" x="1" y="1568" width="270" height="40"/>
-    <SubTexture name="boxlight地" x="755" y="1669" width="259" height="250" frameX="-22" frameY="0" frameWidth="281" frameHeight="250"/>
-    <SubTexture name="boxlight天" x="1505" y="1615" width="223" height="235"/>
-    <SubTexture name="boxlight日" x="1015" y="1669" width="273" height="244"/>
-    <SubTexture name="boxlight月" x="1289" y="1623" width="215" height="242"/>
-    <SubTexture name="cloth-lock" x="1809" y="1061" width="70" height="65"/>
+    <SubTexture name="box" x="719" y="1470" width="282" height="189" frameX="-1" frameY="-2" frameWidth="284" frameHeight="191"/>
+    <SubTexture name="boxcell" x="1544" y="1373" width="224" height="223" frameX="-23" frameY="0" frameWidth="284" frameHeight="223"/>
+    <SubTexture name="boxcover" x="1" y="1951" width="270" height="40"/>
+    <SubTexture name="boxlight地" x="979" y="1660" width="259" height="250" frameX="-22" frameY="0" frameWidth="281" frameHeight="250"/>
+    <SubTexture name="boxlight天" x="1544" y="1597" width="223" height="235"/>
+    <SubTexture name="boxlight日" x="1239" y="1623" width="273" height="244"/>
+    <SubTexture name="boxlight月" x="1768" y="1627" width="215" height="242"/>
+    <SubTexture name="cloth-lock" x="1809" y="1051" width="70" height="65"/>
     <SubTexture name="clothhintarrow" x="1922" y="755" width="122" height="55"/>
     <SubTexture name="clothhintfinger" x="1365" y="1094" width="117" height="111"/>
     <SubTexture name="collection_card_0" x="1026" y="963" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
     <SubTexture name="hintbar" x="1557" y="659" width="476" height="95"/>
-    <SubTexture name="king12" x="1809" y="1159" width="235" height="308" frameX="-73" frameY="-336" frameWidth="353" frameHeight="646"/>
-    <SubTexture name="light" x="1" y="1470" width="234" height="97"/>
+    <SubTexture name="king12" x="251" y="1623" width="223" height="308" frameX="-74" frameY="-336" frameWidth="353" frameHeight="646"/>
+    <SubTexture name="light" x="1809" y="1159" width="234" height="97"/>
     <SubTexture name="light地" x="2021" y="75" width="12" height="39"/>
     <SubTexture name="light天" x="2034" y="75" width="12" height="17"/>
     <SubTexture name="light日" x="2021" y="51" width="14" height="23"/>
     <SubTexture name="light月" x="2021" y="1" width="17" height="49"/>
     <SubTexture name="lion" x="1376" y="764" width="138" height="213"/>
     <SubTexture name="puzzlehint" x="1026" y="659" width="530" height="104"/>
-    <SubTexture name="quiz-matchsign" x="1555" y="1851" width="207" height="190"/>
+    <SubTexture name="quiz-matchsign" x="1336" y="1428" width="207" height="190"/>
     <SubTexture name="quiz-地" x="1365" y="978" width="121" height="115"/>
     <SubTexture name="quiz-天" x="1922" y="1043" width="121" height="115"/>
     <SubTexture name="quiz-日" x="1922" y="927" width="121" height="115"/>
     <SubTexture name="quiz-月" x="1922" y="811" width="121" height="115"/>
-    <SubTexture name="常帽" x="1289" y="1866" width="265" height="174" frameX="-43" frameY="-37" frameWidth="353" frameHeight="260"/>
-    <SubTexture name="常服" x="251" y="1623" width="243" height="301" frameX="-61" frameY="-7" frameWidth="353" frameHeight="333"/>
+    <SubTexture name="常帽" x="1239" y="1868" width="265" height="174" frameX="-43" frameY="-37" frameWidth="353" frameHeight="260"/>
+    <SubTexture name="常服" x="475" y="1623" width="243" height="301" frameX="-61" frameY="-7" frameWidth="353" frameHeight="333"/>
     <SubTexture name="朝帽" x="1026" y="1364" width="309" height="258" frameX="-21" frameY="0" frameWidth="353" frameHeight="260"/>
-    <SubTexture name="朝服" x="1487" y="1061" width="321" height="329" frameX="-20" frameY="-4" frameWidth="353" frameHeight="333"/>
-    <SubTexture name="行帽" x="1729" y="1658" width="231" height="170" frameX="-59" frameY="-38" frameWidth="353" frameHeight="260"/>
+    <SubTexture name="朝服" x="1487" y="1051" width="321" height="321" frameX="-20" frameY="-12" frameWidth="353" frameHeight="333"/>
+    <SubTexture name="行帽" x="1809" y="1257" width="231" height="170" frameX="-59" frameY="-38" frameWidth="353" frameHeight="260"/>
     <SubTexture name="行服" x="1" y="1623" width="249" height="327" frameX="-57" frameY="0" frameWidth="353" frameHeight="333"/>
     <SubTexture name="雨帽" x="1026" y="764" width="349" height="198" frameX="-1" frameY="-48" frameWidth="353" frameHeight="260"/>
-    <SubTexture name="雨服" x="1557" y="755" width="364" height="305" frameX="-6" frameY="-4" frameWidth="370" frameHeight="333"/>
-    <SubTexture name="龙帽" x="755" y="1470" width="267" height="198" frameX="-46" frameY="-16" frameWidth="353" frameHeight="260"/>
-    <SubTexture name="龙袍" x="495" y="1623" width="259" height="287" frameX="-61" frameY="-23" frameWidth="353" frameHeight="333"/>
+    <SubTexture name="雨服" x="1557" y="755" width="364" height="295" frameX="-6" frameY="-14" frameWidth="370" frameHeight="333"/>
+    <SubTexture name="龙帽" x="1769" y="1428" width="267" height="198" frameX="-46" frameY="-16" frameWidth="353" frameHeight="260"/>
+    <SubTexture name="龙袍" x="719" y="1660" width="259" height="287" frameX="-61" frameY="-23" frameWidth="353" frameHeight="333"/>
 </TextureAtlas>

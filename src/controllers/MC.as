@@ -31,6 +31,7 @@ package controllers
 	import views.global.TopBar;
 	import views.global.map.Map;
 	import views.global.userCenter.UserCenterManager;
+	import starling.utils.AssetManager;
 
 	/**
 	 * 主业务控制器
@@ -195,10 +196,10 @@ package controllers
 		}
 
 		public static var isTopBarShow:Boolean=true;
+		public static var assetManager:AssetManager;
 
 		public function restart():void
 		{
-			SoundManager.instance.stop("main");
 			SOService.instance.init();
 			LionMC.instance.show();
 			_moduleIndex=-1;
