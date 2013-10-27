@@ -66,7 +66,7 @@ package views.module2
 				itemArr.push(item);
 			}
 
-			LionMC.instance.say("皇上的洋人老师，带来几个新鲜玩意儿，试试吧", 0, 200, 500, addTouchs, 20, false);
+			LionMC.instance.say("皇上的洋人老师，带来几个新鲜玩意儿，试试吧", 0, 200, 500, addTouchs, 20);
 
 			thermo=getImage("thermometer32");
 			thermo.x=45;
@@ -96,7 +96,7 @@ package views.module2
 
 		private var nameArr:Array=["thermo", "tele", "prism"];
 		private var labelPosArr:Array=[new Point(198, 552),
-			new Point(563, 696), new Point(902, 630)];
+			new Point(563, 696), new Point(902, 600)];
 
 		private function checkClicked(index:int):Boolean
 		{
@@ -113,7 +113,8 @@ package views.module2
 			var label:Image=getImage("label-" + nameArr[index]);
 			label.x=labelPosArr[index].x;
 			label.y=labelPosArr[index].y;
-			addChild(label);
+			var _index:int=getChildIndex(thermo) + 1;
+			addChildAt(label, _index);
 			label.touchable=false;
 		}
 
@@ -197,9 +198,7 @@ package views.module2
 			}
 			if (teleGame.finished)
 				showAchievement(13);
-			teleGame.removeEventListener(PalaceGame.GAME_OVER, onTelePlayed)
-			teleGame.removeChildren();
-			removeChild(teleGame);
+			teleGame.removeFromParent(true);
 			teleGame=null;
 		}
 
@@ -227,10 +226,7 @@ package views.module2
 				addLabel(2);
 				setClicked(2);
 			}
-			prismGame.removeEventListener(PalaceGame.GAME_OVER, onPrismPlayed)
-			prismGame.removeEventListener("addCard", onPrismAddCard)
-			prismGame.removeChildren();
-			removeChild(prismGame);
+			prismGame.removeFromParent(true);
 			prismGame=null;
 		}
 
@@ -248,12 +244,13 @@ package views.module2
 				addLabel(0);
 				setClicked(0);
 			}
-			showAchievement(11);
-			thermoGame.removeEventListener(PalaceGame.GAME_OVER, onThermoPlayed)
-			thermoGame.removeChildren();
-			removeChild(thermoGame);
+			if (thermoGame.isWin)
+				showAchievement(11, sceneOver);
+			else
+				sceneOver();
+			thermoGame.removeFromParent(true);
 			thermoGame=null;
-			sceneOver();
+
 		}
 	}
 }

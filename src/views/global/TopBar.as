@@ -1,9 +1,6 @@
 package views.global
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.manager.LoadManager;
-
-	import flash.display.Bitmap;
 
 	import controllers.MC;
 
@@ -12,27 +9,24 @@ package views.global
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.textures.Texture;
 
 	import views.global.map.Map;
 	import views.global.userCenter.UserCenterManager;
 
 	public class TopBar extends Sprite
 	{
+		[Embed(source="/assets/common/book.png")]
+		public static var Book:Class
+
 		public function TopBar()
 		{
-			LoadManager.instance.loadImage('assets/common/book.png', loadedHandler);
-		}
-
-		private static var dx:Number=-122;
-
-		private function loadedHandler(b:Bitmap):void
-		{
 			var book:Button=new Button();
-			book.defaultIcon=new Image(Texture.fromBitmap(b));
+			book.defaultIcon=Image.fromBitmap(new Book());
 			book.addEventListener(Event.TRIGGERED, bookClickedHandler);
 			addChild(book);
 		}
+
+		private static var dx:Number=-90;
 
 		private function bookClickedHandler():void
 		{
@@ -95,6 +89,21 @@ package views.global
 			MC.instance.contentEnable=value;
 			if (bar)
 				bar.touchable=value;
+		}
+
+		public static function tweenPlay(isOut:Boolean, cb:Function):void
+		{
+			if (!bar)
+			{
+				bar=new TopBar();
+				if (parent)
+					parent.addChild(bar);
+				bar.visible=true;
+				bar.x=dx;
+				bar.y=10;
+				enable=true;
+			}
+			TweenLite.to(bar, 1, {x: isOut ? 10 : dx, onComplete: cb});
 		}
 	}
 }

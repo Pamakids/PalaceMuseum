@@ -128,7 +128,7 @@ package views.module5.scene52
 		private var swingAngle:Number=0;
 		private var ds:Number=0;
 
-		private function swing(value:Number, sec:Number):void
+		public function swing(value:Number, sec:Number):void
 		{
 			swingCount=value > 0 ? 29 : 0;
 			swingReverse=value > 0;

@@ -44,20 +44,6 @@ package views.module1
 		}
 
 		private var clock:Clock;
-		private var _clockMatched:Boolean;
-
-		public function get clockMatched():Boolean
-		{
-			return _clockMatched;
-		}
-
-		public function set clockMatched(value:Boolean):void
-		{
-			_clockMatched=value;
-			if (_clockMatched)
-				sceneOver();
-		}
-
 
 		public function Scene13(am:AssetManager)
 		{
@@ -112,24 +98,6 @@ package views.module1
 			plaque.addEventListener(TouchEvent.TOUCH, onPlaqueTouch);
 		}
 
-		private function addKing():void
-		{
-			var king:Sprite=new Sprite();
-			king.addChild(getImage("king13"));
-			king.x=344;
-			king.y=145;
-			addChild(king);
-		}
-
-		private function addEunuch():void
-		{
-			var eunuch:Sprite=new Sprite();
-			eunuch.addChild(getImage("eunuch13"));
-			eunuch.x=599;
-			eunuch.y=322;
-			addChild(eunuch);
-		}
-
 		private function addClock():void
 		{
 			var clock:Sprite=new Sprite();
@@ -151,7 +119,7 @@ package views.module1
 		private function initClock():void
 		{
 			clock=new Clock(assetManager);
-			clock.addEventListener("clockMatch", clockMatch);
+			clock.addEventListener(PalaceGame.GAME_OVER, clockMatch);
 			clock.scaleX=clock.scaleY=1;
 			clock.x=50;
 			clock.y=25;
@@ -167,33 +135,23 @@ package views.module1
 
 		private function clockMatch(e:Event):void
 		{
-			if (!clockMatched)
-			{
-				TweenLite.to(clock, .5,
-					{scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete:
-						function():void
-						{
-							PopUpManager.removePopUp(clock);
+			TweenLite.to(clock, .5,
+				{scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete:
+					function():void
+					{
+						if (clock.ended)
 							showCard("2",
 								function():void
 								{
 									showAchievement(4, checkAcheive5);
 								}
 								);
-							clockMatched=true;
-						}
+						PopUpManager.removePopUp(clock, true);
+						clock=null;
+						sceneOver();
 					}
-					);
-			}
-			else
-			{
-				TweenLite.to(clock, .5, {scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete: function():void
-				{
-					PopUpManager.removePopUp(clock);
-				}});
-			}
-
-
+				}
+				);
 		}
 
 		private function onPlaqueTouch(e:TouchEvent):void

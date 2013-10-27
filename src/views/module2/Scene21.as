@@ -9,7 +9,9 @@ package views.module2
 
 	import models.SOService;
 
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -46,11 +48,7 @@ package views.module2
 
 			addShelfs();
 
-			var table:Image=getImage("table31");
-			table.x=260;
-			table.y=223;
-			addChild(table);
-			table.touchable=false;
+			addking();
 
 			can=getImage("can31");
 			can.y=291;
@@ -78,6 +76,56 @@ package views.module2
 			playLion();
 		}
 
+		private function addking():void
+		{
+			var kingHolder:Sprite=new Sprite();
+			addChild(kingHolder);
+			kingHolder.touchable=false;
+
+			var table:Image=getImage("table31");
+			table.x=260;
+			table.y=212;
+			kingHolder.addChild(table);
+
+			headHolder=new Sprite();
+			headHolder.x=418;
+			headHolder.y=292;
+			kingHolder.addChild(headHolder);
+			playKing(0);
+
+			var cloth:Image=getImage("cloth");
+			cloth.x=387;
+			cloth.y=478;
+			kingHolder.addChild(cloth);
+
+			var hat:Image=getImage("hat");
+			hat.x=405;
+			hat.y=246;
+			kingHolder.addChild(hat);
+		}
+
+		private var kingHead:MovieClip;
+
+		private function playKing(index:int):void
+		{
+			if (kingHead)
+			{
+				kingHead.stop();
+				Starling.juggler.remove(kingHead);
+				kingHead.removeFromParent(true);
+				kingHead=null;
+			}
+
+			kingHead=new MovieClip(assetManager.getTextures(expArr[index]), 18);
+			kingHead.loop=0;
+			kingHead.play();
+			Starling.juggler.add(kingHead);
+			kingHead.scaleX=kingHead.scaleY=.8;
+			headHolder.addChild(kingHead);
+		}
+
+		private var expArr:Array=["kingHappy", "kingLook", "KingNaughty", "kingStrange"];
+
 		private function onCanTouch(e:TouchEvent):void
 		{
 			if (!ready)
@@ -95,7 +143,7 @@ package views.module2
 				ready=true;
 				if (SOService.instance.checkHintCount(shelfHintCount))
 					addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			}, 20, false);
+			}, 20);
 //			lion=new Lion();
 //			lion.src=getImage("lion");
 //			addChild(lion);
@@ -134,7 +182,7 @@ package views.module2
 					hintShow.removeFromParent(true);
 				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			}
-			if (count < 30 * 8)
+			if (count < 30 * 5)
 				count++;
 			else
 			{
@@ -149,7 +197,8 @@ package views.module2
 					hintFinger.y=202;
 					hintShow.addChild(hintArrow);
 					hintShow.addChild(hintFinger);
-					addChild(hintShow);
+					var index:int=getChildIndex(shelfL) + 1;
+					addChildAt(hintShow, 1);
 					hintShow.touchable=false;
 				}
 				else
@@ -290,9 +339,13 @@ package views.module2
 			if (checkAlign(book))
 				align=3;
 			if (book.bookname == "《圣训》")
+			{
+				playKing(0);
 				showBigBook();
+			}
 			else
 			{
+				playKing(int(Math.random() * expArr.length))
 				if (p)
 					p.playHide();
 				p=Prompt.showTXT(pt.x, pt.y, book.bookname, 24, null, pr, align, true)
@@ -360,6 +413,8 @@ package views.module2
 
 //		private var hint31right:String="恭喜你找到圣训！";
 		private var hint31find:String="《圣训》是皇帝每天早上必读的书本，快点找到它。";
+
+		private var headHolder:Sprite;
 
 		private function onCloseBook(e:Event):void
 		{

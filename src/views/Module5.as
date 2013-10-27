@@ -21,14 +21,15 @@ package views
 			addQAS();
 			addLoading();
 
-			if (assetManager){
+			if (assetManager)
+			{
 				assetManager.purge();
 				assetManager=null;
 			}
 			assetManager=new AssetManager();
 			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName);
-			var f:File=File.applicationDirectory.resolvePath("assets/common");
-			assetManager.enqueue(file, f);
+//			var f:File=File.applicationDirectory.resolvePath("assets/common");
+			assetManager.enqueue(file);
 			assetManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)

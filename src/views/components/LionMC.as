@@ -38,7 +38,7 @@ package views.components
 		{
 			if (lion)
 			{
-				lion.stop();
+				lion.stopAllMovieClips();
 				removeChild(lion);
 				lion=null;
 			}
@@ -46,14 +46,17 @@ package views.components
 			lion.scaleX=lion.scaleY=scale;
 			mcWidth=lion.width * scale;
 			mcHeight=lion.height * scale;
-			lion.stop();
+			lion.stopAllMovieClips();
 			addChild(lion);
 			visible=true;
 		}
 
 		public function replay():void
 		{
-			say(lastContent, lastType, lastX, lastY, null, 20, true);
+			if (lastContent)
+				say(lastContent, lastType, lastX, lastY, null, 20, true);
+			else
+				play(int(Math.random() * 4));
 		}
 
 		public function play(type:int=0, _x:Number=0, _y:Number=0, needMask:Boolean=true):void
@@ -76,20 +79,16 @@ package views.components
 				lion.gotoAndPlay(1);
 				var compFunc:Function=function(e:Event):void {
 					if (lion.currentFrame == lion.totalFrames) {
+						lion.stopAllMovieClips();
 						TailBar.show();
 						lion.removeEventListener(Event.FRAME_CONSTRUCTED, compFunc);
 						isSayingOver=true;
-						if (callBack != null) {
-							callBack();
-							callBack=null;
-						}
 						if (needMask)
 							MC.instance.main.removeMask();
 					}
 				}
 				lion.addEventListener(Event.FRAME_CONSTRUCTED, compFunc);
 			}});
-
 		}
 
 		private function playHide():void
@@ -145,6 +144,7 @@ package views.components
 		private var lastY:Number;
 		private var lastContent:String;
 		private var lastMask:Boolean;
+		private var lastTask:Boolean
 
 		/**
 		 *
@@ -155,7 +155,7 @@ package views.components
 		 * @param _callBack
 		 * @param fontSize
 		 */
-		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20, needMask:Boolean=true):void
+		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20, needMask:Boolean=true, isTask:Boolean=false):void
 		{
 			TailBar.hide();
 			lastType=_type;
@@ -163,6 +163,7 @@ package views.components
 			lastY=_y;
 			lastContent=content;
 			lastMask=needMask;
+			lastTask=isTask;
 
 			showLion(_type);
 			if (!_x && !_y)
@@ -197,7 +198,7 @@ package views.components
 					}
 					if (needMask)
 						MC.instance.main.removeMask();
-				}, MC.instance.main, 1, false);
+				}, MC.instance.main, 1, false, 3, isTask);
 			}});
 		}
 
@@ -225,6 +226,7 @@ package views.components
 			lastY=0;
 			lastContent="";
 			lastMask=false;
+			lastTask=false;
 		}
 	}
 }

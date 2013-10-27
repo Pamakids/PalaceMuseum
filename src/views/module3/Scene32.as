@@ -113,12 +113,13 @@ package views.module3
 			if (game.isWin)
 			{
 				if (game.gamelevel == 0)
-					showAchievement(16);
+					showAchievement(16, sceneOver);
 				else
 					showCard("6", function():void {
-						showAchievement(17)});
-				sceneOver();
+						showAchievement(17, sceneOver)});
 			}
+			else
+				sceneOver();
 			game.removeFromParent(true);
 			game=null;
 		}

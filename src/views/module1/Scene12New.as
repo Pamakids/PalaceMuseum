@@ -99,10 +99,11 @@ package views.module1
 			addLion();
 		}
 
-		private function showLionHint(content:String, callback:Function=null):void
+		private function showLionHint(content:String, callback:Function=null, isTask:Boolean=false):void
 		{
+			lastTask=isTask;
 			crtLionContent=content;
-			showHint(content, 0, callback);
+			showHint(content, 0, callback, isTask);
 		}
 
 		private function addBox():void
@@ -124,11 +125,11 @@ package views.module1
 			boxHolder.addChild(boxCover);
 		}
 
-		private function showHint(content:String, posIndex:int, callback:Function=null):void
+		private function showHint(content:String, posIndex:int, callback:Function=null, isTask:Boolean=false):void
 		{
 			var pos:Point=posArr[posIndex];
 			var txt:String=json[content];
-			Prompt.showTXT(pos.x, pos.y, txt, 20, callback, this);
+			Prompt.showTXT(isTask ? (pos.x + 85) : pos.x, isTask ? (pos.y + 85) : pos.y, txt, 20, callback, this, 1, false, 3, isTask);
 		}
 
 		private var posArr:Array=[new Point(90, 560), new Point(530, 200), new Point(530, 610)];
@@ -158,7 +159,7 @@ package views.module1
 		{
 			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
 			if (tc)
-				showLionHint(crtLionContent);
+				showLionHint(crtLionContent, null, lastTask);
 		}
 
 		private static var clothArr:Array=["朝服", "行服", "雨服", "龙袍", "常服"];
@@ -270,9 +271,9 @@ package views.module1
 			opened=false;
 			var str:String=clothArr[taskType];
 			showLionHint("hint-find-" + str, function():void {
-				TweenLite.to(lion, .5, {x: lionX});
+//				TweenLite.to(lion, .5, {x: lionX});
 				addEventListener(TouchEvent.TOUCH, onDrag);
-			});
+			}, true);
 		}
 
 		private var speedX:Number=0;
@@ -293,7 +294,7 @@ package views.module1
 			}
 			else
 			{
-				SoundManager.instance.play("sad");
+//				SoundManager.instance.play("sad");
 				var _index:int=Math.random() > .6 ? 1 : (Math.random() > .5 ? 2 : 3);
 				playKing(_index);
 				hideNext();
@@ -452,6 +453,7 @@ package views.module1
 		}
 
 		private var kingDelay:TweenLite;
+		private var lastTask:Boolean;
 	}
 }
 

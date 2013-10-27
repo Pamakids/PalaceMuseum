@@ -5,6 +5,8 @@ package views.module2.scene22
 	import flash.events.AccelerometerEvent;
 	import flash.geom.Point;
 
+	import models.SOService;
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -17,6 +19,7 @@ package views.module2.scene22
 
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
+	import views.module1.scene13.Block;
 
 	public class Telescope extends PalaceGame
 	{
@@ -66,13 +69,54 @@ package views.module2.scene22
 			closeBtn.y=60;
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
 
-//			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			if (SOService.instance.checkHintCount(teleHint))
+				addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
+
+		private var teleHint:String="teleHintCheck"
 
 		private function onEnterFrame(e:Event):void
 		{
-			view.pivotX-=speedX;
-			view.pivotY+=speedY;
+			if (handMoved && ringMoved)
+				isMoved=true;
+			if (isMoved)
+			{
+				if (hintShow)
+					hintShow.removeFromParent(true);
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			}
+			if (count < 30 * 5)
+				count++;
+			else
+			{
+				if (!hintShow)
+				{
+					hintShow=new Sprite();
+					hintHand=getImage("hintHand");
+					hintRing=getImage("hintRing");
+
+					hintHand.x=708;
+					hintHand.y=484;
+					hintRing.x=563;
+					hintRing.y=56;
+
+					hintShow.addChild(hintHand);
+					hintShow.addChild(hintRing);
+
+					addChild(hintShow);
+					hintShow.touchable=false;
+				}
+				else
+				{
+					if (hintShow.alpha == 1)
+						isReverse=true;
+					else if (hintShow.alpha == 0)
+						isReverse=false;
+					hintShow.alpha+=isReverse ? -.05 : .05;
+					hintHand.visible=!handMoved;
+					hintRing.visible=!ringMoved;
+				}
+			}
 		}
 
 		private function onCloseTouch(e:Event):void
@@ -81,18 +125,18 @@ package views.module2.scene22
 			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
-		protected function onUpdate(e:AccelerometerEvent):void
-		{
-			var dx:Number=e.accelerationX;
-			if (Math.abs(dx) < .1)
-				dx=0;
-			speedX=dx * 100;
-
-			var dy:Number=e.accelerationY;
-			if (Math.abs(dy) < .1)
-				dy=0;
-			speedY=dy * 100;
-		}
+//		protected function onUpdate(e:AccelerometerEvent):void
+//		{
+//			var dx:Number=e.accelerationX;
+//			if (Math.abs(dx) < .1)
+//				dx=0;
+//			speedX=dx * 100;
+//
+//			var dy:Number=e.accelerationY;
+//			if (Math.abs(dy) < .1)
+//				dy=0;
+//			speedY=dy * 100;
+//		}
 
 		private var centerPT:Point;
 
@@ -186,6 +230,8 @@ package views.module2.scene22
 			target.rotation+=deltaAngle;
 
 			updataBlur();
+
+			ringMoved=true;
 		}
 
 		private function updataBlur():void
@@ -254,6 +300,16 @@ package views.module2.scene22
 		private var isRingMoved:Boolean;
 		private var isZoomed:Boolean;
 		private var eye:MovieClip;
+		private var isMoved:Boolean;
+		private var hintShow:Sprite;
+		private var count:int;
+		private var isReverse:Boolean;
+
+		private var hintHand:Image;
+
+		private var hintRing:Image;
+		private var handMoved:Boolean;
+		private var ringMoved:Boolean;
 
 		private function onTeleTouch(e:TouchEvent):void
 		{
@@ -273,6 +329,9 @@ package views.module2.scene22
 				view.scale=Math.abs(tele3.y) / maxY;
 
 				isZoomed=true;
+
+				handMoved=true;
+
 				if (isRingMoved)
 					finished=true;
 

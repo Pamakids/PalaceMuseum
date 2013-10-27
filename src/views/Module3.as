@@ -2,15 +2,18 @@ package views
 {
 	import flash.filesystem.File;
 
+	import controllers.MC;
+
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
 	import views.components.base.PalaceModule;
-	import views.module3.Scene34;
+	import views.global.TopBar;
 	import views.module3.Scene31;
 	import views.module3.Scene32;
 	import views.module3.Scene33;
+	import views.module3.Scene34;
 
 	public class Module3 extends PalaceModule
 	{
@@ -44,8 +47,8 @@ package views
 			assetManager=new AssetManager();
 			var file1:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/scene30");
 			var file2:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/scene31");
-			var f:File=File.applicationDirectory.resolvePath("assets/common");
-			assetManager.enqueue(file1, file2, f);
+//			var f:File=File.applicationDirectory.resolvePath("assets/common");
+			assetManager.enqueue(file1, file2);
 			assetManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)
@@ -73,13 +76,14 @@ package views
 			assetManager=new AssetManager();
 			var file1:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/scene32");
 			var file2:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/scene33");
-			var f:File=File.applicationDirectory.resolvePath("assets/common");
-			assetManager.enqueue(file1, file2, f);
+//			var f:File=File.applicationDirectory.resolvePath("assets/common");
+			assetManager.enqueue(file1, file2);
 			assetManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)
 				{
-					assetManager=assetManager;
+					TopBar.enable=true;
+					MC.instance.main.removeMask();
 					isLoading=false;
 					addNext2();
 				}
@@ -88,13 +92,13 @@ package views
 
 		protected function addNext2():void
 		{
-			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-			if (load)
-				load.removeFromParent(true);
+//			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			if (skipIndex < 2)
 			{
 				var next:ElasticButton=new ElasticButton(getImage("nextButton"));
 				addChild(next);
+				next.pivotX=next.width >> 1;
+				next.pivotY=33;
 				next.x=1024 - 100;
 				next.y=768 - 100;
 				next.addEventListener(ElasticButton.CLICK, initScene2);
