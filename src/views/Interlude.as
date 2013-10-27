@@ -67,8 +67,7 @@ package views
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			SoundManager.instance.stop("main");
-			Starling.current.stage3D.x=0;
-			Starling.current.stage3D.y=-stage.stageHeight;
+			Starling.current.stage3D.visible = false;
 			initialize();
 			if (Capabilities.isDebugger)
 			{
@@ -103,8 +102,6 @@ package views
 			{
 				const gap:int=20;
 				const bitmap:Bitmap=new BtnSkin();
-				bitmap.width=122;
-				bitmap.height=56;
 				button=new Sprite();
 				button.x=viewWidth - bitmap.width - gap;
 				button.y=viewHeight - bitmap.height - gap;
@@ -197,8 +194,7 @@ package views
 			if (!stage)
 				return;
 			stage.removeEventListener(MouseEvent.MOUSE_DOWN, onStage);
-			Starling.current.stage3D.x=0;
-			Starling.current.stage3D.y=0;
+			Starling.current.stage3D.visible = true;
 			SoundManager.instance.play("main");
 			TweenLite.killTweensOf(shape);
 			if(connection)
