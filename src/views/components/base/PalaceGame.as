@@ -79,7 +79,7 @@ package views.components.base
 			var t:Texture
 			if (MC.assetManager)
 				t=MC.assetManager.getTexture(name);
-			if (!t)
+			if (!t && assetManager)
 				t=assetManager.getTexture(name)
 			if (t)
 				return new Image(t);
