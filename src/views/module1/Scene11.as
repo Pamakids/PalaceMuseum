@@ -4,23 +4,27 @@ package views.module1
 	import com.greensock.TweenMax;
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.SPUtils;
-	
+
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	
+
 	import controllers.MC;
-	
+
+	import models.SOService;
+
+	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
+	import views.global.TopBar;
 
 	/**
 	 * 早起模块
@@ -121,9 +125,35 @@ package views.module1
 			addEventListener(TouchEvent.TOUCH, onTouch);
 			fg.addEventListener(TouchEvent.TOUCH, onFGTouch);
 			addWindows();
-			addKing();
 
 			onAutoMove(2000);
+			if (!SOService.instance.getSO("isfirst"))
+			{
+				SOService.instance.setSO("isfirst", true);
+				var book:Image=getImage("bookshot");
+				MC.instance.main.addMask(0);
+				function showBook():void {
+					addChild(book);
+					book.scaleX=book.scaleY=.08;
+					TweenLite.to(book, .5, {scaleX: 1, scaleY: 1});
+				}
+				function hideBook():void {
+					TweenLite.to(book, .5, {scaleX: .08, scaleY: .08, onComplete: function():void {
+						book.removeFromParent(true);
+						TopBar.tweenPlay(false, addKing)
+					}});
+				}
+				TopBar.tweenPlay(true, showBook);
+				TweenLite.delayedCall(5, hideBook);
+			}
+			else
+				addKing();
+		}
+
+		private function active():void
+		{
+			ready=true;
+			MC.instance.main.removeMask();
 			_offsetX=-10;
 			TweenLite.to(this, 5, {offsetX: -10, onComplete:
 					function():void
@@ -141,12 +171,21 @@ package views.module1
 			king.x=512;
 			king.y=768;
 			king.addEventListener(TouchEvent.TOUCH, onKingTouch);
+
+			var ga:Image=getImage("gallery");
+			ga.x=1024 - ga.width >> 1;
+			addChild(ga);
+			ga.touchable=false;
+			TweenLite.delayedCall(3, function():void {
+				TweenLite.to(ga, 2, {alpha: 0, onComplete: active});
+			});
+
 		}
 
 		private function onKingTouch(event:TouchEvent):void
 		{
 			var tc:Touch=event.getTouch(this, TouchPhase.ENDED);
-			if (!tc)
+			if (!tc || !ready)
 				return;
 			var pt:Point=tc.getLocation(this);
 
@@ -157,7 +196,7 @@ package views.module1
 		private function onFGTouch(event:TouchEvent):void
 		{
 			var tc:Touch=event.getTouch(this, TouchPhase.ENDED);
-			if (!tc)
+			if (!tc || !ready)
 				return;
 			var pt:Point=tc.getLocation(this);
 
@@ -394,7 +433,7 @@ package views.module1
 
 		private function onTouch(event:TouchEvent):void
 		{
-			if (crtWinSelected)
+			if (crtWinSelected || !ready)
 				return;
 			var tc:Touch=event.getTouch(this);
 			if (!tc)
@@ -442,6 +481,7 @@ package views.module1
 		}
 
 		private var _offsetX:Number;
+		private var ready:Boolean;
 
 		public function get offsetX():Number
 		{
@@ -464,7 +504,6 @@ package views.module1
 			bg.x+=dx / 5;
 			mg.x+=dx / 3;
 			fg.x+=dx / 2;
-			king.x-=dx / 8;
 		}
 	}
 }

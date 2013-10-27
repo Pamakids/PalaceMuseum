@@ -91,15 +91,21 @@ package views.global.userCenter.map
 				var point:Point=this.globalToLocal(new Point(0, 0));
 				TweenLite.to(cache, 0.5, {y: -cache.height + point.y - 88, ease: Cubic.easeOut, onComplete: function():void
 				{
-					mapButton.visible=true;
 					cache.visible=false;
 					Map.show(null, -1, -1, true);
+					Map.showCenterBtn=showBtn;
 				}});
 			}
 			else
 			{
 				Map.show(null, -1, -1, true);
 			}
+		}
+
+		private function showBtn():void
+		{
+			if (mapButton)
+				mapButton.visible=true;
 		}
 
 		override public function dispose():void

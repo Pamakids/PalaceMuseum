@@ -76,15 +76,15 @@ package views.components.base
 
 		protected function getImage(name:String):Image
 		{
-			if (assetManager)
-			{
-				var t:Texture=assetManager.getTexture(name);
-				if (t)
-					return new Image(t);
-				else
-					return null;
-			}
-			return null;
+			var t:Texture
+			if (MC.assetManager)
+				t=MC.assetManager.getTexture(name);
+			if (!t)
+				t=assetManager.getTexture(name)
+			if (t)
+				return new Image(t);
+			else
+				return null;
 		}
 	}
 }

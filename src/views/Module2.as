@@ -30,8 +30,9 @@ package views
 			}
 			assetManager=new AssetManager();
 			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName);
-			var f:File=File.applicationDirectory.resolvePath("assets/common");
-			assetManager.enqueue(file, f);
+//			var f:File=File.applicationDirectory.resolvePath("assets/common");
+			var path:String="assets/module1/scene12/kingExp"
+			assetManager.enqueue(file, path + ".atf", path + "2.atf", path + ".xml", path + "2.xml");
 			assetManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)

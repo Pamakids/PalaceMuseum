@@ -47,7 +47,7 @@ package views.module5
 
 			LionMC.instance.say("等大家入座，演出就开始了。", 0, 200, 500, function():void {
 				ready=true;
-			}, 20, false);
+			}, 20);
 		}
 
 		private function addPeople():void

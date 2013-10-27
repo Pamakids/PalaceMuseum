@@ -17,6 +17,7 @@ package views.module4
 	import views.components.ElasticButton;
 	import views.components.LionMC;
 	import views.components.base.PalaceScene;
+	import views.global.TailBar;
 	import views.global.TopBar;
 
 	/**
@@ -93,6 +94,7 @@ package views.module4
 		{
 			MC.isTopBarShow=false;
 			TopBar.hide();
+			TailBar.hide();
 			drawScene=new palace_paper(crtIndex, removeMemorial);
 			MC.instance.stage.addChild(drawScene);
 		}
@@ -115,7 +117,6 @@ package views.module4
 						showCard("9", function():void {
 							showAchievement(23, playLion);
 						});
-
 					}
 					else
 						addChoose();
@@ -126,7 +127,7 @@ package views.module4
 
 		private function playLion():void
 		{
-			LionMC.instance.say("皇上辛苦了，这就传晚膳", 0, 200, 500, sceneOver);
+			LionMC.instance.say("皇上辛苦了，这就传晚膳", 0, 200, 500, sceneOver, 20);
 		}
 
 		private function addChoose():void

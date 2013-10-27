@@ -1,5 +1,7 @@
 package
 {
+	import com.pamakids.manager.SoundManager;
+
 	import flash.filesystem.File;
 
 	import controllers.MC;
@@ -11,15 +13,13 @@ package
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
+	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
 	import views.Interlude;
 	import views.Module1;
-	import views.components.Prompt;
+	import views.components.ElasticButton;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
 	import views.global.map.Map;
@@ -48,7 +48,7 @@ package
 			am.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)
-					Prompt.addAssetManager(am);
+					MC.assetManager=am;
 			});
 
 			Map.loadAssets();
@@ -70,37 +70,44 @@ package
 			else if (lastScene.indexOf("end") >= 0)
 				Map.show(function():void {
 					MC.instance.gotoModule(0, 0);
-				}, 4, 0, true);
+				}, 4, 0, true, true);
 			else
 				startGame();
 		}
 
-		[Embed(source="/assets/common/title.png")]
+		[Embed(source="/assets/start/title.png")]
 		public static var Title:Class
+
+		[Embed(source="/assets/start/sb1.png")]
+		public static var StartBtn:Class
+
+		[Embed(source="/assets/start/sb2.png")]
+		public static var StartBtn2:Class
 
 		public function showStart():void
 		{
 			startHolder=new Sprite();
 			startHolder.addChild(Image.fromBitmap(new PalaceModule.gameBG()));
 			var title:Image=Image.fromBitmap(new Title());
-			title.x=1024 - title.width >> 1;
-			title.y=768 - title.height >> 1;
+			title.x=171;
 			startHolder.addChild(title);
 			addChild(startHolder);
-			startHolder.addEventListener(TouchEvent.TOUCH, onStart);
+
+			var startBtn:ElasticButton=new ElasticButton(Image.fromBitmap(new StartBtn()));
+			startBtn.shadow=Image.fromBitmap(new StartBtn2());
+			startBtn.x=512;
+			startBtn.y=488;
+			startHolder.addChild(startBtn);
+			startBtn.addEventListener(ElasticButton.CLICK, onStart);
 		}
 
-		private function onStart(e:TouchEvent):void
+		private function onStart(e:Event):void
 		{
-			var tc:Touch=e.getTouch(startHolder, TouchPhase.ENDED)
-			if (tc)
-			{
-				startHolder.removeFromParent(true);
-				if (!lastScene)
-					initIntro();
-				else
-					startGame();
-			}
+			startHolder.removeFromParent(true);
+			if (!lastScene)
+				initIntro();
+			else
+				startGame();
 		}
 
 		override public function restart():void
@@ -116,6 +123,7 @@ package
 
 		private function startGame():void
 		{
+			SoundManager.instance.play("main");
 			parseMS(lastScene);
 		}
 
@@ -129,7 +137,7 @@ package
 			var moduleIndex:int=int(_lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(_lastScene.charAt(1)) - 1;
 			if (lastScene.indexOf("end") >= 0)
-				Map.show(null, 4, 0, true);
+				Map.show(null, 4, 0, true, true);
 			else if (moduleIndex < 0 || sceneIndex < 0)
 				Map.show();
 			else if (_lastScene.lastIndexOf("map") < 0)

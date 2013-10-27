@@ -63,7 +63,7 @@ package views.components.base
 		private var _height:Number;
 		private var mask:Quad;
 
-		public function addMask(_alpha:Number=.4):void
+		public function addMask(_alpha:Number=.6):void
 		{
 			mask=new Quad(1024, 768, 0, true);
 			mask.alpha=_alpha;

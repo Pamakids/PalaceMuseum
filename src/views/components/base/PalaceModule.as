@@ -7,7 +7,10 @@
 
 package views.components.base
 {
+	import com.greensock.TweenLite;
 	import com.pamakids.palace.utils.StringUtils;
+
+	import flash.display.MovieClip;
 
 	import controllers.MC;
 
@@ -17,6 +20,7 @@ package views.components.base
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
+	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
@@ -56,8 +60,41 @@ package views.components.base
 			LionMC.instance.clear();
 		}
 
-		protected var load:Sprite;
-		protected var isLoading:Boolean;
+		protected var load:MovieClip;
+		protected var _isLoading:Boolean;
+
+		public function get isLoading():Boolean
+		{
+			return _isLoading;
+		}
+
+		public function set isLoading(value:Boolean):void
+		{
+			if (_isLoading == value)
+				return;
+			_isLoading=value;
+			if (value)
+			{
+				if (!load)
+					load=new PalaceLoading();
+				MC.instance.addMC(load);
+				load.x=1024 - 140;
+				load.y=768 - 90;
+				load.play();
+			}
+			else
+			{
+				if (load)
+				{
+					TweenLite.to(load, .5, {x: 1100, onComplete: function():void {
+						MC.instance.removeMC(load);
+						load.stopAllMovieClips();
+						load=null;
+					}});
+				}
+			}
+		}
+
 
 		protected var Q1:String=""
 		protected var A1:String=""
@@ -97,19 +134,17 @@ package views.components.base
 			tfA2.hAlign="left";
 			tfA2.vAlign="top";
 			tfHolder.addChild(tfA2);
-
-			isLoading=true;
 		}
 
 		protected function addNext():void
 		{
-			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-			if (load)
-				load.removeFromParent(true);
+//			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			if (skipIndex < 0)
 			{
 				var next:ElasticButton=new ElasticButton(getImage("nextButton"));
 				addChild(next);
+				next.pivotX=next.width >> 1;
+				next.pivotY=33;
 				next.x=1024 - 100;
 				next.y=768 - 100;
 				next.addEventListener(ElasticButton.CLICK, initScene);
@@ -132,30 +167,39 @@ package views.components.base
 
 		protected function addLoading():void
 		{
-			load=new Sprite();
-			addChild(load);
-			load.x=1024 - 100;
-			load.y=768 - 100;
-			load.scaleX=load.scaleY=.5;
-			load.addChild(Image.fromBitmap(new loading()));
-			load.pivotX=load.pivotY=64;
-
 			isLoading=true;
-
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+//			load=new Sprite();
+//			addChild(load);
+//			load=new PalaceLoading();
+//			MC.instance.addMC(load);
+//			load.x=1024 - 140;
+//			load.y=768 - 90;
+//			load.play();
+//			load.scaleX=load.scaleY=.5;
+//			load.addChild(Image.fromBitmap(new loading()));
+//			load.pivotX=load.pivotY=64;
+//			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			addEventListener("gotoNext", nextScene);
 		}
 
 		protected function getImage(name:String):Image
 		{
-			return new Image(assetManager.getTexture(name));
+			var t:Texture;
+			if (MC.assetManager)
+				t=MC.assetManager.getTexture(name);
+			if (!t)
+				t=assetManager.getTexture(name)
+			if (t)
+				return new Image(t);
+			else
+				return null;
 		}
 
-		protected function onEnterFrame(e:Event):void
-		{
-			if (isLoading)
-				load.rotation+=.2;
-		}
+//		protected function onEnterFrame(e:Event):void
+//		{
+//			if (isLoading)
+//				load.rotation+=.2;
+//		}
 
 		protected var sceneArr:Array=[];
 		protected var sceneIndex:int;
@@ -168,6 +212,7 @@ package views.components.base
 
 		protected function loadScene(index:int):void
 		{
+			isLoading=false;
 			if (crtScene)
 			{
 				removeChild(crtScene);
@@ -178,22 +223,20 @@ package views.components.base
 			if (index <= sceneArr.length - 1)
 			{
 				var scene:Class=sceneArr[index] as Class;
-
 				crtScene=new scene(assetManager);
 				addChild(crtScene);
 			}
 			else
 			{
-				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+//				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 				removeEventListener("gotoNext", nextScene);
-				if (load)
-					load.removeFromParent(true);
 				MC.instance.nextModule();
 			}
 		}
 
 		override public function dispose():void
 		{
+			isLoading=false;
 			if (assetManager)
 				assetManager.purge();
 			assetManager=null;

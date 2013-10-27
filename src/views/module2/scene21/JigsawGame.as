@@ -254,7 +254,7 @@ package views.module2.scene21
 		private var timeHolder:Sprite;
 		private var lbl:TextField;
 
-//		private var analyst:BitmapAnalyst;
+		private var analyst:BitmapAnalyst;
 		public var isFinished:Boolean;
 
 		private var num:int;
@@ -262,18 +262,18 @@ package views.module2.scene21
 		public function initData(lvl:int):void
 		{
 			var map:Bitmap=new img();
-			num=4 + lvl * 2;
+			num=4 + lvl;
 			var maxW:Number=map.width;
 			var maxH:Number=map.height;
-//			analyst=new BitmapAnalyst(map, num, num);
+//			analyst=new BitmapAnalyst(map, num, num - 1);
 //			analyst.level=gamelevel == 0 ? "easy" : "hard"
 //			analyst.initAnalyst();
 //			bpArr=analyst.getBpArr();
 //			piv=analyst.getPivot();
 //			size=analyst.getSize();
 
-			piv=new Point(lvl ? 172 : 258, lvl ? 130 : 194);
-			size=new Point(maxW / num, maxH / num);
+			piv=new Point(lvl ? 207 : 258, lvl ? 194 : 259);
+			size=new Point(maxW / num, maxH / (num - 1));
 		}
 
 		public function startGame():void
@@ -312,7 +312,7 @@ package views.module2.scene21
 //			}
 			for (var i:int=0; i < num; i++)
 			{
-				for (var j:int=0; j < num; j++)
+				for (var j:int=0; j < num - 1; j++)
 				{
 					var cell:Cell=new Cell(i, j, getImage((gamelevel == 0 ? "easy" : "hard") + i.toString() + j.toString()));
 					cell.pivotX=piv.x >> 1;
@@ -400,6 +400,7 @@ package views.module2.scene21
 				var delta:Point=tcms[0].getMovement(this);
 				cell.x+=delta.x;
 				cell.y+=delta.y;
+				limit(cell);
 			}
 			//如果有两个点，可以认为是旋转
 			else if (tcms.length == 2)
@@ -429,6 +430,18 @@ package views.module2.scene21
 				cell.filter=null;
 				check(cell);
 			}
+		}
+
+		private function limit(cell:Cell):void
+		{
+			if (cell.x < 0)
+				cell.x=0;
+			else if (cell.x > 1024)
+				cell.x=1024;
+			if (cell.y < 0)
+				cell.y=0;
+			else if (cell.y > 768)
+				cell.y=768;
 		}
 
 		private function check(cell:Cell):void

@@ -338,6 +338,7 @@ package views.module2.scene22
 				prism.removeEventListener(TouchEvent.TOUCH, onPrimsTouch);
 				TweenLite.to(lightIn, 1, {alpha: 0});
 				TweenLite.to(lightOut, .5, {alpha: 0});
+				TweenLite.to(prism, 2, {alpha: 0});
 				dispatchEvent(new Event("addCard"));
 			}
 		}
@@ -397,29 +398,38 @@ package views.module2.scene22
 			for (var i:int=0; i < areaArr.length; i++)
 			{
 				var img:Image=areaArr[i] as Image;
-				playEff(i * .3, img);
+				playEff(i * .2, img);
 			}
-			TweenLite.delayedCall(areaArr.length * .3, showWall);
+			TweenLite.delayedCall(areaArr.length * .2 + .5, showWall);
 		}
 
 		private function playEff(delay:Number, _img:DisplayObject, show:Boolean=false):void
 		{
 			TweenLite.delayedCall(delay, function():void {
-				TweenLite.to(_img, .5 + .5, {alpha: show ? 1 : 0});
+				TweenLite.to(_img, .5, {alpha: show ? 1 : 0});
 			});
 		}
 
-		private var wallPosArr:Array=[new Point(454, 32), new Point(349, 31),
-			new Point(563, 34), new Point(234, 33), new Point(660, 32),
-			new Point(121, 34), new Point(778, 32), new Point(13, 30),
-			new Point(865, 26)];
+		private var wallPosArr:Array=[new Point(459, 114), new Point(363, 113),
+			new Point(567, 113), new Point(251, 115), new Point(664, 114),
+			new Point(136, 113), new Point(783, 113), new Point(15, 111),
+			new Point(875, 106)];
 
 		private function showWall():void
 		{
+			var title:Image=getImage("wall-title");
+			title.x=447;
+			title.y=98;
+			addChild(title);
+
+			var info:Image=getImage("wall-word");
+			info.x=92;
+			info.y=516;
+			addChild(info);
+
 			var wall:Sprite=new Sprite();
 			wall.addChild(getImage("wall"));
-			wall.x=1024 - wall.width >> 1;
-			wall.y=768 - wall.height >> 1;
+			wall.y=171;
 			addChild(wall);
 			for (var i:int=0; i < wallPosArr.length; i++)
 			{
@@ -428,9 +438,9 @@ package views.module2.scene22
 				dragon.y=wallPosArr[i].y;
 				wall.addChild(dragon);
 				dragon.alpha=0;
-				playEff(i * .3, dragon, true);
+				playEff(i * .2, dragon, true);
 			}
-			TweenLite.delayedCall(wallPosArr.length * .3 + .5, function():void {
+			TweenLite.delayedCall(wallPosArr.length * .2 + .7, function():void {
 				closeBtn.visible=true;
 			});
 		}

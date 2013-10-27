@@ -6,6 +6,8 @@ package views.components
 
 	import flash.utils.Dictionary;
 
+	import controllers.MC;
+
 	import models.FontVo;
 
 	import starling.display.Image;
@@ -23,7 +25,6 @@ package views.components
 	 */
 	public class Prompt extends Sprite
 	{
-		private static var assetManagers:Array=[];
 		/**
 		 *
 		 * @default
@@ -40,26 +41,6 @@ package views.components
 		 * @default
 		 */
 		public var callback:Function;
-
-		/**
-		 *
-		 * @param am
-		 */
-		public static function addAssetManager(am:AssetManager):void
-		{
-			if (am && assetManagers.indexOf(am) == -1)
-				assetManagers.push(am);
-		}
-
-		/**
-		 *
-		 * @param am
-		 */
-		public static function removeAssetManager(am:AssetManager):void
-		{
-			if (assetManagers.indexOf(am) != -1)
-				assetManagers.splice(assetManagers.indexOf(am), 1);
-		}
 
 		/**
 		 *
@@ -100,6 +81,14 @@ package views.components
 					var t:TextField=new TextField(isK ? bgImage.width - 30 : bgImage.width - 5, isK ? bgImage.height - 10 : bgImage.height - 20, content, FontVo.PALACE_FONT, fontSize, 0x561a1a, true);
 					t.x=bgImage.x + isK ? 15 : 3;
 					t.y=bgImage.y + isK ? 10 : 5;
+					if (bg == "bg-task")
+					{
+						t.y+=10;
+						t.fontSize=40;
+						t.color=0xffffff;
+						algin=4
+						bgAlign=-1;
+					}
 					addChild(t);
 					t.touchable=false;
 					t.hAlign="center";
@@ -156,10 +145,11 @@ package views.components
 		 * @param isKnowledge 知识点背景
 		 * @return
 		 */
-		public static function showTXT(_x:Number, _y:Number, _content:String, _size:int=20, callBack:Function=null, _parent:Sprite=null, bgAlign:int=1, isKnowledge:Boolean=false, hideDelay:Number=3):Prompt
+		public static function showTXT(_x:Number, _y:Number, _content:String, _size:int=20, callBack:Function=null, _parent:Sprite=null, bgAlign:int=1, isKnowledge:Boolean=false, hideDelay:Number=3, isTask:Boolean=false):Prompt
 		{
 			var bgSize:String=checkLength(_content.length)
 			var bg:String="hint-bg" + (isKnowledge ? "-k" : "") + bgSize;
+			bg=isTask ? "bg-task" : bg
 			var delay:int=hideDelay == 0 ? 0 : hideDelay + Math.max(bgSize.length / 2 - 1, 0);
 			return show(_x, _y, bg, _content, 1, delay, callBack, _parent, false, _size, bgAlign);
 		}
@@ -282,15 +272,13 @@ package views.components
 
 		private function getImage(name:String):Image
 		{
-			var texture:Texture;
-			for each (var am:AssetManager in assetManagers)
-			{
-				texture=am.getTexture(name);
-				if (texture)
-					return new Image(texture);
-			}
-			return null;
+			var t:Texture
+			if (MC.assetManager)
+				t=MC.assetManager.getTexture(name);
+			if (t)
+				return new Image(t);
+			else
+				return null;
 		}
-
 	}
 }

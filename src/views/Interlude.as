@@ -63,6 +63,7 @@ package views
 		}
 
 		private var shape:Shape;
+
 		private function onAdded(e:Event):void
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
@@ -90,13 +91,13 @@ package views
 
 		private function initShape():void
 		{
-			shape = new Shape();
-			this.addChild( shape );
+			shape=new Shape();
+			this.addChild(shape);
 			shape.graphics.beginFill(stage.color);
-			shape.graphics.drawRect(0,0,stage.stageWidth, stage.stageHeight);
+			shape.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 			shape.graphics.endFill();
 		}
-		
+
 		private function initButton():void
 		{
 			if (passable)
@@ -145,11 +146,11 @@ package views
 					break;
 				case "NetStream.Play.Start":
 					trace("NetStream.Play.Start");
-					TweenLite.to(shape, 1.5, {alpha: 0, onComplete: function():void{
+					TweenLite.to(shape, 1.5, {alpha: 0, onComplete: function():void {
 						shape.graphics.clear();
 						shape=null;
 					}});
-					if(startHandler)
+					if (startHandler)
 						startHandler();
 					break;
 				case "NetStream.Play.Stop":
@@ -167,12 +168,12 @@ package views
 				};
 			stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
 			stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
-			
-			stageVideo = stage.stageVideos[0];
-			stageVideo.attachNetStream( stream );
-			stageVideo.viewPort = new Rectangle(0, 0 ,stage.stageWidth,stage.stageHeight);
-			stream.play( videoURL );
-			
+
+			stageVideo=stage.stageVideos[0];
+			stageVideo.attachNetStream(stream);
+			stageVideo.viewPort=new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+			stream.play(videoURL);
+
 //			video = new Video(viewWidth, viewHeight);
 //			video.attachNetStream( stream );
 //			this.addChildAt( video, 0 );
@@ -199,9 +200,8 @@ package views
 			stage.removeEventListener(MouseEvent.MOUSE_DOWN, onStage);
 			Starling.current.stage3D.x=0;
 			Starling.current.stage3D.y=0;
-			SoundManager.instance.play("main");
 			TweenLite.killTweensOf(shape);
-			if(connection)
+			if (connection)
 			{
 				connection.removeEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
 				connection.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
