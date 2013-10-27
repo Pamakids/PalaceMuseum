@@ -127,6 +127,7 @@ package views.module1
 			addWindows();
 
 			onAutoMove(2000);
+			addKing();
 			if (!SOService.instance.getSO("isfirst"))
 			{
 				SOService.instance.setSO("isfirst", true);
@@ -140,26 +141,32 @@ package views.module1
 				function hideBook():void {
 					TweenLite.to(book, .5, {scaleX: .08, scaleY: .08, onComplete: function():void {
 						book.removeFromParent(true);
-						TopBar.tweenPlay(false, addKing)
+						TopBar.tweenPlay(false, active)
 					}});
 				}
 				TopBar.tweenPlay(true, showBook);
 				TweenLite.delayedCall(5, hideBook);
 			}
 			else
-				addKing();
+				active();
 		}
 
 		private function active():void
 		{
 			ready=true;
-			MC.instance.main.removeMask();
-			_offsetX=-10;
-			TweenLite.to(this, 5, {offsetX: -10, onComplete:
-					function():void
-					{
-						showHint(50, 50, hint0, 3, king, 3);
-					}});
+			TweenLite.delayedCall(3, function():void {
+				TweenLite.to(ga, 2, {alpha: 0, onComplete: function():void {
+					ga.removeFromParent(true);
+					MC.instance.main.removeMask();
+					_offsetX=-10;
+					TweenLite.to(this, 5, {offsetX: -10, onComplete:
+							function():void
+							{
+								showHint(50, 50, hint0, 3, king, 3);
+							}});
+				}});
+			});
+
 		}
 
 		private function addKing():void
@@ -172,14 +179,9 @@ package views.module1
 			king.y=768;
 			king.addEventListener(TouchEvent.TOUCH, onKingTouch);
 
-			var ga:Image=getImage("gallery");
+			ga=getImage("gallery");
 			ga.x=1024 - ga.width >> 1;
 			addChild(ga);
-			ga.touchable=false;
-			TweenLite.delayedCall(3, function():void {
-				TweenLite.to(ga, 2, {alpha: 0, onComplete: active});
-			});
-
 		}
 
 		private function onKingTouch(event:TouchEvent):void
@@ -482,6 +484,8 @@ package views.module1
 
 		private var _offsetX:Number;
 		private var ready:Boolean;
+
+		private var ga:Image;
 
 		public function get offsetX():Number
 		{

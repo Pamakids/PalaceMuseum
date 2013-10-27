@@ -2,15 +2,18 @@ package views
 {
 	import flash.filesystem.File;
 
+	import controllers.MC;
+
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
 	import views.components.base.PalaceModule;
-	import views.module3.Scene34;
+	import views.global.TopBar;
 	import views.module3.Scene31;
 	import views.module3.Scene32;
 	import views.module3.Scene33;
+	import views.module3.Scene34;
 
 	public class Module3 extends PalaceModule
 	{
@@ -79,7 +82,8 @@ package views
 			{
 				if (ratio == 1.0)
 				{
-					assetManager=assetManager;
+					TopBar.enable=true;
+					MC.instance.main.removeMask();
 					isLoading=false;
 					addNext2();
 				}
