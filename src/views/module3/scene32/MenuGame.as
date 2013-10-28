@@ -75,6 +75,7 @@ package views.module3.scene32
 			addBG();
 
 			closeBtn=new ElasticButton(getImage("button_close"));
+			closeBtn.shadow=getImage("button_close_down");
 			addChild(closeBtn);
 			closeBtn.x=950;
 			closeBtn.y=60;

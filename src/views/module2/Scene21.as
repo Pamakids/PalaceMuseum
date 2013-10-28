@@ -398,6 +398,7 @@ package views.module2
 				bigBook.x=512;
 				bigBook.y=384;
 				var close:ElasticButton=new ElasticButton(getImage("button_close"));
+				close.shadow=getImage("button_close_down");
 				bigBook.addChild(close);
 				close.x=800;
 				close.y=200;

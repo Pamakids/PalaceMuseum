@@ -428,6 +428,7 @@ package views.module1.scene13
 				if (!close)
 				{
 					close=new ElasticButton(getImage("button_close"));
+					close.shadow=getImage("button_close_down");
 					close.x=550;
 					close.y=-130;
 					addChild(close);
@@ -440,8 +441,6 @@ package views.module1.scene13
 				{
 					close.visible=true;
 				}
-
-//				gameOver();
 			}
 		}
 

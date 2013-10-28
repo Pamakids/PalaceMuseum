@@ -44,11 +44,11 @@ package views.module2.scene21
 			addBG();
 
 			closeBtn=new ElasticButton(getImage("button_close"));
+			closeBtn.shadow=getImage("button_close_down");
 			addChild(closeBtn);
 			closeBtn.x=950;
 			closeBtn.y=60;
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
-			//			closeBtn.visible=closeBtn.touchable=false;
 
 			addStart();
 
@@ -261,7 +261,6 @@ package views.module2.scene21
 
 		public function initData(lvl:int):void
 		{
-			var map:Bitmap=new img();
 			num=4 + lvl;
 			var maxW:Number=map.width;
 			var maxH:Number=map.height;
@@ -466,15 +465,25 @@ package views.module2.scene21
 		private function gameOver():void
 		{
 			TweenLite.to(okHolder, .5, {alpha: 0});
-			TweenLite.to(colorBG, .5, {alpha: 1, onComplete: function():void {
+			TweenLite.to(colorBG, 1, {alpha: 1, onComplete: addEdge});
+		}
+
+		private function addEdge():void
+		{
+			var edge:Image=getImage("mapEdge");
+			bgHolder.addChild(edge);
+			edge.alpha=0;
+			TweenLite.to(edge, 1, {alpha: 1, onComplete: function():void {}});
+			var disposeFun:Function=function():void {
+				timeHolder.dispose();
+				gameSP.dispose();
+				initResult(time.currentCount);
+			}
+			TweenLite.delayedCall(2, function():void
+			{
 				TweenLite.to(timeHolder, 1, {x: 1024});
-				TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn,
-						onComplete: function():void {
-							timeHolder.dispose();
-							gameSP.dispose();
-							initResult(time.currentCount);
-						}});
-			}});
+				TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn, onComplete: disposeFun});
+			});
 		}
 
 		private function initResult(_count:int):void
