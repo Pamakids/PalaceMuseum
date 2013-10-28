@@ -297,7 +297,7 @@ package views.module1
 //				SoundManager.instance.play("sad");
 				var _index:int=Math.random() > .6 ? 1 : (Math.random() > .5 ? 2 : 3);
 				playKing(_index);
-				hideNext();
+//				hideNext();
 			}
 		}
 

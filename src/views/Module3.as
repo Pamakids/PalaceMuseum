@@ -82,8 +82,6 @@ package views
 			{
 				if (ratio == 1.0)
 				{
-					TopBar.enable=true;
-					MC.instance.main.removeMask();
 					isLoading=false;
 					addNext2();
 				}
@@ -93,6 +91,8 @@ package views
 		protected function addNext2():void
 		{
 //			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			TopBar.enable=true;
+			MC.instance.main.removeMask();
 			if (skipIndex < 2)
 			{
 				var next:ElasticButton=new ElasticButton(getImage("nextButton"));
