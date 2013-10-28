@@ -158,15 +158,19 @@ package views.module1
 				TweenLite.to(ga, 2, {alpha: 0, onComplete: function():void {
 					ga.removeFromParent(true);
 					MC.instance.main.removeMask();
-					_offsetX=-10;
-					TweenLite.to(this, 5, {offsetX: -10, onComplete:
-							function():void
-							{
-								showHint(50, 50, hint0, 3, king, 3);
-							}});
+					moveScene();
 				}});
 			});
+		}
 
+		private function moveScene():void
+		{
+			_offsetX=-18;
+			TweenLite.to(this, 5, {offsetX: -3, onComplete:
+					function():void
+					{
+						showHint(50, 50, hint0, 3, king, 3);
+					}});
 		}
 
 		private function addKing():void

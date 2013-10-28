@@ -138,7 +138,8 @@ package views.components.base
 
 		protected function addNext():void
 		{
-//			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			TopBar.enable=true;
+			MC.instance.main.removeMask();
 			if (skipIndex < 0)
 			{
 				var next:ElasticButton=new ElasticButton(getImage("nextButton"));

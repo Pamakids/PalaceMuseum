@@ -179,7 +179,8 @@ package views.components.base
 		protected function nextScene(e:Event=null):void
 		{
 			TopBar.enable=false;
-			nextButton.removeEventListener(ElasticButton.CLICK, nextScene);
+			if (nextButton && nextButton.parent)
+				nextButton.removeFromParent(true);
 			dispatchEvent(new Event("gotoNext", true));
 		}
 

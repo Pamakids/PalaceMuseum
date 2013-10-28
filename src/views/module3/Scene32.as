@@ -16,6 +16,7 @@ package views.module3
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
+	import views.global.TopBar;
 	import views.module3.scene32.MenuGame;
 
 	/**
@@ -126,9 +127,14 @@ package views.module3
 
 		override protected function nextScene(e:Event=null):void
 		{
+			TopBar.enable=false;
+			if (nextButton && nextButton.parent)
+				nextButton.removeFromParent(true);
 			var scale:Number=1.2;
 			TweenLite.to(this, 3, {scaleX: scale, scaleY: scale, x: -1024 * (scale - 1),
-					onComplete: super.nextScene});
+					onComplete: function():void {
+						dispatchEvent(new Event("gotoNext", true));
+					}});
 		}
 	}
 }

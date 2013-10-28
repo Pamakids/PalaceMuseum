@@ -16,6 +16,7 @@ package controllers
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
+	import starling.utils.AssetManager;
 
 	import views.Interlude;
 	import views.Module1;
@@ -31,7 +32,6 @@ package controllers
 	import views.global.TopBar;
 	import views.global.map.Map;
 	import views.global.userCenter.UserCenterManager;
-	import starling.utils.AssetManager;
 
 	/**
 	 * 主业务控制器
@@ -200,6 +200,9 @@ package controllers
 
 		public function restart():void
 		{
+			UserCenterManager.closeUserCenter();
+			if (Map.map)
+				Map.map.clear(0);
 			SOService.instance.init();
 			LionMC.instance.show();
 			_moduleIndex=-1;

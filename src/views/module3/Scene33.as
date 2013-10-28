@@ -277,10 +277,7 @@ package views.module3
 		{
 			var win:Boolean=game.isWin();
 
-			game.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed)
-			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart)
-			game.removeChildren();
-			removeChild(game);
+			game.removeFromParent(true);
 			game=null;
 
 			if (kingHungry)
@@ -379,17 +376,14 @@ package views.module3
 
 		private function onGameRestart(e:Event):void
 		{
-			game.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed);
-			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
-			game.removeChildren();
-			removeChild(game);
+			game.removeFromParent(true);
 			game=null;
 
 			game=new DishGame(assetManager);
 			addChild(game);
 			game.addEventListener(PalaceGame.GAME_OVER, onGamePlayed);
 			game.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);
-			game.startGame();
+//			game.startGame();
 		}
 	}
 }

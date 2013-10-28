@@ -514,7 +514,7 @@ package views.module2.scene21
 			var resultTF:TextField=new TextField(400, 100, resultTXT);
 			resultTF.fontSize=48;
 			resultTF.color=0xb83d00;
-			resultTF.x=305;
+			resultTF.x=375;
 			resultTF.y=255;
 			resultTF.vAlign="top";
 			resultTF.hAlign="left";

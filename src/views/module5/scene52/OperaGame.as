@@ -578,7 +578,7 @@ package views.module5.scene52
 				var scoreTXT:TextField=new TextField(400, 100, "");
 				scoreTXT.fontSize=48;
 				scoreTXT.color=0xb83d00;
-				scoreTXT.x=420;
+				scoreTXT.x=490;
 				scoreTXT.y=285;
 				scoreTXT.vAlign="top";
 				scoreTXT.hAlign="left";

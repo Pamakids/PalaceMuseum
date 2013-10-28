@@ -38,10 +38,7 @@ package views.components.base
 		protected function addBG():void
 		{
 			var bg:Image=Image.fromBitmap(new PalaceModule.gameBG());
-//			var bg:Image=getImage("gamebg");
-			bg.blendMode=BlendMode.NONE;
 			addChild(bg);
-			bg.touchable=false;
 		}
 
 		public function get gameResult():String
