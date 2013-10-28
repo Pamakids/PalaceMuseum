@@ -52,6 +52,7 @@ package views.module1.scene13
 			addChild(flace);
 
 			close=new ElasticButton(getImage("button_close"));
+			close.shadow=getImage("button_close_down");
 			close.x=870;
 			close.y=50;
 			addChild(close);

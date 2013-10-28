@@ -66,6 +66,7 @@ package views.module2.scene21
 			addEventListener(TouchEvent.TOUCH, onTouch);
 
 			closeBtn=new ElasticButton(getImage("button_close"));
+			closeBtn.shadow=getImage("button_close_down");
 			addChild(closeBtn);
 			closeBtn.x=950;
 			closeBtn.y=60;

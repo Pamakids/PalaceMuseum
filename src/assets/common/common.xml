@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:f598692a1d2320ea8308a36e2612e137$ -->
+<!-- $TexturePacker:SmartUpdate:d4e41edbce921670ee85cb95760bff5c$ -->
 <TextureAtlas imagePath="common.png">
     <SubTexture name="acheivebar" x="2" y="1188" width="555" height="162"/>
     <SubTexture name="bg-task" x="2" y="1352" width="343" height="215" frameX="-2" frameY="0" frameWidth="345" frameHeight="217"/>
     <SubTexture name="bird" x="902" y="2" width="119" height="114"/>
     <SubTexture name="birdBG" x="2" y="664" width="848" height="522"/>
-    <SubTexture name="button_close" x="902" y="118" width="80" height="81"/>
+    <SubTexture name="button_close" x="902" y="367" width="80" height="81"/>
+    <SubTexture name="button_close_down" x="902" y="284" width="80" height="81"/>
+    <SubTexture name="button_next" x="902" y="201" width="80" height="81"/>
+    <SubTexture name="button_next_down" x="902" y="118" width="80" height="81"/>
     <SubTexture name="craw-light" x="984" y="118" width="35" height="33"/>
     <SubTexture name="craw" x="984" y="153" width="35" height="29" frameX="0" frameY="-2" frameWidth="35" frameHeight="33"/>
     <SubTexture name="game-start-down" x="347" y="1352" width="174" height="171"/>
@@ -19,5 +22,5 @@
     <SubTexture name="hint-bg-mid" x="812" y="1285" width="206" height="166"/>
     <SubTexture name="hint-bg" x="852" y="664" width="161" height="129"/>
     <SubTexture name="lion" x="852" y="1070" width="138" height="213"/>
-    <SubTexture name="nextButton" x="902" y="201" width="75" height="98"/>
+    <SubTexture name="nextButton" x="902" y="450" width="75" height="98"/>
 </TextureAtlas>

@@ -22,6 +22,7 @@ package views.global.userCenter
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 
+	import views.components.ElasticButton;
 	import views.components.SoftPaperAnimation;
 	import views.global.TopBar;
 	import views.global.userCenter.achievement.AchievementScreen;
@@ -126,16 +127,17 @@ package views.global.userCenter
 			this.addChild(_tabBar);
 			_tabBar.addEventListener(Event.CHANGE, tabs_changeHandler);
 		}
-		private var _backButton:Button;
+		private var _backButton:ElasticButton;
 
 		private function initBackButton():void
 		{
-			_backButton=new Button();
-			_backButton.defaultSkin=new Image(UserCenterManager.getTexture("button_close"));
+			_backButton=new ElasticButton(new Image(MC.assetManager.getTexture("button_close")));
+			_backButton.shadow=new Image(MC.assetManager.getTexture("button_close_down"));
+//			_backButton.defaultSkin=new Image(UserCenterManager.getTexture("button_close"));
 			addChild(_backButton);
-			_backButton.x=924;
-			_backButton.y=10;
-			_backButton.addEventListener(Event.TRIGGERED, onTriggered);
+			_backButton.x=950;
+			_backButton.y=60;
+			_backButton.addEventListener(ElasticButton.CLICK, onTriggered);
 		}
 		private var _navigator:ScreenNavigator;
 
