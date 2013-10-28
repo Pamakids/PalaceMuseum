@@ -18,6 +18,7 @@ package views.module3
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.ElasticButton;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 
@@ -156,30 +157,26 @@ package views.module3
 		{
 			book=new Sprite();
 			book.addChild(getImage("book21"));
-			close=getImage("button_close");
-			close.x=850;
-			close.y=50;
+			close=new ElasticButton(getImage("button_close"));
+			close.shadow=getImage("button_close_down");
+			close.x=900;
+			close.y=100;
 			book.addChild(close);
 			book.x=46;
 			book.y=2;
 			PopUpManager.addPopUp(book, true, false);
-			close.addEventListener(TouchEvent.TOUCH, onClose);
+			close.addEventListener(ElasticButton.CLICK, onClose);
 		}
 
-		private function onClose(e:TouchEvent):void
+		private function onClose(e:Event):void
 		{
-			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
-			if (tc)
+			close.removeFromParent(true);
+			TweenLite.to(book, 1, {x: 408, y: 363, scaleX: .07, scaleY: .07, ease: Elastic.easeOut, onComplete: function():void
 			{
-				close.removeEventListener(TouchEvent.TOUCH, onClose);
-				close.visible=false;
-				TweenLite.to(book, 1, {x: 408, y: 363, scaleX: .07, scaleY: .07, ease: Elastic.easeOut, onComplete: function():void
-				{
-					showAchievement(14);
-					PopUpManager.removePopUp(book);
-					TweenLite.delayedCall(1, endEff);
-				}});
-			}
+				showAchievement(14);
+				PopUpManager.removePopUp(book);
+				TweenLite.delayedCall(1, endEff);
+			}});
 		}
 
 		private function endEff():void
@@ -204,7 +201,7 @@ package views.module3
 		private var chefArea:Rectangle=new Rectangle(626, 127, 200, 280);
 		private var book:Sprite;
 		private var king:MovieClip;
-		private var close:Image;
+		private var close:ElasticButton;
 		private var chef:MovieClip;
 	}
 }

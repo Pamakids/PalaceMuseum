@@ -175,6 +175,7 @@ package views.global.map
 			if (!closeButton)
 			{
 				closeButton=new ElasticButton(getImage('button_close'));
+				closeButton.shadow=getImage("button_close_down");
 				addChild(closeButton);
 				closeButton.addEventListener(ElasticButton.CLICK, closeTriggeredHandler);
 				closeButton.x=width - closeButton.width / 2 - 10;

@@ -80,6 +80,7 @@ package views.components.base
 			bird.bird=getImage("bird");
 			bird.bg=getImage("birdBG");
 			bird.close=new ElasticButton(getImage("button_close"));
+			bird.close.shadow=getImage("button_close_down");
 			bird.fly();
 			addChild(bird);
 		}

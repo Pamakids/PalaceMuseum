@@ -64,6 +64,7 @@ package views.module2.scene22
 //			acc.addEventListener(AccelerometerEvent.UPDATE, onUpdate);
 
 			closeBtn=new ElasticButton(getImage("button_close"));
+			closeBtn.shadow=getImage("button_close_down");
 			addChild(closeBtn);
 			closeBtn.x=950;
 			closeBtn.y=60;
