@@ -4,9 +4,7 @@ package views.module3.scene32
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Quad;
-	import com.pamakids.palace.utils.StringUtils;
 	import com.pamakids.utils.DPIUtil;
-	import com.pamakids.utils.StringUtil;
 
 	import flash.events.AccelerometerEvent;
 	import flash.events.TimerEvent;
@@ -74,12 +72,7 @@ package views.module3.scene32
 			scale=DPIUtil.getDPIScale();
 			addBG();
 
-			closeBtn=new ElasticButton(getImage("button_close"));
-			closeBtn.shadow=getImage("button_close_down");
-			addChild(closeBtn);
-			closeBtn.x=950;
-			closeBtn.y=60;
-			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
+			addClose();
 
 			addStart();
 		}
@@ -481,19 +474,20 @@ package views.module3.scene32
 
 		private function gameOver():void
 		{
-			isWin=true;
 			TweenLite.to(playBG, 1, {alpha: 0});
 			TweenLite.to(timeHolder, 1, {x: 1024});
 			TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn,
 					onComplete: function():void {
 						timeHolder.dispose();
 						gameSP.dispose();
-						initGameResult(time.currentCount);
+						initGameResult();
 					}});
 		}
 
-		private function initGameResult(_count:int):void
+		private function initGameResult():void
 		{
+			var _count:int=time.currentCount;
+			isWin=true;
 			addChild(endSP);
 			endSP.x=148;
 			endSP.y=-547;
@@ -554,17 +548,6 @@ package views.module3.scene32
 				else
 					closeBtn.visible=closeBtn.touchable=true;
 			}});
-		}
-
-		private function onCloseTouch(e:Event):void
-		{
-			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseTouch);
-			closeGame();
-		}
-
-		private function closeGame():void
-		{
-			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
 		private function restartGame(e:Event=null):void
@@ -651,8 +634,6 @@ package views.module3.scene32
 		private var startBtn:ElasticButton;
 
 		private var timeHolder:Sprite;
-		private var closeBtn:ElasticButton;
-		public var isWin:Boolean;
 
 		public function get gamelevel():int
 		{

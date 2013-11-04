@@ -15,7 +15,6 @@ package views.module2.scene21
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
-	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
 
 	public class FindGame extends PalaceGame
@@ -57,20 +56,9 @@ package views.module2.scene21
 
 			addBugS();
 
-//			bug=getImage("crickets");
-//			bug.x=originPosArr[2].x;
-//			bug.y=originPosArr[2].y;
-//			bug.scaleX=bug.scaleY=55 / 102;
-//			addChild(bug);
-//			bug.addEventListener(TouchEvent.TOUCH, onBugTouch);
 			addEventListener(TouchEvent.TOUCH, onTouch);
 
-			closeBtn=new ElasticButton(getImage("button_close"));
-			closeBtn.shadow=getImage("button_close_down");
-			addChild(closeBtn);
-			closeBtn.x=950;
-			closeBtn.y=60;
-			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
+			addClose();
 		}
 
 		private function addBugS():void
@@ -95,16 +83,6 @@ package views.module2.scene21
 				bugS.addEventListener(Event.COMPLETE, playBugB);
 			}
 		}
-
-//		private function onBugTouch(e:TouchEvent):void
-//		{
-//			var tc:Touch=e.getTouch(bug, TouchPhase.ENDED);
-//			if (tc)
-//			{
-//				bug.removeEventListener(TouchEvent.TOUCH, onBugTouch);
-//				playBug(destPosArr[2]);
-//			}
-//		}
 
 		private var jumpCount:int=0;
 
@@ -149,12 +127,6 @@ package views.module2.scene21
 		private var jumpGap:Number=165;
 		private var bugBDestX:Number=75;
 		private var bugBY:Number=-32;
-
-		private function onCloseTouch(e:Event):void
-		{
-			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseTouch);
-			dispatchEvent(new Event(PalaceGame.GAME_OVER));
-		}
 
 		private function onTouch(e:TouchEvent):void
 		{
@@ -225,12 +197,10 @@ package views.module2.scene21
 		{
 			checkCount++;
 			if (checkCount == 3)
-				isFinish=true;
+				isWin=true;
 		}
 
 		private var checkCount:int=0;
-		private var closeBtn:ElasticButton;
-		public var isFinish:Boolean;
 		private var bugS:MovieClip;
 		private var bugB:MovieClip;
 	}

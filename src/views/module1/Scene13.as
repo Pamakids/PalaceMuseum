@@ -176,7 +176,6 @@ package views.module1
 				gameHolder.addChild(gameBG);
 
 				game=new TwisterGame(assetManager);
-//				game.addEventListener(PalaceGame.GAME_OVER, gameOver);
 				game.addEventListener(PalaceGame.GAME_OVER, closeGame);
 				gameHolder.addChild(game);
 			}

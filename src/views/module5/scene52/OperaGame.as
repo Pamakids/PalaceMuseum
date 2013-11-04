@@ -36,11 +36,6 @@ package views.module5.scene52
 			initStart();
 		}
 
-		public function isWin():Boolean
-		{
-			return life > 0 && score > 0;
-		}
-
 		public var gamelevel:int=0; //0-西游,1-三国
 
 		private var startHolder:Sprite;
@@ -99,12 +94,7 @@ package views.module5.scene52
 			startBtn.y=666;
 			shakeNext();
 
-			closeBtn=new ElasticButton(getImage("button_close"));
-			closeBtn.shadow=getImage("button_close_down");
-			addChild(closeBtn);
-			closeBtn.x=950;
-			closeBtn.y=60;
-			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
+			addClose();
 
 			TweenLite.delayedCall(.5, function():void {
 				if (!fromCenter) {
@@ -143,10 +133,20 @@ package views.module5.scene52
 			trace(gamelevel);
 		}
 
-		private function onCloseTouch(e:Event):void
+		override protected function onCloseClick(e:Event):void
 		{
-			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseTouch);
-			closeGame();
+			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseClick);
+			if (fromCenter)
+			{
+				dispatchEvent(new Event(PalaceGame.GAME_OVER));
+			}
+			else
+			{
+				var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE_OPEN, null, function():void {
+					dispatchEvent(new Event(PalaceGame.GAME_OVER));
+				});
+				onOperaSwitch(e1);
+			}
 		}
 
 		private function onStartClick(e:Event):void
@@ -329,7 +329,6 @@ package views.module5.scene52
 		private var scoreTF:TextField;
 		private var _life:int;
 		private var rsBtn:ElasticButton;
-		private var closeBtn:ElasticButton;
 
 		private var hardNess:int=3;
 
@@ -553,6 +552,7 @@ package views.module5.scene52
 			var isRecord:Boolean=false;
 			if (life > 0 && score > 0)
 			{
+				isWin=true;
 				var win:Image=getImage("win-panel");
 				endHolder.addChild(win);
 				win.x=222;
@@ -672,21 +672,6 @@ package views.module5.scene52
 			{
 				var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE_OPEN, null, function():void {
 					dispatchEvent(new Event(PalaceGame.GAME_RESTART));
-				});
-				onOperaSwitch(e1);
-			}
-		}
-
-		private function closeGame():void
-		{
-			if (fromCenter)
-			{
-				dispatchEvent(new Event(PalaceGame.GAME_OVER));
-			}
-			else
-			{
-				var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE_OPEN, null, function():void {
-					dispatchEvent(new Event(PalaceGame.GAME_OVER));
 				});
 				onOperaSwitch(e1);
 			}

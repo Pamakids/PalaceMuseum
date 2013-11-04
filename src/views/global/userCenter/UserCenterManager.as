@@ -73,8 +73,8 @@ package views.global.userCenter
 			MC.instance.switchLayer(true);
 			LionMC.instance.show();
 			TopBar.enable=true;
-			if ((!Map.map || !Map.map.visible) && MC.instance.currentModule == null)
-				MC.instance.gotoModule(0, -1);
+//			if ((!Map.map || !Map.map.visible) && MC.instance.currentModule == null)
+//				MC.instance.gotoModule(0, -1);
 		}
 
 		private static var _userCenter:UserCenter;

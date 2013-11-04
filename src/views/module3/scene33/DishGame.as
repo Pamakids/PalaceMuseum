@@ -79,12 +79,7 @@ package views.module3.scene33
 
 			initStart();
 
-			closeBtn=new ElasticButton(getImage("button_close"));
-			closeBtn.shadow=getImage("button_close_down");
-			addChild(closeBtn);
-			closeBtn.x=950;
-			closeBtn.y=60;
-			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
+			addClose();
 		}
 
 		private function initStart():void
@@ -606,11 +601,6 @@ package views.module3.scene33
 			TweenLite.delayedCall(.5, initResult);
 		}
 
-		public function isWin():Boolean
-		{
-			return life > 0 && score > 0;
-		}
-
 		private function initResult():void
 		{
 			addChild(endSP);
@@ -620,6 +610,7 @@ package views.module3.scene33
 			var isRecord:Boolean=false;
 			if (life > 0 && score > 0)
 			{
+				isWin=true;
 				var win:Image=getImage("win-panel");
 				endSP.addChild(win);
 				win.x=222;
@@ -704,17 +695,6 @@ package views.module3.scene33
 			recordIcon.y=327;
 			recordIcon.scaleX=recordIcon.scaleY=3;
 			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut});
-		}
-
-		private function onCloseTouch(e:Event):void
-		{
-			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseTouch);
-			closeGame();
-		}
-
-		private function closeGame():void
-		{
-			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
 		private function restartGame(e:Event=null):void
@@ -911,8 +891,6 @@ package views.module3.scene33
 		private var scoreTF:TextField;
 
 		private var startBtn:ElasticButton;
-
-		private var closeBtn:ElasticButton;
 
 		private var infoHolder:Sprite;
 

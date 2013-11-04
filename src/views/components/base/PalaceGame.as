@@ -6,12 +6,12 @@ package views.components.base
 
 	import models.SOService;
 
-	import starling.display.BlendMode;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
+	import views.components.ElasticButton;
 	import views.global.TailBar;
 	import views.global.TopBar;
 
@@ -22,6 +22,22 @@ package views.components.base
 
 		protected var assetManager:AssetManager;
 		public var fromCenter:Boolean=false;
+		private var _isWin:Boolean;
+
+		public function get isWin():Boolean
+		{
+			return _isWin;
+		}
+
+		public function set isWin(value:Boolean):void
+		{
+			if (_isWin == value)
+				return;
+			_isWin=value;
+			if (value)
+				end();
+		}
+
 
 		public function get gameName():String
 		{
@@ -57,6 +73,29 @@ package views.components.base
 
 		override protected function init():void
 		{
+		}
+
+		protected var closeBtn:ElasticButton;
+
+		protected function addClose(_x:Number=950, _y:Number=60):void
+		{
+			closeBtn=new ElasticButton(getImage("button_close"));
+			closeBtn.shadow=getImage("button_close_down");
+			closeBtn.x=_x;
+			closeBtn.y=_y;
+			addChild(closeBtn);
+			closeBtn.addEventListener(ElasticButton.CLICK, onCloseClick);
+		}
+
+		protected function onCloseClick(e:Event):void
+		{
+			dispatchEvent(new Event(PalaceGame.GAME_OVER));
+		}
+
+		protected function end():void
+		{
+			if (closeBtn)
+				closeBtn.changeSkin(getImage("button_next"), getImage("button_next_down"));
 		}
 
 		override public function dispose():void

@@ -7,19 +7,15 @@ package views.module2.scene22
 
 	import starling.display.Image;
 	import starling.display.Sprite;
-	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
-	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
 
 	public class ThermoMeter extends PalaceGame
 	{
-		private var closeBtn:ElasticButton;
-
 		private var mecury:Sprite;
 
 		private var itemArr:Array=[];
@@ -146,16 +142,6 @@ package views.module2.scene22
 			TweenLite.to(item, .5, {x: itemsPosArr[index].x, y: itemsPosArr[index].y});
 		}
 
-		private function addClose():void
-		{
-			closeBtn=new ElasticButton(getImage("button_close"));
-			closeBtn.shadow=getImage("button_close_down");
-			addChild(closeBtn);
-			closeBtn.x=950;
-			closeBtn.y=60;
-			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
-		}
-
 		private function addThermo():void
 		{
 			var thermo:Image=getImage("thermo");
@@ -225,12 +211,6 @@ package views.module2.scene22
 			}
 		}
 
-		private function onCloseTouch(e:Event):void
-		{
-			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseTouch);
-			dispatchEvent(new Event(PalaceGame.GAME_OVER));
-		}
-
 		private var _temp:Number=0;
 
 		private var itemHolder:Sprite;
@@ -247,9 +227,6 @@ package views.module2.scene22
 			if (_count == tempArr.length)
 				isWin=true;
 		}
-
-		public var isWin:Boolean;
-
 
 		public function get temp():Number
 		{

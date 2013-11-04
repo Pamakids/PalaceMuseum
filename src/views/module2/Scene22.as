@@ -196,7 +196,7 @@ package views.module2
 				addLabel(1);
 				setClicked(1);
 			}
-			if (teleGame.finished)
+			if (teleGame.isWin)
 				showAchievement(13);
 			teleGame.removeFromParent(true);
 			teleGame=null;

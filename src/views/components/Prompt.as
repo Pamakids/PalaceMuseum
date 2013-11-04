@@ -17,7 +17,6 @@ package views.components
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.textures.Texture;
-	import starling.utils.AssetManager;
 
 	/**
 	 * 全局提示

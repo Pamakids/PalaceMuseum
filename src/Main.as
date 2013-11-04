@@ -18,7 +18,6 @@ package
 	import starling.utils.AssetManager;
 
 	import views.Interlude;
-	import views.Module1;
 	import views.components.ElasticButton;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
@@ -26,9 +25,6 @@ package
 
 	public class Main extends Container
 	{
-		private var testingModule:Sprite;
-		private var testingModuleClass:Class=Module1;
-
 		public function Main()
 		{
 //			SOService.instance.clear();
