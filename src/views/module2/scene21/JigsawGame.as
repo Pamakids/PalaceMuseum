@@ -43,12 +43,7 @@ package views.module2.scene21
 			scale=DPIUtil.getDPIScale();
 			addBG();
 
-			closeBtn=new ElasticButton(getImage("button_close"));
-			closeBtn.shadow=getImage("button_close_down");
-			addChild(closeBtn);
-			closeBtn.x=950;
-			closeBtn.y=60;
-			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
+			addClose();
 
 			addStart();
 
@@ -56,17 +51,6 @@ package views.module2.scene21
 
 			px=(1024 - map.width) / 2 - 100;
 			py=(768 - map.height) / 2 - 50;
-		}
-
-		private function onCloseTouch(e:Event):void
-		{
-			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseTouch);
-			closeGame();
-		}
-
-		private function closeGame():void
-		{
-			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
 		private function restartGame(e:Event=null):void
@@ -244,7 +228,6 @@ package views.module2.scene21
 
 		private var px:Number;
 		private var py:Number;
-		private var closeBtn:ElasticButton;
 		private var startBtn:ElasticButton;
 		private var hBtn:Image;
 		private var hBtnD:Image;
@@ -255,7 +238,6 @@ package views.module2.scene21
 		private var lbl:TextField;
 
 		private var analyst:BitmapAnalyst;
-		public var isFinished:Boolean;
 
 		private var num:int;
 
@@ -477,7 +459,7 @@ package views.module2.scene21
 			var disposeFun:Function=function():void {
 				timeHolder.dispose();
 				gameSP.dispose();
-				initResult(time.currentCount);
+				initResult();
 			}
 			TweenLite.delayedCall(2, function():void
 			{
@@ -486,9 +468,10 @@ package views.module2.scene21
 			});
 		}
 
-		private function initResult(_count:int):void
+		private function initResult():void
 		{
-			isFinished=true;
+			isWin=true;
+			var _count:int=time.currentCount;
 			addChild(endSP);
 			setChildIndex(closeBtn, numChildren - 1);
 			endSP.x=148;

@@ -30,15 +30,25 @@ package views.components
 		 * use listener ElasticButton.CLICK
 		 * img:starling.display.Image
 		 * */
-		public function ElasticButton(img:Image)
+		public function ElasticButton(img:Image, img2:Image=null)
 		{
 			addChild(img);
 			pivotX=img.width >> 1;
 			pivotY=img.height >> 1;
+			shadow=img2;
 			addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 
 		public var shadow:Image;
+
+		public function changeSkin(img1:Image, img2:Image=null):void
+		{
+			removeChildren(0, -1, true);
+			addChild(img1);
+			pivotX=img1.width >> 1;
+			pivotY=img1.height >> 1;
+			shadow=img2;
+		}
 
 		private function onTouch(e:TouchEvent):void
 		{

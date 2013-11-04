@@ -60,7 +60,7 @@ package views.components.base
 			LionMC.instance.clear();
 		}
 
-		protected var load:MovieClip;
+		private var load:MovieClip;
 		protected var _isLoading:Boolean;
 
 		public function get isLoading():Boolean
@@ -169,17 +169,6 @@ package views.components.base
 		protected function addLoading():void
 		{
 			isLoading=true;
-//			load=new Sprite();
-//			addChild(load);
-//			load=new PalaceLoading();
-//			MC.instance.addMC(load);
-//			load.x=1024 - 140;
-//			load.y=768 - 90;
-//			load.play();
-//			load.scaleX=load.scaleY=.5;
-//			load.addChild(Image.fromBitmap(new loading()));
-//			load.pivotX=load.pivotY=64;
-//			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			addEventListener("gotoNext", nextScene);
 		}
 

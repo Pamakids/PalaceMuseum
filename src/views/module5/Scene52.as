@@ -196,7 +196,7 @@ package views.module5
 		private function onPlayGame2(e:Event):void
 		{
 			var lvl:int=game.gamelevel;
-			if (game.isWin())
+			if (game.isWin)
 			{
 				if (lvl == 0)
 					showCard("10", function():void {

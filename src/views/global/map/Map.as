@@ -139,8 +139,9 @@ package views.global.map
 			for each (var hotspot:Object in hp)
 			{
 				var rect:Rectangle=getRectFromArray(hotspot.rect as Array);
+				var offset:Point=getPointFromArr(hotspot.offset as Array);
 				hotspots.push(rect);
-				var p:Point=getCenterFromRect(rect);
+				var p:Point=getCenterFromRect(rect, offset);
 				points.push(p);
 				if (hotspot["id"] == "9")
 					gardenPt=p;
@@ -158,11 +159,22 @@ package views.global.map
 			}
 		}
 
+		private function getPointFromArr(arr:Array):Point
+		{
+			if (arr)
+				return new Point(arr[0], arr[1]);
+			else
+				return null;
+		}
+
 		private var typeArr:Array=[[], [], [], [], []];
 
-		private function getCenterFromRect(rect:Rectangle):Point
+		private function getCenterFromRect(rect:Rectangle, offset:Point=null):Point
 		{
-			return new Point(rect.x + rect.width / 2, rect.y + rect.height / 2);
+			if (offset)
+				return new Point(rect.x + rect.width / 2 + offset.x, rect.y + rect.height / 2 + offset.y);
+			else
+				return new Point(rect.x + rect.width / 2, rect.y + rect.height / 2);
 		}
 
 		private function getRectFromArray(arr:Array):Rectangle
@@ -276,8 +288,8 @@ package views.global.map
 			{
 				case 0:
 				{
-					if (mc.currentModule == null && UserCenterManager.getCrtUserCenter() == null)
-						mc.gotoModule(0, -1);
+//					if (mc.currentModule == null && UserCenterManager.getCrtUserCenter() == null)
+//						mc.gotoModule(0, -1);
 					break;
 				}
 

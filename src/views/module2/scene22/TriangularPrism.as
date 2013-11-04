@@ -8,12 +8,12 @@
 package views.module2.scene22
 {
 	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 	import com.pamakids.palace.utils.SPUtils;
 
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 
-	import starling.animation.Tween;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Shape;
@@ -25,7 +25,6 @@ package views.module2.scene22
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
-	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
 
 	public class TriangularPrism extends PalaceGame
@@ -52,12 +51,7 @@ package views.module2.scene22
 			prism.addEventListener(TouchEvent.TOUCH, onPrimsTouch);
 			addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 
-			closeBtn=new ElasticButton(getImage("button_close"));
-			closeBtn.shadow=getImage("button_close_down");
-			addChild(closeBtn);
-			closeBtn.x=950;
-			closeBtn.y=60;
-			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
+			addClose();
 		}
 
 		private function onKeyDown(e:KeyboardEvent):void
@@ -175,9 +169,13 @@ package views.module2.scene22
 
 			if (areaCount > 15 && crtAreaIndex >= 0)
 			{
-				var ap:Number=areaArr[crtAreaIndex].alpha;
+				var img:Image=areaArr[crtAreaIndex];
+				var ap:Number=img.alpha;
 				if (ap.toFixed(2) == "0.40")
+				{
+					TweenMax.to(img, .5, {shake: {scaleX: .2, scaleY: .2, numShakes: 1}});
 					count++;
+				}
 				areaArr[crtAreaIndex].alpha=ap + .01;
 			}
 		}
@@ -246,13 +244,6 @@ package views.module2.scene22
 			addChild(prism);
 		}
 
-		private function onCloseTouch(e:Event):void
-		{
-			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseTouch);
-			dispatchEvent(new Event(PalaceGame.GAME_OVER));
-		}
-
-
 		private function onTouch(e:TouchEvent):void
 		{
 			var tc:Touch=e.getTouch(this);
@@ -316,7 +307,6 @@ package views.module2.scene22
 
 		private var minRadian:Number=-0.13;
 		private var maxRadian:Number=0.18;
-		private var closeBtn:ElasticButton;
 
 		private var prism:Sprite;
 		private var crtRotation:Number=0;
@@ -443,6 +433,7 @@ package views.module2.scene22
 			}
 			TweenLite.delayedCall(wallPosArr.length * .2 + .7, function():void {
 				closeBtn.visible=true;
+				isWin=true;
 			});
 		}
 	}

@@ -177,6 +177,8 @@ package controllers
 			}
 			else //gameover
 			{
+				main.touchable=false;
+				removeAllMC();
 				if (Map.map)
 					Map.map.clear(1);
 				MC.isTopBarShow=false;
@@ -190,6 +192,17 @@ package controllers
 			}
 		}
 
+		private function removeAllMC():void
+		{
+			for (var i:int=0; i < stage.numChildren; i++)
+			{
+				var d:flash.display.DisplayObject=stage.getChildAt(i);
+				if (d is MovieClip)
+					stage.removeChild(d);
+			}
+
+		}
+
 		private function onEnd():void
 		{
 			restart();
@@ -200,15 +213,22 @@ package controllers
 
 		public function restart():void
 		{
-			UserCenterManager.closeUserCenter();
+			main.touchable=false;
+			removeAllMC();
 			if (Map.map)
-				Map.map.clear(0);
+				Map.map.clear(1);
+			clearCrtModule();
+			LionMC.instance.hide();
+
+			UserCenterManager.closeUserCenter();
+
 			SOService.instance.init();
 			LionMC.instance.show();
 			_moduleIndex=-1;
 			MC.isTopBarShow=false;
 			TopBar.hide();
 			TailBar.hide();
+			main.touchable=true;
 			main.restart();
 		}
 

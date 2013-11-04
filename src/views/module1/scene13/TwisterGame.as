@@ -100,16 +100,11 @@ package views.module1.scene13
 
 		override public function dispose():void
 		{
-//			this.assets=null;
-//			removeChildren();
-//			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 
 		public function dispose2():void
 		{
-			this.assetManager=null;
-			removeChildren();
-			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			super.dispose();
 		}
 
 		private var twistHint:String="twistHintCount";
@@ -157,11 +152,6 @@ package views.module1.scene13
 			initTwisterAreas();
 
 			TweenLite.delayedCall(3, shuffle);
-		}
-
-		private function onCloseTouch(e:Event):void
-		{
-			dispatchEvent(new Event(PalaceGame.GAME_OVER, true));
 		}
 
 		private function initTwisterAreas():void
@@ -381,7 +371,6 @@ package views.module1.scene13
 
 		private var shape:Shape;
 
-		private var close:ElasticButton;
 		private var inited:Boolean;
 		private var hintFinger:Image;
 		private var _answerShow:Boolean;
@@ -425,21 +414,16 @@ package views.module1.scene13
 				readyToGo=true;
 				isOver=false;
 
-				if (!close)
+				if (!closeBtn)
 				{
-					close=new ElasticButton(getImage("button_close"));
-					close.shadow=getImage("button_close_down");
-					close.x=550;
-					close.y=-130;
-					addChild(close);
-					close.addEventListener(ElasticButton.CLICK, onCloseTouch);
+					addClose(550, -130);
 					if (SOService.instance.checkHintCount(twistHint))
 						addEventListener(Event.ENTER_FRAME, onEnterFrame);
 					addHintIcon();
 				}
 				else
 				{
-					close.visible=true;
+					closeBtn.visible=true;
 				}
 			}
 		}
@@ -472,7 +456,7 @@ package views.module1.scene13
 
 		public function reset():void
 		{
-			close.visible=false;
+			closeBtn.visible=false;
 			step=10;
 			shuffle();
 		}

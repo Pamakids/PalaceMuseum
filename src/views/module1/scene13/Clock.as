@@ -16,7 +16,6 @@ package views.module1.scene13
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
-	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
 
 	public class Clock extends PalaceGame
@@ -51,12 +50,7 @@ package views.module1.scene13
 			flace.y=374;
 			addChild(flace);
 
-			close=new ElasticButton(getImage("button_close"));
-			close.shadow=getImage("button_close_down");
-			close.x=870;
-			close.y=50;
-			addChild(close);
-			close.addEventListener(ElasticButton.CLICK, onCloseClick);
+			addClose(870, 50);
 
 			if (SOService.instance.checkHintCount(clockHint))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -105,11 +99,6 @@ package views.module1.scene13
 					hintFinger.x+=hintFinger.scaleX == 1 ? 5 : -5;
 				}
 			}
-		}
-
-		private function onCloseClick(e:Event):void
-		{
-			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
 		private function onTouch(e:TouchEvent):void
@@ -206,13 +195,12 @@ package views.module1.scene13
 						info.y=67 - 25;
 						info.alpha=0;
 						TweenLite.to(info, .5, {alpha: 1})
-						setChildIndex(close, numChildren - 1);
+						setChildIndex(closeBtn, numChildren - 1);
+						isWin=true;
 					}});
 				}});
 			}
 		}
-
-		public var isWin:Boolean;
 
 		private function addWheel():void
 		{
@@ -250,7 +238,6 @@ package views.module1.scene13
 		private const LACE_WIDTH:int=72;
 		private const WORD_WIDTH:int=484;
 
-		private var close:ElasticButton;
 		private var _isMoved:Boolean;
 
 		public function get isMoved():Boolean

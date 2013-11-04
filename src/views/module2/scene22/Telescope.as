@@ -2,7 +2,6 @@ package views.module2.scene22
 {
 	import com.pamakids.palace.utils.SPUtils;
 
-	import flash.events.AccelerometerEvent;
 	import flash.geom.Point;
 
 	import models.SOService;
@@ -17,13 +16,10 @@ package views.module2.scene22
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
-	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
-	import views.module1.scene13.Block;
 
 	public class Telescope extends PalaceGame
 	{
-
 		private var view:ViewHolder;
 		private var index:int;
 
@@ -32,8 +28,6 @@ package views.module2.scene22
 		private var tele1:Image;
 		private var tele2:Image;
 		private var tele3:Image;
-
-		public var finished:Boolean;
 
 		public function Telescope(am:AssetManager=null)
 		{
@@ -60,15 +54,7 @@ package views.module2.scene22
 			addChild(arm);
 			arm.touchable=false;
 
-//			var acc:Accelerometer=new Accelerometer();
-//			acc.addEventListener(AccelerometerEvent.UPDATE, onUpdate);
-
-			closeBtn=new ElasticButton(getImage("button_close"));
-			closeBtn.shadow=getImage("button_close_down");
-			addChild(closeBtn);
-			closeBtn.x=950;
-			closeBtn.y=60;
-			closeBtn.addEventListener(ElasticButton.CLICK, onCloseTouch);
+			addClose();
 
 			if (SOService.instance.checkHintCount(teleHint))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -119,25 +105,6 @@ package views.module2.scene22
 				}
 			}
 		}
-
-		private function onCloseTouch(e:Event):void
-		{
-			closeBtn.removeEventListener(ElasticButton.CLICK, onCloseTouch);
-			dispatchEvent(new Event(PalaceGame.GAME_OVER));
-		}
-
-//		protected function onUpdate(e:AccelerometerEvent):void
-//		{
-//			var dx:Number=e.accelerationX;
-//			if (Math.abs(dx) < .1)
-//				dx=0;
-//			speedX=dx * 100;
-//
-//			var dy:Number=e.accelerationY;
-//			if (Math.abs(dy) < .1)
-//				dy=0;
-//			speedY=dy * 100;
-//		}
 
 		private var centerPT:Point;
 
@@ -208,7 +175,7 @@ package views.module2.scene22
 		{
 			isRingMoved=true;
 			if (isZoomed)
-				finished=true;
+				isWin=true;
 
 			var currentPosA:Point=tc.getLocation(this);
 			var previousPosA:Point=tc.getPreviousLocation(this);
@@ -293,7 +260,6 @@ package views.module2.scene22
 		private var ring1:Sprite;
 
 		private var ring2:Sprite;
-		private var closeBtn:ElasticButton;
 		private var speedX:Number=0;
 		private var speedY:Number=0;
 
@@ -334,7 +300,7 @@ package views.module2.scene22
 				handMoved=true;
 
 				if (isRingMoved)
-					finished=true;
+					isWin=true;
 
 				updataBlur();
 			}

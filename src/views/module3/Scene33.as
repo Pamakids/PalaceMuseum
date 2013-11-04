@@ -275,7 +275,7 @@ package views.module3
 
 		private function onGamePlayed(e:Event):void
 		{
-			var win:Boolean=game.isWin();
+			var win:Boolean=game.isWin;
 
 			game.removeFromParent(true);
 			game=null;

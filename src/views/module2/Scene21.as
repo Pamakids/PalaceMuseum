@@ -441,7 +441,7 @@ package views.module2
 
 		private function onGamePlayed(e:Event):void
 		{
-			if (mapGame.isFinished)
+			if (mapGame.isWin)
 				if (mapGame.gamelevel == 0)
 					showAchievement(8);
 				else
@@ -468,7 +468,7 @@ package views.module2
 
 		private function onFindGamePlayed(e:Event):void
 		{
-			if (findGame.isFinish)
+			if (findGame.isWin)
 			{
 				showCard("3", function():void {
 					showAchievement(7);
