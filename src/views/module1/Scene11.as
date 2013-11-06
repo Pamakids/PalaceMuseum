@@ -126,29 +126,34 @@ package views.module1
 			fg.addEventListener(TouchEvent.TOUCH, onFGTouch);
 			addWindows();
 
-			onAutoMove(2000);
+//			onAutoMove(2000);
 			addKing();
 			if (!SOService.instance.getSO("isfirst"))
 			{
 				SOService.instance.setSO("isfirst", true);
-				var book:Image=getImage("bookshot");
-				MC.instance.main.addMask(0);
-				function showBook():void {
-					addChild(book);
-					book.scaleX=book.scaleY=.08;
-					TweenLite.to(book, .5, {scaleX: 1, scaleY: 1});
-				}
-				function hideBook():void {
-					TweenLite.to(book, .5, {scaleX: .08, scaleY: .08, onComplete: function():void {
-						book.removeFromParent(true);
-						TopBar.tweenPlay(false, active)
-					}});
-				}
-				TopBar.tweenPlay(true, showBook);
-				TweenLite.delayedCall(5, hideBook);
+				showFirstBook();
 			}
 			else
 				active();
+		}
+
+		private function showFirstBook():void
+		{
+			var book:Image=getImage("bookshot");
+			MC.instance.main.addMask(0);
+			function showBook():void {
+				addChild(book);
+				book.scaleX=book.scaleY=.08;
+				TweenLite.to(book, .5, {scaleX: 1, scaleY: 1});
+			}
+			function hideBook():void {
+				TweenLite.to(book, .5, {scaleX: .08, scaleY: .08, onComplete: function():void {
+					book.removeFromParent(true);
+					TopBar.tweenPlay(false, active)
+				}});
+			}
+			TopBar.tweenPlay(true, showBook);
+			TweenLite.delayedCall(5, hideBook);
 		}
 
 		private function active():void
@@ -165,8 +170,8 @@ package views.module1
 
 		private function moveScene():void
 		{
-			_offsetX=-18;
-			TweenLite.to(this, 5, {offsetX: -3, onComplete:
+			_offsetX=-10;
+			TweenLite.to(this, 5, {offsetX: 0, onComplete:
 					function():void
 					{
 						showHint(50, 50, hint0, 3, king, 3);

@@ -182,10 +182,11 @@ package views.module5.scene52
 
 			if (gameLevel == 0)
 			{
-				var fireBtnXiyou:ElasticButton=new ElasticButton(getImage("sanguobtnfire"));
+				fireBtnXiyou=new ElasticButton(getImage("sanguobtnfire"));
 				fireBtnXiyou.x=770;
 				fireBtnXiyou.y=btnPosY;
 				addChild(fireBtnXiyou);
+				fireBtnXiyou.visible=fireBtnXiyou.touchable=false;
 				fireBtnXiyou.addEventListener(ElasticButton.CLICK, onXiyouFireBtnClick);
 
 				var mountainBtn:ElasticButton=new ElasticButton(getImage(crtOperaName + "btnmountain"));
@@ -198,14 +199,15 @@ package views.module5.scene52
 				fireMoutainBtn.x=970;
 				fireMoutainBtn.y=btnPosY;
 				addChild(fireMoutainBtn);
-				fireMoutainBtn.addEventListener(ElasticButton.CLICK, onFireBtnClick);
+				fireMoutainBtn.addEventListener(ElasticButton.CLICK, onFireMoutainBtnClick);
 			}
 			else
 			{
-				var fireBtnSanguo:ElasticButton=new ElasticButton(getImage("sanguobtnfire"));
+				fireBtnSanguo=new ElasticButton(getImage("sanguobtnfire"));
 				fireBtnSanguo.x=770;
 				fireBtnSanguo.y=btnPosY;
 				addChild(fireBtnSanguo);
+				fireBtnSanguo.visible=fireBtnSanguo.touchable=false;
 				fireBtnSanguo.addEventListener(ElasticButton.CLICK, onSanguoFireBtnClick);
 
 				var boatBtn:ElasticButton=new ElasticButton(getImage(crtOperaName + "btnboat"));
@@ -233,10 +235,12 @@ package views.module5.scene52
 				dx=Math.random() * 100;
 				TweenLite.to(boat, 3, {x: dx, onComplete: function():void {
 					b.touchable=true;
+					fireBtnSanguo.visible=fireBtnSanguo.touchable=true;
 				}});
 			}
 			else
 			{
+				fireBtnSanguo.visible=fireBtnSanguo.touchable=false;
 				dx=-1100;
 				TweenLite.to(boat, 1.5, {x: dx, onComplete: function():void {
 					boat.x=1100;
@@ -336,11 +340,17 @@ package views.module5.scene52
 			fireParticle.y=150;
 		}
 
-		private function onFireBtnClick(e:Event):void
+		private function onFireMoutainBtnClick(e:Event):void
 		{
 			checkClick(7)
 			TweenLite.killTweensOf(fireMountain);
 			firMountainOpen=!firMountainOpen;
+			fireBtnXiyou.visible=fireBtnXiyou.touchable=firMountainOpen;
+			if (!firMountainOpen && fireParticle)
+			{
+				fireParticle.dispose();
+				fireParticle=null;
+			}
 			var _scale:Number=firMountainOpen ? 1 : 0;
 			TweenLite.to(moutainHolder, .5, {scaleX: _scale, scaleY: _scale});
 		}
@@ -499,6 +509,10 @@ package views.module5.scene52
 		private var fireMountain:Image;
 		private var mountainOpen:Boolean;
 		private var firMountainOpen:Boolean;
+
+		private var fireBtnXiyou:ElasticButton;
+
+		private var fireBtnSanguo:ElasticButton;
 
 		private function addPillars():void
 		{

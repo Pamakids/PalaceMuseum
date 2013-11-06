@@ -106,6 +106,7 @@ package models
 			else
 			{
 				editUser(index, null);
+				so.clear();
 				return true;
 			}
 		}
@@ -136,18 +137,18 @@ package models
 			{
 				var info:UserVO=new UserVO();
 				info.username="我是小皇帝";
-				info.birthday = SOService.dateToString(new Date())
+				info.birthday=SOService.dateToString(new Date())
 				info.avatarIndex=0;
 				arr[0]=info;
 				setUserSO("users", arr);
 			}
 			return arr[index];
 		}
-		
+
 		/**
 		 * 获取用户信息列表
-		 * @return 
-		 */		
+		 * @return
+		 */
 		public function getUserInfoList():Vector.<Object>
 		{
 			var arr:Vector.<Object>=getUserSO("users") as Vector.<Object>;
@@ -221,11 +222,12 @@ package models
 		{
 			//			return false;
 			var arr:Array=getSO('completedModules') as Array;
-			if (!arr){
+			if (!arr)
+			{
 				arr=[-1];
 				setSO('completedModules', arr);
 			}
-			return arr.indexOf(index-1) != -1;
+			return arr.indexOf(index - 1) != -1;
 		}
 
 		/**
@@ -249,24 +251,25 @@ package models
 			userInfo.clear();
 			so.clear();
 		}
-		
+
 		public static function dateToString(date:Date):String
 		{
-			var str:String = date.fullYear.toString();
-			var s:String = date.month.toString();
-			if(s.length == 1)
-				s = "0" + s;
-			str += ("-" + s);
-			s = date.date.toString();
-			if(s.length == 1)
-				s = "0" + s;
-			str += ("-" + s);
+			var str:String=date.fullYear.toString();
+			var s:String=date.month.toString();
+			if (s.length == 1)
+				s="0" + s;
+			str+=("-" + s);
+			s=date.date.toString();
+			if (s.length == 1)
+				s="0" + s;
+			str+=("-" + s);
 			return str;
 		}
+
 		public static function StringToDate(date:String):Date
 		{
-			var arr:Array = date.split("-");
-			return new Date(arr[0], int(arr[1])-1, arr[2]);
+			var arr:Array=date.split("-");
+			return new Date(arr[0], int(arr[1]) - 1, arr[2]);
 		}
 	}
 }
