@@ -122,8 +122,8 @@ package views.module5
 			var arr:Array=this["bodyArr" + game.gamelevel.toString()];
 			var delay:Number;
 			var sy:Number=-300;
-			var dy:Number=500;
-			var sx:Number=100;
+			var dy:Number=550;
+			var sx:Number=130;
 			var dx:Number=150;
 			var index:int=0;
 			function initBody():void
@@ -132,8 +132,9 @@ package views.module5
 				var txt:TextField=getTF(t);
 				holder.addChild(txt);
 				txt.alpha=0;
-				txt.x=sx + dx * index - 100;
-				txt.y=dy + 30;
+				txt.pivotX=txt.width >> 1
+				txt.x=sx + dx * index;
+				txt.y=dy + 25;
 				var body:Image=getImage(t);
 				body.pivotX=body.width >> 1;
 				body.pivotY=body.height;

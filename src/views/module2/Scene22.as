@@ -96,7 +96,7 @@ package views.module2
 
 		private var nameArr:Array=["thermo", "tele", "prism"];
 		private var labelPosArr:Array=[new Point(198, 552),
-			new Point(563, 696), new Point(902, 600)];
+			new Point(563, 696), new Point(912, 595)];
 
 		private function checkClicked(index:int):Boolean
 		{

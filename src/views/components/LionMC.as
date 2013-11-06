@@ -11,6 +11,8 @@ package views.components
 
 	import controllers.MC;
 
+	import models.Const;
+
 	import views.global.TailBar;
 
 	/**
@@ -56,7 +58,7 @@ package views.components
 			if (lastContent)
 				say(lastContent, lastType, lastX, lastY, null, 20, true);
 			else
-				play(int(Math.random() * 4));
+				play(int(Math.random() * mcArr.length));
 		}
 
 		public function play(type:int=0, _x:Number=0, _y:Number=0, needMask:Boolean=true):void
@@ -66,9 +68,8 @@ package views.components
 			if (!_x && !_y)
 			{
 				var s:Stage=MC.instance.stage.stage;
-				var sc:Number=DPIUtil.getDPIScale();
-				_x=(s.fullScreenWidth / sc - mcWidth) / 2;
-				_y=(s.fullScreenHeight / sc - mcHeight) / 2;
+				_x=(Const.WIDTH - mcWidth) / 2;
+				_y=(Const.HEIGHT - mcHeight) / 2;
 			}
 			x=_x < 512 ? -100 - mcWidth * 2 : 1124 + mcWidth;
 			y=_y - 200;
@@ -137,7 +138,7 @@ package views.components
 
 		private var tl:TweenMax;
 		private var mcHeight:Number;
-		private var mcArr:Array=[LionTalk, LionHappy, LionUnHappy, LionNaughty];
+		private var mcArr:Array=[LionTalk, LionHappy, LionUnHappy, LionNaughty, LionSad, LionThink, LionPeep];
 
 		private var lastType:int;
 		private var lastX:Number;
@@ -149,7 +150,7 @@ package views.components
 		/**
 		 *
 		 * @param content
-		 * @param type 0:说话 1:开心 2:不满 3:调皮
+		 * @param type 0:说话 1:开心 2:不满 3:调皮 4:悲伤 5:思考 6:偷看
 		 * @param _x
 		 * @param _y
 		 * @param _callBack

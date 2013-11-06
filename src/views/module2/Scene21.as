@@ -198,7 +198,7 @@ package views.module2
 					hintShow.addChild(hintArrow);
 					hintShow.addChild(hintFinger);
 					var index:int=getChildIndex(shelfL) + 1;
-					addChildAt(hintShow, 1);
+					addChildAt(hintShow, index);
 					hintShow.touchable=false;
 				}
 				else

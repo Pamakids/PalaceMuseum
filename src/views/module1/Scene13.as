@@ -63,6 +63,9 @@ package views.module1
 				pendant.x=pendantPosArr[i].x;
 				pendant.y=pendantPosArr[i].y;
 				pendant.pivotX=offsetXArr[i];
+				var delay:Number=2 + Math.random() * 2;
+				var angle:Number=2 * Math.random() * Math.PI / 10 - Math.PI / 10
+				TweenMax.to(pendant, delay, {shake: {rotation: angle, numShakes: 3}});
 			}
 			addPlaque();
 			addClock();
@@ -83,7 +86,9 @@ package views.module1
 			if (!tc)
 				return;
 			pendant.touchable=false;
-			TweenMax.to(pendant, 3, {shake: {rotation: Math.PI / 15, numShakes: 3}, onComplete: function():void
+			var delay:Number=2 + Math.random() * 2;
+			var angle:Number=2 * Math.random() * Math.PI / 10 - Math.PI / 10
+			TweenMax.to(pendant, delay, {shake: {rotation: angle, numShakes: 3}, onComplete: function():void
 			{
 				pendant.touchable=true;
 			}});
