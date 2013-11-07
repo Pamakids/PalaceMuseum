@@ -61,6 +61,8 @@ package
 
 		override protected function init():void
 		{
+//			MC.instance.gotoModule(0, 0);
+//			return;
 			if (!lastScene)
 				showStart();
 			else if (lastScene.indexOf("end") >= 0)

@@ -70,7 +70,6 @@ package views.components.base
 			var bg:Image=getImage(src);
 			bg.blendMode=BlendMode.NONE;
 			addChild(bg);
-//			bg.touchable=false;
 		}
 
 		private function initBird(img:Image):void

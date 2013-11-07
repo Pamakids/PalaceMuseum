@@ -273,11 +273,11 @@ package controllers
 				main.setChildIndex(mapLayer, i2);
 				MC.isTopBarShow=true;
 				TopBar.show();
-				TailBar.show();
+				TailBar.instance.visible=true;
 			}
 			else
 			{
-				TailBar.hide();
+				TailBar.instance.visible=false;
 				main.setChildIndex(mapLayer, i1);
 				main.setChildIndex(centerLayer, i2);
 				isTopBarShow=(UserCenterManager.getCrtUserCenter() == null);

@@ -16,6 +16,7 @@ package views.module3
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
+	import views.global.TailBar;
 	import views.global.TopBar;
 	import views.module3.scene32.MenuGame;
 
@@ -40,7 +41,6 @@ package views.module3
 			scale=DPIUtil.getDPIScale();
 
 			addBG("bg-22");
-//			addChild(getImage("bg-22"));
 
 			areaArr.push(new Rectangle(316, 238, 182, 342));
 			areaArr.push(new Rectangle(148, 326, 205, 288));
@@ -49,6 +49,8 @@ package views.module3
 			addEventListener(TouchEvent.TOUCH, onTouch);
 
 			addCraw(new Point(463, 461));
+
+			TailBar.show();
 		}
 
 		private function onTouch(e:TouchEvent):void

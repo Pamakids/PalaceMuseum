@@ -21,6 +21,7 @@ package views.module1
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
+	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 	import views.module1.scene12.Cloth2;
@@ -72,7 +73,6 @@ package views.module1
 		private var count:int=0;
 		private var hintFinger:Image;
 
-
 		private var quizSolved:Boolean;
 		private var index:int=0;
 
@@ -101,9 +101,12 @@ package views.module1
 
 		private function showLionHint(content:String, callback:Function=null, isTask:Boolean=false):void
 		{
-			lastTask=isTask;
-			crtLionContent=content;
-			showHint(content, 0, callback, isTask);
+//			lastTask=isTask;
+			var txt:String=json[content];
+			LionMC.instance.say(txt, 0, 0, 0, callback, 20, 1, isTask);
+
+//			crtLionContent=content;
+//			showHint(content, 0, callback, isTask);
 		}
 
 		private function addBox():void
@@ -125,12 +128,12 @@ package views.module1
 			boxHolder.addChild(boxCover);
 		}
 
-		private function showHint(content:String, posIndex:int, callback:Function=null, isTask:Boolean=false):void
-		{
-			var pos:Point=posArr[posIndex];
-			var txt:String=json[content];
-			Prompt.showTXT(isTask ? (pos.x + 85) : pos.x, isTask ? (pos.y + 85) : pos.y, txt, 20, callback, this, 1, false, 3, isTask);
-		}
+//		private function showHint(content:String, posIndex:int, callback:Function=null, isTask:Boolean=false):void
+//		{
+//			var pos:Point=posArr[posIndex];
+//			var txt:String=json[content];
+//			Prompt.showTXT(isTask ? (pos.x + 85) : pos.x, isTask ? (pos.y + 85) : pos.y, txt, 20, callback, this, 1, false, 3, isTask);
+//		}
 
 		private var posArr:Array=[new Point(90, 560), new Point(530, 200), new Point(530, 610)];
 
@@ -139,34 +142,28 @@ package views.module1
 
 		private function addLion():void
 		{
-			lion=new Sprite();
-			lion.addChild(getImage("lion"));
-			addChild(lion);
+			showLionHint("hint-start", null, false);
+//			var txt:String=json["hint-start"];
+//			LionMC.instance.say(txt, 0, 0, 0, null, 20, 1, true);
 
-			lion.x=lionX;
-			lion.y=300;
-			lion.rotation=-Math.PI / 4;
-
-
-			TweenLite.to(lion, 1, {x: lionDX, y: 540, rotation: 0, ease: Elastic.easeOut, onComplete: function():void
-			{
-				showLionHint("hint-start");
-				lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
-			}});
+//			TweenLite.to(lion, 1, {x: lionDX, y: 540, rotation: 0, ease: Elastic.easeOut, onComplete: function():void
+//			{
+//				showLionHint("hint-start");
+//				lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
+//			}});
 		}
 
-		private function onLionTouch(e:TouchEvent):void
-		{
-			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
-			if (tc)
-				showLionHint(crtLionContent, null, lastTask);
-		}
+//		private function onLionTouch(e:TouchEvent):void
+//		{
+//			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
+//			if (tc)
+//				showLionHint(crtLionContent, null, lastTask);
+//		}
 
 		private static var clothArr:Array=["朝服", "行服", "雨服", "龙袍", "常服"];
 		private static var hatArr:Array=["朝帽", "行帽", "雨帽", "龙帽", "常帽"];
 
-		private var lion:Sprite;
-		private var crtLionContent:String;
+//		private var crtLionContent:String;
 
 		private var json:Object;
 
@@ -231,7 +228,7 @@ package views.module1
 				var ey:Number=(768 - quiz.height) / 2;
 
 				addChild(quiz);
-				setChildIndex(lion, numChildren - 1);
+//				setChildIndex(lion, numChildren - 1);
 
 				quiz.x=sx;
 				quiz.y=sy;
@@ -241,7 +238,7 @@ package views.module1
 				{
 					TweenLite.delayedCall(2, function():void
 					{
-						showLionHint("hint-quizstart");
+						showLionHint("hint-quizstart", null, true);
 					});
 					quiz.addEventListener("allMatched", onQuizDone);
 					quiz.activate();
@@ -271,7 +268,6 @@ package views.module1
 			opened=false;
 			var str:String=clothArr[taskType];
 			showLionHint("hint-find-" + str, function():void {
-//				TweenLite.to(lion, .5, {x: lionX});
 				addEventListener(TouchEvent.TOUCH, onDrag);
 			}, true);
 		}
@@ -453,7 +449,7 @@ package views.module1
 		}
 
 		private var kingDelay:TweenLite;
-		private var lastTask:Boolean;
+//		private var lastTask:Boolean;
 	}
 }
 

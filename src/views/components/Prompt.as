@@ -83,14 +83,14 @@ package views.components
 					if (bg == "bg-task")
 					{
 						t.y+=10;
-						t.fontSize=40;
+						t.fontSize=24 - int(content.length / 20);
 						t.color=0xffffff;
-						algin=4
-						bgAlign=-1;
+//						algin=4
+//						bgAlign=-1;
 					}
 					addChild(t);
 					t.touchable=false;
-					t.hAlign="center";
+//					t.hAlign="center";
 				}
 				else
 				{

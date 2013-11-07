@@ -12,6 +12,7 @@ package views.global.userCenter
 
 	import views.components.LionMC;
 	import views.components.base.PalaceModule;
+	import views.global.TailBar;
 	import views.global.TopBar;
 	import views.global.map.Map;
 
@@ -73,6 +74,7 @@ package views.global.userCenter
 			MC.instance.switchLayer(true);
 			LionMC.instance.show();
 			TopBar.enable=true;
+			TailBar.instance.visible=true;
 //			if ((!Map.map || !Map.map.visible) && MC.instance.currentModule == null)
 //				MC.instance.gotoModule(0, -1);
 		}
