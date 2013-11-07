@@ -95,8 +95,8 @@ package models
 			setUserSO("users", arr);
 			if (value)
 				setUserSO("lastUser", index);
-			else
-				changeUser(0);
+//			else
+//				changeUser(0);
 		}
 
 		public function deleteUser(index:int):Boolean

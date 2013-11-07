@@ -25,8 +25,7 @@ package views.global.userCenter.collection
 		private var vo:CollectionVO;
 		public function resetData(value:CollectionVO):void
 		{
-			if(vo && vo == value)
-				return;
+			isTurning = false;
 			vo = value;
 			isBack = false;
 			updateView();
