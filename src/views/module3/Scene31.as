@@ -21,6 +21,7 @@ package views.module3
 	import views.components.ElasticButton;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
+	import views.global.TailBar;
 
 	/**
 	 * 早膳模块

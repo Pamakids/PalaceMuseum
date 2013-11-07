@@ -67,7 +67,7 @@ package views.components.base
 			super.onStage(e);
 			MC.isTopBarShow=false;
 			TopBar.hide();
-			TailBar.hide();
+			TailBar.instance.visible=false;
 			MC.instance.hideMC();
 		}
 
@@ -107,6 +107,7 @@ package views.components.base
 			super.dispose();
 			MC.isTopBarShow=true;
 			TopBar.show();
+			TailBar.instance.visible=true;
 			MC.instance.showMC();
 		}
 

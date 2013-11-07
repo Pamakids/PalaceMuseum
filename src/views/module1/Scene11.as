@@ -22,8 +22,10 @@ package views.module1
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
+	import views.global.TailBar;
 	import views.global.TopBar;
 
 	/**
@@ -134,7 +136,7 @@ package views.module1
 				showFirstBook();
 			}
 			else
-				active();
+				showLionTask();
 		}
 
 		private function showFirstBook():void
@@ -149,21 +151,26 @@ package views.module1
 			function hideBook():void {
 				TweenLite.to(book, .5, {scaleX: .08, scaleY: .08, onComplete: function():void {
 					book.removeFromParent(true);
-					TopBar.tweenPlay(false, active)
+					TopBar.tweenPlay(false, showLionTask)
 				}});
 			}
 			TopBar.tweenPlay(true, showBook);
 			TweenLite.delayedCall(5, hideBook);
 		}
 
+		private function showLionTask():void
+		{
+			LionMC.instance.say("快点找到皇上的寝室，不然天就快亮了！", 0, 0, 0, active, 20, 1, true);
+		}
+
 		private function active():void
 		{
-			ready=true;
 			TweenLite.delayedCall(3, function():void {
 				TweenLite.to(ga, 2, {alpha: 0, onComplete: function():void {
 					ga.removeFromParent(true);
 					MC.instance.main.removeMask();
 					moveScene();
+					ready=true;
 				}});
 			});
 		}
@@ -354,6 +361,7 @@ package views.module1
 				TweenLite.to(this, 2, {scaleX: 1.2, scaleY: 1.2, onComplete: function():void
 				{
 					TweenLite.to(king, 1, {alpha: 0});
+					TailBar.hide();
 					TweenLite.delayedCall(1.5, resetView);
 				}});
 			}

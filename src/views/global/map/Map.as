@@ -117,11 +117,15 @@ package views.global.map
 				init();
 		}
 
-		private function init():void
+		override protected function init():void
 		{
 			mapData=assetManager.getObject("map");
 			parseData();
 			initFlipAnimation();
+
+			MC.isTopBarShow=false;
+			TopBar.hide();
+			LionMC.instance.clear();
 		}
 
 		private var centerPoint:Dictionary;
@@ -347,9 +351,9 @@ package views.global.map
 				king=getImage('king');
 				king.pivotX=king.width / 2;
 				king.pivotY=king.height / 2;
-				flipAnimation.addChild(king);
+//				flipAnimation.addChild(king);
 			}
-			flipAnimation.setChildIndex(king, flipAnimation.numChildren - 1);
+			flipAnimation.addChildAt(king, flipAnimation.numChildren);
 			if (kingPoint)
 			{
 				if (!showFromCenter && from == 3 && gardenPt)
@@ -387,7 +391,7 @@ package views.global.map
 				if (!showFromCenter)
 				{
 					to=i;
-					LionMC.instance.say(tasks[i], 3, 0, 0, comFunc, 20);
+					LionMC.instance.say(tasks[i], 3, 0, 0, comFunc, 20, 1, true);
 					showTaskHint(i);
 				}
 				else

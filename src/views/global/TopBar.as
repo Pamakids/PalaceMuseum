@@ -55,7 +55,7 @@ package views.global
 				hide();
 				return;
 			}
-			trace("show")
+//			trace("show")
 			if (!bar)
 			{
 				bar=new TopBar();
@@ -75,7 +75,7 @@ package views.global
 				show();
 				return;
 			}
-			trace("hide")
+//			trace("hide")
 			if (bar)
 			{
 				bar.x=dx;

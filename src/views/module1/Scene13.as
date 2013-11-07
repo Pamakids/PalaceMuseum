@@ -15,6 +15,7 @@ package views.module1
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.LionMC;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 	import views.module1.scene13.Clock;
@@ -71,6 +72,8 @@ package views.module1
 			addClock();
 			addCraw(new Point(661, 40));
 			addCraw(new Point(898, 360));
+
+			LionMC.instance.say("花些时间熟悉一下皇帝的寝室吧。");
 		}
 
 		private var pendantPosArr:Array=[new Point(299, 226), new Point(390, 192),

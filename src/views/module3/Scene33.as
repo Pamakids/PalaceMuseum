@@ -30,7 +30,7 @@ package views.module3
 	{
 		private var game:DishGame;
 
-		private var chatArr:Array=["chatking1", "chatlion1", "chatking2", "chatking3", "chatlion2"];
+		private var chatArr:Array=["chatking1", "chatlion1", "chatking2", "chatlion3", "chatlion2"];
 		private var cardXArr:Array=[438, 488, 537, 584];
 		private var cardY:Number=510;
 
@@ -49,12 +49,10 @@ package views.module3
 
 		private var chatking1:String="什么时候可以吃饭？";
 		private var chatking2:String="太慢了，我自己来！";
-		private var chatking3:String="快点找到银牌！";
 
 		private var chatlion1:String="别着急，小太监还没有用银牌试毒，不能吃。";
 		private var chatlion2:String="这些是膳牌，是大臣请求接见是递交的，翻翻看吧！";
-
-//		private var chatlion3:String="今天暂时不单独接见，露出破绽就坏了！先去上朝吧！";
+		private var chatlion3:String="快点找到银牌！";
 
 		public function Scene33(am:AssetManager=null)
 		{
@@ -66,13 +64,29 @@ package views.module3
 			addFood();
 			addCards();
 
-			lion=getImage("lion23");
-			lion.x=5;
-			lion.y=316;
+			lion=new MovieClip(assetManager.getTextures("liontalk"), 12);
+			lion.x=15;
+			lion.y=456;
+			lion.setFrameDuration(13, 3);
+			lion.loop=true;
+			lion.stop();
+			Starling.juggler.add(lion);
 			addChild(lion);
 
 			chatIndex=0;
 			TweenLite.delayedCall(.5, startChat);
+		}
+
+		override public function dispose():void
+		{
+			if (lion)
+			{
+				lion.stop();
+				Starling.juggler.remove(lion);
+				lion.removeFromParent(true);
+				lion=null;
+			}
+			super.dispose();
 		}
 
 		private function addCards():void
@@ -156,10 +170,6 @@ package views.module3
 			kingHungry.x=569;
 			kingHungry.y=28;
 
-//			var kingStand:Image=getImage("king-stand");
-//			kingHolder.addChild(kingStand);
-//			kingStand.x=254;
-
 			var table:Image=getImage("table23");
 			table.y=768 - 287;
 			addChild(table);
@@ -179,15 +189,21 @@ package views.module3
 			}
 			else
 			{
-				dx=200;
-				dy=450;
+				lion.stop();
+				lion.play();
+				dx=150;
+				dy=445;
 			}
-			Prompt.showTXT(dx, dy, this[chat], 20, nextChat, this);
-			if (chat == "chatking3")
+			var isT:Boolean;
+			if (chat == "chatlion3")
 			{
+				isT=true;
+				dx=80;
 				if (SOService.instance.checkHintCount(silverCardClickHint))
 					addEventListener(Event.ENTER_FRAME, onEnterFrame);
+
 			}
+			Prompt.showTXT(dx, dy, this[chat], 20, nextChat, this, 1, false, 3, isT);
 		}
 
 		private var silverCardClickHint:String="silverCardClickHint";
@@ -232,7 +248,7 @@ package views.module3
 
 		private var isHintReverse:Boolean;
 
-		private var lion:Image;
+		private var lion:MovieClip;
 		private var choosed:Boolean;
 
 		private var kingHungry:MovieClip;
