@@ -66,6 +66,8 @@ package views.global.userCenter.collection
 		}
 		private function onTouch(e:TouchEvent):void
 		{
+			if(container && container.visible)
+				return;
 			var touch:Touch = e.getTouch(this);
 			if(touch)
 			{
@@ -119,6 +121,7 @@ package views.global.userCenter.collection
 				card = new CollectionShow();
 				container.addChild( card );
 				imageHeight = card.height;
+				container.touchable = false;
 			}
 			card.resetData(selectedVo);
 			container.visible = true;
@@ -135,6 +138,7 @@ package views.global.userCenter.collection
 			
 			TweenLite.to(card, 0.3, {x: targetX, y: targetY, scaleX: 1, scaleY: 1, alpha: 1, ease:Cubic.easeInOut, onComplete: function():void{ 
 				move=false;
+				container.touchable = true;
 			}});
 		}
 		private var move:Boolean = false;
@@ -147,6 +151,7 @@ package views.global.userCenter.collection
 			touch = e.getTouch(stage);
 			if(touch && touch.phase == TouchPhase.ENDED)
 			{
+				container.touchable = false;
 				TweenLite.to(card, 0.3, {x: beginX, y:beginY, scaleX: scale, scaleY: scale, alpha: alpha, ease:Cubic.easeOut, onComplete:function():void{
 					container.visible = false;
 				}});
