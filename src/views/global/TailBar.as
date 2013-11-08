@@ -2,6 +2,8 @@ package views.global
 {
 	import com.greensock.TweenLite;
 
+	import controllers.MC;
+
 	import feathers.controls.Button;
 
 	import starling.display.Image;
@@ -42,15 +44,16 @@ package views.global
 
 		public static function hide():void
 		{
-			trace("hide")
+			TweenLite.killTweensOf(instance);
 			instance.touchable=false;
 			TweenLite.to(instance, .2, {x: -dx});
 			LionMC.instance.playHide();
+//			MC.instance.main.removeMask();
 		}
 
 		public static function show():void
 		{
-			trace("show")
+			TweenLite.killTweensOf(instance);
 			instance.x=-dx;
 			instance.visible=true;
 			TweenLite.to(instance, 1, {x: -dx / 3, onComplete: function():void {
