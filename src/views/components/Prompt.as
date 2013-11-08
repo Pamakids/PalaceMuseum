@@ -203,7 +203,7 @@ package views.components
 			removeEventListener(TouchEvent.TOUCH, onTouch);
 			if (!this.parent)
 				return;
-			TweenLite.killDelayedCallsTo(playHide);
+			TweenLite.killTweensOf(playHide);
 			TweenLite.killTweensOf(this);
 			TweenLite.to(this, 0.5, hideEffect);
 			TweenLite.killDelayedCallsTo(clearHandler);

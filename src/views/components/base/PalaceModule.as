@@ -88,7 +88,7 @@ package views.components.base
 				{
 					TweenLite.to(load, .5, {x: 1100, onComplete: function():void {
 						MC.instance.removeMC(load);
-						load.stopAllMovieClips();
+						load.stop();
 						load=null;
 					}});
 				}

@@ -47,7 +47,7 @@ package controllers
 
 		public function MC()
 		{
-			sm=SoundManager.instance;
+//			SoundManager.instance.init("json/sound.json");
 			SoundAssets.init();
 		}
 
@@ -60,7 +60,6 @@ package controllers
 
 		public var stage:PalaceMuseum;
 		private var topBarLayer:Sprite;
-		private var sm:SoundManager;
 		private var centerLayer:Sprite;
 		private var mapLayer:Sprite;
 

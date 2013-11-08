@@ -27,7 +27,7 @@ package views.components.base
 
 		protected var autoDisposed:Boolean=true;
 
-		private function onRemoved(e:Event):void
+		protected function onRemoved(e:Event):void
 		{
 			if (autoDisposed)
 				dispose();
@@ -65,6 +65,7 @@ package views.components.base
 
 		public function addMask(_alpha:Number=.6):void
 		{
+			removeMask();
 			mask=new Quad(1024, 768, 0, true);
 			mask.alpha=_alpha;
 			addChild(mask);

@@ -27,6 +27,7 @@ package views.components
 
 		protected function onClick(event:MouseEvent):void
 		{
+			removeEventListener(MouseEvent.CLICK, onClick);
 			if (p)
 				p.playHide();
 		}
@@ -38,7 +39,7 @@ package views.components
 			if (lion)
 			{
 				MC.instance.main.removeMask();
-				lion.stopAllMovieClips();
+				lion.stop();
 				removeChild(lion);
 				lion=null;
 			}
@@ -46,7 +47,7 @@ package views.components
 			lion.scaleX=lion.scaleY=scale;
 			mcWidth=lion.width * scale;
 			mcHeight=lion.height * scale;
-			lion.stopAllMovieClips();
+			lion.stop();
 			addChild(lion);
 			visible=true;
 		}
@@ -56,13 +57,13 @@ package views.components
 			if (lastContent)
 				say(lastContent, lastType, lastX, lastY, null, 20, lastMask, lastTask);
 			else
-				play(6);
+				play(int(Math.random() * mcArr.length));
 		}
 
 		public function play(type:int=0, _x:Number=0, _y:Number=0, needMask:Boolean=true):void
 		{
 			TailBar.hide();
-			showLion(6);
+			showLion(type);
 			if (!_x && !_y)
 			{
 //				_x=(Const.WIDTH - mcWidth) / 2;
@@ -79,12 +80,12 @@ package views.components
 				lion.gotoAndPlay(1);
 				var compFunc:Function=function(e:Event):void {
 					if (lion.currentFrame == lion.totalFrames) {
-						lion.stopAllMovieClips();
+						lion.stop();
 						TailBar.show();
 						lion.removeEventListener(Event.FRAME_CONSTRUCTED, compFunc);
 						isSayingOver=true;
 //						if (needMask)
-						MC.instance.main.removeMask();
+//						MC.instance.main.removeMask();
 					}
 				}
 				lion.addEventListener(Event.FRAME_CONSTRUCTED, compFunc);
@@ -96,6 +97,8 @@ package views.components
 			if (tl)
 				tl.reverse();
 			tl=null;
+			MC.instance.main.removeMask();
+			removeEventListener(MouseEvent.CLICK, onClick);
 		}
 
 		private static var _instance:LionMC;
@@ -189,6 +192,7 @@ package views.components
 			MC.instance.main.addMask(maskA);
 			tl=TweenMax.to(this, .5, {x: _x, y: _y, motionBlur: true, onComplete: function():void
 			{
+				addEventListener(MouseEvent.CLICK, onClick);
 				lion.gotoAndPlay(1);
 				p=Prompt.showTXT(isTask ? (x + 70) : (x + mcWidth - 10), isTask ? (y - 20) : y, content, fontSize, function():void
 				{
@@ -199,7 +203,7 @@ package views.components
 						callBack=null;
 					}
 //					if (maskA)
-					MC.instance.main.removeMask();
+//					MC.instance.main.removeMask();
 				}, MC.instance.main, 1, false, 3, isTask);
 			}});
 		}
@@ -209,7 +213,6 @@ package views.components
 		 */
 		public function hide():void
 		{
-			MC.instance.main.removeMask();
 			visible=false;
 			if (p)
 				p.visible=false;

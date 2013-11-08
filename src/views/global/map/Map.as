@@ -75,7 +75,8 @@ package views.global.map
 		private var viewContainer:Sprite;
 		private var mapData:Object;
 
-		private var flipAnimation:FlipAnimation;
+//		private var flipAnimation:FlipAnimation;
+		private var flipAnimation:Sprite;
 		/**
 		 * 地图上不同模块或场景对应的区域
 		 */
@@ -120,7 +121,8 @@ package views.global.map
 		override protected function init():void
 		{
 			mapData=assetManager.getObject("map");
-			parseData();
+			if (mapData)
+				parseData();
 			initFlipAnimation();
 
 			MC.isTopBarShow=false;
@@ -321,15 +323,26 @@ package views.global.map
 			}
 		}
 
+		override protected function onStage(e:Event):void
+		{
+			addEventListener(Event.REMOVED_FROM_STAGE, onRemoved);
+		}
+
 		private function initFlipAnimation():void
 		{
-			flipAnimation=new FlipAnimation(assetManager.getTexture("mapBG"), 4, 3);
-			flipAnimation.backcover=assetManager.getTexture('map_back');
-			flipAnimation.addEventListener('completed', flipedHandler);
-			flipAnimation.width=width;
-			flipAnimation.height=height;
+//			flipAnimation=new FlipAnimation(assetManager.getTexture("mapBG"), 4, 3);
+//			flipAnimation.backcover=assetManager.getTexture('map_back');
+//			flipAnimation.addEventListener('completed', flipedHandler);
+//			flipAnimation.width=width;
+//			flipAnimation.height=height;
+//			addChild(flipAnimation);
+
+			flipAnimation=new Sprite();
+			flipAnimation.addChildAt(getImage("mapBG"), 0);
 			addChild(flipAnimation);
 			positionKing();
+			flipedHandler();
+			flipAnimation.y=-460.8;
 		}
 
 		override public function dispose():void
@@ -371,9 +384,8 @@ package views.global.map
 		public var isTask:Boolean=true;
 		private var sunPosArr:Array=[new Point(949, 39), new Point(863, 22), new Point(713, 7), new Point(554, 0), new Point(217, 10), new Point(-200, 50)];
 
-		private function flipedHandler(e:Event):void
+		private function flipedHandler(e:Event=null):void
 		{
-			positionKing(centerPoint[showFromCenter ? mc.moduleIndex : from]);
 			var comFunc:Function=function():void
 			{
 				initCloseButton();
@@ -402,8 +414,6 @@ package views.global.map
 			else
 				TweenLite.to(flipAnimation, 1.5, {x: 0, scaleX: 1, scaleY: 1, onComplete: lionSay});
 
-//			lionSay();
-
 			if (!pathHolder)
 			{
 				pathHolder=new Sprite();
@@ -412,13 +422,14 @@ package views.global.map
 			}
 			resetDrawPath();
 
-			if (!lockHolder)
-			{
-				lockHolder=new Sprite();
-				flipAnimation.addChild(lockHolder);
-				lockHolder.touchable=false;
-			}
-			resetLockHolder();
+//			if (!lockHolder)
+//			{
+//				lockHolder=new Sprite();
+//				flipAnimation.addChild(lockHolder);
+//				lockHolder.touchable=false;
+//			}
+//			resetLockHolder();
+			positionKing(centerPoint[showFromCenter ? mc.moduleIndex : from]);
 		}
 
 		/**
@@ -664,10 +675,10 @@ package views.global.map
 			if (!rectHolder)
 			{
 				rectHolder=new Shape();
-				flipAnimation.addChild(rectHolder);
+//				flipAnimation.addChild(rectHolder);
 				rectHolder.touchable=false;
 			}
-			flipAnimation.setChildIndex(rectHolder, flipAnimation.numChildren - 1);
+			flipAnimation.addChildAt(rectHolder, flipAnimation.numChildren);
 			TweenLite.killTweensOf(rectHolder);
 			rectHolder.alpha=1;
 			rectHolder.graphics.clear();
@@ -733,16 +744,18 @@ package views.global.map
 				hasTask=false;
 			visible=true;
 			TweenLite.killTweensOf(flipAnimation);
-			flipAnimation.y=showFromCenter ? 0 : -460.8;
-			flipAnimation.height=height;
-			if (ea)
-				flipAnimation.playAnimation();
-			else
-				flipAnimation.animationPlayed();
+//			flipAnimation.y=showFromCenter ? 0 : -460.8;
+			flipAnimation.y=-460.8;
+//			flipAnimation.height=height;
+			flipedHandler();
+//			if (ea)
+//				flipAnimation.playAnimation();
+//			else
+//				flipAnimation.animationPlayed();
 			if (typeHolder)
 				resetTypeHolder(to);
-			if (lockHolder)
-				resetLockHolder();
+//			if (lockHolder)
+//				resetLockHolder();
 			if (closeButton)
 				closeButton.visible=showFromCenter && !forceHideClose;
 //			positionSun(from);
@@ -757,9 +770,8 @@ package views.global.map
 				sun.play();
 				sun.touchable=false;
 				Starling.juggler.add(sun);
-				flipAnimation.addChild(sun);
 			}
-			flipAnimation.setChildIndex(sun, flipAnimation.numChildren - 1);
+			flipAnimation.addChildAt(sun, flipAnimation.numChildren);
 			sun.x=sunPosArr[_index].x;
 			sun.y=sunPosArr[_index].y;
 
@@ -772,7 +784,7 @@ package views.global.map
 			preSky=getImage("sky" + (_index + 1).toString());
 			preSky.alpha=0;
 			TweenLite.to(preSky, .3, {alpha: 1});
-			flipAnimation.skyHolder.addChild(preSky);
+			flipAnimation.addChildAt(preSky, 1);
 		}
 
 		private var preSky:Image;
@@ -796,7 +808,7 @@ package views.global.map
 				TweenLite.to(preSky, 2.3, {alpha: 0});
 
 			desSky=getImage("sky" + (Math.max(0, _to) + 1).toString());
-			flipAnimation.skyHolder.addChild(desSky);
+			flipAnimation.addChildAt(desSky, 1);
 			desSky.alpha=0;
 			TweenLite.to(desSky, 2.3, {alpha: 1});
 
@@ -839,42 +851,29 @@ package views.global.map
 			}
 		}
 
-		/**
-		 * 场景解锁
-		 * 手册进入,跳关用
-		 * */
-		private function resetLockHolder():void
-		{
-//			if (!path)
+	/**
+	 * 场景解锁
+	 * 手册进入,跳关用
+	 * */
+//		private function resetLockHolder():void
+//		{
+//			lockHolder.visible=showFromCenter;
+//			lockHolder.removeChildren();
+//			for (var i:int=0; i < 5; i++)
 //			{
-//				path=new Shape();
-//				pathHolder.addChild(path);
+//				if (sos.isModuleCompleted(i))
+//				{
+//					var img:Image=getImage("map-unlock" + (i + 1).toString());
+//					img.pivotX=img.width >> 1;
+//					img.pivotY=img.height >> 1;
+//					img.x=centerPoint[i].x;
+//					img.y=centerPoint[i].y;
+//					lockHolder.addChild(img);
+//				}
 //			}
-//			path.graphics.clear();
-//			path.graphics.lineStyle(3, 0x66ccff);
-
-			lockHolder.visible=showFromCenter;
-			lockHolder.removeChildren();
-			for (var i:int=0; i < 5; i++)
-			{
-				if (sos.isModuleCompleted(i))
-				{
-					var img:Image=getImage("map-unlock" + (i + 1).toString());
-					img.pivotX=img.width >> 1;
-					img.pivotY=img.height >> 1;
-					img.x=centerPoint[i].x;
-					img.y=centerPoint[i].y;
-					lockHolder.addChild(img);
-
-//					if (i == 0)
-//						path.graphics.moveTo(img.x, img.y);
-//					else
-//						path.graphics.lineTo(img.x, img.y);
-				}
-			}
-			if (king)
-				flipAnimation.setChildIndex(king, flipAnimation.numChildren - 1);
-		}
+//			if (king)
+//				flipAnimation.setChildIndex(king, flipAnimation.numChildren - 1);
+//		}
 	}
 }
 
