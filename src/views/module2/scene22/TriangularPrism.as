@@ -81,10 +81,28 @@ package views.module2.scene22
 				img.alpha=0;
 				img.x=posArr[i].x;
 				img.y=posArr[i].y;
-				addChild(img);
 				areaArr.push(img);
+
+				var shadow:Image=getImage("shadow" + (i + 1).toString());
+				shadow.pivotX=shadow.width >> 1;
+				shadow.pivotY=shadow.height >> 1;
+				shadow.x=img.x + img.width / 2;
+				shadow.y=img.y + img.height / 2;
+				shadow.alpha=0;
+				shadowArr.push(shadow);
+				addChild(shadow);
+				addChild(img);
 			}
 		}
+
+		private function blink(img:Image):void
+		{
+			TweenLite.to(img, .5, {alpha: 1, onComplete: function():void {
+				TweenLite.to(img, .5, {alpha: 0});
+			}});
+		}
+
+		private var shadowArr:Array=[];
 
 		private var posArr:Array=[new Point(376, 10), new Point(631, 34),
 			new Point(778, 206), new Point(761, 410), new Point(527, 560),
@@ -173,7 +191,9 @@ package views.module2.scene22
 				var ap:Number=img.alpha;
 				if (ap.toFixed(2) == "0.40")
 				{
-					TweenMax.to(img, .5, {shake: {scaleX: .2, scaleY: .2, numShakes: 1}});
+					var shadow:Image=shadowArr[crtAreaIndex];
+					blink(shadow);
+//					TweenMax.to(img, .5, {shake: {scaleX: .2, scaleY: .2, numShakes: 1}});
 					count++;
 				}
 				areaArr[crtAreaIndex].alpha=ap + .01;

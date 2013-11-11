@@ -1,7 +1,6 @@
 package views.module1
 {
 	import com.greensock.TweenLite;
-	import com.greensock.easing.Elastic;
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.DPIUtil;
 
@@ -319,7 +318,18 @@ package views.module1
 				knowledgeTF.hAlign="center";
 			}
 			knowledgeTF.text=txt;
+
+			var txt2:String=json["hint-head-" + type];
+			var img:Image=getImage(txt2);
+			if (headP)
+				headP.playHide();
+			if (img)
+				headP=Prompt.showIMG(632, 200, img, null, this);
+			else
+				headP=Prompt.showTXT(632, 200, txt2, 20, null, this);
 		}
+
+		private var headP:Prompt;
 
 		private function initCircle():void
 		{
