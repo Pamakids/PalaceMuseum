@@ -73,7 +73,7 @@ package views.module1
 			addCraw(new Point(661, 40));
 			addCraw(new Point(898, 360));
 
-			LionMC.instance.say("花些时间熟悉一下皇帝的寝室吧。");
+			LionMC.instance.say("花些时间熟悉一下皇帝的寝室吧，如果白天顺利过关，今晚你可要住在这里了！");
 		}
 
 		private var pendantPosArr:Array=[new Point(299, 226), new Point(390, 192),
