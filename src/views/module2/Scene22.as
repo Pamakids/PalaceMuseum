@@ -15,6 +15,7 @@ package views.module2
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
+	import views.global.TailBar;
 	import views.module2.scene22.Telescope;
 	import views.module2.scene22.ThermoMeter;
 	import views.module2.scene22.TriangularPrism;
@@ -245,7 +246,10 @@ package views.module2
 				setClicked(0);
 			}
 			if (thermoGame.isWin)
+			{
+				TailBar.hide();
 				showAchievement(11, sceneOver);
+			}
 			else
 				sceneOver();
 			thermoGame.removeFromParent(true);

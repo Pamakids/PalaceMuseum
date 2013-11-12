@@ -207,8 +207,8 @@ package views.components
 		public function playHide():void
 		{
 			removeEventListener(TouchEvent.TOUCH, onTouch);
-			if (!this.parent)
-				return;
+//			if (!this.parent)
+//				return;
 			TweenLite.killTweensOf(playHide);
 			TweenLite.killTweensOf(this);
 			TweenLite.to(this, 0.5, hideEffect);
@@ -219,12 +219,17 @@ package views.components
 		private function clearHandler(p:Prompt):void
 		{
 			if (p.parent)
-				p.parent.removeChild(p);
+				p.removeFromParent(true);
 			delete promptDic[p.id];
 			if (p.callback != null)
 				p.callback();
 			p.callback=null;
 		}
+
+//		override public function dispose():void
+//		{
+//			super.dispose()
+//		}
 
 		/**
 		 * 显示提示，可获取Prompt引用手动隐藏也可调用hide方法隐藏

@@ -297,27 +297,50 @@ package views.module5.scene52
 			cloud.y=3;
 		}
 
+		private var particleArr:Array=[];
+		private var particlePosArr:Array=[new Point(28, 121), new Point(73, 73),
+			new Point(164, 88), new Point(216, 60), new Point(287, 114)];
+
 		private function onXiyouFireBtnClick(e:Event):void
 		{
-			if (fireParticle)
+			if (particleArr.length)
 			{
 				var b:ElasticButton=e.currentTarget as ElasticButton;
 				b.touchable=false;
-				TweenLite.to(fireParticle, .5, {alpha: .1, scaleY: .1, onComplete: function():void {
-					fireParticle.dispose();
-					fireParticle=null;
+
+				for each (var pt:PalaceParticle in particleArr)
+				{
+					TweenLite.to(pt, .5, {alpha: .1, scaleY: .1});
+				}
+				TweenLite.delayedCall(.51, function():void {
 					b.touchable=true;
-				}});
+					particleArr=[];
+				});
+
+//				TweenLite.to(fireParticle, .5, {alpha: .1, scaleY: .1, onComplete: function():void {
+//					fireParticle.removeFromParent(true);
+//					fireParticle=null;
+//					b.touchable=true;
+//				}});
 			}
 			else
 			{
 				SoundManager.instance.play("fire")
-				fireParticle=new PalaceParticle();
-				fireParticle.init(gameLevel);
-				moutainHolder.addChild(fireParticle);
-				fireParticle.x=170;
-				fireParticle.scaleX=2.5;
-				fireParticle.y=175;
+				for (var i:int=0; i < particlePosArr.length; i++)
+				{
+					var p:PalaceParticle=new PalaceParticle();
+					p.init(gameLevel);
+					moutainHolder.addChild(p);
+					p.x=particlePosArr[i].x;
+					p.y=particlePosArr[i].y;
+					particleArr.push(p);
+				}
+
+//				fireParticle=new PalaceParticle();
+//				fireParticle.init(gameLevel);
+//				moutainHolder.addChild(fireParticle);
+//				fireParticle.x=170;
+//				fireParticle.y=175;
 			}
 		}
 
@@ -346,13 +369,19 @@ package views.module5.scene52
 			TweenLite.killTweensOf(fireMountain);
 			firMountainOpen=!firMountainOpen;
 			fireBtnXiyou.visible=fireBtnXiyou.touchable=firMountainOpen;
-			if (!firMountainOpen && fireParticle)
-			{
-				fireParticle.dispose();
-				fireParticle=null;
-			}
+
 			var _scale:Number=firMountainOpen ? 1 : 0;
-			TweenLite.to(moutainHolder, .5, {scaleX: _scale, scaleY: _scale});
+			TweenLite.to(moutainHolder, .5, {scaleX: _scale, scaleY: _scale, onComplete: function():void {
+				if (!firMountainOpen && particleArr.length)
+				{
+					for each (var p:PalaceParticle in particleArr)
+					{
+						p.dispose();
+						p=null;
+					}
+					particleArr=[];
+				}
+			}});
 		}
 
 		private function onMountainBtnClick(e:Event):void

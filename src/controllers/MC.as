@@ -1,5 +1,6 @@
 package controllers
 {
+	import com.greensock.TweenMax;
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.Singleton;
 
@@ -150,6 +151,7 @@ package controllers
 
 		public function clearCrtModule():void
 		{
+			TweenMax.killAll();
 			if (currentModule)
 			{
 				currentModule.removeFromParent();
@@ -217,12 +219,12 @@ package controllers
 			if (Map.map)
 				Map.map.clear(1);
 			clearCrtModule();
-			LionMC.instance.hide();
+//			LionMC.instance.hide();
 
 			UserCenterManager.closeUserCenter();
 
 			SOService.instance.init();
-			LionMC.instance.show();
+//			LionMC.instance.show();
 			_moduleIndex=-1;
 			MC.isTopBarShow=false;
 			TopBar.hide();

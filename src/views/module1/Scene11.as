@@ -22,7 +22,6 @@ package views.module1
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
-	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 	import views.global.TailBar;
@@ -199,7 +198,7 @@ package views.module1
 			king.addChild(kingImg);
 			SPUtils.registSPCenter(king, 2);
 			addChild(king);
-			king.x=512;
+			king.x=512 - 125;
 			king.y=768;
 			kingImg.addEventListener(TouchEvent.TOUCH, onKingTouch);
 
@@ -465,7 +464,7 @@ package views.module1
 					hintCount++;
 			}
 
-			if (hintCount > 5)
+			if (hintCount > 7)
 				showAchievement(0);
 
 			if (p)
@@ -513,7 +512,7 @@ package views.module1
 					bg.x+=dx / 5;
 					mg.x+=dx / 3;
 					fg.x+=dx / 2;
-					king.x-=dx / 8;
+					king.x+=dx / 5;
 					break;
 				}
 				case TouchPhase.ENDED:
@@ -555,6 +554,7 @@ package views.module1
 			bg.x+=dx / 5;
 			mg.x+=dx / 3;
 			fg.x+=dx / 2;
+			king.x+=dx / 5;
 		}
 	}
 }
