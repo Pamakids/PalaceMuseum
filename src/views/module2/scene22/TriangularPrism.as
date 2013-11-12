@@ -8,7 +8,6 @@
 package views.module2.scene22
 {
 	import com.greensock.TweenLite;
-	import com.greensock.TweenMax;
 	import com.pamakids.palace.utils.SPUtils;
 
 	import flash.geom.Point;
@@ -83,9 +82,12 @@ package views.module2.scene22
 				img.y=posArr[i].y;
 				areaArr.push(img);
 
-				var shadow:Image=getImage("shadow" + (i + 1).toString());
-				shadow.pivotX=shadow.width >> 1;
-				shadow.pivotY=shadow.height >> 1;
+				var shadow:Sprite=new Sprite();
+				var si:Image=getImage("shadow" + (i + 1).toString());
+				si.alpha=0;
+				shadow.addChild(si);
+				shadow.pivotX=si.width >> 1;
+				shadow.pivotY=si.height >> 1;
 				shadow.x=img.x + img.width / 2;
 				shadow.y=img.y + img.height / 2;
 				shadow.alpha=0;
@@ -95,12 +97,14 @@ package views.module2.scene22
 			}
 		}
 
-		private function blink(img:Image):void
-		{
-			TweenLite.to(img, .5, {alpha: 1, onComplete: function():void {
-				TweenLite.to(img, .5, {alpha: 0});
-			}});
-		}
+//		private function blink(img:Image):void
+//		{
+//			TweenLite.to(img, .5, {alpha: 1, onComplete: function():void {
+//				TweenLite.delayedCall(3, function():void {
+//					TweenLite.to(img, .5, {alpha: 0});
+//				});
+//			}});
+//		}
 
 		private var shadowArr:Array=[];
 
@@ -184,23 +188,43 @@ package views.module2.scene22
 			}
 
 			crtAreaIndex=index / 2;
-
-			if (areaCount > 15 && crtAreaIndex >= 0)
+			if (crtAreaIndex < 0)
 			{
-				var img:Image=areaArr[crtAreaIndex];
-				var ap:Number=img.alpha;
-				if (ap.toFixed(2) == "0.40")
+				if (lastAreaIndex != crtAreaIndex)
 				{
-					var shadow:Image=shadowArr[crtAreaIndex];
-					blink(shadow);
-//					TweenMax.to(img, .5, {shake: {scaleX: .2, scaleY: .2, numShakes: 1}});
-					count++;
+					TweenLite.to(shadowArr[lastAreaIndex], .5, {alpha: 0});
+					lastAreaIndex=crtAreaIndex;
 				}
-				areaArr[crtAreaIndex].alpha=ap + .01;
+			}
+			else
+			{
+				if (lastAreaIndex != crtAreaIndex)
+				{
+					if (lastAreaIndex >= 0)
+						TweenLite.to(shadowArr[lastAreaIndex], .5, {alpha: 0});
+					lastAreaIndex=crtAreaIndex;
+					TweenLite.to(shadowArr[crtAreaIndex], .5, {alpha: 1});
+				}
+
+				if (areaCount > 15)
+				{
+					var img:Image=areaArr[crtAreaIndex];
+					var ap:Number=img.alpha;
+					if (ap.toFixed(2) == "0.40")
+					{
+						var shadow:Sprite=shadowArr[crtAreaIndex];
+						TweenLite.to(shadow.getChildAt(0), .5, {alpha: 1});
+//					blink(shadow.getChildAt(0) as Image);
+//					TweenMax.to(img, .5, {shake: {scaleX: .2, scaleY: .2, numShakes: 1}});
+						count++;
+					}
+					areaArr[crtAreaIndex].alpha=ap + .01;
+				}
 			}
 		}
 
 		private var areaArr:Array=[];
+		private var lastAreaIndex:int=-1;
 
 		private var degree30:Number=Math.PI / 6; //30度
 		private var degree40:Number=Math.PI / 4.5; //40度
@@ -274,6 +298,7 @@ package views.module2.scene22
 			{
 				case TouchPhase.BEGAN:
 				{
+					lastAreaIndex=-1;
 					crtRotation=Math.atan2(pt.y - 384, pt.x - 512);
 					TweenLite.killTweensOf(lightIn);
 					TweenLite.killTweensOf(lightOut);
@@ -315,6 +340,12 @@ package views.module2.scene22
 					TweenLite.killTweensOf(lightOut);
 					TweenLite.to(lightIn, 1, {alpha: 0});
 					TweenLite.to(lightOut, .5, {alpha: 0});
+					if (crtAreaIndex >= 0)
+					{
+						TweenLite.to(shadowArr[crtAreaIndex], .5, {alpha: 0});
+//						lastAreaIndex=-1;
+						crtAreaIndex=-1;
+					}
 					break;
 				}
 
@@ -350,6 +381,7 @@ package views.module2.scene22
 				TweenLite.to(lightIn, 1, {alpha: 0});
 				TweenLite.to(lightOut, .5, {alpha: 0});
 				TweenLite.to(prism, 2, {alpha: 0});
+
 				dispatchEvent(new Event("addCard"));
 			}
 		}
@@ -406,6 +438,9 @@ package views.module2.scene22
 
 		public function addDragonWall():void
 		{
+			if (crtAreaIndex >= 0)
+				TweenLite.to(shadowArr[crtAreaIndex], .5, {alpha: 0});
+
 			for (var i:int=0; i < areaArr.length; i++)
 			{
 				var img:Image=areaArr[i] as Image;
@@ -417,7 +452,7 @@ package views.module2.scene22
 		private function playEff(delay:Number, _img:DisplayObject, show:Boolean=false):void
 		{
 			TweenLite.delayedCall(delay, function():void {
-				TweenLite.to(_img, .5, {alpha: show ? 1 : 0});
+				TweenLite.to(_img, .3, {alpha: show ? 1 : 0});
 			});
 		}
 
@@ -449,9 +484,9 @@ package views.module2.scene22
 				dragon.y=wallPosArr[i].y;
 				wall.addChild(dragon);
 				dragon.alpha=0;
-				playEff(i * .2, dragon, true);
+				playEff(i * .1, dragon, true);
 			}
-			TweenLite.delayedCall(wallPosArr.length * .2 + .7, function():void {
+			TweenLite.delayedCall(wallPosArr.length * .1 + .5, function():void {
 				closeBtn.visible=true;
 				isWin=true;
 			});

@@ -5,6 +5,8 @@ package views.module1
 
 	import flash.geom.Point;
 
+	import controllers.MC;
+
 	import feathers.core.PopUpManager;
 
 	import starling.display.Image;
@@ -18,6 +20,8 @@ package views.module1
 	import views.components.LionMC;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
+	import views.global.TailBar;
+	import views.global.TopBar;
 	import views.module1.scene13.Clock;
 	import views.module1.scene13.TwisterGame;
 
@@ -222,7 +226,21 @@ package views.module1
 			else
 			{
 				PopUpManager.removePopUp(gameHolder);
+				MC.isTopBarShow=true;
+				TopBar.show();
+				TailBar.instance.visible=true;
 			}
+		}
+
+		override public function dispose():void
+		{
+			if (game)
+			{
+				game.dispose2();
+				game=null;
+				gameHolder=null;
+			}
+			super.dispose();
 		}
 	}
 }

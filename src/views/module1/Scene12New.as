@@ -280,6 +280,15 @@ package views.module1
 			showKnowledge(type);
 			if (type == clothArr[taskType])
 			{
+//				var txt2:String=json["hint-head-" + type];
+//				var img:Image=getImage(txt2);
+//				if (headP)
+//					headP.playHide();
+//				if (img)
+//					headP=Prompt.showIMG(632, 200, img, null, this);
+//				else
+//					headP=Prompt.showTXT(632, 200, txt2, 20, null, this);
+
 				SoundManager.instance.play("happy");
 				playKing(0);
 				showCard("0", function():void {
@@ -298,7 +307,6 @@ package views.module1
 
 		private function showKnowledge(type:String):void
 		{
-//			trace(type, clothArr[taskType], taskType)
 			var txt:String=json["hint-ok-" + type];
 			if (!knowledgeHolder)
 			{
