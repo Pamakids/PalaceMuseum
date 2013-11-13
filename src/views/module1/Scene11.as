@@ -61,6 +61,7 @@ package views.module1
 		private var hint3:String="hint-pic1";
 		private var hint4:String="这是为皇后准备的房间";
 		private var hint5:String="hint-pic2";
+		private var hint6:String="皇帝寝室，但他今天在另一间休息";
 
 		private var hotzone1:Rectangle=new Rectangle(48, 209, 140, 134); //窗-左
 		private var hotzone2:Rectangle=new Rectangle(746, 177, 158, 168); //门-中
@@ -85,7 +86,7 @@ package views.module1
 		public function Scene11(am:AssetManager)
 		{
 			super(am);
-			windowStrArr=[hint2, hint3, hint5, hint2];
+			windowStrArr=[hint6, hint3, hint5, hint6];
 			crtKnowledgeIndex=1;
 			windowIndex=Math.random() > .5 ? 0 : 3;
 
@@ -164,7 +165,7 @@ package views.module1
 			function showNext2():void {
 				showHint(400, 100, lionHint2, 1, king, 1, function():void {
 					touchReady=true;
-				});
+				}, true);
 			}
 			showHint(50, 50, hint0, 3, king, 3, showNext);
 		}
@@ -217,7 +218,7 @@ package views.module1
 			var tc:Touch=e.getTouch(img, TouchPhase.ENDED);
 			if (!touchReady || !tc || !ready)
 				return;
-			showHint(400, 100, lionHint2, 1, king, 1);
+			showHint(400, 100, lionHint2, 1, king, 1, null, true);
 		}
 
 		private function onKingTouch(e:TouchEvent):void
@@ -449,7 +450,7 @@ package views.module1
 
 		private var checkDic:Dictionary=new Dictionary();
 
-		private function showHint(_x:Number, _y:Number, _src:String, reg:int, _parent:Sprite, align:int=1, callback:Function=null):void
+		private function showHint(_x:Number, _y:Number, _src:String, reg:int, _parent:Sprite, align:int=1, callback:Function=null, isTask:Boolean=false):void
 		{
 
 			if (crtWinSelected)
@@ -473,7 +474,7 @@ package views.module1
 			if (img)
 				p=Prompt.showIMG(_x, _y, img, callback, _parent);
 			else
-				p=Prompt.showTXT(_x, _y, _src, 20, callback, _parent, align)
+				p=Prompt.showTXT(_x, _y, _src, 20, callback, _parent, align, false, 3, isTask)
 		}
 
 		private function onTouch(event:TouchEvent):void

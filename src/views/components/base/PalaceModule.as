@@ -223,8 +223,7 @@ package views.components.base
 			isLoading=false;
 			if (crtScene)
 			{
-				removeChild(crtScene);
-				crtScene.dispose();
+				crtScene.removeFromParent(true);
 				crtScene=null;
 			}
 
@@ -244,6 +243,11 @@ package views.components.base
 
 		override public function dispose():void
 		{
+			if (crtScene)
+			{
+				crtScene.removeFromParent(true);
+				crtScene=null;
+			}
 			isLoading=false;
 			if (assetManager)
 				assetManager.purge();
