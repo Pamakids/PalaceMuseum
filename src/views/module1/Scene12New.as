@@ -253,7 +253,7 @@ package views.module1
 				quiz.parent.removeChild(quiz);
 
 				opened=true;
-				crtKnowledgeIndex=3;
+//				crtKnowledgeIndex=3;
 //				TweenLite.delayedCall(1, function():void
 //				{
 //					showLionHint("hint-gamestart", initCircle);
@@ -353,24 +353,35 @@ package views.module1
 			quizSolved=true;
 		}
 
+		private var dragging:Boolean;
+		private var dpt:Point;
+
 		private function onDrag(e:TouchEvent):void
 		{
 			var tc:Touch=e.getTouch(this);
 			if (!tc)
 				return;
+			var pt:Point=tc.getLocation(this);
 			switch (tc.phase)
 			{
 				case TouchPhase.BEGAN:
 				{
+					dpt=pt;
+					dragging=false;
 					circle.startDrag();
 					break;
 				}
 
 				case TouchPhase.MOVED:
 				{
-					var move:Point=tc.getMovement(this);
-					speedX=move.x / 200 / Math.PI;
-					circle.angle-=speedX;
+					if (Math.abs(dpt.x - pt.x) > 10)
+						dragging=true;
+					if (dragging)
+					{
+						var move:Point=tc.getMovement(this);
+						speedX=move.x / 200 / Math.PI;
+						circle.angle-=speedX;
+					}
 					break;
 				}
 
@@ -383,7 +394,10 @@ package views.module1
 
 				case TouchPhase.ENDED:
 				{
-					circle.tweenPlay(speedX);
+					if (dragging)
+						circle.tweenPlay(speedX);
+					dragging=false;
+					speedX=0;
 					break;
 				}
 
@@ -417,6 +431,15 @@ package views.module1
 			addChild(frontSP);
 			backSP.x=frontSP.x=kingHolder.x=533;
 			backSP.y=frontSP.y=kingHolder.y=653;
+
+			king.addEventListener(TouchEvent.TOUCH, onKingTouch);
+		}
+
+		private function onKingTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(kingHolder, TouchPhase.ENDED);
+			if (tc)
+				playKing(int(Math.random() * expArr.length))
 		}
 
 		public function playKing(expressionIndex:int):void

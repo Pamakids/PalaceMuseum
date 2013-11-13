@@ -29,14 +29,15 @@ package
 		{
 //			SOService.instance.clear();
 //			SOService.instance.init();
-//			SOService.instance.setSO("lastScene", "51map");
+//			SOService.instance.setSO("lastScene", "12");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
 			//以免第一次初始化提示的时候卡顿
 			var label:TextField=new TextField(1, 1, '0', FontVo.PALACE_FONT, 16, 0x561a1a, true);
 			addChild(label);
-			label.removeFromParent(true);
+			label.x=-10;
+			label.y=-10;
 
 			var am:AssetManager=new AssetManager();
 			var f:File=File.applicationDirectory.resolvePath("assets/common");
