@@ -190,6 +190,7 @@ package controllers
 				SOService.instance.setSO("lastScene", "end");
 				var end:Interlude=new Interlude("assets/video/end.mp4", false, null, onEnd);
 				Starling.current.nativeStage.addChild(end);
+				SoundManager.instance.stopAll();
 			}
 		}
 

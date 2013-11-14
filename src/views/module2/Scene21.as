@@ -1,6 +1,7 @@
 package views.module2
 {
 	import com.greensock.TweenLite;
+	import com.pamakids.manager.SoundManager;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -291,7 +292,22 @@ package views.module2
 		private var shelfL:Sprite;
 
 		private var shelfR:Sprite;
-		private var shelfOpen:Boolean;
+		private var _shelfOpen:Boolean;
+
+		public function get shelfOpen():Boolean
+		{
+			return _shelfOpen;
+		}
+
+		public function set shelfOpen(value:Boolean):void
+		{
+			if (_shelfOpen == value)
+				return;
+			_shelfOpen=value;
+			SoundManager.instance.stop(value ? "shelfin" : "shelfout");
+			SoundManager.instance.play(value ? "shelfout" : "shelfin");
+		}
+
 		private var gamePlayed:Boolean;
 
 		private var bigBook:Sprite;

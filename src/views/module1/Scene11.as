@@ -400,6 +400,7 @@ package views.module1
 
 		private function resetView():void
 		{
+			SoundManager.instance.play("step")
 			TweenLite.to(this, 2, {scaleX: 1, scaleY: 1, x: 0, onComplete: addEunuch});
 		}
 

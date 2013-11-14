@@ -1,9 +1,10 @@
 package views.global.userCenter.userInfo
 {
 	import flash.filesystem.File;
-	import flash.system.System;
 
 	import feathers.core.PopUpManager;
+
+	import sound.SoundAssets;
 
 	import starling.display.Image;
 	import starling.events.Event;
@@ -30,8 +31,8 @@ package views.global.userCenter.userInfo
 
 		public function GameScene(gameIndex:int)
 		{
+			SoundAssets.addModuleSnd(sceneName);
 			crtGameIndex=gameIndex;
-
 			initLoadImage();
 
 			var _assets:AssetManager=new AssetManager();

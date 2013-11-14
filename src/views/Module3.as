@@ -4,6 +4,8 @@ package views
 
 	import controllers.MC;
 
+	import sound.SoundAssets;
+
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 
@@ -19,6 +21,7 @@ package views
 	{
 		public function Module3(_skipIndex:int=-1)
 		{
+			SoundAssets.addModuleSnd(moduleName);
 			skipIndex=_skipIndex;
 			if (skipIndex == 3)
 				skipIndex=0;

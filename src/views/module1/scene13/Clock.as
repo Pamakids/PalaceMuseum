@@ -1,6 +1,7 @@
 package views.module1.scene13
 {
 	import com.greensock.TweenLite;
+	import com.pamakids.manager.SoundManager;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -112,6 +113,7 @@ package views.module1.scene13
 				{
 					case TouchPhase.BEGAN:
 					{
+						SoundManager.instance.stop("clockroll");
 						isDown=true;
 						break;
 					}
@@ -124,6 +126,7 @@ package views.module1.scene13
 							if (delta < 0)
 							{
 								isMoved=true;
+								SoundManager.instance.play("clockroll");
 								crtTime-=delta;
 								for (var i:int=0; i < laceArr.length; i++)
 								{
@@ -141,12 +144,15 @@ package views.module1.scene13
 										img1.x+=2 * WORD_WIDTH;
 								}
 							}
+							else
+								SoundManager.instance.stop("clockroll");
 						}
 						break;
 					}
 
 					case TouchPhase.ENDED:
 					{
+						SoundManager.instance.stop("clockroll");
 						isDown=false;
 						break;
 					}
@@ -181,9 +187,12 @@ package views.module1.scene13
 			}
 			else
 			{
+				SoundManager.instance.stop("clockroll");
+				removeEventListener(TouchEvent.TOUCH, onTouch);
 				min.rotation=Math.PI / 180 * (1800);
 				hour.rotation=Math.PI / 180 * (1800 / 12);
 				ended=true;
+				SoundManager.instance.play("clockmatch");
 				TweenLite.to(clock, 1, {scaleX: 1.5, scaleY: 1.5, onComplete: function():void
 				{
 					TweenLite.to(clock, 1, {scaleX: 1, scaleY: 1, onComplete: function():void {
