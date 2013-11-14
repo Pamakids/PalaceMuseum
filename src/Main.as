@@ -1,27 +1,28 @@
 package
 {
 	import com.pamakids.manager.SoundManager;
-
+	
 	import flash.filesystem.File;
-
+	
 	import controllers.MC;
-
+	
 	import models.Const;
 	import models.FontVo;
 	import models.SOService;
-
+	
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-
+	
 	import views.Interlude;
 	import views.components.ElasticButton;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
 	import views.global.map.Map;
+	import views.global.userCenter.UserCenterManager;
 
 	public class Main extends Container
 	{
@@ -119,6 +120,9 @@ package
 
 		private function startGame():void
 		{
+			UserCenterManager.userCenterContainer = this;
+			UserCenterManager.showUserCenter();
+			return;
 			SoundManager.instance.play("main");
 			parseMS(lastScene);
 		}

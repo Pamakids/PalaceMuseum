@@ -2,21 +2,21 @@ package views.global.userCenter.map
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
-	import flash.geom.Point;
-
+	
+	import flash.utils.Dictionary;
+	
+	import controllers.DC;
 	import controllers.MC;
-
-	import feathers.controls.Button;
-
-	import starling.display.Image;
-	import starling.events.Event;
-	import starling.textures.Texture;
-
-	import views.global.map.Map;
+	
+	import feathers.core.PopUpManager;
+	
+	import starling.display.DisplayObject;
+	
 	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenter;
-	import views.global.userCenter.UserCenterManager;
+	import views.global.userCenter.userInfo.GameScene;
+	import views.global.userCenter.userInfo.ItemForGameList;
+	import views.global.userCenter.userInfo.W_Game;
 
 	/**
 	 * 用户中心map场景
@@ -24,10 +24,6 @@ package views.global.userCenter.map
 	 */
 	public class MapScreen extends BaseScreen
 	{
-		private var mapButton:Button;
-		private var mapTexture:Texture;
-		private var cache:Image;
-
 		public function MapScreen()
 		{
 			super();
@@ -36,89 +32,116 @@ package views.global.userCenter.map
 		override protected function initialize():void
 		{
 			super.initialize();
-			initMapButton();
-			initCacheImage();
+			getGameDatas();
+			initGameList();
 
 			dispatchEventWith(UserCenter.InitViewPlayed);
 		}
 
-		override protected function initPages():void
+		/**
+		 * 游戏数据
+		 * @return
+		 * 	[
+		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "", numStars: 0},
+		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "", numStars: 0},
+		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "", numStars: 0}
+		 * 	]
+		 */
+		private var gameDatas:Array;
+		
+		private function getGameDatas():void
 		{
-			var image:Image=new Image(UserCenterManager.getTexture("background_1"));
-			this.addChild(image);
-			image.touchable=false;
+			gameDatas=DC.instance.getGameDatas();
 		}
-
-		private function initCacheImage():void
+		private var gameList:Vector.<ItemForGameList>;
+		
+		private function initGameList():void
 		{
-			cache=new Image(mapTexture);
-			this.addChild(cache);
-			cache.scaleX=cache.scaleY=mapButton.scaleX;
-			cache.x=mapButton.x;
-			cache.y=mapButton.y;
-
-			cache.touchable=false;
-		}
-
-		private function initMapButton():void
-		{
-			mapTexture=UserCenterManager.getTexture("button_map_skin");
-			mapButton=new Button();
-			mapButton.defaultSkin=new Image(mapTexture);
-			mapButton.x=70;
-			mapButton.y=173;
-			addChild(mapButton);
-			mapButton.addEventListener(Event.TRIGGERED, onTriggered);
-		}
-
-
-		private function onTriggered():void
-		{
-			UserCenterManager.disable();
-			if (Map.map && Map.map.visible)
+			const count:int=gameDatas.length;
+			gameList=new Vector.<ItemForGameList>(count);
+			var item:ItemForGameList;
+			for (var i:int=0; i < count; i++)
 			{
-				MC.instance.switchLayer(true);
-				return;
-			}
-
-			if (cache)
-			{
-				cache.scaleX=cache.scaleY=mapButton.scaleX;
-				cache.x=mapButton.x;
-				cache.y=mapButton.y;
-				cache.visible=true;
-				mapButton.visible=false;
-				var point:Point=this.globalToLocal(new Point(0, 0));
-				TweenLite.to(cache, 0.5, {y: -cache.height + point.y - 88, ease: Cubic.easeOut, onComplete: function():void
-				{
-					cache.visible=false;
-					Map.show(null, -1, -1, true);
-					Map.showCenterBtn=showBtn;
-				}});
-			}
-			else
-			{
-				Map.show(null, -1, -1, true);
+				item=new ItemForGameList(gameDatas[i], show_W_game);
+				this.addChild(item);
+				item.x=55 + (i % 2) * 470;
+				item.y=120 + int(i / 2) * 270;
+				gameList[i]=item;
 			}
 		}
-
-		private function showBtn():void
+		
+		private var w_game:W_Game;
+		
+		private function init_w_game(value:Object):void
 		{
-			if (mapButton)
-				mapButton.visible=true;
+			w_game=new W_Game(value);
+			w_game.closeWinHandler=hideWinHandler;
+			w_game.startGameHandler=startGameHandler;
 		}
+		
+		private function show_W_game(value:Object):void
+		{
+			(!w_game) ? init_w_game(value) : w_game.resetData(value);
+			showWinHandler(w_game);
+		}
+		
+		private function showWinHandler(win:DisplayObject):void
+		{
+			PopUpManager.addPopUp(win, true, false);
+			win.y=768 - win.height >> 1;
+			win.x=1024;
+			TweenLite.to(win, 0.3, {x: 1024 - win.width >> 1, ease: Cubic.easeIn});
+		}
+		
+		private function hideWinHandler(win:DisplayObject, onCompleted:Function=null, paras:Object=null):void
+		{
+			
+			var tween:TweenLite=TweenLite.to(win, 0.3, {x: 1024, ease: Cubic.easeOut, onComplete: function():void {
+				if (win) {
+					if (PopUpManager.isPopUp(win))
+						PopUpManager.removePopUp(win);
+					else
+						win.removeFromParent(true);
+				}
+				if (onCompleted)
+					onCompleted(paras);
+				delete twDic[win];
+			}});
+			
+			twDic[win]=tween;
+		}
+		private var twDic:Dictionary=new Dictionary();
+		private var gameScene:GameScene;
+		
+		private function startGameHandler(gameIndex:int):void
+		{
+			gameScene=new GameScene(gameIndex);
+			gameScene.playedCallBack=gamePlayedForW_game;
+			MC.instance.main.addChild(gameScene);
+		}
+		
+		private function gamePlayedForW_game():void
+		{
+			getGameDatas();
+			const max:int=gameDatas.length;
+			for (var i:int=0; i < max; i++)
+			{
+				gameList[i].data=gameDatas[i];
+			}
+			gameScene.removeFromParent(true);
+		}
+		
 
 		override public function dispose():void
 		{
-			if (mapButton)
+			for each (var item:ItemForGameList in gameList)
 			{
-				mapButton.removeEventListener(Event.TRIGGERED, onTriggered);
-				mapButton.removeFromParent(true);
+				item.removeFromParent(true);
 			}
-			if (cache)
-				cache.removeFromParent(true);
-			if (mapTexture)
-				mapTexture.dispose();
+			if (w_game)
+				w_game.removeFromParent(true);
+			if (gameScene)
+				gameScene.removeFromParent(true);
 			super.dispose();
 		}
 	}

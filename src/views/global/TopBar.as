@@ -41,7 +41,7 @@ package views.global
 				if (index == -1)
 					UserCenterManager.showUserCenter();
 				else
-					UserCenterManager.showUserCenter(2, index);
+					UserCenterManager.showUserCenter(1, index);
 			}});
 		}
 
