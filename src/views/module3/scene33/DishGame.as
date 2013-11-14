@@ -3,6 +3,7 @@ package views.module3.scene33
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
+	import com.pamakids.manager.SoundManager;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -694,7 +695,9 @@ package views.module3.scene33
 			recordIcon.x=636;
 			recordIcon.y=327;
 			recordIcon.scaleX=recordIcon.scaleY=3;
-			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut});
+			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut, onComplete: function():void {
+				SoundManager.instance.play("gamerecord");
+			}});
 		}
 
 		private function restartGame(e:Event=null):void
@@ -732,11 +735,15 @@ package views.module3.scene33
 
 				if (!_dish.tested || _dish.isPoison || _dish.isBad)
 				{
+					SoundManager.instance.stop("kingpoison");
+					SoundManager.instance.play("kingpoison");
 					life--;
 					playKing(4);
 				}
 				else
 				{
+					SoundManager.instance.stop("kingeat");
+					SoundManager.instance.play("kingeat");
 					score+=100;
 					playKing(3);
 				}
@@ -768,6 +775,7 @@ package views.module3.scene33
 			}
 			else if (!stageArea.containsPoint(pt))
 			{
+				SoundManager.instance.play("dishout");
 				isOut=true;
 				life--;
 				playKing(Math.random() > .5 ? 1 : 2);

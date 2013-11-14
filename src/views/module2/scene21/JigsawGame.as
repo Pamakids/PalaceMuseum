@@ -4,6 +4,7 @@ package views.module2.scene21
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Quad;
+	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.display.Bitmap;
@@ -190,6 +191,7 @@ package views.module2.scene21
 			recordIcon.scaleX=recordIcon.scaleY=3;
 			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut,
 					onComplete: function():void {
+						SoundManager.instance.play("gamerecord");
 						closeBtn.visible=closeBtn.touchable=true;
 					}});
 		}

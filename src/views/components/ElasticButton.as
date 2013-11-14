@@ -3,6 +3,7 @@ package views.components
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	import com.greensock.easing.Elastic;
+	import com.pamakids.manager.SoundManager;
 
 	import flash.geom.Point;
 	import flash.utils.setTimeout;
@@ -157,6 +158,7 @@ package views.components
 
 		private function doUp():void
 		{
+			SoundManager.instance.play("buttonclick");
 			var vars:Object={scaleX: 1, scaleY: 1, onComplete: upComplete, ease: Elastic.easeOut}
 			TweenLite.to(this, 0.5, vars);
 		}

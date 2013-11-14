@@ -2,6 +2,8 @@ package views
 {
 	import flash.filesystem.File;
 
+	import sound.SoundAssets;
+
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceModule;
@@ -13,6 +15,7 @@ package views
 	{
 		public function Module4(_skipIndex:int=-1)
 		{
+			SoundAssets.addModuleSnd(moduleName);
 			skipIndex=_skipIndex;
 			sceneArr=[Scene41, Scene42, Scene43];
 

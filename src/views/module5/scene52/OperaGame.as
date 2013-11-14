@@ -3,6 +3,7 @@ package views.module5.scene52
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
+	import com.pamakids.manager.SoundManager;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -31,6 +32,7 @@ package views.module5.scene52
 	{
 		public function OperaGame(am:AssetManager=null)
 		{
+			SoundManager.instance.stop("main");
 			super(am);
 			addBG();
 			initStart();
@@ -202,6 +204,7 @@ package views.module5.scene52
 
 		private function shureStart():void
 		{
+			SoundManager.instance.play("gamebg52");
 			addBodys();
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			timer.start();
@@ -257,6 +260,7 @@ package views.module5.scene52
 
 		private function gameOverHandler():void
 		{
+			SoundManager.instance.stop("gamebg52");
 			gameOver=true;
 			timer.stop();
 
@@ -689,7 +693,16 @@ package views.module5.scene52
 			recordIcon.x=636;
 			recordIcon.y=327;
 			recordIcon.scaleX=recordIcon.scaleY=3;
-			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut});
+			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut, onComplete: function():void {
+				SoundManager.instance.play("gamerecord");
+			}});
+		}
+
+		override public function dispose():void
+		{
+			SoundManager.instance.stop("gamebg52");
+			SoundManager.instance.play("main");
+			super.dispose();
 		}
 	}
 }
