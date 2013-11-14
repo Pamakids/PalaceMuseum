@@ -1,5 +1,6 @@
 package controllers
 {
+	import com.greensock.TweenMax;
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.Singleton;
 
@@ -47,7 +48,7 @@ package controllers
 
 		public function MC()
 		{
-			sm=SoundManager.instance;
+//			SoundManager.instance.init("json/sound.json");
 			SoundAssets.init();
 		}
 
@@ -60,7 +61,6 @@ package controllers
 
 		public var stage:PalaceMuseum;
 		private var topBarLayer:Sprite;
-		private var sm:SoundManager;
 		private var centerLayer:Sprite;
 		private var mapLayer:Sprite;
 
@@ -151,6 +151,7 @@ package controllers
 
 		public function clearCrtModule():void
 		{
+			TweenMax.killAll();
 			if (currentModule)
 			{
 				currentModule.removeFromParent();
@@ -218,12 +219,12 @@ package controllers
 			if (Map.map)
 				Map.map.clear(1);
 			clearCrtModule();
-			LionMC.instance.hide();
+//			LionMC.instance.hide();
 
 			UserCenterManager.closeUserCenter();
 
 			SOService.instance.init();
-			LionMC.instance.show();
+//			LionMC.instance.show();
 			_moduleIndex=-1;
 			MC.isTopBarShow=false;
 			TopBar.hide();
@@ -273,11 +274,11 @@ package controllers
 				main.setChildIndex(mapLayer, i2);
 				MC.isTopBarShow=true;
 				TopBar.show();
-				TailBar.show();
+				TailBar.instance.visible=true;
 			}
 			else
 			{
-				TailBar.hide();
+				TailBar.instance.visible=false;
 				main.setChildIndex(mapLayer, i1);
 				main.setChildIndex(centerLayer, i2);
 				isTopBarShow=(UserCenterManager.getCrtUserCenter() == null);

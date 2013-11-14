@@ -70,7 +70,6 @@ package views.components.base
 			var bg:Image=getImage(src);
 			bg.blendMode=BlendMode.NONE;
 			addChild(bg);
-//			bg.touchable=false;
 		}
 
 		private function initBird(img:Image):void
@@ -116,14 +115,16 @@ package views.components.base
 			{
 				TweenLite.killDelayedCallsTo(this);
 				TweenMax.killTweensOf(nextButton);
+				nextButton.removeFromParent(true);
+				nextButton=null;
 			}
 			assetManager=null;
 			removeChildren();
-			super.dispose();
 			MC.isTopBarShow=false;
 			TopBar.hide();
 			TailBar.hide();
 			LionMC.instance.clear();
+			super.dispose();
 		}
 
 		protected function getImage(name:String):Image

@@ -1,17 +1,14 @@
 package views.components
 {
+	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
-	import com.pamakids.utils.DPIUtil;
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 
 	import controllers.MC;
-
-	import models.Const;
 
 	import views.global.TailBar;
 
@@ -30,6 +27,7 @@ package views.components
 
 		protected function onClick(event:MouseEvent):void
 		{
+			removeEventListener(MouseEvent.CLICK, onClick);
 			if (p)
 				p.playHide();
 		}
@@ -40,7 +38,8 @@ package views.components
 		{
 			if (lion)
 			{
-				lion.stopAllMovieClips();
+				MC.instance.main.removeMask();
+				lion.stop();
 				removeChild(lion);
 				lion=null;
 			}
@@ -48,7 +47,7 @@ package views.components
 			lion.scaleX=lion.scaleY=scale;
 			mcWidth=lion.width * scale;
 			mcHeight=lion.height * scale;
-			lion.stopAllMovieClips();
+			lion.stop();
 			addChild(lion);
 			visible=true;
 		}
@@ -56,7 +55,7 @@ package views.components
 		public function replay():void
 		{
 			if (lastContent)
-				say(lastContent, lastType, lastX, lastY, null, 20, true);
+				say(lastContent, lastType, lastX, lastY, null, 20, lastMask, lastTask);
 			else
 				play(int(Math.random() * mcArr.length));
 		}
@@ -67,35 +66,39 @@ package views.components
 			showLion(type);
 			if (!_x && !_y)
 			{
-				var s:Stage=MC.instance.stage.stage;
-				_x=(Const.WIDTH - mcWidth) / 2;
-				_y=(Const.HEIGHT - mcHeight) / 2;
+//				_x=(Const.WIDTH - mcWidth) / 2;
+//				_y=(Const.HEIGHT - mcHeight) / 2;
+				_x=type == 6 ? 0 : 50;
+				_y=520;
 			}
 			x=_x < 512 ? -100 - mcWidth * 2 : 1124 + mcWidth;
 			y=_y - 200;
-			if (needMask)
-				MC.instance.main.addMask();
+//			if (needMask)
+			MC.instance.main.addMask();
 			tl=TweenMax.to(this, .5, {x: _x, y: _y, motionBlur: true, onComplete: function():void
 			{
 				lion.gotoAndPlay(1);
 				var compFunc:Function=function(e:Event):void {
 					if (lion.currentFrame == lion.totalFrames) {
-						lion.stopAllMovieClips();
+						lion.stop();
 						TailBar.show();
 						lion.removeEventListener(Event.FRAME_CONSTRUCTED, compFunc);
 						isSayingOver=true;
-						if (needMask)
-							MC.instance.main.removeMask();
+//						if (needMask)
+//						MC.instance.main.removeMask();
 					}
 				}
 				lion.addEventListener(Event.FRAME_CONSTRUCTED, compFunc);
 			}});
 		}
 
-		private function playHide():void
+		public function playHide():void
 		{
 			if (tl)
 				tl.reverse();
+			tl=null;
+			MC.instance.main.removeMask();
+			removeEventListener(MouseEvent.CLICK, onClick);
 		}
 
 		private static var _instance:LionMC;
@@ -144,7 +147,7 @@ package views.components
 		private var lastX:Number;
 		private var lastY:Number;
 		private var lastContent:String;
-		private var lastMask:Boolean;
+		private var lastMask:Number;
 		private var lastTask:Boolean
 
 		/**
@@ -156,25 +159,26 @@ package views.components
 		 * @param _callBack
 		 * @param fontSize
 		 */
-		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20, needMask:Boolean=true, isTask:Boolean=false):void
+		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20, maskA:Number=.6, isTask:Boolean=false):void
 		{
+			maskA=Math.max(0, Math.min(.6, maskA));
 			TailBar.hide();
 			lastType=_type;
 			lastX=_x;
 			lastY=_y;
 			lastContent=content;
-			lastMask=needMask;
+			lastMask=maskA;
 			lastTask=isTask;
 
 			showLion(_type);
 			if (!_x && !_y)
 			{
-				var s:Stage=MC.instance.stage.stage;
-				var sc:Number=DPIUtil.getDPIScale();
-				_x=(s.fullScreenWidth / sc - mcWidth) / 2;
-				_y=(s.fullScreenHeight / sc - mcHeight) / 2;
+//				_x=(Const.WIDTH - mcWidth) / 2;
+//				_y=(Const.HEIGHT - mcHeight) / 2;
+				_x=50;
+				_y=520;
 			}
-			x=_x < 512 ? -100 - mcWidth * 2 : 1124 + mcWidth;
+			x=_x < 512 ? (-100 - mcWidth * 2) : (1124 + mcWidth);
 			y=_y - 200;
 			callBack=_callBack;
 			if (p)
@@ -184,12 +188,13 @@ package views.components
 				p.playHide();
 			}
 
-			if (needMask)
-				MC.instance.main.addMask();
+//			if (maskA >= 0)
+			MC.instance.main.addMask(maskA);
 			tl=TweenMax.to(this, .5, {x: _x, y: _y, motionBlur: true, onComplete: function():void
 			{
+				addEventListener(MouseEvent.CLICK, onClick);
 				lion.gotoAndPlay(1);
-				p=Prompt.showTXT(x + mcWidth - 10, y + 10, content, fontSize, function():void
+				p=Prompt.showTXT(isTask ? (x + 70) : (x + mcWidth - 10), isTask ? (y - 20) : y, content, fontSize, function():void
 				{
 					TailBar.show();
 					isSayingOver=true;
@@ -197,8 +202,8 @@ package views.components
 						callBack();
 						callBack=null;
 					}
-					if (needMask)
-						MC.instance.main.removeMask();
+//					if (maskA)
+//					MC.instance.main.removeMask();
 				}, MC.instance.main, 1, false, 3, isTask);
 			}});
 		}
@@ -226,7 +231,7 @@ package views.components
 			lastX=0;
 			lastY=0;
 			lastContent="";
-			lastMask=false;
+			lastMask=0;
 			lastTask=false;
 		}
 	}

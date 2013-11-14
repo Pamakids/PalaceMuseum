@@ -59,6 +59,75 @@ package views.module2.scene21
 			addEventListener(TouchEvent.TOUCH, onTouch);
 
 			addClose();
+
+			addHints(-1);
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+
+		private var hintArr:Vector.<Image>=new Vector.<Image>(4);
+		private var reverseArr:Vector.<Boolean>=new Vector.<Boolean>(4);
+
+		private function addHints(index:int):void
+		{
+			if (reverseArr[index + 1])
+				return;
+			var src:String;
+			if (index < 0)
+				src="findHint";
+			else
+				src=scrArr[index] + "Hint";
+			var hint:Image=getImage(src);
+			hint.touchable=false;
+			addChild(hint);
+			hint.x=hintPosArr[2 * (index + 1)];
+			hint.y=hintPosArr[2 * (index + 1) + 1];
+			hintArr[index + 1]=hint;
+		}
+
+		private function removeHint(index:int):void
+		{
+			var img:Image=hintArr[index];
+			if (img)
+				img.removeFromParent(true);
+			hintArr[index]=null;
+			reverseArr[index]=true;
+		}
+
+		private var count:int=0;
+		private var hintPosArr:Array=[493, 52, 305, 205, 647, 477, 808, 512];
+
+		private function onEnterFrame(e:Event):void
+		{
+			for (var i:int=0; i < hintArr.length; i++)
+			{
+				var img:Image=hintArr[i];
+				if (img)
+				{
+					var b:Boolean=reverseArr[i];
+					if (b)
+						img.alpha+=.05;
+					else
+						img.alpha-=.05;
+					if (img.alpha == 0)
+						reverseArr[i]=true;
+					else if (img.alpha == 1)
+						reverseArr[i]=false;
+				}
+			}
+
+			count++;
+			if (count == 120)
+			{
+				removeHint(0);
+			}
+			else if (count == 420)
+			{
+				for (var j:int=0; j < scrArr.length; j++)
+				{
+					addHints(j);
+				}
+
+			}
 		}
 
 		private function addBugS():void
@@ -76,6 +145,7 @@ package views.module2.scene21
 			var tc:Touch=e.getTouch(bugS, TouchPhase.ENDED);
 			if (tc)
 			{
+				removeHint(3);
 				bugS.removeEventListener(TouchEvent.TOUCH, onBugSTouch);
 				bugS.loop=0;
 				bugS.play();
@@ -138,16 +208,18 @@ package views.module2.scene21
 			{
 				playEff(drum, destPosArr[0]);
 				rattleDrumArea=new Rectangle(-1000, -1000, 0, 0)
+				removeHint(1);
 			}
 			else if (fluteArea.containsPoint(pt))
 			{
 				playEff(flute, destPosArr[1]);
 				fluteArea=new Rectangle(-1000, -1000, 0, 0);
+				removeHint(2);
 			}
 		}
 
-		private var rattleDrumArea:Rectangle=new Rectangle(300, 200, 45, 118);
-		private var fluteArea:Rectangle=new Rectangle(645, 500, 50, 45);
+		private var rattleDrumArea:Rectangle=new Rectangle(309, 211, 31, 95);
+		private var fluteArea:Rectangle=new Rectangle(651, 481, 42, 35);
 		private var originPosArr:Array=[new Point(326, 291), new Point(652, 478), new Point(806, 490)];
 		private var destPosArr:Array=[new Point(133, 23), new Point(35, 9), new Point(251, 16)];
 		private var shadowArr:Array=[];

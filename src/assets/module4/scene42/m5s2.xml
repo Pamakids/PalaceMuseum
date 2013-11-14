@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:9d1025fbe7bc19e5409878b391047485$ -->
+<!-- $TexturePacker:SmartUpdate:e69424c75c881e96e1cc7ec038552ce6$ -->
 <TextureAtlas imagePath="m5s2.png">
     <SubTexture name="collection_card_8" x="2" y="404" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
     <SubTexture name="collection_card_9" x="2" y="2" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
-    <SubTexture name="continue" x="112" y="806" width="378" height="88"/>
+    <SubTexture name="continue" x="112" y="806" width="328" height="107"/>
     <SubTexture name="memorial-hand" x="2" y="806" width="108" height="211"/>
     <SubTexture name="memorial1" x="527" y="383" width="183" height="379"/>
-    <SubTexture name="memorial2" x="677" y="2" width="183" height="379"/>
+    <SubTexture name="memorial2" x="701" y="2" width="183" height="379"/>
     <SubTexture name="memorial3" x="342" y="383" width="183" height="379"/>
-    <SubTexture name="memorial4" x="492" y="2" width="183" height="379"/>
-    <SubTexture name="noBtn-down" x="196" y="896" width="82" height="82"/>
-    <SubTexture name="noBtn" x="358" y="896" width="76" height="76" frameX="-3" frameY="-3" frameWidth="82" frameHeight="82"/>
-    <SubTexture name="yesBtn-down" x="112" y="896" width="82" height="82"/>
-    <SubTexture name="yesBtn" x="280" y="896" width="76" height="76" frameX="-3" frameY="-3" frameWidth="82" frameHeight="82"/>
+    <SubTexture name="memorial4" x="516" y="2" width="183" height="379"/>
+    <SubTexture name="noBtn-down" x="221" y="915" width="107" height="79"/>
+    <SubTexture name="noBtn" x="423" y="915" width="91" height="63" frameX="-8" frameY="-8" frameWidth="107" frameHeight="79"/>
+    <SubTexture name="yesBtn-down" x="112" y="915" width="107" height="79"/>
+    <SubTexture name="yesBtn" x="330" y="915" width="91" height="63" frameX="-8" frameY="-8" frameWidth="107" frameHeight="79"/>
 </TextureAtlas>

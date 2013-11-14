@@ -11,6 +11,9 @@ package views.components.base
 	import com.pamakids.palace.utils.StringUtils;
 
 	import flash.display.MovieClip;
+	import flash.geom.Point;
+
+	import assets.loadings.LoadingAssets;
 
 	import controllers.MC;
 
@@ -88,7 +91,7 @@ package views.components.base
 				{
 					TweenLite.to(load, .5, {x: 1100, onComplete: function():void {
 						MC.instance.removeMC(load);
-						load.stopAllMovieClips();
+						load.stop();
 						load=null;
 					}});
 				}
@@ -96,10 +99,12 @@ package views.components.base
 		}
 
 
-		protected var Q1:String=""
-		protected var A1:String=""
-		protected var Q2:String=""
-		protected var A2:String=""
+		protected var Q1:String="";
+		protected var A1:String="";
+		protected var Q2:String="";
+		protected var A2:String="";
+		protected var qa:Class;
+		protected var qaPOS:Point;
 
 		protected function addQAS():void
 		{
@@ -109,6 +114,19 @@ package views.components.base
 			tfHolder.touchable=false;
 			var bg:Image=Image.fromBitmap(new gameBG());
 			tfHolder.addChild(bg);
+
+			qa=LoadingAssets[moduleName + "Loading"];
+			if (qa)
+			{
+				var img:Image=Image.fromBitmap(new qa());
+				tfHolder.addChild(img);
+				if (qaPOS)
+				{
+					img.x=qaPOS.x;
+					img.y=qaPOS.y;
+				}
+				return;
+			}
 
 			var tfQ1:TextField=new TextField(600, 100, Q1, FontVo.PALACE_FONT, 32, 0xffffff, true);
 			tfQ1.x=200;
@@ -205,8 +223,7 @@ package views.components.base
 			isLoading=false;
 			if (crtScene)
 			{
-				removeChild(crtScene);
-				crtScene.dispose();
+				crtScene.removeFromParent(true);
 				crtScene=null;
 			}
 
@@ -226,6 +243,11 @@ package views.components.base
 
 		override public function dispose():void
 		{
+			if (crtScene)
+			{
+				crtScene.removeFromParent(true);
+				crtScene=null;
+			}
 			isLoading=false;
 			if (assetManager)
 				assetManager.purge();

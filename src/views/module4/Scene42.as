@@ -32,7 +32,6 @@ package views.module4
 			super(am);
 			crtKnowledgeIndex=11;
 			addBG("bg52");
-//			addChild(getImage("bg52"));
 
 			hand=getImage("memorial-hand");
 			addChild(hand);
@@ -122,12 +121,11 @@ package views.module4
 						addChoose();
 				}});
 			}});
-
 		}
 
 		private function playLion():void
 		{
-			LionMC.instance.say("皇上辛苦了，这就传晚膳", 0, 200, 500, sceneOver, 20);
+			LionMC.instance.say("皇上辛苦了，这就传晚膳", 0, 0, 0, sceneOver, 20);
 		}
 
 		private function addChoose():void
@@ -135,21 +133,21 @@ package views.module4
 			chooseWin=new Sprite();
 
 			var bar:Image=getImage("continue");
-			bar.x=321;
-			bar.y=466;
+			bar.x=341;
+			bar.y=453;
 			chooseWin.addChild(bar);
 
 			var yes:ElasticButton=new ElasticButton(getImage("yesBtn"));
 			yes.shadow=getImage("yesBtn-down");
-			yes.x=394 + 36;
-			yes.y=592 + 36;
+			yes.x=386 + 54;
+			yes.y=596 + 40;
 			chooseWin.addChild(yes);
 			yes.addEventListener(ElasticButton.CLICK, onYes);
 
 			var no:ElasticButton=new ElasticButton(getImage("noBtn"));
 			no.shadow=getImage("noBtn-down");
-			no.x=528 + 36;
-			no.y=592 + 36;
+			no.x=522 + 54;
+			no.y=596 + 40;
 			chooseWin.addChild(no);
 			no.addEventListener(ElasticButton.CLICK, onNo);
 

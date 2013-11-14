@@ -1,7 +1,6 @@
 package views.module1.scene13
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -16,6 +15,7 @@ package views.module1.scene13
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.InfoSwitch;
 	import views.components.base.PalaceGame;
 
 	public class Clock extends PalaceGame
@@ -27,13 +27,11 @@ package views.module1.scene13
 		private var wordArr:Array=[];
 
 		private var mask:Image;
-		private var scale:Number;
 
 		public function Clock(am:AssetManager)
 		{
 			super(am);
 
-			scale=DPIUtil.getDPIScale();
 			var bg:Image=getImage("clock-bg");
 			addChild(bg);
 
@@ -189,7 +187,17 @@ package views.module1.scene13
 				TweenLite.to(clock, 1, {scaleX: 1.5, scaleY: 1.5, onComplete: function():void
 				{
 					TweenLite.to(clock, 1, {scaleX: 1, scaleY: 1, onComplete: function():void {
-						var info:Image=getImage("clockInfo");
+						var arr:Array=[];
+						for (var i:int=1; i <= 4; i++)
+						{
+							var img:Image=getImage("info" + i);
+							arr.push(img);
+						}
+
+						var info:InfoSwitch=new InfoSwitch(arr, 68, 62);
+						info.addBtns(getImage("infoPre"), getImage("infoNext"));
+						info.addChildAt(getImage("infoBG"), 0);
+//						var info:Image=getImage("clockInfo");
 						addChild(info);
 						info.x=146 - 50;
 						info.y=67 - 25;

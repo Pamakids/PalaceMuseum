@@ -15,6 +15,7 @@ package views.module2
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
+	import views.global.TailBar;
 	import views.module2.scene22.Telescope;
 	import views.module2.scene22.ThermoMeter;
 	import views.module2.scene22.TriangularPrism;
@@ -66,7 +67,7 @@ package views.module2
 				itemArr.push(item);
 			}
 
-			LionMC.instance.say("皇上的洋人老师，带来几个新鲜玩意儿，试试吧", 0, 200, 500, addTouchs, 20);
+			LionMC.instance.say("皇上的洋人老师，带来几个新鲜玩意儿，试试吧", 0, 0, 0, addTouchs, 20);
 
 			thermo=getImage("thermometer32");
 			thermo.x=45;
@@ -245,7 +246,10 @@ package views.module2
 				setClicked(0);
 			}
 			if (thermoGame.isWin)
+			{
+				TailBar.hide();
 				showAchievement(11, sceneOver);
+			}
 			else
 				sceneOver();
 			thermoGame.removeFromParent(true);

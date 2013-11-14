@@ -19,6 +19,7 @@ package views.module4
 	import views.components.Craw;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
+	import views.global.TailBar;
 
 	/**
 	 * 上朝模块
@@ -27,7 +28,7 @@ package views.module4
 	 */
 	public class Scene41 extends PalaceScene
 	{
-		private var dx:Number=0;
+		private var speedX:Number=0;
 		private var bgHolder:Sprite;
 		private var bgW:Number;
 		private var leftHit:Boolean;
@@ -67,13 +68,13 @@ package views.module4
 			acc.addEventListener(AccelerometerEvent.UPDATE, onUpdate);
 
 			if (SOService.instance.checkHintCount(shakeHintCount))
-				addEventListener(Event.ENTER_FRAME, onEnterFrame);
+				needHint=true;
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 
-//			sceneOver();
+			TailBar.show();
 		}
 
 		private var crawPosArr:Array=[new Point(1278, 708), new Point(1064, 490), new Point(1488, 490)];
-//		private var crawArr:Array=[];
 		private var peoplePosArr:Array=[new Point(1241, 641), new Point(911, 416), new Point(1421, 416)];
 
 		private var hintArr:Array=["大臣们奏事时，依次来到皇帝的龙案前跪下，汇报工作，接受指令",
@@ -86,14 +87,6 @@ package views.module4
 			for (var i:int=0; i < crawPosArr.length; i++)
 			{
 				addCraw(crawPosArr[i], onCrowTouch, bgHolder, i);
-//				var craw:Craw=new Craw(assetManager.getTexture("craw"));
-//				craw.pivotX=20;
-//				craw.pivotY=20;
-//				craw.x=crawPosArr[i].x + 20;
-//				craw.y=crawPosArr[i].y + 20;
-//				bgHolder.addChild(craw);
-//				craw.addEventListener(TouchEvent.TOUCH, onCrowTouch);
-//				crawArr.push(craw);
 			}
 			var pillar:Image=getImage("pillar");
 			bgHolder.addChild(pillar);
@@ -118,7 +111,6 @@ package views.module4
 		private function showChancellor(craw:Craw):void
 		{
 			var index:int=craw.index;
-//			crawArr.indexOf(craw);
 			craw.removeEventListener(TouchEvent.TOUCH, onCrowTouch);
 			craw.deActive();
 			craw.touchable=false;
@@ -256,6 +248,20 @@ package views.module4
 
 		private function onEnterFrame(e:Event):void
 		{
+			bgHolder.x-=speedX;
+			if (bgHolder.x > 0)
+			{
+				leftHit=true;
+				bgHolder.x=0;
+			}
+			else if (bgHolder.x < 1024 - bgW)
+			{
+				bgHolder.x=1024 - bgW;
+				rightHit=true;
+			}
+
+			if (!needHint)
+				return;
 			if (isMoved || (leftHit || rightHit))
 			{
 				if (hintShow)
@@ -263,7 +269,8 @@ package views.module4
 					hintShow.removeChildren();
 					hintShow.removeFromParent(true);
 				}
-				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+				needHint=false;
+//				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 				return;
 			}
 			if (count < 30 * 8)
@@ -302,26 +309,12 @@ package views.module4
 		private var shakeCount:int=0;
 		private var shakeReverse:Boolean;
 		private var degress2:Number=Math.PI / 180;
+		private var needHint:Boolean;
 
 		protected function onUpdate(event:AccelerometerEvent):void
 		{
-			dx=event.accelerationX * 50;
-
-			bgHolder.x-=dx;
-			if (bgHolder.x > 0)
-			{
-				leftHit=true;
-				bgHolder.x=0;
-			}
-			else if (bgHolder.x < 1024 - bgW)
-			{
-				bgHolder.x=1024 - bgW;
-				rightHit=true;
-			}
-//			if (leftHit && rightHit)
-//			{
-//				showAchievement(21, sceneOver);
-//			}
+			speedX=event.accelerationX * 50;
+			trace(event.accelerationX)
 		}
 	}
 }

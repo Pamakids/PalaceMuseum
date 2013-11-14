@@ -143,26 +143,7 @@ package views.module2
 				ready=true;
 				if (SOService.instance.checkHintCount(shelfHintCount))
 					addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			}, 20);
-//			lion=new Lion();
-//			lion.src=getImage("lion");
-//			addChild(lion);
-//
-//			lion.x=-140;
-//			lion.y=300;
-//			lion.rotation=-Math.PI / 4;
-//			TweenLite.to(lion, .8, {x: 30, y: 540, rotation: 0, ease: Elastic.easeOut, onComplete: function():void
-//			{
-//				lion.say(hint31find, function():void {
-//					TweenLite.to(lion, .5, {x: -140, onComplete: function():void
-//					{
-//						ready=true;
-//						if (SOService.instance.checkHintCount(shelfHintCount))
-//							addEventListener(Event.ENTER_FRAME, onEnterFrame);
-//					}
-//						});
-//				});
-//			}});
+			}, 20, .6, true);
 		}
 
 		private var shelfHintCount:String="shelfHintCount";

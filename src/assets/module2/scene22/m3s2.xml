@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:01f3b12d67243850d91366a34809a8f7$ -->
+<!-- $TexturePacker:SmartUpdate:8e8ba4c78024cef5d08ae14d05986ce7$ -->
 <TextureAtlas imagePath="m3s2.png">
-    <SubTexture name="brushpot" x="1771" y="955" width="118" height="191"/>
-    <SubTexture name="collection_card_5" x="972" y="1225" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
-    <SubTexture name="dragon1" x="433" y="1940" width="120" height="100"/>
-    <SubTexture name="dragon2" x="323" y="1940" width="108" height="101"/>
-    <SubTexture name="dragon3" x="791" y="1936" width="106" height="98"/>
-    <SubTexture name="dragon4" x="675" y="1937" width="114" height="99"/>
-    <SubTexture name="dragon5" x="300" y="1810" width="130" height="102"/>
-    <SubTexture name="dragon6" x="555" y="1937" width="118" height="99"/>
-    <SubTexture name="dragon7" x="209" y="1949" width="112" height="95"/>
-    <SubTexture name="dragon8" x="432" y="1810" width="114" height="101"/>
+    <SubTexture name="brushpot" x="528" y="1537" width="118" height="191"/>
+    <SubTexture name="collection_card_5" x="1307" y="529" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
+    <SubTexture name="dragon1" x="528" y="1435" width="120" height="100"/>
+    <SubTexture name="dragon2" x="1120" y="1742" width="108" height="101"/>
+    <SubTexture name="dragon3" x="1230" y="1741" width="106" height="98"/>
+    <SubTexture name="dragon4" x="1223" y="1640" width="114" height="99"/>
+    <SubTexture name="dragon5" x="1409" y="1302" width="130" height="102"/>
+    <SubTexture name="dragon6" x="528" y="1730" width="118" height="99"/>
+    <SubTexture name="dragon7" x="331" y="1949" width="112" height="95"/>
+    <SubTexture name="dragon8" x="528" y="1831" width="114" height="101"/>
     <SubTexture name="dragon9" x="547" y="685" width="143" height="107"/>
     <SubTexture name="eye0001" x="974" y="337" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
     <SubTexture name="eye0002" x="974" y="337" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
@@ -60,57 +60,66 @@
     <SubTexture name="eye0045" x="974" y="337" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
     <SubTexture name="eye0046" x="974" y="337" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
     <SubTexture name="hint32" x="547" y="794" width="137" height="58"/>
-    <SubTexture name="hintHand" x="955" y="642" width="63" height="43"/>
-    <SubTexture name="hintRing" x="685" y="964" width="64" height="79" frameX="0" frameY="-1" frameWidth="64" frameHeight="81"/>
-    <SubTexture name="inkstone" x="90" y="1810" width="208" height="137"/>
-    <SubTexture name="label-prism" x="1085" y="1901" width="91" height="47"/>
-    <SubTexture name="label-tele" x="992" y="1986" width="91" height="47"/>
-    <SubTexture name="label-thermo" x="899" y="1986" width="91" height="47"/>
+    <SubTexture name="hintHand" x="984" y="1146" width="63" height="43"/>
+    <SubTexture name="hintRing" x="652" y="1962" width="64" height="79" frameX="0" frameY="-1" frameWidth="64" frameHeight="81"/>
+    <SubTexture name="inkstone" x="740" y="1819" width="208" height="137"/>
+    <SubTexture name="label-prism" x="1214" y="529" width="91" height="47"/>
+    <SubTexture name="label-tele" x="1121" y="529" width="91" height="47"/>
+    <SubTexture name="label-thermo" x="1028" y="529" width="91" height="47"/>
     <SubTexture name="light-input" x="2" y="296" width="1020" height="39"/>
     <SubTexture name="light-out" x="2" y="337" width="688" height="346"/>
-    <SubTexture name="light-prism" x="1411" y="705" width="194" height="169"/>
-    <SubTexture name="light-sign" x="90" y="1230" width="369" height="578"/>
-    <SubTexture name="paper" x="1178" y="1627" width="435" height="383"/>
-    <SubTexture name="part1" x="1187" y="529" width="209" height="176"/>
-    <SubTexture name="part2" x="547" y="1050" width="196" height="177"/>
-    <SubTexture name="part3" x="1807" y="600" width="232" height="176"/>
-    <SubTexture name="part4" x="1785" y="778" width="215" height="175"/>
-    <SubTexture name="part5" x="931" y="1044" width="252" height="179" frameX="0" frameY="0" frameWidth="252" frameHeight="181"/>
-    <SubTexture name="part6" x="772" y="1741" width="222" height="193"/>
-    <SubTexture name="part7" x="1809" y="408" width="232" height="190"/>
-    <SubTexture name="part8" x="1411" y="529" width="201" height="174"/>
-    <SubTexture name="part9" x="1615" y="529" width="190" height="179"/>
-    <SubTexture name="prism32" x="1187" y="778" width="96" height="244"/>
+    <SubTexture name="light-prism" x="1323" y="1871" width="194" height="169"/>
+    <SubTexture name="light-sign" x="740" y="1239" width="369" height="578"/>
+    <SubTexture name="paper" x="547" y="854" width="435" height="383"/>
+    <SubTexture name="part1" x="1539" y="1411" width="209" height="176"/>
+    <SubTexture name="part2" x="1709" y="1589" width="196" height="177"/>
+    <SubTexture name="part3" x="1806" y="807" width="232" height="176"/>
+    <SubTexture name="part4" x="1764" y="1369" width="215" height="175"/>
+    <SubTexture name="part5" x="1291" y="931" width="252" height="179" frameX="0" frameY="0" frameWidth="252" frameHeight="181"/>
+    <SubTexture name="part6" x="1795" y="1174" width="222" height="193"/>
+    <SubTexture name="part7" x="1806" y="615" width="232" height="190"/>
+    <SubTexture name="part8" x="1120" y="1871" width="201" height="174"/>
+    <SubTexture name="part9" x="1519" y="1778" width="190" height="179"/>
+    <SubTexture name="prism32" x="184" y="1741" width="96" height="244"/>
     <SubTexture name="scene22-bird" x="1028" y="121" width="779" height="406"/>
-    <SubTexture name="tele-arm" x="1411" y="876" width="128" height="151"/>
-    <SubTexture name="tele-king" x="692" y="633" width="261" height="329" frameX="-20" frameY="0" frameWidth="281" frameHeight="329"/>
-    <SubTexture name="tele-ring-in" x="461" y="1230" width="509" height="509" frameX="-17" frameY="-17" frameWidth="543" frameHeight="543"/>
+    <SubTexture name="shadow1" x="1192" y="1112" width="219" height="186"/>
+    <SubTexture name="shadow2" x="1505" y="1589" width="202" height="187" frameX="-4" frameY="0" frameWidth="206" frameHeight="187"/>
+    <SubTexture name="shadow3" x="1545" y="1033" width="248" height="192"/>
+    <SubTexture name="shadow4" x="1806" y="985" width="223" height="187" frameX="-6" frameY="0" frameWidth="231" frameHeight="191"/>
+    <SubTexture name="shadow5" x="692" y="633" width="266" height="193" frameX="-1" frameY="-2" frameWidth="268" frameHeight="197"/>
+    <SubTexture name="shadow6" x="1809" y="205" width="236" height="205" frameX="-2" frameY="0" frameWidth="238" frameHeight="209"/>
+    <SubTexture name="shadow7" x="282" y="1741" width="244" height="206" frameX="0" frameY="0" frameWidth="248" frameHeight="206"/>
+    <SubTexture name="shadow8" x="1545" y="1227" width="217" height="182" frameX="0" frameY="-2" frameWidth="217" frameHeight="190"/>
+    <SubTexture name="shadow9" x="984" y="949" width="206" height="195"/>
+    <SubTexture name="tele-arm" x="1409" y="1406" width="128" height="151"/>
+    <SubTexture name="tele-king" x="1028" y="615" width="261" height="329" frameX="-20" frameY="0" frameWidth="281" frameHeight="329"/>
+    <SubTexture name="tele-ring-in" x="2" y="1230" width="509" height="509" frameX="-17" frameY="-17" frameWidth="543" frameHeight="543"/>
     <SubTexture name="tele-ring-out" x="2" y="685" width="543" height="543"/>
     <SubTexture name="tele1" x="974" y="514" width="37" height="126" frameX="0" frameY="0" frameWidth="39" frameHeight="126"/>
     <SubTexture name="tele2" x="974" y="407" width="47" height="84"/>
     <SubTexture name="tele3" x="1809" y="121" width="51" height="80" frameX="0" frameY="0" frameWidth="51" frameHeight="96"/>
     <SubTexture name="tele32" x="692" y="337" width="280" height="294"/>
-    <SubTexture name="thermo-body-shadow" x="660" y="1741" width="110" height="194"/>
-    <SubTexture name="thermo-body" x="548" y="1741" width="110" height="194"/>
-    <SubTexture name="thermo-boiling-shadow" x="1615" y="710" width="168" height="199" frameX="-3" frameY="0" frameWidth="174" frameHeight="201"/>
+    <SubTexture name="thermo-body-shadow" x="1111" y="1300" width="110" height="194"/>
+    <SubTexture name="thermo-body" x="1111" y="1546" width="110" height="194"/>
+    <SubTexture name="thermo-boiling-shadow" x="950" y="1819" width="168" height="199" frameX="-3" frameY="0" frameWidth="174" frameHeight="201"/>
     <SubTexture name="thermo-boiling" x="1872" y="2" width="174" height="201"/>
-    <SubTexture name="thermo-halo" x="745" y="1045" width="184" height="181"/>
-    <SubTexture name="thermo-ice-shadow" x="751" y="964" width="199" height="78" frameX="-3" frameY="-3" frameWidth="205" frameHeight="84"/>
-    <SubTexture name="thermo-ice" x="2" y="1953" width="205" height="84"/>
-    <SubTexture name="thermo-light" x="300" y="1927" width="244" height="11" frameX="-3" frameY="-1" frameWidth="250" frameHeight="15"/>
-    <SubTexture name="thermo-line" x="300" y="1914" width="244" height="11" frameX="-3" frameY="-1" frameWidth="250" frameHeight="15"/>
+    <SubTexture name="thermo-halo" x="1223" y="1300" width="184" height="181"/>
+    <SubTexture name="thermo-ice-shadow" x="718" y="1962" width="199" height="78" frameX="-3" frameY="-3" frameWidth="205" frameHeight="84"/>
+    <SubTexture name="thermo-ice" x="445" y="1949" width="205" height="84"/>
+    <SubTexture name="thermo-light" x="686" y="841" width="244" height="11" frameX="-3" frameY="-1" frameWidth="250" frameHeight="15"/>
+    <SubTexture name="thermo-line" x="686" y="828" width="244" height="11" frameX="-3" frameY="-1" frameWidth="250" frameHeight="15"/>
     <SubTexture name="thermo-mercury" x="1020" y="493" width="6" height="454"/>
-    <SubTexture name="thermo-pan" x="1615" y="911" width="154" height="155" frameX="-11" frameY="-10" frameWidth="184" frameHeight="181"/>
-    <SubTexture name="thermo-snowman-shadow" x="1185" y="1033" width="130" height="188" frameX="-3" frameY="-3" frameWidth="136" frameHeight="194"/>
-    <SubTexture name="thermo-snowman" x="547" y="854" width="136" height="194"/>
-    <SubTexture name="thermo-tea-shadow" x="1891" y="955" width="109" height="158" frameX="-3" frameY="0" frameWidth="115" frameHeight="160"/>
-    <SubTexture name="thermo-tea" x="1615" y="1068" width="115" height="160"/>
-    <SubTexture name="thermo" x="2" y="1230" width="86" height="721"/>
-    <SubTexture name="thermometer32" x="1028" y="529" width="157" height="502"/>
-    <SubTexture name="wall-title" x="899" y="1936" width="145" height="48"/>
+    <SubTexture name="thermo-pan" x="1223" y="1483" width="154" height="155" frameX="-11" frameY="-10" frameWidth="184" frameHeight="181"/>
+    <SubTexture name="thermo-snowman-shadow" x="1413" y="1112" width="130" height="188" frameX="-3" frameY="-3" frameWidth="136" frameHeight="194"/>
+    <SubTexture name="thermo-snowman" x="513" y="1239" width="136" height="194"/>
+    <SubTexture name="thermo-tea-shadow" x="1907" y="1708" width="109" height="158" frameX="-3" frameY="0" frameWidth="115" frameHeight="160"/>
+    <SubTexture name="thermo-tea" x="1907" y="1546" width="115" height="160"/>
+    <SubTexture name="thermo" x="652" y="1239" width="86" height="721"/>
+    <SubTexture name="thermometer32" x="1647" y="529" width="157" height="502"/>
+    <SubTexture name="wall-title" x="184" y="1987" width="145" height="48"/>
     <SubTexture name="wall-word" x="1028" y="2" width="842" height="117"/>
     <SubTexture name="wall" x="2" y="2" width="1024" height="292"/>
-    <SubTexture name="waterpot" x="1809" y="205" width="235" height="201"/>
-    <SubTexture name="writingbrush" x="1285" y="710" width="124" height="310"/>
-    <SubTexture name="笔" x="996" y="1627" width="180" height="272"/>
+    <SubTexture name="waterpot" x="1809" y="412" width="235" height="201"/>
+    <SubTexture name="writingbrush" x="1379" y="1559" width="124" height="310"/>
+    <SubTexture name="笔" x="2" y="1741" width="180" height="272"/>
 </TextureAtlas>

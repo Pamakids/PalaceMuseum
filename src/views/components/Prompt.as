@@ -57,10 +57,17 @@ package views.components
 		 * @param fontSize
 		 * @param bgAlign
 		 */
-		public function Prompt(bg:String, content:String, algin:int=5, fontSize=20, bgAlign:int=-1)
+		public function Prompt(bg:Object, content:String="", algin:int=1, fontSize=20, bgAlign:int=-1)
 		{
 			super();
-			var bgImage:Image=getImage(bg);
+			var bgImage:Image
+			if (bg is Image)
+			{
+				bgImage=bg as Image;
+				bgAlign=algin;
+			}
+			else if (bg is String)
+				bgImage=getImage(bg as String);
 
 			//t,f,1:左右翻转
 			//f,f,1:non
@@ -83,14 +90,13 @@ package views.components
 					if (bg == "bg-task")
 					{
 						t.y+=10;
-						t.fontSize=40;
+						t.fontSize=24 - int(content.length / 20);
 						t.color=0xffffff;
-						algin=4
-						bgAlign=-1;
+//						algin=4
+//						bgAlign=-1;
 					}
 					addChild(t);
 					t.touchable=false;
-					t.hAlign="center";
 				}
 				else
 				{
@@ -201,9 +207,9 @@ package views.components
 		public function playHide():void
 		{
 			removeEventListener(TouchEvent.TOUCH, onTouch);
-			if (!this.parent)
-				return;
-			TweenLite.killDelayedCallsTo(playHide);
+//			if (!this.parent)
+//				return;
+			TweenLite.killTweensOf(playHide);
 			TweenLite.killTweensOf(this);
 			TweenLite.to(this, 0.5, hideEffect);
 			TweenLite.killDelayedCallsTo(clearHandler);
@@ -213,12 +219,17 @@ package views.components
 		private function clearHandler(p:Prompt):void
 		{
 			if (p.parent)
-				p.parent.removeChild(p);
+				p.removeFromParent(true);
 			delete promptDic[p.id];
 			if (p.callback != null)
 				p.callback();
 			p.callback=null;
 		}
+
+//		override public function dispose():void
+//		{
+//			super.dispose()
+//		}
 
 		/**
 		 * 显示提示，可获取Prompt引用手动隐藏也可调用hide方法隐藏
@@ -232,12 +243,10 @@ package views.components
 		 * @return
 		 *
 		 */
-		public static function show(x:Number, y:Number, background:String, content:String='', position:int=5, hideAfter:Number=3, callback:Function=null, parentSprite:Sprite=null, forceShow:Boolean=false, fontSize:int=20, bgAlign:int=-1):Prompt
+		public static function show(x:Number, y:Number, background:String, content:String='', position:int=1, hideAfter:Number=3, callback:Function=null, parentSprite:Sprite=null, forceShow:Boolean=false, fontSize:int=20, bgAlign:int=-1):Prompt
 		{
 			var id:String=content ? content : background;
 			var prompt:Prompt=promptDic[id + x + y];
-//			if (prompt)
-//				trace(id + x + y, prompt.x);
 			if (prompt && (prompt.x == x && prompt.y == y))
 			{
 				if (forceShow)
@@ -278,6 +287,24 @@ package views.components
 				return new Image(t);
 			else
 				return null;
+		}
+
+		public static function showIMG(_x:Number, _y:Number, _bg:Image, callback=null, parentSprite:Sprite=null):Prompt
+		{
+			var id:String="img";
+			var prompt:Prompt=promptDic[id + _x + _y];
+			if (prompt && (prompt.x == _x && prompt.y == _y))
+				return null;
+			prompt=new Prompt(_bg);
+			prompt.callback=callback;
+			prompt.x=_x;
+			prompt.y=_y;
+			prompt.id=id + _x + _y;
+			var p:Sprite=parentSprite ? parentSprite : parent;
+			p.addChild(prompt);
+			promptDic[id + _x + _y]=prompt;
+			prompt.playShow(3);
+			return prompt;
 		}
 	}
 }

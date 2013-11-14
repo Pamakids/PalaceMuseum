@@ -24,6 +24,7 @@ package views.module1
 
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
+	import views.global.TailBar;
 	import views.global.TopBar;
 
 	/**
@@ -51,11 +52,16 @@ package views.module1
 
 		private var windowStrArr:Array=[];
 
-		private var hint0:String="皇帝寝室是哪一间呢？";
-		private var hint1:String="皇贵妃还在休息，不要打扰";
-		private var hint2:String="皇帝的休息室，他不在这里";
-		private var hint3:String="皇帝寝室，但他今天在另一间休息";
-		private var hint4:String="皇后在自己的寝宫，不在这里";
+		private var lionHint1:String="懒蛋，皇帝是不能睡懒觉的，每天几乎都在5点起床。"
+		private var lionHint2:String="别怯场，快来猜猜皇帝到底睡在哪一间呢？"
+
+		private var hint0:String="皇帝不能多睡会儿么？";
+		private var hint1:String="这是为皇贵妃准备的房间";
+		private var hint2:String="这是皇帝的休息室，他不在这里";
+		private var hint3:String="hint-pic1";
+		private var hint4:String="这是为皇后准备的房间";
+		private var hint5:String="hint-pic2";
+		private var hint6:String="皇帝寝室，但他今天在另一间休息";
 
 		private var hotzone1:Rectangle=new Rectangle(48, 209, 140, 134); //窗-左
 		private var hotzone2:Rectangle=new Rectangle(746, 177, 158, 168); //门-中
@@ -80,11 +86,7 @@ package views.module1
 		public function Scene11(am:AssetManager)
 		{
 			super(am);
-			windowStrArr=[hint3, hint2, hint2, hint3];
-		}
-
-		override protected function init():void
-		{
+			windowStrArr=[hint6, hint3, hint5, hint6];
 			crtKnowledgeIndex=1;
 			windowIndex=Math.random() > .5 ? 0 : 3;
 
@@ -126,7 +128,6 @@ package views.module1
 			fg.addEventListener(TouchEvent.TOUCH, onFGTouch);
 			addWindows();
 
-//			onAutoMove(2000);
 			addKing();
 			if (!SOService.instance.getSO("isfirst"))
 			{
@@ -156,14 +157,27 @@ package views.module1
 			TweenLite.delayedCall(5, hideBook);
 		}
 
+		private function showLionTask():void
+		{
+			function showNext():void {
+				showHint(400, 100, lionHint1, 1, king, 1, showNext2);
+			}
+			function showNext2():void {
+				showHint(400, 100, lionHint2, 1, king, 1, function():void {
+					touchReady=true;
+				}, true);
+			}
+			showHint(50, 50, hint0, 3, king, 3, showNext);
+		}
+
 		private function active():void
 		{
-			ready=true;
 			TweenLite.delayedCall(3, function():void {
 				TweenLite.to(ga, 2, {alpha: 0, onComplete: function():void {
 					ga.removeFromParent(true);
 					MC.instance.main.removeMask();
 					moveScene();
+					ready=true;
 				}});
 			});
 		}
@@ -171,43 +185,59 @@ package views.module1
 		private function moveScene():void
 		{
 			_offsetX=-10;
-			TweenLite.to(this, 5, {offsetX: 0, onComplete:
-					function():void
-					{
-						showHint(50, 50, hint0, 3, king, 3);
-					}});
+			TweenLite.to(this, 5, {offsetX: 0, onComplete: showLionTask});
 		}
 
 		private function addKing():void
 		{
-			king=new Sprite();
-			king.addChild(getImage("king11"));
-			SPUtils.registSPCenter(king, 2);
-			addChild(king);
-			king.x=512;
-			king.y=768;
-			king.addEventListener(TouchEvent.TOUCH, onKingTouch);
-
 			ga=getImage("gallery");
 			ga.x=1024 - ga.width >> 1;
 			addChild(ga);
+
+			king=new Sprite();
+			var kingImg:Image=getImage("king11")
+			king.addChild(kingImg);
+			SPUtils.registSPCenter(king, 2);
+			addChild(king);
+			king.x=512 - 125;
+			king.y=768;
+			kingImg.addEventListener(TouchEvent.TOUCH, onKingTouch);
+
+			var lion:Image=getImage("lionHead");
+			lion.x=king.width;
+			lion.y=king.height - lion.height;
+			king.addChild(lion);
+			lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
 		}
 
-		private function onKingTouch(event:TouchEvent):void
+		private function onLionTouch(e:TouchEvent):void
 		{
-			var tc:Touch=event.getTouch(this, TouchPhase.ENDED);
-			if (!tc || !ready)
+			var img:Image=e.currentTarget as Image;
+			if (!img)
 				return;
-			var pt:Point=tc.getLocation(this);
+			var tc:Touch=e.getTouch(img, TouchPhase.ENDED);
+			if (!touchReady || !tc || !ready)
+				return;
+			showHint(400, 100, lionHint2, 1, king, 1, null, true);
+		}
 
-			if (dpt && Point.distance(dpt, pt) < 15)
-				showHint(50, 50, hint0, 3, king, 3);
+		private function onKingTouch(e:TouchEvent):void
+		{
+			var img:Image=e.currentTarget as Image;
+			if (!img)
+				return;
+			var tc:Touch=e.getTouch(img, TouchPhase.ENDED);
+			if (!tc || !ready || !touchReady)
+				return;
+//			var pt:Point=tc.getLocation(this);
+//			if (dpt && Point.distance(dpt, pt) < 15)
+			showHint(50, 50, hint0, 3, king, 3);
 		}
 
 		private function onFGTouch(event:TouchEvent):void
 		{
 			var tc:Touch=event.getTouch(this, TouchPhase.ENDED);
-			if (!tc || !ready)
+			if (!tc || !ready || !touchReady)
 				return;
 			var pt:Point=tc.getLocation(this);
 
@@ -291,7 +321,7 @@ package views.module1
 		private function onWindowTouch(e:TouchEvent):void
 		{
 			var w:Sprite=e.currentTarget as Sprite;
-			if (!w)
+			if (!w || !touchReady)
 				return;
 			var tc:Touch=e.getTouch(w);
 			if (!tc)
@@ -354,6 +384,7 @@ package views.module1
 				TweenLite.to(this, 2, {scaleX: 1.2, scaleY: 1.2, onComplete: function():void
 				{
 					TweenLite.to(king, 1, {alpha: 0});
+					TailBar.hide();
 					TweenLite.delayedCall(1.5, resetView);
 				}});
 			}
@@ -419,7 +450,7 @@ package views.module1
 
 		private var checkDic:Dictionary=new Dictionary();
 
-		private function showHint(_x:Number, _y:Number, _src:String, reg:int, _parent:Sprite, align:int=1):void
+		private function showHint(_x:Number, _y:Number, _src:String, reg:int, _parent:Sprite, align:int=1, callback:Function=null, isTask:Boolean=false):void
 		{
 
 			if (crtWinSelected)
@@ -434,12 +465,16 @@ package views.module1
 					hintCount++;
 			}
 
-			if (hintCount > 5)
+			if (hintCount > 7)
 				showAchievement(0);
 
 			if (p)
 				p.playHide();
-			p=Prompt.showTXT(_x, _y, _src, 20, null, _parent, align)
+			var img:Image=getImage(_src);
+			if (img)
+				p=Prompt.showIMG(_x, _y, img, callback, _parent);
+			else
+				p=Prompt.showTXT(_x, _y, _src, 20, callback, _parent, align, false, 3, isTask)
 		}
 
 		private function onTouch(event:TouchEvent):void
@@ -466,6 +501,8 @@ package views.module1
 
 				case TouchPhase.MOVED:
 				{
+					if (!dpt)
+						return;
 					var delta:Point=tc.getMovement(this);
 					var dx:Number=delta.x;
 					var tx:Number=fg.x + dx / 2;
@@ -476,7 +513,7 @@ package views.module1
 					bg.x+=dx / 5;
 					mg.x+=dx / 3;
 					fg.x+=dx / 2;
-					king.x-=dx / 8;
+					king.x+=dx / 5;
 					break;
 				}
 				case TouchPhase.ENDED:
@@ -495,6 +532,7 @@ package views.module1
 		private var ready:Boolean;
 
 		private var ga:Image;
+		private var touchReady:Boolean;
 
 		public function get offsetX():Number
 		{
@@ -517,6 +555,7 @@ package views.module1
 			bg.x+=dx / 5;
 			mg.x+=dx / 3;
 			fg.x+=dx / 2;
+			king.x+=dx / 5;
 		}
 	}
 }
