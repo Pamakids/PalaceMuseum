@@ -92,6 +92,8 @@ package views.components
 						t.y+=10;
 						t.fontSize=24 - int(content.length / 20);
 						t.color=0xffffff;
+						t.x+=12;
+						t.width-=24;
 //						algin=4
 //						bgAlign=-1;
 					}

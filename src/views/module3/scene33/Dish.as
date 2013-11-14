@@ -1,20 +1,21 @@
 package views.module3.scene33
 {
 	import com.greensock.TweenLite;
-	
+	import com.pamakids.manager.SoundManager;
+
 	import flash.geom.Point;
-	
+
 	import models.FontVo;
-	
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
-	
+
 	import views.components.Prompt;
-	
+
 	public class Dish extends Sprite
 	{
 		public var index:int;
@@ -25,12 +26,12 @@ package views.module3.scene33
 		public var speedX:Number;
 		public var speedY:Number;
 		private var _isBad:Boolean;
-		
+
 		public function get isBad():Boolean
 		{
 			return _isBad;
 		}
-		
+
 		public function set isBad(value:Boolean):void
 		{
 			if (_isBad == value)
@@ -39,10 +40,10 @@ package views.module3.scene33
 			if (value)
 				addFly();
 		}
-		
+
 		public var countBG:Image;
 		private var countDownTxt:TextField;
-		
+
 		private function addCountDown():void
 		{
 			if (!countBG)
@@ -51,14 +52,14 @@ package views.module3.scene33
 			countBG.y=-5;
 			addChild(countBG);
 			countBG.touchable=false;
-			
+
 			countDownTxt=new TextField(countBG.width, countBG.height, "12", FontVo.PALACE_FONT, 24, 0x5d2025);
 			countDownTxt.x=countBG.x;
 			countDownTxt.y=countBG.y;
 			addChild(countDownTxt);
 			countBG.touchable=false;
 		}
-		
+
 		/**
 		 *
 		 * 菜品变质动画
@@ -67,6 +68,8 @@ package views.module3.scene33
 		{
 			if (fly)
 			{
+				SoundManager.instance.stop("fly");
+				SoundManager.instance.play("fly");
 				addChild(fly);
 				fly.x=-60;
 				fly.y=-200;
@@ -80,13 +83,13 @@ package views.module3.scene33
 				scoreCut();
 			scoreCut=null;
 		}
-		
+
 		private function completeHandler(e:Event):void
 		{
 			fly.removeEventListener(Event.COMPLETE, completeHandler);
 			TweenLite.to(fly, .5, {y: -87});
 		}
-		
+
 		override public function dispose():void
 		{
 			scoreCut=null;
@@ -99,37 +102,37 @@ package views.module3.scene33
 			}
 			super.dispose();
 		}
-		
+
 		public function get pt():Point
 		{
 			return _pt;
 		}
-		
+
 		public function set pt(value:Point):void
 		{
 			_pt=value;
 			this.x=value.x;
 			this.y=value.y;
 		}
-		
+
 		public function tweenMove(callback:Function=null):void
 		{
 			TweenLite.to(this, .3, {x: pt.x, y: pt.y, onComplete: callback});
 		}
-		
+
 		public function Dish()
 		{
 		}
-		
+
 		public function addContent(img:Image):void
 		{
 			addChild(img);
 			img.pivotX=img.width >> 1;
 			img.pivotY=img.height >> 1;
 		}
-		
+
 		private var timeCount:int=360;
-		
+
 		public function countDown():void
 		{
 			if (countReady && countDownTxt && !isBad)
@@ -143,13 +146,13 @@ package views.module3.scene33
 					isBad=true;
 			}
 		}
-		
+
 		public function addCount():void
 		{
 			addCountDown();
 			countReady=true;
 		}
-		
+
 		private var count:int=300;
 		public var fly:MovieClip;
 		private var countReady:Boolean;

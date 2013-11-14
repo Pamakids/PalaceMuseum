@@ -2,6 +2,7 @@ package views.components
 {
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
+	import com.pamakids.manager.SoundManager;
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -62,6 +63,7 @@ package views.components
 
 		public function play(type:int=0, _x:Number=0, _y:Number=0, needMask:Boolean=true):void
 		{
+			SoundManager.instance.play("lionshow");
 			TailBar.hide();
 			showLion(type);
 			if (!_x && !_y)
@@ -161,6 +163,7 @@ package views.components
 		 */
 		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20, maskA:Number=.6, isTask:Boolean=false):void
 		{
+			SoundManager.instance.play("lionshow");
 			maskA=Math.max(0, Math.min(.6, maskA));
 			TailBar.hide();
 			lastType=_type;
@@ -194,7 +197,7 @@ package views.components
 			{
 				addEventListener(MouseEvent.CLICK, onClick);
 				lion.gotoAndPlay(1);
-				p=Prompt.showTXT(isTask ? (x + 70) : (x + mcWidth - 10), isTask ? (y - 20) : y, content, fontSize, function():void
+				p=Prompt.showTXT(isTask ? (x + 160) : (x + mcWidth - 10), isTask ? (y + 120) : y, content, fontSize, function():void
 				{
 					TailBar.show();
 					isSayingOver=true;

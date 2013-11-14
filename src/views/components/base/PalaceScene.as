@@ -172,10 +172,11 @@ package views.components.base
 
 		private function shakeNext():void
 		{
-			TweenMax.to(nextButton, 1, {shake: {rotation: Math.PI / 12, numShakes: 4}, onComplete: function():void
-			{
-				TweenLite.delayedCall(5, shakeNext);
-			}});
+			if (nextButton)
+				TweenMax.to(nextButton, 1, {shake: {rotation: Math.PI / 12, numShakes: 4}, onComplete: function():void
+				{
+					TweenLite.delayedCall(5, shakeNext);
+				}});
 		}
 
 		protected function nextScene(e:Event=null):void

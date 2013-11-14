@@ -1,6 +1,7 @@
 package views.module5
 {
 	import com.greensock.TweenLite;
+	import com.pamakids.manager.SoundManager;
 
 	import flash.geom.Point;
 
@@ -96,6 +97,10 @@ package views.module5
 				}});}
 			Prompt.showTXT(img.x + txtOffset[index].x,
 				img.y + txtOffset[index].y, txtArr[index], 20, cb);
+			if (index == 0)
+				SoundManager.instance.play("cough");
+			else if (index == 1)
+				SoundManager.instance.play("sigh");
 		}
 
 		private var ready:Boolean;

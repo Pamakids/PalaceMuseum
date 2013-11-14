@@ -8,6 +8,7 @@
 package views.components.base
 {
 	import com.greensock.TweenLite;
+	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.StringUtils;
 
 	import flash.display.MovieClip;
@@ -18,6 +19,8 @@ package views.components.base
 	import controllers.MC;
 
 	import models.FontVo;
+
+	import sound.SoundAssets;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -57,6 +60,7 @@ package views.components.base
 
 		override protected function init():void
 		{
+			SoundManager.instance.play("main");
 			MC.isTopBarShow=false;
 			TopBar.hide();
 			TailBar.hide();
@@ -79,10 +83,10 @@ package views.components.base
 			if (value)
 			{
 				if (!load)
-					load=new PalaceLoading();
+					load=new LoadingMC();
 				MC.instance.addMC(load);
-				load.x=1024 - 140;
-				load.y=768 - 90;
+				load.x=1024 - 130;
+				load.y=768 - 126;
 				load.play();
 			}
 			else
@@ -243,6 +247,7 @@ package views.components.base
 
 		override public function dispose():void
 		{
+			SoundAssets.removeModuleSnd(moduleName);
 			if (crtScene)
 			{
 				crtScene.removeFromParent(true);

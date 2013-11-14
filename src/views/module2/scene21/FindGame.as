@@ -2,6 +2,7 @@ package views.module2.scene21
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Elastic;
+	import com.pamakids.manager.SoundManager;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -145,6 +146,7 @@ package views.module2.scene21
 			var tc:Touch=e.getTouch(bugS, TouchPhase.ENDED);
 			if (tc)
 			{
+				SoundManager.instance.play("bug");
 				removeHint(3);
 				bugS.removeEventListener(TouchEvent.TOUCH, onBugSTouch);
 				bugS.loop=0;
@@ -206,6 +208,7 @@ package views.module2.scene21
 			var pt:Point=tc.getLocation(this);
 			if (rattleDrumArea.containsPoint(pt))
 			{
+				SoundManager.instance.play("drum");
 				playEff(drum, destPosArr[0]);
 				rattleDrumArea=new Rectangle(-1000, -1000, 0, 0)
 				removeHint(1);

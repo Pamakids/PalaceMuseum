@@ -4,6 +4,7 @@ package views.module3.scene32
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Quad;
+	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.events.AccelerometerEvent;
@@ -508,11 +509,12 @@ package views.module3.scene32
 			else if (_count < menugameresult)
 			{
 				SOService.instance.setSO(gameResultlvl, _count);
-				delayFunction=showRecord;
+//				delayFunction=showRecord;
 				resultTXT=recordTXT=getStringFormTime(_count);
 			}
 			else
 			{
+				delayFunction=showRecord;
 				resultTXT=getStringFormTime(_count);
 				recordTXT=getStringFormTime(menugameresult);
 			}
@@ -590,6 +592,7 @@ package views.module3.scene32
 			recordIcon.scaleX=recordIcon.scaleY=3;
 			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut,
 					onComplete: function():void {
+						SoundManager.instance.play("gamerecord");
 						closeBtn.visible=closeBtn.touchable=true;
 					}});
 		}
