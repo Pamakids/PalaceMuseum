@@ -3,7 +3,6 @@ package views.global.userCenter.userInfo
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	
-	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
 	
@@ -15,7 +14,6 @@ package views.global.userCenter.userInfo
 	import models.FontVo;
 	import models.SOService;
 	
-	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
@@ -57,17 +55,38 @@ package views.global.userCenter.userInfo
 			const num:uint = 8;
 			const center:Point = new Point(this.viewWidth/2, this.viewHeight + 400);
 			const radius:uint = 800;
-//			const r:Number = 
+			const d:Number = 0.14;
+			const defaultR:Number = -Math.PI/2 - 3.5*d;
 			
-			var s:Sprite = new Sprite();
-			Starling.current.nativeStage.addChild( s );
-			s.x = 28;
-			s.y = 89;
-			s.graphics.beginFill(0x003366, 0.3);
-			s.graphics.drawCircle( center.x, center.y, radius );
-			s.graphics.endFill();
 			
+			var r:Number;
+			var px:Number;
+			var py:Number;
+			var btn:Button;
+			var image:Image
 			vecButton = new Vector.<Button>(num);
+			for(var i:int = 0;i<num;i++)
+			{
+				r = defaultR+i*d;
+				px = center.x + radius * Math.cos( r );
+				py = center.y + radius * Math.sin( r );
+				
+				btn = new Button();
+				image = new Image( UserCenterManager.getTexture("button_"+i) );
+				image.pivotX = image.pivotY = image.width >> 1;
+				btn.defaultSkin = image;
+				btn.x = px;
+				btn.y = py;
+				this.addChild( btn );
+				btn.addEventListener(TouchEvent.TOUCH, btnTouch);
+				vecButton[i] = btn;
+			}
+			
+			
+		}
+		
+		private function btnTouch(e:TouchEvent):void
+		{
 			
 		}
 		
@@ -268,6 +287,12 @@ package views.global.userCenter.userInfo
 			image.y=197;
 			this.addChild(image);
 			image.touchable=false;
+			texture = UserCenterManager.getTexture("userCenter_bg");
+			image = new Image(texture);
+			image.x = 185;
+			image.y = 293;
+			this.addChild( image );
+			image.touchable = false;
 		}
 
 		override public function dispose():void

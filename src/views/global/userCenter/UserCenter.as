@@ -341,7 +341,7 @@ package views.global.userCenter
 			else //pageDown
 				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
 			animation.start(pageUp);
-			SoundManager.instance.play("");
+			SoundManager.instance.play("centerflip");
 		}
 
 		private function playedAnimation():void
