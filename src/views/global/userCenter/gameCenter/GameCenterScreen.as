@@ -1,4 +1,4 @@
-package views.global.userCenter.map
+package views.global.userCenter.gameCenter
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
@@ -19,12 +19,12 @@ package views.global.userCenter.map
 	import views.global.userCenter.userInfo.W_Game;
 
 	/**
-	 * 用户中心map场景
+	 * 游戏中心
 	 * @author Administrator
 	 */
-	public class MapScreen extends BaseScreen
+	public class GameCenterScreen extends BaseScreen
 	{
-		public function MapScreen()
+		public function GameCenterScreen()
 		{
 			super();
 		}

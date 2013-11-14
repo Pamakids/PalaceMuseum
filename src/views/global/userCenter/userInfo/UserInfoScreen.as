@@ -3,6 +3,8 @@ package views.global.userCenter.userInfo
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	
+	import flash.display.Sprite;
+	import flash.geom.Point;
 	import flash.utils.Dictionary;
 	
 	import controllers.MC;
@@ -13,6 +15,7 @@ package views.global.userCenter.userInfo
 	import models.FontVo;
 	import models.SOService;
 	
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
@@ -52,7 +55,20 @@ package views.global.userCenter.userInfo
 		private function initModuleButton():void
 		{
 			const num:uint = 8;
+			const center:Point = new Point(this.viewWidth/2, this.viewHeight + 400);
+			const radius:uint = 800;
+//			const r:Number = 
+			
+			var s:Sprite = new Sprite();
+			Starling.current.nativeStage.addChild( s );
+			s.x = 28;
+			s.y = 89;
+			s.graphics.beginFill(0x003366, 0.3);
+			s.graphics.drawCircle( center.x, center.y, radius );
+			s.graphics.endFill();
+			
 			vecButton = new Vector.<Button>(num);
+			
 		}
 		
 		private function initBirdView():void

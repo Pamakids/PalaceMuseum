@@ -1,5 +1,7 @@
 package views.global.userCenter
 {
+	import com.pamakids.manager.SoundManager;
+	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
@@ -26,8 +28,8 @@ package views.global.userCenter
 	import views.global.TopBar;
 	import views.global.userCenter.achievement.AchievementScreen;
 	import views.global.userCenter.collection.CollectionScreen;
+	import views.global.userCenter.gameCenter.GameCenterScreen;
 	import views.global.userCenter.handbook.HandbookScreen;
-	import views.global.userCenter.map.MapScreen;
 	import views.global.userCenter.userInfo.UserInfoScreen;
 
 	/**
@@ -53,7 +55,7 @@ package views.global.userCenter
 		 */
 		public static const ViewUpdateFail:String="viewUpdateFail";
 
-		private static const MAP:String="MapScreen";
+		private static const GAMECENTER:String="GameCenterScreen";
 		private static const ACHIEVEMENT:String="AchievementScreen";
 		private static const COLLECTION:String="CollectionScreen";
 		private static const HANDBOOK:String="HandbookScreen";
@@ -75,7 +77,7 @@ package views.global.userCenter
 		{
 			MC.isTopBarShow=false;
 			TopBar.hide();
-			this.screenNames=[USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION, MAP];
+			this.screenNames=[USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION, GAMECENTER];
 
 			initBackgroud();
 			initTabBar();
@@ -178,7 +180,7 @@ package views.global.userCenter
 					width: contentWidth, height: contentHeight,
 					viewWidth: contentWidth, viewHeight: contentHeight
 				}));
-			_navigator.addScreen(MAP, new ScreenNavigatorItem(MapScreen,
+			_navigator.addScreen(GAMECENTER, new ScreenNavigatorItem(GameCenterScreen,
 				{
 					initViewPlayed: onInitViewPlayed
 				},
@@ -339,6 +341,7 @@ package views.global.userCenter
 			else //pageDown
 				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
 			animation.start(pageUp);
+			SoundManager.instance.play("");
 		}
 
 		private function playedAnimation():void
