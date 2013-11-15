@@ -1,27 +1,28 @@
 package
 {
 	import com.pamakids.manager.SoundManager;
-	
+
 	import flash.filesystem.File;
-	
+
 	import controllers.MC;
-	
+
 	import models.Const;
 	import models.FontVo;
 	import models.SOService;
-	
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-	
+
 	import views.Interlude;
 	import views.components.ElasticButton;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
 	import views.global.map.Map;
+	import views.global.userCenter.UserCenterManager;
 
 	public class Main extends Container
 	{
@@ -29,7 +30,7 @@ package
 		{
 //			SOService.instance.clear();
 //			SOService.instance.init();
-//			SOService.instance.setSO("lastScene", "21");
+			SOService.instance.setSO("lastScene", "52");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
@@ -136,7 +137,8 @@ package
 			var moduleIndex:int=int(_lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(_lastScene.charAt(1)) - 1;
 			if (lastScene.indexOf("end") >= 0)
-				Map.show(null, 4, 0, true, true);
+				UserCenterManager.showUserCenter(1, 0, false);
+//				Map.show(null, 4, 0, true, true);
 			else if (moduleIndex < 0 || sceneIndex < 0)
 				Map.show();
 			else if (_lastScene.lastIndexOf("map") < 0)

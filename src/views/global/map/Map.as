@@ -125,8 +125,8 @@ package views.global.map
 			initFlipAnimation();
 
 			MC.isTopBarShow=false;
-			TopBar.hide();
-			LionMC.instance.clear();
+//			TopBar.hide();
+//			LionMC.instance.clear();
 		}
 
 		private var centerPoint:Dictionary;
@@ -228,7 +228,8 @@ package views.global.map
 			if (!fromCenter)
 				SOService.instance.setSO("lastScene", msIndex);
 			MC.instance.hideMC();
-			MC.instance.switchWOTB();
+			if (fromCenter)
+				MC.instance.switchWOTB();
 			showFromCenter=fromCenter;
 			var ec:Boolean=true;
 			if (from || to || callback == null)
@@ -517,16 +518,17 @@ package views.global.map
 								{
 									if (showFromCenter)
 									{
-										if (targetIndex == crtIndex)
-										{
-											clear(1);
-											return;
-										}
-										else if (sos.isModuleCompleted(targetIndex))
-										{
-											moveSun(crtIndex, targetIndex);
-											changing=true;
-										}
+										changing=false;
+//										if (targetIndex == crtIndex)
+//										{
+//											clear(1);
+//											return;
+//										}
+//										else if (sos.isModuleCompleted(targetIndex))
+//										{
+//											moveSun(crtIndex, targetIndex);
+//											changing=true;
+//										}
 									}
 									else
 									{
