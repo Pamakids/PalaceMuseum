@@ -400,7 +400,7 @@ package views.global.userCenter
 		 * @param page
 		 *
 		 */
-		public function turnTo(screen:int, page:int=0):void
+		public function turnTo(screen:int, page:int=0, closeable:Boolean=true):void
 		{
 			aniable=false;
 			prevIndex=screen;
@@ -408,6 +408,7 @@ package views.global.userCenter
 				crtPage_Handbook=page;
 			_tabBar.selectedIndex=screen;
 			_navigator.showScreen(screenNames[screen]);
+			this._backButton.visible = closeable;
 		}
 	}
 }

@@ -16,7 +16,7 @@ package views.global.userCenter.gameCenter
 	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.userInfo.GameScene;
 	import views.global.userCenter.userInfo.ItemForGameList;
-	import views.global.userCenter.userInfo.W_Game;
+	import views.global.userCenter.userInfo.win.W_Game;
 
 	/**
 	 * 游戏中心

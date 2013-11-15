@@ -3,7 +3,6 @@ package views.global.userCenter.userInfo
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	
-	import flash.geom.Point;
 	import flash.utils.Dictionary;
 	
 	import controllers.MC;
@@ -23,9 +22,15 @@ package views.global.userCenter.userInfo
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	
+	import views.components.ElasticButton;
+	import views.global.map.Map;
 	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
+	import views.global.userCenter.userInfo.win.W_Alert;
+	import views.global.userCenter.userInfo.win.W_ChooseUser;
+	import views.global.userCenter.userInfo.win.W_DeleteUser;
+	import views.global.userCenter.userInfo.win.W_EditUser;
 
 	/**
 	 * 用户信息
@@ -40,54 +45,36 @@ package views.global.userCenter.userInfo
 		override protected function initialize():void
 		{
 			super.initialize();
-			initBackgroundImage();
 			initCrtUserView();
 			initButton();
 			initBirdView();
-			initModuleButton();
+			initModuleList();
+			initMapButton();
 
 			TweenLite.delayedCall(0.1, dispatchEventWith, [UserCenter.InitViewPlayed]);
 		}
 		
-		private var vecButton:Vector.<Button>;
-		private function initModuleButton():void
+		private var mapButton:ElasticButton;
+		private function initMapButton():void
 		{
-			const num:uint = 8;
-			const center:Point = new Point(this.viewWidth/2, this.viewHeight + 400);
-			const radius:uint = 800;
-			const d:Number = 0.14;
-			const defaultR:Number = -Math.PI/2 - 3.5*d;
-			
-			
-			var r:Number;
-			var px:Number;
-			var py:Number;
-			var btn:Button;
-			var image:Image
-			vecButton = new Vector.<Button>(num);
-			for(var i:int = 0;i<num;i++)
-			{
-				r = defaultR+i*d;
-				px = center.x + radius * Math.cos( r );
-				py = center.y + radius * Math.sin( r );
-				
-				btn = new Button();
-				image = new Image( UserCenterManager.getTexture("button_"+i) );
-				image.pivotX = image.pivotY = image.width >> 1;
-				btn.defaultSkin = image;
-				btn.x = px;
-				btn.y = py;
-				this.addChild( btn );
-				btn.addEventListener(TouchEvent.TOUCH, btnTouch);
-				vecButton[i] = btn;
-			}
-			
-			
+			mapButton = new ElasticButton(new Image(UserCenterManager.getTexture("button_map_skin")), new Image(UserCenterManager.getTexture("button_map_skin")));
+			this.addChild( mapButton );
+			mapButton.x = 830;
+			mapButton.y = 535;
+			mapButton.addEventListener(ElasticButton.CLICK, onClick);
+		}
+		private function onClick(e:Event):void
+		{
+			Map.show(null, -1, -1, true);
+			MC.instance.switchLayer(true);
 		}
 		
-		private function btnTouch(e:TouchEvent):void
+		private var moduleList:ModuleList;
+		private function initModuleList():void
 		{
-			
+			moduleList = new ModuleList();
+			this.addChild( moduleList );
+			moduleList.y = 200;
 		}
 		
 		private function initBirdView():void
@@ -274,10 +261,12 @@ package views.global.userCenter.userInfo
 			crtUserView.y=42;
 		}
 
-		private function initBackgroundImage():void
+		override protected function initPages():void
 		{
+			var image:Image = new Image(UserCenterManager.getTexture("background_0"));
+			this.addChild( image );
 			var texture:Texture=UserCenterManager.getTexture("line_long");
-			var image:Image=new Image(texture);
+			image = new Image(texture);
 			image.x=60;
 			image.y=197;
 			this.addChild(image);
@@ -287,12 +276,6 @@ package views.global.userCenter.userInfo
 			image.y=197;
 			this.addChild(image);
 			image.touchable=false;
-			texture = UserCenterManager.getTexture("userCenter_bg");
-			image = new Image(texture);
-			image.x = 185;
-			image.y = 293;
-			this.addChild( image );
-			image.touchable = false;
 		}
 
 		override public function dispose():void
@@ -303,7 +286,8 @@ package views.global.userCenter.userInfo
 				TweenLite.killTweensOf(t);
 				delete twDic[t];
 			}
-
+			if(moduleList)
+				moduleList.removeFromParent(true);
 			if (w_editUser)
 			{
 				w_editUser.addEventListener(Event.CHANGE, changeUserHandler);

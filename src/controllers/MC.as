@@ -3,22 +3,22 @@ package controllers
 	import com.greensock.TweenMax;
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.Singleton;
-
+	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
-
+	
 	import feathers.core.PopUpManager;
-
+	
 	import models.SOService;
-
+	
 	import sound.SoundAssets;
-
+	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.utils.AssetManager;
-
+	
 	import views.Interlude;
 	import views.Module1;
 	import views.Module2;
@@ -147,6 +147,7 @@ package controllers
 		{
 			_moduleIndex=index;
 			showModule(sceneIndex);
+			UserCenterManager.closeUserCenter();
 		}
 
 		public function clearCrtModule():void
