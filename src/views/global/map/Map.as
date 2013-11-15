@@ -25,7 +25,6 @@ package views.global.map
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
-	import views.components.FlipAnimation;
 	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceModule;

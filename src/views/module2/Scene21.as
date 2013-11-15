@@ -410,7 +410,7 @@ package views.module2
 		}
 
 //		private var hint31right:String="恭喜你找到圣训！";
-		private var hint31find:String="《圣训》是皇帝每天早上必读的书本，快点找到它。";
+		private var hint31find:String="猜猜哪两本是皇帝每天必读的书呢？都是与前代皇帝治国之道相关的书。";
 
 		private var headHolder:Sprite;
 
