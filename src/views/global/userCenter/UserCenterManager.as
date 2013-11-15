@@ -1,15 +1,15 @@
 package views.global.userCenter
 {
 	import flash.filesystem.File;
-	
+
 	import controllers.MC;
-	
+
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.LionMC;
 	import views.components.base.PalaceModule;
 	import views.global.TailBar;
@@ -33,12 +33,21 @@ package views.global.userCenter
 		private static var _page:int;
 		private static var _screen:int;
 		private static var _closeable:Boolean;
+		private static var _mapVisible:Boolean;
 
-		public static function showUserCenter(screen:int=1, page:int=0, closeable:Boolean=true):void
+		/**
+		 * @param screen
+		 * @param page
+		 * @param closeable时
+		 * @param mapVisible	地图按钮是否可见
+		 */
+		public static function showUserCenter(screen:int=1, page:int=0, closeable:Boolean=true, mapVisible=true):void
 		{
+			MC.instance.topBarLayer.visible=false;
 			_screen=screen;
 			_page=page;
-			_closeable = closeable;
+			_closeable=closeable;
+			_mapVisible=mapVisible;
 			if (!loaded)
 				loadAssets();
 			else
@@ -47,7 +56,7 @@ package views.global.userCenter
 
 		private static function showHandler():void
 		{
-			MC.instance.switchLayer(false);
+//			MC.instance.switchLayer(false);
 //			if (_userCenter && _userCenter.parent)
 //			{
 //				MC.instance.main.removeMask();
@@ -59,7 +68,7 @@ package views.global.userCenter
 			MC.instance.main.removeMask();
 			if (!_userCenter)
 				_userCenter=new UserCenter();
-			_userCenter.turnTo(_screen, _page, _closeable);
+			_userCenter.turnTo(_screen, _page, _closeable, _mapVisible);
 			_userCenterContainer.addChild(_userCenter);
 			MC.instance.hideMC();
 			LionMC.instance.hide();
@@ -72,12 +81,11 @@ package views.global.userCenter
 				_userCenter.removeFromParent(true);
 			_userCenter=null;
 			MC.instance.showMC();
-			MC.instance.switchLayer(true);
+//			MC.instance.switchLayer(true);
 			LionMC.instance.show();
 			TopBar.enable=true;
-			TailBar.instance.visible=true;
-//			if ((!Map.map || !Map.map.visible) && MC.instance.currentModule == null)
-//				MC.instance.gotoModule(0, -1);
+			MC.instance.topBarLayer.visible=true;
+			TopBar.show();
 		}
 
 		private static var _userCenter:UserCenter;

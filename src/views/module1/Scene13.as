@@ -226,7 +226,6 @@ package views.module1
 			else
 			{
 				PopUpManager.removePopUp(gameHolder);
-				MC.isTopBarShow=true;
 				TopBar.show();
 				TailBar.instance.visible=true;
 			}

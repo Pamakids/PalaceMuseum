@@ -60,7 +60,7 @@ package controllers
 		private var modules:Array=[Module1, Module2, Module3, Module4, Module5];
 
 		public var stage:PalaceMuseum;
-		private var topBarLayer:Sprite;
+		public var topBarLayer:Sprite;
 		private var centerLayer:Sprite;
 		private var mapLayer:Sprite;
 
@@ -185,7 +185,6 @@ package controllers
 				removeAllMC();
 				if (Map.map)
 					Map.map.clear(1);
-				MC.isTopBarShow=false;
 				TopBar.hide();
 				TailBar.hide();
 				clearCrtModule();
@@ -213,7 +212,6 @@ package controllers
 			restart();
 		}
 
-		public static var isTopBarShow:Boolean=true;
 		public static var assetManager:AssetManager;
 
 		public function restart():void
@@ -230,7 +228,6 @@ package controllers
 			SOService.instance.init();
 //			LionMC.instance.show();
 			_moduleIndex=-1;
-			MC.isTopBarShow=false;
 			TopBar.hide();
 			TailBar.hide();
 			main.touchable=true;
@@ -276,17 +273,11 @@ package controllers
 			{
 				main.setChildIndex(centerLayer, i1);
 				main.setChildIndex(mapLayer, i2);
-				MC.isTopBarShow=true;
-				TopBar.show();
-				TailBar.instance.visible=true;
 			}
 			else
 			{
-				TailBar.instance.visible=false;
 				main.setChildIndex(mapLayer, i1);
 				main.setChildIndex(centerLayer, i2);
-				isTopBarShow=(UserCenterManager.getCrtUserCenter() == null);
-				TopBar.hide();
 				UserCenterManager.enable();
 			}
 		}

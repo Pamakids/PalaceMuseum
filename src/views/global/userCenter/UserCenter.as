@@ -1,19 +1,19 @@
 package views.global.userCenter
 {
 	import com.pamakids.manager.SoundManager;
-	
+
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
+
 	import controllers.MC;
-	
+
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
-	
+
 	import org.agony2d.utils.getClassName;
-	
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -22,7 +22,7 @@ package views.global.userCenter
 	import starling.events.TouchPhase;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
-	
+
 	import views.components.ElasticButton;
 	import views.components.SoftPaperAnimation;
 	import views.global.TopBar;
@@ -75,8 +75,6 @@ package views.global.userCenter
 //initialize--------------------------------------------------------------------------------------
 		private function init():void
 		{
-			MC.isTopBarShow=false;
-			TopBar.hide();
 			this.screenNames=[USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION, GAMECENTER];
 
 			initBackgroud();
@@ -156,6 +154,7 @@ package views.global.userCenter
 				}));
 			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen,
 				{
+					initialized: onInitialized,
 					initViewPlayed: onInitViewPlayed
 				},
 				{
@@ -226,6 +225,9 @@ package views.global.userCenter
 			{
 				case HANDBOOK:
 					(_navigator.activeScreen as HandbookScreen).initView(crtPage_Handbook);
+					break;
+				case USERINFO:
+					(_navigator.activeScreen as UserInfoScreen).setMapVisible(mapVisible);
 					break;
 			}
 		}
@@ -400,7 +402,7 @@ package views.global.userCenter
 		 * @param page
 		 *
 		 */
-		public function turnTo(screen:int, page:int=0, closeable:Boolean=true):void
+		public function turnTo(screen:int, page:int=0, closeable:Boolean=true, mapVisible:Boolean=true):void
 		{
 			aniable=false;
 			prevIndex=screen;
@@ -408,7 +410,9 @@ package views.global.userCenter
 				crtPage_Handbook=page;
 			_tabBar.selectedIndex=screen;
 			_navigator.showScreen(screenNames[screen]);
-			this._backButton.visible = closeable;
+			this._backButton.visible=closeable;
+			this.mapVisible=mapVisible;
 		}
+		private var mapVisible:Boolean=true;
 	}
 }

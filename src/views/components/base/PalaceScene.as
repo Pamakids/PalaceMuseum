@@ -101,7 +101,6 @@ package views.components.base
 		override protected function onStage(e:Event):void
 		{
 			super.onStage(e);
-			MC.isTopBarShow=true;
 			TopBar.show();
 		}
 
@@ -120,7 +119,6 @@ package views.components.base
 			}
 			assetManager=null;
 			removeChildren();
-			MC.isTopBarShow=false;
 			TopBar.hide();
 			TailBar.hide();
 			LionMC.instance.clear();
