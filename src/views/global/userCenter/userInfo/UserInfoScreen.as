@@ -51,7 +51,7 @@ package views.global.userCenter.userInfo
 			initModuleList();
 			initMapButton();
 
-			TweenLite.delayedCall(0.1, dispatchEventWith, [UserCenter.InitViewPlayed]);
+			TweenLite.delayedCall(0.1, dispatchEventWith, [UserCenter.Initialized]);
 		}
 		
 		private var mapButton:ElasticButton;
@@ -249,6 +249,12 @@ package views.global.userCenter.userInfo
 
 		private var crtUserData:Object;
 		private var crtUserView:CurrentUserView;
+		
+		public function setMapVisible(visible:Boolean):void
+		{
+			this.mapButton.visible = visible;
+			TweenLite.delayedCall(0.1, dispatchEventWith, [UserCenter.InitViewPlayed]);
+		}
 
 		private function initCrtUserView():void
 		{

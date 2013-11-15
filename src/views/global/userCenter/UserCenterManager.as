@@ -33,12 +33,20 @@ package views.global.userCenter
 		private static var _page:int;
 		private static var _screen:int;
 		private static var _closeable:Boolean;
+		private static var _mapVisible:Boolean;
 
-		public static function showUserCenter(screen:int=1, page:int=0, closeable:Boolean=true):void
+		/**
+		 * @param screen
+		 * @param page
+		 * @param closeable时
+		 * @param mapVisible	地图按钮是否可见
+		 */		
+		public static function showUserCenter(screen:int=1, page:int=0, closeable:Boolean=true, mapVisible=true):void
 		{
 			_screen=screen;
 			_page=page;
 			_closeable = closeable;
+			_mapVisible = mapVisible;
 			if (!loaded)
 				loadAssets();
 			else
@@ -59,7 +67,7 @@ package views.global.userCenter
 			MC.instance.main.removeMask();
 			if (!_userCenter)
 				_userCenter=new UserCenter();
-			_userCenter.turnTo(_screen, _page, _closeable);
+			_userCenter.turnTo(_screen, _page, _closeable, _mapVisible);
 			_userCenterContainer.addChild(_userCenter);
 			MC.instance.hideMC();
 			LionMC.instance.hide();

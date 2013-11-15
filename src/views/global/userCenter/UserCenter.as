@@ -156,6 +156,7 @@ package views.global.userCenter
 				}));
 			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen,
 				{
+					initialized: onInitialized,
 					initViewPlayed: onInitViewPlayed
 				},
 				{
@@ -226,6 +227,9 @@ package views.global.userCenter
 			{
 				case HANDBOOK:
 					(_navigator.activeScreen as HandbookScreen).initView(crtPage_Handbook);
+					break;
+				case USERINFO:
+					(_navigator.activeScreen as UserInfoScreen).setMapVisible(mapVisible);
 					break;
 			}
 		}
@@ -400,7 +404,7 @@ package views.global.userCenter
 		 * @param page
 		 *
 		 */
-		public function turnTo(screen:int, page:int=0, closeable:Boolean=true):void
+		public function turnTo(screen:int, page:int=0, closeable:Boolean=true, mapVisible:Boolean=true):void
 		{
 			aniable=false;
 			prevIndex=screen;
@@ -409,6 +413,8 @@ package views.global.userCenter
 			_tabBar.selectedIndex=screen;
 			_navigator.showScreen(screenNames[screen]);
 			this._backButton.visible = closeable;
+			this.mapVisible = mapVisible;
 		}
+		private var mapVisible:Boolean = true;
 	}
 }

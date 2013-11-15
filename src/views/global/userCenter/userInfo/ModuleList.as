@@ -192,7 +192,6 @@ package views.global.userCenter.userInfo
 		
 		private function isComplete(i:int):Boolean
 		{
-			return true;
 			if(i==0)	return true;
 			var str:String = mapping[i];
 			var k:int = int( str.charAt(2) );
