@@ -1,4 +1,4 @@
-package views.global.userCenter.userInfo
+package views.global.userCenter.userInfo.win
 {
 	import feathers.controls.List;
 	import feathers.controls.renderers.IListItemRenderer;
@@ -10,6 +10,7 @@ package views.global.userCenter.userInfo
 	import starling.events.Event;
 	
 	import views.global.userCenter.UserCenterManager;
+	import views.global.userCenter.userInfo.IconListRenderer;
 
 	public class W_IconList extends FeathersControl
 	{
