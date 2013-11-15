@@ -1,4 +1,4 @@
-package views.global.userCenter.userInfo
+package views.global.userCenter.userInfo.win
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
@@ -15,6 +15,7 @@ package views.global.userCenter.userInfo
 
 	import views.components.DateChangeDevice;
 	import views.global.userCenter.UserCenterManager;
+	import views.global.userCenter.userInfo.ItemForUserList;
 
 	/**
 	 * 用户编辑窗口

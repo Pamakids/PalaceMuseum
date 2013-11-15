@@ -1,4 +1,4 @@
-package views.global.userCenter.userInfo
+package views.global.userCenter.userInfo.win
 {
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
@@ -13,6 +13,7 @@ package views.global.userCenter.userInfo
 	import starling.textures.Texture;
 	
 	import views.global.userCenter.UserCenterManager;
+	import views.global.userCenter.userInfo.ItemForUserList;
 
 	/**
 	 * 选择用户窗口

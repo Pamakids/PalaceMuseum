@@ -1,4 +1,4 @@
-package views.global.userCenter.userInfo
+package views.global.userCenter.userInfo.win
 {
 	import controllers.MC;
 	

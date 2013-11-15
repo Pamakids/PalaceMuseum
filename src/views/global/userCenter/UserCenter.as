@@ -1,18 +1,19 @@
 package views.global.userCenter
 {
+	import com.pamakids.manager.SoundManager;
+	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	import controllers.MC;
-
-	import feathers.controls.Button;
+	
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
-
+	
 	import org.agony2d.utils.getClassName;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -21,14 +22,14 @@ package views.global.userCenter
 	import starling.events.TouchPhase;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
-
+	
 	import views.components.ElasticButton;
 	import views.components.SoftPaperAnimation;
 	import views.global.TopBar;
 	import views.global.userCenter.achievement.AchievementScreen;
 	import views.global.userCenter.collection.CollectionScreen;
+	import views.global.userCenter.gameCenter.GameCenterScreen;
 	import views.global.userCenter.handbook.HandbookScreen;
-	import views.global.userCenter.map.MapScreen;
 	import views.global.userCenter.userInfo.UserInfoScreen;
 
 	/**
@@ -54,7 +55,7 @@ package views.global.userCenter
 		 */
 		public static const ViewUpdateFail:String="viewUpdateFail";
 
-		private static const MAP:String="MapScreen";
+		private static const GAMECENTER:String="GameCenterScreen";
 		private static const ACHIEVEMENT:String="AchievementScreen";
 		private static const COLLECTION:String="CollectionScreen";
 		private static const HANDBOOK:String="HandbookScreen";
@@ -76,7 +77,7 @@ package views.global.userCenter
 		{
 			MC.isTopBarShow=false;
 			TopBar.hide();
-			this.screenNames=[MAP, USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION];
+			this.screenNames=[USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION, GAMECENTER];
 
 			initBackgroud();
 			initTabBar();
@@ -99,10 +100,6 @@ package views.global.userCenter
 			_tabBar=new TabBar();
 			_tabBar.dataProvider=new ListCollection([
 				{
-					defaultIcon: new Image(UserCenterManager.getTexture("map_up")),
-					selectedUpIcon: new Image(UserCenterManager.getTexture("map_down"))
-				},
-				{
 					defaultIcon: new Image(UserCenterManager.getTexture("userinfo_up")),
 					selectedUpIcon: new Image(UserCenterManager.getTexture("userinfo_down"))
 				},
@@ -117,10 +114,13 @@ package views.global.userCenter
 				{
 					defaultIcon: new Image(UserCenterManager.getTexture("collection_up")),
 					selectedUpIcon: new Image(UserCenterManager.getTexture("collection_down"))
+				},
+				{
+					defaultIcon: new Image(UserCenterManager.getTexture("map_up")),
+					selectedUpIcon: new Image(UserCenterManager.getTexture("map_down"))
 				}
 				]);
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;
-//			_tabBar.selectedIndex=2;
 			_tabBar.gap=2;
 			_tabBar.x=45;
 			_tabBar.y=36;
@@ -133,7 +133,6 @@ package views.global.userCenter
 		{
 			_backButton=new ElasticButton(new Image(MC.assetManager.getTexture("button_close")));
 			_backButton.shadow=new Image(MC.assetManager.getTexture("button_close_down"));
-//			_backButton.defaultSkin=new Image(UserCenterManager.getTexture("button_close"));
 			addChild(_backButton);
 			_backButton.x=950;
 			_backButton.y=60;
@@ -144,14 +143,6 @@ package views.global.userCenter
 		private function initNavigator():void
 		{
 			_navigator=new ScreenNavigator();
-			_navigator.addScreen(MAP, new ScreenNavigatorItem(MapScreen,
-				{
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
 			_navigator.addScreen(HANDBOOK, new ScreenNavigatorItem(HandbookScreen,
 				{
 					initialized: onInitialized,
@@ -189,11 +180,17 @@ package views.global.userCenter
 					width: contentWidth, height: contentHeight,
 					viewWidth: contentWidth, viewHeight: contentHeight
 				}));
+			_navigator.addScreen(GAMECENTER, new ScreenNavigatorItem(GameCenterScreen,
+				{
+					initViewPlayed: onInitViewPlayed
+				},
+				{
+					width: contentWidth, height: contentHeight,
+					viewWidth: contentWidth, viewHeight: contentHeight
+				}));
 			_navigator.x=28;
 			_navigator.y=89;
 			this.addChild(_navigator);
-//			_navigator.showScreen(HANDBOOK);
-
 			_navigator.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 		private var animation:SoftPaperAnimation;
@@ -201,7 +198,6 @@ package views.global.userCenter
 		private function initAnimation():void
 		{
 			animation=new SoftPaperAnimation(contentWidth, contentHeight);
-//			animation.setFixPageTexture(UserCenterManager.getTexture("content_page_1"), UserCenterManager.getTexture("content_page_2"));
 			this.addChild(animation);
 			animation.addEventListener(Event.COMPLETE, playedAnimation);
 			animation.visible=false;
@@ -277,7 +273,7 @@ package views.global.userCenter
 		private function onTouch(e:TouchEvent):void
 		{
 			var index:int=_tabBar.selectedIndex;
-			if ((index != 2 && index != 3) || animation.visible) //速成手册 or 成就
+			if ((index != 1 && index != 2) || animation.visible) //速成手册 or 成就
 				return;
 			var touch:Touch=e.getTouch(this);
 			var point:Point;
@@ -345,6 +341,7 @@ package views.global.userCenter
 			else //pageDown
 				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
 			animation.start(pageUp);
+			SoundManager.instance.play("centerflip");
 		}
 
 		private function playedAnimation():void
@@ -403,14 +400,15 @@ package views.global.userCenter
 		 * @param page
 		 *
 		 */
-		public function turnTo(screen:int, page:int=0):void
+		public function turnTo(screen:int, page:int=0, closeable:Boolean=true):void
 		{
 			aniable=false;
 			prevIndex=screen;
-			if (screen == 2)
+			if (screen == 1)
 				crtPage_Handbook=page;
 			_tabBar.selectedIndex=screen;
 			_navigator.showScreen(screenNames[screen]);
+			this._backButton.visible = closeable;
 		}
 	}
 }
