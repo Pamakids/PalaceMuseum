@@ -2,6 +2,7 @@ package views.module1
 {
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
+	import com.greensock.easing.Quad;
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.SPUtils;
 
@@ -172,13 +173,17 @@ package views.module1
 
 		private function active():void
 		{
-			TweenLite.delayedCall(3, function():void {
+			function removeGA():void {
 				TweenLite.to(ga, 2, {alpha: 0, onComplete: function():void {
 					ga.removeFromParent(true);
 					MC.instance.main.removeMask();
 					moveScene();
 					ready=true;
 				}});
+			};
+			TweenLite.delayedCall(1, function():void {
+				TweenLite.to(ga, 3, {scaleX: 3, scaleY: 3, ease: Quad.easeInOut, onComplete: removeGA});
+//				TweenLite.delayedCall(3, removeGA);
 			});
 		}
 
@@ -191,7 +196,10 @@ package views.module1
 		private function addKing():void
 		{
 			ga=getImage("gallery");
-			ga.x=1024 - ga.width >> 1;
+			ga.pivotX=ga.width >> 1;
+			ga.pivotY=ga.height >> 1;
+			ga.x=1024 / 2;
+			ga.y=768 / 2;
 			addChild(ga);
 
 			king=new Sprite();

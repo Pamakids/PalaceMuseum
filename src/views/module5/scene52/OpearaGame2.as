@@ -85,7 +85,6 @@ package views.module5.scene52
 		override protected function onStage(e:Event):void
 		{
 			super.onStage(e);
-			MC.isTopBarShow=true;
 			TopBar.show();
 			MC.instance.hideMC();
 		}

@@ -198,7 +198,8 @@ package views.module3
 			if (chat == "chatlion3")
 			{
 				isT=true;
-				dx=80;
+				dx=180;
+				dy=590;
 				if (SOService.instance.checkHintCount(silverCardClickHint))
 					addEventListener(Event.ENTER_FRAME, onEnterFrame);
 
