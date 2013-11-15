@@ -40,6 +40,7 @@ package views.global.userCenter.userInfo
 	{
 		public function UserInfoScreen()
 		{
+			dispatchEventWith(UserCenter.Initialized);
 		}
 
 		override protected function initialize():void
@@ -51,7 +52,7 @@ package views.global.userCenter.userInfo
 			initModuleList();
 			initMapButton();
 
-			TweenLite.delayedCall(0.1, dispatchEventWith, [UserCenter.Initialized]);
+			TweenLite.delayedCall(0.1, dispatchEventWith, [UserCenter.InitViewPlayed]);
 		}
 		
 		private var mapButton:ElasticButton;
@@ -59,6 +60,7 @@ package views.global.userCenter.userInfo
 		{
 			mapButton = new ElasticButton(new Image(UserCenterManager.getTexture("button_map_skin")), new Image(UserCenterManager.getTexture("button_map_skin")));
 			this.addChild( mapButton );
+			mapButton.visible = mapVisible;
 			mapButton.x = 830;
 			mapButton.y = 535;
 			mapButton.addEventListener(ElasticButton.CLICK, onClick);
@@ -250,10 +252,10 @@ package views.global.userCenter.userInfo
 		private var crtUserData:Object;
 		private var crtUserView:CurrentUserView;
 		
+		private var mapVisible:Boolean;
 		public function setMapVisible(visible:Boolean):void
 		{
-			this.mapButton.visible = visible;
-			TweenLite.delayedCall(0.1, dispatchEventWith, [UserCenter.InitViewPlayed]);
+			mapVisible = visible;
 		}
 
 		private function initCrtUserView():void
