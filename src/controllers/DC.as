@@ -1,7 +1,7 @@
 package controllers
 {
 	import com.pamakids.utils.Singleton;
-	
+
 	import models.AchieveVO;
 	import models.SOService;
 
@@ -58,8 +58,8 @@ package controllers
 			var i:int;
 			for (i=0; i < max; i++)
 			{
-				t = arr[i];
-				if(t)
+				t=arr[i];
+				if (t)
 					_achidatas.push([t[0], t[1], (SOService.instance.getSO(i + "_achieve")) ? 1 : 0])
 			}
 			return _achidatas;
@@ -96,13 +96,13 @@ package controllers
 						iconIndex: i,
 						numStars: 0
 					};
-				obj.isOpend = SOService.instance.getSO(obj.className);
+				obj.isOpend=SOService.instance.getSO(obj.className);
 				if (gameLevels[i] == 0) //无难度划分
 				{
 					if (SOService.instance.getSO(obj.className))
 					{
 						var res:int=SOService.instance.getSO(obj.className + "gameresult") as int;
-						obj.resultEasy=res?res.toString():"000000";
+						obj.resultEasy=res ? res.toString() : "000000";
 						obj.resultHard="000000";
 					}
 					else
@@ -116,9 +116,9 @@ package controllers
 					if (SOService.instance.getSO(obj.className))
 					{
 						var res2:int=SOService.instance.getSO(obj.className + "gameresult0") as int;
-						obj.resultEasy=res2?res2.toString():"000000";
+						obj.resultEasy=res2 ? res2.toString() : "000000";
 						var res3:int=SOService.instance.getSO(obj.className + "gameresult1") as int;
-						obj.resultHard=res3?res3.toString():"000000";
+						obj.resultHard=res3 ? res3.toString() : "000000";
 					}
 					else
 					{

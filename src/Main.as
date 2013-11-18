@@ -5,6 +5,7 @@ package
 	import flash.filesystem.File;
 
 	import controllers.MC;
+	import controllers.UserBehaviorAnalysis;
 
 	import models.Const;
 	import models.FontVo;
@@ -34,6 +35,7 @@ package
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
+			UserBehaviorAnalysis.trackEvent("全局", "游戏开始");
 			//以免第一次初始化提示的时候卡顿
 			var label:TextField=new TextField(1, 1, '0', FontVo.PALACE_FONT, 16, 0x561a1a, true);
 			addChild(label);
