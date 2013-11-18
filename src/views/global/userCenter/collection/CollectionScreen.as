@@ -5,6 +5,8 @@ package views.global.userCenter.collection
 	
 	import flash.geom.Point;
 	
+	import controllers.DC;
+	
 	import models.CollectionVO;
 	
 	import starling.display.Image;
@@ -174,8 +176,7 @@ package views.global.userCenter.collection
 				vo.name = arr[id].name;
 				vo.content = arr[id].content;
 				vo.explain = arr[id].explain;
-				vo.isCollected = true;
-//				vo.isCollected = DC.instance.testCollectionIsOpend(id);
+				vo.isCollected = DC.instance.testCollectionIsOpend(id);
 				source[i] = vo;
 			}
 		}
