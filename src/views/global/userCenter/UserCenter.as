@@ -306,11 +306,11 @@ package views.global.userCenter
 
 		private function tabs_changeHandler():void
 		{
-			if (!aniable)
-			{
-				aniable=true;
-				return;
-			}
+//			if (!aniable)
+//			{
+//				aniable=true;
+//				return;
+//			}
 			if (animation.visible)
 			{
 				_tabBar.selectedIndex=prevIndex;

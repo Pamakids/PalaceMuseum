@@ -2,17 +2,17 @@ package views.global.userCenter.userInfo
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.utils.Dictionary;
-
+	
 	import controllers.MC;
-
+	
 	import feathers.controls.Button;
 	import feathers.core.PopUpManager;
-
+	
 	import models.FontVo;
 	import models.SOService;
-
+	
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
@@ -21,7 +21,7 @@ package views.global.userCenter.userInfo
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.textures.Texture;
-
+	
 	import views.components.ElasticButton;
 	import views.global.map.Map;
 	import views.global.userCenter.BaseScreen;
@@ -53,33 +53,31 @@ package views.global.userCenter.userInfo
 
 			TweenLite.delayedCall(0.1, dispatchEventWith, [UserCenter.Initialized]);
 		}
-
+		
 		private var mapButton:ElasticButton;
-
 		private function initMapButton():void
 		{
-			mapButton=new ElasticButton(new Image(UserCenterManager.getTexture("button_map_skin")), new Image(UserCenterManager.getTexture("button_map_skin")));
-			this.addChild(mapButton);
-			mapButton.x=830;
-			mapButton.y=535;
+			mapButton = new ElasticButton(new Image(UserCenterManager.getTexture("button_map_skin")), new Image(UserCenterManager.getTexture("button_map_skin")));
+			this.addChild( mapButton );
+			mapButton.visible = mapVisible;
+			mapButton.x = 830;
+			mapButton.y = 535;
 			mapButton.addEventListener(ElasticButton.CLICK, onClick);
 		}
-
 		private function onClick(e:Event):void
 		{
-			Map.show(null, -1, -1, true, true);
-//			MC.instance.switchLayer(true);
+			Map.show(null, -1, -1, true);
+			MC.instance.switchLayer(true);
 		}
-
+		
 		private var moduleList:ModuleList;
-
 		private function initModuleList():void
 		{
-			moduleList=new ModuleList();
-			this.addChild(moduleList);
-			moduleList.y=200;
+			moduleList = new ModuleList();
+			this.addChild( moduleList );
+			moduleList.y = 200;
 		}
-
+		
 		private function initBirdView():void
 		{
 			var image:Image=new Image(UserCenterManager.getTexture("icon_bird"));
@@ -252,11 +250,12 @@ package views.global.userCenter.userInfo
 
 		private var crtUserData:Object;
 		private var crtUserView:CurrentUserView;
-
+		
+		private var mapVisible:Boolean;
 		public function setMapVisible(visible:Boolean):void
 		{
-			this.mapButton.visible=visible;
-			TweenLite.delayedCall(0.1, dispatchEventWith, [UserCenter.InitViewPlayed]);
+			mapButton.visible = visible;
+			dispatchEventWith(UserCenter.InitViewPlayed);
 		}
 
 		private function initCrtUserView():void
@@ -272,10 +271,10 @@ package views.global.userCenter.userInfo
 
 		override protected function initPages():void
 		{
-			var image:Image=new Image(UserCenterManager.getTexture("background_0"));
-			this.addChild(image);
+			var image:Image = new Image(UserCenterManager.getTexture("background_0"));
+			this.addChild( image );
 			var texture:Texture=UserCenterManager.getTexture("line_long");
-			image=new Image(texture);
+			image = new Image(texture);
 			image.x=60;
 			image.y=197;
 			this.addChild(image);
@@ -295,7 +294,7 @@ package views.global.userCenter.userInfo
 				TweenLite.killTweensOf(t);
 				delete twDic[t];
 			}
-			if (moduleList)
+			if(moduleList)
 				moduleList.removeFromParent(true);
 			if (w_editUser)
 			{
