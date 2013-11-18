@@ -78,14 +78,16 @@ package views.global.userCenter
 		public static function closeUserCenter():void
 		{
 			if (_userCenter)
+			{
 				_userCenter.removeFromParent(true);
+				MC.instance.showMC();
+				LionMC.instance.show();
+				TopBar.enable=true;
+				MC.instance.topBarLayer.visible=true;
+				TopBar.show();
+			}
 			_userCenter=null;
-			MC.instance.showMC();
 //			MC.instance.switchLayer(true);
-			LionMC.instance.show();
-			TopBar.enable=true;
-			MC.instance.topBarLayer.visible=true;
-			TopBar.show();
 		}
 
 		private static var _userCenter:UserCenter;

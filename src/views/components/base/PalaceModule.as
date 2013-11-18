@@ -84,7 +84,7 @@ package views.components.base
 				if (!load)
 					load=new LoadingMC();
 				MC.instance.addMC(load);
-				load.x=1024 - 130;
+				load.x=1024 - 172;
 				load.y=768 - 126;
 				load.play();
 			}
@@ -127,6 +127,11 @@ package views.components.base
 				{
 					img.x=qaPOS.x;
 					img.y=qaPOS.y;
+				}
+				else
+				{
+					img.x=177;
+					img.y=108;
 				}
 				return;
 			}

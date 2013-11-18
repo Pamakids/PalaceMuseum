@@ -398,6 +398,7 @@ package views.module1
 			}
 			else
 			{
+				SoundManager.instance.play("windowwrong");
 				TweenMax.to(sp, 1, {shake: {rotation: .05, numShakes: 4}, onComplete: function():void
 				{
 					sp.touchable=true;

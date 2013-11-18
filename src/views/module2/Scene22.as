@@ -37,11 +37,11 @@ package views.module2
 		private var tele:Image;
 		private var thermoGame:ThermoMeter;
 
-		private var hint0:String="纸中之王是从唐朝开始生产的宣纸，它不褪色，少虫蛀，寿命长。我国流传至今的古籍珍本、名家书画，大都用宣纸保存，依然如初。";
-		private var hint1:String="清朝皇帝多喜爱松花石砚，石头产自满族家乡松花江畔的长白山，颜色也和山中开放的黄绿色松花相似。";
-		private var hint2:String="毛笔的冠军是浙江产的湖笔。湖笔与徽墨、宣纸、端砚并称为“文房四宝”，分别是笔墨纸砚中的极品。";
-		private var hint3:String="古时书桌上用来盛装磨墨用的水的器具，有嘴的叫“水注”，无嘴的叫“水丞”。";
-		private var hint4:String="这个金星玻璃冰裂纹笔筒，结合了金属与玻璃两种工艺，是乾隆时期是清宫造办处玻璃厂的作品。";
+		private var hint0:String="造纸家弟子的传世之作－宣纸\n宣纸因产自唐代宣州（今安徽泾县）而得名，它易书写，不退色，少虫蛀，寿命长。";
+		private var hint1:String="仙鹤带来的制砚灵感－端砚\n端砚产自广东省端州（今肇庆）， 端砚石质优良，雕刻精美，研出的墨汁细滑。";
+		private var hint2:String="秦始皇的大将创制的笔－湖笔\n毛笔的冠军是浙江湖州产的湖笔，笔尖锋利，笔头饱满，易写耐用。";
+
+		private var hint3:String="能吃还能当药用的墨－徽墨\n因产于古徽州府(今安徽歙县)而得名，配方讲究，造型美观，耐磨耐用。";
 
 		private var itemNameArr:Array=["paper", "inkstone", "writingbrush", "waterpot", "brushpot"];
 		private var posArr:Array=[new Point(13, 208), new Point(134, 158),
@@ -53,7 +53,7 @@ package views.module2
 		public function Scene22(am:AssetManager=null)
 		{
 			super(am);
-			hintArr=[hint0, hint1, hint2, hint3, hint4]
+			hintArr=[hint0, hint1, hint2]
 			crtKnowledgeIndex=6;
 			addBG("bg32");
 
@@ -137,7 +137,8 @@ package views.module2
 			var index:int=itemArr.indexOf(item);
 			var _x:Number=item.x + item.width / 2;
 			var _y:Number=item.y + item.height / 2;
-			showHint(_x, _y, hintArr[index]);
+			if (index < 3)
+				showHint(_x, _y, hintArr[index]);
 			check(index);
 		}
 

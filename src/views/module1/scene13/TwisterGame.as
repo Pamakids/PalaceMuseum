@@ -1,6 +1,7 @@
 package views.module1.scene13
 {
 	import com.greensock.TweenLite;
+	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
@@ -227,6 +228,8 @@ package views.module1.scene13
 
 		private function twist(clockwise:Boolean, auto:Boolean=false):void
 		{
+			SoundManager.instance.stop("twisting");
+			SoundManager.instance.play("twisting");
 			if (!auto)
 			{
 				isMoved=true;
@@ -301,6 +304,7 @@ package views.module1.scene13
 			addChildAt(halo, 0);
 			halo.x=Block.GAP;
 			halo.y=Block.GAP;
+			SoundManager.instance.play("twistermatch");
 			TweenLite.to(halo, 2, {rotation: Math.PI * 4, onComplete: flipHolder});
 //			for each (var block:Block in blockArr)
 //			{
@@ -425,6 +429,7 @@ package views.module1.scene13
 				{
 					closeBtn.visible=true;
 				}
+//				gameOver();
 			}
 		}
 

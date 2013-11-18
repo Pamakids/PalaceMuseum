@@ -1,5 +1,6 @@
 package views.module2.scene22
 {
+	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.SPUtils;
 
 	import flash.geom.Point;
@@ -137,6 +138,8 @@ package views.module2.scene22
 			{
 				case TouchPhase.BEGAN:
 				{
+					SoundManager.instance.stop("ringrolling");
+					ringBlock=false;
 					if (Point.distance(currentPosA, centerPT) < 210)
 						actionIndex=0; //move
 					else
@@ -146,14 +149,19 @@ package views.module2.scene22
 
 				case TouchPhase.MOVED:
 				{
-					if (actionIndex == 0)
-						moveView(tc.getMovement(this));
-					else if (actionIndex == 1)
-						rotateRing(tc, ring2);
+					if (!ringBlock)
+					{
+						if (actionIndex == 0)
+							moveView(tc.getMovement(this));
+						else if (actionIndex == 1)
+							rotateRing(tc, ring2);
+					}
 					break;
 				}
 				case TouchPhase.ENDED:
 				{
+					SoundManager.instance.stop("ringrolling");
+					ringBlock=false;
 					actionIndex=-1
 					break;
 				}
@@ -173,6 +181,7 @@ package views.module2.scene22
 
 		private function rotateRing(tc:Touch, target:Sprite):void
 		{
+			SoundManager.instance.play("ringrolling");
 			isRingMoved=true;
 			if (isZoomed)
 				isWin=true;
@@ -197,19 +206,27 @@ package views.module2.scene22
 
 			target.rotation+=deltaAngle;
 
-			updataBlur();
-
+			var blur:Number=updataBlur();
+			if (Math.abs(blur) < 0.01 && tele3.y == -maxY)
+			{
+				SoundManager.instance.stop("ringrolling");
+				SoundManager.instance.play("ringblock");
+				ringBlock=true;
+			}
 			ringMoved=true;
 		}
 
-		private function updataBlur():void
+		private function updataBlur():Number
 		{
 			var ty:Number=Math.abs(tele3.y / maxY);
 //			var rt1:Number=Math.abs(ring1.rotation) * 2 / Math.PI;
 			var rt2:Number=Math.abs(ring2.rotation) * 2 / Math.PI;
 
 			var blur:Number=Math.abs(ty - rt2) * 10;
+			if (blur == 0)
+				trace(blur)
 			view.blur(blur);
+			return blur;
 		}
 
 		private function addView():void
@@ -277,32 +294,62 @@ package views.module2.scene22
 		private var hintRing:Image;
 		private var handMoved:Boolean;
 		private var ringMoved:Boolean;
+		private var ringBlock:Boolean;
 
 		private function onTeleTouch(e:TouchEvent):void
 		{
-			var tc:Touch=e.getTouch(telHolder, TouchPhase.MOVED);
-			if (tc)
+			var tc:Touch=e.getTouch(telHolder);
+			if (!tc)
+				return;
+			switch (tc.phase)
 			{
-				var move:Point=tc.getMovement(telHolder);
-				var dy:Number=-move.y / 3;
-				tele3.y-=dy;
-				if (tele3.y < -maxY)
-					tele3.y=-maxY;
-				else if (tele3.y > 0)
-					tele3.y=0;
+				case TouchPhase.BEGAN:
+				{
+					SoundManager.instance.stop("telescale");
+					break;
+				}
+				case TouchPhase.MOVED:
+				{
+					var move:Point=tc.getMovement(telHolder);
+					var dy:Number=-move.y / 3;
+					tele3.y-=dy;
+					if (tele3.y < -maxY)
+					{
+						SoundManager.instance.stop("telescale");
+						tele3.y=-maxY;
+					}
+					else if (tele3.y > 0)
+					{
+						SoundManager.instance.stop("telescale");
+						tele3.y=0;
+					}
+					else
+						SoundManager.instance.play("telescale");
 
-				tele2.y=Math.max(-84, tele3.y);
+					tele2.y=Math.max(-84, tele3.y);
 
-				view.scale=Math.abs(tele3.y) / maxY;
+					view.scale=Math.abs(tele3.y) / maxY;
 
-				isZoomed=true;
+					isZoomed=true;
 
-				handMoved=true;
+					handMoved=true;
 
-				if (isRingMoved)
-					isWin=true;
+					if (isRingMoved)
+						isWin=true;
 
-				updataBlur();
+					updataBlur();
+					break;
+				}
+				case TouchPhase.ENDED:
+				{
+					SoundManager.instance.stop("telescale");
+					break;
+				}
+
+				default:
+				{
+					break;
+				}
 			}
 		}
 

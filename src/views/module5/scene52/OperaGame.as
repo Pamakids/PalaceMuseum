@@ -515,16 +515,20 @@ package views.module5.scene52
 			for each (var body:OperaBody in bodyArr)
 			{
 				if (body)
-					if (body.getBounds(this).containsPoint(pt) && mask.type == body.type && !body.isMatched && body.ready)
-					{
-						body.addMask(mask);
-						mask.removeEventListener(TouchEvent.TOUCH, onMaskTouch);
-						TweenLite.delayedCall(1, function():void {
-							removeOneBody(body);
-						});
-						addOneMask(mask.index, false);
-						return;
-					}
+					if (body.getBounds(this).containsPoint(pt))
+						if (mask.type == body.type && !body.isMatched && body.ready)
+						{
+							SoundManager.instance.play("maskok");
+							body.addMask(mask);
+							mask.removeEventListener(TouchEvent.TOUCH, onMaskTouch);
+							TweenLite.delayedCall(1, function():void {
+								removeOneBody(body);
+							});
+							addOneMask(mask.index, false);
+							return;
+						}
+						else
+							SoundManager.instance.play("maskwrong");
 			}
 			mask.reset();
 		}

@@ -560,7 +560,7 @@ package views.global.map
 											function():void
 											{
 												delete showingHint[item.tip];
-												clear(2);
+												clear(0);
 												MC.instance.gotoModule(targetIndex);
 											});
 									else

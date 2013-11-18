@@ -5,8 +5,6 @@ package views.module1
 
 	import flash.geom.Point;
 
-	import controllers.MC;
-
 	import feathers.core.PopUpManager;
 
 	import starling.display.Image;
@@ -77,7 +75,7 @@ package views.module1
 			addCraw(new Point(661, 40));
 			addCraw(new Point(898, 360));
 
-			LionMC.instance.say("花些时间熟悉一下皇帝的寝室吧，如果白天顺利过关，今晚你可要住在这里了！");
+			LionMC.instance.say("为明天早起上个闹钟吧！\n花些时间熟悉一下皇帝的寝室。", 0, 0, 0, null, 20, .6, true);
 		}
 
 		private var pendantPosArr:Array=[new Point(299, 226), new Point(390, 192),

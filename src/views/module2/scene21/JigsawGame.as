@@ -312,6 +312,8 @@ package views.module2.scene21
 
 		}
 
+		private static var cellScale:Number=.85;
+
 		private function shuffle():void
 		{
 			for each (var cell:Cell in cellArr)
@@ -320,7 +322,7 @@ package views.module2.scene21
 				var dy:Number=Math.random() * 50 + 530 + gamelevel * 40;
 				var dr:Number=Math.random() * Math.PI * 2;
 				//				dr=0;
-				TweenLite.to(cell, 1, {x: dx, y: dy, rotation: dr});
+				TweenLite.to(cell, 1, {x: dx, y: dy, rotation: dr, scaleX: cellScale, scaleY: cellScale});
 			}
 
 			TweenLite.to(timeHolder, 1, {x: 822, onComplete: function():void {
@@ -370,6 +372,7 @@ package views.module2.scene21
 
 			if (tcbs.length > 0)
 			{
+				cell.scaleX=cell.scaleY=1;
 				if (!cell.filter)
 				{
 					var fl:BlurFilter=BlurFilter.createDropShadow(10);
@@ -443,6 +446,10 @@ package views.module2.scene21
 				}
 				else
 					TweenLite.to(cell, .3, {x: cell.tx, y: cell.ty, rotation: 0});
+			}
+			else
+			{
+				cell.scaleX=cell.scaleY=cellScale;
 			}
 		}
 

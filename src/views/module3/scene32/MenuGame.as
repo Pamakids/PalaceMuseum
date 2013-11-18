@@ -456,6 +456,8 @@ package views.module3.scene32
 					}
 
 					delayFunction=function():void {
+						SoundManager.instance.stop("blockmatch");
+						SoundManager.instance.play("blockmatch");
 						TweenLite.to(checkLight.clipRect, .7, {x: 0});
 						if (endFunction)
 							endFunction();

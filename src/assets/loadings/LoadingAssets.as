@@ -9,5 +9,8 @@ package assets.loadings
 
 		[Embed(source="loading1.png")]
 		public static var module1Loading:Class;
+
+		[Embed(source="loading2.png")]
+		public static var module2Loading:Class;
 	}
 }
