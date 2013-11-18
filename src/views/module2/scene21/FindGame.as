@@ -215,6 +215,7 @@ package views.module2.scene21
 			}
 			else if (fluteArea.containsPoint(pt))
 			{
+				SoundManager.instance.play("flute");
 				playEff(flute, destPosArr[1]);
 				fluteArea=new Rectangle(-1000, -1000, 0, 0);
 				removeHint(2);

@@ -45,17 +45,20 @@ package views.module2
 			super(am);
 			crtKnowledgeIndex=5;
 			addBG("bg31")
-//			addChild(getImage("bg31"));
 
 			addShelfs();
 
 			addking();
 
-			can=getImage("can31");
-			can.y=291;
-			addChild(can);
-//			can.touchable=false;
-			can.addEventListener(TouchEvent.TOUCH, onCanTouch);
+			can1=getImage("can1");
+			can1.y=291;
+			addChild(can1);
+			can1.touchable=false;
+
+			can2=getImage("can2");
+			can2.y=can1.y + can1.height;
+			addChild(can2);
+			can2.addEventListener(TouchEvent.TOUCH, onCanTouch);
 
 			var curtainL:Image=getImage("curtain-l");
 			addChild(curtainL);
@@ -65,17 +68,36 @@ package views.module2
 			addChild(curtainR);
 			curtainR.touchable=false;
 
+
 			map=getImage("map31");
-			map.x=444;
+			map.x=484;
 			map.y=596;
 			addChild(map);
 			map.addEventListener(TouchEvent.TOUCH, onMapTouch);
 
 			addCraw(new Point(125, 686));
-			addCraw(new Point(501, 581));
+			addCraw(new Point(541, 581));
+
+			addSmallBooks();
 
 			playLion();
 		}
+
+		private function addSmallBooks():void
+		{
+			for (var i:int=0; i < 2; i++)
+			{
+				var pt:Point=this["dpt" + i];
+				var shadow:Image=getImage("book-shadow" + (i + 1).toString());
+				addChild(shadow);
+				shadow.touchable=false;
+				shadow.x=pt.x;
+				shadow.y=pt.y;
+				shadowArr.push(shadow);
+			}
+		}
+
+		private var shadowArr:Array=[];
 
 		private function addking():void
 		{
@@ -131,7 +153,7 @@ package views.module2
 		{
 			if (!ready)
 				return;
-			var tc:Touch=e.getTouch(can, TouchPhase.ENDED);
+			var tc:Touch=e.getTouch(can2, TouchPhase.ENDED);
 			if (tc)
 				if (canArea.containsPoint(tc.getLocation(this)))
 					initFindGame();
@@ -218,9 +240,30 @@ package views.module2
 		private var innerX:Number=300;
 		private var rx:Number=1024 - 457;
 
-		private var nameArr:Array=["《诗经》", "《学蒙语》", "《大学》", "《资治通鉴》", "《论语》", "《春秋》", "《三国志传》", "《史记》",
-			"《全唐诗》", "《古文渊鉴》", "《孟子》", "《学藏语》", "《二十四孝》", "《礼记》", "《御注老子》", "《历代题诗》",
-			"《周易》", "《圣训》", "《明史》", "《中庸》", "《佩文韵府》", "《尚书》"];
+		private var nameArr:Array=[
+			"《实录》", //大图
+			"《学蒙语》\n与蒙古人的关系很重要，皇帝要会蒙语",
+			"《大学》\n孔子及其门徒留下来的儒学入门读物",
+			"《资治通鉴》\n北宋司马光主编的编年体史书",
+			"《论语》\n记载孔子及其学生言行的一部书",
+			"《春秋》\n孔子修订的鲁国编年史",
+			"《三国志传》\n西晋陈寿所著关于三国时代历史的断代史",
+			"《史记》\n司马迁撰写的中国第一部纪传体通史",
+			"《全唐诗》\n清初编辑的唐代诗歌总集",
+			"《古文渊鉴》\n康熙皇帝主持编辑的历代散文总集",
+			"《孟子》\n记载孟子及其学生言行的儒家经典",
+			"《学藏语》\n与藏族人的关系密切，皇帝要懂藏语",
+			"《二十四孝》\n元代编辑的行孝故事合集",
+			"《礼记》\n记述秦汉以前典章制度、礼仪的一部书",
+			"《御注老子》\n唐宋明清的四位皇帝对《老子》的亲手注释",
+			"《历代题诗》\n各个朝代题诗的合集",
+			"《周易》\n相传周文王所著，以六十四卦表述宇宙间普遍的变化",
+			"《圣训》", //大图
+			"《明史》\n讲述明朝历史的纪传体断代史书",
+			"《中庸》\n孔子的孙子子思创作的儒学名著",
+			"《诗经》\n中国最早的诗歌总集",
+			"《尚书》\n中国最早的散文总集"
+			];
 
 		private var lIndexArr:Array=[7, 10];
 		private var rIndexArr:Array=[1, 3, 4, 7, 9, 10];
@@ -306,6 +349,8 @@ package views.module2
 			_shelfOpen=value;
 			SoundManager.instance.stop(value ? "shelfin" : "shelfout");
 			SoundManager.instance.play(value ? "shelfout" : "shelfin");
+			if (!value && p)
+				p.playHide();
 		}
 
 		private var gamePlayed:Boolean;
@@ -314,7 +359,8 @@ package views.module2
 		private var finded:Boolean;
 		private var findGame:FindGame;
 
-		private var can:Image;
+		private var can1:Image;
+		private var can2:Image;
 
 		private function onBookTouch(e:TouchEvent):void
 		{
@@ -332,20 +378,28 @@ package views.module2
 
 			var pr:Sprite=book.parent as Sprite;
 			var pt:Point=new Point(book.x + book.width / 2, book.y + book.height / 2);
+			var gpt:Point=pr.localToGlobal(pt);
 			var align:int=1;
 			if (checkAlign(book))
 				align=3;
-			if (book.bookname == "《圣训》")
+			if (book.bookname.indexOf("圣训") >= 0)
 			{
 				playKing(0);
-				showBigBook();
+				showBigBook(0, gpt);
+			}
+			else if (book.bookname.indexOf("实录") >= 0)
+			{
+				playKing(0);
+				showBigBook(1, gpt);
 			}
 			else
 			{
 				playKing(int(Math.random() * expArr.length))
 				if (p)
 					p.playHide();
-				p=Prompt.showTXT(pt.x, pt.y, book.bookname, 24, null, pr, align, true)
+				var dx:Number=gpt.x;
+				var dy:Number=gpt.y < 150 ? 150 : gpt.y;
+				p=Prompt.showTXT(dx, dy, book.bookname, 20, null, this, align, true)
 			}
 		}
 
@@ -380,27 +434,26 @@ package views.module2
 			return -1;
 		}
 
-		private function showBigBook():void
+		private function showBigBook(index:int, pt:Point):void
 		{
-			if (!bigBook)
-			{
-				bigBook=new Sprite();
-				var img:Image=getImage("book-big");
-				bigBook.addChild(img);
-				img.x=270;
-				img.y=138;
+			crtIndex=index;
+			crtPt=pt;
+			bigBook=new Sprite();
+			var img:Image=getImage("book-big" + (index + 1).toString());
+			bigBook.addChild(img);
+			img.x=270;
+			img.y=138;
 
-				bigBook.pivotX=512;
-				bigBook.pivotY=384;
-				bigBook.x=512;
-				bigBook.y=384;
-				var close:ElasticButton=new ElasticButton(getImage("button_close"));
-				close.shadow=getImage("button_close_down");
-				bigBook.addChild(close);
-				close.x=800;
-				close.y=200;
-				close.addEventListener(ElasticButton.CLICK, onCloseBook);
-			}
+			bigBook.pivotX=512;
+			bigBook.pivotY=384;
+			bigBook.x=512;
+			bigBook.y=384;
+			var close:ElasticButton=new ElasticButton(getImage("button_close"));
+			close.shadow=getImage("button_close_down");
+			bigBook.addChild(close);
+			close.x=800;
+			close.y=200;
+			close.addEventListener(ElasticButton.CLICK, onCloseBook);
 			bigBook.scaleX=.1;
 			bigBook.scaleY=.1;
 			PopUpManager.addPopUp(bigBook, true, false)
@@ -416,16 +469,55 @@ package views.module2
 
 		private function onCloseBook(e:Event):void
 		{
-			showAchievement(6);
-			sceneOver();
-			PopUpManager.removePopUp(bigBook);
+			showSmallBook(crtIndex, crtPt);
+			PopUpManager.removePopUp(bigBook, true);
+			bigBook=null;
 		}
+
+		private function showSmallBook(index:int, spt:Point):void
+		{
+			var dpt:Point;
+			if (index == 0)
+			{
+				if (!book1Found)
+					dpt=this["dpt" + index];
+				book1Found=true;
+			}
+			else if (index == 1)
+			{
+				if (!book2Found)
+					dpt=this["dpt" + index];
+				book2Found=true;
+			}
+
+			if (dpt)
+			{
+				var book:Image=getImage("book-small" + (index + 1).toString());
+				addChild(book);
+				book.x=spt.x;
+				book.y=spt.y;
+				book.touchable=false;
+				TweenLite.to(book, .5, {x: dpt.x, y: dpt.y, onComplete: checkOver});
+				TweenLite.to(shadowArr[index], .5, {alpha: 0});
+			}
+		}
+
+		private var dpt0:Point=new Point(317, 600);
+		private var dpt1:Point=new Point(377, 600);
 
 		private function checkOver():void
 		{
-//			if (gamePlayed && bookFinded && finded)
-//				sceneOver();
+			if (book1Found && book2Found)
+			{
+				showAchievement(6);
+				sceneOver();
+			}
 		}
+
+		private var book1Found:Boolean;
+		private var book2Found:Boolean;
+		private var crtIndex:int;
+		private var crtPt:Point;
 
 		private function initGame():void
 		{
@@ -451,7 +543,6 @@ package views.module2
 			removeChild(mapGame);
 			mapGame=null;
 			gamePlayed=true;
-			checkOver();
 			inGame=false;
 		}
 
@@ -461,6 +552,7 @@ package views.module2
 			findGame.addEventListener(PalaceGame.GAME_OVER, onFindGamePlayed)
 			addChild(findGame);
 			inGame=true;
+			SoundManager.instance.play("scrollout");
 		}
 
 		private function onFindGamePlayed(e:Event):void
@@ -475,7 +567,6 @@ package views.module2
 			removeChild(mapGame);
 			findGame=null;
 			finded=true;
-			checkOver();
 			inGame=false;
 		}
 

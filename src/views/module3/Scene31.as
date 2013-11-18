@@ -2,9 +2,11 @@ package views.module3
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Elastic;
+	import com.pamakids.manager.SoundManager;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.getTimer;
 
 	import feathers.core.PopUpManager;
 
@@ -21,7 +23,6 @@ package views.module3
 	import views.components.ElasticButton;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
-	import views.global.TailBar;
 
 	/**
 	 * 早膳模块
@@ -186,6 +187,9 @@ package views.module3
 			{
 				king.addEventListener(Event.COMPLETE, onKingPlayed);
 				king.play();
+				TweenLite.delayedCall(1.3, function():void {
+					SoundManager.instance.play("kingdragged");
+				});
 			}
 		}
 

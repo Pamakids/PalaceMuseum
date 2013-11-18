@@ -27,8 +27,6 @@ package views
 			A1="顺治和康熙帝住在乾清宫，之后的八个皇帝都住在养心殿。"
 			Q2="皇帝睡懒觉吗？"
 			A2="清朝的皇帝几乎每天5点左右起床。"
-//			qa=LoadingAssets.module1Loading;
-			qaPOS=new Point(82, 164);
 
 			addQAS();
 			addLoading();

@@ -1,27 +1,29 @@
 package
 {
 	import com.pamakids.manager.SoundManager;
-	
+
 	import flash.filesystem.File;
-	
+
 	import controllers.MC;
-	
+	import controllers.UserBehaviorAnalysis;
+
 	import models.Const;
 	import models.FontVo;
 	import models.SOService;
-	
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-	
+
 	import views.Interlude;
 	import views.components.ElasticButton;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
 	import views.global.map.Map;
+	import views.global.userCenter.UserCenterManager;
 
 	public class Main extends Container
 	{
@@ -29,10 +31,11 @@ package
 		{
 //			SOService.instance.clear();
 //			SOService.instance.init();
-//			SOService.instance.setSO("lastScene", "52");
+			SOService.instance.setSO("lastScene", "21");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
+			UserBehaviorAnalysis.trackEvent("全局", "游戏开始");
 			//以免第一次初始化提示的时候卡顿
 			var label:TextField=new TextField(1, 1, '0', FontVo.PALACE_FONT, 16, 0x561a1a, true);
 			addChild(label);
@@ -136,7 +139,8 @@ package
 			var moduleIndex:int=int(_lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(_lastScene.charAt(1)) - 1;
 			if (lastScene.indexOf("end") >= 0)
-				Map.show(null, 4, 0, true, true);
+				UserCenterManager.showUserCenter(1, 0, false);
+//				Map.show(null, 4, 0, true, true);
 			else if (moduleIndex < 0 || sceneIndex < 0)
 				Map.show();
 			else if (_lastScene.lastIndexOf("map") < 0)

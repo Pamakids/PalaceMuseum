@@ -298,6 +298,7 @@ package views.module3.scene33
 
 			flyVec=assetManager.getTextures("flyMC");
 
+			SoundManager.instance.play("dishon");
 			for (var i:int=0; i < dishNum; i++)
 			{
 				addOneDish(i);
@@ -334,6 +335,8 @@ package views.module3.scene33
 				playHand(i);
 
 				dish.tweenMove(function():void {
+					SoundManager.instance.stop("dishon");
+					SoundManager.instance.play("dishon");
 					if (gamelevel == 1)
 						dish.addCount();
 					dishArr[i]=dish;

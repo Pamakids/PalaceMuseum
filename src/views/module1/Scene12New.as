@@ -214,7 +214,7 @@ package views.module1
 
 		private function onClickBox(e:TouchEvent):void
 		{
-			var tc:Touch=e.getTouch(stage, TouchPhase.BEGAN);
+			var tc:Touch=e.getTouch(box, TouchPhase.ENDED);
 			if (tc)
 			{
 				box.removeEventListener(TouchEvent.TOUCH, onClickBox);
@@ -233,6 +233,7 @@ package views.module1
 				quiz.y=sy;
 				quiz.scaleX=quiz.scaleY=.2;
 
+				SoundManager.instance.play("boxscale");
 				TweenLite.to(quiz, 1, {scaleX: 1, scaleY: 1, x: ex, y: ey, onComplete: function():void
 				{
 					TweenLite.delayedCall(2, function():void
@@ -252,6 +253,7 @@ package views.module1
 			{
 				quiz.parent.removeChild(quiz);
 
+				SoundManager.instance.play("boxopen");
 				opened=true;
 //				crtKnowledgeIndex=3;
 //				TweenLite.delayedCall(1, function():void

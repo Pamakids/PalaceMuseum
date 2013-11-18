@@ -8,7 +8,8 @@ package sound
 		{
 		}
 
-		public static var initArr:Array=["main", "camera", "happy", "sad", "buttonclick", "centerflip", "gamerecord", "lionshow"];
+		public static var initArr:Array=["main", "camera", "happy", "sad", "buttonclick", "centerflip", "gamerecord", "lionshow",
+			"getachieve", "getcard"];
 		[Embed(source="/sound/main.mp3")] //done
 		public static var main:Class;
 		[Embed(source="/sound/camera.mp3")] //done
@@ -19,14 +20,19 @@ package sound
 		public static var sad:Class;
 		[Embed(source="/sound/buttonclick.mp3")] //done
 		public static var buttonclick:Class;
-		[Embed(source="/sound/centerflip.mp3")]
+		[Embed(source="/sound/centerflip.mp3")] //done
 		public static var centerflip:Class;
 		[Embed(source="/sound/gamerecord.mp3")] //done
 		public static var gamerecord:Class;
 		[Embed(source="/sound/lionshow.mp3")] //done
 		public static var lionshow:Class;
+		[Embed(source="/sound/getachieve.mp3")] //done
+		public static var getachieve:Class;
+		[Embed(source="/sound/getcard.mp3")] //done
+		public static var getcard:Class;
 
-		public static var module1:Array=["lighton", "opendoor", "step", "dresson", "switching", "clockmatch", "clockroll"];
+		public static var module1:Array=["lighton", "opendoor", "step", "dresson", "switching", "clockmatch", "clockroll",
+			"windowwrong", "boxopen", "boxscale", "twistermatch", "twisting"];
 		[Embed(source="/sound/11lighton.mp3")] //done
 		public static var lighton:Class;
 		[Embed(source="/sound/11opendoor.mp3")] //done
@@ -41,8 +47,19 @@ package sound
 		public static var clockmatch:Class;
 		[Embed(source="/sound/13clockroll.mp3")] //done
 		public static var clockroll:Class;
+		[Embed(source="/sound/11windowwrong.mp3")] //done
+		public static var windowwrong:Class;
+		[Embed(source="/sound/12boxopen.mp3")] //done
+		public static var boxopen:Class;
+		[Embed(source="/sound/12boxscale.mp3")] //done
+		public static var boxscale:Class;
+		[Embed(source="/sound/13twistermatch.mp3")] //done
+		public static var twistermatch:Class;
+		[Embed(source="/sound/13twisting.mp3")] //done
+		public static var twisting:Class;
 
-		public static var module2:Array=['bug', 'drum', 'shelfin', 'shelfout'];
+		public static var module2:Array=['bug', 'drum', 'shelfin', 'shelfout',
+			"flute", "scrollout", "dragonlighton", "ringblock", "ringrolling", "telescale"];
 		[Embed(source="/sound/21bug.mp3")] //done
 		public static var bug:Class;
 		[Embed(source="/sound/21drum.mp3")] //done
@@ -51,8 +68,21 @@ package sound
 		public static var shelfin:Class;
 		[Embed(source="/sound/21shelfout.mp3")] //done
 		public static var shelfout:Class;
+		[Embed(source="/sound/21flute.mp3")] //done
+		public static var flute:Class;
+		[Embed(source="/sound/21scrollout.mp3")] //done
+		public static var scrollout:Class;
+		[Embed(source="/sound/22dragonlighton.mp3")] //done
+		public static var dragonlighton:Class;
+		[Embed(source="/sound/22ringblock.mp3")] //done
+		public static var ringblock:Class;
+		[Embed(source="/sound/22ringrolling.mp3")] //done
+		public static var ringrolling:Class;
+		[Embed(source="/sound/22telescale.mp3")] //done
+		public static var telescale:Class;
 
-		public static var module3:Array=['dishout', 'fly', 'kingeat', 'kingpoison'];
+		public static var module3:Array=['dishout', 'fly', 'kingeat', 'kingpoison',
+			"kingdragged", "blockfall", "blockhit", "blockmatch", "dishon"];
 		[Embed(source="/sound/33dishout.mp3")] //done
 		public static var dishout:Class;
 		[Embed(source="/sound/33fly.mp3")] //done
@@ -61,10 +91,20 @@ package sound
 		public static var kingeat:Class;
 		[Embed(source="/sound/33kingpoison.mp3")] //done
 		public static var kingpoison:Class;
+		[Embed(source="/sound/31kingdragged.mp3")] //done
+		public static var kingdragged:Class;
+		[Embed(source="/sound/32blockfall.mp3")] //
+		public static var blockfall:Class;
+		[Embed(source="/sound/32blockhit.mp3")] //
+		public static var blockhit:Class;
+		[Embed(source="/sound/32blockmatch.mp3")] //done
+		public static var blockmatch:Class;
+		[Embed(source="/sound/33dishon.mp3")] //done
+		public static var dishon:Class;
 
 		public static var module4:Array=[];
 
-		public static var module5:Array=['cough', 'sigh', 'gamebg52', 'fire'];
+		public static var module5:Array=['cough', 'sigh', 'gamebg52', 'fire', "bodyfall", "maskok", "maskwrong"];
 		[Embed(source="/sound/51cough.mp3")] //done
 		public static var cough:Class;
 		[Embed(source="/sound/51sigh.mp3")] //done
@@ -73,6 +113,12 @@ package sound
 		public static var gamebg52:Class;
 		[Embed(source="/sound/52fire.mp3")] //done
 		public static var fire:Class;
+		[Embed(source="/sound/52bodyfall.mp3")] //done
+		public static var bodyfall:Class;
+		[Embed(source="/sound/52maskok.mp3")] //done
+		public static var maskok:Class;
+		[Embed(source="/sound/52maskwrong.mp3")] //done
+		public static var maskwrong:Class;
 
 		public static var gamescene:Array=['dishout', 'fly', 'kingeat', 'kingpoison', 'gamebg52'];
 		public static var loopArr:Array=["main", "gamebg52"];

@@ -8,6 +8,7 @@
 package views.module2.scene22
 {
 	import com.greensock.TweenLite;
+	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.SPUtils;
 
 	import flash.geom.Point;
@@ -212,6 +213,7 @@ package views.module2.scene22
 					var ap:Number=img.alpha;
 					if (ap.toFixed(2) == "0.40")
 					{
+						SoundManager.instance.play("dragonlighton");
 						var shadow:Sprite=shadowArr[crtAreaIndex];
 						TweenLite.to(shadow.getChildAt(0), .5, {alpha: 1});
 //					blink(shadow.getChildAt(0) as Image);

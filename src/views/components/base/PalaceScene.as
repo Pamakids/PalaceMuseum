@@ -9,6 +9,7 @@ package views.components.base
 {
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
+	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.StringUtils;
 
 	import flash.geom.Point;
@@ -200,6 +201,7 @@ package views.components.base
 					_callback();
 				return;
 			}
+			SoundManager.instance.play("getachieve");
 			SOService.instance.setSO(_achieveIndex.toString() + "_achieve", true);
 //			var txt:String="xxx";
 			var txt:String="恭喜您获得成就: " + AchieveVO.achieveList[_achieveIndex][0];
@@ -247,6 +249,7 @@ package views.components.base
 					callback();
 				return;
 			}
+			SoundManager.instance.play("getcard");
 			SOService.instance.setSO("collection_card_" + _cardName + "collected", true);
 
 			var cardShow:Sprite=new Sprite();
