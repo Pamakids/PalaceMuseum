@@ -383,7 +383,6 @@ package views.global.map
 			{
 				initCloseButton();
 //				MC.instance.switchLayer(true);
-				closeButton.visible=buttonShow;
 				if (!showFromCenter)
 					TopBar.show();
 				mc.switchLayer(false);
@@ -752,8 +751,7 @@ package views.global.map
 				resetTypeHolder(to);
 //			if (lockHolder)
 //				resetLockHolder();
-			if (closeButton)
-				closeButton.visible=buttonShow;
+			initCloseButton();
 //			positionSun(from);
 		}
 

@@ -145,11 +145,13 @@ package controllers
 
 		public function gotoModule(index:int, sceneIndex:int=-1):void
 		{
-			_moduleIndex=index;
-			showModule(sceneIndex);
 			UserCenterManager.closeUserCenter();
 			if (Map.map)
 				Map.map.clear(0);
+			TopBar.hide();
+			TailBar.hide();
+			_moduleIndex=index;
+			showModule(sceneIndex);
 		}
 
 		public function clearCrtModule():void

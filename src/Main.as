@@ -31,7 +31,7 @@ package
 		{
 //			SOService.instance.clear();
 //			SOService.instance.init();
-			SOService.instance.setSO("lastScene", "21");
+//			SOService.instance.setSO("lastScene", "00map");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
@@ -69,10 +69,6 @@ package
 //			return;
 			if (!lastScene)
 				showStart();
-			else if (lastScene.indexOf("end") >= 0)
-				Map.show(function():void {
-					MC.instance.gotoModule(0, 0);
-				}, 4, 0, true, true);
 			else
 				startGame();
 		}
@@ -139,8 +135,7 @@ package
 			var moduleIndex:int=int(_lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(_lastScene.charAt(1)) - 1;
 			if (lastScene.indexOf("end") >= 0)
-				UserCenterManager.showUserCenter(1, 0, false);
-//				Map.show(null, 4, 0, true, true);
+				UserCenterManager.showUserCenter(0, 0, false);
 			else if (moduleIndex < 0 || sceneIndex < 0)
 				Map.show();
 			else if (_lastScene.lastIndexOf("map") < 0)
