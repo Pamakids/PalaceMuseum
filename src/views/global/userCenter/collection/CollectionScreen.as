@@ -5,8 +5,6 @@ package views.global.userCenter.collection
 	
 	import flash.geom.Point;
 	
-	import controllers.DC;
-	
 	import models.CollectionVO;
 	
 	import starling.display.Image;
@@ -41,8 +39,8 @@ package views.global.userCenter.collection
 		{
 			var paddingLeft:int = 50;
 			var horizontalGap:int = 15;
-			var paddingTop:int = 150;
-			var verticalGap:int = 90;
+			var paddingTop:int = 90;
+			var verticalGap:int = 60;
 			
 			vecImage = new Vector.<Image>(max);
 			var image:Image;
@@ -57,9 +55,10 @@ package views.global.userCenter.collection
 				texture = vo.isCollected?UserCenterManager.getTexture("card_collection_"+vo.id):textureUn;
 				image = new Image(texture);
 				image.scaleX = image.scaleY = .8;
-				image.x = int( paddingLeft + Math.floor(i/6) * this.viewWidth/2 + (i%3) * (horizontalGap + image.width) );
-				image.y = int( paddingTop + Math.floor( (i%6)/3 ) * (verticalGap + image.height) );
+				image.x = int( paddingLeft + Math.floor(i/3)%2 * this.viewWidth/2 + (i%3) * (horizontalGap + image.width) );
+				image.y = int( paddingTop + Math.floor(i/6) * (verticalGap + image.height) );
 				this.addChild( image );
+				trace(image.x, image.y);
 				vecImage[i] = image;
 				image.addEventListener(TouchEvent.TOUCH, onTouch);
 			}
@@ -158,21 +157,25 @@ package views.global.userCenter.collection
 			}
 		}
 		
+		private const order:Array = [0,1,2,3,4,12,5,6,7,8,9,10,11];
 		private var source:Vector.<CollectionVO>;
 		private function initDatas():void
 		{
 			var arr:Array = UserCenterManager.getAssetsManager().getObject("collection").source;
-			max = arr.length;
+			max = order.length;
 			source = new Vector.<CollectionVO>(max);
 			var vo:CollectionVO;
+			var id:String;
 			for(var i:int = 0;i<max;i ++)
 			{
+				id = order[i];
 				vo = new CollectionVO();
-				vo.id = i.toString();
-				vo.name = arr[i].name;
-				vo.content = arr[i].content;
-				vo.explain = arr[i].explain;
-				vo.isCollected = DC.instance.testCollectionIsOpend(vo.id);
+				vo.id = id;
+				vo.name = arr[id].name;
+				vo.content = arr[id].content;
+				vo.explain = arr[id].explain;
+				vo.isCollected = true;
+//				vo.isCollected = DC.instance.testCollectionIsOpend(id);
 				source[i] = vo;
 			}
 		}
