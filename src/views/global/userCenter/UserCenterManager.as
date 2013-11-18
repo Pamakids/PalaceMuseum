@@ -1,15 +1,15 @@
 package views.global.userCenter
 {
 	import flash.filesystem.File;
-	
+
 	import controllers.MC;
-	
+
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.LionMC;
 	import views.components.base.PalaceModule;
 	import views.global.TailBar;
@@ -40,13 +40,14 @@ package views.global.userCenter
 		 * @param page
 		 * @param closeable时
 		 * @param mapVisible	地图按钮是否可见
-		 */		
+		 */
 		public static function showUserCenter(screen:int=1, page:int=0, closeable:Boolean=true, mapVisible=true):void
 		{
+			MC.instance.topBarLayer.visible=false;
 			_screen=screen;
 			_page=page;
-			_closeable = closeable;
-			_mapVisible = mapVisible;
+			_closeable=closeable;
+			_mapVisible=mapVisible;
 			if (!loaded)
 				loadAssets();
 			else
@@ -55,7 +56,7 @@ package views.global.userCenter
 
 		private static function showHandler():void
 		{
-			MC.instance.switchLayer(false);
+//			MC.instance.switchLayer(false);
 //			if (_userCenter && _userCenter.parent)
 //			{
 //				MC.instance.main.removeMask();
@@ -80,12 +81,11 @@ package views.global.userCenter
 				_userCenter.removeFromParent(true);
 			_userCenter=null;
 			MC.instance.showMC();
-			MC.instance.switchLayer(true);
+//			MC.instance.switchLayer(true);
 			LionMC.instance.show();
 			TopBar.enable=true;
-			TailBar.instance.visible=true;
-//			if ((!Map.map || !Map.map.visible) && MC.instance.currentModule == null)
-//				MC.instance.gotoModule(0, -1);
+			MC.instance.topBarLayer.visible=true;
+			TopBar.show();
 		}
 
 		private static var _userCenter:UserCenter;

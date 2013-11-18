@@ -67,7 +67,7 @@ package views.module2
 				itemArr.push(item);
 			}
 
-			LionMC.instance.say("皇上的洋人老师，带来几个新鲜玩意儿，试试吧", 0, 0, 0, addTouchs, 20);
+			LionMC.instance.say("皇帝是个热爱科学的孩子，这些洋人老师带来的新鲜玩意你快来试试！", 0, 0, 0, addTouchs, 20);
 
 			thermo=getImage("thermometer32");
 			thermo.x=45;

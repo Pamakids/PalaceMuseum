@@ -39,7 +39,7 @@ package views.global
 				if (Map.map && Map.map.visible)
 					index=-1;
 				if (index == -1)
-					UserCenterManager.showUserCenter();
+					UserCenterManager.showUserCenter(0, 0, true, false);
 				else
 					UserCenterManager.showUserCenter(1, index);
 			}});
@@ -50,12 +50,6 @@ package views.global
 
 		public static function show():void
 		{
-			if (!MC.isTopBarShow)
-			{
-				hide();
-				return;
-			}
-//			trace("show")
 			if (!bar)
 			{
 				bar=new TopBar();
@@ -70,12 +64,6 @@ package views.global
 
 		public static function hide():void
 		{
-			if (MC.isTopBarShow)
-			{
-				show();
-				return;
-			}
-//			trace("hide")
 			if (bar)
 			{
 				bar.x=dx;

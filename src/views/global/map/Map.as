@@ -25,7 +25,6 @@ package views.global.map
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
-	import views.components.FlipAnimation;
 	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceModule;
@@ -124,10 +123,6 @@ package views.global.map
 			if (mapData)
 				parseData();
 			initFlipAnimation();
-
-			MC.isTopBarShow=false;
-			TopBar.hide();
-			LionMC.instance.clear();
 		}
 
 		private var centerPoint:Dictionary;
@@ -199,7 +194,7 @@ package views.global.map
 				closeButton.x=width - closeButton.width / 2 - 10;
 				closeButton.y=closeButton.height / 2 + 10;
 			}
-			closeButton.visible=showFromCenter && !forceHideClose;
+			closeButton.visible=buttonShow;
 		}
 
 		public static var map:Map;
@@ -208,7 +203,7 @@ package views.global.map
 		public var to:int;
 		public var points:Array;
 		private var labels:Array;
-		private static var forceHideClose:Boolean;
+		private static var buttonShow:Boolean;
 
 		/**
 		 * 显示地图
@@ -216,9 +211,9 @@ package views.global.map
 		 * @param from 	   当前模块
 		 * @param to   	   转向模块
 		 */
-		public static function show(callback:Function=null, from:int=-1, to:int=-1, fromCenter:Boolean=false, _forceHideClose:Boolean=false):void
+		public static function show(callback:Function=null, from:int=-1, to:int=-1, fromCenter:Boolean=false, _buttonShow:Boolean=false):void
 		{
-			forceHideClose=_forceHideClose;
+			buttonShow=_buttonShow;
 			var msIndex:String=SOService.instance.getSO("lastScene") as String;
 			if (!msIndex)
 				msIndex="00map";
@@ -229,7 +224,8 @@ package views.global.map
 			if (!fromCenter)
 				SOService.instance.setSO("lastScene", msIndex);
 			MC.instance.hideMC();
-			MC.instance.switchWOTB();
+			if (fromCenter)
+				MC.instance.switchWOTB();
 			showFromCenter=fromCenter;
 			var ec:Boolean=true;
 			if (from || to || callback == null)
@@ -283,19 +279,16 @@ package views.global.map
 			visible=false;
 			closeButton.visible=false;
 			changing=false;
-			if (UserCenterManager.getCrtUserCenter() != null)
-				MC.instance.switchLayer(false);
-			else
-			{
-				MC.isTopBarShow=true;
-				TopBar.show();
-			}
+//			if (UserCenterManager.getCrtUserCenter() != null)
+//				MC.instance.switchLayer(false);
+//			else
+//			{
+//				TopBar.show();
+//			}
 			switch (status)
 			{
 				case 0:
 				{
-//					if (mc.currentModule == null && UserCenterManager.getCrtUserCenter() == null)
-//						mc.gotoModule(0, -1);
 					break;
 				}
 
@@ -389,10 +382,13 @@ package views.global.map
 			var comFunc:Function=function():void
 			{
 				initCloseButton();
-				MC.instance.switchLayer(true);
-				closeButton.visible=showFromCenter && !forceHideClose;
-				if (showCenterBtn != null)
-					showCenterBtn();
+//				MC.instance.switchLayer(true);
+				closeButton.visible=buttonShow;
+				if (!showFromCenter)
+					TopBar.show();
+				mc.switchLayer(false);
+//				if (showCenterBtn != null)
+//					showCenterBtn();
 				addEventListener(TouchEvent.TOUCH, touchHandler);
 				positionSun(showFromCenter ? mc.moduleIndex : from);
 				TweenLite.to(flipAnimation, 5, {delay: 1, y: 0, ease: Cubic.easeOut});
@@ -518,16 +514,17 @@ package views.global.map
 								{
 									if (showFromCenter)
 									{
-										if (targetIndex == crtIndex)
-										{
-											clear(1);
-											return;
-										}
-										else if (sos.isModuleCompleted(targetIndex))
-										{
-											moveSun(crtIndex, targetIndex);
-											changing=true;
-										}
+										changing=false;
+//										if (targetIndex == crtIndex)
+//										{
+//											clear(1);
+//											return;
+//										}
+//										else if (sos.isModuleCompleted(targetIndex))
+//										{
+//											moveSun(crtIndex, targetIndex);
+//											changing=true;
+//										}
 									}
 									else
 									{
@@ -541,7 +538,6 @@ package views.global.map
 									if (changing)
 									{
 										closeButton.visible=false;
-										MC.isTopBarShow=false;
 										TopBar.hide();
 										TailBar.hide();
 										if (king.visible)
@@ -757,7 +753,7 @@ package views.global.map
 //			if (lockHolder)
 //				resetLockHolder();
 			if (closeButton)
-				closeButton.visible=showFromCenter && !forceHideClose;
+				closeButton.visible=buttonShow;
 //			positionSun(from);
 		}
 

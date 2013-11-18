@@ -61,7 +61,6 @@ package views.components.base
 		override protected function init():void
 		{
 			SoundManager.instance.play("main");
-			MC.isTopBarShow=false;
 			TopBar.hide();
 			TailBar.hide();
 			LionMC.instance.clear();

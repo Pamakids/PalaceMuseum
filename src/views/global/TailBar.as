@@ -2,8 +2,6 @@ package views.global
 {
 	import com.greensock.TweenLite;
 
-	import controllers.MC;
-
 	import feathers.controls.Button;
 
 	import starling.display.Image;
@@ -27,7 +25,7 @@ package views.global
 			addChild(book);
 			dx=163;
 			x=-dx;
-			y=768 - 35;
+			y=768 - 50;
 			touchable=false;
 		}
 
