@@ -2,7 +2,7 @@ package views
 {
 	import com.greensock.TweenLite;
 	import com.pamakids.manager.SoundManager;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -17,10 +17,11 @@ package views
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.system.Capabilities;
-
+	
 	import models.Const;
-
+	
 	import starling.core.Starling;
+	import com.pamakids.utils.DPIUtil;
 
 	/**
 	 * 引子
@@ -104,8 +105,9 @@ package views
 				const gap:int=20;
 				const bitmap:Bitmap=new BtnSkin();
 				button=new Sprite();
-				button.x=viewWidth - bitmap.width - gap;
-				button.y=viewHeight - bitmap.height - gap;
+				button.x=(viewWidth - bitmap.width - gap) * DPIUtil.getDPIScale();
+				button.y=(viewHeight - bitmap.height - gap) * DPIUtil.getDPIScale();
+				button.scaleX = button.scaleY = DPIUtil.getDPIScale();
 				button.addChild(bitmap);
 				this.addChild(button);
 				button.addEventListener(MouseEvent.CLICK, passHandler);
