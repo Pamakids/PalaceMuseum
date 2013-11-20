@@ -84,25 +84,34 @@ package views.module1
 		private function sayNext():void
 		{
 			var pos:Point=this["pos" + (talkIndex % 2 + 2).toString()]
-			talkIndex++;
-			if (talkIndex > 8)
+			if (talkIndex == 7)
 				moveKingBack();
 			else
 			{
+				talkIndex++;
 				var txt:String=this["txt" + talkIndex.toString()]
-				if (talkIndex == 8)
-					pos=this["pos" + (talkIndex % 2 + 2).toString()]
-				Prompt.showTXT(pos.x + 10, pos.y - 20, txt, 20, sayNext);
+				if (talkIndex == 9)
+				{
+					pos=this["pos1"];
+					Prompt.showTXT(pos.x + 10, pos.y - 20, txt, 20);
+				}
+				else
+					Prompt.showTXT(pos.x + 10, pos.y - 20, txt, 20, sayNext);
 			}
+
+			if (talkIndex == 3)
+				sceneOver();
+
 		}
 
 		private function moveKingBack():void
 		{
+			talkIndex++;
 			if (!king)
 				return;
 			king.startShakeHead(Math.PI / 20, 3);
 			king.startShakeBody(Math.PI / 30, 3);
-			TweenLite.to(king, 3, {x: pos1.x, y: pos1.y, onComplete: sceneOver});
+			TweenLite.to(king, 3, {x: pos1.x, y: pos1.y, onComplete: sayNext});
 		}
 
 		private var txt1:String="孩，孩儿给太后请安。";
@@ -112,7 +121,7 @@ package views.module1
 		private var txt5:String="厄……可能孩儿前些天偶感风寒，还，还没有痊愈。";
 		private var txt6:String="皇帝你政务繁忙，勤奋的同时也要注意身体啊。";
 		private var txt7:String="谢母后关心，孩儿告退。";
-		private var txt8:String="哎哟，好险！";
+		private var txt9:String="哎哟，好险！";
 
 		private var pos1:Point=new Point(747, 275);
 		private var pos2:Point=new Point(527, 492);

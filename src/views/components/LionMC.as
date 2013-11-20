@@ -74,7 +74,7 @@ package views.components
 				_y=520;
 			}
 			x=_x < 512 ? -100 - mcWidth * 2 : 1124 + mcWidth;
-			y=_y - 200;
+			y=_y;
 //			if (needMask)
 			MC.instance.main.addMask();
 			tl=TweenMax.to(this, .5, {x: _x, y: _y, motionBlur: true, onComplete: function():void
@@ -152,6 +152,16 @@ package views.components
 		private var lastMask:Number;
 		private var lastTask:Boolean
 
+		public function setLastData(content:String, _type:int=0, _x:Number=0, _y:Number=0, maskA:Number=.6, isTask:Boolean=false):void
+		{
+			lastType=_type;
+			lastX=_type;
+			lastY=_y;
+			lastContent=content;
+			lastMask=maskA;
+			lastTask=isTask;
+		}
+
 		/**
 		 *
 		 * @param content
@@ -182,7 +192,7 @@ package views.components
 				_y=520;
 			}
 			x=_x < 512 ? (-100 - mcWidth * 2) : (1124 + mcWidth);
-			y=_y - 200;
+			y=_y;
 			callBack=_callBack;
 			if (p)
 			{

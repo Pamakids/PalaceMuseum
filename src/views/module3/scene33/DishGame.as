@@ -87,8 +87,8 @@ package views.module3.scene33
 		{
 			addChild(startSP);
 			var hint:Image=getImage("dish-hint")
-			hint.x=46;
-			hint.y=51;
+//			hint.x=46;
+//			hint.y=51;
 			startSP.addChild(hint);
 
 			startBtn=new ElasticButton(getImage("game-start"));

@@ -21,8 +21,10 @@ package views.module3
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
+	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
+	import views.global.TailBar;
 
 	/**
 	 * 早膳模块
@@ -32,42 +34,13 @@ package views.module3
 	public class Scene31 extends PalaceScene
 	{
 
-//		private var chefB:Image;
-//
-//		private var chefF:Image;
-//		private var _chefTurn:Boolean;
-//
-//		public function get chefTurn():Boolean
-//		{
-//			return _chefTurn;
-//		}
-//
-//		public function set chefTurn(value:Boolean):void
-//		{
-//			_chefTurn=value;
-//			chefB.visible=!value;
-//			chefF.visible=value;
-//		}
-
-
 		public function Scene31(am:AssetManager=null)
 		{
 			super(am);
 			crtKnowledgeIndex=7;
 			addBG("bg21");
-//			addChild(getImage("bg21"));
 
 			addChief();
-//			chefB=getImage("chef-back");
-//			chefF=getImage("chef-front");
-//			chefF.visible=false;
-//			var chef:Sprite=new Sprite();
-//			chef.addChild(chefB);
-//			chef.addChild(chefF);
-//
-//			addChild(chef);
-//			chef.x=628;
-//			chef.y=62;
 
 			var desk:Image=getImage("fg21");
 			desk.y=768 - 496;
@@ -75,16 +48,10 @@ package views.module3
 			desk.touchable=false;
 
 			addKing();
-//			king=getImage("king21");
-//			addChild(king);
-//			king.x=714;
-//			king.y=768;
-//			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void
-//			{
-//				addEventListener(TouchEvent.TOUCH, onTouch);
-//			}});
 
 			addCraw(new Point(443, 349));
+
+			LionMC.instance.say("皇帝怎么能进御膳房呢！");
 		}
 
 		private function addKing():void
@@ -185,13 +152,19 @@ package views.module3
 		{
 			if (king)
 			{
+				p=Prompt.showTXT(king.x + 50, king.y + 60, "急什么，再让我看一会儿…", 20, null, this, 3);
+				TailBar.hide();
 				king.addEventListener(Event.COMPLETE, onKingPlayed);
 				king.play();
 				TweenLite.delayedCall(1.3, function():void {
+					if (p)
+						p.playHide();
 					SoundManager.instance.play("kingdragged");
 				});
 			}
 		}
+
+		private var p:Prompt;
 
 		private function onKingPlayed(e:Event):void
 		{

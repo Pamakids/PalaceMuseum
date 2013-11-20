@@ -5,6 +5,7 @@ package views.components.base
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.TouchEvent;
 
 	public class Container extends Sprite
 	{
@@ -69,6 +70,7 @@ package views.components.base
 			mask=new Quad(1024, 768, 0, true);
 			mask.alpha=_alpha;
 			addChild(mask);
+			mask.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent):void {e.stopImmediatePropagation()});
 		}
 
 		public function removeMask():void

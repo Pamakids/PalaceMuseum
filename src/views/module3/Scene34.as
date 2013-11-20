@@ -10,6 +10,7 @@ package views.module3
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 
+	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 	import views.module5.scene52.OperaBody;
 
@@ -45,10 +46,15 @@ package views.module3
 			king.touchable=false;
 			king.alpha=0;
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			TweenLite.delayedCall(5, function():void {
-				TweenLite.to(king, 1, {alpha: 1, onComplete: moveKing});
+			TweenLite.delayedCall(4, function():void {
+				TweenLite.to(king, 1, {alpha: 1, onComplete: kingSay});
 			}
 			);
+		}
+
+		private function kingSay():void
+		{
+			Prompt.showTXT(king.x - 20, king.y - 50, "这么香，谁在做饭呢？", 20, moveKing, this);
 		}
 
 		override public function dispose():void

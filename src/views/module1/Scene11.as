@@ -182,7 +182,7 @@ package views.module1
 				}});
 			};
 			TweenLite.delayedCall(1, function():void {
-				TweenLite.to(ga, 3, {scaleX: 3, scaleY: 3, ease: Quad.easeInOut, onComplete: removeGA});
+				TweenLite.to(ga, 3, {scaleX: 2, scaleY: 2, ease: Quad.easeInOut, onComplete: removeGA});
 //				TweenLite.delayedCall(3, removeGA);
 			});
 		}

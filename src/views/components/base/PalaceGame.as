@@ -12,8 +12,6 @@ package views.components.base
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
-	import views.global.TailBar;
-	import views.global.TopBar;
 
 	public class PalaceGame extends Container
 	{
@@ -53,7 +51,7 @@ package views.components.base
 
 		protected function addBG():void
 		{
-			var bg:Image=Image.fromBitmap(new PalaceModule.gameBG());
+			bg=Image.fromBitmap(new PalaceModule.gameBG());
 			addChild(bg);
 		}
 
@@ -65,8 +63,7 @@ package views.components.base
 		override protected function onStage(e:Event):void
 		{
 			super.onStage(e);
-			TopBar.hide();
-			TailBar.instance.visible=false;
+			MC.instance.topBarLayer.visible=false;
 			MC.instance.hideMC();
 		}
 
@@ -75,6 +72,8 @@ package views.components.base
 		}
 
 		protected var closeBtn:ElasticButton;
+
+		protected var bg:Image;
 
 		protected function addClose(_x:Number=950, _y:Number=60):void
 		{
@@ -104,8 +103,7 @@ package views.components.base
 			else
 				assetManager=null;
 			super.dispose();
-			TopBar.show();
-			TailBar.instance.visible=true;
+			MC.instance.topBarLayer.visible=true;
 			MC.instance.showMC();
 		}
 
@@ -120,6 +118,10 @@ package views.components.base
 				return new Image(t);
 			else
 				return null;
+		}
+
+		protected function showResult(result:Number, gamelevel:int=-1, type:int=0):void
+		{
 		}
 	}
 }

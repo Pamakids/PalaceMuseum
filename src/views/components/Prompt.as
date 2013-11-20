@@ -228,11 +228,6 @@ package views.components
 			p.callback=null;
 		}
 
-//		override public function dispose():void
-//		{
-//			super.dispose()
-//		}
-
 		/**
 		 * 显示提示，可获取Prompt引用手动隐藏也可调用hide方法隐藏
 		 * @param x
