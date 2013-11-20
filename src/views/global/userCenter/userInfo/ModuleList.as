@@ -123,9 +123,7 @@ package views.global.userCenter.userInfo
 						var targetR:Number;
 						if (activeIcon.texture == SKIN_ICON_SUN)
 						{
-							selectI=Math.floor((crtR - minR) / d);
-							if (crtR - (minR + selectI * d) >= crtR - (minR + (selectI + 1) * d))
-								selectI+=1;
+							selectI=Math.round((crtR - minR) / d);
 							for (var i:int=selectI; i >= 0; i--)
 							{
 								if (isComplete(i))
