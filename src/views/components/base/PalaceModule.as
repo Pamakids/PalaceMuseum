@@ -12,6 +12,7 @@ package views.components.base
 	import com.pamakids.palace.utils.StringUtils;
 
 	import flash.display.MovieClip;
+	import flash.filesystem.File;
 	import flash.geom.Point;
 
 	import assets.loadings.LoadingAssets;
@@ -67,40 +68,6 @@ package views.components.base
 		}
 
 		private var load:MovieClip;
-		protected var _isLoading:Boolean;
-
-		public function get isLoading():Boolean
-		{
-			return _isLoading;
-		}
-
-		public function set isLoading(value:Boolean):void
-		{
-			if (_isLoading == value)
-				return;
-			_isLoading=value;
-			if (value)
-			{
-				if (!load)
-					load=new LoadingMC();
-				MC.instance.addMC(load);
-				load.x=1024 - 172;
-				load.y=768 - 126;
-				load.play();
-			}
-			else
-			{
-				if (load)
-				{
-					TweenLite.to(load, .5, {x: 1100, onComplete: function():void {
-						MC.instance.removeMC(load);
-						load.stop();
-						load=null;
-					}});
-				}
-			}
-		}
-
 
 		protected var Q1:String="";
 		protected var A1:String="";
@@ -166,6 +133,7 @@ package views.components.base
 		{
 			TopBar.enable=true;
 			MC.instance.main.removeMask();
+			removeLoading();
 			if (skipIndex < 0)
 			{
 				var next:ElasticButton=new ElasticButton(getImage("nextButton"));
@@ -194,8 +162,25 @@ package views.components.base
 
 		protected function addLoading():void
 		{
-			isLoading=true;
+			if (!load)
+				load=new LoadingMC();
+			MC.instance.addMC(load);
+			load.x=1024 - 172;
+			load.y=768 - 126;
+			load.play();
 			addEventListener("gotoNext", nextScene);
+		}
+
+		protected function removeLoading():void
+		{
+			if (load)
+			{
+				TweenLite.to(load, .5, {x: 1100, onComplete: function():void {
+					MC.instance.removeMC(load);
+					load.stop();
+					load=null;
+				}});
+			}
 		}
 
 		protected function getImage(name:String):Image
@@ -222,19 +207,21 @@ package views.components.base
 
 		protected function nextScene(e:Event):void
 		{
+			addMask(0);
 			sceneIndex++;
-			loadScene(sceneIndex);
+			loadAssets(sceneIndex, function():void {
+				removeMask();
+				loadScene(sceneIndex);
+			});
 		}
 
 		protected function loadScene(index:int):void
 		{
-			isLoading=false;
 			if (crtScene)
 			{
 				crtScene.removeFromParent(true);
 				crtScene=null;
 			}
-
 			if (index <= sceneArr.length - 1)
 			{
 				var scene:Class=sceneArr[index] as Class;
@@ -243,7 +230,6 @@ package views.components.base
 			}
 			else
 			{
-//				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 				removeEventListener("gotoNext", nextScene);
 				MC.instance.nextModule();
 			}
@@ -257,11 +243,27 @@ package views.components.base
 				crtScene.removeFromParent(true);
 				crtScene=null;
 			}
-			isLoading=false;
+			removeLoading();
 			if (assetManager)
 				assetManager.purge();
 			assetManager=null;
 			super.dispose();
+		}
+
+		protected function loadAssets(index:int, callback:Function):void
+		{
+			if (index < 0)
+				index=0;
+			assetManager=new AssetManager();
+			var scene:Class=sceneArr[index] as Class;
+			var sceneName:String=StringUtils.getClassName(scene);
+			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
+			assetManager.enqueue(file);
+			assetManager.loadQueue(function(ratio:Number):void
+			{
+				if (ratio == 1.0 && callback != null)
+					callback();
+			});
 		}
 	}
 }

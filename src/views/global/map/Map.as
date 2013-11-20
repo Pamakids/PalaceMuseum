@@ -90,7 +90,6 @@ package views.global.map
 			if (!assetManager)
 				assetManager=new AssetManager();
 			var f:File=File.applicationDirectory.resolvePath('assets/global/map');
-//			var f2:File=File.applicationDirectory.resolvePath("assets/common");
 			assetManager.enqueue(f, "json/map.json");
 			assetManager.loadQueue(function(ratio:Number):void
 			{

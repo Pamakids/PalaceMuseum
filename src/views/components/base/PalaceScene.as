@@ -118,7 +118,11 @@ package views.components.base
 				nextButton.removeFromParent(true);
 				nextButton=null;
 			}
-			assetManager=null;
+			if (assetManager)
+			{
+				assetManager.purge();
+				assetManager=null;
+			}
 			removeChildren();
 			TopBar.hide();
 			TailBar.hide();
@@ -181,8 +185,9 @@ package views.components.base
 		protected function nextScene(e:Event=null):void
 		{
 			TopBar.enable=false;
-			if (nextButton && nextButton.parent)
-				nextButton.removeFromParent(true);
+			if (nextButton)
+				nextButton.touchable=false;
+			TweenLite.killTweensOf(shakeNext);
 			dispatchEvent(new Event("gotoNext", true));
 		}
 

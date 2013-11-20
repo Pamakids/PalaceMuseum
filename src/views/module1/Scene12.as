@@ -1,31 +1,30 @@
 package views.module1
 {
 	import com.greensock.TweenLite;
-	import com.greensock.easing.Elastic;
+	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 
-	import feathers.controls.List;
-	import feathers.controls.renderers.IListItemRenderer;
-	import feathers.data.ListCollection;
-	import feathers.layout.VerticalLayout;
+	import models.FontVo;
 
-	import models.SOService;
-
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
+	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
-	import views.module1.scene12.BoxCellRenderer;
-	import views.module1.scene12.Cloth;
+	import views.module1.scene12.Cloth2;
+	import views.module1.scene12.ClothCircle;
 	import views.module1.scene12.ClothPuzzle;
 
 	/**
@@ -35,6 +34,8 @@ package views.module1
 	 */
 	public class Scene12 extends PalaceScene
 	{
+		private var bgHolder:Sprite;
+
 		private var kingHolder:Sprite;
 		private var boxHolder:Sprite;
 
@@ -55,70 +56,22 @@ package views.module1
 			{
 				_opened=value
 				if (value)
-					list.clipRect.height=37;
-				boxHolder.setChildIndex(list, 1);
-				TweenLite.to(list, 1, {y: (value ? -536 : 4)});
-				TweenLite.to(list.clipRect, 1, {height: (value ? 567 : 30), onComplete: (value ? function():void
 				{
-					if (SOService.instance.checkHintCount(clothHintCount))
-						addEventListener(Event.ENTER_FRAME, onEnterFrame);
-				} : function():void
-				{
-					list.visible=false;
-					boxHolder.setChildIndex(list, 0);
-				})});
-				TweenLite.to(boxCover, 1, {y: (value ? -544 : -4)});
+					var dx:Number=boxCover.x + 400;
+					TweenLite.to(boxCover, .2, {y: -50, onComplete: function():void {
+						TweenLite.to(boxCover, .5, {x: dx, onComplete: initCircle});
+					}
+						});
+				}
+				else
+					TweenLite.to(boxHolder, .5, {x: 1100});
 			}
 		}
 
 		private var clothHintCount:String="clothHintCount";
-		private var isMoved:Boolean;
-		private var hintShow:Sprite;
 		private var count:int=0;
 		private var hintFinger:Image;
 
-		private function onEnterFrame(e:Event):void
-		{
-			if (isMoved)
-			{
-				if (hintShow)
-					hintShow.removeFromParent(true);
-				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-			}
-			if (count < 30 * 5)
-				count++;
-			else
-			{
-				if (!hintShow)
-				{
-					hintShow=new Sprite();
-					var hintArrow:Image=getImage("clothhintarrow");
-					hintFinger=getImage("clothhintfinger");
-					hintArrow.x=596;
-					hintArrow.y=354;
-					hintFinger.x=789;
-					hintFinger.y=414;
-					hintShow.addChild(hintArrow);
-					hintShow.addChild(hintFinger);
-					addChild(hintShow);
-					hintShow.touchable=false;
-				}
-				else
-				{
-					if (hintFinger.x == 589)
-					{
-						hintFinger.scaleX=hintFinger.scaleY=1;
-					}
-					else if (hintFinger.x == 789)
-					{
-						hintFinger.scaleX=hintFinger.scaleY=.8;
-					}
-					hintFinger.x+=hintFinger.scaleX == 1 ? 10 : -10;
-				}
-			}
-		}
-
-		private var list:List;
 		private var quizSolved:Boolean;
 		private var index:int=0;
 
@@ -132,185 +85,27 @@ package views.module1
 
 		override protected function init():void
 		{
-			addBG("background12");
+			taskType=int(Math.random() * clothArr.length);
 
+			bgHolder=new Sprite();
+			addChild(bgHolder);
+
+			bgHolder.addChild(getImage("background12"));
+
+			addCircle();
 			addKing();
 			addBox();
-			addShelf();
 			addLion();
-
-			addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 
-		private function onTouch(event:TouchEvent):void
+		private function showLionHint(content:String, callback:Function=null, isTask:Boolean=false):void
 		{
-			if (!dragging)
-				return;
+//			lastTask=isTask;
+			var txt:String=json[content];
+			LionMC.instance.say(txt, 0, 0, 0, callback, 20, 1, isTask);
 
-			var tc:Touch=event.getTouch(stage);
-			if (!tc)
-				return;
-
-			var pt:Point=new Point(tc.globalX / scale, tc.globalY / scale);
-
-			switch (tc.phase)
-			{
-				case TouchPhase.MOVED:
-				{
-					if (dragging && draggingCloth)
-					{
-						draggingCloth.x=pt.x;
-						draggingCloth.y=pt.y
-					}
-					break;
-				}
-
-				case TouchPhase.ENDED:
-				{
-					dragging=false;
-					dpt=null;
-
-					if (draggingCloth)
-					{
-						var targetPT:Point;
-						if (kingRect.containsPoint(pt))
-						{
-							targetPT=checkType(draggingCloth.type) ? clothPosition : hatPosition;
-							isMoved=true;
-						}
-						else
-						{
-							var back:Boolean=true;
-							targetPT=shelfPosition;
-						}
-						var _scale:Number=back ? .5 : 1;
-						var _alpha:Number=back ? 0 : 1;
-						tweening=true;
-						TweenLite.to(draggingCloth, .5, {x: targetPT.x, y: targetPT.y, scaleX: _scale, scaleY: _scale, alpha: _alpha, onComplete: function():void
-						{
-							tweening=false;
-
-							switch (targetPT)
-							{
-								case shelfPosition:
-								{
-									draggingCloth.renderer.setIconVisible(true);
-									break;
-								}
-
-								case clothPosition:
-								{
-									if (kingCloth.renderer)
-										kingCloth.renderer.setIconVisible(true);
-									kingCloth.renderer=draggingCloth.renderer;
-
-									clothIndex=clothArr.indexOf(kingCloth.type);
-									clothLocked=(clothIndex == missionIndex);
-									if (!clothLocked)
-										showClothHint("hint-" + kingCloth.type);
-									else if (hatLocked)
-										TweenLite.delayedCall(2, completeMission);
-									break;
-								}
-
-								case hatPosition:
-								{
-									if (kingHat.renderer)
-										kingHat.renderer.setIconVisible(true);
-									kingHat.renderer=draggingCloth.renderer;
-
-									hatIndex=hatArr.indexOf(kingHat.type);
-									hatLocked=(hatIndex == missionIndex);
-									if (!hatLocked)
-										showHatHint("hint-" + kingHat.type);
-									else if (clothLocked)
-										TweenLite.delayedCall(2, completeMission);
-									break;
-								}
-
-								default:
-								{
-									break;
-								}
-							}
-							draggingCloth.visible=false;
-						}});
-					}
-					break;
-				}
-			}
-		}
-
-		private function showClothHint(content:String):void
-		{
-			showHint(content, 2);
-		}
-
-		private function showHatHint(content:String):void
-		{
-			showHint(content, 1);
-		}
-
-		private function showLionHint(content:String, callback:Function=null):void
-		{
-			crtLionContent=content;
-			showHint(content, 0, callback);
-		}
-
-		//完成单个任务
-		private function completeMission():void
-		{
-			var str:String=clothArr[missionIndex];
-
-			var callback:Function=missionIndex == clothArr.length - 1 ? endMission : nextMission;
-			showLionHint("hint-ok-" + str, callback);
-		}
-
-		//完成所有任务
-		private function endMission():void
-		{
-			showAchievement(2);
-			opened=false;
-			TweenLite.delayedCall(2, function():void
-			{
-				showLionHint("hint-end", clothChecked);
-			});
-		}
-
-		private function nextMission():void
-		{
-			//解锁
-			hatLocked=false;
-			clothLocked=false;
-
-			if (missionIndex < 0)
-				missionIndex=Math.random() * (clothArr.length - 1);
-			else
-				missionIndex=clothArr.length - 1;
-
-			if (missionIndex < clothArr.length)
-			{
-				var str:String=clothArr[missionIndex];
-
-				showLionHint("hint-find-" + str);
-			}
-		}
-
-		private function clothChecked():void
-		{
-			showCard("0");
-			TweenLite.to(hatLockMark, .5, {alpha: 0});
-			TweenLite.to(clothLockMark, .5, {alpha: 0});
-			TweenLite.to(lion, 1, {x: lionX, onComplete: sceneOver});
-		}
-
-		private var hatPosition:Point=new Point(444.5, 168);
-		private var clothPosition:Point=new Point(444.5, 517);
-		private var shelfPosition:Point=new Point(800, 400);
-
-		private function checkType(type:String):Boolean
-		{
-			return clothArr.indexOf(type) >= 0
+//			crtLionContent=content;
+//			showHint(content, 0, callback, isTask);
 		}
 
 		private function addBox():void
@@ -332,232 +127,94 @@ package views.module1
 			boxHolder.addChild(boxCover);
 		}
 
-		private function showHint(content:String, posIndex:int, callback:Function=null):void
-		{
-			var pos:Point=posArr[posIndex];
-			var txt:String=json[content];
-			Prompt.showTXT(pos.x, pos.y, txt, 20, callback, this);
-		}
+//		private function showHint(content:String, posIndex:int, callback:Function=null, isTask:Boolean=false):void
+//		{
+//			var pos:Point=posArr[posIndex];
+//			var txt:String=json[content];
+//			Prompt.showTXT(isTask ? (pos.x + 85) : pos.x, isTask ? (pos.y + 85) : pos.y, txt, 20, callback, this, 1, false, 3, isTask);
+//		}
 
 		private var posArr:Array=[new Point(90, 560), new Point(530, 200), new Point(530, 610)];
-
-		private var hatIndex:int=-1;
-		private var clothIndex:int=-1;
-
-		private var _hatLocked:Boolean=false;
-
-		public function get hatLocked():Boolean
-		{
-			return _hatLocked;
-		}
-
-		public function set hatLocked(value:Boolean):void
-		{
-			_hatLocked=value;
-			if (hatLockMark)
-				hatLockMark.visible=value;
-		}
-
-		private var _clothLocked:Boolean=false;
-
-		public function get clothLocked():Boolean
-		{
-			return _clothLocked;
-		}
-
-		public function set clothLocked(value:Boolean):void
-		{
-			_clothLocked=value;
-			if (clothLockMark)
-				clothLockMark.visible=value;
-		}
-
 
 		private var lionX:int=-140;
 		private var lionDX:int=20;
 
 		private function addLion():void
 		{
-			lion=new Sprite();
-			lion.addChild(getImage("lion"));
-			addChild(lion);
+			showLionHint("hint-start", null, false);
+//			var txt:String=json["hint-start"];
+//			LionMC.instance.say(txt, 0, 0, 0, null, 20, 1, true);
 
-			lion.x=lionX;
-			lion.y=300;
-			lion.rotation=-Math.PI / 4;
-
-
-			TweenLite.to(lion, 1, {x: lionDX, y: 540, rotation: 0, ease: Elastic.easeOut, onComplete: function():void
-			{
-				showLionHint("hint-start");
-				lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
-			}});
+//			TweenLite.to(lion, 1, {x: lionDX, y: 540, rotation: 0, ease: Elastic.easeOut, onComplete: function():void
+//			{
+//				showLionHint("hint-start");
+//				lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
+//			}});
 		}
 
-		private function onLionTouch(e:TouchEvent):void
-		{
-			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
-			if (tc)
-				showLionHint(crtLionContent);
-		}
+//		private function onLionTouch(e:TouchEvent):void
+//		{
+//			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
+//			if (tc)
+//				showLionHint(crtLionContent, null, lastTask);
+//		}
 
 		private static var clothArr:Array=["朝服", "行服", "雨服", "龙袍", "常服"];
 		private static var hatArr:Array=["朝帽", "行帽", "雨帽", "龙帽", "常帽"];
-		private var dpt:Point;
-		private var kingRect:Rectangle;
-		private var draggingCloth:Cloth;
-		private var dragging:Boolean;
-		private var tweening:Boolean;
 
-		private var kingCloth:Cloth;
-
-		private var kingHat:Cloth;
-
-		private var missionIndex:int=-1;
-
-		private var lion:Sprite;
-		private var crtLionContent:String;
-
-		private var hatLockMark:Image;
-
-		private var clothLockMark:Image;
-		private var scrolling:Boolean;
+//		private var crtLionContent:String;
 
 		private var json:Object;
 
-		private function addShelf():void
+		private function addCircle():void
 		{
-			list=new List();
-
-			var layout:VerticalLayout=new VerticalLayout();
-			layout.useVirtualLayout=false;
-			list.layout=layout;
-
-			var items:Array=[];
-
-			for each (var i:String in clothArr)
+			for (var i:int=0; i < clothArr.length; i++)
 			{
-				var cloth:Object={type: i, src: getImage(i)};
-				items.push(cloth);
+				var cloth:Cloth2=new Cloth2();
+				cloth.cloth=getImage(clothArr[i]);
+				cloth.hat=getImage(hatArr[i]);
+				cloth.type=clothArr[i];
+				dataArr.push(cloth);
 			}
-
-			for each (var j:String in hatArr)
+			shuffleArr(dataArr, 5);
+			if ((dataArr[0].type) == clothArr[taskType])
 			{
-				var hat:Object={type: j, src: getImage(j)};
-				items.push(hat);
+				dataArr=dataArr.reverse();
 			}
-
-			items.fixed=true;
-
-			list.dataProvider=new ListCollection(items);
-
-			list.itemRendererFactory=function():IListItemRenderer
-			{
-				var renderer:BoxCellRenderer=new BoxCellRenderer();
-				renderer.width=284;
-				renderer.height=223;
-				renderer.addChild(getImage("boxcell"));
-				renderer.labelField="type";
-				renderer.iconField="src";
-
-				renderer.isQuickHitAreaEnabled=true;
-				return renderer;
-			}
-			boxHolder.addChildAt(list, 0);
-			list.x=6;
-			list.y=4;
-			list.setSize(284, 567);
-			list.clipRect=new Rectangle(0, 0, 284, 0)
-			list.hasElasticEdges=false;
-
-			draggingCloth=new Cloth();
-			addChild(draggingCloth);
-			draggingCloth.visible=false;
-
-			list.addEventListener(TouchEvent.TOUCH, onListTouch);
+			circle=new ClothCircle();
+			circle.readyCallback=initMission;
+			circle.dataArr=dataArr;
+			circle.light=assetManager.getTexture("light");
+			addChild(circle);
+			circle.x=533;
+			circle.y=653;
+			circle.checkIndex=checkIndex;
 		}
 
-		private function onListTouch(e:TouchEvent):void
+		private var taskType:int=0;
+
+		private function shuffleArr(arr:Array, times:int):void
 		{
-			if (tweening)
+			var len:int=arr.length;
+			if (len < 2)
 				return;
-			var tc:Touch=e.getTouch(stage);
-			if (!tc)
-				return;
-
-			var pt:Point=new Point(tc.globalX / scale, tc.globalY / scale);
-			switch (tc.phase)
+			for (var i:int=0; i < times; i++)
 			{
-				case TouchPhase.BEGAN:
-				{
-					var renderer:BoxCellRenderer=e.target as BoxCellRenderer;
-
-					if (renderer)
-					{
-						var isKingCloth:Boolean
-						if (!kingCloth.renderer)
-							isKingCloth=false;
-						else
-							isKingCloth=kingCloth.renderer.label == renderer.label;
-
-						var isKingHat:Boolean;
-						if (!kingHat.renderer)
-							isKingHat=false;
-						else
-							isKingHat=kingHat.renderer.label == renderer.label;
-
-						if (!isKingCloth && !isKingHat)
-						{
-							if ((hatLocked && hatArr.indexOf(renderer.label) >= 0) || (clothLocked && clothArr.indexOf(renderer.label) >= 0))
-								return;
-							draggingCloth.renderer=renderer
-							dpt=pt;
-						}
-					}
-					else
-						dpt=null;
-					draggingCloth.visible=false;
-					scrolling=false;
-					break;
-				}
-
-				case TouchPhase.MOVED:
-				{
-					if (dragging || scrolling)
-						return;
-					if (dpt)
-					{
-						var dx:Number=dpt.x - pt.x;
-						var dy:Number=dpt.y - pt.y;
-						if (Math.abs(dx) >= 10 * scale && Math.abs(dy) < 30 * scale && draggingCloth.renderer)
-						{
-							dragging=true;
-							list.stopScrolling();
-							draggingCloth.visible=true;
-							draggingCloth.x=pt.x;
-							draggingCloth.y=pt.y;
-							draggingCloth.scaleX=draggingCloth.scaleY=1;
-							draggingCloth.alpha=1;
-							draggingCloth.renderer.setIconVisible(false);
-						}
-						else if (Math.abs(dy) >= 30 * scale)
-						{
-							scrolling=true;
-						}
-					}
-					break;
-				}
-
-				default:
-				{
-					break;
-				}
+				arr.push(arr.splice(int(Math.random() * len), 1)[0])
 			}
 		}
+
+		private var dataArr:Array=[];
+
+		private var circle:ClothCircle;
+
+		private var backSP:Sprite;
+
+		private var frontSP:Sprite;
 
 		private function onClickBox(e:TouchEvent):void
 		{
-			var tc:Touch=e.getTouch(stage, TouchPhase.BEGAN);
+			var tc:Touch=e.getTouch(box, TouchPhase.ENDED);
 			if (tc)
 			{
 				box.removeEventListener(TouchEvent.TOUCH, onClickBox);
@@ -570,17 +227,18 @@ package views.module1
 				var ey:Number=(768 - quiz.height) / 2;
 
 				addChild(quiz);
-				setChildIndex(lion, numChildren - 1);
+//				setChildIndex(lion, numChildren - 1);
 
 				quiz.x=sx;
 				quiz.y=sy;
 				quiz.scaleX=quiz.scaleY=.2;
 
+				SoundManager.instance.play("boxscale");
 				TweenLite.to(quiz, 1, {scaleX: 1, scaleY: 1, x: ex, y: ey, onComplete: function():void
 				{
 					TweenLite.delayedCall(2, function():void
 					{
-						showLionHint("hint-quizstart");
+						showLionHint("hint-quizstart", null, true);
 					});
 					quiz.addEventListener("allMatched", onQuizDone);
 					quiz.activate();
@@ -595,85 +253,153 @@ package views.module1
 			{
 				quiz.parent.removeChild(quiz);
 
+				SoundManager.instance.play("boxopen");
 				opened=true;
-				crtKnowledgeIndex=3;
-				TweenLite.delayedCall(2, function():void
-				{
-					showLionHint("hint-gamestart", nextMission);
-				});
+//				crtKnowledgeIndex=3;
+//				TweenLite.delayedCall(1, function():void
+//				{
+//					showLionHint("hint-gamestart", initCircle);
+//				});
 			}});
 		}
 
-		private function addKing():void
+		private function initMission():void
 		{
-			clothLocked=hatLocked=true;
-
-			kingHolder=new Sprite();
-			kingHolder.addChild(getImage("king12"));
-			addChild(kingHolder);
-			kingHolder.x=268;
-			kingHolder.y=38;
-			kingRect=new Rectangle(268, 38, 353, 646);
-
-			kingCloth=new Cloth();
-			kingHolder.addChild(kingCloth);
-			kingCloth.x=176.5;
-			kingCloth.y=479.5;
-			kingCloth.addEventListener(TouchEvent.TOUCH, onClothTouch);
-
-			kingHat=new Cloth();
-			kingHolder.addChild(kingHat);
-			kingHat.x=176.5;
-			kingHat.y=130;
-			kingHat.addEventListener(TouchEvent.TOUCH, onClothTouch);
-
-			hatLockMark=getImage("cloth-lock");
-			hatLockMark.visible=false;
-			hatLockMark.x=265;
-			hatLockMark.y=110;
-			kingHolder.addChild(hatLockMark);
-
-			clothLockMark=getImage("cloth-lock");
-			clothLockMark.visible=false;
-			clothLockMark.x=260;
-			clothLockMark.y=515;
-			kingHolder.addChild(clothLockMark);
+			playKing(1);
+			opened=false;
+			var str:String=clothArr[taskType];
+			showLionHint("hint-find-" + str, function():void {
+				addEventListener(TouchEvent.TOUCH, onDrag);
+			}, true);
 		}
 
-		private function onClothTouch(event:TouchEvent):void
+		private var speedX:Number=0;
+		private var knowledgeHolder:Sprite;
+		private var knowledgeTF:TextField;
+
+		private function checkIndex(type:String):void
 		{
-			if (tweening || dragging || !opened)
-				return;
-			var tc:Touch=event.getTouch(stage)
+			showKnowledge(type);
+			if (type == clothArr[taskType])
+			{
+//				var txt2:String=json["hint-head-" + type];
+//				var img:Image=getImage(txt2);
+//				if (headP)
+//					headP.playHide();
+//				if (img)
+//					headP=Prompt.showIMG(632, 200, img, null, this);
+//				else
+//					headP=Prompt.showTXT(632, 200, txt2, 20, null, this);
+
+				SoundManager.instance.play("happy");
+				playKing(0);
+				showCard("0", function():void {
+					showAchievement(2);
+				});
+				sceneOver();
+			}
+			else
+			{
+//				SoundManager.instance.play("sad");
+				var _index:int=Math.random() > .6 ? 1 : (Math.random() > .5 ? 2 : 3);
+				playKing(_index);
+//				hideNext();
+			}
+		}
+
+		private function showKnowledge(type:String):void
+		{
+			var txt:String=json["hint-ok-" + type];
+			if (!knowledgeHolder)
+			{
+				knowledgeHolder=new Sprite();
+				addChild(knowledgeHolder);
+				knowledgeHolder.x=532;
+				knowledgeHolder.y=720;
+				var knowledgeBG:Image=getImage("hintbar");
+				knowledgeHolder.addChild(knowledgeBG);
+				knowledgeHolder.pivotX=knowledgeBG.width >> 1;
+				knowledgeHolder.pivotY=knowledgeBG.height >> 1;
+				knowledgeTF=new TextField(knowledgeBG.width - 30, knowledgeBG.height - 10, txt, FontVo.PALACE_FONT, 20, 0x561a1a, true);
+				knowledgeTF.x=knowledgeBG.x + 15;
+				knowledgeTF.y=knowledgeBG.y + 3;
+				knowledgeHolder.addChild(knowledgeTF);
+				knowledgeTF.touchable=false;
+				knowledgeTF.hAlign="center";
+			}
+			knowledgeTF.text=txt;
+
+			var txt2:String=json["hint-head-" + type];
+			var img:Image=getImage(txt2);
+			if (headP)
+				headP.playHide();
+			if (img)
+				headP=Prompt.showIMG(632, 200, img, null, this);
+			else
+				headP=Prompt.showTXT(632, 200, txt2, 20, null, this);
+		}
+
+		private var headP:Prompt;
+
+		private function initCircle():void
+		{
+			circle.sp1=frontSP;
+			circle.sp2=backSP;
+			circle.initCircle();
+
+			var quad:Quad=new Quad(1024, 768, 0);
+			quad.alpha=0;
+			bgHolder.addChild(quad);
+
+			TweenLite.to(quad, 1, {alpha: .6});
+			quizSolved=true;
+		}
+
+		private var dragging:Boolean;
+		private var dpt:Point;
+
+		private function onDrag(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(this);
 			if (!tc)
 				return;
-
+			var pt:Point=tc.getLocation(this);
 			switch (tc.phase)
 			{
 				case TouchPhase.BEGAN:
 				{
-					var cloth:Cloth=event.currentTarget as Cloth;
+					dpt=pt;
+					dragging=false;
+					circle.startDrag();
+					break;
+				}
 
-					if (clothArr.indexOf(cloth.type) >= 0)
+				case TouchPhase.MOVED:
+				{
+					if (Math.abs(dpt.x - pt.x) > 10)
+						dragging=true;
+					if (dragging)
 					{
-						if (clothLocked)
-							return;
+						var move:Point=tc.getMovement(this);
+						speedX=move.x / 200 / Math.PI;
+						circle.angle-=speedX;
 					}
-					else
-					{
-						if (hatLocked)
-							return;
-					}
+					break;
+				}
 
-					dragging=true;
-					draggingCloth.renderer=cloth.renderer;
-					draggingCloth.x=tc.globalX / scale;
-					draggingCloth.y=tc.globalY / scale;
-					draggingCloth.visible=true;
-					draggingCloth.scaleX=draggingCloth.scaleY=1;
-					draggingCloth.alpha=1;
+				case TouchPhase.STATIONARY:
+				{
+					speedX=0;
+					trace("stay")
+					break;
+				}
 
-					cloth.distroy();
+				case TouchPhase.ENDED:
+				{
+					if (dragging)
+						circle.tweenPlay(speedX);
+					dragging=false;
+					speedX=0;
 					break;
 				}
 
@@ -683,6 +409,90 @@ package views.module1
 				}
 			}
 		}
+
+		private var expArr:Array=["kingHappy", "kingLook", "KingNaughty", "kingStrange"];
+
+		private var kingHead:MovieClip;
+
+		private function addKing():void
+		{
+			backSP=new Sprite();
+			frontSP=new Sprite();
+
+			kingHolder=new Sprite();
+			playKing(0);
+			var king:Image=getImage("king12")
+			king.x=-1;
+			king.y=2;
+			kingHolder.addChild(king);
+			kingHolder.pivotX=king.width >> 1;
+			kingHolder.pivotY=king.height;
+
+			addChild(backSP);
+			addChild(kingHolder);
+			addChild(frontSP);
+			backSP.x=frontSP.x=kingHolder.x=533;
+			backSP.y=frontSP.y=kingHolder.y=653;
+
+			king.addEventListener(TouchEvent.TOUCH, onKingTouch);
+		}
+
+		private function onKingTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(kingHolder, TouchPhase.ENDED);
+			if (tc)
+				playKing(int(Math.random() * expArr.length))
+		}
+
+		public function playKing(expressionIndex:int):void
+		{
+			if (kingDelay)
+			{
+				kingDelay.kill();
+				kingDelay=null;
+			}
+			if (kingHead)
+			{
+				kingHead.stop();
+				Starling.juggler.remove(kingHead);
+				kingHead.removeFromParent(true);
+				kingHead=null;
+			}
+
+			kingHead=new MovieClip(assetManager.getTextures(expArr[expressionIndex]), 18);
+			kingHead.loop=0;
+			kingHead.play();
+			Starling.juggler.add(kingHead);
+			kingHead.x=62;
+			kingHead.y=108;
+			kingHolder.addChildAt(kingHead, 0);
+
+			if (quizSolved)
+			{
+				var _index:int=Math.random() > .7 ? 1 : 2;
+				kingDelay=TweenLite.delayedCall(8, playKing, [_index]);
+			}
+		}
+
+		override public function dispose():void
+		{
+			if (kingDelay)
+			{
+				kingDelay.kill();
+				kingDelay=null;
+			}
+			if (kingHead)
+			{
+				kingHead.stop();
+				Starling.juggler.remove(kingHead);
+				kingHead.removeFromParent(true);
+				kingHead=null;
+			}
+			super.dispose();
+		}
+
+		private var kingDelay:TweenLite;
+//		private var lastTask:Boolean;
 	}
 }
 
