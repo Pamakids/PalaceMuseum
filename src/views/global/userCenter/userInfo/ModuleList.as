@@ -2,14 +2,14 @@ package views.global.userCenter.userInfo
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.geom.Point;
 	import flash.utils.getTimer;
-
+	
 	import controllers.MC;
-
+	
 	import models.SOService;
-
+	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -19,7 +19,7 @@ package views.global.userCenter.userInfo
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
-
+	
 	import views.Interlude;
 	import views.global.userCenter.UserCenterManager;
 
@@ -72,10 +72,11 @@ package views.global.userCenter.userInfo
 		private function init():void
 		{
 			initBackGround();
+			initLines();
+			initWords();
 			initBtns();
 			initActiveIcon();
 		}
-
 
 		private function initActiveIcon():void
 		{
@@ -170,7 +171,7 @@ package views.global.userCenter.userInfo
 			for (var i:int=0; i < btnCount; i++)
 			{
 				r=minR + i * d;
-				image=new Image(isComplete(i) ? UserCenterManager.getTexture("button_" + i) : UserCenterManager.getTexture("button_unFinish"));
+				image=isComplete(i) ? UserCenterManager.getImage("button_" + i) : UserCenterManager.getImage("button_unFinish");
 				image.pivotX=image.pivotY=image.width >> 1;
 				setPositionByRadian(image, r);
 				this.addChild(image);
@@ -230,15 +231,62 @@ package views.global.userCenter.userInfo
 
 		private function initBackGround():void
 		{
-			var image:Image=new Image(UserCenterManager.getTexture("userCenter_bg"));
+			var image:Image=UserCenterManager.getImage("userCenter_bg");
 			image.x=185;
 			image.y=93;
 			this.addChild(image);
 			image.touchable=false;
 		}
+		
+		private const wordPosition:Array = [
+			new Point(135, 199),
+			new Point(222, 160),
+			new Point(321, 128),
+			new Point(419, 112),
+			new Point(512, 113),
+			new Point(596, 128),
+			new Point(695, 157),
+			new Point(768, 196)
+		];
+		private const linePosition:Array = [
+			new Point(141, 123),
+			new Point(238, 82),
+			new Point(356, 59),
+			new Point(452, 57),
+			new Point(568, 60),
+			new Point(688, 82),
+			new Point(791, 128)
+		];
+		private function initLines():void
+		{
+			var image:Image;
+			var point:Point;
+			for (var i:int = 0; i < linePosition.length; i++) 
+			{
+				point = linePosition[i];
+				image = UserCenterManager.getImage(isComplete(i+1)?"line_complete_"+i:"line_uncomplete_"+i);
+				image.touchable = false;
+				image.x = point.x;
+				image.y = point.y;
+				this.addChild( image );
+			}
+		}
+		private function initWords():void
+		{
+			var image:Image;
+			var point:Point;
+			for (var i:int = 0; i < wordPosition.length; i++) 
+			{
+				point = wordPosition[i];
+				image = UserCenterManager.getImage(isComplete(i)?"word_complete_"+i:"word_uncomplete_"+i);
+				image.touchable = false;
+				image.x = point.x;
+				image.y = point.y;
+				this.addChild( image );
+			}
+		}
 
 		private var startObj:Object;
-
 		private function onTouch(e:TouchEvent):void
 		{
 			var i:int;

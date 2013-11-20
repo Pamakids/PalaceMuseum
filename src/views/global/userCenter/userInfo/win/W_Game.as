@@ -1,7 +1,5 @@
 package views.global.userCenter.userInfo.win
 {
-	import controllers.MC;
-	
 	import feathers.controls.Button;
 	import feathers.core.FeathersControl;
 	
@@ -95,15 +93,15 @@ package views.global.userCenter.userInfo.win
 		private function initButtons():void
 		{
 			button_start = new Button();
-			button_start.defaultSkin = new Image(UserCenterManager.getTexture("button_start_up"));
-			button_start.downSkin = new Image(UserCenterManager.getTexture("button_start_down"));
+			button_start.defaultSkin = UserCenterManager.getImage("button_start_up");
+			button_start.downSkin = UserCenterManager.getImage("button_start_down");
 			button_start.addEventListener(Event.TRIGGERED, startGame);
 			this.addChild( button_start );
 			button_start.x = 452;
 			button_start.y = 303;
 			
 			button_close = new Button();
-			button_close.defaultSkin = new Image(UserCenterManager.getTexture("button_close_small"));
+			button_close.defaultSkin = UserCenterManager.getImage("button_close_small");
 			button_close.addEventListener(Event.TRIGGERED, closeWindow);
 			this.addChild( button_close );
 			button_close.x = 566;
@@ -113,12 +111,12 @@ package views.global.userCenter.userInfo.win
 		private function initBackImages():void
 		{
 			//背景
-			var image:Image = new Image(UserCenterManager.getTexture("background_win_0"));
+			var image:Image = UserCenterManager.getImage("background_win_0");
 			this.addChild( image );
 			this.width = image.width;
 			this.height = image.height;
 			//线条
-			image = new Image(UserCenterManager.getTexture("line_other"));
+			image = UserCenterManager.getImage("line_other");
 			this.addChild( image );
 			image.x = 363;
 			image.y = 125;
@@ -142,7 +140,7 @@ package views.global.userCenter.userInfo.win
 		
 		private function initGameicon():void
 		{
-			icon = new Image(UserCenterManager.getTexture("card_game_" + _gameData.iconIndex));
+			icon = UserCenterManager.getImage("card_game_" + _gameData.iconIndex);
 			this.addChild( icon );
 			icon.x = 33;
 			icon.y = 58;

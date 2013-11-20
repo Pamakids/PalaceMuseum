@@ -15,7 +15,7 @@ package views.global.userCenter.userInfo
 		
 		override protected function initialize():void
 		{
-			var image:Image = new Image(UserCenterManager.getTexture("background_icon_1"));
+			var image:Image = UserCenterManager.getImage("background_icon_1");
 			this.width = image.width;
 			this.height = image.height;
 			this.addChild( image );

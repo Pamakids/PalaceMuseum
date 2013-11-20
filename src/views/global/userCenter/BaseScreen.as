@@ -17,7 +17,7 @@ package views.global.userCenter
 		
 		protected function initPages():void
 		{
-			var image:Image = new Image(UserCenterManager.getTexture("background_0"));
+			var image:Image = UserCenterManager.getImage("background_0");
 			this.addChild( image );
 		}
 		

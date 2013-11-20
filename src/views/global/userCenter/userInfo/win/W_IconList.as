@@ -58,7 +58,7 @@ package views.global.userCenter.userInfo.win
 		
 		private function initBackground():void
 		{
-			var image:Image = new Image( UserCenterManager.getTexture("background_iconlist") );
+			var image:Image = UserCenterManager.getImage("background_iconlist");
 			this.addChild( image );
 			this.width = image.width;
 			this.height = image.height;

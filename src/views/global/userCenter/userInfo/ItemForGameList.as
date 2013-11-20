@@ -84,7 +84,7 @@ package views.global.userCenter.userInfo
 			gameIcon = new Button();
 			gameIcon.width = 205;
 			gameIcon.height = 159;
-			gameIcon.defaultSkin = new Image(UserCenterManager.getTexture("card_game_"+_data.iconIndex));
+			gameIcon.defaultSkin = UserCenterManager.getImage("card_game_"+_data.iconIndex);
 			this.addChild( gameIcon );
 			gameIcon.addEventListener(TouchEvent.TOUCH, onTouch);
 			
@@ -95,7 +95,7 @@ package views.global.userCenter.userInfo
 				this.addChild( mask );
 				mask.x = 7;
 				mask.y = 7;
-				lock = new Image(UserCenterManager.getTexture("icon_lock"));
+				lock = UserCenterManager.getImage("icon_lock");
 				lock.x = 15;
 				lock.y = 96;
 				this.addChild( lock );

@@ -98,22 +98,22 @@ package views.components
 		
 		private function initImages():void
 		{
-			var image:Image = new Image(UserCenterManager.getTexture("background_date"));
+			var image:Image = UserCenterManager.getImage("background_date");
 			this.addChild( image );
 			image.y = 35;
 			image.touchable = false;
 			
-			image = new Image(UserCenterManager.getTexture("background_date_year"));
+			image = UserCenterManager.getImage("background_date_year");
 			this.addChild( image );
 			image.x = 60;
 			image.touchable = false;
 			
-			image = new Image(UserCenterManager.getTexture("background_date_day"));
+			image = UserCenterManager.getImage("background_date_day");
 			this.addChild( image );
 			image.x = 174;
 			image.touchable = false;
 			
-			image = new Image(UserCenterManager.getTexture("background_date_day"));
+			image = UserCenterManager.getImage("background_date_day");
 			this.addChild( image );
 			image.x = 266;
 			image.touchable = false;

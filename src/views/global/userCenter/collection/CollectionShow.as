@@ -59,7 +59,7 @@ package views.global.userCenter.collection
 				{
 					if(!icon)
 					{
-						icon = new Image(UserCenterManager.getTexture("icon_collection_" + vo.id));
+						icon = UserCenterManager.getImage("icon_collection_" + vo.id);
 						this.addChild( icon );
 						icon.touchable = false;
 					}
@@ -90,7 +90,7 @@ package views.global.userCenter.collection
 		private var viewWidth:int;
 		private function initialize():void
 		{
-			background = new Image( UserCenterManager.getTexture("background_collection_0") );
+			background = UserCenterManager.getImage("background_collection_0");
 			this.addChild( background );
 			viewWidth = background.width;
 			
@@ -106,7 +106,6 @@ package views.global.userCenter.collection
 			label_1.x = ( background.width - label_1.width >> 1 ) + 2;
 			label_1.y = 330;
 			
-//			label_1.border = label_0.border = true;
 			label_1.touchable = label_0.touchable = false;
 			
 			this.addEventListener(TouchEvent.TOUCH, onTouch);
