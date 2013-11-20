@@ -2,6 +2,7 @@ package views
 {
 	import com.greensock.TweenLite;
 	import com.pamakids.manager.SoundManager;
+	import com.pamakids.utils.DPIUtil;
 	
 	import flash.display.Bitmap;
 	import flash.display.Shape;
@@ -17,11 +18,11 @@ package views
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.system.Capabilities;
+	import flash.utils.getTimer;
 	
 	import models.Const;
 	
 	import starling.core.Starling;
-	import com.pamakids.utils.DPIUtil;
 
 	/**
 	 * 引子
@@ -110,6 +111,7 @@ package views
 				button.scaleX = button.scaleY = DPIUtil.getDPIScale();
 				button.addChild(bitmap);
 				this.addChild(button);
+				button.visible = false;
 				button.addEventListener(MouseEvent.CLICK, passHandler);
 			}
 		}
@@ -151,6 +153,11 @@ package views
 					}});
 					if (startHandler)
 						startHandler();
+					if(passable)
+					{
+						start = getTimer();
+						this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+					}
 					break;
 				case "NetStream.Play.Stop":
 					trace("NetStream.Play.Stop");
@@ -159,6 +166,17 @@ package views
 			}
 		}
 
+		private var start:uint;
+		private const seconds:uint = 8;
+		private function onEnterFrame(e:Event):void
+		{
+			if(getTimer() - start >= seconds*1000)
+			{
+				this.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+				button.visible = true;
+			}
+		}
+		
 		private function connectStream():void
 		{
 			stream=new NetStream(connection);
@@ -172,11 +190,6 @@ package views
 			stageVideo.attachNetStream(stream);
 			stageVideo.viewPort=new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 			stream.play(videoURL);
-
-//			video = new Video(viewWidth, viewHeight);
-//			video.attachNetStream( stream );
-//			this.addChildAt( video, 0 );
-//			stream.play( videoURL );
 		}
 
 		private function onMetaData(_obj:Object):void
