@@ -1,5 +1,7 @@
 package views
 {
+	import com.pamakids.palace.utils.StringUtils;
+
 	import flash.filesystem.File;
 
 	import sound.SoundAssets;
@@ -26,25 +28,30 @@ package views
 			addQAS();
 			addLoading();
 
-			if (assetManager)
+			loadAssets(skipIndex, addNext);
+		}
+
+		override protected function loadAssets(index:int, callback:Function):void
+		{
+			if (index < 0)
+				index=0
+			if (index == 0)
 			{
-				assetManager.purge();
-				assetManager=null;
-			}
-			assetManager=new AssetManager();
-			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName);
-//			var f:File=File.applicationDirectory.resolvePath("assets/common");
-			var path:String="assets/module1/scene12/kingExp"
-			assetManager.enqueue(file, path + ".atf", path + "2.atf",
-				path + ".xml", path + "2.xml", "assets/games/game31/mapEdge.png");
-			assetManager.loadQueue(function(ratio:Number):void
-			{
-				if (ratio == 1.0)
+				assetManager=new AssetManager();
+				var scene:Class=sceneArr[index] as Class;
+				var sceneName:String=StringUtils.getClassName(scene);
+				var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
+				var path:String="assets/module1/scene12/kingExp"
+				assetManager.enqueue(file, path + ".atf", path + "2.atf",
+					path + ".xml", path + "2.xml", "assets/games/game31/mapEdge.png");
+				assetManager.loadQueue(function(ratio:Number):void
 				{
-					isLoading=false;
-					addNext();
-				}
-			});
+					if (ratio == 1.0 && callback != null)
+						callback();
+				});
+			}
+			else
+				super.loadAssets(index, callback);
 		}
 	}
 }

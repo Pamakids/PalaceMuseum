@@ -1,13 +1,10 @@
 package views
 {
-	import flash.filesystem.File;
-
 	import controllers.MC;
 
 	import sound.SoundAssets;
 
 	import starling.events.Event;
-	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
 	import views.components.base.PalaceModule;
@@ -42,24 +39,7 @@ package views
 			addQAS();
 			addLoading();
 
-			if (assetManager)
-			{
-				assetManager.purge();
-				assetManager=null;
-			}
-			assetManager=new AssetManager();
-			var file1:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/scene30");
-			var file2:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/scene31");
-//			var f:File=File.applicationDirectory.resolvePath("assets/common");
-			assetManager.enqueue(file1, file2);
-			assetManager.loadQueue(function(ratio:Number):void
-			{
-				if (ratio == 1.0)
-				{
-					isLoading=false;
-					addNext();
-				}
-			});
+			loadAssets(skipIndex, addNext);
 		}
 
 		private function loadSecond():void
@@ -71,31 +51,16 @@ package views
 			addQAS();
 			addLoading();
 
-			if (assetManager)
-			{
-				assetManager.purge();
-				assetManager=null;
-			}
-			assetManager=new AssetManager();
-			var file1:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/scene32");
-			var file2:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/scene33");
-//			var f:File=File.applicationDirectory.resolvePath("assets/common");
-			assetManager.enqueue(file1, file2);
-			assetManager.loadQueue(function(ratio:Number):void
-			{
-				if (ratio == 1.0)
-				{
-					isLoading=false;
-					addNext2();
-				}
-			});
+			if (sceneIndex < 2)
+				sceneIndex=2;
+			loadAssets(sceneIndex, addNext2);
 		}
 
 		protected function addNext2():void
 		{
-//			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			TopBar.enable=true;
 			MC.instance.main.removeMask();
+			removeLoading();
 			if (skipIndex < 2)
 			{
 				var next:ElasticButton=new ElasticButton(getImage("nextButton"));
@@ -123,15 +88,15 @@ package views
 
 		override protected function nextScene(e:Event):void
 		{
-			sceneIndex++;
-			if (sceneIndex == 2)
+			if (sceneIndex == 1)
 			{
+				sceneIndex++;
 				if (crtScene)
 					crtScene.removeFromParent(true);
 				loadSecond();
 			}
 			else
-				loadScene(sceneIndex);
+				super.nextScene(e);
 		}
 	}
 }

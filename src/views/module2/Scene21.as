@@ -2,6 +2,7 @@ package views.module2
 {
 	import com.greensock.TweenLite;
 	import com.pamakids.manager.SoundManager;
+	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -397,8 +398,9 @@ package views.module2
 				playKing(int(Math.random() * expArr.length))
 				if (p)
 					p.playHide();
-				var dx:Number=gpt.x;
-				var dy:Number=gpt.y < 150 ? 150 : gpt.y;
+				var dx:Number=gpt.x / DPIUtil.getDPIScale();
+				var dy:Number=gpt.y / DPIUtil.getDPIScale();
+				dy=dy < 150 ? 150 : dy;
 				p=Prompt.showTXT(dx, dy, book.bookname, 20, null, this, align, true)
 			}
 		}

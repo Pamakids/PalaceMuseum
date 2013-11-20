@@ -31,7 +31,7 @@ package
 		{
 //			SOService.instance.clear();
 //			SOService.instance.init();
-//			SOService.instance.setSO("lastScene", "00map");
+//			SOService.instance.setSO("lastScene", "34");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
@@ -47,8 +47,10 @@ package
 			am.enqueue(f);
 			am.loadQueue(function(ratio:Number):void
 			{
-				if (ratio == 1.0)
+				if (ratio == 1.0) {
 					MC.assetManager=am;
+					initialize();
+				}
 			});
 
 			Map.loadAssets();
@@ -65,8 +67,14 @@ package
 
 		override protected function init():void
 		{
-//			MC.instance.gotoModule(0, 0);
-//			return;
+//			if (!lastScene)
+//				showStart();
+//			else
+//				startGame();
+		}
+
+		private function initialize():void
+		{
 			if (!lastScene)
 				showStart();
 			else

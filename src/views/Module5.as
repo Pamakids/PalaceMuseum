@@ -1,10 +1,6 @@
 package views
 {
-	import flash.filesystem.File;
-
 	import sound.SoundAssets;
-
-	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceModule;
 	import views.module5.Scene51;
@@ -24,23 +20,7 @@ package views
 			addQAS();
 			addLoading();
 
-			if (assetManager)
-			{
-				assetManager.purge();
-				assetManager=null;
-			}
-			assetManager=new AssetManager();
-			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName);
-//			var f:File=File.applicationDirectory.resolvePath("assets/common");
-			assetManager.enqueue(file);
-			assetManager.loadQueue(function(ratio:Number):void
-			{
-				if (ratio == 1.0)
-				{
-					isLoading=false;
-					addNext();
-				}
-			});
+			loadAssets(skipIndex, addNext);
 		}
 	}
 }
