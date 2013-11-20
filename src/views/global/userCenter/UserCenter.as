@@ -1,19 +1,19 @@
 package views.global.userCenter
 {
 	import com.pamakids.manager.SoundManager;
-
+	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	import controllers.MC;
-
+	
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
-
+	
 	import org.agony2d.utils.getClassName;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -22,10 +22,9 @@ package views.global.userCenter
 	import starling.events.TouchPhase;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
-
+	
 	import views.components.ElasticButton;
 	import views.components.SoftPaperAnimation;
-	import views.global.TopBar;
 	import views.global.userCenter.achievement.AchievementScreen;
 	import views.global.userCenter.collection.CollectionScreen;
 	import views.global.userCenter.gameCenter.GameCenterScreen;
@@ -87,7 +86,7 @@ package views.global.userCenter
 
 		private function initBackgroud():void
 		{
-			var image:Image=new Image(UserCenterManager.getTexture("main_background"));
+			var image:Image=UserCenterManager.getImage("main_background");
 			this.addChild(image);
 			image.touchable=false;
 		}
@@ -98,24 +97,24 @@ package views.global.userCenter
 			_tabBar=new TabBar();
 			_tabBar.dataProvider=new ListCollection([
 				{
-					defaultIcon: new Image(UserCenterManager.getTexture("userinfo_up")),
-					selectedUpIcon: new Image(UserCenterManager.getTexture("userinfo_down"))
+					defaultIcon: 	UserCenterManager.getImage("userinfo_up"),
+					selectedUpIcon:	UserCenterManager.getImage("userinfo_down")
 				},
 				{
-					defaultIcon: new Image(UserCenterManager.getTexture("handbook_up")),
-					selectedUpIcon: new Image(UserCenterManager.getTexture("handbook_down"))
+					defaultIcon:	UserCenterManager.getImage("handbook_up"),
+					selectedUpIcon:	UserCenterManager.getImage("handbook_down")
 				},
 				{
-					defaultIcon: new Image(UserCenterManager.getTexture("achievement_up")),
-					selectedUpIcon: new Image(UserCenterManager.getTexture("achievement_down"))
+					defaultIcon:	UserCenterManager.getImage("achievement_up"),
+					selectedUpIcon:	UserCenterManager.getImage("achievement_down")
 				},
 				{
-					defaultIcon: new Image(UserCenterManager.getTexture("collection_up")),
-					selectedUpIcon: new Image(UserCenterManager.getTexture("collection_down"))
+					defaultIcon:	UserCenterManager.getImage("collection_up"),
+					selectedUpIcon:	UserCenterManager.getImage("collection_down")
 				},
 				{
-					defaultIcon: new Image(UserCenterManager.getTexture("map_up")),
-					selectedUpIcon: new Image(UserCenterManager.getTexture("map_down"))
+					defaultIcon:	UserCenterManager.getImage("map_up"),
+					selectedUpIcon:	UserCenterManager.getImage("map_down")
 				}
 				]);
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;

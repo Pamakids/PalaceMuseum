@@ -56,13 +56,13 @@ package views.global.userCenter.userInfo
 		private var nameBoard:Image;
 		private function initBackImages():void
 		{
-			nameBoard = new Image(UserCenterManager.getTexture("background_nameboard"));
+			nameBoard = UserCenterManager.getImage("background_nameboard");
 			this.addChild( nameBoard );
 			nameBoard.x = 50;
 			nameBoard.y = 27;
 			if(!_data)
 				nameBoard.alpha = .6;
-			var image:Image = new Image(UserCenterManager.getTexture("background_headicon"));
+			var image:Image = UserCenterManager.getImage("background_headicon");
 			this.addChild( image );
 		}
 		

@@ -1,18 +1,17 @@
 package views.global.userCenter
 {
 	import flash.filesystem.File;
-
+	
 	import controllers.MC;
-
+	
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.LionMC;
 	import views.components.base.PalaceModule;
-	import views.global.TailBar;
 	import views.global.TopBar;
 
 	/**
@@ -178,6 +177,11 @@ package views.global.userCenter
 		public static function getTexture(name:String):Texture
 		{
 			return _assetsManager.getTexture(name);
+		}
+		
+		public static function getImage(name:String):Image
+		{
+			return new Image(_assetsManager.getTexture(name));
 		}
 
 	}

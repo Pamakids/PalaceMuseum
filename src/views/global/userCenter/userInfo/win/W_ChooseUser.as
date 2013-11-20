@@ -51,7 +51,7 @@ package views.global.userCenter.userInfo.win
 		private var selectedTitle:Image;
 		private function initSeclectedTitle():void
 		{
-			selectedTitle = new Image(UserCenterManager.getTexture("background_selected_icon"));
+			selectedTitle = UserCenterManager.getImage("background_selected_icon");
 			this.addChild(selectedTitle);
 			selectedTitle.touchable = false;
 		}
@@ -89,7 +89,7 @@ package views.global.userCenter.userInfo.win
 		private function initButtons():void
 		{
 			button_close = new Button();
-			button_close.defaultSkin = new Image(UserCenterManager.getTexture("button_close_small"));
+			button_close.defaultSkin = UserCenterManager.getImage("button_close_small");
 			button_close.addEventListener(Event.TRIGGERED, closeWindow);
 			this.addChild( button_close );
 			button_close.x = 420;
@@ -143,7 +143,7 @@ package views.global.userCenter.userInfo.win
 		
 		private function initBackImages():void
 		{
-			var image:Image = new Image(UserCenterManager.getTexture("background_win_1"));
+			var image:Image = UserCenterManager.getImage("background_win_1");
 			this.addChild( image );
 			this.width = image.width;
 			this.height = image.height;

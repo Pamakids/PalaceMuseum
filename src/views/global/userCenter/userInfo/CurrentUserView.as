@@ -25,7 +25,7 @@ package views.global.userCenter.userInfo
 		{
 			this.touchable = false;
 			
-			var image:Image = new Image(UserCenterManager.getTexture("background_crtuserinfo"));
+			var image:Image = UserCenterManager.getImage("background_crtuserinfo");
 			this.addChild( image );
 			
 			initHeadicon();

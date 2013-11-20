@@ -44,7 +44,7 @@ package views.global.userCenter.userInfo
 		{
 			if(_index)
 			{
-				_icon = new Image(UserCenterManager.getTexture("icon_userhead_" + _index));
+				_icon = UserCenterManager.getImage("icon_userhead_" + _index);
 				this.addChild( _icon );
 				_icon.x = -_icon.width >> 1;
 				_icon.y = -_icon.height >> 1;

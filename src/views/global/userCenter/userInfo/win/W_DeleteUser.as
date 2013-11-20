@@ -39,16 +39,16 @@ package views.global.userCenter.userInfo.win
 		private function initButtons():void
 		{
 			button_ok = new Button();
-			button_ok.defaultSkin = new Image(UserCenterManager.getTexture("button_ok_up"));
-			button_ok.downSkin = new Image(UserCenterManager.getTexture("button_ok_down"));
+			button_ok.defaultSkin = UserCenterManager.getImage("button_ok_up");
+			button_ok.downSkin = UserCenterManager.getImage("button_ok_down");
 			button_ok.addEventListener(Event.TRIGGERED, deleteUser);
 			this.addChild( button_ok );
 			button_ok.x = 270;
 			button_ok.y = 300;
 			
 			button_cancle = new Button();
-			button_cancle.defaultSkin = new Image(UserCenterManager.getTexture("button_cancle_up"));
-			button_cancle.downSkin = new Image(UserCenterManager.getTexture("button_cancle_down"));
+			button_cancle.defaultSkin = UserCenterManager.getImage("button_cancle_up");
+			button_cancle.downSkin = UserCenterManager.getImage("button_cancle_down");
 			button_cancle.addEventListener(Event.TRIGGERED, closeWindow);
 			this.addChild( button_cancle );
 			button_cancle.x = 100;
@@ -63,7 +63,7 @@ package views.global.userCenter.userInfo.win
 		
 		private function initBackImages():void
 		{
-			var image:Image = new Image(UserCenterManager.getTexture("background_win_1"));
+			var image:Image = UserCenterManager.getImage("background_win_1");
 			this.addChild( image );
 			this.width = image.width;
 			this.height = image.height;

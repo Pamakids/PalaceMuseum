@@ -115,9 +115,9 @@ package views.global.userCenter.achievement
 		private function initBackground():void
 		{
 			if(_state == 0)
-				image = new Image(UserCenterManager.getTexture("achievement_card_unfinish"));
+				image = UserCenterManager.getImage("achievement_card_unfinish");
 			else
-				image = new Image(UserCenterManager.getTexture("achievement_card_unfinish_big"));
+				image = UserCenterManager.getImage("achievement_card_unfinish_big");
 			this.width = image.width;
 			this.height = image.height;
 			this.addChild( image );

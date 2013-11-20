@@ -58,7 +58,7 @@ package views.global.userCenter.userInfo
 
 		private function initMapButton():void
 		{
-			mapButton=new ElasticButton(new Image(UserCenterManager.getTexture("button_map_skin")), new Image(UserCenterManager.getTexture("button_map_skin")));
+			mapButton=new ElasticButton(UserCenterManager.getImage("button_map_skin"), UserCenterManager.getImage("button_map_skin"));
 			this.addChild(mapButton);
 			mapButton.visible=mapVisible;
 			mapButton.x=830;
@@ -83,7 +83,7 @@ package views.global.userCenter.userInfo
 
 		private function initBirdView():void
 		{
-			var image:Image=new Image(UserCenterManager.getTexture("icon_bird"));
+			var image:Image=UserCenterManager.getImage("icon_bird");
 			image.x=642;
 			image.y=65;
 			this.addChild(image);
@@ -156,8 +156,8 @@ package views.global.userCenter.userInfo
 		private function initButton():void
 		{
 			button_change=new Button();
-			button_change.defaultSkin=new Image(UserCenterManager.getTexture("button_changeUser_up"));
-			button_change.downSkin=new Image(UserCenterManager.getTexture("button_changeUser_down"));
+			button_change.defaultSkin=UserCenterManager.getImage("button_changeUser_up");
+			button_change.downSkin=UserCenterManager.getImage("button_changeUser_down");
 			this.addChild(button_change);
 			button_change.x=346;
 			button_change.y=143;
@@ -275,7 +275,7 @@ package views.global.userCenter.userInfo
 
 		override protected function initPages():void
 		{
-			var image:Image=new Image(UserCenterManager.getTexture("background_0"));
+			var image:Image=UserCenterManager.getImage("background_0");
 			this.addChild(image);
 			var texture:Texture=UserCenterManager.getTexture("line_long");
 			image=new Image(texture);
