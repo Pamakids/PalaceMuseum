@@ -1,16 +1,25 @@
 package views.module2
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Elastic;
+	import com.pamakids.palace.utils.SPUtils;
+
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
+
+	import feathers.core.PopUpManager;
 
 	import models.SOService;
 
 	import starling.display.Image;
+	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.ElasticButton;
 	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
@@ -40,34 +49,24 @@ package views.module2
 		private var hint0:String="造纸家弟子的传世之作－宣纸\n宣纸因产自唐代宣州（今安徽泾县）而得名，它易书写，不退色，少虫蛀，寿命长。";
 		private var hint1:String="仙鹤带来的制砚灵感－端砚\n端砚产自广东省端州（今肇庆）， 端砚石质优良，雕刻精美，研出的墨汁细滑。";
 		private var hint2:String="秦始皇的大将创制的笔－湖笔\n毛笔的冠军是浙江湖州产的湖笔，笔尖锋利，笔头饱满，易写耐用。";
-
 		private var hint3:String="能吃还能当药用的墨－徽墨\n因产于古徽州府(今安徽歙县)而得名，配方讲究，造型美观，耐磨耐用。";
 
-		private var itemNameArr:Array=["paper", "inkstone", "writingbrush", "waterpot", "brushpot"];
 		private var posArr:Array=[new Point(13, 208), new Point(134, 158),
 			new Point(330, 140), new Point(668, 177), new Point(577, 87)];
 
+		private var hotAreaArr:Array=[new Rectangle(85, 372, 351, 167), new Rectangle(602, 151, 111, 147),
+			new Rectangle(354, 164, 135, 204), new Rectangle(712, 193, 127, 82), new Rectangle(123, 139, 198, 175)];
+
 		private var hintArr:Array;
-		private var itemArr:Array=[];
 
 		public function Scene22(am:AssetManager=null)
 		{
 			super(am);
-			hintArr=[hint0, hint1, hint2]
+			hintArr=[hint0, hint1, hint2, hint3]
 			crtKnowledgeIndex=6;
 			addBG("bg32");
 
-			for (var i:int=0; i < itemNameArr.length; i++)
-			{
-				var item:Image=getImage(itemNameArr[i]);
-				item.x=posArr[i].x;
-				item.y=posArr[i].y;
-				item.addEventListener(TouchEvent.TOUCH, onItemTouch);
-				addChild(item);
-				itemArr.push(item);
-			}
-
-			LionMC.instance.say("皇帝是个热爱科学的孩子，这些洋人老师带来的新鲜玩意你快来试试！", 0, 0, 0, addTouchs, 20);
+//			LionMC.instance.say("皇帝是个热爱科学的孩子，这些洋人老师带来的新鲜玩意你快来试试！", 0, 0, 0, addTouchs, 20);
 
 			thermo=getImage("thermometer32");
 			thermo.x=45;
@@ -93,7 +92,86 @@ package views.module2
 			addCraw(new Point(174, 578));
 			addCraw(new Point(590, 632));
 			addCraw(new Point(908, 461));
+
+			addMask(.2);
+			king=new Sprite();
+			var kingImg:Image=getImage("kingHead")
+			king.addChild(kingImg);
+			SPUtils.registSPCenter(king, 2);
+			addChild(king);
+			king.x=512 - 125;
+			king.y=768;
+			kingImg.addEventListener(TouchEvent.TOUCH, onKingTouch);
+
+			var lion:Image=getImage("lionHead");
+			lion.x=king.width;
+			lion.y=king.height - lion.height;
+			king.addChild(lion);
+			lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
+
+			kingChat1();
 		}
+
+		private function onKingTouch(e:TouchEvent):void
+		{
+			var img:Image=e.currentTarget as Image;
+			if (!img)
+				return;
+			var tc:Touch=e.getTouch(img, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			//			var pt:Point=tc.getLocation(this);
+			//			if (dpt && Point.distance(dpt, pt) < 15)
+			if (chatP)
+				chatP.playHide();
+		}
+
+		private function onLionTouch(e:TouchEvent):void
+		{
+			var img:Image=e.currentTarget as Image;
+			if (!img)
+				return;
+			var tc:Touch=e.getTouch(img, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			if (chatP)
+				chatP.playHide();
+		}
+
+		private function kingChat1():void
+		{
+			if (chatP)
+				chatP.playHide();
+			chatP=Prompt.showTXT(50, 50, chat1, 20, lionChat1, king, 3)
+		}
+
+		private function lionChat1():void
+		{
+			if (chatP)
+				chatP.playHide();
+			chatP=Prompt.showTXT(420, 140, chat2, 20, lionChat2, king)
+		}
+
+		private function lionChat2():void
+		{
+			if (chatP)
+				chatP.playHide();
+			chatP=Prompt.showTXT(420, 140, chat3, 20, chatOver, king, 1, false, 3, true)
+			LionMC.instance.setLastData(chat3, 0, 0, 0, .6, true);
+		}
+
+		private function chatOver():void
+		{
+			removeMask();
+			king.touchable=false;
+			TweenLite.to(king, 1, {y: 768 + 311, onComplete: addTouchs});
+		}
+
+		private var chatP:Prompt;
+
+		private var chat1:String="这些新鲜玩意儿是什么？";
+		private var chat2:String="都是洋人老师带来的西洋仪器。"
+		private var chat3:String="皇帝是个热爱科学的孩子，这些仪器你至少要学会一样！"
 
 		private var nameArr:Array=["thermo", "tele", "prism"];
 		private var labelPosArr:Array=[new Point(198, 552),
@@ -121,6 +199,9 @@ package views.module2
 
 		private function addTouchs():void
 		{
+			king.removeFromParent(true);
+			TailBar.show();
+			bg.addEventListener(TouchEvent.TOUCH, onItemTouch);
 			thermo.addEventListener(TouchEvent.TOUCH, onThermoTouch);
 			tele.addEventListener(TouchEvent.TOUCH, onTeleTouch);
 			prism.addEventListener(TouchEvent.TOUCH, onPrismTouch);
@@ -128,18 +209,58 @@ package views.module2
 
 		private function onItemTouch(e:TouchEvent):void
 		{
-			var item:Image=e.currentTarget as Image;
-			if (!item)
-				return;
-			var tc:Touch=e.getTouch(item, TouchPhase.ENDED);
+			var tc:Touch=e.getTouch(bg, TouchPhase.ENDED);
 			if (!tc)
 				return;
-			var index:int=itemArr.indexOf(item);
-			var _x:Number=item.x + item.width / 2;
-			var _y:Number=item.y + item.height / 2;
-			if (index < 3)
-				showHint(_x, _y, hintArr[index]);
-			check(index);
+			var index:int=checkIndex(tc.getLocation(bg));
+			if (index < 0)
+				return;
+			if (index == 4)
+			{
+				book=new Sprite();
+				book.addChild(getImage("intro-waterpot"));
+				book.x=1024 - book.width >> 1;
+				book.y=768 - book.height >> 1;
+				close=new ElasticButton(getImage("button_close"));
+				close.shadow=getImage("button_close_down");
+				close.x=800;
+				close.y=30;
+				book.addChild(close);
+				close.addEventListener(ElasticButton.CLICK, onClose);
+				PopUpManager.addPopUp(book, true, false);
+			}
+			else
+			{
+				var rect:Rectangle=hotAreaArr[index];
+				var _x:Number=rect.x + rect.width / 2;
+				var _y:Number=rect.y + rect.height / 2;
+				showHint(_x, _y, hintArr[index], index == 3 ? 3 : 1);
+				check(index);
+			}
+		}
+
+		private function onClose(e:Event):void
+		{
+			close.touchable=false;
+			TweenLite.to(book, 1, {x: 512 - 10, y: 384 - 10, scaleX: .07, scaleY: .07, ease: Elastic.easeOut, onComplete: function():void
+			{
+				PopUpManager.removePopUp(book, true);
+				book=null;
+				showCard("12", function():void {
+					check(4);
+				});
+			}});
+		}
+
+		private function checkIndex(pt:Point):int
+		{
+			for (var i:int=0; i < hotAreaArr.length; i++)
+			{
+				var rect:Rectangle=hotAreaArr[i];
+				if (rect.containsPoint(pt))
+					return i;
+			}
+			return -1;
 		}
 
 		private function check(index:int):void
@@ -155,16 +276,20 @@ package views.module2
 
 		private var p:Prompt;
 		private var checkArr:Vector.<Boolean>=new Vector.<Boolean>(5);
+		private var book:Sprite;
+		private var close:ElasticButton;
+		private var king:Sprite;
 
-		private function showHint(_x:Number, _y:Number, content:String):void
+		private function showHint(_x:Number, _y:Number, content:String, align:int=1):void
 		{
 			if (p)
 				p.playHide();
-			p=Prompt.showTXT(_x, _y, content, 18, null, this, 1, true);
+			p=Prompt.showTXT(_x, _y, content, 18, null, this, align, true);
 		}
 
 		private function onTeleTouch(e:TouchEvent):void
 		{
+			e.stopImmediatePropagation();
 			var tc:Touch=e.getTouch(tele, TouchPhase.ENDED);
 			if (tc)
 				initTelescope();
@@ -172,6 +297,7 @@ package views.module2
 
 		private function onThermoTouch(e:TouchEvent):void
 		{
+			e.stopImmediatePropagation();
 			var tc:Touch=e.getTouch(thermo, TouchPhase.ENDED);
 			if (tc)
 				initThermo();
@@ -179,6 +305,7 @@ package views.module2
 
 		private function onPrismTouch(e:TouchEvent):void
 		{
+			e.stopImmediatePropagation();
 			var tc:Touch=e.getTouch(prism, TouchPhase.ENDED);
 			if (tc)
 				initPrism();

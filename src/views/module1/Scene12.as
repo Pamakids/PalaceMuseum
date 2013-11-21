@@ -7,6 +7,7 @@ package views.module1
 	import flash.geom.Point;
 
 	import models.FontVo;
+	import models.SOService;
 
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -23,6 +24,7 @@ package views.module1
 	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
+	import views.global.TailBar;
 	import views.module1.scene12.Cloth2;
 	import views.module1.scene12.ClothCircle;
 	import views.module1.scene12.ClothPuzzle;
@@ -279,35 +281,22 @@ package views.module1
 
 		private function checkIndex(type:String):void
 		{
-			showKnowledge(type);
+			var isWin:Boolean;
 			if (type == clothArr[taskType])
 			{
-//				var txt2:String=json["hint-head-" + type];
-//				var img:Image=getImage(txt2);
-//				if (headP)
-//					headP.playHide();
-//				if (img)
-//					headP=Prompt.showIMG(632, 200, img, null, this);
-//				else
-//					headP=Prompt.showTXT(632, 200, txt2, 20, null, this);
-
+				isWin=true;
 				SoundManager.instance.play("happy");
 				playKing(0);
-				showCard("0", function():void {
-					showAchievement(2);
-				});
-				sceneOver();
 			}
 			else
 			{
-//				SoundManager.instance.play("sad");
 				var _index:int=Math.random() > .6 ? 1 : (Math.random() > .5 ? 2 : 3);
 				playKing(_index);
-//				hideNext();
 			}
+			showKnowledge(type, isWin);
 		}
 
-		private function showKnowledge(type:String):void
+		private function showKnowledge(type:String, isWin:Boolean=false):void
 		{
 			var txt:String=json["hint-ok-" + type];
 			if (!knowledgeHolder)
@@ -333,10 +322,22 @@ package views.module1
 			var img:Image=getImage(txt2);
 			if (headP)
 				headP.playHide();
+			var cb:Function;
+			if (isWin)
+			{
+				if (!SOService.instance.getSO("collection_card_0collected"))
+					addMask(0);
+				TailBar.hide();
+				cb=function():void {
+					showCard("0", function():void {
+						showAchievement(2, sceneOver);
+					});
+				}
+			}
 			if (img)
-				headP=Prompt.showIMG(632, 200, img, null, this);
+				headP=Prompt.showIMG(632, 200, img, cb, this);
 			else
-				headP=Prompt.showTXT(632, 200, txt2, 20, null, this);
+				headP=Prompt.showTXT(632, 200, txt2, 20, cb, this);
 		}
 
 		private var headP:Prompt;
@@ -396,8 +397,8 @@ package views.module1
 
 				case TouchPhase.ENDED:
 				{
-					if (dragging)
-						circle.tweenPlay(speedX);
+//					if (dragging)
+					circle.tweenPlay(speedX);
 					dragging=false;
 					speedX=0;
 					break;

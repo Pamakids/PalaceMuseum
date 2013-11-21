@@ -68,8 +68,7 @@ package views.components.base
 
 		protected function addBG(src:String):void
 		{
-			var bg:Image=getImage(src);
-			bg.blendMode=BlendMode.NONE;
+			bg=getImage(src);
 			addChild(bg);
 		}
 
@@ -151,6 +150,7 @@ package views.components.base
 
 		protected function sceneOver():void
 		{
+			removeMask();
 			if (!nextButton)
 			{
 				nextButton=new ElasticButton(getImage("nextButton"));
@@ -192,6 +192,8 @@ package views.components.base
 		}
 
 		private var delayIndex:int;
+
+		protected var bg:Image;
 
 		public function get sceneName():String
 		{
