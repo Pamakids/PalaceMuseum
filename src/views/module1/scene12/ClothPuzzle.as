@@ -9,6 +9,7 @@ package views.module1.scene12
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 
+	import models.FontVo;
 	import models.SOService;
 
 	import starling.display.Image;
@@ -17,6 +18,7 @@ package views.module1.scene12
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
 	[Event(name="allMatched", type="starling.events.Event")]
@@ -124,20 +126,47 @@ package views.module1.scene12
 			return randomPoints;
 		}
 
+		private function showKnowledge(type:String, isWin:Boolean=false):void
+		{
+			if (matchedGlow.alpha > 0)
+				return;
+			var txt:String=json[type];
+			if (!knowledgeHolder)
+			{
+				knowledgeHolder=new Sprite();
+				knowledgeHolder.x=width >> 1;
+				knowledgeHolder.y=680;
+				var knowledgeBG:Image=new Image(am.getTexture("hintbar"));
+				knowledgeHolder.addChild(knowledgeBG);
+				knowledgeHolder.pivotX=knowledgeBG.width >> 1;
+				knowledgeHolder.pivotY=knowledgeBG.height >> 1;
+				knowledgeTF=new TextField(knowledgeBG.width - 30, knowledgeBG.height - 10, txt, FontVo.PALACE_FONT, 20, 0x561a1a, true);
+				knowledgeTF.x=knowledgeBG.x + 15;
+				knowledgeTF.y=knowledgeBG.y + 3;
+				knowledgeHolder.addChild(knowledgeTF);
+				knowledgeTF.touchable=false;
+				knowledgeTF.hAlign="center";
+				addChild(knowledgeHolder);
+			}
+			knowledgeTF.text=txt;
+		}
+
 		public function ClothPuzzle(am:AssetManager)
 		{
 			super();
 			this.am=am;
+			json=am.getObject("hint12").hint;
 			addChild(new Image(am.getTexture('bgquiz')));
 			matchedGlow=new Image(am.getTexture('bgquizshadow'));
 			matchedGlow.alpha=0;
 			addChild(matchedGlow);
 
-			var points:Array=[new Point(151, 95), new Point(330, 64), new Point(510, 95), new Point(689, 73)];
+			points=[new Point(151, 95), new Point(330, 64), new Point(510, 95), new Point(689, 73)];
 			var points1:Array=[new Point(238, 262), new Point(427, 233), new Point(608, 264), new Point(797, 242)];
 			var points2:Array=[new Point(74, 257), new Point(309, 248), new Point(482, 257), new Point(671, 240)];
+			pst=["日", "月", "天", "地"];
 			correctPositionDic=new Dictionary();
-			var clothPoints:Dictionary;
+
 			clothPoints=new Dictionary();
 			clothPoints['日']=points[0];
 			clothPoints['月']=points[1];
@@ -228,6 +257,7 @@ package views.module1.scene12
 					var top:Point=randomPoints[ia[cloth]];
 					TweenLite.to(cloth, 0.5, {x: top.x + clothXOffset, y: top.y + clothYOffset, ease: Cubic.easeIn, onComplete: function():void
 					{
+						showKnowledge("puzzle-default");
 						ready=true;
 					}});
 				}
@@ -249,6 +279,15 @@ package views.module1.scene12
 
 		private var randomPoints:Array;
 		private var lightDic:Dictionary;
+		private var json:Object;
+		private var knowledgeHolder:Sprite;
+		private var knowledgeTF:TextField;
+
+		private var clothPoints:Dictionary;
+
+		private var pst:Array;
+
+		private var points:Array;
 
 		private function touchHandler(event:TouchEvent):void
 		{
@@ -307,6 +346,10 @@ package views.module1.scene12
 						if (useInBegin)
 						{
 							dragingCloth=i;
+
+							var id:String=pst[points.indexOf(correctPositionDic[dragingCloth])];
+							showKnowledge(id);
+
 						}
 						else if (dragingCloth)
 						{
@@ -354,6 +397,7 @@ package views.module1.scene12
 										}
 										if (allMatched)
 										{
+											TweenLite.to(knowledgeHolder, 1, {alpha: 0})
 											TweenLite.to(matchedGlow, 2, {alpha: 1, onComplete: function():void
 											{
 												dispatchEvent(new Event('allMatched'));

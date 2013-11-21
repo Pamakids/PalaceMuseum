@@ -383,6 +383,7 @@ package views.module2.scene21
 
 			if (tcms.length == 1)
 			{
+				cell.scaleX=cell.scaleY=1;
 				var delta:Point=tcms[0].getMovement(this);
 				cell.x+=delta.x;
 				cell.y+=delta.y;
@@ -413,21 +414,18 @@ package views.module2.scene21
 
 			if (tces.length > 0)
 			{
-				cell.filter=null;
-				check(cell);
+				if (tcbs.length == 0 && tcms.length == 0)
+				{
+					cell.filter=null;
+					check(cell);
+				}
 			}
 		}
 
 		private function limit(cell:Cell):void
 		{
-			if (cell.x < 0)
-				cell.x=0;
-			else if (cell.x > 1024)
-				cell.x=1024;
-			if (cell.y < 0)
-				cell.y=0;
-			else if (cell.y > 768)
-				cell.y=768;
+			cell.x=Math.max(-size.x / 2, Math.min(cell.x, 1024 - size.x / 2));
+			cell.y=Math.max(-size.y / 2, Math.min(cell.y, 768 - size.y / 2));
 		}
 
 		private function check(cell:Cell):void
@@ -448,9 +446,7 @@ package views.module2.scene21
 					TweenLite.to(cell, .3, {x: cell.tx, y: cell.ty, rotation: 0});
 			}
 			else
-			{
 				cell.scaleX=cell.scaleY=cellScale;
-			}
 		}
 
 		private function gameOver():void

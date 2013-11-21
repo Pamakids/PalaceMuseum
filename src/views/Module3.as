@@ -52,7 +52,7 @@ package views
 			addLoading();
 
 			if (sceneIndex < 2)
-				sceneIndex=2;
+				sceneIndex=Math.max(skipIndex, 2);
 			loadAssets(sceneIndex, addNext2);
 		}
 

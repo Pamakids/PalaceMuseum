@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:3cf79bba03f8c23e503f62d566edd496$ -->
+<!-- $TexturePacker:SmartUpdate:30cfa45096fdb862e1ab489b0a046459$ -->
 <TextureAtlas imagePath="m3s1.png">
     <SubTexture name="book-big1" x="1153" y="1270" width="526" height="437" frameX="0" frameY="0" frameWidth="526" frameHeight="441"/>
     <SubTexture name="book-big2" x="1153" y="827" width="526" height="441"/>
