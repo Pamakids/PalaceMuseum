@@ -155,8 +155,9 @@ package views.global.userCenter.userInfo
 			if (selectI == 5)
 				return;
 			var string:String=mapping[selectI];
+			var i:int = int( string.charAt(2) );
 			if (string.charAt(0) == "m") //进入模块
-				MC.instance.gotoModule(int(string.charAt(2)));
+				(i != MC.instance.moduleIndex)?MC.instance.gotoModule(i):UserCenterManager.closeUserCenter();
 			else
 				Starling.current.nativeStage.addChild(new Interlude(string));
 		}
