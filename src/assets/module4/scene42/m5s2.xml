@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:e69424c75c881e96e1cc7ec038552ce6$ -->
+<!-- $TexturePacker:SmartUpdate:cecdbe5065bd066f48c9cc66f2e99ecd$ -->
 <TextureAtlas imagePath="m5s2.png">
-    <SubTexture name="collection_card_8" x="2" y="404" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
+    <SubTexture name="collection_card_8" x="342" y="2" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
     <SubTexture name="collection_card_9" x="2" y="2" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
-    <SubTexture name="continue" x="112" y="806" width="328" height="107"/>
-    <SubTexture name="memorial-hand" x="2" y="806" width="108" height="211"/>
-    <SubTexture name="memorial1" x="527" y="383" width="183" height="379"/>
-    <SubTexture name="memorial2" x="701" y="2" width="183" height="379"/>
-    <SubTexture name="memorial3" x="342" y="383" width="183" height="379"/>
-    <SubTexture name="memorial4" x="516" y="2" width="183" height="379"/>
-    <SubTexture name="noBtn-down" x="221" y="915" width="107" height="79"/>
-    <SubTexture name="noBtn" x="423" y="915" width="91" height="63" frameX="-8" frameY="-8" frameWidth="107" frameHeight="79"/>
-    <SubTexture name="yesBtn-down" x="112" y="915" width="107" height="79"/>
-    <SubTexture name="yesBtn" x="330" y="915" width="91" height="63" frameX="-8" frameY="-8" frameWidth="107" frameHeight="79"/>
+    <SubTexture name="continue" x="682" y="2" width="328" height="107"/>
+    <SubTexture name="memorial-hand" x="245" y="841" width="239" height="211"/>
+    <SubTexture name="memorial1" x="2" y="841" width="241" height="435"/>
+    <SubTexture name="memorial2" x="597" y="551" width="241" height="435"/>
+    <SubTexture name="memorial3" x="245" y="404" width="241" height="435"/>
+    <SubTexture name="memorial4" x="2" y="404" width="241" height="435"/>
+    <SubTexture name="memorialBlank" x="682" y="111" width="249" height="438"/>
+    <SubTexture name="noBtn-down" x="488" y="485" width="107" height="79"/>
+    <SubTexture name="noBtn" x="488" y="631" width="91" height="63" frameX="-8" frameY="-8" frameWidth="107" frameHeight="79"/>
+    <SubTexture name="yesBtn-down" x="488" y="404" width="107" height="79"/>
+    <SubTexture name="yesBtn" x="488" y="566" width="91" height="63" frameX="-8" frameY="-8" frameWidth="107" frameHeight="79"/>
 </TextureAtlas>

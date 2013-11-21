@@ -1,5 +1,8 @@
 package views.components.base
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Quad;
+	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.StringUtils;
 
 	import controllers.MC;
@@ -13,20 +16,48 @@ package views.components.base
 
 	import views.components.ElasticButton;
 
+	/**
+	 *
+	 * @author Administrator
+	 */
 	public class PalaceGame extends Container
 	{
+		/**
+		 *
+		 * @default
+		 */
 		public static const GAME_OVER:String="gameOver";
+		/**
+		 *
+		 * @default
+		 */
 		public static const GAME_RESTART:String="gameRestart";
 
+		/**
+		 *
+		 * @default
+		 */
 		protected var assetManager:AssetManager;
+		/**
+		 *
+		 * @default
+		 */
 		public var fromCenter:Boolean=false;
 		private var _isWin:Boolean;
 
+		/**
+		 *
+		 * @return
+		 */
 		public function get isWin():Boolean
 		{
 			return _isWin;
 		}
 
+		/**
+		 *
+		 * @param value
+		 */
 		public function set isWin(value:Boolean):void
 		{
 			if (_isWin == value)
@@ -37,11 +68,19 @@ package views.components.base
 		}
 
 
+		/**
+		 *
+		 * @return
+		 */
 		public function get gameName():String
 		{
 			return StringUtils.getClassName(this);
 		}
 
+		/**
+		 *
+		 * @param am
+		 */
 		public function PalaceGame(am:AssetManager=null)
 		{
 			SOService.instance.setSO(gameName, true);
@@ -49,12 +88,19 @@ package views.components.base
 			super();
 		}
 
+		/**
+		 *
+		 */
 		protected function addBG():void
 		{
 			bg=Image.fromBitmap(new PalaceModule.gameBG());
 			addChild(bg);
 		}
 
+		/**
+		 *
+		 * @return
+		 */
 		public function get gameResult():String
 		{
 			return gameName + "gameresult";
@@ -71,10 +117,23 @@ package views.components.base
 		{
 		}
 
+		/**
+		 *
+		 * @default
+		 */
 		protected var closeBtn:ElasticButton;
 
+		/**
+		 *
+		 * @default
+		 */
 		protected var bg:Image;
 
+		/**
+		 *
+		 * @param _x
+		 * @param _y
+		 */
 		protected function addClose(_x:Number=950, _y:Number=60):void
 		{
 			closeBtn=new ElasticButton(getImage("button_close"));
@@ -85,11 +144,18 @@ package views.components.base
 			closeBtn.addEventListener(ElasticButton.CLICK, onCloseClick);
 		}
 
+		/**
+		 *
+		 * @param e
+		 */
 		protected function onCloseClick(e:Event):void
 		{
 			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
+		/**
+		 *
+		 */
 		protected function end():void
 		{
 			if (closeBtn)
@@ -107,6 +173,11 @@ package views.components.base
 			MC.instance.showMC();
 		}
 
+		/**
+		 *
+		 * @param name
+		 * @return
+		 */
 		protected function getImage(name:String):Image
 		{
 			var t:Texture
@@ -120,8 +191,119 @@ package views.components.base
 				return null;
 		}
 
-		protected function showResult(result:Number, gamelevel:int=-1, type:int=0):void
+		public static const GAMERESULT:String="GAMERESULT";
+
+		/**
+		 *
+		 * @param type -1:失败, 0: 时间, 1:得分
+		 * @param result 结果
+		 * @param gamelevel 游戏难度 -1:无难度
+		 * @param numStars 星星个数
+		 */
+		protected function showResult(type:int=-1, result:Number=0, gamelevel:int=-1, numStars:int=0):void
 		{
+			if (type < 0)
+				initLosePanel();
+			else
+				initWinPanel(type, result, gamelevel, numStars);
+			initRsBtn();
+		}
+
+		private function initLosePanel():void
+		{
+			var panel:Image=getImage("lose-panel");
+			addChild(panel);
+		}
+
+		/**
+		 *
+		 * @param type 0: 时间, 1:得分
+		 * @param result 结果
+		 * @param gamelevel 游戏难度 -1:无难度
+		 */
+		private function initWinPanel(type:int=0, result:Number=0, gamelevel:int=-1, numStars:int=0):void
+		{
+			var panel:Image=getImage("win-panel");
+			addChild(panel);
+
+			addStars(gamelevel == 1 ? numStars : -1);
+
+			var txt1:String=type == 0 ? "时间" : "得分";
+			var txt2:String=type == 0 ? "最快" : "最高";
+		}
+
+		private function addStars(num:int):void
+		{
+			if (num < 0)
+				return;
+			for (var i:int=0; i < num; i++)
+			{
+				var starG:Image=getImage("star-grey")
+				addChild(starG);
+			}
+
+			for (var j:int=num; j < 3; j++)
+			{
+				var starR:Image=getImage("star-red")
+				addChild(starR);
+			}
+		}
+
+		private function initRsBtn():void
+		{
+			var rsBtn:ElasticButton=new ElasticButton(getImage("restart"), getImage("restart-light"));
+			addChild(rsBtn);
+			rsBtn.addEventListener(ElasticButton.CLICK, onRestartClick);
+		}
+
+		/**
+		 *
+		 * @param e
+		 */
+		protected function onRestartClick(e:Event):void
+		{
+
+		}
+
+		/**
+		 *
+		 * @param _count
+		 * @return
+		 */
+		public function getStringFormTime(_count:int):String
+		{
+			var sectime:int=_count / 30;
+
+			var mm:int=(_count % 30);
+			var min:int=sectime % 3600 / 60;
+			var sec:int=sectime % 60;
+			var hour:int=sectime / 3600;
+
+			var mmStr:String=mm.toString();
+			var minStr:String=min.toString();
+			var secStr:String=sec.toString();
+			var hourStr:String=hour.toString();
+
+			if (mm < 10)
+				mmStr="0" + mmStr;
+			if (min < 10)
+				minStr="0" + minStr;
+			if (sec < 10)
+				secStr="0" + secStr;
+
+			var txt:String=hour == 0 ? (minStr + ":" + secStr) : "59:59";
+			txt+=":" + mmStr;
+			return txt;
+		}
+
+		private function showRecord(cb:Function=null):void
+		{
+			var recordIcon:Image=getImage("record");
+			addChild(recordIcon);
+			recordIcon.x=536;
+			recordIcon.y=282;
+			recordIcon.scaleX=recordIcon.scaleY=3;
+			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut, onComplete: cb});
 		}
 	}
 }

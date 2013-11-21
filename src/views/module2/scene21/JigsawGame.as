@@ -65,12 +65,12 @@ package views.module2.scene21
 			startSP.touchable=false;
 			TweenLite.delayedCall(1, function():void {
 				TweenLite.to(startSP, 1, {y: -768,
-						onComplete: function():void {
-							startSP.dispose();
-							initGameBG();
-							initData(gamelevel);
-							startGame();
-						}});
+								 onComplete: function():void {
+									 startSP.dispose();
+									 initGameBG();
+									 initData(gamelevel);
+									 startGame();
+								 }});
 			});
 		}
 
@@ -156,32 +156,6 @@ package views.module2.scene21
 				}});
 		}
 
-		private function getStringFormTime(_count:int):String
-		{
-			var sectime:int=_count / 30;
-
-			var mm:int=(_count % 30);
-			var min:int=sectime % 3600 / 60;
-			var sec:int=sectime % 60;
-			var hour:int=sectime / 3600;
-
-			var mmStr:String=mm.toString();
-			var minStr:String=min.toString();
-			var secStr:String=sec.toString();
-			var hourStr:String=hour.toString();
-
-			if (mm < 10)
-				mmStr="0" + mmStr;
-			if (min < 10)
-				minStr="0" + minStr;
-			if (sec < 10)
-				secStr="0" + secStr;
-
-			var txt:String=hour == 0 ? (minStr + ":" + secStr) : "59:59";
-			txt+=":" + mmStr;
-			return txt;
-		}
-
 		private function showRecord():void
 		{
 			var recordIcon:Image=getImage("game-record");
@@ -190,10 +164,10 @@ package views.module2.scene21
 			recordIcon.y=282;
 			recordIcon.scaleX=recordIcon.scaleY=3;
 			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut,
-					onComplete: function():void {
-						SoundManager.instance.play("gamerecord");
-						closeBtn.visible=closeBtn.touchable=true;
-					}});
+							 onComplete: function():void {
+								 SoundManager.instance.play("gamerecord");
+								 closeBtn.visible=closeBtn.touchable=true;
+							 }});
 		}
 
 		private function onHBTouch(e:TouchEvent):void
@@ -554,11 +528,11 @@ package views.module2.scene21
 			var greyBG:Image=Image.fromBitmap(map);
 			var fl:ColorMatrixFilter=new ColorMatrixFilter();
 			fl.matrix=Vector.<Number>([
-				1, 0, 0, 0, 0,
-				1, 0, 0, 0, 0,
-				1, 0, 0, 0, 0,
-				0, 0, 0, 1, 0
-				]);
+									  1, 0, 0, 0, 0,
+									  1, 0, 0, 0, 0,
+									  1, 0, 0, 0, 0,
+									  0, 0, 0, 1, 0
+									  ]);
 			greyBG.filter=fl;
 			bgHolder.addChild(greyBG);
 

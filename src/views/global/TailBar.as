@@ -21,13 +21,14 @@ package views.global
 				_parent.addChild(this);
 			var tail:MovieClip=new MovieClip(MC.assetManager.getTextures("tail"), 30);
 			Starling.juggler.add(tail);
+			tail.scaleX=tail.scaleY=.5;
 			tail.loop=true;
 			tail.play();
 			tail.addEventListener(TouchEvent.TOUCH, tailClickedHandler);
 			addChild(tail);
-			dx=140;
+			dx=100;
 			x=-dx;
-			y=768 - 150;
+			y=768 - 100;
 			touchable=false;
 		}
 
@@ -55,7 +56,7 @@ package views.global
 			TweenLite.killTweensOf(instance);
 			instance.x=-dx;
 			instance.visible=true;
-			TweenLite.to(instance, 1, {x: -30, onComplete: function():void {
+			TweenLite.to(instance, 1, {x: -15, onComplete: function():void {
 				instance.touchable=true;
 			}});
 		}

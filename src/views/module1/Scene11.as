@@ -160,15 +160,16 @@ package views.module1
 
 		private function showLionTask():void
 		{
-			function showNext():void {
+			showHint(50, 50, hint0, 3, king, 3, function showNext():void {
 				showHint(400, 100, lionHint1, 1, king, 1, showNext2);
-			}
-			function showNext2():void {
-				showHint(400, 100, lionHint2, 1, king, 1, function():void {
-					touchReady=true;
-				}, true);
-			}
-			showHint(50, 50, hint0, 3, king, 3, showNext);
+			});
+		}
+
+		private function showNext2():void
+		{
+			showHint(400, 100, lionHint2, 1, king, 1, function():void {
+				touchReady=true;
+			}, true);
 		}
 
 		private function active():void

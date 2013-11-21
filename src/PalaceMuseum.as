@@ -9,7 +9,7 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.system.Capabilities;
-
+ 
 	import controllers.MC;
 	import controllers.UserBehaviorAnalysis;
 
