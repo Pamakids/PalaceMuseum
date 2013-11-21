@@ -50,8 +50,6 @@ package views.module3
 			addKing();
 
 			addCraw(new Point(443, 349));
-
-			LionMC.instance.say("皇帝怎么能进御膳房呢！");
 		}
 
 		private function addKing():void
@@ -63,10 +61,19 @@ package views.module3
 			king.stop();
 			king.x=714;
 			king.y=768;
-			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void
-			{
+			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: kingSay});
+		}
+
+		private function kingSay():void
+		{
+			Prompt.showTXT(king.x + 20, king.y + 135, "这么香，谁在做饭呢？", 20, lionSay, this, 3);
+		}
+
+		private function lionSay():void
+		{
+			LionMC.instance.say("皇帝怎么能进御膳房呢！", 2, 0, 0, function():void {
 				addEventListener(TouchEvent.TOUCH, onTouch);
-			}});
+			});
 		}
 
 		private function addChief():void
@@ -152,13 +159,11 @@ package views.module3
 		{
 			if (king)
 			{
-				p=Prompt.showTXT(king.x + 50, king.y + 60, "急什么，再让我看一会儿…", 20, null, this, 3);
 				TailBar.hide();
 				king.addEventListener(Event.COMPLETE, onKingPlayed);
 				king.play();
 				TweenLite.delayedCall(1.3, function():void {
-					if (p)
-						p.playHide();
+					p=Prompt.showTXT(king.x + 150, king.y + 135, "急什么，再让我看一会儿…", 20, null, null, 3, false);
 					SoundManager.instance.play("kingdragged");
 				});
 			}

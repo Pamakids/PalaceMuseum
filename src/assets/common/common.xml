@@ -2,151 +2,1235 @@
 <!-- Created with TexturePacker http://texturepacker.com-->
 <!-- $TexturePacker:SmartUpdate:4cc3944bbff7ae28f86e673b755b13aa$ -->
 <TextureAtlas imagePath="common.png">
-    <SubTexture name="acheivebar" x="2" y="1499" width="555" height="162"/>
-    <SubTexture name="bg-task" x="603" y="1331" width="355" height="209"/>
-    <SubTexture name="bird" x="902" y="125" width="119" height="114"/>
-    <SubTexture name="button_close" x="788" y="1621" width="80" height="81"/>
-    <SubTexture name="button_close_down" x="785" y="1759" width="80" height="81"/>
-    <SubTexture name="button_next" x="896" y="1603" width="80" height="81"/>
-    <SubTexture name="button_next_down" x="814" y="1926" width="80" height="81"/>
-    <SubTexture name="craw-light" x="985" y="735" width="35" height="33"/>
-    <SubTexture name="craw" x="985" y="770" width="35" height="29" frameX="0" frameY="-2" frameWidth="35" frameHeight="33"/>
-    <SubTexture name="game-start-down" x="2" y="1866" width="174" height="171"/>
-    <SubTexture name="game-start" x="386" y="1846" width="146" height="147" frameX="-11" frameY="-8" frameWidth="174" frameHeight="171"/>
-    <SubTexture name="halo" x="2" y="2" width="898" height="660"/>
-    <SubTexture name="hint-bg-k-large" x="712" y="853" width="300" height="255"/>
-    <SubTexture name="hint-bg-k-mid" x="205" y="1663" width="212" height="181"/>
-    <SubTexture name="hint-bg-k" x="561" y="1642" width="147" height="124"/>
-    <SubTexture name="hint-bg-large" x="711" y="1110" width="251" height="202"/>
-    <SubTexture name="hint-bg-mid" x="178" y="1866" width="206" height="166"/>
-    <SubTexture name="hint-bg" x="534" y="1800" width="161" height="129"/>
-    <SubTexture name="lose-panel" x="2" y="664" width="708" height="430"/>
-    <SubTexture name="nextButton" x="559" y="1542" width="75" height="98"/>
-    <SubTexture name="record0" x="712" y="664" width="187" height="187"/>
-    <SubTexture name="record1" x="2" y="1663" width="201" height="201"/>
-    <SubTexture name="restart-light" x="419" y="1663" width="140" height="135"/>
-    <SubTexture name="restart" x="902" y="2" width="120" height="121" frameX="-8" frameY="-6" frameWidth="140" frameHeight="135"/>
-    <SubTexture name="star-grey" x="710" y="1686" width="76" height="71" frameX="0" frameY="-1" frameWidth="76" frameHeight="73"/>
-    <SubTexture name="star-red" x="697" y="1853" width="76" height="73"/>
-    <SubTexture name="tail0001" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0002" x="534" y="1931" width="90" height="95" frameX="-16" frameY="-16" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0003" x="603" y="1244" width="98" height="85" frameX="-12" frameY="-33" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0004" x="603" y="1096" width="106" height="77" frameX="-8" frameY="-49" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0005" x="902" y="603" width="112" height="67" frameX="-6" frameY="-65" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0006" x="902" y="241" width="118" height="57" frameX="-4" frameY="-82" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0007" x="902" y="361" width="114" height="53" frameX="-4" frameY="-92" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0008" x="885" y="1542" width="110" height="59" frameX="-4" frameY="-93" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0009" x="603" y="1175" width="102" height="67" frameX="-7" frameY="-92" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0010" x="716" y="1928" width="96" height="81" frameX="-9" frameY="-93" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0011" x="626" y="1931" width="88" height="93" frameX="-13" frameY="-96" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0012" x="964" y="1110" width="58" height="103" frameX="-5" frameY="-112" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0013" x="960" y="1314" width="62" height="97" frameX="-4" frameY="-105" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0014" x="636" y="1542" width="72" height="89" frameX="-2" frameY="-99" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0015" x="697" y="1768" width="86" height="83" frameX="0" frameY="-92" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0016" x="785" y="1542" width="96" height="77" frameX="0" frameY="-85" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0017" x="775" y="1853" width="108" height="71" frameX="0" frameY="-78" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0018" x="901" y="672" width="112" height="61" frameX="0" frameY="-70" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0019" x="902" y="469" width="114" height="51" frameX="-3" frameY="-62" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0020" x="902" y="416" width="114" height="51" frameX="-8" frameY="-53" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0021" x="902" y="300" width="114" height="59" frameX="-13" frameY="-44" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0022" x="902" y="522" width="112" height="79" frameX="-20" frameY="-24" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0023" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0024" x="534" y="1931" width="90" height="95" frameX="-16" frameY="-16" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0025" x="603" y="1244" width="98" height="85" frameX="-12" frameY="-33" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0026" x="603" y="1096" width="106" height="77" frameX="-8" frameY="-49" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0027" x="902" y="603" width="112" height="67" frameX="-6" frameY="-65" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0028" x="902" y="241" width="118" height="57" frameX="-4" frameY="-82" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0029" x="902" y="361" width="114" height="53" frameX="-4" frameY="-92" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0030" x="885" y="1542" width="110" height="59" frameX="-4" frameY="-93" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0031" x="603" y="1175" width="102" height="67" frameX="-7" frameY="-92" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0032" x="716" y="1928" width="96" height="81" frameX="-9" frameY="-93" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0033" x="626" y="1931" width="88" height="93" frameX="-13" frameY="-96" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0034" x="964" y="1110" width="58" height="103" frameX="-5" frameY="-112" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0035" x="960" y="1314" width="62" height="97" frameX="-4" frameY="-105" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0036" x="636" y="1542" width="72" height="89" frameX="-2" frameY="-99" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0037" x="697" y="1768" width="86" height="83" frameX="0" frameY="-92" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0038" x="785" y="1542" width="96" height="77" frameX="0" frameY="-85" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0039" x="775" y="1853" width="108" height="71" frameX="0" frameY="-78" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0040" x="901" y="672" width="112" height="61" frameX="0" frameY="-70" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0041" x="902" y="469" width="114" height="51" frameX="-3" frameY="-62" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0042" x="902" y="416" width="114" height="51" frameX="-8" frameY="-53" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0043" x="902" y="300" width="114" height="59" frameX="-13" frameY="-44" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0044" x="902" y="522" width="112" height="79" frameX="-20" frameY="-24" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0045" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0046" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0047" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0048" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0049" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0050" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0051" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0052" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0053" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0054" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0055" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0056" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0057" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0058" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0059" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0060" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0061" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0062" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0063" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0064" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0065" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0066" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0067" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0068" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0069" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0070" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0071" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0072" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0073" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0074" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0075" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0076" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0077" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0078" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0079" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0080" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0081" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0082" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0083" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0084" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0085" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0086" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0087" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0088" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0089" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0090" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0091" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0092" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0093" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0094" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0095" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0096" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0097" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0098" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0099" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0100" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0101" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0102" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0103" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0104" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0105" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0106" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0107" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0108" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0109" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0110" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0111" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0112" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0113" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0114" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0115" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0116" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0117" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0118" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0119" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="tail0120" x="901" y="735" width="82" height="105" frameX="-20" frameY="0" frameWidth="132" frameHeight="215"/>
-    <SubTexture name="win-panel" x="2" y="1096" width="599" height="401"/>
+	<SubTexture name="acheivebar"
+				x="2"
+				y="1499"
+				width="555"
+				height="162"/>
+	<SubTexture name="bg-task"
+				x="603"
+				y="1331"
+				width="355"
+				height="209"/>
+	<SubTexture name="bird"
+				x="902"
+				y="125"
+				width="119"
+				height="114"/>
+	<SubTexture name="button_close"
+				x="788"
+				y="1621"
+				width="80"
+				height="81"/>
+	<SubTexture name="button_close_down"
+				x="785"
+				y="1759"
+				width="80"
+				height="81"/>
+	<SubTexture name="button_next"
+				x="896"
+				y="1603"
+				width="80"
+				height="81"/>
+	<SubTexture name="button_next_down"
+				x="814"
+				y="1926"
+				width="80"
+				height="81"/>
+	<SubTexture name="craw-light"
+				x="985"
+				y="735"
+				width="35"
+				height="33"/>
+	<SubTexture name="craw"
+				x="985"
+				y="770"
+				width="35"
+				height="29"
+				frameX="0"
+				frameY="-2"
+				frameWidth="35"
+				frameHeight="33"/>
+	<SubTexture name="game-start-down"
+				x="2"
+				y="1866"
+				width="174"
+				height="171"/>
+	<SubTexture name="game-start"
+				x="386"
+				y="1846"
+				width="146"
+				height="147"
+				frameX="-11"
+				frameY="-8"
+				frameWidth="174"
+				frameHeight="171"/>
+	<SubTexture name="halo"
+				x="2"
+				y="2"
+				width="898"
+				height="660"/>
+	<SubTexture name="hint-bg-k-large"
+				x="712"
+				y="853"
+				width="300"
+				height="255"/>
+	<SubTexture name="hint-bg-k-mid"
+				x="205"
+				y="1663"
+				width="212"
+				height="181"/>
+	<SubTexture name="hint-bg-k"
+				x="561"
+				y="1642"
+				width="147"
+				height="124"/>
+	<SubTexture name="hint-bg-large"
+				x="711"
+				y="1110"
+				width="251"
+				height="202"/>
+	<SubTexture name="hint-bg-mid"
+				x="178"
+				y="1866"
+				width="206"
+				height="166"/>
+	<SubTexture name="hint-bg"
+				x="534"
+				y="1800"
+				width="161"
+				height="129"/>
+	<SubTexture name="lose-panel"
+				x="2"
+				y="664"
+				width="708"
+				height="430"/>
+	<SubTexture name="nextButton"
+				x="559"
+				y="1542"
+				width="75"
+				height="98"/>
+	<SubTexture name="record1"
+				x="712"
+				y="664"
+				width="187"
+				height="187"/>
+	<SubTexture name="record0"
+				x="2"
+				y="1663"
+				width="201"
+				height="201"/>
+	<SubTexture name="restart-light"
+				x="419"
+				y="1663"
+				width="140"
+				height="135"/>
+	<SubTexture name="restart"
+				x="902"
+				y="2"
+				width="120"
+				height="121"
+				frameX="-8"
+				frameY="-6"
+				frameWidth="140"
+				frameHeight="135"/>
+	<SubTexture name="star-grey"
+				x="710"
+				y="1686"
+				width="76"
+				height="71"
+				frameX="0"
+				frameY="-1"
+				frameWidth="76"
+				frameHeight="73"/>
+	<SubTexture name="star-red"
+				x="697"
+				y="1853"
+				width="76"
+				height="73"/>
+	<SubTexture name="tail0001"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0002"
+				x="534"
+				y="1931"
+				width="90"
+				height="95"
+				frameX="-16"
+				frameY="-16"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0003"
+				x="603"
+				y="1244"
+				width="98"
+				height="85"
+				frameX="-12"
+				frameY="-33"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0004"
+				x="603"
+				y="1096"
+				width="106"
+				height="77"
+				frameX="-8"
+				frameY="-49"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0005"
+				x="902"
+				y="603"
+				width="112"
+				height="67"
+				frameX="-6"
+				frameY="-65"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0006"
+				x="902"
+				y="241"
+				width="118"
+				height="57"
+				frameX="-4"
+				frameY="-82"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0007"
+				x="902"
+				y="361"
+				width="114"
+				height="53"
+				frameX="-4"
+				frameY="-92"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0008"
+				x="885"
+				y="1542"
+				width="110"
+				height="59"
+				frameX="-4"
+				frameY="-93"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0009"
+				x="603"
+				y="1175"
+				width="102"
+				height="67"
+				frameX="-7"
+				frameY="-92"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0010"
+				x="716"
+				y="1928"
+				width="96"
+				height="81"
+				frameX="-9"
+				frameY="-93"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0011"
+				x="626"
+				y="1931"
+				width="88"
+				height="93"
+				frameX="-13"
+				frameY="-96"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0012"
+				x="964"
+				y="1110"
+				width="58"
+				height="103"
+				frameX="-5"
+				frameY="-112"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0013"
+				x="960"
+				y="1314"
+				width="62"
+				height="97"
+				frameX="-4"
+				frameY="-105"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0014"
+				x="636"
+				y="1542"
+				width="72"
+				height="89"
+				frameX="-2"
+				frameY="-99"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0015"
+				x="697"
+				y="1768"
+				width="86"
+				height="83"
+				frameX="0"
+				frameY="-92"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0016"
+				x="785"
+				y="1542"
+				width="96"
+				height="77"
+				frameX="0"
+				frameY="-85"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0017"
+				x="775"
+				y="1853"
+				width="108"
+				height="71"
+				frameX="0"
+				frameY="-78"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0018"
+				x="901"
+				y="672"
+				width="112"
+				height="61"
+				frameX="0"
+				frameY="-70"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0019"
+				x="902"
+				y="469"
+				width="114"
+				height="51"
+				frameX="-3"
+				frameY="-62"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0020"
+				x="902"
+				y="416"
+				width="114"
+				height="51"
+				frameX="-8"
+				frameY="-53"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0021"
+				x="902"
+				y="300"
+				width="114"
+				height="59"
+				frameX="-13"
+				frameY="-44"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0022"
+				x="902"
+				y="522"
+				width="112"
+				height="79"
+				frameX="-20"
+				frameY="-24"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0023"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0024"
+				x="534"
+				y="1931"
+				width="90"
+				height="95"
+				frameX="-16"
+				frameY="-16"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0025"
+				x="603"
+				y="1244"
+				width="98"
+				height="85"
+				frameX="-12"
+				frameY="-33"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0026"
+				x="603"
+				y="1096"
+				width="106"
+				height="77"
+				frameX="-8"
+				frameY="-49"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0027"
+				x="902"
+				y="603"
+				width="112"
+				height="67"
+				frameX="-6"
+				frameY="-65"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0028"
+				x="902"
+				y="241"
+				width="118"
+				height="57"
+				frameX="-4"
+				frameY="-82"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0029"
+				x="902"
+				y="361"
+				width="114"
+				height="53"
+				frameX="-4"
+				frameY="-92"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0030"
+				x="885"
+				y="1542"
+				width="110"
+				height="59"
+				frameX="-4"
+				frameY="-93"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0031"
+				x="603"
+				y="1175"
+				width="102"
+				height="67"
+				frameX="-7"
+				frameY="-92"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0032"
+				x="716"
+				y="1928"
+				width="96"
+				height="81"
+				frameX="-9"
+				frameY="-93"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0033"
+				x="626"
+				y="1931"
+				width="88"
+				height="93"
+				frameX="-13"
+				frameY="-96"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0034"
+				x="964"
+				y="1110"
+				width="58"
+				height="103"
+				frameX="-5"
+				frameY="-112"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0035"
+				x="960"
+				y="1314"
+				width="62"
+				height="97"
+				frameX="-4"
+				frameY="-105"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0036"
+				x="636"
+				y="1542"
+				width="72"
+				height="89"
+				frameX="-2"
+				frameY="-99"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0037"
+				x="697"
+				y="1768"
+				width="86"
+				height="83"
+				frameX="0"
+				frameY="-92"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0038"
+				x="785"
+				y="1542"
+				width="96"
+				height="77"
+				frameX="0"
+				frameY="-85"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0039"
+				x="775"
+				y="1853"
+				width="108"
+				height="71"
+				frameX="0"
+				frameY="-78"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0040"
+				x="901"
+				y="672"
+				width="112"
+				height="61"
+				frameX="0"
+				frameY="-70"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0041"
+				x="902"
+				y="469"
+				width="114"
+				height="51"
+				frameX="-3"
+				frameY="-62"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0042"
+				x="902"
+				y="416"
+				width="114"
+				height="51"
+				frameX="-8"
+				frameY="-53"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0043"
+				x="902"
+				y="300"
+				width="114"
+				height="59"
+				frameX="-13"
+				frameY="-44"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0044"
+				x="902"
+				y="522"
+				width="112"
+				height="79"
+				frameX="-20"
+				frameY="-24"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0045"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0046"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0047"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0048"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0049"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0050"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0051"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0052"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0053"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0054"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0055"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0056"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0057"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0058"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0059"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0060"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0061"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0062"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0063"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0064"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0065"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0066"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0067"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0068"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0069"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0070"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0071"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0072"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0073"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0074"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0075"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0076"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0077"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0078"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0079"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0080"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0081"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0082"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0083"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0084"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0085"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0086"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0087"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0088"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0089"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0090"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0091"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0092"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0093"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0094"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0095"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0096"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0097"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0098"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0099"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0100"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0101"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0102"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0103"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0104"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0105"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0106"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0107"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0108"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0109"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0110"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0111"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0112"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0113"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0114"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0115"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0116"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0117"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0118"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0119"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="tail0120"
+				x="901"
+				y="735"
+				width="82"
+				height="105"
+				frameX="-20"
+				frameY="0"
+				frameWidth="132"
+				frameHeight="215"/>
+	<SubTexture name="win-panel"
+				x="2"
+				y="1096"
+				width="599"
+				height="401"/>
 </TextureAtlas>

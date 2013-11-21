@@ -131,10 +131,10 @@ package views.module3.scene32
 			startSP.touchable=false;
 			TweenLite.delayedCall(1, function():void {
 				TweenLite.to(startSP, 1, {y: -768,
-						onComplete: function():void {
-							startSP.dispose();
-							initGame(gamelevel);
-						}});
+								 onComplete: function():void {
+									 startSP.dispose();
+									 initGame(gamelevel);
+								 }});
 			});
 		}
 
@@ -225,11 +225,11 @@ package views.module3.scene32
 
 			TweenLite.to(timeHolder, 1, {x: 822});
 			TweenLite.to(barArea, 1.2, {y: 0, ease: Bounce.easeOut,
-					onComplete: function():void {
-						addWorld();
-						startGame();
-					}
-				});
+							 onComplete: function():void {
+								 addWorld();
+								 startGame();
+							 }
+						 });
 		}
 
 		private function addRope():void
@@ -310,7 +310,7 @@ package views.module3.scene32
 
 			var wallW:int=200;
 			var posArr:Array=[new Rectangle(-wallW, -wallW, 1224, wallW), new Rectangle(-wallW, 768, 1224, wallW),
-				new Rectangle(-wallW, 0, wallW, 768), new Rectangle(1024, 0, wallW, 768)];
+							  new Rectangle(-wallW, 0, wallW, 768), new Rectangle(1024, 0, wallW, 768)];
 
 			//addwall
 			for (var i:int=0; i < 4; i++)
@@ -470,7 +470,7 @@ package views.module3.scene32
 					};
 				}
 				TweenLite.to(draggingBlock.position, .3, {x: rect.x + rect.width / 2, y: rect.y + rect.height / 2,
-						onComplete: delayFunction});
+								 onComplete: delayFunction});
 			}
 
 		}
@@ -480,11 +480,11 @@ package views.module3.scene32
 			TweenLite.to(playBG, 1, {alpha: 0});
 			TweenLite.to(timeHolder, 1, {x: 1024});
 			TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn,
-					onComplete: function():void {
-						timeHolder.dispose();
-						gameSP.dispose();
-						initGameResult();
-					}});
+							 onComplete: function():void {
+								 timeHolder.dispose();
+								 gameSP.dispose();
+								 initGameResult();
+							 }});
 		}
 
 		private function initGameResult():void
@@ -559,32 +559,6 @@ package views.module3.scene32
 			dispatchEvent(new Event(PalaceGame.GAME_RESTART));
 		}
 
-		private function getStringFormTime(_count:int):String
-		{
-			var sectime:int=_count / 30;
-
-			var mm:int=(_count % 30);
-			var min:int=sectime % 3600 / 60;
-			var sec:int=sectime % 60;
-			var hour:int=sectime / 3600;
-
-			var mmStr:String=mm.toString();
-			var minStr:String=min.toString();
-			var secStr:String=sec.toString();
-			var hourStr:String=hour.toString();
-
-			if (mm < 10)
-				mmStr="0" + mmStr;
-			if (min < 10)
-				minStr="0" + minStr;
-			if (sec < 10)
-				secStr="0" + secStr;
-
-			var txt:String=hour == 0 ? (minStr + ":" + secStr) : "59:59";
-			txt+=":" + mmStr;
-			return txt;
-		}
-
 		private function showRecord():void
 		{
 			var recordIcon:Image=getImage("game-record");
@@ -593,10 +567,10 @@ package views.module3.scene32
 			recordIcon.y=282;
 			recordIcon.scaleX=recordIcon.scaleY=3;
 			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut,
-					onComplete: function():void {
-						SoundManager.instance.play("gamerecord");
-						closeBtn.visible=closeBtn.touchable=true;
-					}});
+							 onComplete: function():void {
+								 SoundManager.instance.play("gamerecord");
+								 closeBtn.visible=closeBtn.touchable=true;
+							 }});
 		}
 
 		private function onBlockTouch(e:TouchEvent):void

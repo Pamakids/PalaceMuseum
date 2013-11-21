@@ -207,7 +207,7 @@ package views.components
 			{
 				addEventListener(MouseEvent.CLICK, onClick);
 				lion.gotoAndPlay(1);
-				p=Prompt.showTXT(isTask ? (x + 160) : (x + mcWidth - 10), isTask ? (y + 120) : y, content, fontSize, function():void
+				p=Prompt.showTXT(isTask ? (x + 160) : (x + mcWidth + 30), isTask ? (y + 120) : y, content, fontSize, function():void
 				{
 					TailBar.show();
 					isSayingOver=true;

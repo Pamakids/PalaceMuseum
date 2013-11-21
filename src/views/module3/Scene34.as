@@ -47,14 +47,9 @@ package views.module3
 			king.alpha=0;
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			TweenLite.delayedCall(4, function():void {
-				TweenLite.to(king, 1, {alpha: 1, onComplete: kingSay});
+				TweenLite.to(king, 1, {alpha: 1, onComplete: moveKing});
 			}
 			);
-		}
-
-		private function kingSay():void
-		{
-			Prompt.showTXT(king.x - 20, king.y - 50, "这么香，谁在做饭呢？", 20, moveKing, this);
 		}
 
 		override public function dispose():void
