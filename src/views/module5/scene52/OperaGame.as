@@ -12,6 +12,7 @@ package views.module5.scene52
 
 	import events.OperaSwitchEvent;
 
+	import models.FontVo;
 	import models.SOService;
 
 	import starling.display.Image;
@@ -49,15 +50,15 @@ package views.module5.scene52
 
 		private var crtB_HPosArr:Array; //头,身子 相对位置
 		private var xiyouB_PosArr:Array=[new Point(33, 107), new Point(-31, 86),
-			new Point(-3, 98), new Point(-7, 88), new Point(21, 123), new Point(-3, 87)];
+										 new Point(-3, 98), new Point(-7, 88), new Point(21, 123), new Point(-3, 87)];
 		private var sanguoB_PosArr:Array=[new Point(6, 114), new Point(21, 115),
-			new Point(22, 111), new Point(-16, 68), new Point(-6, 117), new Point(-32, 58)];
+										  new Point(22, 111), new Point(-16, 68), new Point(-6, 117), new Point(-32, 58)];
 
 		private var crtMaskPosArr:Array; //脸谱,相对位置
 		private var xiyouMaskPosArr:Array=[new Point(30, 44), new Point(32, 50),
-			new Point(30, 37), new Point(7, 23), new Point(28, 69), new Point(16, 43)];
+										   new Point(30, 37), new Point(7, 23), new Point(28, 69), new Point(16, 43)];
 		private var sanguoMaskPosArr:Array=[new Point(18, 41), new Point(15, 64),
-			new Point(22, 50), new Point(25, 41), new Point(22, 54), new Point(6, 46)];
+											new Point(22, 50), new Point(25, 41), new Point(22, 54), new Point(6, 46)];
 
 		private function initStart():void
 		{
@@ -144,7 +145,7 @@ package views.module5.scene52
 			}
 			else
 			{
-				var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE_OPEN, null, function():void {
+				var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE, null, function():void {
 					dispatchEvent(new Event(PalaceGame.GAME_OVER));
 				});
 				onOperaSwitch(e1);
@@ -324,7 +325,7 @@ package views.module5.scene52
 		private var typeArr:Array=["1", "2", "3", "4", "5", "6"];
 
 		private var bodyPosArr:Array=[new Point(100, 230), new Point(500, 230),
-			new Point(300, 465), new Point(700, 465), new Point(200, 708), new Point(600, 708)]; //人偶位置
+									  new Point(300, 465), new Point(700, 465), new Point(200, 708), new Point(600, 708)]; //人偶位置
 
 		private var ropeSP:Shape;
 		private var infoHolder:Sprite;
@@ -563,7 +564,7 @@ package views.module5.scene52
 				isWin=true;
 				var win:Image=getImage("win-panel");
 				endHolder.addChild(win);
-				win.x=222;
+				win.x=1024 - win.width >> 1;
 				win.y=30;
 
 				for (var i:int=0; i < life; i++)
@@ -584,13 +585,26 @@ package views.module5.scene52
 
 				var operagameresult:int=SOService.instance.getSO(gameResult + gamelevel.toString()) as int;
 
-				var scoreTXT:TextField=new TextField(400, 100, "");
+				var t1:TextField=new TextField(200, 100, "得分：", FontVo.PALACE_FONT, 48, 0xb83d00);
+				t1.vAlign="top";
+				t1.hAlign="left";
+				t1.x=332;
+				t1.y=283;
+				endHolder.addChild(t1);
+				var t2:TextField=new TextField(200, 40, "最高：", FontVo.PALACE_FONT, 26, 0xb83d00);
+				t2.vAlign="top";
+				t2.hAlign="left";
+				t2.x=362;
+				t2.y=370;
+				endHolder.addChild(t2);
+
+				var scoreTXT:TextField=new TextField(220, 100, "");
 				scoreTXT.fontSize=48;
 				scoreTXT.color=0xb83d00;
-				scoreTXT.x=490;
+				scoreTXT.x=470;
 				scoreTXT.y=285;
 				scoreTXT.vAlign="top";
-				scoreTXT.hAlign="left";
+				scoreTXT.hAlign="right";
 				endHolder.addChild(scoreTXT);
 
 				var recordTXT:TextField=new TextField(100, 40, "");

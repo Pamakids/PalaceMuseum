@@ -212,7 +212,10 @@ package views.module2.scene22
 				SoundManager.instance.stop("ringrolling");
 				SoundManager.instance.play("ringblock");
 				ringBlock=true;
+				view.standUp=true;
 			}
+			else
+				view.standUp=false;
 			ringMoved=true;
 		}
 
@@ -245,6 +248,8 @@ package views.module2.scene22
 			view.x=view.pivotX=centerPT.x;
 			view.y=view.pivotY=centerPT.y;
 			view.scale=.1;
+
+			view.initLion(getImage("lionsit"), getImage("lionstand"));
 
 			addChild(mask);
 		}

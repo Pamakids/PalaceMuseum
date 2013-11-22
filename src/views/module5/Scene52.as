@@ -7,6 +7,7 @@ package views.module5
 
 	import models.FontVo;
 
+	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
@@ -15,6 +16,8 @@ package views.module5
 	import starling.utils.AssetManager;
 
 	import views.components.FlipImage;
+	import views.components.LionMC;
+	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 	import views.module5.scene52.OpearaGame2;
@@ -56,7 +59,25 @@ package views.module5
 			curtainR.x=1024 - offsetX;
 			addChild(curtainR);
 
-			initGame();
+			king=new MovieClip(assetManager.getTextures("kingDrag"), 18);
+			addChild(king);
+			king.loop=false;
+			Starling.juggler.add(king);
+			king.stop();
+			king.x=714;
+			king.y=768;
+			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void {
+				Prompt.showTXT(king.x + 20, king.y + 135, "哇，好大的戏台子，我去后面瞧瞧热闹。", 20, lionSay, null, 3);
+			}});
+		}
+
+		private function lionSay():void
+		{
+			LionMC.instance.say("这个淘气的孩子，随他玩会儿吧。", 5, 0, 0, function():void {
+				TweenLite.to(king, .5, {y: 768});
+				initGame();
+				LionMC.instance.hide();
+			});
 		}
 
 		public function onOperaSwitch(e:OperaSwitchEvent, forceInit:Boolean=false):void
@@ -172,6 +193,8 @@ package views.module5
 		private var bodyArr0:Array=["沙僧", "唐僧", "猪八戒", "孙悟空", "牛魔王", "铁扇公主"];
 		private var bodyArr1:Array=["诸葛亮", "张飞", "关羽", "孙尚香", "周瑜", "曹操"];
 
+		private var king:MovieClip;
+
 		private function closeCurtains(closeCallback:Function=null):void
 		{
 			TweenLite.to(curtainL, 1, {x: 0});
@@ -196,6 +219,17 @@ package views.module5
 
 		private function onPlayGame2(e:Event):void
 		{
+			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void {
+				king.play();
+				Prompt.showTXT(king.x + 20, king.y + 135, "真好玩儿", 20, getGameInfo, null, 3);
+			}});
+		}
+
+		private function getGameInfo(e:Event=null):void
+		{
+			Starling.juggler.remove(king);
+			king.removeFromParent(true);
+			king=null;
 			var lvl:int=game.gamelevel;
 			if (game.isWin)
 			{
@@ -213,11 +247,7 @@ package views.module5
 			else
 				initGame2(lvl);
 
-			game.removeEventListener(PalaceGame.GAME_OVER, onGameOver);
-			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
-			game.removeEventListener("nextGame", onPlayGame2);
-			gameHolder.removeChild(game);
-			game.dispose();
+			game.removeFromParent(true);
 			game=null;
 		}
 
@@ -237,11 +267,7 @@ package views.module5
 
 		private function onGameRestart(e:Event):void
 		{
-			game.removeEventListener(PalaceGame.GAME_OVER, onGameOver);
-			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
-			game.removeEventListener("nextGame", onPlayGame2);
-			gameHolder.removeChild(game);
-			game.dispose();
+			game.removeFromParent(true);
 			game=null;
 
 			initGame();
@@ -249,15 +275,15 @@ package views.module5
 
 		private function onGameOver(e:Event):void
 		{
-			var lvl:int=game.gamelevel;
-			game.removeEventListener(PalaceGame.GAME_OVER, onGameOver);
-			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
-			game.removeEventListener("nextGame", onPlayGame2);
-			gameHolder.removeChild(game);
-			game.dispose();
-			game=null;
-
-			initGame2(lvl);
+			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void {
+				king.play();
+				Prompt.showTXT(king.x + 20, king.y + 135, "真好玩儿", 20, getGameInfo, null, 3);
+			}});
+//			var lvl:int=game.gamelevel;
+//			initGame2(lvl);
+//
+//			game.removeFromParent(true);
+//			game=null;
 		}
 	}
 }

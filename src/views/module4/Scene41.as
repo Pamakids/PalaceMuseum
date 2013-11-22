@@ -1,6 +1,7 @@
 package views.module4
 {
 	import com.greensock.TweenLite;
+	import com.pamakids.palace.utils.SPUtils;
 
 	import flash.events.AccelerometerEvent;
 	import flash.geom.Point;
@@ -17,6 +18,7 @@ package views.module4
 	import starling.utils.AssetManager;
 
 	import views.components.Craw;
+	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 	import views.global.TailBar;
@@ -36,7 +38,7 @@ package views.module4
 		private var acc:Accelerometer;
 
 		private var cardArr:Array=[new Point(571, 146), new Point(1890, 151),
-			new Point(122, 113), new Point(2333, 114), new Point(1215, 111)];
+								   new Point(122, 113), new Point(2333, 114), new Point(1215, 111)];
 
 		public function Scene41(am:AssetManager=null)
 		{
@@ -61,7 +63,94 @@ package views.module4
 				bgHolder.addChild(card);
 			}
 
+			king=new Sprite();
+			var kingImg:Image=getImage("kingHead")
+			king.addChild(kingImg);
+			SPUtils.registSPCenter(king, 2);
+			addChild(king);
+			king.x=512 - 125;
+			king.y=768;
+			kingImg.addEventListener(TouchEvent.TOUCH, onKingTouch);
 
+			var lion:Image=getImage("lionHead");
+			lion.x=king.width;
+			lion.y=king.height - lion.height;
+			king.addChild(lion);
+			lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
+
+			lionChat1();
+		}
+
+		private function onKingTouch(e:TouchEvent):void
+		{
+			var img:Image=e.currentTarget as Image;
+			if (!img)
+				return;
+			var tc:Touch=e.getTouch(img, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			//			var pt:Point=tc.getLocation(this);
+			//			if (dpt && Point.distance(dpt, pt) < 15)
+			if (chatP)
+				chatP.playHide();
+		}
+
+		private function onLionTouch(e:TouchEvent):void
+		{
+			var img:Image=e.currentTarget as Image;
+			if (!img)
+				return;
+			var tc:Touch=e.getTouch(img, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			if (chatP)
+				chatP.playHide();
+		}
+
+		private function lionChat1():void
+		{
+			if (chatP)
+				chatP.playHide();
+			chatP=Prompt.showTXT(420, 140, chat1, 20, kingChat1, king)
+		}
+
+		private function kingChat1():void
+		{
+			if (chatP)
+				chatP.playHide();
+			chatP=Prompt.showTXT(50, 50, chat2, 20, lionChat2, king, 3)
+		}
+
+		private function lionChat2():void
+		{
+			if (chatP)
+				chatP.playHide();
+			chatP=Prompt.showTXT(420, 140, chat3, 20, lionChat3, king)
+		}
+
+		private function lionChat3():void
+		{
+			if (chatP)
+				chatP.playHide();
+			chatP=Prompt.showTXT(420, 140, chat4, 20, chatOver, king, 1, false, 3, true)
+			LionMC.instance.setLastData(chat4, 0, 0, 0, .6, true);
+		}
+
+		private function chatOver():void
+		{
+			removeMask();
+			king.touchable=false;
+			TweenLite.to(king, 1, {y: 768 + 311, onComplete: getReady});
+		}
+
+		private var chatP:Prompt;
+		private var chat1:String="明天皇帝要和群臣上朝，就在这儿举行。";
+		private var chat2:String="皇帝上朝怎么是在外面呢？"
+		private var chat3:String="呵呵，为了让老天爷作证自己工作努力啊！"
+		private var chat4:String="一定要熟悉御门听政的整个过程，这样你就能从容应对。" //task
+
+		private function getReady():void
+		{
 			addCraws();
 
 			acc=new Accelerometer();
@@ -78,7 +167,7 @@ package views.module4
 		private var peoplePosArr:Array=[new Point(1241, 641), new Point(911, 416), new Point(1421, 416)];
 
 		private var hintArr:Array=["大臣们奏事时，依次来到皇帝的龙案前跪下，汇报工作，接受指令",
-			"御门听政相当于国家最高级别的办公会议，只有各部门的重要领导才有资格参加", "大臣如果迟到或早退，不仅要被皇帝骂，有时还会被扣工资"];
+								   "御门听政相当于国家最高级别的办公会议，只有各部门的重要领导才有资格参加", "大臣如果迟到或早退，不仅要被皇帝骂，有时还会被扣工资"];
 
 		private function addCraws():void
 		{
@@ -310,6 +399,7 @@ package views.module4
 		private var shakeReverse:Boolean;
 		private var degress2:Number=Math.PI / 180;
 		private var needHint:Boolean;
+		private var king:Sprite;
 
 		protected function onUpdate(event:AccelerometerEvent):void
 		{

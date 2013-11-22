@@ -41,7 +41,8 @@ package views.module4
 			hand.x=handPosX;
 			hand.y=handOutPosY;
 
-			addMemorials();
+			LionMC.instance.say("国泰民安，近日奏章数量不多，皇上大可放心。", 0, 0, 0, addMemorials, 20, .6, true);
+//			addMemorials();
 		}
 
 		private var handPosX:Number; //手 位置
@@ -144,7 +145,7 @@ package views.module4
 
 		private function playLion():void
 		{
-			LionMC.instance.say("皇上辛苦了，这就传晚膳", 0, 0, 0, sceneOver, 20);
+			LionMC.instance.say("皇上辛苦了，这就传晚膳", 1, 0, 0, sceneOver, 20);
 		}
 
 		private function playEff():void
@@ -219,8 +220,7 @@ package views.module4
 		private function onYes(e:Event):void
 		{
 			chooseWin.touchable=false;
-			PopUpManager.removePopUp(chooseWin);
-			chooseWin.dispose();
+			PopUpManager.removePopUp(chooseWin, true);
 			memorialBottom.addEventListener(TouchEvent.TOUCH, onBottonMemorialTouch);
 		}
 
@@ -235,16 +235,21 @@ package views.module4
 
 		private function onNo():void
 		{
-			memorialBottom.removeFromParent(true);
 			chooseWin.touchable=false;
 			PopUpManager.removePopUp(chooseWin);
 			chooseWin.dispose();
 			MC.instance.stage.removeChild(drawScene);
 			drawScene=null;
-//			LionMC.instance.say("皇上辛苦了，这就传晚膳", 0, 200, 500, sceneOver);
-			showCard("8", function():void {
-				showAchievement(22, playLion);
+			removeMemorial(memorialBottom, function():void {
+				showCard("8", function():void {
+					showAchievement(22, playLion2);
+				});
 			});
+		}
+
+		private function playLion2():void
+		{
+			LionMC.instance.say("皇上要更努力啊，先用晚膳吧。", 4, 0, 0, sceneOver, 20);
 		}
 	}
 }

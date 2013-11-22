@@ -147,6 +147,8 @@ package states
 			if (mPhoto)
 			{
 				TweenLite.killTweensOf(mPhoto)
+				mPhoto.kill()
+				mPhoto=null
 			}
 		}
 

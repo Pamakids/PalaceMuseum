@@ -10,6 +10,7 @@ package views.components.base
 	import models.SOService;
 
 	import starling.display.Image;
+	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
@@ -191,8 +192,6 @@ package views.components.base
 				return null;
 		}
 
-		public static const GAMERESULT:String="GAMERESULT";
-
 		/**
 		 *
 		 * @param type -1:失败, 0: 时间, 1:得分
@@ -200,19 +199,22 @@ package views.components.base
 		 * @param gamelevel 游戏难度 -1:无难度
 		 * @param numStars 星星个数
 		 */
-		protected function showResult(type:int=-1, result:Number=0, gamelevel:int=-1, numStars:int=0):void
+		protected function showResult(type:int=-1, result:Number=0, record:Number=0, gamelevel:int=-1, numStars:int=0, pr:Sprite=null):void
 		{
+			pr=pr ? pr : this;
 			if (type < 0)
-				initLosePanel();
+				initLosePanel(pr);
 			else
-				initWinPanel(type, result, gamelevel, numStars);
-			initRsBtn();
+				initWinPanel(type, result, record, gamelevel, numStars, pr);
+			initRsBtn(type >= 0, pr);
 		}
 
-		private function initLosePanel():void
+		private function initLosePanel(pr:Sprite):void
 		{
 			var panel:Image=getImage("lose-panel");
-			addChild(panel);
+			panel.x=1024 - panel.width >> 1;
+			panel.y=768 - panel.height >> 1;
+			pr.addChild(panel);
 		}
 
 		/**
@@ -221,38 +223,41 @@ package views.components.base
 		 * @param result 结果
 		 * @param gamelevel 游戏难度 -1:无难度
 		 */
-		private function initWinPanel(type:int=0, result:Number=0, gamelevel:int=-1, numStars:int=0):void
+		private function initWinPanel(type:int=0, result:Number=0, record:Number=0, gamelevel:int=-1, numStars:int=0, pr:Sprite=null):void
 		{
 			var panel:Image=getImage("win-panel");
 			addChild(panel);
 
-			addStars(gamelevel == 1 ? numStars : -1);
+			addStars(gamelevel == 1 ? numStars : -1, pr);
 
 			var txt1:String=type == 0 ? "时间" : "得分";
 			var txt2:String=type == 0 ? "最快" : "最高";
+			var resultTxt:String=type == 0 ? getStringFormTime(result) : result.toString();
+			var recordTxt:String=type == 0 ? getStringFormTime(record) : record.toString();
 		}
 
-		private function addStars(num:int):void
+		private function addStars(num:int, pr:Sprite):void
 		{
 			if (num < 0)
 				return;
 			for (var i:int=0; i < num; i++)
 			{
 				var starG:Image=getImage("star-grey")
-				addChild(starG);
+				pr.addChild(starG);
 			}
 
 			for (var j:int=num; j < 3; j++)
 			{
 				var starR:Image=getImage("star-red")
-				addChild(starR);
+				pr.addChild(starR);
 			}
 		}
 
-		private function initRsBtn():void
+		private function initRsBtn(win:Boolean, pr:Sprite):void
 		{
 			var rsBtn:ElasticButton=new ElasticButton(getImage("restart"), getImage("restart-light"));
-			addChild(rsBtn);
+			pr.addChild(rsBtn);
+//			rsBtn.x=win?
 			rsBtn.addEventListener(ElasticButton.CLICK, onRestartClick);
 		}
 

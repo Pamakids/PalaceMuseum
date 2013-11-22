@@ -10,6 +10,7 @@ package views.module3.scene33
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
 
+	import models.FontVo;
 	import models.SOService;
 
 	import starling.core.Starling;
@@ -609,15 +610,15 @@ package views.module3.scene33
 		{
 			addChild(endSP);
 			endSP.x=-1024;
-			//			score=10000;
-			//			life=3;
+//			score=5000;
+//			life=3;
 			var isRecord:Boolean=false;
 			if (life > 0 && score > 0)
 			{
 				isWin=true;
 				var win:Image=getImage("win-panel");
 				endSP.addChild(win);
-				win.x=222;
+				win.x=1024 - win.width >> 1;
 				win.y=30;
 
 				for (var i:int=0; i < life; i++)
@@ -639,13 +640,26 @@ package views.module3.scene33
 				var gameResultlvl:String=gameResult + gamelevel.toString();
 				var dishgameresult:int=SOService.instance.getSO(gameResultlvl) as int;
 
-				var scoreTXT:TextField=new TextField(400, 100, "");
+				var t1:TextField=new TextField(200, 100, "得分：", FontVo.PALACE_FONT, 48, 0xb83d00);
+				t1.vAlign="top";
+				t1.hAlign="left";
+				t1.x=332;
+				t1.y=277;
+				endSP.addChild(t1);
+				var t2:TextField=new TextField(200, 40, "最高：", FontVo.PALACE_FONT, 26, 0xb83d00);
+				t2.vAlign="top";
+				t2.hAlign="left";
+				t2.x=362;
+				t2.y=370;
+				endSP.addChild(t2);
+
+				var scoreTXT:TextField=new TextField(200, 100, "");
 				scoreTXT.fontSize=48;
 				scoreTXT.color=0xb83d00;
 				scoreTXT.x=490;
 				scoreTXT.y=280;
 				scoreTXT.vAlign="top"
-				scoreTXT.hAlign="left";
+				scoreTXT.hAlign="right";
 				endSP.addChild(scoreTXT);
 
 				var recordTXT:TextField=new TextField(100, 40, "");
@@ -653,6 +667,8 @@ package views.module3.scene33
 				recordTXT.color=0xb83d00;
 				recordTXT.x=520;
 				recordTXT.y=370;
+				recordTXT.vAlign="top"
+				recordTXT.hAlign="right";
 				endSP.addChild(recordTXT);
 
 				if (!dishgameresult || dishgameresult < score)
@@ -778,6 +794,7 @@ package views.module3.scene33
 			}
 			else if (!stageArea.containsPoint(pt))
 			{
+				SoundManager.instance.stop("dishout");
 				SoundManager.instance.play("dishout");
 				isOut=true;
 				life--;

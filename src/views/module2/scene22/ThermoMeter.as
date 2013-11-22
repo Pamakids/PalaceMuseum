@@ -25,22 +25,22 @@ package views.module2.scene22
 		private var lineLengthArr:Array=[94, 219, 56, 198, 78];
 
 		private var circlePosArr:Array=[new Point(320, 130), new Point(445, 233),
-			new Point(281, 339), new Point(421, 430), new Point(300, 536)];
+										new Point(281, 339), new Point(421, 430), new Point(300, 536)];
 
 		private var lightArr:Array=[];
 
 		private var itemsPosArr:Array=[new Point(835, 160), new Point(673, 661),
-			new Point(691, 298), new Point(715, 0), new Point(804, 435)];
+									   new Point(691, 298), new Point(715, 0), new Point(804, 435)];
 		private var itemsStrArr:Array=["snowman", "ice", "body", "tea", "boiling"];
 
 		private var itemsArr:Array=[];
 
 		private var tempArr:Array=[-20, 0, 37, 70, 100];
 		private var hotAreaArr:Array=[new Rectangle(329, 139, 135, 130), new Rectangle(471, 268, 145, 134),
-			new Rectangle(287, 346, 151, 125), new Rectangle(454, 439, 135, 136), new Rectangle(308, 569, 143, 135)];
+									  new Rectangle(287, 346, 151, 125), new Rectangle(454, 439, 135, 136), new Rectangle(308, 569, 143, 135)];
 
 		private var offsetsArr:Array=[new Point(22, -12), new Point(20, -16),
-			new Point(40, 14), new Point(-13, 53), new Point(31, -12)];
+									  new Point(40, 14), new Point(-13, 53), new Point(31, -12)];
 
 		public function ThermoMeter(am:AssetManager=null)
 		{
@@ -51,6 +51,9 @@ package views.module2.scene22
 			tempArr.reverse();
 
 			addBG();
+
+			contentHolder=new Sprite();
+			addChild(contentHolder);
 
 			addLines();
 			addLights();
@@ -65,7 +68,7 @@ package views.module2.scene22
 		private function addItems():void
 		{
 			itemHolder=new Sprite();
-			addChild(itemHolder);
+			contentHolder.addChild(itemHolder);
 			for (var i:int=0; i < itemsStrArr.length; i++)
 			{
 				var item:Sprite=new Sprite();
@@ -147,14 +150,14 @@ package views.module2.scene22
 			var thermo:Image=getImage("thermo");
 			thermo.x=152;
 			thermo.y=19;
-			addChild(thermo);
+			contentHolder.addChild(thermo);
 
 			mecury=new Sprite();
 			mecury.addChild(getImage("thermo-mercury"));
 			mecury.x=172;
 			mecury.y=169;
 			mecury.clipRect=new Rectangle(0, 454, 6, 454);
-			addChild(mecury);
+			contentHolder.addChild(mecury);
 		}
 
 		private function addLines():void
@@ -166,7 +169,7 @@ package views.module2.scene22
 				line.clipRect=new Rectangle(0, 0, lineLengthArr[i] + 7, 15);
 				line.x=lineX;
 				line.y=lineYArr[i];
-				addChild(line);
+				contentHolder.addChild(line);
 			}
 		}
 
@@ -195,7 +198,7 @@ package views.module2.scene22
 				light.x=x1;
 				light.y=y2;
 				light.clipRect=new Rectangle(light.width, 0, light.width, light.height);
-				addChild(light);
+				contentHolder.addChild(light);
 				lightArr.push(light);
 			}
 		}
@@ -207,7 +210,7 @@ package views.module2.scene22
 				var circle:Image=getImage("thermo-pan");
 				circle.x=circlePosArr[i].x;
 				circle.y=circlePosArr[i].y;
-				addChild(circle);
+				contentHolder.addChild(circle);
 			}
 		}
 
@@ -215,6 +218,8 @@ package views.module2.scene22
 
 		private var itemHolder:Sprite;
 		private var _count:int=0;
+
+		private var contentHolder:Sprite;
 
 		public function get count():int
 		{
@@ -225,7 +230,17 @@ package views.module2.scene22
 		{
 			_count=value;
 			if (_count == tempArr.length)
-				isWin=true;
+			{
+				TweenLite.to(contentHolder, .5, {alpha: 0, onComplete: function():void {
+					contentHolder.removeChildren(0, -1, true);
+					var info:Image=getImage("thermo-intro");
+					info.x=75;
+					info.y=71;
+					contentHolder.addChild(info);
+					TweenLite.to(contentHolder, .5, {alpha: 1});
+					isWin=true;
+				}});
+			}
 		}
 
 		public function get temp():Number

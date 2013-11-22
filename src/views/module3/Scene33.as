@@ -51,7 +51,7 @@ package views.module3
 		private var chatking2:String="太慢了，我自己来！";
 
 		private var chatlion1:String="别着急，小太监还没有用银牌试毒，不能吃。";
-		private var chatlion2:String="这些是膳牌，是大臣请求接见是递交的，翻翻看吧！";
+		private var chatlion2:String="翻翻请求接见的大臣递交的膳牌。 皇亲贵族用红头牌子，大臣用绿头牌子。"; //task
 		private var chatlion3:String="快点找到银牌！";
 
 		public function Scene33(am:AssetManager=null)
@@ -135,11 +135,11 @@ package views.module3
 			var card:Image=e.currentTarget as Image;
 			card.removeEventListener(TouchEvent.TOUCH, onCardBTouch);
 			TweenLite.to(card, .5, {alpha: 0,
-					onComplete: function():void {
-						cardSelected=false;
-						showAchievement(19);
-						sceneOver();
-					}});
+							 onComplete: function():void {
+								 cardSelected=false;
+								 showAchievement(19);
+								 sceneOver();
+							 }});
 		}
 
 		private function addFood():void
@@ -147,8 +147,8 @@ package views.module3
 			foodHolder=new Sprite();
 			addChild(foodHolder);
 			food=getImage("food");
-			food.x=231;
-			food.y=473;
+			food.x=304;
+			food.y=470;
 			foodHolder.addChild(food);
 
 			pin=getImage("pin23");
@@ -171,7 +171,7 @@ package views.module3
 			kingHungry.y=28;
 
 			var table:Image=getImage("table23");
-			table.y=768 - 287;
+			table.y=483;
 			addChild(table);
 		}
 
@@ -202,7 +202,12 @@ package views.module3
 				dy=590;
 				if (SOService.instance.checkHintCount(silverCardClickHint))
 					addEventListener(Event.ENTER_FRAME, onEnterFrame);
-
+			}
+			else if (chat == "chatlion2")
+			{
+				dx=180;
+				dy=590;
+				isT=true;
 			}
 			Prompt.showTXT(dx, dy, this[chat], 20, nextChat, this, 1, false, 3, isT);
 		}
@@ -304,8 +309,8 @@ package views.module3
 			}
 			kingHolder.removeChildren();
 			var chair:Image=getImage("chair");
-			chair.x=(1024 - chair.width) / 2;
-			chair.y=(768 - chair.height) / 2;
+			chair.x=211;
+			chair.y=210;
 			kingHolder.addChild(chair);
 
 //			var kingSit:Image=getImage("king23-sit");
@@ -331,12 +336,12 @@ package views.module3
 			{
 				showCard("7", function():void {
 					showAchievement(18, function():void {
-						Prompt.showTXT(200, 450, "把没吃完的菜赏赐下去吧", 20, addChooses);
+						Prompt.showTXT(180, 590, "皇帝要把没吃完的菜赏下去，通常是赏给王公贵族，你来试试？", 20, addChooses, null, 1, false, 3, true);
 					});
 				});
 			}
 			else
-				Prompt.showTXT(200, 450, "把没吃完的菜赏赐下去吧", 20, addChooses);
+				Prompt.showTXT(180, 590, "皇帝要把没吃完的菜赏下去，通常是赏给王公贵族，你来试试？", 20, addChooses, null, 1, false, 3, true);
 		}
 
 		private function addChooses():void
@@ -345,14 +350,14 @@ package views.module3
 				kingFull.pause();
 				Starling.juggler.remove(kingFull);
 			});
-			var gap:Number=142 + 16;
+			var gap:Number=85 + 28;
 			for (var i:int=0; i < 4; i++)
 			{
 				var btn:ElasticButton=new ElasticButton(getImage("choose" + (i + 1).toString()));
-				btn.shadow=getImage("choose" + (i + 1).toString() + "-down");
+//				btn.shadow=getImage("choose" + (i + 1).toString() + "-down");
 				btn.index=i;
-				btn.x=380 + gap * i;
-				btn.y=580;
+				btn.x=483 + gap * i + 85 / 2;
+				btn.y=294 + 219 / 2;
 				foodHolder.addChild(btn);
 				btn.addEventListener(ElasticButton.CLICK, onBtnClick);
 			}
@@ -367,9 +372,18 @@ package views.module3
 			{
 				choosed=true;
 				if (b.index == 3)
-					showAchievement(20, moveTable);
+					Prompt.showTXT(150, 445, "果然是平民少年，更体会百姓的疾苦。", 20,
+								   function():void {
+									   showAchievement(20, moveTable);
+								   }, this);
+//					LionMC.instance.say("果然是平民少年，更体会百姓的疾苦。", 0, 0, 0, 
+//						function():void {
+//						showAchievement(20, moveTable);
+//					})
 				else
-					moveTable();
+					Prompt.showTXT(150, 445, "按照规矩办事，表现不错。", 20, moveTable, this);
+//				LionMC.instance.say("按照规矩办事，表现不错。", 0, 0, 0, moveTable);
+//				moveTable();
 				for (var i:int=0; i < foodHolder.numChildren; i++)
 				{
 					var obj:DisplayObject=foodHolder.getChildAt(i);
