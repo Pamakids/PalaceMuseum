@@ -4,6 +4,9 @@ package views.module2.scene22
 
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.filters.BlurFilter;
 
 	public class ViewHolder extends Sprite
@@ -115,6 +118,41 @@ package views.module2.scene22
 
 		public function ViewHolder()
 		{
+		}
+
+		private var sit:Image;
+		private var stand:Image;
+
+		public function initLion(img1:Image, img2:Image):void
+		{
+			sit=img1;
+			stand=img2;
+
+			addChild(sit);
+			sit.x=1211;
+			sit.y=214;
+
+			addChild(stand);
+			stand.x=1222;
+			stand.y=208;
+
+			stand.visible=stand.touchable=false;
+		}
+
+		private var _standUp:Boolean;
+
+		public function get standUp():Boolean
+		{
+			return _standUp;
+		}
+
+		public function set standUp(value:Boolean):void
+		{
+			if (_standUp == value)
+				return;
+			_standUp=value;
+			sit.visible=sit.touchable=!value;
+			stand.visible=stand.touchable=value;
 		}
 	}
 }

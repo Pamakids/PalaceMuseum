@@ -15,6 +15,7 @@ package views.module3
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
@@ -52,7 +53,7 @@ package views.module3
 
 			addCraw(new Point(463, 461));
 
-			TailBar.show();
+			LionMC.instance.say("皇帝吃的饭菜，名称很讲究，看你能否给菜名对号入座。", 0, 0, 0, null, 20, .6, true);
 		}
 
 		private function onTouch(e:TouchEvent):void
@@ -143,9 +144,9 @@ package views.module3
 				nextButton.removeFromParent(true);
 			var scale:Number=1.2;
 			TweenLite.to(this, 3, {scaleX: scale, scaleY: scale, x: -1024 * (scale - 1),
-					onComplete: function():void {
-						dispatchEvent(new Event("gotoNext", true));
-					}});
+							 onComplete: function():void {
+								 dispatchEvent(new Event("gotoNext", true));
+							 }});
 		}
 	}
 }

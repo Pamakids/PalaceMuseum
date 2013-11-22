@@ -12,6 +12,7 @@ package views.module2.scene21
 	import flash.geom.Point;
 	import flash.utils.Timer;
 
+	import models.FontVo;
 	import models.SOService;
 
 	import starling.display.Image;
@@ -160,8 +161,8 @@ package views.module2.scene21
 		{
 			var recordIcon:Image=getImage("game-record");
 			endSP.addChild(recordIcon);
-			recordIcon.x=536;
-			recordIcon.y=282;
+			recordIcon.x=636;
+			recordIcon.y=342;
 			recordIcon.scaleX=recordIcon.scaleY=3;
 			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut,
 							 onComplete: function():void {
@@ -304,6 +305,7 @@ package views.module2.scene21
 				time=new Timer(33);
 				time.addEventListener(TimerEvent.TIMER, onTimer);
 				time.start();
+//				gameOver(); //test
 			}});
 		}
 
@@ -435,15 +437,15 @@ package views.module2.scene21
 			bgHolder.addChild(edge);
 			edge.alpha=0;
 			TweenLite.to(edge, 1, {alpha: 1, onComplete: function():void {}});
-			var disposeFun:Function=function():void {
-				timeHolder.dispose();
-				gameSP.dispose();
-				initResult();
-			}
+//			var disposeFun:Function=
 			TweenLite.delayedCall(2, function():void
 			{
 				TweenLite.to(timeHolder, 1, {x: 1024});
-				TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn, onComplete: disposeFun});
+				TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn, onComplete: function():void {
+					timeHolder.removeFromParent(true);
+					gameSP.removeFromParent(true);
+					initResult();
+				}});
 			});
 		}
 
@@ -453,8 +455,7 @@ package views.module2.scene21
 			var _count:int=time.currentCount;
 			addChild(endSP);
 			setChildIndex(closeBtn, numChildren - 1);
-			endSP.x=148;
-			endSP.y=-547;
+			endSP.y=-768;
 
 			var gameResultlvl:String=gameResult + gamelevel.toString();
 			var jigsawgameresult:int=SOService.instance.getSO(gameResultlvl) as int;
@@ -480,31 +481,48 @@ package views.module2.scene21
 				resultTXT=getStringFormTime(_count);
 				recordTXT=getStringFormTime(jigsawgameresult);
 			}
-			endSP.addChild(getImage("menu-end"));
+			var panel:Image=getImage("win-panel");
+			panel.x=1024 - panel.width >> 1;
+			panel.y=50;
+			endSP.addChild(panel);
+
+			var t1:TextField=new TextField(200, 100, "用时：", FontVo.PALACE_FONT, 48, 0xb83d00);
+			t1.vAlign="top";
+			t1.hAlign="left";
+			t1.x=332;
+			t1.y=277;
+			endSP.addChild(t1);
+			var t2:TextField=new TextField(200, 40, "最快：", FontVo.PALACE_FONT, 26, 0xb83d00);
+			t2.vAlign="top";
+			t2.hAlign="left";
+			t2.x=362;
+			t2.y=390;
+			endSP.addChild(t2);
 
 			var resultTF:TextField=new TextField(400, 100, resultTXT);
 			resultTF.fontSize=48;
 			resultTF.color=0xb83d00;
-			resultTF.x=375;
-			resultTF.y=255;
+			resultTF.x=468;
+			resultTF.y=277;
 			resultTF.vAlign="top";
 			resultTF.hAlign="left";
 			endSP.addChild(resultTF);
 
+
 			var recordTF:TextField=new TextField(150, 40, recordTXT);
 			recordTF.fontSize=26;
 			recordTF.color=0x602508;
-			recordTF.x=332;
-			recordTF.y=400;
+			recordTF.x=482;
+			recordTF.y=390;
 			endSP.addChild(recordTF);
 
 			var rsBtn:ElasticButton=new ElasticButton(getImage("restart"));
 			rsBtn.shadow=getImage("restart-light");
-			rsBtn.x=380;
+			rsBtn.x=512;
 			rsBtn.y=520;
 			endSP.addChild(rsBtn);
 
-			TweenLite.to(endSP, 1, {y: 28, onComplete: function():void {
+			TweenLite.to(endSP, 1, {y: 0, onComplete: function():void {
 
 				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
 				if (delayFunction)

@@ -1,6 +1,12 @@
 package views
 {
+	import com.pamakids.palace.utils.StringUtils;
+
+	import flash.filesystem.File;
+
 	import sound.SoundAssets;
+
+	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceModule;
 	import views.module5.Scene51;
@@ -21,6 +27,26 @@ package views
 			addLoading();
 
 			loadAssets(skipIndex, addNext);
+		}
+
+		override protected function loadAssets(index:int, callback:Function):void
+		{
+			if (index == 1)
+			{
+				assetManager=new AssetManager();
+				var scene:Class=sceneArr[index] as Class;
+				var sceneName:String=StringUtils.getClassName(scene);
+				var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
+				var path:String="assets/module3/scene31/dragMC."
+				assetManager.enqueue(file, path + "atf", path + "xml");
+				assetManager.loadQueue(function(ratio:Number):void
+				{
+					if (ratio == 1.0 && callback != null)
+						callback();
+				});
+			}
+			else
+				super.loadAssets(index, callback);
 		}
 	}
 }

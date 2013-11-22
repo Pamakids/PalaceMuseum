@@ -31,7 +31,7 @@ package
 		{
 //			SOService.instance.clear();
 //			SOService.instance.init();
-//			SOService.instance.setSO("lastScene", "31map");
+			SOService.instance.setSO("lastScene", "22");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);

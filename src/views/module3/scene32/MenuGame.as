@@ -14,6 +14,7 @@ package views.module3.scene32
 	import flash.sensors.Accelerometer;
 	import flash.utils.Timer;
 
+	import models.FontVo;
 	import models.SOService;
 
 	import nape.callbacks.CbType;
@@ -492,8 +493,7 @@ package views.module3.scene32
 			var _count:int=time.currentCount;
 			isWin=true;
 			addChild(endSP);
-			endSP.x=148;
-			endSP.y=-547;
+			endSP.y=-768;
 
 			var gameResultlvl:String=gameResult + gamelevel.toString();
 			var menugameresult:int=SOService.instance.getSO(gameResultlvl) as int;
@@ -520,13 +520,29 @@ package views.module3.scene32
 				resultTXT=getStringFormTime(_count);
 				recordTXT=getStringFormTime(menugameresult);
 			}
-			endSP.addChild(getImage("menu-end"));
+			var panel:Image=getImage("win-panel");
+			panel.x=1024 - panel.width >> 1;
+			panel.y=50;
+			endSP.addChild(panel);
+
+			var t1:TextField=new TextField(200, 100, "用时：", FontVo.PALACE_FONT, 48, 0xb83d00);
+			t1.vAlign="top";
+			t1.hAlign="left";
+			t1.x=332;
+			t1.y=277;
+			endSP.addChild(t1);
+			var t2:TextField=new TextField(200, 40, "最快：", FontVo.PALACE_FONT, 26, 0xb83d00);
+			t2.vAlign="top";
+			t2.hAlign="left";
+			t2.x=362;
+			t2.y=390;
+			endSP.addChild(t2);
 
 			var resultTF:TextField=new TextField(400, 100, resultTXT);
 			resultTF.fontSize=48;
 			resultTF.color=0xb83d00;
-			resultTF.x=375;
-			resultTF.y=255;
+			resultTF.x=468;
+			resultTF.y=277;
 			resultTF.vAlign="top";
 			resultTF.hAlign="left";
 			endSP.addChild(resultTF);
@@ -534,17 +550,17 @@ package views.module3.scene32
 			var recordTF:TextField=new TextField(150, 40, recordTXT);
 			recordTF.fontSize=26;
 			recordTF.color=0x602508;
-			recordTF.x=332;
-			recordTF.y=400;
+			recordTF.x=482;
+			recordTF.y=390;
 			endSP.addChild(recordTF);
 
 			var rsBtn:ElasticButton=new ElasticButton(getImage("restart"));
 			rsBtn.shadow=getImage("restart-light");
-			rsBtn.x=380;
+			rsBtn.x=512;
 			rsBtn.y=520;
 			endSP.addChild(rsBtn);
 
-			TweenLite.to(endSP, 1, {y: 28, onComplete: function():void {
+			TweenLite.to(endSP, 1, {y: 0, onComplete: function():void {
 
 				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
 				if (delayFunction)
@@ -563,8 +579,8 @@ package views.module3.scene32
 		{
 			var recordIcon:Image=getImage("game-record");
 			endSP.addChild(recordIcon);
-			recordIcon.x=536;
-			recordIcon.y=282;
+			recordIcon.x=636;
+			recordIcon.y=342;
 			recordIcon.scaleX=recordIcon.scaleY=3;
 			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut,
 							 onComplete: function():void {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:3f2e64c8cb770ca18b6785d5ae2e715b$ -->
+<!-- $TexturePacker:SmartUpdate:7234be4cef58d231437297983167fe8d$ -->
 <TextureAtlas imagePath="m3s2.png">
     <SubTexture name="collection_card_12" x="1368" y="529" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
     <SubTexture name="collection_card_5" x="1028" y="529" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
@@ -61,7 +61,7 @@
     <SubTexture name="eye0046" x="974" y="337" width="50" height="41" frameX="-4" frameY="-2" frameWidth="56" frameHeight="45"/>
     <SubTexture name="hintHand" x="948" y="909" width="63" height="43"/>
     <SubTexture name="hintRing" x="948" y="828" width="64" height="79" frameX="0" frameY="-1" frameWidth="64" frameHeight="81"/>
-    <SubTexture name="kingHead" x="1708" y="604" width="257" height="311"/>
+    <SubTexture name="kingHead" x="1784" y="604" width="257" height="311"/>
     <SubTexture name="label-prism" x="647" y="1741" width="91" height="47"/>
     <SubTexture name="label-tele" x="554" y="1741" width="91" height="47"/>
     <SubTexture name="label-thermo" x="461" y="1741" width="91" height="47"/>
@@ -70,6 +70,8 @@
     <SubTexture name="light-prism" x="1807" y="1591" width="194" height="169"/>
     <SubTexture name="light-sign" x="90" y="1230" width="369" height="578"/>
     <SubTexture name="lionHead" x="1173" y="1309" width="208" height="174"/>
+    <SubTexture name="lionsit" x="1708" y="529" width="74" height="81"/>
+    <SubTexture name="lionstand" x="960" y="642" width="54" height="84"/>
     <SubTexture name="part1" x="1392" y="1297" width="209" height="176"/>
     <SubTexture name="part2" x="1347" y="1748" width="196" height="177"/>
     <SubTexture name="part3" x="1423" y="931" width="232" height="176"/>
