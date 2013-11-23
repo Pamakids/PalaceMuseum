@@ -19,6 +19,7 @@ package controllers
 	import starling.display.Sprite;
 	import starling.utils.AssetManager;
 
+	import views.EndScene;
 	import views.Interlude;
 	import views.Module1;
 	import views.Module2;
@@ -211,7 +212,19 @@ package controllers
 
 		private function onEnd():void
 		{
-			restart();
+			main.touchable=false;
+			removeAllMC();
+			if (Map.map)
+				Map.map.clear(1);
+			clearCrtModule();
+			UserCenterManager.closeUserCenter();
+			_moduleIndex=-1;
+			TopBar.hide();
+			TailBar.hide();
+			main.touchable=true;
+
+			var fin:EndScene=new EndScene(restart);
+			main.addChild(fin);
 		}
 
 		public static var assetManager:AssetManager;
@@ -223,12 +236,8 @@ package controllers
 			if (Map.map)
 				Map.map.clear(1);
 			clearCrtModule();
-//			LionMC.instance.hide();
-
 			UserCenterManager.closeUserCenter();
-
 			SOService.instance.init();
-//			LionMC.instance.show();
 			_moduleIndex=-1;
 			TopBar.hide();
 			TailBar.hide();

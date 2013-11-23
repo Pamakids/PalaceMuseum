@@ -26,6 +26,7 @@ package views.components.base
 
 	import starling.display.BlendMode;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
@@ -58,12 +59,18 @@ package views.components.base
 			Prompt.parent=this;
 			assetManager=am;
 
-			if (Math.random() < 0.2)
-				TweenLite.delayedCall(3, function():void {
-					var img:Image=getImage(sceneName.toLocaleLowerCase() + "-bird");
-					if (img)
-						initBird(img);
-				});
+//			if (!checkBird())
+			TweenLite.delayedCall(3, function():void {
+				var img:Image=getImage(sceneName.toLocaleLowerCase() + "-bird");
+				if (img)
+					initBird(img);
+			});
+		}
+
+		private function checkBird():Boolean
+		{
+			var b:Boolean=SOService.instance.getSO(sceneName + "birdCatched");
+			return b;
 		}
 
 		protected function addBG(src:String):void
@@ -75,9 +82,13 @@ package views.components.base
 		private function initBird(img:Image):void
 		{
 			var bird:PalaceBird=new PalaceBird();
+			bird.crtScene=sceneName;
 			bird.img=img;
-			bird.bird=getImage("bird");
-			bird.bg=getImage("birdBG");
+			var mc:MovieClip=new MovieClip(MC.assetManager.getTextures("bird"), 18);
+//			mc.scaleX=mc.scaleY=.5;
+			trace(mc.numFrames)
+			bird.bird=mc;
+			bird.bg=getImage("sceneBirdBG");
 			bird.close=new ElasticButton(getImage("button_close"));
 			bird.close.shadow=getImage("button_close_down");
 			bird.fly();

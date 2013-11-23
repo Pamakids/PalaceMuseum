@@ -21,7 +21,7 @@ package views.global
 				_parent.addChild(this);
 			var tail:MovieClip=new MovieClip(MC.assetManager.getTextures("tail"), 30);
 			Starling.juggler.add(tail);
-			tail.scaleX=tail.scaleY=.5;
+//			tail.scaleX=tail.scaleY=.5;
 			tail.loop=true;
 			tail.play();
 			tail.addEventListener(TouchEvent.TOUCH, tailClickedHandler);

@@ -20,6 +20,7 @@ package views.module5
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
+	import views.global.TailBar;
 	import views.module5.scene52.OpearaGame2;
 	import views.module5.scene52.OperaGame;
 
@@ -257,6 +258,7 @@ package views.module5
 			gameHolder.addChild(game2);
 			game2.onOperaSwitch=onOperaSwitch;
 			game2.addEventListener(PalaceGame.GAME_OVER, onGame2Over);
+			TailBar.hide();
 		}
 
 		private function onGame2Over(e:Event):void
