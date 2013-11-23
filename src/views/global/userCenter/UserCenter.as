@@ -26,6 +26,7 @@ package views.global.userCenter
 	import views.components.ElasticButton;
 	import views.components.SoftPaperAnimation;
 	import views.global.userCenter.achievement.AchievementScreen;
+	import views.global.userCenter.birds.BirdScreen;
 	import views.global.userCenter.collection.CollectionScreen;
 	import views.global.userCenter.gameCenter.GameCenterScreen;
 	import views.global.userCenter.handbook.HandbookScreen;
@@ -59,6 +60,7 @@ package views.global.userCenter
 		private static const COLLECTION:String="CollectionScreen";
 		private static const HANDBOOK:String="HandbookScreen";
 		private static const USERINFO:String="UserInfoScreen";
+		private static const BIRDS:String = "BirdScreen";
 
 		private var screenNames:Array;
 
@@ -74,16 +76,27 @@ package views.global.userCenter
 //initialize--------------------------------------------------------------------------------------
 		private function init():void
 		{
-			this.screenNames=[USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION, GAMECENTER];
+			this.screenNames=[USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION, GAMECENTER, BIRDS];
 
 			initBackgroud();
 			initTabBar();
+			initShade();
 			initBackButton();
 			initNavigator();
 			initAnimation();
 			initRender();
 		}
-
+		
+		private function initShade():void
+		{
+			var image:Image = UserCenterManager.getImage("shade");
+			this.addChild( image );
+			image.x = 19;
+			image.y = 85;
+			image.height >> 2;
+			image.touchable = false;
+		}
+		
 		private function initBackgroud():void
 		{
 			var image:Image=UserCenterManager.getImage("main_background");
@@ -113,14 +126,18 @@ package views.global.userCenter
 					selectedUpIcon:	UserCenterManager.getImage("collection_down")
 				},
 				{
-					defaultIcon:	UserCenterManager.getImage("map_up"),
-					selectedUpIcon:	UserCenterManager.getImage("map_down")
+					defaultIcon:	UserCenterManager.getImage("games_up"),
+					selectedUpIcon:	UserCenterManager.getImage("games_down")
+				},
+				{
+					defaultIcon:	UserCenterManager.getImage("bird_up"),
+					selectedUpIcon:	UserCenterManager.getImage("bird_down")
 				}
 				]);
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;
-			_tabBar.gap=2;
-			_tabBar.x=45;
-			_tabBar.y=36;
+			_tabBar.gap=1;
+			_tabBar.x=43;
+			_tabBar.y=15;
 			this.addChild(_tabBar);
 			_tabBar.addEventListener(Event.CHANGE, tabs_changeHandler);
 		}
@@ -131,7 +148,7 @@ package views.global.userCenter
 			_backButton=new ElasticButton(new Image(MC.assetManager.getTexture("button_close")));
 			_backButton.shadow=new Image(MC.assetManager.getTexture("button_close_down"));
 			addChild(_backButton);
-			_backButton.x=950;
+			_backButton.x=960;
 			_backButton.y=60;
 			_backButton.addEventListener(ElasticButton.CLICK, onTriggered);
 		}
@@ -186,6 +203,17 @@ package views.global.userCenter
 					width: contentWidth, height: contentHeight,
 					viewWidth: contentWidth, viewHeight: contentHeight
 				}));
+			_navigator.addScreen(BIRDS, new ScreenNavigatorItem(BirdScreen,
+				{
+					initialized: onInitialized,
+					viewUpdated: onViewUpdated,
+					viewUpdateFail: onViewUpdateFail,
+					initViewPlayed: onInitViewPlayed
+				},
+				{
+					width: contentWidth, height: contentHeight,
+					viewWidth: contentWidth, viewHeight: contentHeight
+				}));
 			_navigator.x=28;
 			_navigator.y=89;
 			this.addChild(_navigator);
@@ -228,6 +256,9 @@ package views.global.userCenter
 				case USERINFO:
 					(_navigator.activeScreen as UserInfoScreen).setMapVisible(mapVisible);
 					break;
+				case BIRDS:
+					(_navigator.activeScreen as BirdScreen).initView(0);
+					break;
 			}
 		}
 
@@ -246,6 +277,7 @@ package views.global.userCenter
 			{
 				case HANDBOOK:
 					crtPage_Handbook+=(pageUp) ? -1 : 1; //记录
+				case BIRDS:
 				case ACHIEVEMENT:
 					getTarTexture();
 					startAnimation(pageUp);
@@ -258,9 +290,8 @@ package views.global.userCenter
 			switch (getClassName(e.currentTarget))
 			{
 				case HANDBOOK:
-					hideAnimation();
-					break;
 				case ACHIEVEMENT:
+				case BIRDS:
 					hideAnimation();
 					break;
 			}
@@ -274,7 +305,7 @@ package views.global.userCenter
 		private function onTouch(e:TouchEvent):void
 		{
 			var index:int=_tabBar.selectedIndex;
-			if ((index != 1 && index != 2) || animation.visible) //速成手册 or 成就
+			if ((index != 1 && index != 2 && index != 5) || animation.visible) //速成手册 or 成就
 				return;
 			var touch:Touch=e.getTouch(this);
 			var point:Point;
@@ -298,6 +329,9 @@ package views.global.userCenter
 					else if (_navigator.activeScreen is AchievementScreen) //成就页面
 					{
 						pageUp ? (_navigator.activeScreen as AchievementScreen).pageUp() : (_navigator.activeScreen as AchievementScreen).pageDown();
+					}else if( _navigator.activeScreen is BirdScreen )
+					{
+						pageUp ? (_navigator.activeScreen as BirdScreen).pageUp() : (_navigator.activeScreen as BirdScreen).pageDown();
 					}
 					break;
 			}
