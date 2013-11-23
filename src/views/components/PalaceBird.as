@@ -6,7 +6,9 @@ package views.components
 
 	import models.SOService;
 
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Shape;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -18,11 +20,10 @@ package views.components
 	{
 		public function PalaceBird()
 		{
-			super();
 		}
 
 		public var img:Image;
-		public var bird:Image;
+		public var bird:MovieClip;
 		public var bg:Image;
 		public var close:ElasticButton;
 		private var speedX:Number;
@@ -34,15 +35,13 @@ package views.components
 		public function fly():void
 		{
 			addChild(bird);
+			Starling.juggler.add(bird);
+			bird.loop=true;
+			bird.play();
 			bird.x=1024;
 			birdY=Math.random() * 500 + 100;
 			speedX=-10;
 			count=0;
-
-//			sp=new Shape();
-//			sp.graphics.lineStyle(1);
-//			sp.graphics.moveTo(1024, birdY);
-//			addChild(sp);
 
 			this.addEventListener(TouchEvent.TOUCH, onTouch);
 			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -54,9 +53,7 @@ package views.components
 		{
 			count+=degree1 * 30;
 			bird.x+=speedX;
-			bird.y=Math.cos(count) * 100 + birdY;
-//			sp.graphics.lineTo(bird.x, bird.y);
-//			bird.rotation=Math.PI + Math.atan2(Math.cos(count) * 20, speedX);
+			bird.y=Math.cos(count) * 50 + birdY;
 			if (bird.y < -200)
 			{
 				this.removeEventListener(TouchEvent.TOUCH, onTouch);
@@ -78,8 +75,11 @@ package views.components
 			}
 		}
 
+		public var crtScene:String;
+
 		private function open():void
 		{
+			SOService.instance.setSO(crtScene + "birdCatched", true);
 			var num:Object=SOService.instance.getSO("bird_count");
 			if (!num)
 				num=1;
@@ -118,6 +118,18 @@ package views.components
 			close.removeEventListener(ElasticButton.CLICK, onClose);
 			PopUpManager.removePopUp(this);
 			this.dispose();
+		}
+
+		override public function dispose():void
+		{
+			if (bird)
+			{
+				Starling.juggler.remove(bird);
+				bird.stop();
+				bird.removeFromParent(true);
+				bird=null;
+			}
+			super.dispose();
 		}
 	}
 }
