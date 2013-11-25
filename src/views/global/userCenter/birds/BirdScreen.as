@@ -1,37 +1,37 @@
 package views.global.userCenter.birds
 {
 	import assets.global.userCenter.BirdAssets;
-	
+
 	import models.SOService;
-	
+
 	import starling.display.Image;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenter;
-	
+
 	public class BirdScreen extends BaseScreen
 	{
 		public static const MAX_NUM:int=8;
-		
+
 		public function BirdScreen()
 		{
 			_assetsManager=new AssetManager();
 		}
-		
+
 		private var _assetsManager:AssetManager;
 		private var crtPage:int;
-		
+
 		override protected function initialize():void
 		{
 			super.initialize();
 //			initLoad();
 			dispatchEventWith(UserCenter.Initialized);
 		}
-		
+
 //		private var load:Image;
-		
+
 //		private function initLoad():void
 //		{
 //			load=new Image(Texture.fromBitmap(new PalaceModule.loading()));
@@ -46,13 +46,13 @@ package views.global.userCenter.birds
 //				load.rotation+=0.2;
 //			});
 //		}
-		
+
 //		private function removeLoad():void
 //		{
 //			if (PopUpManager.isPopUp(load))
 //				PopUpManager.removePopUp(load, true);
 //		}
-		
+
 		/**
 		 * 初始化显示，需手动调用
 		 */
@@ -79,22 +79,22 @@ package views.global.userCenter.birds
 //				}
 //			});
 		}
-		
-		
+
+
 		private var cache:Image;
-		
+
 		private function initImages():void
 		{
-			cache = new Image( ifCollected(crtPage) ? getTexture("bird"+crtPage) : getTexture("birdUn"));
+			cache=new Image(ifCollected(crtPage) ? getTexture("bird" + crtPage) : getTexture("birdUn"));
 			this.addChild(cache);
 			cache.touchable=false;
 		}
-		
+
 		private function ifCollected(page:uint):Boolean
 		{
 			return SOService.instance.getSO("birdCatched" + page);
 		}
-		
+
 		/**
 		 * 上翻一页，翻页失败会派发UserCenter.ViewUpdateFail事件
 		 */
@@ -110,7 +110,7 @@ package views.global.userCenter.birds
 			this.crtPage-=1;
 			updateView();
 		}
-		
+
 		/**
 		 * 下翻一页，翻页失败会派发UserCenter.ViewUpdateFail事件
 		 */
@@ -126,7 +126,7 @@ package views.global.userCenter.birds
 			this.crtPage+=1;
 			updateView();
 		}
-		
+
 		/**
 		 * 清除纹理以释放资源
 		 * @param pageIndex
@@ -137,7 +137,7 @@ package views.global.userCenter.birds
 //			if (texture)
 //				_assetsManager.removeTexture(name, true);
 //		}
-		
+
 		/**
 		 * 动态加载纹理
 		 * @param pageIndex
@@ -149,23 +149,23 @@ package views.global.userCenter.birds
 //			_assetsManager.enqueue( "assets/global/userCenter/bird_collection_" + pageIndex + ".png");
 //			_assetsManager.loadQueue(function(ratio:Number):void{});
 //		}
-		
+
 		/**
 		 * 更新显示内容
 		 */
 		private function updateView():void
 		{
-			cache.texture = ifCollected(crtPage) ? getTexture("bird"+crtPage) : getTexture("birdUn");
+			cache.texture=ifCollected(crtPage) ? getTexture("bird" + crtPage) : getTexture("birdUn");
 			dispatchEventWith(UserCenter.ViewUpdated);
 		}
-		
+
 		override public function dispose():void
 		{
 			if (cache)
 				cache.removeFromParent(true);
 			_assetsManager.dispose();
 		}
-		
+
 		private function getTexture(name:String):Texture
 		{
 			return Texture.fromBitmap(new BirdAssets[name]());

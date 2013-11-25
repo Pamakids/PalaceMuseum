@@ -2,6 +2,7 @@ package views.global.map
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
+	import com.pamakids.manager.SoundManager;
 
 	import flash.filesystem.File;
 	import flash.geom.Point;
@@ -212,6 +213,11 @@ package views.global.map
 		 */
 		public static function show(callback:Function=null, from:int=-1, to:int=-1, fromCenter:Boolean=false, _buttonShow:Boolean=false):void
 		{
+			if (!fromCenter)
+			{
+				SoundManager.instance.stop("main");
+				SoundManager.instance.play("mapbgm");
+			}
 			buttonShow=_buttonShow;
 			var msIndex:String=SOService.instance.getSO("lastScene") as String;
 			if (!msIndex)
@@ -258,6 +264,11 @@ package views.global.map
 		 * */
 		public function clear(status:int=0):void
 		{
+			if (!showFromCenter)
+			{
+				SoundManager.instance.stop("mapbgm");
+				SoundManager.instance.play("main");
+			}
 			if (preSky)
 			{
 				TweenLite.killTweensOf(preSky);
@@ -339,6 +350,8 @@ package views.global.map
 
 		override public function dispose():void
 		{
+			SoundManager.instance.play("mapbgm");
+			SoundManager.instance.stop("main");
 			if (sun)
 			{
 				sun.stop();
@@ -555,18 +568,18 @@ package views.global.map
 								{
 									if (changing)
 										showFinalHint(upPoint.x, upPoint.y < 156 ? 156 : upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 800 ? 3 : 1,
-											function():void
-											{
-												delete showingHint[item.tip];
-												clear(0);
-												MC.instance.gotoModule(targetIndex);
-											});
+													  function():void
+													  {
+														  delete showingHint[item.tip];
+														  clear(0);
+														  MC.instance.gotoModule(targetIndex);
+													  });
 									else
 										showHint(upPoint.x, upPoint.y < 156 ? 156 : upPoint.y, item.tip, 1, flipAnimation, upPoint.x > 800 ? 3 : 1,
-											function():void
-											{
-												delete showingHint[item.tip];
-											});
+												 function():void
+												 {
+													 delete showingHint[item.tip];
+												 });
 								}
 
 //								if (targetIndex != -1 && crtIndex == targetIndex)

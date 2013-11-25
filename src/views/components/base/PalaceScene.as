@@ -88,6 +88,7 @@ package views.components.base
 			Prompt.parent=this;
 			assetManager=am;
 
+			SoundManager.instance.play("main");
 //			if (!checkBird())
 //			TweenLite.delayedCall(3, function():void {
 //				var img:Image=getImage(sceneName + "-bird");
