@@ -2,6 +2,8 @@ package views.global.userCenter.birds
 {
 	import feathers.core.PopUpManager;
 	
+	import models.SOService;
+	
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -93,7 +95,7 @@ package views.global.userCenter.birds
 		
 		private function ifCollected(page:uint):Boolean
 		{
-			return true;
+			return SOService.instance.getSO("birdCatched" + page);
 		}
 		
 		/**

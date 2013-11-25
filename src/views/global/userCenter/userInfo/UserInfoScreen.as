@@ -2,17 +2,17 @@ package views.global.userCenter.userInfo
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.utils.Dictionary;
-
+	
 	import controllers.MC;
-
+	
 	import feathers.controls.Button;
 	import feathers.core.PopUpManager;
-
+	
 	import models.FontVo;
 	import models.SOService;
-
+	
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
@@ -21,12 +21,13 @@ package views.global.userCenter.userInfo
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.textures.Texture;
-
+	
 	import views.components.ElasticButton;
 	import views.global.map.Map;
 	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
+	import views.global.userCenter.birds.BirdScreen;
 	import views.global.userCenter.userInfo.win.W_Alert;
 	import views.global.userCenter.userInfo.win.W_ChooseUser;
 	import views.global.userCenter.userInfo.win.W_DeleteUser;
@@ -89,7 +90,12 @@ package views.global.userCenter.userInfo
 			this.addChild(image);
 			image.touchable=false;
 
-			var num:String=int(SOService.instance.getSO("bird_count")).toString();
+			var num:uint = 0;
+			for(var i:int = BirdScreen.MAX_NUM-1;i>=0;i--)
+			{
+				if(SOService.instance.getSO("birdCatched" + i))
+					num ++;
+			}
 			var text:TextField=new TextField(200, 40, "x " + num, FontVo.PALACE_FONT, 26, 0x932720);
 			text.hAlign="left";
 			text.vAlign="center";
