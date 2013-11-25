@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:d25cd78118b79b752df283c9f3a13b98$ -->
+<!-- $TexturePacker:SmartUpdate:c99e0e5a9a3580af7b79bfae23a3464e$ -->
 <TextureAtlas imagePath="common.png">
 	<SubTexture name="acheivebar"
 				x="2"
@@ -218,8 +218,8 @@
 				width="35"
 				height="33"/>
 	<SubTexture name="craw"
-				x="656"
-				y="1936"
+				x="2"
+				y="1874"
 				width="35"
 				height="29"
 				frameX="0"
@@ -275,6 +275,16 @@
 				y="1752"
 				width="161"
 				height="129"/>
+	<SubTexture name="lifeicon-lost"
+				x="656"
+				y="1855"
+				width="49"
+				height="50"/>
+	<SubTexture name="lifeicon"
+				x="656"
+				y="1803"
+				width="49"
+				height="50"/>
 	<SubTexture name="lose-panel"
 				x="2"
 				y="664"
@@ -286,8 +296,8 @@
 				width="75"
 				height="98"/>
 	<SubTexture name="restart-light"
-				x="706"
-				y="1883"
+				x="656"
+				y="1907"
 				width="140"
 				height="135"/>
 	<SubTexture name="restart"
@@ -300,8 +310,8 @@
 				frameWidth="140"
 				frameHeight="135"/>
 	<SubTexture name="star-grey"
-				x="80"
-				y="1874"
+				x="876"
+				y="1959"
 				width="76"
 				height="71"
 				frameX="0"
@@ -309,8 +319,8 @@
 				frameWidth="76"
 				frameHeight="73"/>
 	<SubTexture name="star-red"
-				x="2"
-				y="1883"
+				x="798"
+				y="1970"
 				width="76"
 				height="73"/>
 	<SubTexture name="tail0001"
@@ -323,8 +333,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0002"
-				x="158"
-				y="1887"
+				x="2"
+				y="1907"
 				width="46"
 				height="49"
 				frameX="-7"
@@ -359,8 +369,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0006"
-				x="240"
-				y="1909"
+				x="798"
+				y="1883"
 				width="60"
 				height="29"
 				frameX="-1"
@@ -368,8 +378,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0007"
-				x="294"
-				y="1874"
+				x="798"
+				y="1914"
 				width="58"
 				height="27"
 				frameX="-1"
@@ -386,8 +396,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0009"
-				x="240"
-				y="1874"
+				x="954"
+				y="1986"
 				width="52"
 				height="33"
 				frameX="-2"
@@ -395,8 +405,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0010"
-				x="656"
-				y="1803"
+				x="130"
+				y="1874"
 				width="48"
 				height="41"
 				frameX="-4"
@@ -404,8 +414,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0011"
-				x="656"
-				y="1887"
+				x="84"
+				y="1907"
 				width="44"
 				height="47"
 				frameX="-6"
@@ -422,8 +432,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0013"
-				x="206"
-				y="1887"
+				x="50"
+				y="1907"
 				width="32"
 				height="49"
 				frameX="-1"
@@ -449,8 +459,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0016"
-				x="656"
-				y="1846"
+				x="130"
+				y="1917"
 				width="48"
 				height="39"
 				frameX="0"
@@ -476,8 +486,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0019"
-				x="716"
-				y="2020"
+				x="954"
+				y="1959"
 				width="58"
 				height="25"
 				frameX="-1"
@@ -485,8 +495,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0020"
-				x="656"
-				y="2020"
+				x="798"
+				y="1943"
 				width="58"
 				height="25"
 				frameX="-3"
@@ -521,8 +531,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0024"
-				x="158"
-				y="1887"
+				x="2"
+				y="1907"
 				width="46"
 				height="49"
 				frameX="-7"
@@ -557,8 +567,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0028"
-				x="240"
-				y="1909"
+				x="798"
+				y="1883"
 				width="60"
 				height="29"
 				frameX="-1"
@@ -566,8 +576,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0029"
-				x="294"
-				y="1874"
+				x="798"
+				y="1914"
 				width="58"
 				height="27"
 				frameX="-1"
@@ -584,8 +594,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0031"
-				x="240"
-				y="1874"
+				x="954"
+				y="1986"
 				width="52"
 				height="33"
 				frameX="-2"
@@ -593,8 +603,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0032"
-				x="656"
-				y="1803"
+				x="130"
+				y="1874"
 				width="48"
 				height="41"
 				frameX="-4"
@@ -602,8 +612,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0033"
-				x="656"
-				y="1887"
+				x="84"
+				y="1907"
 				width="44"
 				height="47"
 				frameX="-6"
@@ -620,8 +630,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0035"
-				x="206"
-				y="1887"
+				x="50"
+				y="1907"
 				width="32"
 				height="49"
 				frameX="-1"
@@ -647,8 +657,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0038"
-				x="656"
-				y="1846"
+				x="130"
+				y="1917"
 				width="48"
 				height="39"
 				frameX="0"
@@ -674,8 +684,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0041"
-				x="716"
-				y="2020"
+				x="954"
+				y="1959"
 				width="58"
 				height="25"
 				frameX="-1"
@@ -683,8 +693,8 @@
 				frameWidth="66"
 				frameHeight="107"/>
 	<SubTexture name="tail0042"
-				x="656"
-				y="2020"
+				x="798"
+				y="1943"
 				width="58"
 				height="25"
 				frameX="-3"

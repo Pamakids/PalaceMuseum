@@ -1,6 +1,7 @@
 package views.module4
 {
 	import com.greensock.TweenLite;
+	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.SPUtils;
 
 	import flash.events.AccelerometerEvent;
@@ -79,6 +80,9 @@ package views.module4
 			lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
 
 			lionChat1();
+
+			SoundManager.instance.stop("main");
+			SoundManager.instance.play("s41bgm");
 		}
 
 		private function onKingTouch(e:TouchEvent):void

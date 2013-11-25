@@ -113,6 +113,9 @@ package views.module1
 			addChild(fg);
 
 			onFGLoaded();
+
+			SoundManager.instance.stop("main");
+			SoundManager.instance.play("s11bgm");
 		}
 
 		/**

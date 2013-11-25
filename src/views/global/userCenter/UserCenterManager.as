@@ -1,15 +1,17 @@
 package views.global.userCenter
 {
+	import com.greensock.TweenMax;
+
 	import flash.filesystem.File;
-	
+
 	import controllers.MC;
-	
+
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.LionMC;
 	import views.components.base.PalaceModule;
 	import views.global.TopBar;
@@ -66,7 +68,10 @@ package views.global.userCenter
 //			}
 			MC.instance.main.removeMask();
 			if (!_userCenter)
+			{
+				TweenMax.pauseAll();
 				_userCenter=new UserCenter();
+			}
 			_userCenter.turnTo(_screen, _page, _closeable, _mapVisible);
 			_userCenterContainer.addChild(_userCenter);
 			MC.instance.hideMC();
@@ -78,6 +83,7 @@ package views.global.userCenter
 		{
 			if (_userCenter)
 			{
+				TweenMax.resumeAll();
 				_userCenter.removeFromParent(true);
 				MC.instance.showMC();
 				LionMC.instance.show();
@@ -178,7 +184,7 @@ package views.global.userCenter
 		{
 			return _assetsManager.getTexture(name);
 		}
-		
+
 		public static function getImage(name:String):Image
 		{
 			return new Image(_assetsManager.getTexture(name));
