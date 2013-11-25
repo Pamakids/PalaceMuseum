@@ -1,6 +1,7 @@
 package views.components
 {
 	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 
 	import feathers.core.PopUpManager;
 
@@ -24,7 +25,7 @@ package views.components
 
 		public var img:Image;
 		public var bird:MovieClip;
-		public var bg:Image;
+//		public var bg:Image;
 		public var close:ElasticButton;
 		private var speedX:Number;
 		private var speedY:Number;
@@ -79,6 +80,7 @@ package views.components
 
 		private function open():void
 		{
+			TweenMax.pauseAll();
 			SOService.instance.setSO("birdCatched" + crtIndex, true);
 //			var num:Object=SOService.instance.getSO("bird_count");
 //			if (!num)
@@ -88,24 +90,16 @@ package views.components
 //			SOService.instance.setSO("bird_count", num);
 
 			PopUpManager.addPopUp(this, true, false);
-			TweenLite.to(bird, 1, {x: 440, y: 39, rotation: 0});
-
-			bg.pivotX=bg.width >> 1;
-			bg.pivotY=bg.height >> 1;
-			bg.x=512;
-			bg.y=444;
-			bg.scaleX=bg.scaleY=.2;
-			addChild(bg);
+			TweenLite.to(bird, 1, {x: 440, y: 10, rotation: 0});
 
 			img.pivotX=img.width >> 1;
 			img.pivotY=img.height >> 1;
 			img.x=512;
 			img.y=444;
 			img.scaleX=img.scaleY=.2;
-			addChild(img);
+			addChildAt(img, 0);
 
 			TweenLite.to(img, 1, {scaleX: 1, scaleY: 1});
-			TweenLite.to(bg, 1, {scaleX: 1, scaleY: 1});
 
 			close.x=950;
 			close.y=50;
@@ -115,6 +109,7 @@ package views.components
 
 		private function onClose(e:Event):void
 		{
+			TweenMax.resumeAll();
 			close.removeEventListener(ElasticButton.CLICK, onClose);
 			PopUpManager.removePopUp(this);
 			this.dispose();
