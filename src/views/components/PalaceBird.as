@@ -75,17 +75,17 @@ package views.components
 			}
 		}
 
-		public var crtScene:String;
+		public var crtIndex:int;
 
 		private function open():void
 		{
-			SOService.instance.setSO(crtScene + "birdCatched", true);
-			var num:Object=SOService.instance.getSO("bird_count");
-			if (!num)
-				num=1;
-			else
-				num=int(num) + 1;
-			SOService.instance.setSO("bird_count", num);
+			SOService.instance.setSO("birdCatched" + crtIndex, true);
+//			var num:Object=SOService.instance.getSO("bird_count");
+//			if (!num)
+//				num=1;
+//			else
+//				num=int(num) + 1;
+//			SOService.instance.setSO("bird_count", num);
 
 			PopUpManager.addPopUp(this, true, false);
 			TweenLite.to(bird, 1, {x: 440, y: 39, rotation: 0});
