@@ -91,9 +91,8 @@ package views.global.userCenter
 		{
 			var image:Image = UserCenterManager.getImage("shade");
 			this.addChild( image );
-			image.x = 19;
-			image.y = 85;
-			image.height >> 2;
+			image.x = 22;
+			image.y = 70;
 			image.touchable = false;
 		}
 		
