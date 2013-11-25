@@ -105,6 +105,8 @@ package views.module4
 				TweenLite.to(hand, .5, {y: handOutPosY})
 				memorialTop.addEventListener(TouchEvent.TOUCH, onTopMemorialTouch);
 			}});
+
+			birdIndex=7;
 		}
 
 		private function onTopMemorialTouch(e:TouchEvent):void

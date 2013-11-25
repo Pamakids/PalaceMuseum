@@ -52,10 +52,10 @@ package views.module2
 		private var hint3:String="能吃还能当药用的墨－徽墨\n因产于古徽州府(今安徽歙县)而得名，配方讲究，造型美观，耐磨耐用。";
 
 		private var posArr:Array=[new Point(13, 208), new Point(134, 158),
-			new Point(330, 140), new Point(668, 177), new Point(577, 87)];
+								  new Point(330, 140), new Point(668, 177), new Point(577, 87)];
 
 		private var hotAreaArr:Array=[new Rectangle(85, 372, 351, 167), new Rectangle(602, 151, 111, 147),
-			new Rectangle(354, 164, 135, 204), new Rectangle(712, 193, 127, 82), new Rectangle(123, 139, 198, 175)];
+									  new Rectangle(354, 164, 135, 204), new Rectangle(712, 193, 127, 82), new Rectangle(123, 139, 198, 175)];
 
 		private var hintArr:Array;
 
@@ -162,6 +162,7 @@ package views.module2
 
 		private function chatOver():void
 		{
+			birdIndex=3
 			removeMask();
 			king.touchable=false;
 			TweenLite.to(king, 1, {y: 768 + 311, onComplete: addTouchs});
@@ -175,7 +176,7 @@ package views.module2
 
 		private var nameArr:Array=["thermo", "tele", "prism"];
 		private var labelPosArr:Array=[new Point(198, 552),
-			new Point(563, 696), new Point(912, 595)];
+									   new Point(563, 696), new Point(912, 595)];
 
 		private function checkClicked(index:int):Boolean
 		{

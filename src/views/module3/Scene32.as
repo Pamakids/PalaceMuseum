@@ -7,8 +7,6 @@ package views.module3
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import controllers.MC;
-
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -19,7 +17,6 @@ package views.module3
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
-	import views.global.TailBar;
 	import views.global.TopBar;
 	import views.module3.scene32.MenuGame;
 
@@ -53,7 +50,9 @@ package views.module3
 
 			addCraw(new Point(463, 461));
 
-			LionMC.instance.say("皇帝吃的饭菜，名称很讲究，看你能否给菜名对号入座。", 0, 0, 0, null, 20, .6, true);
+			LionMC.instance.say("皇帝吃的饭菜，名称很讲究，看你能否给菜名对号入座。", 0, 0, 0, function():void {
+				birdIndex=5;
+			}, 20, .6, true);
 		}
 
 		private function onTouch(e:TouchEvent):void

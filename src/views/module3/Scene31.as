@@ -50,6 +50,8 @@ package views.module3
 			addKing();
 
 			addCraw(new Point(443, 349));
+
+			birdIndex=4;
 		}
 
 		private function addKing():void
