@@ -142,6 +142,7 @@ package views.module4
 
 		private function chatOver():void
 		{
+			birdIndex=6;
 			removeMask();
 			king.touchable=false;
 			TweenLite.to(king, 1, {y: 768 + 311, onComplete: getReady});

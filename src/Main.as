@@ -7,6 +7,8 @@ package
 	import controllers.MC;
 	import controllers.UserBehaviorAnalysis;
 
+	import events.UserBehaviorEvent;
+
 	import models.Const;
 	import models.FontVo;
 	import models.SOService;
@@ -31,11 +33,13 @@ package
 		{
 //			SOService.instance.clear();
 //			SOService.instance.init();
-			SOService.instance.setSO("lastScene", "11");
+//			SOService.instance.setSO("lastScene", "11");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
-			UserBehaviorAnalysis.trackEvent("全局", "游戏开始");
+			addEventListener(UserBehaviorEvent.USERBEHAVIOR, onRecordUserBehavior);
+			dispatchEvent(new UserBehaviorEvent("全局", "游戏开始"));
+//			UserBehaviorAnalysis.trackEvent("全局", "游戏开始");
 			//以免第一次初始化提示的时候卡顿
 			var label:TextField=new TextField(1, 1, '0', FontVo.PALACE_FONT, 16, 0x561a1a, true);
 			addChild(label);
@@ -54,6 +58,12 @@ package
 			});
 
 			Map.loadAssets();
+		}
+
+		private function onRecordUserBehavior(e:UserBehaviorEvent):void
+		{
+			var data:Object=e.data;
+			UserBehaviorAnalysis.trackEvent(data['catetory'], data['action'], data['label'], data['value']);
 		}
 
 		private var inito:Interlude;

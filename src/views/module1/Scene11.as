@@ -116,8 +116,6 @@ package views.module1
 
 			SoundManager.instance.stop("main");
 			SoundManager.instance.play("s11bgm");
-
-			birdIndex=0;
 		}
 
 		/**
@@ -181,6 +179,7 @@ package views.module1
 		{
 			function removeGA():void {
 				TweenLite.to(ga, 2, {alpha: 0, onComplete: function():void {
+					birdIndex=0;
 					ga.removeFromParent(true);
 					MC.instance.main.removeMask();
 					moveScene();

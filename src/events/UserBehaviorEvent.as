@@ -6,9 +6,9 @@ package events
 	{
 		public static const USERBEHAVIOR:String="USERBEHAVIOR";
 
-		public function UserBehaviorEvent(data:Object)
+		public function UserBehaviorEvent(catetory:String, action:String, label:String='', value:int=0)
 		{
-			super(USERBEHAVIOR, true, data);
+			super(USERBEHAVIOR, true, {"catetory": catetory, "action": action, "label": label, "value": value});
 		}
 	}
 }

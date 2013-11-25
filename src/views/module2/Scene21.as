@@ -182,6 +182,7 @@ package views.module2
 
 		private function getReady():void
 		{
+			birdIndex=2;
 			ready=true;
 			if (SOService.instance.checkHintCount(shelfHintCount))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -250,10 +251,10 @@ package views.module2
 
 		private var dataArrL:Array=[1, 2, 3, 7, 8, 9, 10, 11, 4, 5, 6];
 		private var posArrL:Array=[new Point(97, 50), new Point(201, 74), new Point(305, 74), new Point(81, 183), new Point(224, 194),
-			new Point(310, 213), new Point(100, 337), new Point(235, 327), new Point(90, 466), new Point(189, 453), new Point(294, 475)];
+								   new Point(310, 213), new Point(100, 337), new Point(235, 327), new Point(90, 466), new Point(189, 453), new Point(294, 475)];
 		private var dataArrR:Array=[7, 3, 8, 1, 2, 5, 9, 10, 4, 6, 11];
 		private var posArrR:Array=[new Point(99, 48), new Point(243, 72), new Point(107, 194), new Point(242, 184), new Point(373, 207),
-			new Point(72, 336), new Point(155, 355), new Point(248, 338), new Point(94, 468), new Point(220, 476), new Point(356, 440)];
+								   new Point(72, 336), new Point(155, 355), new Point(248, 338), new Point(94, 468), new Point(220, 476), new Point(356, 440)];
 
 		private var innerX:Number=300;
 		private var rx:Number=1024 - 457;

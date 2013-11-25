@@ -75,11 +75,13 @@ package views.module1
 			addCraw(new Point(661, 40));
 			addCraw(new Point(898, 360));
 
-			LionMC.instance.say("为明天早起上个闹钟吧！\n花些时间熟悉一下皇帝的寝室。", 0, 0, 0, null, 20, .6, true);
+			LionMC.instance.say("为明天早起上个闹钟吧！\n花些时间熟悉一下皇帝的寝室。", 0, 0, 0, function():void {
+				birdIndex=1;
+			}, 20, .6, true);
 		}
 
 		private var pendantPosArr:Array=[new Point(299, 226), new Point(390, 192),
-			new Point(484, 163), new Point(574, 164), new Point(635, 176), new Point(765, 227)];
+										 new Point(484, 163), new Point(574, 164), new Point(635, 176), new Point(765, 227)];
 		private var offsetXArr:Array=[12, 9, 10, 8, 11, 4];
 
 		private function onPendantTouch(e:TouchEvent):void
@@ -146,22 +148,22 @@ package views.module1
 		private function clockMatch(e:Event):void
 		{
 			TweenLite.to(clock, .5,
-				{scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete:
-					function():void
-					{
-						if (clock.ended)
-							showCard("2",
-								function():void
-								{
-									showAchievement(4, checkAcheive5);
-								}
-								);
-						PopUpManager.removePopUp(clock, true);
-						clock=null;
-						sceneOver();
-					}
-				}
-				);
+						 {scaleX: .1, scaleY: .1, x: 512, y: 768 / 2, onComplete:
+							 function():void
+							 {
+								 if (clock.ended)
+									 showCard("2",
+											  function():void
+											  {
+												  showAchievement(4, checkAcheive5);
+											  }
+											  );
+								 PopUpManager.removePopUp(clock, true);
+								 clock=null;
+								 sceneOver();
+							 }
+						 }
+						 );
 		}
 
 		private function onPlaqueTouch(e:TouchEvent):void
