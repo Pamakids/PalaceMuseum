@@ -13,8 +13,11 @@ package views.components.base
 	import com.pamakids.palace.utils.StringUtils;
 
 	import flash.geom.Point;
+	import flash.utils.Dictionary;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
+
+	import assets.global.userCenter.BirdAssets;
 
 	import controllers.MC;
 
@@ -24,7 +27,6 @@ package views.components.base
 	import models.FontVo;
 	import models.SOService;
 
-	import starling.display.BlendMode;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
@@ -46,7 +48,34 @@ package views.components.base
 	public class PalaceScene extends Container
 	{
 		protected var assetManager:AssetManager;
+
 		public var crtKnowledgeIndex:int=-1;
+		private var _birdIndex:int=-1;
+
+		public function get birdIndex():int
+		{
+			return _birdIndex;
+		}
+
+		public function set birdIndex(value:int):void
+		{
+			if (_birdIndex == value)
+				return;
+			_birdIndex=value;
+			if (value < 0)
+				return;
+			if (!checkBird())
+				TweenLite.delayedCall(3, function():void {
+					var cls:Class=BirdAssets["bird" + birdIndex];
+					if (!cls)
+						return;
+					var img:Image=Image.fromBitmap(new cls());
+//					var img:Image=getImage(sceneName + "-bird");
+					if (img)
+						initBird(img);
+				});
+		}
+
 
 		public function PalaceScene(am:AssetManager=null)
 		{
@@ -60,16 +89,16 @@ package views.components.base
 			assetManager=am;
 
 //			if (!checkBird())
-			TweenLite.delayedCall(3, function():void {
-				var img:Image=getImage(sceneName.toLocaleLowerCase() + "-bird");
-				if (img)
-					initBird(img);
-			});
+//			TweenLite.delayedCall(3, function():void {
+//				var img:Image=getImage(sceneName + "-bird");
+//				if (img)
+//					initBird(img);
+//			});
 		}
 
 		private function checkBird():Boolean
 		{
-			var b:Boolean=SOService.instance.getSO(sceneName + "birdCatched");
+			var b:Boolean=SOService.instance.getSO("birdCatched" + birdIndex);
 			return b;
 		}
 
@@ -82,7 +111,7 @@ package views.components.base
 		private function initBird(img:Image):void
 		{
 			var bird:PalaceBird=new PalaceBird();
-			bird.crtScene=sceneName;
+			bird.crtIndex=birdIndex;
 			bird.img=img;
 			var mc:MovieClip=new MovieClip(MC.assetManager.getTextures("bird"), 18);
 //			mc.scaleX=mc.scaleY=.5;
