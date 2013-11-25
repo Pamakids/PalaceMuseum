@@ -116,6 +116,8 @@ package views.module1
 
 			SoundManager.instance.stop("main");
 			SoundManager.instance.play("s11bgm");
+
+			birdIndex=0;
 		}
 
 		/**

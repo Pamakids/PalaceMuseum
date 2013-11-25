@@ -64,16 +64,16 @@ package views.components.base
 			_birdIndex=value;
 			if (value < 0)
 				return;
-			if (!checkBird())
-				TweenLite.delayedCall(3, function():void {
-					var cls:Class=BirdAssets["bird" + birdIndex];
-					if (!cls)
-						return;
-					var img:Image=Image.fromBitmap(new cls());
+//			if (!checkBird())
+			TweenLite.delayedCall(3, function():void {
+				var cls:Class=BirdAssets["bird" + birdIndex];
+				if (!cls)
+					return;
+				var img:Image=Image.fromBitmap(new cls());
 //					var img:Image=getImage(sceneName + "-bird");
-					if (img)
-						initBird(img);
-				});
+				if (img)
+					initBird(img);
+			});
 		}
 
 
@@ -118,7 +118,7 @@ package views.components.base
 //			mc.scaleX=mc.scaleY=.5;
 			trace(mc.numFrames)
 			bird.bird=mc;
-			bird.bg=getImage("sceneBirdBG");
+//			bird.bg=getImage("sceneBirdBG");
 			bird.close=new ElasticButton(getImage("button_close"));
 			bird.close.shadow=getImage("button_close_down");
 			bird.fly();
