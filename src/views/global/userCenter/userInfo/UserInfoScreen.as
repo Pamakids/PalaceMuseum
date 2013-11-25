@@ -48,7 +48,7 @@ package views.global.userCenter.userInfo
 			super.initialize();
 			initCrtUserView();
 			initButton();
-			initBirdView();
+//			initBirdView();
 			initModuleList();
 			initMapButton();
 
@@ -82,28 +82,28 @@ package views.global.userCenter.userInfo
 			moduleList.y=200;
 		}
 
-		private function initBirdView():void
-		{
-			var image:Image=UserCenterManager.getImage("icon_bird");
-			image.x=642;
-			image.y=65;
-			this.addChild(image);
-			image.touchable=false;
-
-			var num:uint = 0;
-			for(var i:int = BirdScreen.MAX_NUM-1;i>=0;i--)
-			{
-				if(SOService.instance.getSO("birdCatched" + i))
-					num ++;
-			}
-			var text:TextField=new TextField(200, 40, "x " + num, FontVo.PALACE_FONT, 26, 0x932720);
-			text.hAlign="left";
-			text.vAlign="center";
-			this.addChild(text);
-			text.x=750;
-			text.y=140;
-			text.touchable=false;
-		}
+//		private function initBirdView():void
+//		{
+//			var image:Image=UserCenterManager.getImage("icon_bird");
+//			image.x=642;
+//			image.y=65;
+//			this.addChild(image);
+//			image.touchable=false;
+//
+//			var num:uint = 0;
+//			for(var i:int = BirdScreen.MAX_NUM-1;i>=0;i--)
+//			{
+//				if(SOService.instance.getSO("birdCatched" + i))
+//					num ++;
+//			}
+//			var text:TextField=new TextField(200, 40, "x " + num, FontVo.PALACE_FONT, 26, 0x932720);
+//			text.hAlign="left";
+//			text.vAlign="center";
+//			this.addChild(text);
+//			text.x=750;
+//			text.y=140;
+//			text.touchable=false;
+//		}
 
 		private var w_editUser:W_EditUser;
 		private var w_chooseUser:W_ChooseUser;
