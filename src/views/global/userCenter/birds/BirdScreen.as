@@ -1,13 +1,15 @@
 package views.global.userCenter.birds
 {
 	import assets.global.userCenter.BirdAssets;
-
+	
+	import models.FontVo;
 	import models.SOService;
-
+	
 	import starling.display.Image;
+	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
+	
 	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenter;
 
@@ -28,6 +30,21 @@ package views.global.userCenter.birds
 			super.initialize();
 //			initLoad();
 			dispatchEventWith(UserCenter.Initialized);
+		}
+		
+		private var page_0:TextField;
+		private var page_1:TextField;
+		private function initPageNums():void
+		{
+			var n:int = MAX_NUM * 2;
+			page_0 = new TextField(100, 40, String(crtPage*2+1)+" / "+n.toString(), FontVo.PALACE_FONT, 22, 0x932720);
+			page_1 = new TextField(100, 40, String(crtPage*2+2)+" / "+n.toString(), FontVo.PALACE_FONT, 22, 0x932720);
+			page_0.touchable = page_1.touchable = false;
+			page_0.x = 196;
+			page_1.x = 680;
+			page_0.y = page_1.y = 590;
+			this.addChild( page_0 );
+			this.addChild( page_1 );
 		}
 
 //		private var load:Image;
@@ -60,6 +77,7 @@ package views.global.userCenter.birds
 		{
 			crtPage=pageIndex;
 			initImages();
+			initPageNums();
 			dispatchEventWith(UserCenter.InitViewPlayed);
 //			_assetsManager.enqueue( 
 //				"assets/global/userCenter/bird_collection_" + crtPage + ".png",
@@ -156,6 +174,8 @@ package views.global.userCenter.birds
 		private function updateView():void
 		{
 			cache.texture=ifCollected(crtPage) ? getTexture("bird" + crtPage) : getTexture("birdUn");
+			page_0.text = String(crtPage*2+1)+" / "+String(MAX_NUM*2);
+			page_1.text = String(crtPage*2+2)+" / "+String(MAX_NUM*2);
 			dispatchEventWith(UserCenter.ViewUpdated);
 		}
 
@@ -163,7 +183,12 @@ package views.global.userCenter.birds
 		{
 			if (cache)
 				cache.removeFromParent(true);
+			if(page_0)
+				page_0.removeFromParent(true);
+			if(page_1)
+				page_1.removeFromParent(true);
 			_assetsManager.dispose();
+			super.dispose();
 		}
 
 		private function getTexture(name:String):Texture
