@@ -68,13 +68,13 @@ package views.module5
 			king.x=714;
 			king.y=768;
 			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void {
-				Prompt.showTXT(king.x + 20, king.y + 135, "哇，好大的戏台子，我去后面瞧瞧热闹。", 20, lionSay, null, 3);
+				Prompt.showTXT(king.x + 20, king.y + 135, "从没见过这么神奇的戏台子，我得去后面仔细瞧瞧。", 20, lionSay, null, 3);
 			}});
 		}
 
 		private function lionSay():void
 		{
-			LionMC.instance.say("这个淘气的孩子，随他玩会儿吧。", 5, 0, 0, function():void {
+			LionMC.instance.say("这个平民小孩，这次可长见识了。", 5, 0, 0, function():void {
 				TweenLite.to(king, .5, {y: 768});
 				initGame();
 				LionMC.instance.hide();
@@ -222,7 +222,7 @@ package views.module5
 		{
 			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void {
 				king.play();
-				Prompt.showTXT(king.x + 20, king.y + 135, "真好玩儿", 20, getGameInfo, null, 3);
+				Prompt.showTXT(king.x + 20, king.y + 135, "太过瘾了，看得我眼花缭乱！", 20, getGameInfo, null, 3);
 			}});
 		}
 
@@ -279,7 +279,7 @@ package views.module5
 		{
 			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void {
 				king.play();
-				Prompt.showTXT(king.x + 20, king.y + 135, "真好玩儿", 20, getGameInfo, null, 3);
+				Prompt.showTXT(king.x + 20, king.y + 135, "太过瘾了，看得我眼花缭乱！", 20, getGameInfo, null, 3);
 			}});
 //			var lvl:int=game.gamelevel;
 //			initGame2(lvl);

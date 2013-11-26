@@ -90,19 +90,19 @@ package views.components
 //			SOService.instance.setSO("bird_count", num);
 
 			PopUpManager.addPopUp(this, true, false);
-			TweenLite.to(bird, 1, {x: 440, y: 10, rotation: 0});
+			TweenLite.to(bird, 1, {x: 470, y: 8, rotation: 0});
 
 			img.pivotX=img.width >> 1;
 			img.pivotY=img.height >> 1;
 			img.x=512;
-			img.y=444;
+			img.y=430;
 			img.scaleX=img.scaleY=.2;
 			addChildAt(img, 0);
 
 			TweenLite.to(img, 1, {scaleX: 1, scaleY: 1});
 
-			close.x=950;
-			close.y=50;
+			close.x=980;
+			close.y=100;
 			addChild(close);
 			close.addEventListener(ElasticButton.CLICK, onClose);
 		}

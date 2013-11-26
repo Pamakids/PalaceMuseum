@@ -21,7 +21,7 @@ package
 		public function PalaceMuseum()
 		{
 			this.scaleX=this.scaleY=DPIUtil.getDPIScale();
-			UserBehaviorAnalysis.init(this);
+			UserBehaviorAnalysis.init();
 
 			TweenPlugin.activate([ShakeEffect]);
 			TweenPlugin.activate([MotionBlurPlugin]);

@@ -67,7 +67,7 @@ package views.components.base
 			LionMC.instance.clear();
 		}
 
-		private var load:MovieClip;
+		private static var load:MovieClip;
 
 		protected var Q1:String="";
 		protected var A1:String="";

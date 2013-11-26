@@ -118,7 +118,6 @@ package views.components.base
 //			mc.scaleX=mc.scaleY=.5;
 			trace(mc.numFrames)
 			bird.bird=mc;
-//			bird.bg=getImage("sceneBirdBG");
 			bird.close=new ElasticButton(getImage("button_close"));
 			bird.close.shadow=getImage("button_close_down");
 			bird.fly();

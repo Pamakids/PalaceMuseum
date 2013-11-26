@@ -23,17 +23,17 @@ package views.module5
 	public class Scene51 extends PalaceScene
 	{
 		private var txtArr:Array=[
-			"大臣：幸亏我年纪一把，能有个椅子坐",
-			"大臣：希望这次的座位别排在柱子后面",
-			"太后：今演好了，重重有赏！"];
+			"幸亏我年纪一把，能有个椅子坐",
+			"希望这次的座位别排在柱子后面",
+			"今演好了，重重有赏！"];
 
 		private var pArr:Array=["dachen1", "dachen2", "taihou"];
 		private var posArr:Array=[new Point(228, 562),
-			new Point(836, 414), new Point(624, 517)];
+								  new Point(836, 414), new Point(624, 517)];
 		private var movArr:Array=[new Point(-25, 25),
-			new Point(-5, -60), new Point(30, 5)];
+								  new Point(-5, -60), new Point(30, 5)];
 		private var txtOffset:Array=[new Point(65, 60),
-			new Point(17, 15), new Point(147, 62)];
+									 new Point(17, 15), new Point(147, 62)];
 		private var imgArr:Array=[];
 
 		private var checkArr:Vector.<Boolean>=new Vector.<Boolean>(5);
@@ -46,7 +46,7 @@ package views.module5
 
 			addPeople();
 
-			LionMC.instance.say("等大家入座，演出就开始了。", 0, 0, 0, function():void {
+			LionMC.instance.say(" 待各位落座，演出就正式开始。", 0, 0, 0, function():void {
 				ready=true;
 			}, 20, .6, true);
 		}
@@ -72,7 +72,7 @@ package views.module5
 		}
 
 		private var labelPosArr:Array=[new Point(352, 574),
-			new Point(891, 391), new Point(818, 560)];
+									   new Point(891, 391), new Point(818, 560)];
 		private var labelArr:Array=[];
 
 		private function onClick(e:TouchEvent):void
@@ -96,7 +96,7 @@ package views.module5
 					checkAll(index);
 				}});}
 			Prompt.showTXT(img.x + txtOffset[index].x,
-				img.y + txtOffset[index].y, txtArr[index], 20, cb);
+						   img.y + txtOffset[index].y, txtArr[index], 20, cb);
 			if (index == 0)
 				SoundManager.instance.play("cough");
 			else if (index == 1)

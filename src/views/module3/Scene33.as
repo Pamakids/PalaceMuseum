@@ -381,7 +381,7 @@ package views.module3
 //						showAchievement(20, moveTable);
 //					})
 				else
-					Prompt.showTXT(150, 445, "按照规矩办事，表现不错。", 20, moveTable, this);
+					Prompt.showTXT(150, 445, "嗯，做的有模有样，表现不错。", 20, moveTable, this);
 //				LionMC.instance.say("按照规矩办事，表现不错。", 0, 0, 0, moveTable);
 //				moveTable();
 				for (var i:int=0; i < foodHolder.numChildren; i++)
