@@ -59,4 +59,8 @@
 		</InfoAdditions>
 		<requestedDisplayResolution>high</requestedDisplayResolution>
 	</iPhone>
+	<extensions>
+		<extensionID>eu.alebianco.air.extensions.analytics.NativeGATracker</extensionID>
+		<extensionID>com.pamakids.UMeng</extensionID>
+	</extensions>
 </application>

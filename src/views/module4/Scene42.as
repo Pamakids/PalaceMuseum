@@ -251,7 +251,7 @@ package views.module4
 
 		private function playLion2():void
 		{
-			LionMC.instance.say("皇上要更努力啊，先用晚膳吧。", 4, 0, 0, sceneOver, 20);
+			LionMC.instance.say("皇上要更努力才行，先用晚膳吧。", 4, 0, 0, sceneOver, 20);
 		}
 	}
 }

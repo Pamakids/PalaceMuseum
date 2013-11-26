@@ -68,7 +68,7 @@ package views.module3
 
 		private function kingSay():void
 		{
-			Prompt.showTXT(king.x + 20, king.y + 135, "这么香，谁在做饭呢？", 20, lionSay, this, 3);
+			Prompt.showTXT(king.x + 20, king.y + 135, "好香！御膳房真是个好地方啊！", 20, lionSay, this, 3);
 		}
 
 		private function lionSay():void

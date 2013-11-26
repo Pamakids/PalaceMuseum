@@ -409,7 +409,6 @@ package views.module4
 		protected function onUpdate(event:AccelerometerEvent):void
 		{
 			speedX=event.accelerationX * 50;
-			trace(event.accelerationX)
 		}
 	}
 }
