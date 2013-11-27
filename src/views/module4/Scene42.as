@@ -42,7 +42,7 @@ package views.module4
 			hand.y=handOutPosY;
 
 			LionMC.instance.say("国泰民安，近日奏章数量不多，皇上大可放心。", 0, 0, 0, addMemorials, 20, .6, true);
-//			addMemorials();
+			//			addMemorials();
 		}
 
 		private var handPosX:Number; //手 位置
@@ -255,3 +255,5 @@ package views.module4
 		}
 	}
 }
+
+

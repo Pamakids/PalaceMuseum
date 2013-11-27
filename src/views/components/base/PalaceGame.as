@@ -2,10 +2,12 @@ package views.components.base
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Quad;
-	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.StringUtils;
 
+	import flash.utils.getTimer;
+
 	import controllers.MC;
+	import controllers.UserBehaviorAnalysis;
 
 	import models.SOService;
 
@@ -23,6 +25,10 @@ package views.components.base
 	 */
 	public class PalaceGame extends Container
 	{
+
+		protected var initTime:int=-1;
+		protected var disposeTime:int=-1;
+
 		/**
 		 *
 		 * @default
@@ -116,6 +122,8 @@ package views.components.base
 
 		override protected function init():void
 		{
+			initTime=getTimer();
+			UserBehaviorAnalysis.trackView(gameName);
 		}
 
 		/**
@@ -151,6 +159,7 @@ package views.components.base
 		 */
 		protected function onCloseClick(e:Event):void
 		{
+			UserBehaviorAnalysis.trackEvent("click", "close");
 			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
@@ -165,6 +174,12 @@ package views.components.base
 
 		override public function dispose():void
 		{
+			if (initTime > 0)
+			{
+				disposeTime=getTimer();
+				UserBehaviorAnalysis.trackTime("stayTime", disposeTime - initTime, gameName);
+				initTime=-1;
+			}
 			if (fromCenter)
 				assetManager.dispose()
 			else

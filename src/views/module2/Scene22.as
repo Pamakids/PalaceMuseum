@@ -75,6 +75,7 @@ package views.module2
 			if (checkClicked(0))
 				addLabel(0);
 
+			addEventListener("lionFound", onLionFound);
 			tele=getImage("tele32");
 			tele.x=474;
 			tele.y=453;
@@ -110,6 +111,11 @@ package views.module2
 			lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
 
 			kingChat1();
+		}
+
+		private function onLionFound(e:Event):void
+		{
+			showAchievement(13);
 		}
 
 		private function onKingTouch(e:TouchEvent):void
@@ -326,8 +332,8 @@ package views.module2
 				addLabel(1);
 				setClicked(1);
 			}
-			if (teleGame.isWin)
-				showAchievement(13);
+//			if (teleGame.isWin)
+//				showAchievement(13);
 			teleGame.removeFromParent(true);
 			teleGame=null;
 		}
