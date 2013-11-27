@@ -281,11 +281,13 @@ package views.module5
 				king.play();
 				Prompt.showTXT(king.x + 20, king.y + 135, "太过瘾了，看得我眼花缭乱！", 20, getGameInfo, null, 3);
 			}});
-//			var lvl:int=game.gamelevel;
-//			initGame2(lvl);
-//
-//			game.removeFromParent(true);
-//			game=null;
+			//			var lvl:int=game.gamelevel;
+			//			initGame2(lvl);
+			//
+			//			game.removeFromParent(true);
+			//			game=null;
 		}
 	}
 }
+
+

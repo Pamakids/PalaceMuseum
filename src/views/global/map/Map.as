@@ -8,8 +8,10 @@ package views.global.map
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
+	import flash.utils.getTimer;
 
 	import controllers.MC;
+	import controllers.UserBehaviorAnalysis;
 
 	import models.Const;
 	import models.SOService;
@@ -85,6 +87,11 @@ package views.global.map
 		public static var assetManager:AssetManager;
 
 		private static var loaded:Boolean=false;
+
+		private static var initTime:int=-1;
+		private static var disposeTime:int=-1;
+		private static var taskInitTime:int=-1;
+		private static var sceneOverTime:int=-1;
 
 		public static function loadAssets():void
 		{
@@ -213,6 +220,7 @@ package views.global.map
 		 */
 		public static function show(callback:Function=null, from:int=-1, to:int=-1, fromCenter:Boolean=false, _buttonShow:Boolean=false):void
 		{
+			initTime=getTimer();
 			if (!fromCenter)
 			{
 				SoundManager.instance.stop("main");
@@ -264,6 +272,13 @@ package views.global.map
 		 * */
 		public function clear(status:int=0):void
 		{
+			if (initTime > 0)
+			{
+				disposeTime=getTimer();
+				UserBehaviorAnalysis.trackTime("stayTime", disposeTime - initTime, "map");
+				initTime=-1;
+				taskInitTime=-1;
+			}
 			if (!showFromCenter)
 			{
 				SoundManager.instance.stop("mapbgm");
@@ -410,6 +425,7 @@ package views.global.map
 				if (!showFromCenter)
 				{
 					to=i;
+					taskInitTime=getTimer();
 					LionMC.instance.say(tasks[i], 3, 0, 0, comFunc, 20, 1, true);
 					showTaskHint(i);
 				}
@@ -580,6 +596,7 @@ package views.global.map
 												 {
 													 delete showingHint[item.tip];
 												 });
+									UserBehaviorAnalysis.trackEvent("click", "mapArea", "", int(item.id));
 								}
 
 //								if (targetIndex != -1 && crtIndex == targetIndex)
@@ -715,6 +732,12 @@ package views.global.map
 
 		private function showFinalHint(_x:Number, _y:Number, _content:String, reg:int, _parent:Sprite, bgAlign:int=1, callbakc:Function=null):void
 		{
+			if (taskInitTime > 0)
+			{
+				sceneOverTime=getTimer();
+				UserBehaviorAnalysis.trackTime("taskTime", sceneOverTime - taskInitTime, "map");
+				taskInitTime=-1;
+			}
 			if (p2)
 				p2.playHide();
 			p2=Prompt.showTXT(_x, _y, _content, 18, callbakc, _parent, bgAlign, true);

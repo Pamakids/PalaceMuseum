@@ -3,6 +3,7 @@ package views.global
 	import com.greensock.TweenLite;
 
 	import controllers.MC;
+	import controllers.UserBehaviorAnalysis;
 
 	import feathers.controls.Button;
 
@@ -30,6 +31,7 @@ package views.global
 
 		private function bookClickedHandler():void
 		{
+			UserBehaviorAnalysis.trackEvent("click", "book");
 			MC.instance.main.addMask(0);
 			enable=false;
 			TweenLite.to(bar, 1, {x: 10, onComplete: function():void {

@@ -4,9 +4,6 @@ package views.module2.scene22
 
 	import starling.display.Image;
 	import starling.display.Sprite;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
 	import starling.filters.BlurFilter;
 
 	public class ViewHolder extends Sprite

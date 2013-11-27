@@ -364,7 +364,7 @@ package views.module4
 					hintShow.removeFromParent(true);
 				}
 				needHint=false;
-//				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+				//				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 				return;
 			}
 			if (count < 30 * 8)
@@ -412,3 +412,5 @@ package views.module4
 		}
 	}
 }
+
+
