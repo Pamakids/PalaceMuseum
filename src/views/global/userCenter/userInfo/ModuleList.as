@@ -152,12 +152,12 @@ package views.global.userCenter.userInfo
 
 		private function clickHandler():void
 		{
-			if (selectI == 5)
-				return;
 			var string:String=mapping[selectI];
-			var i:int = int( string.charAt(2) );
+			var module:int = int( string.charAt(2) );
+			var screen:int = int( string.charAt(4) );
+			trace(module, screen);
 			if (string.charAt(0) == "m") //进入模块
-				(i != MC.instance.moduleIndex)?MC.instance.gotoModule(i):UserCenterManager.closeUserCenter();
+				(module != MC.instance.moduleIndex)?MC.instance.gotoModule(module, screen):UserCenterManager.closeUserCenter();
 			else
 				Starling.current.nativeStage.addChild(new Interlude(string));
 		}
@@ -183,17 +183,18 @@ package views.global.userCenter.userInfo
 
 		private const mapping:Array=[
 			"assets/video/intro.mp4",
-			"m_0",
-			"m_1",
-			"m_2",
-			"m_3",
-			"assets/video/garden.mp4",
-			"m_4",
+			"m_0_0",
+			"m_1_0",
+			"m_2_0",
+			"m_3_0",
+			"m_3_3",
+			"m_4_0",
 			"assets/video/end.mp4"
 			];
 
 		private function isComplete(i:int):Boolean
 		{
+			return true;
 			if (i == 0)
 				return true;
 			var str:String=mapping[i];
