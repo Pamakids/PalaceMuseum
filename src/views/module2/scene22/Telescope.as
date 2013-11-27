@@ -4,6 +4,7 @@ package views.module2.scene22
 	import com.pamakids.palace.utils.SPUtils;
 
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 
 	import models.SOService;
 
@@ -128,6 +129,8 @@ package views.module2.scene22
 			ring2.addEventListener(TouchEvent.TOUCH, onRing2Touch);
 		}
 
+		private var dpt:Point;
+
 		private function onRing2Touch(e:TouchEvent):void
 		{
 			var tc:Touch=e.getTouch(ring2);
@@ -138,6 +141,7 @@ package views.module2.scene22
 			{
 				case TouchPhase.BEGAN:
 				{
+					dpt=tc.getLocation(stage);
 					SoundManager.instance.stop("ringrolling");
 					ringBlock=false;
 					if (Point.distance(currentPosA, centerPT) < 210)
@@ -160,6 +164,10 @@ package views.module2.scene22
 				}
 				case TouchPhase.ENDED:
 				{
+					var pt:Point=tc.getLocation(stage)
+					if (dpt && Point.distance(pt, dpt) < 10)
+						checkViewPoint(pt);
+					dpt=null;
 					SoundManager.instance.stop("ringrolling");
 					ringBlock=false;
 					actionIndex=-1
@@ -170,6 +178,18 @@ package views.module2.scene22
 				{
 					break;
 				}
+			}
+		}
+
+		private function checkViewPoint(pt:Point):void
+		{
+			if (view.scale < 1)
+				return;
+			var vpt:Point=view.globalToLocal(pt);
+			if (lionRect.containsPoint(vpt))
+			{
+				view.standUp=true;
+				dispatchEvent(new Event("lionFound", true));
 			}
 		}
 
@@ -212,10 +232,10 @@ package views.module2.scene22
 				SoundManager.instance.stop("ringrolling");
 				SoundManager.instance.play("ringblock");
 				ringBlock=true;
-				view.standUp=true;
+//				view.standUp=true;
 			}
-			else
-				view.standUp=false;
+//			else
+//				view.standUp=false;
 			ringMoved=true;
 		}
 
@@ -300,6 +320,8 @@ package views.module2.scene22
 		private var handMoved:Boolean;
 		private var ringMoved:Boolean;
 		private var ringBlock:Boolean;
+
+		private var lionRect:Rectangle=new Rectangle(1211, 214, 74, 81);
 
 		private function onTeleTouch(e:TouchEvent):void
 		{

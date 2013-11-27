@@ -13,13 +13,14 @@ package views.components.base
 	import com.pamakids.palace.utils.StringUtils;
 
 	import flash.geom.Point;
-	import flash.utils.Dictionary;
 	import flash.utils.clearTimeout;
+	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 
 	import assets.global.userCenter.BirdAssets;
 
 	import controllers.MC;
+	import controllers.UserBehaviorAnalysis;
 
 	import feathers.core.PopUpManager;
 
@@ -52,6 +53,11 @@ package views.components.base
 		public var crtKnowledgeIndex:int=-1;
 		private var _birdIndex:int=-1;
 
+		protected var initTime:int=-1;
+		protected var disposeTime:int=-1;
+		protected var taskInitTime:int=-1;
+		protected var sceneOverTime:int=-1;
+
 		public function get birdIndex():int
 		{
 			return _birdIndex;
@@ -64,16 +70,18 @@ package views.components.base
 			_birdIndex=value;
 			if (value < 0)
 				return;
-//			if (!checkBird())
-			TweenLite.delayedCall(3, function():void {
-				var cls:Class=BirdAssets["bird" + birdIndex];
-				if (!cls)
-					return;
-				var img:Image=Image.fromBitmap(new cls());
-//					var img:Image=getImage(sceneName + "-bird");
-				if (img)
-					initBird(img);
-			});
+			if (!checkBird())
+				TweenLite.delayedCall(3, function():void {
+					var cls:Class=BirdAssets["bird" + birdIndex];
+					if (!cls)
+						return;
+					var img:Image=Image.fromBitmap(new cls());
+					if (img)
+					{
+						initBird(img);
+						UserBehaviorAnalysis.trackEvent("collect", "bird", "", birdIndex);
+					}
+				});
 		}
 
 
@@ -146,10 +154,18 @@ package views.components.base
 
 		override protected function init():void
 		{
+			initTime=getTimer();
+			UserBehaviorAnalysis.trackView(sceneName);
 		}
 
 		override public function dispose():void
 		{
+			if (initTime > 0)
+			{
+				disposeTime=getTimer();
+				UserBehaviorAnalysis.trackTime("stayTime", disposeTime - initTime, sceneName);
+				initTime=-1;
+			}
 			if (nextButton)
 			{
 				TweenLite.killDelayedCallsTo(this);
@@ -224,6 +240,7 @@ package views.components.base
 
 		protected function nextScene(e:Event=null):void
 		{
+			UserBehaviorAnalysis.trackEvent("click", "next");
 			TopBar.enable=false;
 			if (nextButton)
 				nextButton.touchable=false;
@@ -248,6 +265,7 @@ package views.components.base
 					_callback();
 				return;
 			}
+			UserBehaviorAnalysis.trackEvent("collect", "achievement", "", _achieveIndex);
 			SoundManager.instance.play("getachieve");
 			SOService.instance.setSO(_achieveIndex.toString() + "_achieve", true);
 //			var txt:String="xxx";
@@ -296,6 +314,7 @@ package views.components.base
 					callback();
 				return;
 			}
+			UserBehaviorAnalysis.trackEvent("collect", "card", "", int(_cardName));
 			SoundManager.instance.play("getcard");
 			SOService.instance.setSO("collection_card_" + _cardName + "collected", true);
 

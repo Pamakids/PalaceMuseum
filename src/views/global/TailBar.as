@@ -3,6 +3,7 @@ package views.global
 	import com.greensock.TweenLite;
 
 	import controllers.MC;
+	import controllers.UserBehaviorAnalysis;
 
 	import starling.core.Starling;
 	import starling.display.MovieClip;
@@ -20,8 +21,8 @@ package views.global
 			if (_parent)
 				_parent.addChild(this);
 			var tail:MovieClip=new MovieClip(MC.assetManager.getTextures("tail"), 30);
+//			this.scaleX=this.scaleY=tail.scaleX=tail.scaleY=1;
 			Starling.juggler.add(tail);
-//			tail.scaleX=tail.scaleY=.5;
 			tail.loop=true;
 			tail.play();
 			tail.addEventListener(TouchEvent.TOUCH, tailClickedHandler);
@@ -69,6 +70,7 @@ package views.global
 			var tc:Touch=e.getTouch(tail, TouchPhase.ENDED);
 			if (!tc)
 				return;
+			UserBehaviorAnalysis.trackEvent("click", "tail");
 			LionMC.instance.replay();
 		}
 	}
