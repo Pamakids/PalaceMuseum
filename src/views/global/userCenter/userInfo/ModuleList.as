@@ -2,14 +2,14 @@ package views.global.userCenter.userInfo
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
+
 	import flash.geom.Point;
 	import flash.utils.getTimer;
-	
+
 	import controllers.MC;
-	
+
 	import models.SOService;
-	
+
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -19,7 +19,7 @@ package views.global.userCenter.userInfo
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
-	
+
 	import views.Interlude;
 	import views.global.userCenter.UserCenterManager;
 
@@ -152,12 +152,12 @@ package views.global.userCenter.userInfo
 
 		private function clickHandler():void
 		{
-			if (selectI == 5)
-				return;
 			var string:String=mapping[selectI];
-			var i:int = int( string.charAt(2) );
+			var module:int=int(string.charAt(2));
+			var screen:int=int(string.charAt(4));
+			trace(module, screen);
 			if (string.charAt(0) == "m") //进入模块
-				(i != MC.instance.moduleIndex)?MC.instance.gotoModule(i):UserCenterManager.closeUserCenter();
+				(module != MC.instance.moduleIndex) ? MC.instance.gotoModule(module, screen) : UserCenterManager.closeUserCenter();
 			else
 				Starling.current.nativeStage.addChild(new Interlude(string));
 		}
@@ -183,17 +183,18 @@ package views.global.userCenter.userInfo
 
 		private const mapping:Array=[
 			"assets/video/intro.mp4",
-			"m_0",
-			"m_1",
-			"m_2",
-			"m_3",
-			"assets/video/garden.mp4",
-			"m_4",
+			"m_0_0",
+			"m_1_0",
+			"m_2_0",
+			"m_3_0",
+			"m_3_3",
+			"m_4_0",
 			"assets/video/end.mp4"
 			];
 
 		private function isComplete(i:int):Boolean
 		{
+//			return true;
 			if (i == 0)
 				return true;
 			var str:String=mapping[i];
@@ -238,8 +239,8 @@ package views.global.userCenter.userInfo
 			this.addChild(image);
 			image.touchable=false;
 		}
-		
-		private const wordPosition:Array = [
+
+		private const wordPosition:Array=[
 			new Point(135, 199),
 			new Point(222, 160),
 			new Point(321, 128),
@@ -248,8 +249,8 @@ package views.global.userCenter.userInfo
 			new Point(596, 128),
 			new Point(695, 157),
 			new Point(768, 196)
-		];
-		private const linePosition:Array = [
+			];
+		private const linePosition:Array=[
 			new Point(141, 123),
 			new Point(238, 82),
 			new Point(356, 59),
@@ -257,37 +258,40 @@ package views.global.userCenter.userInfo
 			new Point(568, 60),
 			new Point(688, 82),
 			new Point(791, 128)
-		];
+			];
+
 		private function initLines():void
 		{
 			var image:Image;
 			var point:Point;
-			for (var i:int = 0; i < linePosition.length; i++) 
+			for (var i:int=0; i < linePosition.length; i++)
 			{
-				point = linePosition[i];
-				image = UserCenterManager.getImage(isComplete(i+1)?"line_complete_"+i:"line_uncomplete_"+i);
-				image.touchable = false;
-				image.x = point.x;
-				image.y = point.y;
-				this.addChild( image );
+				point=linePosition[i];
+				image=UserCenterManager.getImage(isComplete(i + 1) ? "line_complete_" + i : "line_uncomplete_" + i);
+				image.touchable=false;
+				image.x=point.x;
+				image.y=point.y;
+				this.addChild(image);
 			}
 		}
+
 		private function initWords():void
 		{
 			var image:Image;
 			var point:Point;
-			for (var i:int = 0; i < wordPosition.length; i++) 
+			for (var i:int=0; i < wordPosition.length; i++)
 			{
-				point = wordPosition[i];
-				image = UserCenterManager.getImage(isComplete(i)?"word_complete_"+i:"word_uncomplete_"+i);
-				image.touchable = false;
-				image.x = point.x;
-				image.y = point.y;
-				this.addChild( image );
+				point=wordPosition[i];
+				image=UserCenterManager.getImage(isComplete(i) ? "word_complete_" + i : "word_uncomplete_" + i);
+				image.touchable=false;
+				image.x=point.x;
+				image.y=point.y;
+				this.addChild(image);
 			}
 		}
 
 		private var startObj:Object;
+
 		private function onTouch(e:TouchEvent):void
 		{
 			var i:int;
