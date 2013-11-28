@@ -133,7 +133,7 @@ package views.module2.scene22
 			stand.x=1222;
 			stand.y=208;
 
-			stand.visible=stand.touchable=false;
+			sit.visible=stand.touchable=false;
 		}
 
 		private var _standUp:Boolean;
@@ -145,8 +145,6 @@ package views.module2.scene22
 
 		public function set standUp(value:Boolean):void
 		{
-			if (_standUp == value)
-				return;
 			_standUp=value;
 			sit.visible=sit.touchable=!value;
 			stand.visible=stand.touchable=value;
