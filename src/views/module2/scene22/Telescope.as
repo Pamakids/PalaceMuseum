@@ -188,7 +188,7 @@ package views.module2.scene22
 			var vpt:Point=view.globalToLocal(pt);
 			if (lionRect.containsPoint(vpt))
 			{
-				view.standUp=true;
+				view.standUp=false;
 				dispatchEvent(new Event("lionFound", true));
 			}
 		}
@@ -321,7 +321,8 @@ package views.module2.scene22
 		private var ringMoved:Boolean;
 		private var ringBlock:Boolean;
 
-		private var lionRect:Rectangle=new Rectangle(1211, 214, 74, 81);
+//		private var lionRect:Rectangle=new Rectangle(1211, 214, 74, 81);
+		private var lionRect:Rectangle=new Rectangle(1222, 208, 54, 84);
 
 		private function onTeleTouch(e:TouchEvent):void
 		{

@@ -2,12 +2,15 @@ package views.module4
 {
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
+	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Quad;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -24,6 +27,7 @@ package views.module4
 		private var _W:Number=1664;
 
 		private var bg2:Image;
+		private var birdLayer:Sprite;
 		private var fg:Sprite;
 		private var king:Sprite;
 		private var flowerPos:Object;
@@ -41,17 +45,50 @@ package views.module4
 			addChild(bg2);
 
 			fg=new Sprite();
-			fg.addChild(getImage("fg44"));
 			fg.x=1024 - _W >> 1;
 			addChild(fg);
 
 			addKite();
+
+			birdLayer=new Sprite();
+			fg.addChild(birdLayer);
+
+			var fgImg:Image=getImage("fg44");
+			fgImg.touchable=false;
+			fg.addChild(fgImg);
+
+			addBtrees();
 			addFlowers();
 			addTrees();
 			addKing();
 
 			addEventListener(TouchEvent.TOUCH, onTouch);
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+
+		private function addBtrees():void
+		{
+			var t1:Image=getImage("treeb1");
+			t1.pivotX=t1.width >> 1;
+			t1.pivotY=t1.height;
+			t1.x=160 + t1.pivotX;
+			t1.y=-71 + t1.pivotY;
+			fg.addChild(t1);
+			t1.addEventListener(TouchEvent.TOUCH, onTreeTouch);
+
+			var t2:Image=getImage("treeb2");
+			t2.pivotX=t2.width >> 1;
+			t2.pivotY=t2.height;
+			t2.x=1207 + t2.pivotX;
+			t2.y=-71 + t2.pivotY;
+			fg.addChild(t2);
+			t2.addEventListener(TouchEvent.TOUCH, onTreeTouch);
+
+			var ts:Image=getImage("trees2");
+			ts.x=1379;
+			ts.y=52;
+			ts.touchable=false;
+			fg.addChild(ts);
 		}
 
 		private function addKing():void
@@ -66,13 +103,14 @@ package views.module4
 
 		private var windX:Number;
 		private var windY:Number;
-		private var kiteBounds:Rectangle=new Rectangle(913, 16, 20, 20);
-		private var linePos:Point=new Point(997, 96);
-		private var lineDis:Point;
+		private var kiteBounds:Rectangle;
+		private var linePos:Point=new Point(997 - 5, 96 - 10);
+		private var lineDis:Point=new Point(1180, 326);
+		private var kitePos:Point=new Point(972, 70);
 
 		private function getRandomSpeed():Number
 		{
-			return (.2 + Math.random() * .2); //.2-.4
+			return (.1 + Math.random() * .3); //.2-.4
 		}
 
 		private function addKite():void
@@ -80,19 +118,29 @@ package views.module4
 			windX=(Math.random() > .5 ? 1 : -1) * getRandomSpeed();
 			windY=(Math.random() > .5 ? 1 : -1) * getRandomSpeed();
 
-			line=getImage("kite-line");
-			fg.addChild(line);
-			line.x=linePos.x;
-			line.y=linePos.y;
-			lineDis=new Point(line.x + line.width, line.y + line.height);
+			line=new Sprite();
+			var lineImg:Image=getImage("kite-line");
+			line.addChild(lineImg);
+			lw=lineImg.width;
+			lh=lineImg.height;
+			line.pivotX=lw;
+			line.pivotY=lh;
+			line.x=lineDis.x;
+			line.y=lineDis.y;
+			line.touchable=false;
 
 			kite=new Kite();
 			kite.addChild(getImage("kite"));
-			fg.addChild(kite);
-			kite.x=923;
-			kite.y=26;
+			kite.x=kitePos.x;
+			kite.y=kitePos.y;
 			kite.isFree=false;
 			kite.addEventListener(TouchEvent.TOUCH, onKiteTouch);
+
+			resetKiteBounds();
+//			kiteBounds=new Rectangle(kitePos.x - 10, kitePos.y - 10, 20, 20)
+
+			fg.addChild(kite);
+			fg.addChild(line);
 		}
 
 		private function onKiteTouch(e:TouchEvent):void
@@ -100,23 +148,34 @@ package views.module4
 			var tc:Touch=e.getTouch(kite, TouchPhase.ENDED);
 			if (!tc)
 				return;
+			kite.touchable=false;
 			kite.isFree=true;
-			TweenLite.to(line, 1, {alpha: 0});
-			TweenLite.to(kite, 3, {x: 923 - 300, y: 26 - 200, onComplete: resetKite, ease: Quad.easeOut});
+			var dx:Number=kite.x - 200;
+			TweenLite.to(kite, 3, {x: dx, y: -30, onComplete: stickKite, ease: Quad.easeOut});
 			checkOver(1);
+		}
+
+		private function stickKite():void
+		{
+			resetKiteBounds();
+			kite.isFree=false;
+			TweenLite.delayedCall(3, resetKite);
+		}
+
+		private function resetKiteBounds():void
+		{
+			kiteBounds=new Rectangle(kite.x - 10, kite.y - 10, 20, 20)
 		}
 
 		private function resetKite():void
 		{
-			kite.x=lineDis.x;
-			kite.y=lineDis.y;
-			kite.scaleX=kite.scaleY=.3;
-
-			TweenMax.to(kite, 3, {scaleX: 1, scaleY: 1, bezier: [{x: 923, y: lineDis.y}, {x: 923, y: 26}], ease: Quad.easeInOut,
-							onComplete: function():void {
-								kite.isFree=false;
-								TweenLite.to(line, .2, {alpha: 1});
-							}});
+			kite.isFree=true;
+			TweenLite.to(kite, 3, {x: kitePos.x, y: kitePos.y, ease: Bounce.easeIn,
+							 onComplete: function():void {
+								 kite.touchable=true;
+								 kite.isFree=false;
+								 resetKiteBounds();
+							 }});
 		}
 
 		private function addFlowers():void
@@ -153,7 +212,11 @@ package views.module4
 
 		private var kite:Kite;
 
-		private var line:Image;
+		private var line:Sprite;
+
+		private var lw:Number;
+
+		private var lh:Number;
 
 		private function checkOver(index:int):void
 		{
@@ -193,41 +256,90 @@ package views.module4
 			if (!tc)
 				return;
 			tree.touchable=false;
-			TweenMax.to(tree, 3, {shake: {rotation: .1, numShakes: 2}, onComplete: function():void {
+			var b:Boolean=tree.width > 400;
+			var r:Number=b ? .005 : .02;
+			var n:int=b ? 4 : 2;
+			var d:Number=b ? 1 : 2.5;
+			TweenMax.to(tree, d, {shake: {rotation: r, numShakes: n}, onComplete: function():void {
 				tree.touchable=true;
 			}})
+
+			if (b)
+				addBrids(tree.x < 800) //左
 		}
+
+		private function addBrids(isleft:Boolean):void
+		{
+			var r:Rectangle=isleft ? birdArea1 : birdArea2;
+			var birdNum:int=Math.random() < .5 ? 2 : 4; //2-4
+			for (var i:int=0; i < birdNum; i++)
+			{
+				addOneBird(isleft, r);
+			}
+		}
+
+		private var prob:Number=.8;
+
+		private function addOneBird(isleft:Boolean, r:Rectangle):void
+		{
+			var toleft:Boolean=isleft ? Math.random() > prob : Math.random() < prob; //左边小概率左飞,右边大概率左飞
+			var sx:Number=r.x + Math.random() * r.width;
+			var sy:Number=r.y + Math.random() * r.height;
+			var color:String=Math.random() > .5 ? "y" : "p"; //黄,紫
+			var bird:MovieClip=new MovieClip(assetManager.getTextures(color + "bird"));
+			bird.scaleX=toleft ? -1 : 1; //水平翻转
+			birdLayer.addChild(bird);
+			Starling.juggler.add(bird);
+			bird.loop=true;
+			bird.play();
+			bird.x=sx;
+			bird.y=sy;
+			var dx:Number=r.x + (toleft ? -1 : 1) * (300 + Math.random() * 900);
+			var dy:Number=-100 - Math.random() * 200; //保证出屏幕
+			var delay:Number=3 + Math.random() * 3;
+			assetManager.playSound("bird");
+			TweenLite.to(bird, delay, {x: dx, y: dy, onComplete: function():void {
+				Starling.juggler.remove(bird);
+				bird.stop();
+				bird.removeFromParent(true);
+				bird=null;
+			}});
+		}
+
+		private var birdArea1:Rectangle=new Rectangle(285, 38, 100, 200);
+		private var birdArea2:Rectangle=new Rectangle(1250, 100, 100, 250);
 
 		private function onEnterFrame(e:Event):void
 		{
-			if (kite.isFree)
-				return;
-			kite.x+=windX;
-			if (kite.x < kiteBounds.x)
+			if (!kite.isFree)
 			{
-				windX=reverseSpeed(windX);
-				kite.x=kiteBounds.x
-			}
-			else if (kite.x > kiteBounds.x + kiteBounds.width)
-			{
-				windX=reverseSpeed(windX);
-				kite.x=kiteBounds.x + kiteBounds.width
+				kite.x+=windX;
+				if (kite.x < kiteBounds.x)
+				{
+					windX=reverseSpeed(windX);
+					kite.x=kiteBounds.x
+				}
+				else if (kite.x > kiteBounds.x + kiteBounds.width)
+				{
+					windX=reverseSpeed(windX);
+					kite.x=kiteBounds.x + kiteBounds.width
+				}
+
+				kite.y+=windY;
+				if (kite.y < kiteBounds.y)
+				{
+					windY=reverseSpeed(windY);
+					kite.y=kiteBounds.y
+				}
+				else if (kite.y > kiteBounds.y + kiteBounds.height)
+				{
+					windY=reverseSpeed(windY);
+					kite.y=kiteBounds.y + kiteBounds.height
+				}
 			}
 
-			kite.y+=windY;
-			if (kite.y < kiteBounds.y)
-			{
-				windY=windX=reverseSpeed(windY);
-				kite.y=kiteBounds.y
-			}
-			else if (kite.y > kiteBounds.y + kiteBounds.height)
-			{
-				windY=windX=reverseSpeed(windY);
-				kite.y=kiteBounds.y + kiteBounds.height
-			}
-
-			line.x=linePos.x + (kite.x - 923) / 2.5;
-			line.y=linePos.y + (kite.y - 26) / 2.5;
+			line.width=lw - (kite.x - kitePos.x) - 44;
+			line.height=lh - (kite.y - kitePos.y) - 37;
 		}
 
 		private function reverseSpeed(speed:Number):Number
