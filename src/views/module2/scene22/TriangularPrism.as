@@ -14,6 +14,8 @@ package views.module2.scene22
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 
+	import sound.SoundAssets;
+
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Shape;
@@ -110,9 +112,9 @@ package views.module2.scene22
 		private var shadowArr:Array=[];
 
 		private var posArr:Array=[new Point(376, 10), new Point(631, 34),
-			new Point(778, 206), new Point(761, 410), new Point(527, 560),
-			new Point(250, 551), new Point(25, 428), new Point(18, 225),
-			new Point(141, 34)]
+								  new Point(778, 206), new Point(761, 410), new Point(527, 560),
+								  new Point(250, 551), new Point(25, 428), new Point(18, 225),
+								  new Point(141, 34)]
 
 		private function addPrism2():void
 		{
@@ -153,23 +155,23 @@ package views.module2.scene22
 		}
 
 		private var angleArr:Array=[-1.94,
-			-1.37,
-			-1.10,
-			-0.61,
-			-0.41,
-			-0.04,
-			0.16,
-			0.50,
-			0.82,
-			1.35,
-			1.88,
-			2.34,
-			2.61,
-			2.94,
-			-3.11,
-			-2.81,
-			-2.58,
-			-2.20];
+									-1.37,
+									-1.10,
+									-0.61,
+									-0.41,
+									-0.04,
+									0.16,
+									0.50,
+									0.82,
+									1.35,
+									1.88,
+									2.34,
+									2.61,
+									2.94,
+									-3.11,
+									-2.81,
+									-2.58,
+									-2.20];
 
 		private function addColor(_rotation:Number):void
 		{
@@ -213,7 +215,7 @@ package views.module2.scene22
 					var ap:Number=img.alpha;
 					if (ap.toFixed(2) == "0.40")
 					{
-						SoundManager.instance.play("dragonlighton");
+						SoundAssets.playSFX("dragonlighton");
 						var shadow:Sprite=shadowArr[crtAreaIndex];
 						TweenLite.to(shadow.getChildAt(0), .5, {alpha: 1});
 //					blink(shadow.getChildAt(0) as Image);
@@ -459,9 +461,9 @@ package views.module2.scene22
 		}
 
 		private var wallPosArr:Array=[new Point(459, 114), new Point(363, 113),
-			new Point(567, 113), new Point(251, 115), new Point(664, 114),
-			new Point(136, 113), new Point(783, 113), new Point(15, 111),
-			new Point(875, 106)];
+									  new Point(567, 113), new Point(251, 115), new Point(664, 114),
+									  new Point(136, 113), new Point(783, 113), new Point(15, 111),
+									  new Point(875, 106)];
 
 		private function showWall():void
 		{

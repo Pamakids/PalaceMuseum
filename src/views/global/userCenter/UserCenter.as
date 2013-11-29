@@ -1,19 +1,21 @@
 package views.global.userCenter
 {
 	import com.pamakids.manager.SoundManager;
-	
+
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
+
 	import controllers.MC;
-	
+
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
-	
+
 	import org.agony2d.utils.getClassName;
-	
+
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -22,7 +24,7 @@ package views.global.userCenter
 	import starling.events.TouchPhase;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
-	
+
 	import views.components.ElasticButton;
 	import views.components.SoftPaperAnimation;
 	import views.global.userCenter.achievement.AchievementScreen;
@@ -60,7 +62,7 @@ package views.global.userCenter
 		private static const COLLECTION:String="CollectionScreen";
 		private static const HANDBOOK:String="HandbookScreen";
 		private static const USERINFO:String="UserInfoScreen";
-		private static const BIRDS:String = "BirdScreen";
+		private static const BIRDS:String="BirdScreen";
 
 		private var screenNames:Array;
 
@@ -86,16 +88,16 @@ package views.global.userCenter
 			initAnimation();
 			initRender();
 		}
-		
+
 		private function initShade():void
 		{
-			var image:Image = UserCenterManager.getImage("shade");
-			this.addChild( image );
-			image.x = 22;
-			image.y = 70;
-			image.touchable = false;
+			var image:Image=UserCenterManager.getImage("shade");
+			this.addChild(image);
+			image.x=22;
+			image.y=70;
+			image.touchable=false;
 		}
-		
+
 		private function initBackgroud():void
 		{
 			var image:Image=UserCenterManager.getImage("main_background");
@@ -108,31 +110,31 @@ package views.global.userCenter
 		{
 			_tabBar=new TabBar();
 			_tabBar.dataProvider=new ListCollection([
-				{
-					defaultIcon: 	UserCenterManager.getImage("userinfo_up"),
-					selectedUpIcon:	UserCenterManager.getImage("userinfo_down")
-				},
-				{
-					defaultIcon:	UserCenterManager.getImage("handbook_up"),
-					selectedUpIcon:	UserCenterManager.getImage("handbook_down")
-				},
-				{
-					defaultIcon:	UserCenterManager.getImage("achievement_up"),
-					selectedUpIcon:	UserCenterManager.getImage("achievement_down")
-				},
-				{
-					defaultIcon:	UserCenterManager.getImage("collection_up"),
-					selectedUpIcon:	UserCenterManager.getImage("collection_down")
-				},
-				{
-					defaultIcon:	UserCenterManager.getImage("games_up"),
-					selectedUpIcon:	UserCenterManager.getImage("games_down")
-				},
-				{
-					defaultIcon:	UserCenterManager.getImage("bird_up"),
-					selectedUpIcon:	UserCenterManager.getImage("bird_down")
-				}
-				]);
+													{
+														defaultIcon: UserCenterManager.getImage("userinfo_up"),
+														selectedUpIcon: UserCenterManager.getImage("userinfo_down")
+													},
+													{
+														defaultIcon: UserCenterManager.getImage("handbook_up"),
+														selectedUpIcon: UserCenterManager.getImage("handbook_down")
+													},
+													{
+														defaultIcon: UserCenterManager.getImage("achievement_up"),
+														selectedUpIcon: UserCenterManager.getImage("achievement_down")
+													},
+													{
+														defaultIcon: UserCenterManager.getImage("collection_up"),
+														selectedUpIcon: UserCenterManager.getImage("collection_down")
+													},
+													{
+														defaultIcon: UserCenterManager.getImage("games_up"),
+														selectedUpIcon: UserCenterManager.getImage("games_down")
+													},
+													{
+														defaultIcon: UserCenterManager.getImage("bird_up"),
+														selectedUpIcon: UserCenterManager.getImage("bird_down")
+													}
+													]);
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;
 			_tabBar.gap=1;
 			_tabBar.x=43;
@@ -157,62 +159,62 @@ package views.global.userCenter
 		{
 			_navigator=new ScreenNavigator();
 			_navigator.addScreen(HANDBOOK, new ScreenNavigatorItem(HandbookScreen,
-				{
-					initialized: onInitialized,
-					viewUpdated: onViewUpdated,
-					viewUpdateFail: onViewUpdateFail,
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+																   {
+																	   initialized: onInitialized,
+																	   viewUpdated: onViewUpdated,
+																	   viewUpdateFail: onViewUpdateFail,
+																	   initViewPlayed: onInitViewPlayed
+																   },
+																   {
+																	   width: contentWidth, height: contentHeight,
+																	   viewWidth: contentWidth, viewHeight: contentHeight
+																   }));
 			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen,
-				{
-					initialized: onInitialized,
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+																   {
+																	   initialized: onInitialized,
+																	   initViewPlayed: onInitViewPlayed
+																   },
+																   {
+																	   width: contentWidth, height: contentHeight,
+																	   viewWidth: contentWidth, viewHeight: contentHeight
+																   }));
 			_navigator.addScreen(ACHIEVEMENT, new ScreenNavigatorItem(AchievementScreen,
-				{
-					viewUpdated: onViewUpdated,
-					viewUpdateFail: onViewUpdateFail,
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+																	  {
+																		  viewUpdated: onViewUpdated,
+																		  viewUpdateFail: onViewUpdateFail,
+																		  initViewPlayed: onInitViewPlayed
+																	  },
+																	  {
+																		  width: contentWidth, height: contentHeight,
+																		  viewWidth: contentWidth, viewHeight: contentHeight
+																	  }));
 			_navigator.addScreen(COLLECTION, new ScreenNavigatorItem(CollectionScreen,
-				{
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+																	 {
+																		 initViewPlayed: onInitViewPlayed
+																	 },
+																	 {
+																		 width: contentWidth, height: contentHeight,
+																		 viewWidth: contentWidth, viewHeight: contentHeight
+																	 }));
 			_navigator.addScreen(GAMECENTER, new ScreenNavigatorItem(GameCenterScreen,
-				{
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+																	 {
+																		 initViewPlayed: onInitViewPlayed
+																	 },
+																	 {
+																		 width: contentWidth, height: contentHeight,
+																		 viewWidth: contentWidth, viewHeight: contentHeight
+																	 }));
 			_navigator.addScreen(BIRDS, new ScreenNavigatorItem(BirdScreen,
-				{
-					initialized: onInitialized,
-					viewUpdated: onViewUpdated,
-					viewUpdateFail: onViewUpdateFail,
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+																{
+																	initialized: onInitialized,
+																	viewUpdated: onViewUpdated,
+																	viewUpdateFail: onViewUpdateFail,
+																	initViewPlayed: onInitViewPlayed
+																},
+																{
+																	width: contentWidth, height: contentHeight,
+																	viewWidth: contentWidth, viewHeight: contentHeight
+																}));
 			_navigator.x=28;
 			_navigator.y=89;
 			this.addChild(_navigator);
@@ -328,7 +330,8 @@ package views.global.userCenter
 					else if (_navigator.activeScreen is AchievementScreen) //成就页面
 					{
 						pageUp ? (_navigator.activeScreen as AchievementScreen).pageUp() : (_navigator.activeScreen as AchievementScreen).pageDown();
-					}else if( _navigator.activeScreen is BirdScreen )
+					}
+					else if (_navigator.activeScreen is BirdScreen)
 					{
 						pageUp ? (_navigator.activeScreen as BirdScreen).pageUp() : (_navigator.activeScreen as BirdScreen).pageDown();
 					}
@@ -375,7 +378,7 @@ package views.global.userCenter
 			else //pageDown
 				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
 			animation.start(pageUp);
-			SoundManager.instance.play("centerflip");
+			SoundAssets.playSFX("centerflip");
 		}
 
 		private function playedAnimation():void

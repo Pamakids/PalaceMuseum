@@ -26,6 +26,8 @@ package views.module3.scene32
 	import nape.shape.Polygon;
 	import nape.space.Space;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -457,8 +459,7 @@ package views.module3.scene32
 					}
 
 					delayFunction=function():void {
-						SoundManager.instance.stop("blockmatch");
-						SoundManager.instance.play("blockmatch");
+						SoundAssets.playSFX("blockmatch", true);
 						TweenLite.to(checkLight.clipRect, .7, {x: 0});
 						if (endFunction)
 							endFunction();
@@ -584,7 +585,7 @@ package views.module3.scene32
 			recordIcon.scaleX=recordIcon.scaleY=3;
 			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut,
 							 onComplete: function():void {
-								 SoundManager.instance.play("gamerecord");
+								 SoundAssets.playSFX("gamerecord");
 								 closeBtn.visible=closeBtn.touchable=true;
 							 }});
 		}

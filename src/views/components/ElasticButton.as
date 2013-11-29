@@ -8,6 +8,8 @@ package views.components
 	import flash.geom.Point;
 	import flash.utils.setTimeout;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -158,7 +160,7 @@ package views.components
 
 		private function doUp():void
 		{
-			SoundManager.instance.play("buttonclick");
+			SoundAssets.playSFX("buttonclick");
 			var vars:Object={scaleX: 1, scaleY: 1, onComplete: upComplete, ease: Elastic.easeOut}
 			TweenLite.to(this, 0.5, vars);
 		}

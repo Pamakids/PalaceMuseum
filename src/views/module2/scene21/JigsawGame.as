@@ -15,6 +15,8 @@ package views.module2.scene21
 	import models.FontVo;
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -166,7 +168,7 @@ package views.module2.scene21
 			recordIcon.scaleX=recordIcon.scaleY=3;
 			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut,
 							 onComplete: function():void {
-								 SoundManager.instance.play("gamerecord");
+								 SoundAssets.playSFX("gamerecord");
 								 closeBtn.visible=closeBtn.touchable=true;
 							 }});
 		}

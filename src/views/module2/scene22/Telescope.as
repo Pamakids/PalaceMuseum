@@ -8,6 +8,8 @@ package views.module2.scene22
 
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -142,7 +144,7 @@ package views.module2.scene22
 				case TouchPhase.BEGAN:
 				{
 					dpt=tc.getLocation(stage);
-					SoundManager.instance.stop("ringrolling");
+					SoundAssets.stopSFX("ringrolling");
 					ringBlock=false;
 					if (Point.distance(currentPosA, centerPT) < 210)
 						actionIndex=0; //move
@@ -168,7 +170,7 @@ package views.module2.scene22
 					if (dpt && Point.distance(pt, dpt) < 10)
 						checkViewPoint(pt);
 					dpt=null;
-					SoundManager.instance.stop("ringrolling");
+					SoundAssets.stopSFX("ringrolling");
 					ringBlock=false;
 					actionIndex=-1
 					break;
@@ -201,7 +203,7 @@ package views.module2.scene22
 
 		private function rotateRing(tc:Touch, target:Sprite):void
 		{
-			SoundManager.instance.play("ringrolling");
+			SoundAssets.playSFX("ringrolling");
 			isRingMoved=true;
 			if (isZoomed)
 				isWin=true;
@@ -229,13 +231,9 @@ package views.module2.scene22
 			var blur:Number=updataBlur();
 			if (Math.abs(blur) < 0.01 && tele3.y == -maxY)
 			{
-				SoundManager.instance.stop("ringrolling");
-				SoundManager.instance.play("ringblock");
+				SoundAssets.playSFX("ringblock", true);
 				ringBlock=true;
-//				view.standUp=true;
 			}
-//			else
-//				view.standUp=false;
 			ringMoved=true;
 		}
 
@@ -333,7 +331,7 @@ package views.module2.scene22
 			{
 				case TouchPhase.BEGAN:
 				{
-					SoundManager.instance.stop("telescale");
+					SoundAssets.stopSFX("telescale");
 					break;
 				}
 				case TouchPhase.MOVED:
@@ -343,16 +341,16 @@ package views.module2.scene22
 					tele3.y-=dy;
 					if (tele3.y < -maxY)
 					{
-						SoundManager.instance.stop("telescale");
+						SoundAssets.stopSFX("telescale");
 						tele3.y=-maxY;
 					}
 					else if (tele3.y > 0)
 					{
-						SoundManager.instance.stop("telescale");
+						SoundAssets.stopSFX("telescale");
 						tele3.y=0;
 					}
 					else
-						SoundManager.instance.play("telescale");
+						SoundAssets.playSFX("telescale");
 
 					tele2.y=Math.max(-84, tele3.y);
 
@@ -370,7 +368,7 @@ package views.module2.scene22
 				}
 				case TouchPhase.ENDED:
 				{
-					SoundManager.instance.stop("telescale");
+					SoundAssets.stopSFX("telescale");
 					break;
 				}
 

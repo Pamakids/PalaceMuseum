@@ -4,6 +4,8 @@ package views.module4.scene44
 	import com.greensock.TweenMax;
 	import com.pamakids.manager.SoundManager;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Touch;
@@ -30,8 +32,7 @@ package views.module4.scene44
 			img2.visible=value;
 			if (img2.visible)
 			{
-				SoundManager.instance.stop("buttonclick");
-				SoundManager.instance.play("buttonclick");
+				SoundAssets.playSFX("buttonclick", true);
 				TweenLite.killTweensOf(img2);
 				TweenMax.to(img2, .3, {shake: {scaleX: .1, scaleY: .1, numShakes: 1}});
 			}

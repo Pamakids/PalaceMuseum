@@ -3,7 +3,7 @@ package views
 	import com.greensock.TweenLite;
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.DPIUtil;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -19,9 +19,11 @@ package views
 	import flash.net.NetStream;
 	import flash.system.Capabilities;
 	import flash.utils.getTimer;
-	
+
 	import models.Const;
-	
+
+	import sound.SoundAssets;
+
 	import starling.core.Starling;
 
 	/**
@@ -69,7 +71,7 @@ package views
 		private function onAdded(e:Event):void
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
-			SoundManager.instance.stop("main");
+			SoundAssets.stopBGM();
 			Starling.current.stage3D.visible=false;
 			initialize();
 			if (Capabilities.isDebugger)
@@ -108,10 +110,10 @@ package views
 				button=new Sprite();
 				button.x=(viewWidth - bitmap.width - gap) * DPIUtil.getDPIScale();
 				button.y=(viewHeight - bitmap.height - gap) * DPIUtil.getDPIScale();
-				button.scaleX = button.scaleY = DPIUtil.getDPIScale();
+				button.scaleX=button.scaleY=DPIUtil.getDPIScale();
 				button.addChild(bitmap);
 				this.addChild(button);
-				button.visible = false;
+				button.visible=false;
 				button.addEventListener(MouseEvent.CLICK, passHandler);
 			}
 		}
@@ -153,9 +155,9 @@ package views
 					}});
 					if (startHandler)
 						startHandler();
-					if(passable)
+					if (passable)
 					{
-						start = getTimer();
+						start=getTimer();
 						this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 					}
 					break;
@@ -167,16 +169,17 @@ package views
 		}
 
 		private var start:uint;
-		private const seconds:uint = 8;
+		private const seconds:uint=8;
+
 		private function onEnterFrame(e:Event):void
 		{
-			if(getTimer() - start >= seconds*1000)
+			if (getTimer() - start >= seconds * 1000)
 			{
 				this.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-				button.visible = true;
+				button.visible=true;
 			}
 		}
-		
+
 		private function connectStream():void
 		{
 			stream=new NetStream(connection);

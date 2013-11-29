@@ -7,6 +7,8 @@ package views.module2.scene21
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
+	import sound.SoundAssets;
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -146,7 +148,7 @@ package views.module2.scene21
 			var tc:Touch=e.getTouch(bugS, TouchPhase.ENDED);
 			if (tc)
 			{
-				SoundManager.instance.play("bug");
+				SoundAssets.playSFX("bug");
 				removeHint(3);
 				bugS.removeEventListener(TouchEvent.TOUCH, onBugSTouch);
 				bugS.loop=0;
@@ -208,14 +210,14 @@ package views.module2.scene21
 			var pt:Point=tc.getLocation(this);
 			if (rattleDrumArea.containsPoint(pt))
 			{
-				SoundManager.instance.play("drum");
+				SoundAssets.playSFX("drum");
 				playEff(drum, destPosArr[0]);
 				rattleDrumArea=new Rectangle(-1000, -1000, 0, 0)
 				removeHint(1);
 			}
 			else if (fluteArea.containsPoint(pt))
 			{
-				SoundManager.instance.play("flute");
+				SoundAssets.playSFX("flute");
 				playEff(flute, destPosArr[1]);
 				fluteArea=new Rectangle(-1000, -1000, 0, 0);
 				removeHint(2);
@@ -242,7 +244,7 @@ package views.module2.scene21
 				var destScale:Number=shadow.width / img.width;
 
 				TweenLite.to(img, .5, {scaleX: destScale, scaleY: destScale,
-						x: destPos.x, y: destPos.y, onComplete: checkResult});
+								 x: destPos.x, y: destPos.y, onComplete: checkResult});
 			});
 		}
 
@@ -260,7 +262,7 @@ package views.module2.scene21
 				TweenLite.to(img, 1, {alpha: 0});
 				var destScale:Number=img.width / bug.width;
 				TweenLite.to(bug, .5, {x: destPos.x - 5, y: destPos.y - 5, scaleX: destScale, scaleY: destScale,
-						onComplete: checkResult});
+								 onComplete: checkResult});
 
 			});
 		}

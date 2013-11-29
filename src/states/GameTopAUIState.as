@@ -22,6 +22,8 @@ package states
 	import org.agony2d.view.enum.LayoutType;
 	import org.agony2d.view.puppet.ImagePuppet;
 
+	import sound.SoundAssets;
+
 	public class GameTopAUIState extends UIState
 	{
 
@@ -228,7 +230,7 @@ package states
 
 		private function onTakePhoto(e:AEvent):void
 		{
-			SoundManager.instance.play('camera');
+			SoundAssets.playSFX('camera');
 			this.doSetTranslateState(false)
 			Agony.process.dispatchDirectEvent(TAKE_PHOTO)
 		}

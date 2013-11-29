@@ -10,6 +10,8 @@ package views.module4
 
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -81,8 +83,7 @@ package views.module4
 
 			lionChat1();
 
-			SoundManager.instance.stop("main");
-			SoundManager.instance.play("s41bgm");
+			SoundAssets.playBGM("s41bgm");
 		}
 
 		private function onKingTouch(e:TouchEvent):void

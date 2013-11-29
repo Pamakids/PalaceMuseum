@@ -11,6 +11,8 @@ package views.components
 
 	import controllers.MC;
 
+	import sound.SoundAssets;
+
 	import views.global.TailBar;
 
 	/**
@@ -63,7 +65,7 @@ package views.components
 
 		public function play(type:int=0, _x:Number=0, _y:Number=0, needMask:Boolean=true):void
 		{
-			SoundManager.instance.play("lionshow");
+			SoundAssets.playSFX("lionshow", true);
 			TailBar.hide();
 			showLion(type);
 			if (!_x && !_y)
@@ -173,7 +175,7 @@ package views.components
 		 */
 		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20, maskA:Number=.6, isTask:Boolean=false):void
 		{
-			SoundManager.instance.play("lionshow");
+			SoundAssets.playSFX("lionshow");
 			maskA=Math.max(0, Math.min(.6, maskA));
 			TailBar.hide();
 			lastType=_type;

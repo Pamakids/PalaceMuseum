@@ -28,6 +28,8 @@ package views.components.base
 	import models.FontVo;
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
@@ -96,13 +98,7 @@ package views.components.base
 			Prompt.parent=this;
 			assetManager=am;
 
-			SoundManager.instance.play("main");
-//			if (!checkBird())
-//			TweenLite.delayedCall(3, function():void {
-//				var img:Image=getImage(sceneName + "-bird");
-//				if (img)
-//					initBird(img);
-//			});
+			SoundAssets.playBGM("main");
 		}
 
 		private function checkBird():Boolean
@@ -266,7 +262,7 @@ package views.components.base
 				return;
 			}
 			UserBehaviorAnalysis.trackEvent("collect", "achievement", "", _achieveIndex);
-			SoundManager.instance.play("getachieve");
+			SoundAssets.playSFX("getachieve");
 			SOService.instance.setSO(_achieveIndex.toString() + "_achieve", true);
 //			var txt:String="xxx";
 			var txt:String="恭喜您获得成就: " + AchieveVO.achieveList[_achieveIndex][0];
@@ -315,7 +311,7 @@ package views.components.base
 				return;
 			}
 			UserBehaviorAnalysis.trackEvent("collect", "card", "", int(_cardName));
-			SoundManager.instance.play("getcard");
+			SoundAssets.playSFX("getcard");
 			SOService.instance.setSO("collection_card_" + _cardName + "collected", true);
 
 			var cardShow:Sprite=new Sprite();
