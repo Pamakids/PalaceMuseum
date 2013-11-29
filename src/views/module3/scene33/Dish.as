@@ -7,6 +7,8 @@ package views.module3.scene33
 
 	import models.FontVo;
 
+	import sound.SoundAssets;
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -68,8 +70,7 @@ package views.module3.scene33
 		{
 			if (fly)
 			{
-				SoundManager.instance.stop("fly");
-				SoundManager.instance.play("fly");
+				SoundAssets.playSFX("fly", true);
 				addChild(fly);
 				fly.x=-60;
 				fly.y=-200;

@@ -13,6 +13,8 @@ package views.module3.scene33
 	import models.FontVo;
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -299,7 +301,7 @@ package views.module3.scene33
 
 			flyVec=assetManager.getTextures("flyMC");
 
-			SoundManager.instance.play("dishon");
+			SoundAssets.playSFX("dishon");
 			for (var i:int=0; i < dishNum; i++)
 			{
 				addOneDish(i);
@@ -336,8 +338,7 @@ package views.module3.scene33
 				playHand(i);
 
 				dish.tweenMove(function():void {
-					SoundManager.instance.stop("dishon");
-					SoundManager.instance.play("dishon");
+					SoundAssets.playSFX("dishon", true);
 					if (gamelevel == 1)
 						dish.addCount();
 					dishArr[i]=dish;
@@ -715,7 +716,7 @@ package views.module3.scene33
 			recordIcon.y=327;
 			recordIcon.scaleX=recordIcon.scaleY=3;
 			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut, onComplete: function():void {
-				SoundManager.instance.play("gamerecord");
+				SoundAssets.playSFX("gamerecord");
 			}});
 		}
 
@@ -754,15 +755,13 @@ package views.module3.scene33
 
 				if (!_dish.tested || _dish.isPoison || _dish.isBad)
 				{
-					SoundManager.instance.stop("kingpoison");
-					SoundManager.instance.play("kingpoison");
+					SoundAssets.playSFX("kingpoison", true);
 					life--;
 					playKing(4);
 				}
 				else
 				{
-					SoundManager.instance.stop("kingeat");
-					SoundManager.instance.play("kingeat");
+					SoundAssets.playSFX("kingeat", true);
 					score+=100;
 					playKing(3);
 				}
@@ -794,8 +793,7 @@ package views.module3.scene33
 			}
 			else if (!stageArea.containsPoint(pt))
 			{
-				SoundManager.instance.stop("dishout");
-				SoundManager.instance.play("dishout");
+				SoundAssets.playSFX("dishout", true);
 				isOut=true;
 				life--;
 				playKing(Math.random() > .5 ? 1 : 2);

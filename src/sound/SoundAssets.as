@@ -2,6 +2,8 @@ package sound
 {
 	import com.pamakids.manager.SoundManager;
 
+	import models.SOService;
+
 	public class SoundAssets
 	{
 		public function SoundAssets()
@@ -106,7 +108,7 @@ package sound
 		[Embed(source="/sound/33dishon.mp3")] //done
 		public static var dishon:Class;
 
-		public static var module4:Array=["s41bgm"];
+		public static var module4:Array=["s41bgm", "gamebg52"];
 		[Embed(source="/sound/s41bgm.mp3")] //done
 		public static var s41bgm:Class;
 
@@ -133,8 +135,26 @@ package sound
 
 		public static function init():void
 		{
+			sm=SoundManager.instance;
 			addModuleSnd("initArr");
 		}
+
+		public static function initVol():void
+		{
+			var sv:Object=SOService.instance.getSO(SFX)
+			if (sv != null)
+				sfxVol=sv as Number
+			else
+				sfxVol=1;
+
+			var bv:Object=SOService.instance.getSO(BGM)
+			if (bv != null)
+				bgmVol=bv as Number
+			else
+				bgmVol=.3;
+		}
+
+		public static var sm:SoundManager;
 
 		public static function addModuleSnd(_name:String):void
 		{
@@ -143,9 +163,9 @@ package sound
 				for each (var str:String in arr)
 				{
 					if (loopArr.indexOf(str) >= 0)
-						SoundManager.instance.addSound(str, SoundAssets[str], 999, .3);
+						sm.addSound(str, SoundAssets[str], 999);
 					else
-						SoundManager.instance.addSound(str, SoundAssets[str]);
+						sm.addSound(str, SoundAssets[str]);
 				}
 		}
 
@@ -155,8 +175,73 @@ package sound
 			if (arr)
 				for each (var str:String in arr)
 				{
-					SoundManager.instance.clear(str);
+					sm.clear(str);
 				}
 		}
+
+		public static function playBGM(_name:String):void
+		{
+			if (crtBGM == _name)
+				return;
+			if (crtBGM)
+				sm.stop(crtBGM);
+			crtBGM=_name;
+			sm.play(_name, 0, bgmVol);
+		}
+
+		public static function stopBGM():void
+		{
+			if (crtBGM)
+				sm.stop(crtBGM);
+			crtBGM="";
+		}
+
+		public static function playSFX(_name:String, forceStop:Boolean=false):void
+		{
+			if (forceStop)
+				sm.stop(_name);
+			sm.play(_name, 0, sfxVol);
+		}
+
+		public static function stopSFX(_name:String):void
+		{
+			sm.stop(_name);
+		}
+
+		public static var crtBGM:String;
+		private static var _bgmVol:Number;
+
+		public static function get bgmVol():Number
+		{
+			return _bgmVol;
+		}
+
+		public static function set bgmVol(value:Number):void
+		{
+			if (_bgmVol == value)
+				return;
+			_bgmVol=value;
+			SOService.instance.setSO(BGM, value);
+			if (crtBGM)
+				sm.play(crtBGM, 0, bgmVol);
+		}
+
+		private static var _sfxVol:Number;
+
+		public static function get sfxVol():Number
+		{
+			return _sfxVol;
+		}
+
+		public static function set sfxVol(value:Number):void
+		{
+			if (_sfxVol == value)
+				return;
+			_sfxVol=value;
+			SOService.instance.setSO(SFX, value);
+		}
+
+		public static const SFX:String="SFXVOL";
+		public static const BGM:String="BGMVOL";
 	}
 }

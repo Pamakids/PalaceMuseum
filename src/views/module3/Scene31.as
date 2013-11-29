@@ -10,6 +10,8 @@ package views.module3
 
 	import feathers.core.PopUpManager;
 
+	import sound.SoundAssets;
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -166,7 +168,7 @@ package views.module3
 				king.play();
 				TweenLite.delayedCall(1.3, function():void {
 					p=Prompt.showTXT(king.x + 150, king.y + 135, "急什么，再让我看一会儿…", 20, null, null, 3, false);
-					SoundManager.instance.play("kingdragged");
+					SoundAssets.playSFX("kingdragged");
 				});
 			}
 		}

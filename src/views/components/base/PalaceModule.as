@@ -8,7 +8,6 @@
 package views.components.base
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.StringUtils;
 
 	import flash.display.MovieClip;
@@ -61,7 +60,7 @@ package views.components.base
 
 		override protected function init():void
 		{
-			SoundManager.instance.play("main");
+			SoundAssets.playBGM("main");
 			TopBar.hide();
 			TailBar.hide();
 			LionMC.instance.clear();

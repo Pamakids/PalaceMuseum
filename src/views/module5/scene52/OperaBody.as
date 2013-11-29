@@ -9,6 +9,8 @@ package views.module5.scene52
 
 	import models.FontVo;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -151,8 +153,7 @@ package views.module5.scene52
 
 		public function playEnter(needCount:Boolean=true):void
 		{
-			SoundManager.instance.stop("bodyfall");
-			SoundManager.instance.play("bodyfall");
+			SoundAssets.playSFX("bodyfall", true);
 			var dur:Number=playDur * (stagePt.y - enterPt.y) / 1024;
 			TweenLite.to(this, dur, {x: stagePt.x, y: stagePt.y, ease: Bounce.easeOut, onComplete: function():void {
 				if (needCount)

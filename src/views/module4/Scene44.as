@@ -4,9 +4,11 @@ package views.module4
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Quad;
+	import com.pamakids.manager.SoundManager;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.media.SoundTransform;
 
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -20,7 +22,6 @@ package views.module4
 
 	import views.components.base.PalaceScene;
 	import views.module4.scene44.Flower;
-	import views.module4.scene44.Kite;
 
 	public class Scene44 extends PalaceScene
 	{
@@ -104,7 +105,6 @@ package views.module4
 		private var windX:Number;
 		private var windY:Number;
 		private var kiteBounds:Rectangle;
-		private var linePos:Point=new Point(997 - 5, 96 - 10);
 		private var lineDis:Point=new Point(1180, 326);
 		private var kitePos:Point=new Point(972, 70);
 
@@ -129,19 +129,21 @@ package views.module4
 			line.y=lineDis.y;
 			line.touchable=false;
 
-			kite=new Kite();
-			kite.addChild(getImage("kite"));
+			kite=getImage("kite");
 			kite.x=kitePos.x;
 			kite.y=kitePos.y;
-			kite.isFree=false;
+			isFree=false;
 			kite.addEventListener(TouchEvent.TOUCH, onKiteTouch);
 
 			resetKiteBounds();
-//			kiteBounds=new Rectangle(kitePos.x - 10, kitePos.y - 10, 20, 20)
 
 			fg.addChild(kite);
 			fg.addChild(line);
+
+			resetLine();
 		}
+
+		private var isFree:Boolean;
 
 		private function onKiteTouch(e:TouchEvent):void
 		{
@@ -149,7 +151,7 @@ package views.module4
 			if (!tc)
 				return;
 			kite.touchable=false;
-			kite.isFree=true;
+			isFree=true;
 			var dx:Number=kite.x - 200;
 			TweenLite.to(kite, 3, {x: dx, y: -30, onComplete: stickKite, ease: Quad.easeOut});
 			checkOver(1);
@@ -158,7 +160,7 @@ package views.module4
 		private function stickKite():void
 		{
 			resetKiteBounds();
-			kite.isFree=false;
+			isFree=false;
 			TweenLite.delayedCall(3, resetKite);
 		}
 
@@ -169,11 +171,11 @@ package views.module4
 
 		private function resetKite():void
 		{
-			kite.isFree=true;
+			isFree=true;
 			TweenLite.to(kite, 3, {x: kitePos.x, y: kitePos.y, ease: Bounce.easeIn,
 							 onComplete: function():void {
 								 kite.touchable=true;
-								 kite.isFree=false;
+								 isFree=false;
 								 resetKiteBounds();
 							 }});
 		}
@@ -208,9 +210,9 @@ package views.module4
 			checkOver(0)
 		}
 
-		private var checkArr:Vector.<Boolean>=new Vector.<Boolean>(2);
+		private var checkArr:Vector.<Boolean>=new Vector.<Boolean>(3);
 
-		private var kite:Kite;
+		private var kite:Image;
 
 		private var line:Sprite;
 
@@ -220,13 +222,68 @@ package views.module4
 
 		private function checkOver(index:int):void
 		{
+			if (!checkArr)
+				return;
 			checkArr[index]=true;
 			for each (var b:Boolean in checkArr)
 			{
 				if (!b)
 					return;
 			}
+			checkArr=null;
+			startPlayNotes();
 			sceneOver();
+		}
+
+		private function startPlayNotes():void
+		{
+			king.removeFromParent(true);
+
+			king=new Sprite();
+			king.addChild(getImage("king-2"));
+			king.touchable=false;
+			addChild(king);
+			king.x=1024 - king.width >> 1;
+			king.y=768 - king.height;
+
+			SoundManager.instance.play("gamebg52", 0, .5);
+			playNote();
+		}
+
+		private function playNote():void
+		{
+			var delay:Number=.2 + Math.random() * .5;
+			TweenLite.delayedCall(delay, playNote); //1s
+			var scale:Number=Math.random() * .6 + .4;
+			var index:int=Math.random() * 3;
+			var note:Image=getImage("note" + index);
+			note.pivotX=note.width >> 1;
+			note.pivotY=note.height >> 1;
+			note.scaleX=note.scaleY=scale;
+			note.touchable=false;
+			note.x=1100;
+			note.y=600;
+			addChild(note);
+			TweenMax.to(note, 4, {bezier: [{x: 930, y: 550}, {x: 830, y: 650}, {x: 730, y: 550}, {x: 630, y: 600}],
+							rotation: Math.PI * -2, scaleX: .25, scaleY: .25, ease: Quad.easeIn,
+							onComplete: function():void {
+								endNote(note);
+							}});
+		}
+
+		private function endNote(note:Image):void
+		{
+			TweenLite.to(note, .5, {x: 612, y: 613, scaleX: .1, scaleY: .1, alpha: 0, onComplete: function():void {
+				note.removeFromParent(true);
+			}});
+		}
+
+		override public function dispose():void
+		{
+			SoundManager.instance.stop("gamebg52");
+			TweenLite.killTweensOf(playNote);
+			TweenLite.killTweensOf(this);
+			super.dispose();
 		}
 
 		private function addTrees():void
@@ -270,8 +327,9 @@ package views.module4
 
 		private function addBrids(isleft:Boolean):void
 		{
+			checkOver(2);
 			var r:Rectangle=isleft ? birdArea1 : birdArea2;
-			var birdNum:int=Math.random() < .5 ? 2 : 4; //2-4
+			var birdNum:int=Math.random() < .5 ? 2 : 3; //2-4
 			for (var i:int=0; i < birdNum; i++)
 			{
 				addOneBird(isleft, r);
@@ -286,8 +344,10 @@ package views.module4
 			var sx:Number=r.x + Math.random() * r.width;
 			var sy:Number=r.y + Math.random() * r.height;
 			var color:String=Math.random() > .5 ? "y" : "p"; //黄,紫
+			var scale:Number=Math.random() * .6 + .2;
 			var bird:MovieClip=new MovieClip(assetManager.getTextures(color + "bird"));
-			bird.scaleX=toleft ? -1 : 1; //水平翻转
+			bird.scaleX=(toleft ? -1 : 1) * scale; //水平翻转
+			bird.scaleY=scale;
 			birdLayer.addChild(bird);
 			Starling.juggler.add(bird);
 			bird.loop=true;
@@ -297,7 +357,7 @@ package views.module4
 			var dx:Number=r.x + (toleft ? -1 : 1) * (300 + Math.random() * 900);
 			var dy:Number=-100 - Math.random() * 200; //保证出屏幕
 			var delay:Number=3 + Math.random() * 3;
-			assetManager.playSound("bird");
+			assetManager.playSound("bird", 0, 0, new SoundTransform(scale));
 			TweenLite.to(bird, delay, {x: dx, y: dy, onComplete: function():void {
 				Starling.juggler.remove(bird);
 				bird.stop();
@@ -311,7 +371,7 @@ package views.module4
 
 		private function onEnterFrame(e:Event):void
 		{
-			if (!kite.isFree)
+			if (!isFree)
 			{
 				kite.x+=windX;
 				if (kite.x < kiteBounds.x)
@@ -338,8 +398,13 @@ package views.module4
 				}
 			}
 
-			line.width=lw - (kite.x - kitePos.x) - 44;
-			line.height=lh - (kite.y - kitePos.y) - 37;
+			resetLine();
+		}
+
+		private function resetLine():void
+		{
+			line.width=Math.abs(kite.x + 69 - lineDis.x);
+			line.height=Math.abs(kite.y + 56 - lineDis.y);
 		}
 
 		private function reverseSpeed(speed:Number):Number
@@ -375,7 +440,6 @@ package views.module4
 						dx=(0 - fg.x) * 2;
 					bg2.x+=dx / 5;
 					fg.x+=dx / 2;
-//					king.x+=dx / 5;
 					break;
 				}
 				case TouchPhase.ENDED:

@@ -2,7 +2,6 @@ package views.global.map
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	import com.pamakids.manager.SoundManager;
 
 	import flash.filesystem.File;
 	import flash.geom.Point;
@@ -15,6 +14,8 @@ package views.global.map
 
 	import models.Const;
 	import models.SOService;
+
+	import sound.SoundAssets;
 
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -223,8 +224,7 @@ package views.global.map
 			initTime=getTimer();
 			if (!fromCenter)
 			{
-				SoundManager.instance.stop("main");
-				SoundManager.instance.play("mapbgm");
+				SoundAssets.playBGM("mapbgm");
 			}
 			buttonShow=_buttonShow;
 			var msIndex:String=SOService.instance.getSO("lastScene") as String;
@@ -281,8 +281,7 @@ package views.global.map
 			}
 			if (!showFromCenter)
 			{
-				SoundManager.instance.stop("mapbgm");
-				SoundManager.instance.play("main");
+				SoundAssets.playBGM("main");
 			}
 			if (preSky)
 			{
@@ -365,8 +364,6 @@ package views.global.map
 
 		override public function dispose():void
 		{
-			SoundManager.instance.play("mapbgm");
-			SoundManager.instance.stop("main");
 			if (sun)
 			{
 				sun.stop();
@@ -374,7 +371,6 @@ package views.global.map
 				Starling.juggler.remove(sun);
 			}
 			removeEventListener(TouchEvent.TOUCH, touchHandler);
-//			super.dispose();
 		}
 
 		private function positionKing(kingPoint:Point=null):void

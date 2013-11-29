@@ -1,7 +1,5 @@
 package
 {
-	import com.pamakids.manager.SoundManager;
-
 	import flash.filesystem.File;
 
 	import controllers.MC;
@@ -13,6 +11,8 @@ package
 	import models.FontVo;
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -21,7 +21,6 @@ package
 	import starling.utils.AssetManager;
 
 	import views.Interlude;
-	import views.components.ElasticButton;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
 	import views.global.map.Map;
@@ -43,6 +42,8 @@ package
 			addChild(label);
 			label.x=-10;
 			label.y=-10;
+
+			showStart();
 
 			var am:AssetManager=new AssetManager();
 			var f:File=File.applicationDirectory.resolvePath("assets/common");
@@ -75,18 +76,15 @@ package
 
 		override protected function init():void
 		{
-//			if (!lastScene)
-//				showStart();
-//			else
-//				startGame();
 		}
 
 		private function initialize():void
 		{
-			if (!lastScene)
-				showStart();
-			else
-				startGame();
+			onStart(null);
+//			if (!lastScene)
+//				showStart();
+//			else
+//				startGame();
 		}
 
 		[Embed(source="/assets/start/title.png")]
@@ -106,18 +104,21 @@ package
 			title.x=171;
 			startHolder.addChild(title);
 			addChild(startHolder);
-
-			var startBtn:ElasticButton=new ElasticButton(Image.fromBitmap(new StartBtn()));
-			startBtn.shadow=Image.fromBitmap(new StartBtn2());
-			startBtn.x=512;
-			startBtn.y=488;
-			startHolder.addChild(startBtn);
-			startBtn.addEventListener(ElasticButton.CLICK, onStart);
+//			var startBtn:ElasticButton=new ElasticButton(Image.fromBitmap(new StartBtn()));
+//			startBtn.shadow=Image.fromBitmap(new StartBtn2());
+//			startBtn.x=512;
+//			startBtn.y=488;
+//			startHolder.addChild(startBtn);
+//			startBtn.addEventListener(ElasticButton.CLICK, onStart);
 		}
 
 		private function onStart(e:Event):void
 		{
-			startHolder.removeFromParent(true);
+			if (startHolder)
+			{
+				startHolder.removeFromParent(true);
+				startHolder=null;
+			}
 			if (!lastScene)
 				initIntro();
 			else
@@ -126,7 +127,8 @@ package
 
 		override public function restart():void
 		{
-			showStart();
+//			showStart();
+			onStart(null);
 		}
 
 		private function initIntro():void
@@ -137,7 +139,8 @@ package
 
 		private function startGame():void
 		{
-			SoundManager.instance.play("main");
+			SoundAssets.initVol();
+			SoundAssets.playBGM("main");
 			parseMS(lastScene);
 		}
 
