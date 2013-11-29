@@ -174,7 +174,7 @@ package views.module1.scene12
 			var index1:int=Math.floor(angle / dAngle);
 			var index2:int=Math.ceil(angle / dAngle);
 			var vx:Number=Math.abs(speedX);
-			var fix:int=Math.abs(speedX) > 0.02 ? 1 : 0;
+			var fix:int=Math.abs(speedX) > 0.05 ? 1 : 0;
 			if (speedX == 0)
 				index=index0;
 			else if (speedX > 0)

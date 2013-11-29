@@ -150,10 +150,10 @@ package views.module4
 		}
 
 		private var chatP:Prompt;
-		private var chat1:String="明天皇帝要和群臣上朝，就在这儿举行。";
-		private var chat2:String="皇帝上朝怎么是在外面呢？"
-		private var chat3:String="呵呵，为了让老天爷作证自己工作努力啊！"
-		private var chat4:String="一定要熟悉御门听政的整个过程，这样你就能从容应对。" //task
+		private var chat1:String="御门听政即“上朝”，就在这儿举行。";
+		private var chat2:String="皇帝为什么在室外办公呢？"
+		private var chat3:String="这是皇帝在向天地彰显他的公正和勤勉！"
+		private var chat4:String="对于皇帝来说御门听政是很严肃的工作，你要熟悉整个过程，绝对不能马虎。" //task
 
 		private function getReady():void
 		{

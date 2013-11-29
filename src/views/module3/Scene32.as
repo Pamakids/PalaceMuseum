@@ -79,8 +79,8 @@ package views.module3
 			}
 		}
 
-		private var hint1:String="檀木桌子好重啊！";
-		private var hint2:String="快点，快点。皇上该着急了！";
+		private var hint1:String="皇帝在哪里传膳，桌子就要搬到哪里去！";
+		private var hint2:String="八个热菜四个凉菜，赶紧端！";
 		private var inGame:Boolean;
 
 		private function playMenuGame():void

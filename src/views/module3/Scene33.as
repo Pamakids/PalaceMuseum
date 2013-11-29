@@ -47,12 +47,12 @@ package views.module3
 		private var cardSelected:Boolean;
 		private var cardEnable:Boolean;
 
-		private var chatking1:String="什么时候可以吃饭？";
+		private var chatking1:String="哇！当皇帝真好，有这么多好吃的！";
 		private var chatking2:String="太慢了，我自己来！";
 
-		private var chatlion1:String="别着急，小太监还没有用银牌试毒，不能吃。";
+		private var chatlion1:String="别急，试菜的公公还没用银牌试毒呢？";
 		private var chatlion2:String="翻翻请求接见的大臣递交的膳牌。 皇亲贵族用红头牌子，大臣用绿头牌子。"; //task
-		private var chatlion3:String="快点找到银牌！";
+		private var chatlion3:String="试毒要用银牌哟！";
 
 		public function Scene33(am:AssetManager=null)
 		{
@@ -72,6 +72,9 @@ package views.module3
 			lion.stop();
 			Starling.juggler.add(lion);
 			addChild(lion);
+
+			lion.touchable=false;
+			lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
 
 			chatIndex=0;
 			TweenLite.delayedCall(.5, startChat);
@@ -170,25 +173,54 @@ package views.module3
 			kingHungry.x=569;
 			kingHungry.y=28;
 
+			kingHolder.touchable=false;
+			kingHolder.addEventListener(TouchEvent.TOUCH, onKingTouch);
+
 			var table:Image=getImage("table23");
 			table.y=483;
 			addChild(table);
 		}
 
+		private function onKingTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(kingHolder, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			if (kingP)
+				kingP.playHide();
+			if (kingChat)
+				kingP=Prompt.showTXT(kingChat.x, kingChat.y, kingChat.content, 20, null, this);
+		}
+
+		private function onLionTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(lion, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			if (lionP)
+				lionP.playHide();
+			if (lionChat)
+				lionP=Prompt.showTXT(lionChat.x, lionChat.y, lionChat.content, 20, null, this, 1, lionChat.isTask);
+		}
+
 		private function startChat():void
 		{
+			kingHolder.touchable=lion.touchable=false;
 			if (chatIndex >= 5)
 				return;
 			var chat:String=chatArr[chatIndex];
 			var dx:Number;
 			var dy:Number;
+			var isK:Boolean;
 			if (chat.indexOf("king") >= 0)
 			{
+				isK=true;
 				dx=800;
 				dy=320;
 			}
 			else
 			{
+				isK=false;
 				lion.stop();
 				lion.play();
 				dx=150;
@@ -197,6 +229,7 @@ package views.module3
 			var isT:Boolean;
 			if (chat == "chatlion3")
 			{
+				kingHolder.touchable=lion.touchable=true;
 				isT=true;
 				dx=180;
 				dy=590;
@@ -205,12 +238,23 @@ package views.module3
 			}
 			else if (chat == "chatlion2")
 			{
+				kingHolder.touchable=lion.touchable=true;
 				dx=180;
 				dy=590;
 				isT=true;
 			}
+			var obj:Object={x: dx, y: dy, content: this[chat], isTask: isT};
+			if (isK)
+				kingChat=obj;
+			else
+				lionChat=obj;
 			Prompt.showTXT(dx, dy, this[chat], 20, nextChat, this, 1, false, 3, isT);
 		}
+
+		private var kingChat:Object;
+		private var lionChat:Object;
+		private var kingP:Prompt;
+		private var lionP:Prompt;
 
 		private var silverCardClickHint:String="silverCardClickHint";
 		private var isMoved:Boolean;

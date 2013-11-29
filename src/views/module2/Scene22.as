@@ -46,10 +46,10 @@ package views.module2
 		private var tele:Image;
 		private var thermoGame:ThermoMeter;
 
-		private var hint0:String="造纸家弟子的传世之作－宣纸\n宣纸因产自唐代宣州（今安徽泾县）而得名，它易书写，不退色，少虫蛀，寿命长。";
-		private var hint1:String="仙鹤带来的制砚灵感－端砚\n端砚产自广东省端州（今肇庆）， 端砚石质优良，雕刻精美，研出的墨汁细滑。";
-		private var hint2:String="秦始皇的大将创制的笔－湖笔\n毛笔的冠军是浙江湖州产的湖笔，笔尖锋利，笔头饱满，易写耐用。";
-		private var hint3:String="能吃还能当药用的墨－徽墨\n因产于古徽州府(今安徽歙县)而得名，配方讲究，造型美观，耐磨耐用。";
+		private var hint0:String="造纸家弟子的传世之作－宣纸\n\n宣纸因产自唐代宣州\n（今安徽泾县）而得名，\n它易书写，不褪色，\n少虫蛀，寿命长。";
+		private var hint1:String="仙鹤带来的制砚灵感－端砚\n\n端砚产自广东省端州\n（今肇庆）， 端砚石质优良，\n雕刻精美，研出的墨汁细滑。";
+		private var hint2:String="秦始皇的大将创制的笔－湖笔\n\n毛笔的冠军是浙江湖州地区\n产的湖笔，笔尖锋利，\n笔头饱满，易写耐用。";
+		private var hint3:String="能吃还能当药用的墨－徽墨\n\n徽墨因产于古徽州府\n(今安徽歙县)而得名，\n配方讲究，造型美观，\n耐磨耐用。";
 
 		private var posArr:Array=[new Point(13, 208), new Point(134, 158),
 								  new Point(330, 140), new Point(668, 177), new Point(577, 87)];
@@ -65,8 +65,6 @@ package views.module2
 			hintArr=[hint0, hint1, hint2, hint3]
 			crtKnowledgeIndex=6;
 			addBG("bg32");
-
-//			LionMC.instance.say("皇帝是个热爱科学的孩子，这些洋人老师带来的新鲜玩意你快来试试！", 0, 0, 0, addTouchs, 20);
 
 			thermo=getImage("thermometer32");
 			thermo.x=45;
@@ -178,7 +176,7 @@ package views.module2
 
 		private var chat1:String="这些新鲜玩意儿是什么？";
 		private var chat2:String="都是洋人老师带来的西洋仪器。"
-		private var chat3:String="皇帝是个热爱科学的孩子，这些仪器你至少要学会一样！"
+		private var chat3:String="皇帝是个热爱科学的孩子，这些仪器你至少要学会一样！文房四宝也要会用。"
 
 		private var nameArr:Array=["thermo", "tele", "prism"];
 		private var labelPosArr:Array=[new Point(198, 552),
@@ -291,7 +289,7 @@ package views.module2
 		{
 			if (p)
 				p.playHide();
-			p=Prompt.showTXT(_x, _y, content, 18, null, this, align, true);
+			p=Prompt.showTXT(_x, _y, content, 20, null, this, align, true);
 		}
 
 		private function onTeleTouch(e:TouchEvent):void

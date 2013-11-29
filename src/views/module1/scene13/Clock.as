@@ -199,7 +199,7 @@ package views.module1.scene13
 				{
 					TweenLite.to(clock, 1, {scaleX: 1, scaleY: 1, onComplete: function():void {
 						var arr:Array=[];
-						for (var i:int=1; i <= 4; i++)
+						for (var i:int=1; i <= 1; i++)
 						{
 							var img:Image=getImage("info" + i);
 							arr.push(img);
