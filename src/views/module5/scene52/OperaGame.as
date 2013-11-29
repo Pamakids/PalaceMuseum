@@ -651,12 +651,14 @@ package views.module5.scene52
 			else
 			{
 				closeBtn.touchable=closeBtn.visible=false;
-				var nextShowBtn:ElasticButton=new ElasticButton(getImage("startShow"));
-				nextShowBtn.shadow=getImage("startShow-light");
-				nextShowBtn.x=1024 - 200;
-				nextShowBtn.y=768 - 100;
-				endHolder.addChild(nextShowBtn);
-				nextShowBtn.addEventListener(ElasticButton.CLICK, onNextShow);
+				TweenLite.delayedCall(2, function():void {
+					var nextShowBtn:ElasticButton=new ElasticButton(getImage("startShow"));
+					nextShowBtn.shadow=getImage("startShow-light");
+					nextShowBtn.x=1024 - 200;
+					nextShowBtn.y=768 - 100;
+					endHolder.addChild(nextShowBtn);
+					nextShowBtn.addEventListener(ElasticButton.CLICK, onNextShow);
+				});
 			}
 
 			function closeCallBack():void {

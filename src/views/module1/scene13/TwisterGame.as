@@ -298,6 +298,7 @@ package views.module1.scene13
 
 		private function gameOver():void
 		{
+			isWin=true;
 			isOver=true;
 			halo=getImage("halo2");
 			halo.pivotX=halo.width >> 1;

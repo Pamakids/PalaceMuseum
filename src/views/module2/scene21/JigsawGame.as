@@ -289,7 +289,7 @@ package views.module2.scene21
 
 		}
 
-		private static var cellScale:Number=.85;
+		private static var cellScale:Number=.7;
 
 		private function shuffle():void
 		{
