@@ -1,4 +1,4 @@
-package views.global.userCenter.collection
+package views.global.userCenter.screen
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
@@ -17,9 +17,9 @@ package views.global.userCenter.collection
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 	
-	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
+	import views.global.userCenter.collection.CollectionShow;
 	
 	public class CollectionScreen extends BaseScreen
 	{

@@ -1,4 +1,4 @@
-package views.global.userCenter.achievement
+package views.global.userCenter.screen
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
@@ -17,8 +17,8 @@ package views.global.userCenter.achievement
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	
-	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenter;
+	import views.global.userCenter.achievement.AchieveIcon;
 	
 	public class AchievementScreen extends BaseScreen
 	{

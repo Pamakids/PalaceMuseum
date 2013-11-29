@@ -1,4 +1,4 @@
-package views.global.userCenter.birds
+package views.global.userCenter.screen
 {
 	import assets.global.userCenter.BirdAssets;
 	
@@ -10,7 +10,6 @@ package views.global.userCenter.birds
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 	
-	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenter;
 
 	public class BirdScreen extends BaseScreen

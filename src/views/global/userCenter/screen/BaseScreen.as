@@ -1,8 +1,9 @@
-package views.global.userCenter
+package views.global.userCenter.screen
 {
 	import feathers.controls.Screen;
 	
 	import starling.display.Image;
+	import views.global.userCenter.UserCenterManager;
 	
 	public class BaseScreen extends Screen
 	{

@@ -1,4 +1,4 @@
-package views.global.userCenter.userInfo
+package views.global.userCenter.screen
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
@@ -24,14 +24,14 @@ package views.global.userCenter.userInfo
 	
 	import views.components.ElasticButton;
 	import views.global.map.Map;
-	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.UserCenterManager;
-	import views.global.userCenter.birds.BirdScreen;
 	import views.global.userCenter.userInfo.win.W_Alert;
 	import views.global.userCenter.userInfo.win.W_ChooseUser;
 	import views.global.userCenter.userInfo.win.W_DeleteUser;
 	import views.global.userCenter.userInfo.win.W_EditUser;
+	import views.global.userCenter.userInfo.CurrentUserView;
+	import views.global.userCenter.userInfo.ModuleList;
 
 	/**
 	 * 用户信息

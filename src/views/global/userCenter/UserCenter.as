@@ -25,12 +25,12 @@ package views.global.userCenter
 	
 	import views.components.ElasticButton;
 	import views.components.SoftPaperAnimation;
-	import views.global.userCenter.achievement.AchievementScreen;
-	import views.global.userCenter.birds.BirdScreen;
-	import views.global.userCenter.collection.CollectionScreen;
-	import views.global.userCenter.gameCenter.GameCenterScreen;
-	import views.global.userCenter.handbook.HandbookScreen;
-	import views.global.userCenter.userInfo.UserInfoScreen;
+	import views.global.userCenter.screen.AchievementScreen;
+//	import views.global.userCenter.birds.BirdScreen;
+	import views.global.userCenter.screen.CollectionScreen;
+	import views.global.userCenter.screen.GameCenterScreen;
+//	import views.global.userCenter.handbook.HandbookScreen;
+	import views.global.userCenter.screen.UserInfoScreen;
 
 	/**
 	 * 用户中心
@@ -58,9 +58,9 @@ package views.global.userCenter
 		private static const GAMECENTER:String="GameCenterScreen";
 		private static const ACHIEVEMENT:String="AchievementScreen";
 		private static const COLLECTION:String="CollectionScreen";
-		private static const HANDBOOK:String="HandbookScreen";
+//		private static const HANDBOOK:String="HandbookScreen";
 		private static const USERINFO:String="UserInfoScreen";
-		private static const BIRDS:String = "BirdScreen";
+//		private static const BIRDS:String = "BirdScreen";
 
 		private var screenNames:Array;
 
@@ -76,7 +76,8 @@ package views.global.userCenter
 //initialize--------------------------------------------------------------------------------------
 		private function init():void
 		{
-			this.screenNames=[USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION, GAMECENTER, BIRDS];
+//			this.screenNames=[USERINFO, HANDBOOK, ACHIEVEMENT, COLLECTION, GAMECENTER, BIRDS];
+			this.screenNames=[USERINFO, ACHIEVEMENT, COLLECTION, GAMECENTER];
 
 			initBackgroud();
 			initTabBar();
@@ -112,10 +113,10 @@ package views.global.userCenter
 					defaultIcon: 	UserCenterManager.getImage("userinfo_up"),
 					selectedUpIcon:	UserCenterManager.getImage("userinfo_down")
 				},
-				{
-					defaultIcon:	UserCenterManager.getImage("handbook_up"),
-					selectedUpIcon:	UserCenterManager.getImage("handbook_down")
-				},
+//				{
+//					defaultIcon:	UserCenterManager.getImage("handbook_up"),
+//					selectedUpIcon:	UserCenterManager.getImage("handbook_down")
+//				},
 				{
 					defaultIcon:	UserCenterManager.getImage("achievement_up"),
 					selectedUpIcon:	UserCenterManager.getImage("achievement_down")
@@ -128,10 +129,10 @@ package views.global.userCenter
 					defaultIcon:	UserCenterManager.getImage("games_up"),
 					selectedUpIcon:	UserCenterManager.getImage("games_down")
 				},
-				{
-					defaultIcon:	UserCenterManager.getImage("bird_up"),
-					selectedUpIcon:	UserCenterManager.getImage("bird_down")
-				}
+//				{
+//					defaultIcon:	UserCenterManager.getImage("bird_up"),
+//					selectedUpIcon:	UserCenterManager.getImage("bird_down")
+//				}
 				]);
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;
 			_tabBar.gap=1;
@@ -156,17 +157,17 @@ package views.global.userCenter
 		private function initNavigator():void
 		{
 			_navigator=new ScreenNavigator();
-			_navigator.addScreen(HANDBOOK, new ScreenNavigatorItem(HandbookScreen,
-				{
-					initialized: onInitialized,
-					viewUpdated: onViewUpdated,
-					viewUpdateFail: onViewUpdateFail,
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+//			_navigator.addScreen(HANDBOOK, new ScreenNavigatorItem(HandbookScreen,
+//				{
+//					initialized: onInitialized,
+//					viewUpdated: onViewUpdated,
+//					viewUpdateFail: onViewUpdateFail,
+//					initViewPlayed: onInitViewPlayed
+//				},
+//				{
+//					width: contentWidth, height: contentHeight,
+//					viewWidth: contentWidth, viewHeight: contentHeight
+//				}));
 			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen,
 				{
 					initialized: onInitialized,
@@ -202,17 +203,17 @@ package views.global.userCenter
 					width: contentWidth, height: contentHeight,
 					viewWidth: contentWidth, viewHeight: contentHeight
 				}));
-			_navigator.addScreen(BIRDS, new ScreenNavigatorItem(BirdScreen,
-				{
-					initialized: onInitialized,
-					viewUpdated: onViewUpdated,
-					viewUpdateFail: onViewUpdateFail,
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+//			_navigator.addScreen(BIRDS, new ScreenNavigatorItem(BirdScreen,
+//				{
+//					initialized: onInitialized,
+//					viewUpdated: onViewUpdated,
+//					viewUpdateFail: onViewUpdateFail,
+//					initViewPlayed: onInitViewPlayed
+//				},
+//				{
+//					width: contentWidth, height: contentHeight,
+//					viewWidth: contentWidth, viewHeight: contentHeight
+//				}));
 			_navigator.x=28;
 			_navigator.y=89;
 			this.addChild(_navigator);
@@ -249,15 +250,15 @@ package views.global.userCenter
 		{
 			switch (getClassName(e.currentTarget))
 			{
-				case HANDBOOK:
-					(_navigator.activeScreen as HandbookScreen).initView(crtPage_Handbook);
-					break;
+//				case HANDBOOK:
+//					(_navigator.activeScreen as HandbookScreen).initView(crtPage_Handbook);
+//					break;
 				case USERINFO:
 					(_navigator.activeScreen as UserInfoScreen).setMapVisible(mapVisible);
 					break;
-				case BIRDS:
-					(_navigator.activeScreen as BirdScreen).initView(0);
-					break;
+//				case BIRDS:
+//					(_navigator.activeScreen as BirdScreen).initView(0);
+//					break;
 			}
 		}
 
@@ -274,9 +275,9 @@ package views.global.userCenter
 		{
 			switch (getClassName(e.currentTarget))
 			{
-				case HANDBOOK:
-					crtPage_Handbook+=(pageUp) ? -1 : 1; //记录
-				case BIRDS:
+//				case HANDBOOK:
+//					crtPage_Handbook+=(pageUp) ? -1 : 1; //记录
+//				case BIRDS:
 				case ACHIEVEMENT:
 					getTarTexture();
 					startAnimation(pageUp);
@@ -288,9 +289,9 @@ package views.global.userCenter
 		{
 			switch (getClassName(e.currentTarget))
 			{
-				case HANDBOOK:
+//				case HANDBOOK:
 				case ACHIEVEMENT:
-				case BIRDS:
+//				case BIRDS:
 					hideAnimation();
 					break;
 			}
@@ -304,7 +305,8 @@ package views.global.userCenter
 		private function onTouch(e:TouchEvent):void
 		{
 			var index:int=_tabBar.selectedIndex;
-			if ((index != 1 && index != 2 && index != 5) || animation.visible) //速成手册 or 成就
+//			if ((index != 1 && index != 2 && index != 5) || animation.visible) //速成手册 or 成就 or小鸟
+			if (index != 1 || animation.visible)
 				return;
 			var touch:Touch=e.getTouch(this);
 			var point:Point;
@@ -321,17 +323,17 @@ package views.global.userCenter
 						return;
 					pageUp=(beginX < point.x); //方向
 					showAnimation();
-					if (_navigator.activeScreen is HandbookScreen) //用户手册页面
+					/*if (_navigator.activeScreen is HandbookScreen) //用户手册页面
 					{
 						pageUp ? (_navigator.activeScreen as HandbookScreen).pageUp() : (_navigator.activeScreen as HandbookScreen).pageDown();
 					}
-					else if (_navigator.activeScreen is AchievementScreen) //成就页面
+					else */if (_navigator.activeScreen is AchievementScreen) //成就页面
 					{
 						pageUp ? (_navigator.activeScreen as AchievementScreen).pageUp() : (_navigator.activeScreen as AchievementScreen).pageDown();
-					}else if( _navigator.activeScreen is BirdScreen )
+					}/*else if( _navigator.activeScreen is BirdScreen )
 					{
 						pageUp ? (_navigator.activeScreen as BirdScreen).pageUp() : (_navigator.activeScreen as BirdScreen).pageDown();
-					}
+					}*/
 					break;
 			}
 		}

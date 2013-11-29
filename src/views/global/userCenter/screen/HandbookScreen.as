@@ -1,4 +1,4 @@
-package views.global.userCenter.handbook
+package views.global.userCenter.screen
 {
 	import feathers.core.PopUpManager;
 
@@ -8,7 +8,6 @@ package views.global.userCenter.handbook
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceModule;
-	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenter;
 
 	/**

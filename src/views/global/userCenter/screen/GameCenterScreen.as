@@ -1,4 +1,4 @@
-package views.global.userCenter.gameCenter
+package views.global.userCenter.screen
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
@@ -12,7 +12,6 @@ package views.global.userCenter.gameCenter
 	
 	import starling.display.DisplayObject;
 	
-	import views.global.userCenter.BaseScreen;
 	import views.global.userCenter.UserCenter;
 	import views.global.userCenter.userInfo.GameScene;
 	import views.global.userCenter.userInfo.ItemForGameList;

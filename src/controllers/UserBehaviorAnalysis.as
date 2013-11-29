@@ -36,13 +36,13 @@ package controllers
 		 */
 		public static function init():void
 		{
-			if (Capabilities.os.indexOf("Windows") >= 0)
-				return;
-			UMeng.instance.init("52897e3b56240b9bf21d435e", "Appstore", Capabilities.isDebugger);
-			UID=UMeng.instance.getUDID();
-			var analytics:Analytics=Analytics.getInstance();
-			tracker=analytics.getTracker(GA_ID);
-			trackEvent("login", "user", UID);
+//			if (Capabilities.os.indexOf("Windows") >= 0)
+//				return;
+//			UMeng.instance.init("52897e3b56240b9bf21d435e", "Appstore", Capabilities.isDebugger);
+//			UID=UMeng.instance.getUDID();
+//			var analytics:Analytics=Analytics.getInstance();
+//			tracker=analytics.getTracker(GA_ID);
+//			trackEvent("login", "user", UID);
 		}
 
 		/**
