@@ -25,10 +25,12 @@ package views.global.userCenter.collection
 		private var vo:CollectionVO;
 		public function resetData(value:CollectionVO):void
 		{
+			haveTurned = false;
 			isTurning = false;
 			vo = value;
 			isBack = false;
 			updateView();
+			TweenLite.delayedCall( 2, completeFunc);
 		}
 		private function updateView():void
 		{
@@ -113,6 +115,24 @@ package views.global.userCenter.collection
 			this.pivotX = this.width >> 1;
 		}
 		
+		private var haveTurned:Boolean = false;
+		private function completeFunc():void
+		{
+			if(haveTurned)
+				return;
+			turnHandler();
+		}
+		
+		private function turnHandler():void
+		{
+			isBack = !isBack;
+			haveTurned = true;
+			isTurning = true;
+			TweenLite.to(this, 0.5, {
+				scaleX: 0, ease: Cubic.easeIn, onComplete: onTweenComplete
+			});
+		}
+		
 		private var isBack:Boolean = false;
 		private var isTurning:Boolean = false;
 		private function onTouch(e:TouchEvent):void
@@ -122,11 +142,7 @@ package views.global.userCenter.collection
 			var touch:Touch = e.getTouch(this);
 			if(touch && touch.phase == TouchPhase.ENDED)
 			{
-				isBack = !isBack;
-				isTurning = true;
-				TweenLite.to(this, 0.5, {
-					scaleX: 0, ease: Cubic.easeIn, onComplete: onTweenComplete
-				});
+				turnHandler();
 			}
 			
 		}
