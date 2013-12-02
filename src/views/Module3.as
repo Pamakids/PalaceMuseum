@@ -26,10 +26,17 @@ package views
 				skipIndex++;
 			sceneArr=[Scene34, Scene31, Scene32, Scene33];
 
-			if (skipIndex < 2)
-				loadFirst();
-			else
-				loadSecond();
+//			if (skipIndex < 2)
+//				loadFirst();
+//			else
+//				loadSecond();
+
+			Q1="御膳房是什么地方？"
+			A1="皇宫中专门管理皇帝吃饭的机构叫“御膳房”。紫禁城里大大小小的宫院里，都有各自的膳房。没有人准确地知道，究竟有多少人为皇帝一家的吃喝服务。据记载，仅“养心殿”一个御膳房，就有几百人之多。"
+			addQAS();
+			addLoading();
+
+			loadAssets(skipIndex, addNext);
 		}
 
 		private function loadFirst():void
@@ -86,17 +93,17 @@ package views
 			loadScene(sceneIndex);
 		}
 
-		override protected function nextScene(e:Event):void
-		{
-			if (sceneIndex == 1)
-			{
-				sceneIndex++;
-				if (crtScene)
-					crtScene.removeFromParent(true);
-				loadSecond();
-			}
-			else
-				super.nextScene(e);
-		}
+//		override protected function nextScene(e:Event):void
+//		{
+//			if (sceneIndex == 1)
+//			{
+//				sceneIndex++;
+//				if (crtScene)
+//					crtScene.removeFromParent(true);
+//				loadSecond();
+//			}
+//			else
+//				super.nextScene(e);
+//		}
 	}
 }

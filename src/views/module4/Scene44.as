@@ -4,11 +4,12 @@ package views.module4
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Quad;
-	import com.pamakids.manager.SoundManager;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.media.SoundTransform;
+
+	import controllers.SoundManager;
 
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -20,6 +21,7 @@ package views.module4
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 	import views.module4.scene44.Flower;
 
@@ -63,9 +65,14 @@ package views.module4
 			addTrees();
 			addKing();
 
+			moveBG(200)
+			outMove=true;
+
 			addEventListener(TouchEvent.TOUCH, onTouch);
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
+
+		private var outMove:Boolean;
 
 		private function addBtrees():void
 		{
@@ -96,10 +103,18 @@ package views.module4
 		{
 			king=new Sprite();
 			king.addChild(getImage("king-1"));
-			king.touchable=false;
+//			king.touchable=false;
+			king.addEventListener(TouchEvent.TOUCH, onKingTouch);
 			addChild(king);
 			king.x=1024 - king.width >> 1;
 			king.y=768 - king.height;
+		}
+
+		private function onKingTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(king, TouchPhase.ENDED);
+			if (tc)
+				Prompt.showTXT(512, 600, "哇，连石子路都这么漂亮！", 20, null, this);
 		}
 
 		private var windX:Number;
@@ -369,8 +384,17 @@ package views.module4
 		private var birdArea1:Rectangle=new Rectangle(285, 38, 100, 200);
 		private var birdArea2:Rectangle=new Rectangle(1250, 100, 100, 250);
 
+		private var count:int=0;
+
 		private function onEnterFrame(e:Event):void
 		{
+			if (outMove)
+			{
+				count++;
+				if (count > 60)
+					outMove=false;
+				moveBG(-10);
+			}
 			if (!isFree)
 			{
 				kite.x+=windX;
@@ -418,7 +442,7 @@ package views.module4
 			if (!tc)
 				return;
 			var pt:Point=tc.getLocation(this);
-
+			outMove=false;
 			switch (tc.phase)
 			{
 				case TouchPhase.BEGAN:
@@ -433,13 +457,7 @@ package views.module4
 						return;
 					var delta:Point=tc.getMovement(this);
 					var dx:Number=delta.x;
-					var tx:Number=fg.x + dx / 2;
-					if (tx < (1024 - _W))
-						dx=(1024 - _W - fg.x) * 2;
-					else if (tx > 0)
-						dx=(0 - fg.x) * 2;
-					bg2.x+=dx / 5;
-					fg.x+=dx / 2;
+					moveBG(dx);
 					break;
 				}
 				case TouchPhase.ENDED:
@@ -452,6 +470,17 @@ package views.module4
 					break;
 				}
 			}
+		}
+
+		private function moveBG(dx:Number):void
+		{
+			var tx:Number=fg.x + dx / 2;
+			if (tx < (1024 - _W))
+				dx=(1024 - _W - fg.x) * 2;
+			else if (tx > 0)
+				dx=(0 - fg.x) * 2;
+			bg2.x+=dx / 5;
+			fg.x+=dx / 2;
 		}
 	}
 }

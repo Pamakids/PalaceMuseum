@@ -1,7 +1,6 @@
 package controllers
 {
 	import com.greensock.TweenMax;
-	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.Singleton;
 
 	import flash.display.DisplayObject;
@@ -49,7 +48,6 @@ package controllers
 
 		public function MC()
 		{
-			SoundAssets.init();
 		}
 
 		private var _moduleIndex:int=-1;

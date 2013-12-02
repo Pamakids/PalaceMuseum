@@ -279,10 +279,10 @@ package views.global.map
 				initTime=-1;
 				taskInitTime=-1;
 			}
-			if (!showFromCenter)
-			{
-				SoundAssets.playBGM("main");
-			}
+//			if (!showFromCenter)
+//			{
+//				SoundAssets.playBGM("main");
+//			}
 			if (preSky)
 			{
 				TweenLite.killTweensOf(preSky);
