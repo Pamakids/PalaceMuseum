@@ -70,7 +70,7 @@ package views.global.books.userCenter
 			initAnimation();
 			initRender();
 			
-			this.addChild( new Catalogue() );
+//			this.addChild( new Catalogue() );
 		}
 		
 		private function initShade():void
