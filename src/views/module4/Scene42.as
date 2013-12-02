@@ -179,7 +179,7 @@ package views.module4
 				endEff(function():void {
 					MC.instance.stage.removeChild(drawScene);
 					drawScene=null;
-					showCard("9", function():void {
+					showCard("13", function():void { //13-9
 						showAchievement(23, playLion);
 					});
 				});
