@@ -1,6 +1,14 @@
 package sound
 {
-	import com.pamakids.manager.SoundManager;
+	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
+
+	import flash.media.Sound;
+	import flash.media.SoundChannel;
+	import flash.media.SoundTransform;
+	import flash.utils.Dictionary;
+
+	import controllers.SoundManager;
 
 	import models.SOService;
 
@@ -151,7 +159,8 @@ package sound
 			if (bv != null)
 				bgmVol=bv as Number
 			else
-				bgmVol=.3;
+				bgmVol=.5;
+//			bgmVol=.5;
 		}
 
 		public static var sm:SoundManager;
@@ -184,15 +193,43 @@ package sound
 			if (crtBGM == _name)
 				return;
 			if (crtBGM)
-				sm.stop(crtBGM);
+				fadeOut(crtBGM);
 			crtBGM=_name;
-			sm.play(_name, 0, bgmVol);
+			fadeIn(crtBGM);
+		}
+
+		private static var scDic:Dictionary=new Dictionary();
+		private static const FADEINOUTDELAY:Number=2;
+
+		public static function fadeOut(sound:String):void
+		{
+			var sc:SoundChannel=scDic[sound];
+			if (sc)
+			{
+				trace("fadeOut", sound)
+//				TweenMax.killTweensOf(sc, true);
+				TweenMax.to(sc, FADEINOUTDELAY, {volume: 0, onComplete: function():void {
+					sm.stop(sound);
+				}});
+			}
+		}
+
+		public static function fadeIn(sound:String):void
+		{
+			var sc:SoundChannel=sm.play(sound);
+			if (sc)
+			{
+				trace("fadeIn", sound)
+				scDic[sound]=sc;
+//				TweenMax.killTweensOf(sc, true);
+				TweenMax.to(sc, FADEINOUTDELAY, {volume: bgmVol});
+			}
 		}
 
 		public static function stopBGM():void
 		{
 			if (crtBGM)
-				sm.stop(crtBGM);
+				fadeOut(crtBGM)
 			crtBGM="";
 		}
 
@@ -209,6 +246,7 @@ package sound
 		}
 
 		public static var crtBGM:String;
+
 		private static var _bgmVol:Number;
 
 		public static function get bgmVol():Number
@@ -223,7 +261,7 @@ package sound
 			_bgmVol=value;
 			SOService.instance.setSO(BGM, value);
 			if (crtBGM)
-				sm.play(crtBGM, 0, bgmVol);
+				scDic[crtBGM]=sm.play(crtBGM, 0, bgmVol);
 		}
 
 		private static var _sfxVol:Number;

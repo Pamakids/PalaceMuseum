@@ -1,5 +1,9 @@
 package views.module2.scene22
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Bounce;
+	import com.greensock.easing.Quad;
+
 	import flash.geom.Rectangle;
 
 	import starling.display.Image;
@@ -146,8 +150,17 @@ package views.module2.scene22
 		public function set standUp(value:Boolean):void
 		{
 			_standUp=value;
-			sit.visible=sit.touchable=!value;
-			stand.visible=stand.touchable=value;
+			var dy1:Number=stand.y - 100;
+			var dy2:Number=stand.y;
+			if (!value)
+			{
+				TweenLite.to(stand, .5, {y: dy1, ease: Quad.easeOut, onComplete: function():void {
+					TweenLite.to(stand, 2.5, {y: dy2, ease: Bounce.easeOut, onComplete: function():void {
+						sit.visible=sit.touchable=!value;
+						stand.visible=stand.touchable=value;
+					}});
+				}});
+			}
 		}
 	}
 }

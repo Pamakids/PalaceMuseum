@@ -205,10 +205,16 @@ package views.module1.scene13
 							arr.push(img);
 						}
 
-						var info:InfoSwitch=new InfoSwitch(arr, 68, 62);
-						info.addBtns(getImage("infoPre"), getImage("infoNext"));
-						info.addChildAt(getImage("infoBG"), 0);
-//						var info:Image=getImage("clockInfo");
+						var info:Sprite=new Sprite();
+						info.addChild(getImage("infoBG"));
+						var content:Image=getImage("infoContent");
+						content.x=95;
+						content.y=82;
+						content.addEventListener(TouchEvent.TOUCH, onContentTouch);
+						info.addChild(content);
+//						var info:InfoSwitch=new InfoSwitch(arr, 68, 62);
+//						info.addBtns(getImage("infoPre"), getImage("infoNext"));
+//						info.addChildAt(getImage("infoBG"), 0);
 						addChild(info);
 						info.x=146 - 50;
 						info.y=67 - 25;
@@ -218,6 +224,17 @@ package views.module1.scene13
 						isWin=true;
 					}});
 				}});
+			}
+		}
+
+		private function onContentTouch(e:TouchEvent):void
+		{
+			var img:Image=e.currentTarget as Image;
+			var tc:Touch=e.getTouch(img, TouchPhase.BEGAN);
+			if (tc)
+			{
+				this.touchable=false;
+				trace("gotoBook")
 			}
 		}
 
