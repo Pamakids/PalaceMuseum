@@ -8,6 +8,8 @@ package views.module1.scene13
 
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -113,7 +115,7 @@ package views.module1.scene13
 				{
 					case TouchPhase.BEGAN:
 					{
-						SoundManager.instance.stop("clockroll");
+						SoundAssets.stopSFX("clockroll");
 						isDown=true;
 						break;
 					}
@@ -126,7 +128,7 @@ package views.module1.scene13
 							if (delta < 0)
 							{
 								isMoved=true;
-								SoundManager.instance.play("clockroll");
+								SoundAssets.playSFX("clockroll");
 								crtTime-=delta;
 								for (var i:int=0; i < laceArr.length; i++)
 								{
@@ -145,14 +147,14 @@ package views.module1.scene13
 								}
 							}
 							else
-								SoundManager.instance.stop("clockroll");
+								SoundAssets.stopSFX("clockroll");
 						}
 						break;
 					}
 
 					case TouchPhase.ENDED:
 					{
-						SoundManager.instance.stop("clockroll");
+						SoundAssets.stopSFX("clockroll");
 						isDown=false;
 						break;
 					}
@@ -187,12 +189,12 @@ package views.module1.scene13
 			}
 			else
 			{
-				SoundManager.instance.stop("clockroll");
+				SoundAssets.stopSFX("clockroll");
 				removeEventListener(TouchEvent.TOUCH, onTouch);
 				min.rotation=Math.PI / 180 * (1800);
 				hour.rotation=Math.PI / 180 * (1800 / 12);
 				ended=true;
-				SoundManager.instance.play("clockmatch");
+				SoundAssets.playSFX("clockmatch");
 				TweenLite.to(clock, 1, {scaleX: 1.5, scaleY: 1.5, onComplete: function():void
 				{
 					TweenLite.to(clock, 1, {scaleX: 1, scaleY: 1, onComplete: function():void {

@@ -11,6 +11,8 @@ package views.module2
 
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -366,8 +368,9 @@ package views.module2
 			if (_shelfOpen == value)
 				return;
 			_shelfOpen=value;
-			SoundManager.instance.stop(value ? "shelfin" : "shelfout");
-			SoundManager.instance.play(value ? "shelfout" : "shelfin");
+			SoundAssets.stopSFX(value ? "shelfin" : "shelfout");
+			SoundAssets.playSFX(value ? "shelfout" : "shelfin");
+
 			if (!value && p)
 				p.playHide();
 		}
@@ -574,7 +577,7 @@ package views.module2
 			findGame.addEventListener(PalaceGame.GAME_OVER, onFindGamePlayed)
 			addChild(findGame);
 			inGame=true;
-			SoundManager.instance.play("scrollout");
+			SoundAssets.playSFX("scrollout");
 		}
 
 		private function onFindGamePlayed(e:Event):void

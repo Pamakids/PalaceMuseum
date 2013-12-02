@@ -14,6 +14,8 @@ package views.global.userCenter
 	
 	import org.agony2d.utils.getClassName;
 	
+	import sound.SoundAssets;
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -26,10 +28,8 @@ package views.global.userCenter
 	import views.components.ElasticButton;
 	import views.components.SoftPaperAnimation;
 	import views.global.userCenter.screen.AchievementScreen;
-//	import views.global.userCenter.birds.BirdScreen;
 	import views.global.userCenter.screen.CollectionScreen;
 	import views.global.userCenter.screen.GameCenterScreen;
-//	import views.global.userCenter.handbook.HandbookScreen;
 	import views.global.userCenter.screen.UserInfoScreen;
 
 	/**
@@ -340,11 +340,6 @@ package views.global.userCenter
 
 		private function tabs_changeHandler():void
 		{
-//			if (!aniable)
-//			{
-//				aniable=true;
-//				return;
-//			}
 			if (animation.visible)
 			{
 				_tabBar.selectedIndex=prevIndex;
@@ -377,7 +372,7 @@ package views.global.userCenter
 			else //pageDown
 				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
 			animation.start(pageUp);
-			SoundManager.instance.play("centerflip");
+			SoundAssets.playSFX("centerflip");
 		}
 
 		private function playedAnimation():void

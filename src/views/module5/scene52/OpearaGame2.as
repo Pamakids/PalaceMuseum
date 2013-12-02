@@ -13,6 +13,8 @@ package views.module5.scene52
 
 	import particle.PalaceParticle;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -298,7 +300,7 @@ package views.module5.scene52
 
 		private var particleArr:Array=[];
 		private var particlePosArr:Array=[new Point(28, 121), new Point(73, 73),
-			new Point(164, 88), new Point(216, 60), new Point(287, 114)];
+										  new Point(164, 88), new Point(216, 60), new Point(287, 114)];
 
 		private function onXiyouFireBtnClick(e:Event):void
 		{
@@ -324,7 +326,7 @@ package views.module5.scene52
 			}
 			else
 			{
-				SoundManager.instance.play("fire")
+				SoundAssets.playSFX("fire");
 				for (var i:int=0; i < particlePosArr.length; i++)
 				{
 					var p:PalaceParticle=new PalaceParticle();
@@ -354,7 +356,7 @@ package views.module5.scene52
 					ptc=null;
 				}});
 			}
-			SoundManager.instance.play("fire")
+			SoundAssets.playSFX("fire");
 			fireParticle=new PalaceParticle();
 			fireParticle.init(gameLevel);
 			boat.addChild(fireParticle);
@@ -446,17 +448,17 @@ package views.module5.scene52
 
 		private var xiyouTypeArr:Array=["7", "6", "3", "5", "4", "1"];
 		private var xiyouBodyPosArr:Array=[new Point(836, 144), new Point(380, 380),
-			new Point(649, 375), new Point(274, 634), new Point(528, 632), new Point(773, 644)];
+										   new Point(649, 375), new Point(274, 634), new Point(528, 632), new Point(773, 644)];
 		private var xiyouB_PosArr:Array=[new Point(-104, 2), new Point(-3, 87), new Point(-3, 98), new Point(21, 123), new Point(-7, 88), new Point(33, 107)];
 		private var xiyouMaskPosArr:Array=[new Point(0, 0), new Point(16, 43), new Point(30, 37), new Point(28, 69), new Point(7, 23), new Point(30, 44)];
 
 		private var sanguoTypeArr:Array=["1", "2", "3", "4", "5", "6"];
 		private var sanguoBodyPosArr:Array=[new Point(131, 148), new Point(450, 154),
-			new Point(900, 153), new Point(300, 400), new Point(521, 400), new Point(738, 380)];
+											new Point(900, 153), new Point(300, 400), new Point(521, 400), new Point(738, 380)];
 		private var sanguoB_PosArr:Array=[new Point(6, 114), new Point(21, 115),
-			new Point(22, 111), new Point(-16, 68), new Point(-6, 117), new Point(-32, 58)];
+										  new Point(22, 111), new Point(-16, 68), new Point(-6, 117), new Point(-32, 58)];
 		private var sanguoMaskPosArr:Array=[new Point(18, 41), new Point(15, 64),
-			new Point(22, 50), new Point(25, 41), new Point(22, 54), new Point(6, 46)];
+											new Point(22, 50), new Point(25, 41), new Point(22, 54), new Point(6, 46)];
 
 		private function addOneBody(index:int):void
 		{
@@ -530,7 +532,7 @@ package views.module5.scene52
 		private var moutainHolder:Sprite;
 
 		private var pillarPosArr:Array=[new Point(285, 0), new Point(697, 0),
-			new Point(246, 239), new Point(749, 240), new Point(202, 477), new Point(757, 478)];
+										new Point(246, 239), new Point(749, 240), new Point(202, 477), new Point(757, 478)];
 
 		private var mountain:Image;
 

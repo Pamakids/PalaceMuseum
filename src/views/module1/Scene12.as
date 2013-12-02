@@ -9,6 +9,8 @@ package views.module1
 	import models.FontVo;
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -63,7 +65,7 @@ package views.module1
 					TweenLite.to(boxCover, .2, {y: -50, onComplete: function():void {
 						TweenLite.to(boxCover, .5, {x: dx, onComplete: initCircle});
 					}
-						});
+								 });
 				}
 				else
 					TweenLite.to(boxHolder, .5, {x: 1100});
@@ -235,7 +237,7 @@ package views.module1
 				quiz.y=sy;
 				quiz.scaleX=quiz.scaleY=.2;
 
-				SoundManager.instance.play("boxscale");
+				SoundAssets.playSFX("boxscale");
 				TweenLite.to(quiz, 1, {scaleX: 1, scaleY: 1, x: ex, y: ey, onComplete: function():void
 				{
 					TweenLite.delayedCall(2, function():void
@@ -255,13 +257,8 @@ package views.module1
 			{
 				quiz.parent.removeChild(quiz);
 
-				SoundManager.instance.play("boxopen");
+				SoundAssets.playSFX("boxopen");
 				opened=true;
-//				crtKnowledgeIndex=3;
-//				TweenLite.delayedCall(1, function():void
-//				{
-//					showLionHint("hint-gamestart", initCircle);
-//				});
 			}});
 		}
 
@@ -285,7 +282,7 @@ package views.module1
 			if (type == clothArr[taskType])
 			{
 				isWin=true;
-				SoundManager.instance.play("happy");
+				SoundAssets.playSFX("happy");
 				playKing(0);
 			}
 			else

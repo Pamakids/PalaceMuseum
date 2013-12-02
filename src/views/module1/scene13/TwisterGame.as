@@ -9,6 +9,8 @@ package views.module1.scene13
 
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -228,8 +230,7 @@ package views.module1.scene13
 
 		private function twist(clockwise:Boolean, auto:Boolean=false):void
 		{
-			SoundManager.instance.stop("twisting");
-			SoundManager.instance.play("twisting");
+			SoundAssets.playSFX("twisting", true);
 			if (!auto)
 			{
 				isMoved=true;
@@ -304,17 +305,8 @@ package views.module1.scene13
 			addChildAt(halo, 0);
 			halo.x=Block.GAP;
 			halo.y=Block.GAP;
-			SoundManager.instance.play("twistermatch");
+			SoundAssets.playSFX("twistermatch");
 			TweenLite.to(halo, 2, {rotation: Math.PI * 4, onComplete: flipHolder});
-//			for each (var block:Block in blockArr)
-//			{
-//				TweenMax.to(block, 1, {shake: {rotation: .2, numShakes: 4}});
-//			}
-
-//			TweenLite.delayedCall(2, function():void
-//			{
-//				dispatchEvent(new Event(PalaceGame.GAME_OVER, true));
-//			});
 		}
 
 		private function checkAllMathed():Boolean

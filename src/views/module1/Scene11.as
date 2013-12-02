@@ -16,6 +16,8 @@ package views.module1
 
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Touch;
@@ -114,8 +116,7 @@ package views.module1
 
 			onFGLoaded();
 
-			SoundManager.instance.stop("main");
-			SoundManager.instance.play("s11bgm");
+			SoundAssets.playBGM("s11bgm");
 		}
 
 		/**
@@ -284,7 +285,7 @@ package views.module1
 				effComplete=false;
 				if (!isShadowShow)
 				{
-					SoundManager.instance.play("lighton");
+					SoundAssets.playSFX("lighton");
 					TweenLite.to(w0l, 1, {alpha: 1, onComplete: showShadow});
 				}
 				else
@@ -371,7 +372,7 @@ package views.module1
 			sp.touchable=false;
 			if (sp.x == windowXPosArr[windowIndex])
 			{
-				SoundManager.instance.play("opendoor")
+				SoundAssets.playSFX("opendoor");
 				crtWinSelected=true;
 				showAchievement(1);
 				okEff=new Sprite();
@@ -403,7 +404,7 @@ package views.module1
 			}
 			else
 			{
-				SoundManager.instance.play("windowwrong");
+				SoundAssets.playSFX("windowwrong");
 				TweenMax.to(sp, 1, {shake: {rotation: .05, numShakes: 4}, onComplete: function():void
 				{
 					sp.touchable=true;
@@ -414,7 +415,7 @@ package views.module1
 
 		private function resetView():void
 		{
-			SoundManager.instance.play("step")
+			SoundAssets.playSFX("step");
 			TweenLite.to(this, 2, {scaleX: 1, scaleY: 1, x: 0, onComplete: addEunuch});
 		}
 

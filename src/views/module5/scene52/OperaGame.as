@@ -15,6 +15,8 @@ package views.module5.scene52
 	import models.FontVo;
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -33,7 +35,7 @@ package views.module5.scene52
 	{
 		public function OperaGame(am:AssetManager=null)
 		{
-			SoundManager.instance.stop("main");
+			SoundAssets.stopBGM();
 			super(am);
 			addBG();
 			initStart();
@@ -205,7 +207,7 @@ package views.module5.scene52
 
 		private function shureStart():void
 		{
-			SoundManager.instance.play("gamebg52");
+			SoundAssets.playBGM("gamebg52");
 			addBodys();
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			timer.start();
@@ -261,7 +263,7 @@ package views.module5.scene52
 
 		private function gameOverHandler():void
 		{
-			SoundManager.instance.stop("gamebg52");
+			SoundAssets.stopBGM();
 			gameOver=true;
 			timer.stop();
 
@@ -519,7 +521,7 @@ package views.module5.scene52
 					if (body.getBounds(this).containsPoint(pt))
 						if (mask.type == body.type && !body.isMatched && body.ready)
 						{
-							SoundManager.instance.play("maskok");
+							SoundAssets.playSFX("maskok", true);
 							body.addMask(mask);
 							mask.removeEventListener(TouchEvent.TOUCH, onMaskTouch);
 							TweenLite.delayedCall(1, function():void {
@@ -529,7 +531,8 @@ package views.module5.scene52
 							return;
 						}
 						else
-							SoundManager.instance.play("maskwrong");
+							SoundAssets.playSFX("maskwrong", true);
+
 			}
 			mask.reset();
 		}
@@ -712,14 +715,13 @@ package views.module5.scene52
 			recordIcon.y=327;
 			recordIcon.scaleX=recordIcon.scaleY=3;
 			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut, onComplete: function():void {
-				SoundManager.instance.play("gamerecord");
+				SoundAssets.playSFX("gamerecord");
 			}});
 		}
 
 		override public function dispose():void
 		{
-			SoundManager.instance.stop("gamebg52");
-			SoundManager.instance.play("main");
+			SoundAssets.playBGM("main");
 			super.dispose();
 		}
 	}

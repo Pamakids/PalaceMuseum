@@ -2,7 +2,6 @@ package views.module1.scene12
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
@@ -11,6 +10,8 @@ package views.module1.scene12
 
 	import models.FontVo;
 	import models.SOService;
+
+	import sound.SoundAssets;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -364,7 +365,7 @@ package views.module1.scene12
 								}});
 								return;
 							}
-							SoundManager.instance.play("switching");
+							SoundAssets.playSFX("switching");
 							TweenLite.to(dragingCloth, 0.5, {x: p.x + clothXOffset, y: p.y + clothYOffset, ease: Cubic.easeOut});
 							TweenLite.to(i, 0.5, {x: dp.x + clothXOffset, y: dp.y + clothYOffset, ease: Cubic.easeOut, onComplete: function():void
 							{

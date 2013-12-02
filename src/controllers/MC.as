@@ -49,7 +49,6 @@ package controllers
 
 		public function MC()
 		{
-//			SoundManager.instance.init("json/sound.json");
 			SoundAssets.init();
 		}
 

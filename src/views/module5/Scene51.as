@@ -5,6 +5,8 @@ package views.module5
 
 	import flash.geom.Point;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -98,9 +100,9 @@ package views.module5
 			Prompt.showTXT(img.x + txtOffset[index].x,
 						   img.y + txtOffset[index].y, txtArr[index], 20, cb);
 			if (index == 0)
-				SoundManager.instance.play("cough");
+				SoundAssets.playSFX("cough");
 			else if (index == 1)
-				SoundManager.instance.play("sigh");
+				SoundAssets.playSFX("sigh");
 		}
 
 		private var ready:Boolean;
