@@ -32,7 +32,7 @@ package controllers
 	import views.global.TailBar;
 	import views.global.TopBar;
 	import views.global.map.Map;
-	import views.global.userCenter.UserCenterManager;
+	import views.global.books.BooksManager;
 
 	/**
 	 * 主业务控制器
@@ -91,7 +91,7 @@ package controllers
 		public function addMC(mc:MovieClip):void
 		{
 			stage.addChild(mc);
-			mc.visible=(UserCenterManager.getCrtUserCenter() == null);
+			mc.visible=(BooksManager.getCrtUserCenter() == null);
 		}
 
 		public function removeMC(mc:MovieClip):void
@@ -143,7 +143,7 @@ package controllers
 
 		public function gotoModule(index:int, sceneIndex:int=-1):void
 		{
-			UserCenterManager.closeUserCenter();
+			BooksManager.closeCtrBook();
 			if (Map.map)
 				Map.map.clear(0);
 			TopBar.hide();
@@ -214,7 +214,7 @@ package controllers
 			if (Map.map)
 				Map.map.clear(1);
 			clearCrtModule();
-			UserCenterManager.closeUserCenter();
+			BooksManager.closeCtrBook();
 			_moduleIndex=-1;
 			TopBar.hide();
 			TailBar.hide();
@@ -233,7 +233,7 @@ package controllers
 			if (Map.map)
 				Map.map.clear(1);
 			clearCrtModule();
-			UserCenterManager.closeUserCenter();
+			BooksManager.closeCtrBook();
 			SOService.instance.init();
 			_moduleIndex=-1;
 			TopBar.hide();
@@ -260,7 +260,7 @@ package controllers
 			main.addChild(mapLayer);
 			main.addChild(topBarLayer);
 
-			UserCenterManager.userCenterContainer=centerLayer;
+			BooksManager.userCenterContainer=centerLayer;
 			Map.parent=mapLayer;
 			TopBar.parent=topBarLayer;
 			TailBar._parent=topBarLayer;
@@ -286,7 +286,7 @@ package controllers
 			{
 				main.setChildIndex(mapLayer, i1);
 				main.setChildIndex(centerLayer, i2);
-				UserCenterManager.enable();
+				BooksManager.enable();
 			}
 		}
 

@@ -5,7 +5,7 @@ package views.components
 	import starling.display.Image;
 	import starling.events.Event;
 	
-	import views.global.userCenter.UserCenterManager;
+	import views.global.books.BooksManager;
 
 	/**
 	 * 时间更改组件，时间单位最小至“天”
@@ -98,22 +98,22 @@ package views.components
 		
 		private function initImages():void
 		{
-			var image:Image = UserCenterManager.getImage("background_date");
+			var image:Image = BooksManager.getImage("background_date");
 			this.addChild( image );
 			image.y = 35;
 			image.touchable = false;
 			
-			image = UserCenterManager.getImage("background_date_year");
+			image = BooksManager.getImage("background_date_year");
 			this.addChild( image );
 			image.x = 60;
 			image.touchable = false;
 			
-			image = UserCenterManager.getImage("background_date_day");
+			image = BooksManager.getImage("background_date_day");
 			this.addChild( image );
 			image.x = 174;
 			image.touchable = false;
 			
-			image = UserCenterManager.getImage("background_date_day");
+			image = BooksManager.getImage("background_date_day");
 			this.addChild( image );
 			image.x = 266;
 			image.touchable = false;
