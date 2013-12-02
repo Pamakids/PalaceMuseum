@@ -1,25 +1,25 @@
 package
 {
 	import flash.filesystem.File;
-	
+
 	import controllers.MC;
 	import controllers.UserBehaviorAnalysis;
-	
+
 	import events.UserBehaviorEvent;
-	
+
 	import models.Const;
 	import models.FontVo;
 	import models.SOService;
-	
+
 	import sound.SoundAssets;
-	
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-	
+
 	import views.Interlude;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
@@ -32,7 +32,7 @@ package
 		{
 //			SOService.instance.clear();
 //			SOService.instance.init();
-			SOService.instance.setSO("lastScene", "13");
+			SOService.instance.setSO("lastScene", "42");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);

@@ -20,6 +20,7 @@ package views.module1
 	import views.components.base.PalaceScene;
 	import views.global.TailBar;
 	import views.global.TopBar;
+	import views.global.books.BooksManager;
 	import views.module1.scene13.Clock;
 	import views.module1.scene13.TwisterGame;
 
@@ -132,6 +133,7 @@ package views.module1
 		{
 			clock=new Clock(assetManager);
 			clock.addEventListener(PalaceGame.GAME_OVER, clockMatch);
+			clock.addEventListener("gotoBook", gotoBook);
 			clock.scaleX=clock.scaleY=1;
 			clock.x=50;
 			clock.y=25;
@@ -139,10 +141,24 @@ package views.module1
 			PopUpManager.addPopUp(clock, true, false);
 		}
 
+		private function gotoBook(e:Event):void
+		{
+			var b:Boolean=clock.ended
+			PopUpManager.removePopUp(clock, true);
+			clock=null;
+			if (b)
+				showCard("2",
+						 function():void
+						 {
+							 showAchievement(4, checkAcheive5);
+						 }
+						 );
+			sceneOver();
+		}
+
 		private function checkAcheive5():void
 		{
-//			if (_clockMatched && _gamePlayed)
-//				showAchievement(5);
+			BooksManager.showBooks(1, 1, 0);
 		}
 
 		private function clockMatch(e:Event):void
@@ -155,7 +171,7 @@ package views.module1
 									 showCard("2",
 											  function():void
 											  {
-												  showAchievement(4, checkAcheive5);
+												  showAchievement(4);
 											  }
 											  );
 								 PopUpManager.removePopUp(clock, true);

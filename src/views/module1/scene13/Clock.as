@@ -232,10 +232,7 @@ package views.module1.scene13
 			var img:Image=e.currentTarget as Image;
 			var tc:Touch=e.getTouch(img, TouchPhase.BEGAN);
 			if (tc)
-			{
-				this.touchable=false;
-				trace("gotoBook")
-			}
+				dispatchEvent(new Event("gotoBook"));
 		}
 
 		private function addWheel():void
