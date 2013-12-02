@@ -16,9 +16,11 @@ package views.module3
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
+	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
+	import views.global.TailBar;
 	import views.module3.scene33.DishGame;
 
 	/**
@@ -200,7 +202,7 @@ package views.module3
 			if (lionP)
 				lionP.playHide();
 			if (lionChat)
-				lionP=Prompt.showTXT(lionChat.x, lionChat.y, lionChat.content, 20, null, this, 1, lionChat.isTask);
+				lionP=Prompt.showTXT(lionChat.x, lionChat.y, lionChat.content, 20, null, this, 1, false, 3, true);
 		}
 
 		private function startChat():void
@@ -238,7 +240,7 @@ package views.module3
 			}
 			else if (chat == "chatlion2")
 			{
-				kingHolder.touchable=lion.touchable=true;
+				lion.touchable=true;
 				dx=180;
 				dy=590;
 				isT=true;
@@ -315,7 +317,10 @@ package views.module3
 			else if (chatIndex == 5)
 			{
 				cardEnable=true;
-				TweenLite.to(lion, .5, {x: -350});
+				LionMC.instance.setLastData(lionChat.content, 0, 0, 0, .6, true);
+				TailBar.show();
+				TweenLite.to(lion, .5, {x: -350, onComplete: function():void {
+				}});
 			}
 			else
 				startChat();
@@ -376,6 +381,8 @@ package views.module3
 			kingFull.x=342;
 			kingFull.y=28;
 
+			kingHolder.touchable=lion.touchable=false;
+
 			if (win)
 			{
 				showCard("7", function():void {
@@ -385,11 +392,16 @@ package views.module3
 				});
 			}
 			else
+			{
 				Prompt.showTXT(180, 590, "皇帝要把没吃完的菜赏下去，通常是赏给王公贵族，你来试试？", 20, addChooses, null, 1, false, 3, true);
+			}
 		}
 
 		private function addChooses():void
 		{
+			lion.touchable=true;
+			lionChat={x: 180, y: 590, content: "皇帝要把没吃完的菜赏下去，通常是赏给王公贵族，你来试试？", isTask: true};
+
 			kingFull.addEventListener(Event.COMPLETE, function(e:Event):void {
 				kingFull.pause();
 				Starling.juggler.remove(kingFull);
@@ -415,6 +427,9 @@ package views.module3
 			if (b)
 			{
 				choosed=true;
+
+				kingHolder.touchable=lion.touchable=false;
+
 				if (b.index == 3)
 					Prompt.showTXT(150, 445, "果然是平民少年，更体会百姓的疾苦。", 20,
 								   function():void {
