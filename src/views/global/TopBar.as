@@ -12,7 +12,7 @@ package views.global
 	import starling.events.Event;
 
 	import views.global.map.Map;
-	import views.global.userCenter.UserCenterManager;
+	import views.global.books.BooksManager;
 
 	public class TopBar extends Sprite
 	{
@@ -41,9 +41,9 @@ package views.global
 				if (Map.map && Map.map.visible)
 					index=-1;
 				if (index == -1)
-					UserCenterManager.showUserCenter(0, 0, true, false);
+					BooksManager.showBooks(0, 0, 0, true, false);
 				else
-					UserCenterManager.showUserCenter(1, index);
+					BooksManager.showBooks(0, 1, index);
 			}});
 		}
 

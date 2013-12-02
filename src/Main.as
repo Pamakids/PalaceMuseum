@@ -1,30 +1,30 @@
 package
 {
 	import flash.filesystem.File;
-
+	
 	import controllers.MC;
 	import controllers.UserBehaviorAnalysis;
-
+	
 	import events.UserBehaviorEvent;
-
+	
 	import models.Const;
 	import models.FontVo;
 	import models.SOService;
-
+	
 	import sound.SoundAssets;
-
+	
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-
+	
 	import views.Interlude;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
 	import views.global.map.Map;
-	import views.global.userCenter.UserCenterManager;
+	import views.global.books.BooksManager;
 
 	public class Main extends Container
 	{
@@ -154,7 +154,7 @@ package
 			var moduleIndex:int=int(_lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(_lastScene.charAt(1)) - 1;
 			if (lastScene.indexOf("end") >= 0)
-				UserCenterManager.showUserCenter(0, 0, false);
+				BooksManager.showBooks(0, 0, 0, false);
 			else if (moduleIndex < 0 || sceneIndex < 0)
 				Map.show();
 			else if (_lastScene.lastIndexOf("map") < 0)

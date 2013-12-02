@@ -34,7 +34,7 @@ package views.global.map
 	import views.components.base.PalaceModule;
 	import views.global.TailBar;
 	import views.global.TopBar;
-	import views.global.userCenter.UserCenterManager;
+	import views.global.books.BooksManager;
 
 	/**
 	 * 热点数据格式用map.json的应该就能满足所有需求
@@ -318,13 +318,13 @@ package views.global.map
 
 				case 1:
 				{
-					UserCenterManager.closeUserCenter();
+					BooksManager.closeCtrBook();
 					break;
 				}
 
 				case 2:
 				{
-					UserCenterManager.closeUserCenter();
+					BooksManager.closeCtrBook();
 					break;
 				}
 
