@@ -159,7 +159,7 @@ package views.module4
 				removeImg(img, i);
 			}
 
-			TweenLite.delayedCall((i + 1) * .2, addChoose);
+			TweenLite.delayedCall((i + 1) * .2 + 1, addChoose);
 		}
 
 		private function removeImg(img:Image, i:int):void

@@ -1,6 +1,7 @@
 package views.module2.scene22
 {
 	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -54,6 +55,9 @@ package views.module2.scene22
 
 			contentHolder=new Sprite();
 			addChild(contentHolder);
+
+			contentHolder.x=contentHolder.pivotX=1024 >> 1;
+			contentHolder.y=contentHolder.pivotY=768 >> 1;
 
 			addLines();
 			addLights();
@@ -231,15 +235,22 @@ package views.module2.scene22
 			_count=value;
 			if (_count == tempArr.length)
 			{
-				TweenLite.to(contentHolder, .5, {alpha: 0, onComplete: function():void {
-					contentHolder.removeChildren(0, -1, true);
-					var info:Image=getImage("thermo-intro");
-					info.x=75;
-					info.y=71;
-					contentHolder.addChild(info);
-					TweenLite.to(contentHolder, .5, {alpha: 1});
-					isWin=true;
-				}});
+//				for each (var i:Sprite in itemArr)
+//				{
+//					TweenMax.to(i, 1.5, {shake: {scaleX: .05, scaleY: .05, numShakes: 1}});
+//				}
+				TweenMax.to(contentHolder, 1.5, {shake: {scaleX: .05, scaleY: .05, numShakes: 1}});
+				TweenLite.delayedCall(2, function():void {
+					TweenLite.to(contentHolder, .5, {alpha: 0, onComplete: function():void {
+						contentHolder.removeChildren(0, -1, true);
+						var info:Image=getImage("thermo-intro");
+						info.x=75;
+						info.y=71;
+						contentHolder.addChild(info);
+						TweenLite.to(contentHolder, .5, {alpha: 1});
+						isWin=true;
+					}});
+				});
 			}
 		}
 
