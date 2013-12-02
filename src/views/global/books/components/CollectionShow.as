@@ -25,9 +25,10 @@ package views.global.books.components
 		private var vo:CollectionVO;
 		public function resetData(value:CollectionVO):void
 		{
-			haveTurned = false;
-			isTurning = false;
 			vo = value;
+//			if(vo.isCollected)
+				haveTurned = false;
+			isTurning = false;
 			isBack = false;
 			updateView();
 			TweenLite.delayedCall( 2, completeFunc);
