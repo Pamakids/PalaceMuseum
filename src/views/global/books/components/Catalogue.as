@@ -1,21 +1,13 @@
 package views.global.books.components
 {
-	import flash.text.TextFormat;
+	import controllers.MC;
 	
-	import feathers.controls.GroupedList;
-	import feathers.controls.ScrollContainer;
-	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
-	import feathers.controls.renderers.IGroupedListItemRenderer;
-	import feathers.controls.text.TextFieldTextRenderer;
-	import feathers.core.ITextRenderer;
-	import feathers.data.HierarchicalCollection;
-	
-	import models.FontVo;
+	import feathers.controls.List;
 	
 	import starling.display.Image;
 	import starling.display.Sprite;
-	import starling.events.Event;
 	
+	import views.components.ElasticButton;
 	import views.global.books.BooksManager;
 
 	/**
@@ -26,79 +18,44 @@ package views.global.books.components
 	{
 		public function Catalogue()
 		{
+			parseJson();
 			init();
 		}
 		
+		private var crtIndex:uint = 0;
+		private function parseJson():void
+		{
+			var obj:Object = BooksManager.getAssetsManager().getObject("catalogue");
+			trace(obj);
+		}
+		private var list:List;
+		
 		private function init():void
 		{
-			initGroup();
-//			var c:ScrollContainer = new ScrollContainer();
-//			c.setSize(960, 640);
-//			this.addChild( c );
-//			
-//			var image:Image;
-//			for(var i:int = 0;i<20;i++)
-//			{
-//				image = BooksManager.getImage("achievement_card_finish");
-//				c.addChild( image );
-//				image.x = 150;
-//				image.y = i*(10+image.height);
-//			}
+			initBG();
+			initBackButton();
 		}
 		
-		private var list:GroupedList;
-		private function initGroup():void
+		private var backBtn:ElasticButton;
+		private function initBackButton():void
 		{
-			list = new GroupedList();
-			list.dataProvider = new HierarchicalCollection(
-				[
-					{
-						header: "晨起",
-						children:
-						[
-							{ text: "Milk", thumbnail: BooksManager.getTexture("achievement_card_finish") },
-							{ text: "Cheese", thumbnail: BooksManager.getTexture( "achievement_card_finish" ) },
-						]
-					},
-					{
-						header: "Bakery",
-						children:
-						[
-							{ text: "Bread", thumbnail: BooksManager.getTexture( "achievement_card_finish" ) },
-						]
-					},
-					{
-						header: "Produce",
-						children:
-						[
-							{ text: "Bananas", thumbnail: BooksManager.getTexture( "achievement_card_finish" ) },
-							{ text: "Lettuce", thumbnail: BooksManager.getTexture( "achievement_card_finish" ) },
-							{ text: "Onion", thumbnail: BooksManager.getTexture( "achievement_card_finish" ) },
-						]
-					},
-				]);
-			list.itemRendererFactory = function():IGroupedListItemRenderer
-			{
-				var renderer:DefaultGroupedListItemRenderer = new DefaultGroupedListItemRenderer();
-				renderer.labelField = "text";
-				renderer.labelFactory = function():ITextRenderer{
-					var render:TextFieldTextRenderer = new TextFieldTextRenderer();
-					render.textFormat = new TextFormat(FontVo.PALACE_FONT, 24, 0x333333);
-					return render;
-				}
-				renderer.iconSourceField = "thumbnail";
-				return renderer;
-			};
-//			list.headerRendererProperties(
-			list.backgroundSkin = BooksManager.getImage("background_win_1");
-			list.width = 480;
-			list.height = 422;
-			list.addEventListener( Event.CHANGE, list_changeHandler );
-			this.addChild( list );
+			backBtn=new ElasticButton(new Image(MC.assetManager.getTexture("button_close")));
+			backBtn.shadow=new Image(MC.assetManager.getTexture("button_close_down"));
+			addChild(backBtn);
+			backBtn.x=660;
+			backBtn.y=30;
+			backBtn.addEventListener(ElasticButton.CLICK, onTriggered);
 		}
 		
-		private function list_changeHandler(e:Event):void
+		private function onTriggered():void
 		{
+		}
+		
+		private function initBG():void
+		{
+			var image:Image = BooksManager.getImage("catalogue_bg");
+			this.addChild( image );
+			image.touchable = false;
 		}
 	}
 }

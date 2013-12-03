@@ -5,12 +5,11 @@ package views.global.books.handbook
 	
 	import controllers.MC;
 	
+	import feathers.controls.Button;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
-	
-	import org.agony2d.utils.getClassName;
 	
 	import sound.SoundAssets;
 	
@@ -26,6 +25,7 @@ package views.global.books.handbook
 	import views.components.ElasticButton;
 	import views.components.SoftPaperAnimation;
 	import views.global.books.BooksManager;
+	import views.global.books.components.Catalogue;
 	import views.global.books.handbook.screen.BirdsScreen;
 	import views.global.books.handbook.screen.HandbookScreen;
 	import views.global.books.handbook.screen.HistoricalRelicScreen;
@@ -53,12 +53,33 @@ package views.global.books.handbook
 		{
 			this.screenNames=[SPEED_UP, HISTORICAL_RELIC, BIRDS, MAP];
 			initBackgroud();
+			initCataBtn();
 			initTabBar();
 			initShade();
 			initBackButton();
 			initNavigator();
 			initAnimation();
 			initRender();
+		}
+		
+		private var cataBtn:Button;
+		private function initCataBtn():void
+		{
+			cataBtn = new Button();
+			cataBtn.defaultSkin = BooksManager.getImage("button_catalogue_up");
+			cataBtn.downSkin = BooksManager.getImage("button_catalogue_down");
+			this.addChild( cataBtn );
+			cataBtn.x = 55;
+			cataBtn.y = 4;
+			cataBtn.addEventListener(Event.TRIGGERED, openCatalogue);
+		}
+		
+		private function test():void
+		{
+			var cata:Catalogue = new Catalogue();
+			this.addChild( cata );
+			cata.x = 28;
+			cata.y = 89;
 		}
 		
 		private function initShade():void
@@ -198,7 +219,7 @@ package views.global.books.handbook
 		private function onInitialized(e:Event):void
 		{
 			var i:int=0;
-			switch (getClassName(e.currentTarget))
+			switch (_navigator.activeScreenID)
 			{
 				case SPEED_UP:
 					i = crtPage_Handbook;
@@ -224,7 +245,7 @@ package views.global.books.handbook
 		
 		private function onViewUpdated(e:Event):void
 		{
-			switch (getClassName(e.currentTarget))
+			switch (_navigator.activeScreenID)
 			{
 				case SPEED_UP:
 					crtPage_Handbook+=(pageUp) ? -1 : 1; //记录
@@ -248,6 +269,18 @@ package views.global.books.handbook
 		private function onTriggered(e:Event):void
 		{
 			BooksManager.closeCtrBook();
+		}
+		
+		private var cata:Catalogue;
+		private function openCatalogue():void
+		{
+			if(!cata)
+			{
+				cata = new Catalogue();
+				this.addChild( cata );
+				cata.x = 93;
+				cata.y = 85;
+			}
 		}
 		
 		private function onTouch(e:TouchEvent):void
@@ -353,6 +386,8 @@ package views.global.books.handbook
 		
 		override public function dispose():void
 		{
+			if(cataBtn)
+				cataBtn.removeFromParent(true);
 			if (_tabBar)
 				_tabBar.removeFromParent(true);
 			if (_navigator)

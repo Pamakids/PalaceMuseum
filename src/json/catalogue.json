@@ -1,0 +1,227 @@
+{
+	"晨起":
+	[
+		{
+			"type":		"0",
+			"explain":	"皇帝住在哪儿",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"0",
+			"explain":	"皇帝衣服上的秘密",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"1",
+			"explain":	"写字机械人钟",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"1",
+			"explain":	"铜镀金滚钟",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"1",
+			"explain":	"兽耳八卦铜壶滴漏",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"2",
+			"explain":	"关于养心殿的两个“意外”",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"2",
+			"explain":	"清朝皇帝之最",
+			"screen":	"1",
+			"page":		"2"
+		}
+	],
+	"早读":
+	[
+		{
+			"type":		"0",
+			"explain":	"小书房里的大乾坤",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"0",
+			"explain":	"活到老学到老",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"1",
+			"explain":	"象牙雕葫芦形笔掭",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"1",
+			"explain":	"青玉卷书式墨床",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"1",
+			"explain":	"墨彩竹节式臂搁",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"2",
+			"explain":	"最大的书",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"2",
+			"explain":	"康熙学科学",
+			"screen":	"1",
+			"page":		"2"
+		}
+	],
+	"早膳":
+	[
+		{
+			"type":		"0",
+			"explain":	"皇帝晚上得饿着吗？皇帝在哪儿吃饭？",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"0",
+			"explain":	"皇帝忙煞御厨房",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"0",
+			"explain":	"膳牌又是什么呢？",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"1",
+			"explain":	"和阗白玉错金嵌宝石碗",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"1",
+			"explain":	"矾红彩描金云龙纹高足盘",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"1",
+			"explain":	"掐丝珐琅团花纹菱花式火锅",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"2",
+			"explain":	"“抠门”的道光皇帝",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"2",
+			"explain":	"溥仪最后一餐的苹果",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"2",
+			"explain":	"满汉全席",
+			"screen":	"1",
+			"page":		"2"
+		}
+	],
+	"常朝":
+	[
+		{
+			"type":		"0",
+			"explain":	"上早朝是怎么回事儿？",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"0",
+			"explain":	"皇帝具体是怎样工作的？",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"1",
+			"explain":	"二十五宝玺",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"2",
+			"explain":	"大臣上朝敢迟到吗？",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"2",
+			"explain":	"皇帝批奏折只用书面语么？",
+			"screen":	"1",
+			"page":		"2"
+		}
+	],
+	"娱乐休闲":
+	[
+		{
+			"type":		"0",
+			"explain":	"皇帝平时怎样休闲娱乐？",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"0",
+			"explain":	"古代的连续剧",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"1",
+			"explain":	"兔儿爷",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"1",
+			"explain":	"英国玩具小火车",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"1",
+			"explain":	"《七巧图》",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"2",
+			"explain":	"爱作诗的乾隆皇帝",
+			"screen":	"1",
+			"page":		"2"
+		},
+		{
+			"type":		"2",
+			"explain":	"最爱恶作剧的皇帝",
+			"screen":	"1",
+			"page":		"2"
+		}
+	]
+}

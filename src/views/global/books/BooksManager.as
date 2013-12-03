@@ -50,6 +50,7 @@ package views.global.books
 		{
 			MC.instance.topBarLayer.visible=false;
 			_book = book;
+			_book = 1;
 			_screen=screen;
 			_page=page;
 			_closeable=closeable;
@@ -165,7 +166,8 @@ package views.global.books
 			_assetsManager=new AssetManager();
 			_assetsManager.enqueue(
 				File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"),
-				"json/collection.json"
+				"json/collection.json",
+				"json/catalogue.json"
 				);
 			_assetsManager.loadQueue(function(ratio:Number):void
 			{
