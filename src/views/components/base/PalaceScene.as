@@ -243,7 +243,7 @@ package views.components.base
 			dispatchEvent(new Event("gotoNext", true));
 		}
 
-		private var delayIndex:int;
+//		private var delayIndex:int;
 
 		protected var bg:Image;
 
@@ -265,15 +265,12 @@ package views.components.base
 			SOService.instance.setSO(_achieveIndex.toString() + "_achieve", true);
 //			var txt:String="xxx";
 			var txt:String="恭喜您获得成就: " + AchieveVO.achieveList[_achieveIndex][0];
+			addMask(0);
 			if (!tfSP)
 			{
 				tfSP=new Sprite();
 				addChild(tfSP);
 				tfSP.touchable=false;
-
-//				var quad:Quad=new Quad(400, 80, 0);
-//				quad.alpha=.5;
-//				tfSP.addChild(quad);
 
 				var bar:Image=getImage("acheivebar");
 				bar.pivotX=bar.width >> 1;
@@ -287,18 +284,23 @@ package views.components.base
 			}
 			else
 			{
-				if (delayIndex)
-					clearTimeout(delayIndex);
+				TweenLite.killTweensOf(resetTFSP, true);
 				TweenLite.killTweensOf(tfSP);
 				tf.text=txt;
 				tfSP.y=-170;
 				setChildIndex(tfSP, numChildren - 1);
 			}
 			TweenLite.to(tfSP, .5, {y: 0});
-			delayIndex=setTimeout(function():void
-			{
-				TweenLite.to(tfSP, .5, {y: -170, onComplete: _callback})
-			}, 2500);
+			TweenLite.delayedCall(2.5, resetTFSP, [_callback]);
+		}
+
+		private function resetTFSP(cb:Function):void
+		{
+			TweenLite.to(tfSP, .5, {y: -170, onComplete: function():void {
+				removeMask();
+				if (cb != null)
+					cb();
+			}})
 		}
 
 		protected function showCard(_cardName:String, callback:Function=null):void

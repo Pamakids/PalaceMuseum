@@ -35,15 +35,15 @@ package views.global
 			MC.instance.main.addMask(0);
 			enable=false;
 			TweenLite.to(bar, 1, {x: 10, onComplete: function():void {
-				var index:int=-1;
-				if (MC.instance.currentModule && MC.instance.currentModule.crtScene)
-					index=MC.instance.currentModule.crtScene.crtKnowledgeIndex - 1;
-				if (Map.map && Map.map.visible)
-					index=-1;
-				if (index == -1)
-					BooksManager.showBooks(0, 0, 0, true, false);
-				else
-					BooksManager.showBooks(0, 1, index);
+//				var index:int=-1;
+//				if (MC.instance.currentModule && MC.instance.currentModule.crtScene)
+//					index=MC.instance.currentModule.crtScene.crtKnowledgeIndex - 1;
+//				if (Map.map && Map.map.visible)
+//					index=-1;
+//				if (index == -1)
+//					BooksManager.showBooks(0, 0);
+//				else
+				BooksManager.showBooks(0, 0);
 			}});
 		}
 
