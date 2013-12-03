@@ -2,6 +2,9 @@ package views.module4
 {
 	import com.greensock.TweenLite;
 
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+
 	import controllers.MC;
 
 	import feathers.core.PopUpManager;
@@ -15,10 +18,12 @@ package views.module4
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
+	import views.components.ItemIntro;
 	import views.components.LionMC;
 	import views.components.base.PalaceScene;
 	import views.global.TailBar;
 	import views.global.TopBar;
+	import views.global.books.BooksManager;
 
 	/**
 	 * 上朝模块
@@ -42,8 +47,47 @@ package views.module4
 			hand.y=handOutPosY;
 
 			LionMC.instance.say("国泰民安，近日奏章数量不多，皇上大可放心。", 0, 0, 0, addMemorials, 20, .6, true);
-			//			addMemorials();
+
+			bg.addEventListener(TouchEvent.TOUCH, onBGTouch);
 		}
+
+		private function onBGTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(bg, TouchPhase.BEGAN);
+			if (!tc)
+				return;
+			var pt:Point=tc.getLocation(bg);
+			if (sealRect.containsPoint(pt))
+				openBook();
+		}
+
+		private function openBook():void
+		{
+			book=new ItemIntro(5, new Rectangle(447, 451, 240, 69));
+			var close:ElasticButton=new ElasticButton(getImage("button_close"), getImage("button_close_down"));
+			book.addIntro(getImage("intro-bg"), getImage("intro-seal"), close);
+			book.addEventListener(ItemIntro.CLOSE, onClose);
+			book.addEventListener(ItemIntro.OPEN, onOpenItemIntro);
+		}
+
+		private function onClose(e:Event):void
+		{
+			PopUpManager.removePopUp(book, true);
+			book=null;
+			showCard("9");
+		}
+
+		private function onOpenItemIntro(e:Event):void
+		{
+			var index:int=book.index;
+			PopUpManager.removePopUp(book, true);
+			book=null;
+			showCard("9", function():void {
+				BooksManager.showBooks(1, 1, index);
+			});
+		}
+
+		private var sealRect:Rectangle=new Rectangle(270, 50, 145, 103);
 
 		private var handPosX:Number; //手 位置
 		private var handPosY:Number;
@@ -128,6 +172,7 @@ package views.module4
 		}
 
 		private var count:int=0;
+		private var book:ItemIntro;
 
 		private function removeMemorial(img:Image, cb:Function=null):void
 		{

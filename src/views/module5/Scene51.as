@@ -4,18 +4,25 @@ package views.module5
 	import com.pamakids.manager.SoundManager;
 
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
+
+	import feathers.core.PopUpManager;
 
 	import sound.SoundAssets;
 
 	import starling.display.Image;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
+	import views.components.ElasticButton;
+	import views.components.ItemIntro;
 	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
+	import views.global.books.BooksManager;
 
 	/**
 	 * 娱乐模块
@@ -50,7 +57,35 @@ package views.module5
 
 			LionMC.instance.say(" 待各位落座，演出就正式开始。", 0, 0, 0, function():void {
 				ready=true;
+				bg.addEventListener(TouchEvent.TOUCH, onBGTouch);
 			}, 20, .6, true);
+
+		}
+
+		private function onBGTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(bg, TouchPhase.BEGAN);
+			if (!tc)
+				return;
+			var pt:Point=tc.getLocation(bg);
+			if (rect.containsPoint(pt))
+				openBook();
+		}
+
+		private function openBook():void
+		{
+			book=new ItemIntro(0, null);
+			var close:ElasticButton=new ElasticButton(getImage("button_close"), getImage("button_close_down"));
+			book.addIntro(getImage("intro-bg"), getImage("intro-stage"), close);
+			book.addEventListener(ItemIntro.CLOSE, onClose);
+		}
+
+		private var rect:Rectangle=new Rectangle(313, 121, 343, 336);
+
+		private function onClose(e:Event):void
+		{
+			PopUpManager.removePopUp(book, true);
+			book=null;
 		}
 
 		private function addPeople():void
@@ -106,6 +141,7 @@ package views.module5
 		}
 
 		private var ready:Boolean;
+		private var book:ItemIntro;
 
 		private function checkAll(index:int):void
 		{

@@ -1,7 +1,6 @@
 package views.module2
 {
 	import com.greensock.TweenLite;
-	import com.greensock.easing.Elastic;
 	import com.pamakids.palace.utils.SPUtils;
 
 	import flash.geom.Point;
@@ -20,11 +19,13 @@ package views.module2
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
+	import views.components.ItemIntro;
 	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 	import views.global.TailBar;
+	import views.global.books.BooksManager;
 	import views.module2.scene22.Telescope;
 	import views.module2.scene22.ThermoMeter;
 	import views.module2.scene22.TriangularPrism;
@@ -222,17 +223,11 @@ package views.module2
 				return;
 			if (index == 4)
 			{
-				book=new Sprite();
-				book.addChild(getImage("intro-waterpot"));
-				book.x=1024 - book.width >> 1;
-				book.y=768 - book.height >> 1;
-				close=new ElasticButton(getImage("button_close"));
-				close.shadow=getImage("button_close_down");
-				close.x=800;
-				close.y=30;
-				book.addChild(close);
-				close.addEventListener(ElasticButton.CLICK, onClose);
-				PopUpManager.addPopUp(book, true, false);
+				book=new ItemIntro(4, new Rectangle(82, 402, 260, 90));
+				close=new ElasticButton(getImage("button_close"), getImage("button_close_down"));
+				book.addIntro(getImage("intro-bg"), getImage("intro-waterpot"), close);
+				book.addEventListener(ItemIntro.CLOSE, onClose);
+				book.addEventListener(ItemIntro.OPEN, onOpenItemIntro);
 			}
 			else
 			{
@@ -244,17 +239,25 @@ package views.module2
 			}
 		}
 
+		private function onOpenItemIntro(e:Event):void
+		{
+			var index:int=book.index;
+			PopUpManager.removePopUp(book, true);
+			book=null;
+			showCard("12", function():void {
+				check(4, function():void {
+					BooksManager.showBooks(1, 1, index);
+				});
+			});
+		}
+
 		private function onClose(e:Event):void
 		{
-			close.touchable=false;
-			TweenLite.to(book, 1, {x: 512 - 10, y: 384 - 10, scaleX: .07, scaleY: .07, ease: Elastic.easeOut, onComplete: function():void
-			{
-				PopUpManager.removePopUp(book, true);
-				book=null;
-				showCard("12", function():void {
-					check(4);
-				});
-			}});
+			PopUpManager.removePopUp(book, true);
+			book=null;
+			showCard("12", function():void {
+				check(4);
+			});
 		}
 
 		private function checkIndex(pt:Point):int
@@ -268,20 +271,25 @@ package views.module2
 			return -1;
 		}
 
-		private function check(index:int):void
+		private function check(index:int, cb:Function=null):void
 		{
 			checkArr[index]=true;
 			for each (var b:Boolean in checkArr)
 			{
 				if (!b)
+				{
+					if (cb != null)
+						cb();
 					return;
+				}
 			}
-			showAchievement(10);
+			showAchievement(10, cb);
 		}
 
 		private var p:Prompt;
 		private var checkArr:Vector.<Boolean>=new Vector.<Boolean>(5);
-		private var book:Sprite;
+//		private var book:Sprite;
+		private var book:ItemIntro;
 		private var close:ElasticButton;
 		private var king:Sprite;
 
