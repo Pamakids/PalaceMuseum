@@ -67,8 +67,6 @@ package views.global.books.userCenter
 			initNavigator();
 			initAnimation();
 			initRender();
-			
-//			this.addChild( new Catalogue() );
 		}
 		
 		private function initShade():void

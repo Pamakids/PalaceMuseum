@@ -1,5 +1,7 @@
 package views.global.books.handbook
 {
+	import com.greensock.TweenLite;
+	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
@@ -13,7 +15,9 @@ package views.global.books.handbook
 	
 	import sound.SoundAssets;
 	
+	import starling.animation.Tween;
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -271,16 +275,53 @@ package views.global.books.handbook
 			BooksManager.closeCtrBook();
 		}
 		
+		private var sprite:Sprite;
 		private var cata:Catalogue;
+		private var mask:Quad;
 		private function openCatalogue():void
 		{
 			if(!cata)
 			{
+				sprite = new Sprite();
+				this.addChild( sprite );
+				sprite.x = 93;
+				sprite.y = 85;
+				var point:Point = sprite.globalToLocal(new Point());
+				mask = new Quad(1024, 768, 0x0);
+				sprite.addChild( mask );
+				mask.x = point.x;
+				mask.y = point.y;
 				cata = new Catalogue();
-				this.addChild( cata );
-				cata.x = 93;
-				cata.y = 85;
+				sprite.addChild( cata );
+				cata.addEventListener(Event.CHANGE, catalogueChange);
 			}
+			sprite.visible = true;
+			sprite.alpha = 1;
+			mask.alpha = .5;
+			cata.scaleX = cata.scaleY = 1;
+		}
+		
+		private function catalogueChange(e:Event):void
+		{
+			var obj:Object = e.data;
+			TweenLite.to(sprite, 0.8, {alpha: 0});
+			TweenLite.to(cata, 0.8, {scaleX: 0, scaleY: 0, onComplete: function():void{
+				sprite.visible = false;
+				turnToForCata(obj[0], obj[1]);
+				trace(obj);
+			}});
+		}
+		
+		private function turnToForCata(screen:int, page:int):void
+		{
+			if(screen == 0)
+				crtPage_Handbook = page;
+			else if(screen == 1)
+				crtPage_Allustion = page;
+			else if(screen == 2)
+				crtPage_Birds == page;
+			_tabBar.selectedIndex = screen;
+			
 		}
 		
 		private function onTouch(e:TouchEvent):void
@@ -421,5 +462,6 @@ package views.global.books.handbook
 			_navigator.showScreen(screenNames[screen]);
 			this._backButton.visible=closeable;
 		}
+		
 	}
 }

@@ -50,7 +50,6 @@ package views.global.books
 		{
 			MC.instance.topBarLayer.visible=false;
 			_book = book;
-			_book = 1;
 			_screen=screen;
 			_page=page;
 			_closeable=closeable;
@@ -121,6 +120,10 @@ package views.global.books
 		public static function getCrtUserCenter():UserCenter
 		{
 			return _userCenter;
+		}
+		public static function getCrtHandbook():Handbook
+		{
+			return _handbook;
 		}
 
 		public static function enable():void
