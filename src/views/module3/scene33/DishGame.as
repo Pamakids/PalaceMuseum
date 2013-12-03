@@ -28,6 +28,7 @@ package views.module3.scene33
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
+	import views.components.LionMC;
 	import views.components.base.PalaceGame;
 
 	public class DishGame extends PalaceGame
@@ -604,7 +605,9 @@ package views.module3.scene33
 			gameOver=true;
 			timer.stop();
 
-			TweenLite.delayedCall(.5, initResult);
+			LionMC.instance.play((life > 0 && score > 0) ? 1 : 4, 0, 0, initResult);
+
+//			TweenLite.delayedCall(.5, initResult);
 		}
 
 		private function initResult():void

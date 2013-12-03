@@ -38,6 +38,7 @@ package views.module3.scene32
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
+	import views.components.LionMC;
 	import views.components.base.PalaceGame;
 
 	public class MenuGame extends PalaceGame
@@ -454,7 +455,8 @@ package views.module3.scene32
 					{
 						time.stop();
 						endFunction=function():void {
-							TweenLite.delayedCall(2, gameOver);
+							LionMC.instance.play(1, 0, 0, gameOver);
+//							TweenLite.delayedCall(2, gameOver);
 						}
 					}
 

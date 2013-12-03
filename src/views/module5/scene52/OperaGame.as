@@ -29,6 +29,7 @@ package views.module5.scene52
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
+	import views.components.LionMC;
 	import views.components.base.PalaceGame;
 
 	public class OperaGame extends PalaceGame
@@ -267,7 +268,9 @@ package views.module5.scene52
 			gameOver=true;
 			timer.stop();
 
-			TweenLite.delayedCall(2, initResult);
+			LionMC.instance.play((life > 0 && score > 0) ? 1 : 4, 0, 0, initResult);
+
+//			TweenLite.delayedCall(2, initResult);
 		}
 
 		private function initScore():void
