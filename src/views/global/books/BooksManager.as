@@ -121,6 +121,10 @@ package views.global.books
 		{
 			return _userCenter;
 		}
+		public static function getCrtHandbook():Handbook
+		{
+			return _handbook;
+		}
 
 		public static function enable():void
 		{
@@ -165,7 +169,8 @@ package views.global.books
 			_assetsManager=new AssetManager();
 			_assetsManager.enqueue(
 				File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"),
-				"json/collection.json"
+				"json/collection.json",
+				"json/catalogue.json"
 				);
 			_assetsManager.loadQueue(function(ratio:Number):void
 			{

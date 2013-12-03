@@ -10,8 +10,6 @@ package views.global.books.userCenter
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
 	
-	import org.agony2d.utils.getClassName;
-	
 	import sound.SoundAssets;
 	
 	import starling.display.Image;
@@ -69,8 +67,6 @@ package views.global.books.userCenter
 			initNavigator();
 			initAnimation();
 			initRender();
-			
-//			this.addChild( new Catalogue() );
 		}
 		
 		private function initShade():void
@@ -233,7 +229,7 @@ package views.global.books.userCenter
 
 		private function onInitialized(e:Event):void
 		{
-			switch (getClassName(e.currentTarget))
+			switch (_navigator.activeScreenID)
 			{
 //				case HANDBOOK:
 //					(_navigator.activeScreen as HandbookScreen).initView(crtPage_Handbook);
@@ -258,7 +254,7 @@ package views.global.books.userCenter
 
 		private function onViewUpdated(e:Event):void
 		{
-			switch (getClassName(e.currentTarget))
+			switch (_navigator.activeScreenID)
 			{
 //				case HANDBOOK:
 //					crtPage_Handbook+=(pageUp) ? -1 : 1; //记录
@@ -272,7 +268,7 @@ package views.global.books.userCenter
 
 		private function onViewUpdateFail(e:Event):void
 		{
-			switch (getClassName(e.currentTarget))
+			switch (_navigator.activeScreenID)
 			{
 //				case HANDBOOK:
 				case ACHIEVEMENT:
