@@ -63,21 +63,18 @@ package views.components
 				play(int(Math.random() * mcArr.length));
 		}
 
-		public function play(type:int=0, _x:Number=0, _y:Number=0, needMask:Boolean=true):void
+		public function play(type:int=0, _x:Number=0, _y:Number=0, cb:Function=null):void
 		{
 			SoundAssets.playSFX("lionshow", true);
 			TailBar.hide();
 			showLion(type);
 			if (!_x && !_y)
 			{
-//				_x=(Const.WIDTH - mcWidth) / 2;
-//				_y=(Const.HEIGHT - mcHeight) / 2;
 				_x=type == 6 ? 0 : 50;
 				_y=520;
 			}
 			x=_x < 512 ? -100 - mcWidth * 2 : 1124 + mcWidth;
 			y=_y;
-//			if (needMask)
 			MC.instance.main.addMask();
 			tl=TweenMax.to(this, .5, {x: _x, y: _y, motionBlur: true, onComplete: function():void
 			{
@@ -88,8 +85,8 @@ package views.components
 						TailBar.show();
 						lion.removeEventListener(Event.FRAME_CONSTRUCTED, compFunc);
 						isSayingOver=true;
-//						if (needMask)
-//						MC.instance.main.removeMask();
+						if (cb != null)
+							cb();
 					}
 				}
 				lion.addEventListener(Event.FRAME_CONSTRUCTED, compFunc);

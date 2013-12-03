@@ -150,12 +150,12 @@ package views.module2.scene22
 		public function set standUp(value:Boolean):void
 		{
 			_standUp=value;
-			var dy1:Number=stand.y - 100;
+			var dy1:Number=stand.y - 50;
 			var dy2:Number=stand.y;
 			if (!value)
 			{
-				TweenLite.to(stand, .5, {y: dy1, ease: Quad.easeOut, onComplete: function():void {
-					TweenLite.to(stand, 2.5, {y: dy2, ease: Bounce.easeOut, onComplete: function():void {
+				TweenLite.to(stand, .3, {y: dy1, ease: Quad.easeOut, onComplete: function():void {
+					TweenLite.to(stand, 2, {y: dy2, ease: Bounce.easeOut, onComplete: function():void {
 						sit.visible=sit.touchable=!value;
 						stand.visible=stand.touchable=value;
 					}});

@@ -46,7 +46,7 @@ package views.module3
 			king.touchable=false;
 			king.alpha=0;
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			TweenLite.delayedCall(4, function():void {
+			TweenLite.delayedCall(2.5, function():void {
 				TweenLite.to(king, 1, {alpha: 1, onComplete: moveKing});
 			}
 			);

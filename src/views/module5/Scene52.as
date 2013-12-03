@@ -236,13 +236,15 @@ package views.module5
 			{
 				if (lvl == 0)
 					showCard("10", function():void {
-						initGame2(lvl);
-						showAchievement(28);
+						showAchievement(28, function():void {
+							initGame2(lvl);
+						});
 					});
 				else
 					showCard("11", function():void {
-						initGame2(lvl);
-						showAchievement(29);
+						showAchievement(29, function():void {
+							initGame2(lvl);
+						});
 					});
 			}
 			else
