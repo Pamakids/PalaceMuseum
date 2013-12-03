@@ -16,6 +16,9 @@ package controllers
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
 	import views.EndScene;
@@ -31,8 +34,8 @@ package controllers
 	import views.components.base.PalaceModule;
 	import views.global.TailBar;
 	import views.global.TopBar;
-	import views.global.map.Map;
 	import views.global.books.BooksManager;
+	import views.global.map.Map;
 
 	/**
 	 * 主业务控制器
@@ -264,6 +267,18 @@ package controllers
 			Map.parent=mapLayer;
 			TopBar.parent=topBarLayer;
 			TailBar._parent=topBarLayer;
+
+			contentLayer.addEventListener(TouchEvent.TOUCH, onHideTopBar);
+			mapLayer.addEventListener(TouchEvent.TOUCH, onHideTopBar);
+			centerLayer.addEventListener(TouchEvent.TOUCH, onHideTopBar);
+		}
+
+		private function onHideTopBar(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(e.currentTarget as starling.display.DisplayObject, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			TopBar.instance.hideBookAndAvatar();
 		}
 
 		public function set contentEnable(value:Boolean):void

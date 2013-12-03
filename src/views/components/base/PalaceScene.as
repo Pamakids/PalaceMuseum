@@ -9,13 +9,10 @@ package views.components.base
 {
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
-	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.StringUtils;
 
 	import flash.geom.Point;
-	import flash.utils.clearTimeout;
 	import flash.utils.getTimer;
-	import flash.utils.setTimeout;
 
 	import assets.global.userCenter.BirdAssets;
 
@@ -73,7 +70,7 @@ package views.components.base
 			if (value < 0)
 				return;
 			if (!checkBird())
-				TweenLite.delayedCall(3, function():void {
+				TweenLite.delayedCall(10, function():void {
 					var cls:Class=BirdAssets["bird" + birdIndex];
 					if (!cls)
 						return;

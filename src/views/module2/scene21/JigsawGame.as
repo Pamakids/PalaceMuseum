@@ -29,6 +29,7 @@ package views.module2.scene21
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
+	import views.components.LionMC;
 	import views.components.base.PalaceGame;
 
 	public class JigsawGame extends PalaceGame
@@ -438,10 +439,8 @@ package views.module2.scene21
 			var edge:Image=getImage("mapEdge");
 			bgHolder.addChild(edge);
 			edge.alpha=0;
-			TweenLite.to(edge, 1, {alpha: 1, onComplete: function():void {}});
-//			var disposeFun:Function=
-			TweenLite.delayedCall(2, function():void
-			{
+			TweenLite.to(edge, 1, {alpha: 1});
+			LionMC.instance.play(1, 0, 0, function():void {
 				TweenLite.to(timeHolder, 1, {x: 1024});
 				TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn, onComplete: function():void {
 					timeHolder.removeFromParent(true);
@@ -449,6 +448,15 @@ package views.module2.scene21
 					initResult();
 				}});
 			});
+//			TweenLite.delayedCall(2, function():void
+//			{
+//				TweenLite.to(timeHolder, 1, {x: 1024});
+//				TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn, onComplete: function():void {
+//					timeHolder.removeFromParent(true);
+//					gameSP.removeFromParent(true);
+//					initResult();
+//				}});
+//			});
 		}
 
 		private function initResult():void
