@@ -65,7 +65,7 @@ package views.global.books.userCenter.screen
 		private function initSoundButton():void
 		{
 			check_BGM = new Button();
-			check_BGM.label = "音乐";
+			check_BGM.label = "  音乐";
 			check_BGM.labelFactory = function():ITextRenderer{
 				var render:TextFieldTextRenderer = new TextFieldTextRenderer();
 				render.embedFonts = true;
@@ -81,7 +81,7 @@ package views.global.books.userCenter.screen
 			check_BGM.y = 80;
 			
 			check_effect = new Button();
-			check_effect.label = "音效";
+			check_effect.label = "  音效";
 			check_effect.labelFactory = function():ITextRenderer{
 				var render:TextFieldTextRenderer = new TextFieldTextRenderer();
 				render.embedFonts = true;

@@ -3,16 +3,21 @@ package views.global.books.components
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.Shape;
 	import flash.geom.Point;
-	import flash.utils.getTimer;
 	
 	import controllers.MC;
+	
+	import feathers.controls.Button;
 	
 	import models.SOService;
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -23,7 +28,7 @@ package views.global.books.components
 	import views.Interlude;
 	import views.global.books.BooksManager;
 	import views.global.map.Map;
-
+	
 	/**
 	 * 场景选择组件
 	 * @author Administrator
@@ -33,27 +38,13 @@ package views.global.books.components
 		public function ModuleList()
 		{
 			init();
-			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
-
-		private var start:int;
-		private var started:Boolean=false;
-
-		private function onEnterFrame():void
-		{
-			if (started)
-			{
-				if (getTimer() - start >= 500)
-				{
-					activeIcon.texture=SKIN_ICON_SUN;
-					started=false;
-				}
-			}
-		}
-
+		
+		private var moving:Boolean = false;
+		
 		private const viewWidth:uint=968;
 		private const viewHeight:uint=464;
-
+		
 		private var vecImage:Vector.<Image>;
 		private const btnCount:uint=8;
 		private const center:Point=new Point(viewWidth / 2, viewHeight + 400);
@@ -62,14 +53,13 @@ package views.global.books.components
 		private const minR:Number=-Math.PI / 2 - 3.5 * d;
 		private const maxR:Number=minR + 7 * d;
 		private var activeIcon:Image;
-
+		
 		private var SKIN_VIDEO_UP:Texture=BooksManager.getTexture("module_video_up");
 		private var SKIN_VIDEO_DOWN:Texture=BooksManager.getTexture("module_video_down");
 		private var SKIN_MODULE_UP:Texture=BooksManager.getTexture("module_start_up");
 		private var SKIN_MODULE_DOWN:Texture=BooksManager.getTexture("module_start_down");
 		private var SKIN_ICON_SUN:Texture=BooksManager.getTexture("drag_sun");
-
-
+		
 		private function init():void
 		{
 			initBackGround();
@@ -77,14 +67,36 @@ package views.global.books.components
 			initWords();
 			initBtns();
 			initActiveIcon();
+			initPlayBtn();
 		}
-
+		
+		private var play:Image;
+		private function initPlayBtn():void
+		{
+			play = BooksManager.getImage("btn_play");
+			play.pivotX = play.width >> 1;
+			play.pivotY = play.height >> 1;
+			play.x = centerS.x + 4;
+			play.y = centerS.y + 3;
+			this.addChild( play );
+			play.addEventListener(TouchEvent.TOUCH, onPlay);
+		}
+		
+		private function onPlay(e:TouchEvent):void
+		{
+			var touch:Touch = e.getTouch( play );
+			if(touch && touch.phase == TouchPhase.ENDED)
+			{
+				clickHandler();
+			}
+		}
+		
 		private var crtScene:int;
 		private var crtModule:int;
 		private var fromMap:Boolean;
 		private function initActiveIcon():void
 		{
-			activeIcon=new Image(SKIN_VIDEO_UP);
+			activeIcon=new Image(SKIN_ICON_SUN);
 			activeIcon.pivotX=activeIcon.width >> 1;
 			activeIcon.pivotY=activeIcon.height >> 1;
 			var str:String=SOService.instance.getSO("lastScene") as String;
@@ -115,9 +127,11 @@ package views.global.books.components
 			selectI = i;
 			activeIcon.addEventListener(TouchEvent.TOUCH, onTriggered);
 		}
-
+		
 		private function onTriggered(e:TouchEvent):void
 		{
+			if(moving)
+				return;
 			var touch:Touch=e.getTouch(activeIcon);
 			var point:Point;
 			if (touch)
@@ -125,51 +139,31 @@ package views.global.books.components
 				switch (touch.phase)
 				{
 					case TouchPhase.BEGAN:
-						activeIcon.texture=(activeIcon.texture == SKIN_VIDEO_UP) ? SKIN_VIDEO_DOWN : SKIN_MODULE_DOWN;
-						started=true;
-						start=getTimer();
+						play.visible = false;
 						break;
 					case TouchPhase.MOVED:
-						point=touch.getLocation(activeIcon);
-						if (!activeIcon.hitTest(point))
-							started=false;
-						if (activeIcon.texture == SKIN_ICON_SUN)
-						{
-							point=touch.getLocation(this);
-							crtR=Math.min(maxR, Math.max(minR, Math.atan2(point.y - center.y, point.x - center.x)));
-						}
+						point=touch.getLocation(this);
+						crtR=Math.min(maxR, Math.max(minR, Math.atan2(point.y - center.y, point.x - center.x)));
 						break;
 					case TouchPhase.ENDED:
-						started=false;
 						var targetR:Number;
-						if (activeIcon.texture == SKIN_ICON_SUN)
+						selectI=Math.round((crtR - minR) / d);
+						for (var i:int=selectI; i >= 0; i--)
 						{
-							selectI=Math.round((crtR - minR) / d);
-							for (var i:int=selectI; i >= 0; i--)
+							if (isComplete(i))
 							{
-								if (isComplete(i))
-								{
-									selectI=i;
-									break;
-								}
-							}
-							targetR=minR + selectI * d;
-							animationStart(targetR);
-						}
-						else
-						{
-							point=touch.getLocation(activeIcon);
-							activeIcon.texture=(mapping[selectI].charAt(0) == "m") ? SKIN_MODULE_UP : SKIN_VIDEO_UP;
-							if (activeIcon.hitTest(point))
-							{
-								clickHandler();
+								selectI=i;
+								break;
 							}
 						}
+						targetR=minR + selectI * d;
+						animationStart(targetR);
+						play.visible = true;
 						break;
 				}
 			}
 		}
-
+		
 		private function clickHandler():void
 		{
 			var string:String=mapping[selectI];
@@ -267,9 +261,9 @@ package views.global.books.components
 			//			else
 			//				Starling.current.nativeStage.addChild(new Interlude(string));
 		}
-
+		
 		private var selectI:int=0;
-
+		
 		private function initBtns():void
 		{
 			var r:Number;
@@ -286,7 +280,7 @@ package views.global.books.components
 				image.addEventListener(TouchEvent.TOUCH, onTouch);
 			}
 		}
-
+		
 		private const mapping:Array=[
 			"assets/video/intro.mp4",
 			"m_0_0",
@@ -296,11 +290,11 @@ package views.global.books.components
 			"m_3_3",
 			"m_4_0",
 			"assets/video/end.mp4"
-			];
-
+		];
+		
 		private function isComplete(i:int):Boolean
 		{
-//			return true;
+						return true;
 			if (i == 0)
 				return true;
 			var str:String=mapping[i];
@@ -315,9 +309,9 @@ package views.global.books.components
 			}
 			return false;
 		}
-
+		
 		private var _crtR:Number;
-
+		
 		public function set crtR(r:Number):void
 		{
 			if (_crtR == r)
@@ -325,18 +319,18 @@ package views.global.books.components
 			_crtR=r;
 			setPositionByRadian(activeIcon, _crtR);
 		}
-
+		
 		public function get crtR():Number
 		{
 			return _crtR;
 		}
-
+		
 		private function setPositionByRadian(obj:DisplayObject, r:Number):void
 		{
 			obj.x=center.x + radius * Math.cos(r);
 			obj.y=center.y + radius * Math.sin(r);
 		}
-
+		
 		private function initBackGround():void
 		{
 			var image:Image=BooksManager.getImage("userCenter_bg");
@@ -344,8 +338,57 @@ package views.global.books.components
 			image.y=93;
 			this.addChild(image);
 			image.touchable=false;
+			
+			image = BooksManager.getImage("bg_sundial");
+			image.x = 386;
+			image.y = 246;
+			this.addChild( image );
+			image.touchable = false;
+			
+//			var shape:Shape = new Shape();
+//			centerS = localToGlobal(centerS);
+//			shape.graphics.beginFill(0x0333, 0.2);
+//			shape.graphics.drawCircle(60, 60, 60);
+//			shape.graphics.endFill();
+//			var bd:BitmapData = new BitmapData(120, 120);
+//			bd.draw( shape );
+//			var bp:Bitmap = new Bitmap(bd);
+//			image = new Image(Texture.fromBitmap(bp));
+//			this.addChild( image );
+//			image.pivotX = image.pivotY = 60;
+//			image.x = centerS.x;
+//			image.y = centerS.y;
+			
+			
+			pointer = new Quad(66, 4, 0x0);
+			pointer.alpha = .4;
+			pointer.pivotY = pointer.height >> 1;
+			pointer.x = centerS.x;
+			pointer.y = centerS.y;
+			this.addChild( pointer );
+			pointer.touchable = false;
+			pointer.rotation = arrR[selectI];
+			
+			image = BooksManager.getImage("focus_0");
+			image.x = 445;
+			image.y = 238;
+			this.addChild(image);
+			image.touchable = false;
 		}
-
+		
+		private var centerS:Point = new Point(482, 332);
+		private const arrR:Array = [
+			-Math.PI/2,
+			-10*Math.PI/180,
+			1*Math.PI/180,
+			20*Math.PI/180,
+			50*Math.PI/180,
+			140*Math.PI/180,
+			158*Math.PI/180,
+			-Math.PI/2+2*Math.PI
+		];
+		private var pointer:Quad;
+		
 		private const wordPosition:Array=[
 			new Point(135, 199),
 			new Point(222, 160),
@@ -355,7 +398,7 @@ package views.global.books.components
 			new Point(596, 128),
 			new Point(695, 157),
 			new Point(768, 196)
-			];
+		];
 		private const linePosition:Array=[
 			new Point(141, 123),
 			new Point(238, 82),
@@ -364,8 +407,8 @@ package views.global.books.components
 			new Point(568, 60),
 			new Point(688, 82),
 			new Point(791, 128)
-			];
-
+		];
+		
 		private function initLines():void
 		{
 			var image:Image;
@@ -380,7 +423,7 @@ package views.global.books.components
 				this.addChild(image);
 			}
 		}
-
+		
 		private function initWords():void
 		{
 			var image:Image;
@@ -395,9 +438,9 @@ package views.global.books.components
 				this.addChild(image);
 			}
 		}
-
+		
 		private var startObj:Object;
-
+		
 		private function onTouch(e:TouchEvent):void
 		{
 			var i:int;
@@ -413,18 +456,22 @@ package views.global.books.components
 				animationStart(targetR);
 			}
 		}
-
+		
 		private function animationStart(targetR:Number):void
 		{
+			moving = true;
 			TweenLite.to(this, 1, {crtR: targetR, ease: Cubic.easeOut, onComplete: function():void {
-				activeIcon.texture=(mapping[selectI].charAt(0) == "m") ? SKIN_MODULE_UP : SKIN_VIDEO_UP;
+				moving = false;
+			}});
+			var tarR:Number = arrR[selectI];
+			TweenLite.to(pointer, 1, {rotation: tarR, ease: Cubic.easeOut, onComplete:function():void {
+//				play.visible = true;
 			}});
 		}
-
+		
 		override public function dispose():void
 		{
 			TweenLite.killTweensOf(this);
-			this.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			for each (var image:Image in vecImage)
 			{
 				image.removeEventListener(TouchEvent.TOUCH, onTouch);

@@ -282,6 +282,7 @@ package views.global.books.handbook
 				this.addChild( sprite );
 				sprite.x = 93;
 				sprite.y = 85;
+				sprite.addEventListener(TouchEvent.TOUCH, hideCatalogue);
 				var point:Point = sprite.globalToLocal(new Point());
 				mask = new Quad(1024, 768, 0x0);
 				sprite.addChild( mask );
@@ -297,6 +298,22 @@ package views.global.books.handbook
 			cata.scaleX = cata.scaleY = 1;
 			cata.updateView(0);
 			
+		}
+		
+		private function hideCatalogue(e:TouchEvent):void
+		{
+			var touch:Touch = e.getTouch( sprite );
+			if(touch && touch.phase == TouchPhase.ENDED)
+			{
+				var point:Point = touch.getLocation(sprite);
+				if(!cata.hitTest(point))
+				{
+					TweenLite.to(sprite, 0.8, {alpha: 0});
+					TweenLite.to(cata, 0.8, {scaleX: 0, scaleY: 0, onComplete: function():void{
+						sprite.visible = false;
+					}});
+				}
+			}
 		}
 		
 		private function catalogueChange(e:Event):void
@@ -334,7 +351,7 @@ package views.global.books.handbook
 					break;
 				
 			}
-				
+			
 			if(_tabBar.selectedIndex == screen)
 			{
 				showAnimation();
