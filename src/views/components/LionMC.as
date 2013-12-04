@@ -1,8 +1,7 @@
 package views.components
 {
-	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
-	import com.pamakids.manager.SoundManager;
+	import com.greensock.easing.Quad;
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -39,9 +38,9 @@ package views.components
 
 		private function showLion(type:int=0):void
 		{
+			MC.instance.main.removeMask();
 			if (lion)
 			{
-				MC.instance.main.removeMask();
 				lion.stop();
 				removeChild(lion);
 				lion=null;
@@ -73,10 +72,10 @@ package views.components
 				_x=type == 6 ? 0 : 50;
 				_y=520;
 			}
-			x=_x < 512 ? -100 - mcWidth * 2 : 1124 + mcWidth;
+			x=_x < 512 ? (-175 - mcWidth * 2) : (1124 + mcWidth);
 			y=_y;
 			MC.instance.main.addMask();
-			tl=TweenMax.to(this, .5, {x: _x, y: _y, motionBlur: true, onComplete: function():void
+			tl=TweenMax.to(this, .8, {x: _x, y: _y, motionBlur: true, onComplete: function():void
 			{
 				lion.gotoAndPlay(1);
 				var compFunc:Function=function(e:Event):void {
@@ -88,6 +87,7 @@ package views.components
 						if (cb != null)
 							cb();
 					}
+					MC.instance.main.removeMask();
 				}
 				lion.addEventListener(Event.FRAME_CONSTRUCTED, compFunc);
 			}});
@@ -185,12 +185,10 @@ package views.components
 			showLion(_type);
 			if (!_x && !_y)
 			{
-//				_x=(Const.WIDTH - mcWidth) / 2;
-//				_y=(Const.HEIGHT - mcHeight) / 2;
 				_x=50;
 				_y=520;
 			}
-			x=_x < 512 ? (-100 - mcWidth * 2) : (1124 + mcWidth);
+			x=_x < 512 ? (-175 - mcWidth * 2) : (1124 + mcWidth);
 			y=_y;
 			callBack=_callBack;
 			if (p)
@@ -200,24 +198,23 @@ package views.components
 				p.playHide();
 			}
 
-//			if (maskA >= 0)
 			MC.instance.main.addMask(maskA);
-			tl=TweenMax.to(this, .5, {x: _x, y: _y, motionBlur: true, onComplete: function():void
-			{
-				addEventListener(MouseEvent.CLICK, onClick);
-				lion.gotoAndPlay(1);
-				p=Prompt.showTXT(isTask ? (x + 160) : (x + mcWidth + 30), isTask ? (y + 120) : y, content, fontSize, function():void
-				{
-					TailBar.show();
-					isSayingOver=true;
-					if (callBack != null) {
-						callBack();
-						callBack=null;
-					}
-//					if (maskA)
-//					MC.instance.main.removeMask();
-				}, MC.instance.main, 1, false, 3, isTask);
-			}});
+			tl=TweenMax.to(this, .8, {x: _x, y: _y, motionBlur: true, ease: Quad.easeIn,
+							   onComplete: function():void
+							   {
+								   addEventListener(MouseEvent.CLICK, onClick);
+								   lion.gotoAndPlay(1);
+								   p=Prompt.showTXT(isTask ? (x + 160) : (x + mcWidth + 30), isTask ? (y + 120) : y, content, fontSize, function():void
+								   {
+									   TailBar.show();
+									   isSayingOver=true;
+									   if (callBack != null) {
+										   callBack();
+										   callBack=null;
+									   }
+									   MC.instance.main.removeMask();
+								   }, MC.instance.main, 1, false, 3, isTask);
+							   }});
 		}
 
 		/**

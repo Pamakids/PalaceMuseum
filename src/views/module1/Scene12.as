@@ -1,7 +1,6 @@
 package views.module1
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
@@ -99,17 +98,14 @@ package views.module1
 			addCircle();
 			addKing();
 			addBox();
-			addLion();
+
+			showLionHint("hint-start", null, false);
 		}
 
 		private function showLionHint(content:String, callback:Function=null, isTask:Boolean=false):void
 		{
-//			lastTask=isTask;
 			var txt:String=json[content];
 			LionMC.instance.say(txt, 0, 0, 0, callback, 20, 1, isTask);
-
-//			crtLionContent=content;
-//			showHint(content, 0, callback, isTask);
 		}
 
 		private function addBox():void
@@ -131,42 +127,13 @@ package views.module1
 			boxHolder.addChild(boxCover);
 		}
 
-//		private function showHint(content:String, posIndex:int, callback:Function=null, isTask:Boolean=false):void
-//		{
-//			var pos:Point=posArr[posIndex];
-//			var txt:String=json[content];
-//			Prompt.showTXT(isTask ? (pos.x + 85) : pos.x, isTask ? (pos.y + 85) : pos.y, txt, 20, callback, this, 1, false, 3, isTask);
-//		}
-
 		private var posArr:Array=[new Point(90, 560), new Point(530, 200), new Point(530, 610)];
 
 		private var lionX:int=-140;
 		private var lionDX:int=20;
 
-		private function addLion():void
-		{
-			showLionHint("hint-start", null, false);
-//			var txt:String=json["hint-start"];
-//			LionMC.instance.say(txt, 0, 0, 0, null, 20, 1, true);
-
-//			TweenLite.to(lion, 1, {x: lionDX, y: 540, rotation: 0, ease: Elastic.easeOut, onComplete: function():void
-//			{
-//				showLionHint("hint-start");
-//				lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
-//			}});
-		}
-
-//		private function onLionTouch(e:TouchEvent):void
-//		{
-//			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
-//			if (tc)
-//				showLionHint(crtLionContent, null, lastTask);
-//		}
-
 		private static var clothArr:Array=["朝服", "行服", "雨服", "龙袍", "常服"];
 		private static var hatArr:Array=["朝帽", "行帽", "雨帽", "龙帽", "常帽"];
-
-//		private var crtLionContent:String;
 
 		private var json:Object;
 
@@ -231,7 +198,6 @@ package views.module1
 				var ey:Number=(768 - quiz.height) / 2;
 
 				addChild(quiz);
-//				setChildIndex(lion, numChildren - 1);
 
 				quiz.x=sx;
 				quiz.y=sy;

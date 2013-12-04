@@ -36,14 +36,14 @@ package controllers
 		 */
 		public static function init():void
 		{
-//			if (Capabilities.os.indexOf("Windows") >= 0)
-//				return;
-//			trace("initAnalyst")
-//			UMeng.instance.init("52897e3b56240b9bf21d435e", "Appstore", Capabilities.isDebugger);
-//			UID=UMeng.instance.getUDID();
-//			var analytics:Analytics=Analytics.getInstance();
-//			tracker=analytics.getTracker(GA_ID);
-//			trackEvent("login", "user", UID);
+			if (Capabilities.os.indexOf("Windows") >= 0)
+				return;
+			trace("initAnalyst")
+			UMeng.instance.init("52897e3b56240b9bf21d435e", "Appstore", Capabilities.isDebugger);
+			UID=UMeng.instance.getUDID();
+			var analytics:Analytics=Analytics.getInstance();
+			tracker=analytics.getTracker(GA_ID);
+			trackEvent("login", "user", UID);
 		}
 
 		/**
@@ -57,7 +57,7 @@ package controllers
 		{
 			if (!tracker)
 				return;
-			trace("buildEvent", catetory, action, label, value)
+//			trace("buildEvent", catetory, action, label, value)
 			label=label ? label : UID;
 			tracker.buildEvent(catetory, action).withLabel(label).withValue(value).track();
 		}
@@ -70,7 +70,7 @@ package controllers
 		{
 			if (!tracker)
 				return;
-			trace("buildView", view)
+//			trace("buildView", view)
 			tracker.buildView(view).track();
 		}
 
@@ -84,7 +84,7 @@ package controllers
 		{
 			if (!tracker)
 				return;
-			trace("buildTiming", catetory, value, type, UID)
+//			trace("buildTiming", catetory, value, type, UID)
 			tracker.buildTiming(catetory, value).withLabel(UID).withName(type).track();
 		}
 	}

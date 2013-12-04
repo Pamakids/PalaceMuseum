@@ -239,19 +239,35 @@ package views.module2.scene22
 //				{
 //					TweenMax.to(i, 1.5, {shake: {scaleX: .05, scaleY: .05, numShakes: 1}});
 //				}
+				isWin=true;
 				TweenMax.to(contentHolder, 1.5, {shake: {scaleX: .05, scaleY: .05, numShakes: 1}});
-				TweenLite.delayedCall(2, function():void {
-					TweenLite.to(contentHolder, .5, {alpha: 0, onComplete: function():void {
-						contentHolder.removeChildren(0, -1, true);
-						var info:Image=getImage("thermo-intro");
-						info.x=75;
-						info.y=71;
-						contentHolder.addChild(info);
-						TweenLite.to(contentHolder, .5, {alpha: 1});
-						isWin=true;
-					}});
-				});
+				TweenLite.delayedCall(2, removeContent);
 			}
+		}
+
+		private function removeContent():void
+		{
+			TweenLite.to(contentHolder, .5, {alpha: 0, onComplete: addInfo});
+		}
+
+		private function addInfo():void
+		{
+//			TweenLite.to(contentHolder, .5, {alpha: 0, onComplete: function():void {
+			contentHolder.removeChildren(0, -1, true);
+			var info:Image=getImage("thermo-intro");
+			info.x=75;
+			info.y=71;
+			contentHolder.addChild(info);
+			TweenLite.to(contentHolder, .5, {alpha: 1});
+//			}});
+		}
+
+		override public function dispose():void
+		{
+			TweenLite.killTweensOf(contentHolder);
+			TweenLite.killTweensOf(removeContent);
+			TweenLite.killTweensOf(contentHolder);
+			super.dispose();
 		}
 
 		public function get temp():Number

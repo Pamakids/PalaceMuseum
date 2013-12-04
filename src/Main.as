@@ -1,6 +1,7 @@
 package
 {
 	import flash.filesystem.File;
+	import flash.system.Capabilities;
 
 	import controllers.MC;
 	import controllers.UserBehaviorAnalysis;
@@ -23,8 +24,8 @@ package
 	import views.Interlude;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
-	import views.global.map.Map;
 	import views.global.books.BooksManager;
+	import views.global.map.Map;
 
 	public class Main extends Container
 	{
@@ -32,12 +33,12 @@ package
 		{
 //			SOService.instance.clear();
 //			SOService.instance.init();
-//			SOService.instance.setSO("lastScene", "11map");
+//			SOService.instance.setSO("lastScene", "51");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
 			SoundAssets.init();
-			addEventListener(UserBehaviorEvent.USERBEHAVIOR, onRecordUserBehavior);
+//			addEventListener(UserBehaviorEvent.USERBEHAVIOR, onRecordUserBehavior);
 			//以免第一次初始化提示的时候卡顿
 			var label:TextField=new TextField(1, 1, '0', FontVo.PALACE_FONT, 16, 0x561a1a, true);
 			addChild(label);
@@ -159,7 +160,12 @@ package
 			else if (moduleIndex < 0 || sceneIndex < 0)
 				Map.show();
 			else if (_lastScene.lastIndexOf("map") < 0)
-				MC.instance.gotoModule(moduleIndex, sceneIndex);
+			{
+				if (Capabilities.isDebugger)
+					MC.instance.gotoModule(moduleIndex, sceneIndex);
+				else
+					BooksManager.showBooks(0, 0, 0, false);
+			}
 			else
 				Map.show(null, moduleIndex - 1, moduleIndex);
 		}
