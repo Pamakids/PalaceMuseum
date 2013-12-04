@@ -288,9 +288,10 @@ package views.module4
 			MC.instance.stage.removeChild(drawScene);
 			drawScene=null;
 			removeMemorial(memorialBottom, function():void {
-				showCard("8", function():void {
-					showAchievement(22, playLion2);
-				});
+				showCard("8", playLion2);
+//				showCard("8", function():void {
+//					showAchievement(22, playLion2);
+//				});
 			});
 		}
 

@@ -33,7 +33,7 @@ package
 		{
 //			SOService.instance.clear();
 //			SOService.instance.init();
-//			SOService.instance.setSO("lastScene", "51");
+//			SOService.instance.setSO("lastScene", "44");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
@@ -153,6 +153,10 @@ package
 				Map.show();
 				return;
 			}
+
+			BooksManager.showBooks(0, 0, 0, false);
+			return;
+
 			var moduleIndex:int=int(_lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(_lastScene.charAt(1)) - 1;
 			if (lastScene.indexOf("end") >= 0)
