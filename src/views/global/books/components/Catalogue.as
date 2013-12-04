@@ -42,7 +42,6 @@ package views.global.books.components
 			initProbar();
 			initHeaders();
 			initList();
-			addToView(0);
 		}
 		
 		private var probar:ProgressBar;
@@ -61,7 +60,7 @@ package views.global.books.components
 		}
 		
 		private var moving:Boolean  = false;
-		private function addToView(index:int):void
+		public function updateView(index:int):void
 		{
 			if(index == crtIndex || moving)
 				return;
@@ -69,7 +68,7 @@ package views.global.books.components
 			if(crtIndex == -1)		//初始化
 			{
 				crtIndex = index;
-				updateView();
+				addToView();
 			}else
 			{
 				crtIndex = index;
@@ -86,14 +85,14 @@ package views.global.books.components
 				{
 					TweenLite.to(list, 0.5, {height: 0, alpha: 0, ease: Cubic.easeOut, onComplete: function():void{
 						list.removeFromParent();
-						updateView();
+						addToView();
 					}});
 					break;
 				}
 			}
 		}
 		
-		private function updateView():void
+		private function addToView():void
 		{
 			var list:List = vecList[crtIndex];
 			list = vecList[crtIndex];
@@ -160,7 +159,7 @@ package views.global.books.components
 				head = vecHeader[i];
 				head.setSelected(index == i);
 			}
-			addToView(index);
+			updateView(index);
 		}
 		
 		private var scroll:ScrollContainer;
@@ -214,18 +213,18 @@ package views.global.books.components
 					};
 					renderer.iconSourceField = "icon";
 					renderer.labelField = "text";
+					renderer.addEventListener(Event.TRIGGERED, onChanged);
 					return renderer;
 				};
 				list.layout = layout;
-				list.addEventListener(Event.CHANGE, onChanged);
+//				list.addEventListener(Event.CHANGE, onChanged);
 				vecList[i] = list;
 			}
 		}
 		
 		private function onChanged(e:Event):void
 		{
-			var list:List = vecList[crtIndex];
-			var obj:Object = list.dataProvider.data[list.selectedIndex];
+			var obj:Object = (e.target as Object).data;
 			dispatchEventWith(Event.CHANGE, false, [obj.screen, obj.page]);
 		}
 		

@@ -1,24 +1,25 @@
 package views.global.books.userCenter.screen
 {
-	import com.greensock.TweenLite;
+	import starling.events.Event;
 	
-	import views.global.books.userCenter.UserCenter;
+	import views.global.books.events.BookEvent;
 
 	public class DeveloperScreen extends BaseScreen
 	{
 		public function DeveloperScreen()
 		{
-			super();
 		}
-		
 		
 		override protected function initialize():void
 		{
 			super.initialize();
+			dispatchEvent( new Event( BookEvent.InitViewPlayed ) );
+		}
+		
+		override public function dispose():void
+		{
 			
-			
-			
-			TweenLite.delayedCall(0.1, dispatchEventWith, [UserCenter.Initialized]);
+			super.dispose();
 		}
 	}
 }

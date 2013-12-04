@@ -32,7 +32,6 @@ package views.global.books.handbook.screen
 		override protected function initialize():void
 		{
 			super.initialize();
-//			initLoad();
 			dispatchEventWith(BookEvent.Initialized);
 		}
 		
@@ -51,28 +50,6 @@ package views.global.books.handbook.screen
 			this.addChild( page_1 );
 		}
 
-//		private var load:Image;
-
-//		private function initLoad():void
-//		{
-//			load=new Image(Texture.fromBitmap(new PalaceModule.loading()));
-//			load.pivotX=load.width >> 1;
-//			load.pivotY=load.height >> 1;
-//			load.x=1024 - 100;
-//			load.y=768 - 100;
-//			load.scaleX=load.scaleY=.5;
-//			PopUpManager.addPopUp(load);
-//			load.addEventListener(Event.ENTER_FRAME, function(e:Event):void
-//			{
-//				load.rotation+=0.2;
-//			});
-//		}
-
-//		private function removeLoad():void
-//		{
-//			if (PopUpManager.isPopUp(load))
-//				PopUpManager.removePopUp(load, true);
-//		}
 
 		/**
 		 * 初始化显示，需手动调用
@@ -83,23 +60,6 @@ package views.global.books.handbook.screen
 			initImages();
 			initPageNums();
 			dispatchEventWith(BookEvent.InitViewPlayed);
-//			_assetsManager.enqueue( 
-//				"assets/global/userCenter/bird_collection_" + crtPage + ".png",
-//				"assets/global/userCenter/bird_uncollection.png");
-//			_assetsManager.loadQueue(function(ratio:Number):void {
-//				if (ratio == 1)
-//				{
-//					if (crtPage > 0)
-//						_assetsManager.enqueue(	"assets/global/userCenter/bird_collection_" + String(crtPage - 1) + ".png");
-//					if (crtPage < BirdScreen.MAX_NUM - 1)
-//						_assetsManager.enqueue(	"assets/global/userCenter/bird_collection_" + String(crtPage + 1) + ".png");
-//					_assetsManager.loadQueue(function(r:Number):void {});
-//					initImages();
-//					removeLoad();
-//					dispatchEventWith(UserCenter.InitViewPlayed);
-//					
-//				}
-//			});
 		}
 
 
@@ -127,8 +87,6 @@ package views.global.books.handbook.screen
 				dispatchEventWith(BookEvent.ViewUpdateFail);
 				return;
 			}
-//			loadByPageIndex(crtPage - 2);
-//			clearByPageIndex(crtPage + 1);
 			this.crtPage-=1;
 			updateView();
 		}
@@ -143,35 +101,26 @@ package views.global.books.handbook.screen
 				dispatchEventWith(BookEvent.ViewUpdateFail);
 				return;
 			}
-//			clearByPageIndex(crtPage - 1);
-//			loadByPageIndex(crtPage + 2);
 			this.crtPage+=1;
 			updateView();
 		}
 
-		/**
-		 * 清除纹理以释放资源
-		 * @param pageIndex
-		 */
-//		private function clearByPageIndex(pageIndex:int):void
-//		{
-//			var texture:Texture=_assetsManager.getTexture("content_page_" + pageIndex);
-//			if (texture)
-//				_assetsManager.removeTexture(name, true);
-//		}
 
 		/**
-		 * 动态加载纹理
-		 * @param pageIndex
-		 */
-//		private function loadByPageIndex(pageIndex:int):void
-//		{
-//			if (pageIndex < 0 || pageIndex > HandbookScreen.MAX_NUM - 1)
-//				return;
-//			_assetsManager.enqueue( "assets/global/userCenter/bird_collection_" + pageIndex + ".png");
-//			_assetsManager.loadQueue(function(ratio:Number):void{});
-//		}
-
+		 * 更新至指定页
+		 * @param page
+		 */		
+		public function updateByPage(page:int):void
+		{
+			if (crtPage == page || page > MAX_NUM-1 || page < 0)
+			{
+				dispatchEventWith(BookEvent.ViewUpdateFail);
+				return;
+			}
+			crtPage = page;
+			updateView();
+		}
+		
 		/**
 		 * 更新显示内容
 		 */
@@ -180,7 +129,7 @@ package views.global.books.handbook.screen
 			cache.texture=ifCollected(crtPage) ? getTexture("bird" + crtPage) : getTexture("birdUn");
 			page_0.text = String(crtPage*2+1)+" / "+String(MAX_NUM*2);
 			page_1.text = String(crtPage*2+2)+" / "+String(MAX_NUM*2);
-			dispatchEventWith(BookEvent.ViewUpdated);
+			dispatchEventWith(BookEvent.ViewUpdated, false, crtPage);
 		}
 
 		override public function dispose():void

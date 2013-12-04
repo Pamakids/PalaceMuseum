@@ -149,12 +149,42 @@ package views.global.books.handbook.screen
 		}
 		
 		/**
+		 * 更新到指定页
+		 * @param page
+		 */		
+		public function updateByPage(page:int):void
+		{
+			if (crtPage == page || page > MAX_NUM-1 || page < 0)
+			{
+				dispatchEventWith(BookEvent.ViewUpdateFail);
+				return;
+			}
+			//清除缓存纹理
+			_assetsManager.dispose();
+			initLoad();
+			this.crtPage = page;
+			_assetsManager.enqueue("assets/global/userCenter/history_relic_" + page + ".png");
+			_assetsManager.loadQueue(function(ratio:Number):void {
+				if (ratio == 1)
+				{
+					if (crtPage > 0)
+						_assetsManager.enqueue("assets/global/userCenter/history_relic_" + String(crtPage-1) + ".png");
+					if (crtPage < HandbookScreen.MAX_NUM - 1)
+						_assetsManager.enqueue("assets/global/userCenter/history_relic_" + String(crtPage+1) + ".png");
+					_assetsManager.loadQueue(function(r:Number):void {});
+					updateView();
+					removeLoad();
+				}
+			});
+		}
+		
+		/**
 		 * 更新显示内容
 		 */
 		private function updateView():void
 		{
 			cache.texture=_assetsManager.getTexture("history_relic_" + crtPage);
-			dispatchEventWith(BookEvent.ViewUpdated);
+			dispatchEventWith(BookEvent.ViewUpdated, false, crtPage);
 		}
 		
 		override public function dispose():void
