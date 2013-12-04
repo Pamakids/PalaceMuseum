@@ -1,3 +1,4 @@
+
 package views.module4
 {
 	import com.greensock.TweenLite;
@@ -169,14 +170,16 @@ package views.module4
 			isFree=true;
 			var dx:Number=kite.x - 200;
 			TweenLite.to(kite, 3, {x: dx, y: -30, onComplete: stickKite, ease: Quad.easeOut});
-			checkOver(1);
 		}
 
 		private function stickKite():void
 		{
-			resetKiteBounds();
 			isFree=false;
-			TweenLite.delayedCall(3, resetKite);
+			resetKiteBounds();
+			showCard("15", function():void {
+				checkOver(1);
+				TweenLite.delayedCall(3, resetKite);
+			});
 		}
 
 		private function resetKiteBounds():void

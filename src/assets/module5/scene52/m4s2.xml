@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:5227f7c830a8585f363abfe60f12e8f1$ -->
+<!-- $TexturePacker:SmartUpdate:6cfefefd913161b71051e0f5e135ed95$ -->
 <TextureAtlas imagePath="m4s2.png">
     <SubTexture name="boat" x="2" y="404" width="957" height="190"/>
     <SubTexture name="body-countdown" x="1102" y="1890" width="42" height="42"/>
