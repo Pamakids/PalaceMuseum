@@ -57,7 +57,7 @@ package controllers
 		{
 			if (!tracker)
 				return;
-			trace("buildEvent", catetory, action, label, value)
+//			trace("buildEvent", catetory, action, label, value)
 			label=label ? label : UID;
 			tracker.buildEvent(catetory, action).withLabel(label).withValue(value).track();
 		}
@@ -70,7 +70,7 @@ package controllers
 		{
 			if (!tracker)
 				return;
-			trace("buildView", view)
+//			trace("buildView", view)
 			tracker.buildView(view).track();
 		}
 
@@ -84,7 +84,7 @@ package controllers
 		{
 			if (!tracker)
 				return;
-			trace("buildTiming", catetory, value, type, UID)
+//			trace("buildTiming", catetory, value, type, UID)
 			tracker.buildTiming(catetory, value).withLabel(UID).withName(type).track();
 		}
 	}

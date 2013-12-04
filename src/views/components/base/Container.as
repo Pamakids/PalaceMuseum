@@ -1,5 +1,6 @@
 package views.components.base
 {
+	import com.greensock.TweenLite;
 	import com.pamakids.utils.DPIUtil;
 
 	import starling.display.Quad;
@@ -86,6 +87,12 @@ package views.components.base
 		{
 			// TODO Auto Generated method stub
 
+		}
+
+		override public function dispose():void
+		{
+			TweenLite.killTweensOf(this);
+			super.dispose();
 		}
 	}
 }

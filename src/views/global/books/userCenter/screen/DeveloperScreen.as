@@ -26,7 +26,6 @@ package views.global.books.userCenter.screen
 		
 		override public function dispose():void
 		{
-			
 			super.dispose();
 		}
 	}

@@ -13,6 +13,10 @@ package views.global.books.handbook
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
 	
+	import models.AchieveVO;
+	import models.FontVo;
+	import models.SOService;
+	
 	import sound.SoundAssets;
 	
 	import starling.display.Image;
@@ -22,6 +26,7 @@ package views.global.books.handbook
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	
@@ -373,6 +378,11 @@ package views.global.books.handbook
 				_tabBar.selectedIndex=prevIndex;
 				return;
 			}
+			if(Map.map && _tabBar.selectedIndex == 3)		//地图tab
+			{
+				BooksManager.closeCtrBook();
+				return;
+			}
 			tarIndex=_tabBar.selectedIndex;
 			if (tarIndex == prevIndex)
 				return;
@@ -480,5 +490,29 @@ package views.global.books.handbook
 			this._backButton.visible=closeable;
 		}
 		
+		public function showAchieve(index:int):void
+		{
+			if(SOService.instance.getSO(index + "_achieve"))
+				return;
+			SOService.instance.setSO(index+"_achieve", true);
+			var txt:String="恭喜您获得成就: " + AchieveVO.achieveList[index][0];
+			var sprite:Sprite = new Sprite();
+			this.addChild( sprite );
+			var image:Image = new Image( MC.assetManager.getTexture("acheivebar") );
+			image.pivotX=image.width >> 1;
+			sprite.addChild(image);
+			var tf:TextField = new TextField(400, 80, txt, FontVo.PALACE_FONT, 32, 0xfbf4cb);
+			sprite.addChild(tf);
+			tf.x=-200;
+			tf.y=15;
+			sprite.x=512;
+			sprite.y=-170;
+			TweenLite.to(sprite, .5, {y: 0});
+			TweenLite.delayedCall(2.5, function():void{
+				TweenLite.to(sprite, .5, {y: -170, onComplete: function():void{
+					sprite.removeFromParent(true);
+				}});
+			});
+		}
 	}
 }

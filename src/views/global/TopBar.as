@@ -97,7 +97,7 @@ package views.global
 		private static var _BW:Number;
 		private static var _AW:Number;
 		private static var _RW:Number;
-		private static var _RX:Number=-10
+		private static var _RX:Number=-45
 
 		private function ribbonClickedHandler():void
 		{
@@ -159,6 +159,7 @@ package views.global
 		public static function show():void
 		{
 			instance.show();
+			enable=true;
 		}
 
 		public static function hide():void

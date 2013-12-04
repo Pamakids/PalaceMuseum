@@ -55,7 +55,7 @@ package views.module5
 
 			addPeople();
 
-			LionMC.instance.say(" 待各位落座，演出就正式开始。", 0, 0, 0, function():void {
+			LionMC.instance.say(" 待各位落座，演出就\n正式开始。", 0, 0, 0, function():void {
 				ready=true;
 				bg.addEventListener(TouchEvent.TOUCH, onBGTouch);
 			}, 20, .6, true);
@@ -86,6 +86,8 @@ package views.module5
 		{
 			PopUpManager.removePopUp(book, true);
 			book=null;
+
+			showCard("14");
 		}
 
 		private function addPeople():void
