@@ -94,7 +94,7 @@ package views.components.base
 			}
 			Prompt.parent=this;
 			assetManager=am;
-
+			MC.instance.main.removeMask();
 			SoundAssets.playBGM("main");
 		}
 

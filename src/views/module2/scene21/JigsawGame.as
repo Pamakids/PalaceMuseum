@@ -439,15 +439,16 @@ package views.module2.scene21
 			var edge:Image=getImage("mapEdge");
 			bgHolder.addChild(edge);
 			edge.alpha=0;
-			TweenLite.to(edge, 1, {alpha: 1});
-			LionMC.instance.play(1, 0, 0, function():void {
-				TweenLite.to(timeHolder, 1, {x: 1024});
-				TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn, onComplete: function():void {
-					timeHolder.removeFromParent(true);
-					gameSP.removeFromParent(true);
-					initResult();
-				}});
-			});
+			TweenLite.to(edge, 3, {alpha: 3, onComplete: function():void {
+				LionMC.instance.play(1, 0, 0, function():void {
+					TweenLite.to(timeHolder, 1, {x: 1024});
+					TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn, onComplete: function():void {
+						timeHolder.removeFromParent(true);
+						gameSP.removeFromParent(true);
+						initResult();
+					}});
+				});
+			}});
 //			TweenLite.delayedCall(2, function():void
 //			{
 //				TweenLite.to(timeHolder, 1, {x: 1024});
