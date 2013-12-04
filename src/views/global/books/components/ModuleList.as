@@ -294,7 +294,7 @@ package views.global.books.components
 		
 		private function isComplete(i:int):Boolean
 		{
-						return true;
+//						return true;
 			if (i == 0)
 				return true;
 			var str:String=mapping[i];
