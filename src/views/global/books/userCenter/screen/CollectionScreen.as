@@ -164,7 +164,7 @@ package views.global.books.userCenter.screen
 			}
 		}
 		
-		private const order:Array = [0,1,2,3,4,12,5,6,7,9,8,13,10,11,14];
+		private const order:Array = [0,1,2,3,4,12,5,6,7,9,8,13,10,11,14,15];
 		private var source:Vector.<CollectionVO>;
 		private function initDatas():void
 		{
