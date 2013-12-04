@@ -20,12 +20,10 @@ package views.global.books.userCenter.screen
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 	
-	import views.components.ElasticButton;
-	import views.global.books.events.BookEvent;
-	import views.global.map.Map;
 	import views.global.books.BooksManager;
 	import views.global.books.components.CurrentUserView;
 	import views.global.books.components.ModuleList;
+	import views.global.books.events.BookEvent;
 	import views.global.books.userCenter.win.W_Alert;
 	import views.global.books.userCenter.win.W_ChooseUser;
 	import views.global.books.userCenter.win.W_DeleteUser;
@@ -162,8 +160,8 @@ package views.global.books.userCenter.screen
 			button_change.defaultSkin=BooksManager.getImage("button_changeUser_up");
 			button_change.downSkin=BooksManager.getImage("button_changeUser_down");
 			this.addChild(button_change);
-			button_change.x=346;
-			button_change.y=143;
+			button_change.x=366;
+			button_change.y=118;
 			button_change.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 

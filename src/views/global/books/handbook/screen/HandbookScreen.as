@@ -79,7 +79,6 @@ package views.global.books.handbook.screen
 					initImages();
 					removeLoad();
 					dispatchEventWith(BookEvent.InitViewPlayed);
-
 				}
 			});
 		}
@@ -149,6 +148,32 @@ package views.global.books.handbook.screen
 					trace("资源加载完成");
 			});
 		}
+		
+		public function updateByPage(page:int):void
+		{
+			if (crtPage == page || page > MAX_NUM-1 || page < 0)
+			{
+				dispatchEventWith(BookEvent.ViewUpdateFail);
+				return;
+			}
+			//清除缓存纹理
+			_assetsManager.dispose();
+			initLoad();
+			this.crtPage = page;
+			_assetsManager.enqueue("assets/global/userCenter/content_page_" + page + ".png");
+			_assetsManager.loadQueue(function(ratio:Number):void {
+				if (ratio == 1)
+				{
+					if (crtPage > 0)
+						_assetsManager.enqueue("assets/global/userCenter/content_page_" + String(crtPage-1) + ".png");
+					if (crtPage < HandbookScreen.MAX_NUM - 1)
+						_assetsManager.enqueue("assets/global/userCenter/content_page_" + String(crtPage+1) + ".png");
+					_assetsManager.loadQueue(function(r:Number):void {});
+					updateView();
+					removeLoad();
+				}
+			});
+		}
 
 		/**
 		 * 更新显示内容
@@ -156,7 +181,7 @@ package views.global.books.handbook.screen
 		private function updateView():void
 		{
 			cache.texture=_assetsManager.getTexture("content_page_" + crtPage);
-			dispatchEventWith(BookEvent.ViewUpdated);
+			dispatchEventWith(BookEvent.ViewUpdated, false, crtPage);
 		}
 
 		override public function dispose():void

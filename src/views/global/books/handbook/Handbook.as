@@ -15,7 +15,6 @@ package views.global.books.handbook
 	
 	import sound.SoundAssets;
 	
-	import starling.animation.Tween;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -76,14 +75,6 @@ package views.global.books.handbook
 			cataBtn.x = 55;
 			cataBtn.y = 4;
 			cataBtn.addEventListener(Event.TRIGGERED, openCatalogue);
-		}
-		
-		private function test():void
-		{
-			var cata:Catalogue = new Catalogue();
-			this.addChild( cata );
-			cata.x = 28;
-			cata.y = 89;
 		}
 		
 		private function initShade():void
@@ -229,7 +220,7 @@ package views.global.books.handbook
 					i = crtPage_Handbook;
 					break;
 				case HISTORICAL_RELIC:
-					i = crtPage_Allustion;
+					i = crtPage_Relic;
 					break;
 				case BIRDS:
 					i = crtPage_Birds;
@@ -252,13 +243,13 @@ package views.global.books.handbook
 			switch (_navigator.activeScreenID)
 			{
 				case SPEED_UP:
-					crtPage_Handbook+=(pageUp) ? -1 : 1; //记录
+					crtPage_Handbook = int(e.data); //记录
 					break;
 				case HISTORICAL_RELIC:
-					crtPage_Allustion += (pageUp) ? -1 : 1;
+					crtPage_Relic = int(e.data);
 					break;
 				case BIRDS:
-					crtPage_Birds += (pageUp) ? -1 : 1;
+					crtPage_Birds = int(e.data);
 					break;
 			}
 			getTarTexture();
@@ -299,6 +290,8 @@ package views.global.books.handbook
 			sprite.alpha = 1;
 			mask.alpha = .5;
 			cata.scaleX = cata.scaleY = 1;
+			cata.updateView(0);
+			
 		}
 		
 		private function catalogueChange(e:Event):void
@@ -314,14 +307,38 @@ package views.global.books.handbook
 		
 		private function turnToForCata(screen:int, page:int):void
 		{
-			if(screen == 0)
-				crtPage_Handbook = page;
-			else if(screen == 1)
-				crtPage_Allustion = page;
-			else if(screen == 2)
-				crtPage_Birds == page;
-			_tabBar.selectedIndex = screen;
-			
+			switch(screen)
+			{
+				case 0:
+					if(page == crtPage_Handbook && _tabBar.selectedIndex == screen)
+						return;
+					pageUp = crtPage_Handbook>page;
+					crtPage_Handbook = page;
+					break;
+				case 1:
+					if(page == crtPage_Relic && _tabBar.selectedIndex == screen)
+						return;
+					pageUp = crtPage_Relic>page;
+					crtPage_Relic = page;
+					break;
+				case 2:
+					if(page == crtPage_Birds && _tabBar.selectedIndex == screen)
+						return;
+					pageUp = crtPage_Birds > page;
+					crtPage_Birds = page;
+					break;
+				
+			}
+				
+			if(_tabBar.selectedIndex == screen)
+			{
+				showAnimation();
+				(_navigator.activeScreen as Object).updateByPage(page);
+			}
+			else
+			{
+				_tabBar.selectedIndex = screen;
+			}
 		}
 		
 		private function onTouch(e:TouchEvent):void
@@ -407,7 +424,7 @@ package views.global.books.handbook
 		private var beginX:Number;
 		private const standardLength:Number=50; //翻页有效拖拽距离
 		private var crtPage_Handbook:int=0;
-		private var crtPage_Allustion:int=0;
+		private var crtPage_Relic:int=0;
 		private var crtPage_Birds:int=0;
 		
 		private function getCrtTexture():void
@@ -455,7 +472,7 @@ package views.global.books.handbook
 			if (screen == 0)
 				crtPage_Handbook=page;
 			else if(screen == 1)
-				crtPage_Allustion = page;
+				crtPage_Relic = page;
 			else if(screen == 2)
 				crtPage_Birds = page;
 			_tabBar.selectedIndex=screen;
