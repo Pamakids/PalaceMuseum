@@ -50,7 +50,6 @@ package views.global.books.handbook.screen
 			this.addChild( page_1 );
 		}
 
-
 		/**
 		 * 初始化显示，需手动调用
 		 */

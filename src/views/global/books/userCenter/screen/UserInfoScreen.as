@@ -10,14 +10,17 @@ package views.global.books.userCenter.screen
 	import feathers.controls.Button;
 	import feathers.core.PopUpManager;
 	
+	import models.FontVo;
 	import models.SOService;
 	
 	import starling.display.DisplayObject;
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
 	import starling.textures.Texture;
 	
 	import views.global.books.BooksManager;
@@ -41,16 +44,55 @@ package views.global.books.userCenter.screen
 
 		override protected function initialize():void
 		{
-			super.initialize();
+			initPages();
+			initTextfields();
 			initCrtUserView();
 			initButton();
-//			initBirdView();
 			initModuleList();
-//			initMapButton();
+			initSoundButton();
 
 			TweenLite.delayedCall(0.1, dispatchEventWith, [BookEvent.InitViewPlayed]);
 		}
-
+		
+		private var check_BGM:Button;
+		private var check_effect:Button;
+		private function initSoundButton():void
+		{
+			check_BGM = new Button();
+			check_BGM.defaultSkin = BooksManager.getImage("button_sound_0_up");
+			check_BGM.defaultSelectedSkin = BooksManager.getImage("button_sound_0_down");
+			this.addChild( check_BGM );
+			check_BGM.isSelected = false;
+			check_BGM.addEventListener(Event.TRIGGERED, onTriggered);
+			
+			
+			check_effect = new Button();
+			check_effect.defaultSkin = BooksManager.getImage("button_sound_1_up");
+			check_effect.defaultSelectedSkin = BooksManager.getImage("button_sound_1_down");
+			this.addChild( check_effect );
+			check_effect.isSelected = false;
+			check_effect.addEventListener(Event.TRIGGERED, onTriggered);
+		}
+		
+		private function onTriggered(e:Event):void
+		{
+			switch(e.target)
+			{
+				case check_BGM:
+					break;
+				case check_effect:
+					break;
+			}
+		}
+		
+		private var textfield_0:TextField;
+		private var textfield_1:TextField;
+		private function initTextfields():void
+		{
+			textfield_0 = new TextField(200, 50, "", FontVo.PALACE_FONT, 24, 0x333333);
+			this.addChild( textfield_0 );
+		}
+		
 //		private var mapButton:ElasticButton;
 //		private function initMapButton():void
 //		{
@@ -276,7 +318,7 @@ package views.global.books.userCenter.screen
 
 		override protected function initPages():void
 		{
-			var image:Image=BooksManager.getImage("background_0");
+			var image:Image=BooksManager.getImage("background_2");
 			this.addChild(image);
 			var texture:Texture=BooksManager.getTexture("line_long");
 			image=new Image(texture);

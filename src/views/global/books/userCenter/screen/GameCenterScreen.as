@@ -11,11 +11,12 @@ package views.global.books.userCenter.screen
 	import feathers.core.PopUpManager;
 	
 	import starling.display.DisplayObject;
+	import starling.display.Image;
 	
-	import views.global.books.events.BookEvent;
-	import views.global.books.userCenter.UserCenter;
+	import views.global.books.BooksManager;
 	import views.global.books.components.GameScene;
 	import views.global.books.components.ItemForGameList;
+	import views.global.books.events.BookEvent;
 	import views.global.books.userCenter.win.W_Game;
 
 	/**
@@ -31,11 +32,17 @@ package views.global.books.userCenter.screen
 
 		override protected function initialize():void
 		{
-			super.initialize();
+			initPages();
 			getGameDatas();
 			initGameList();
 
 			dispatchEventWith(BookEvent.InitViewPlayed);
+		}
+		
+		override protected function initPages():void
+		{
+			var image:Image = BooksManager.getImage("background_2");
+			this.addChild( image );
 		}
 
 		/**

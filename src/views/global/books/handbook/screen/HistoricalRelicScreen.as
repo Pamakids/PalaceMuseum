@@ -8,8 +8,10 @@ package views.global.books.handbook.screen
 	import starling.utils.AssetManager;
 	
 	import views.components.base.PalaceModule;
+	import views.global.books.BooksManager;
 	import views.global.books.events.BookEvent;
 	import views.global.books.userCenter.screen.BaseScreen;
+
 	/**
 	 * 文物
 	 * @author Administrator
@@ -31,9 +33,15 @@ package views.global.books.handbook.screen
 		
 		override protected function initialize():void
 		{
-			super.initialize();
+			initPages();
 			initLoad();
 			dispatchEventWith(BookEvent.Initialized);
+		}
+		
+		override protected function initPages():void
+		{
+			var image:Image = BooksManager.getImage("background_2");
+			this.addChild( image );
 		}
 		
 		private var load:Image;

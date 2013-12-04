@@ -9,6 +9,7 @@ package views.global.books.userCenter.screen
 	
 	import models.FontVo;
 	
+	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -17,9 +18,9 @@ package views.global.books.userCenter.screen
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	
-	import views.global.books.events.BookEvent;
-	import views.global.books.userCenter.UserCenter;
+	import views.global.books.BooksManager;
 	import views.global.books.components.AchieveIcon;
+	import views.global.books.events.BookEvent;
 	
 	public class AchievementScreen extends BaseScreen
 	{
@@ -29,13 +30,20 @@ package views.global.books.userCenter.screen
 		
 		override protected function initialize():void
 		{
-			super.initialize();
+			initPages();
 			initDatas();
 			initIcons();
 			initPageNums();
 			
 			TweenLite.delayedCall(0.1, dispatchEventWith, [BookEvent.InitViewPlayed]);
 		}
+		
+		override protected function initPages():void
+		{
+			var image:Image = BooksManager.getImage("background_2");
+			this.addChild( image );
+		}
+		
 		/**单页显示数量*/		
 		private var maxNum:int = 18;
 		private var datas:Array;

@@ -1,162 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:3b910036e347822a8f4719ec35015991$ -->
+<!-- $TexturePacker:SmartUpdate:d7eb1b06a32ba27a4dd5be8f09a99ac7$ -->
 <TextureAtlas imagePath="assets.png">
-    <SubTexture name="achievement_card_finish" x="1701" y="1534" width="137" height="106"/>
-    <SubTexture name="achievement_card_finish_big" x="971" y="413" width="497" height="387"/>
-    <SubTexture name="achievement_card_unfinish" x="1210" y="1392" width="138" height="106"/>
-    <SubTexture name="achievement_card_unfinish_big" x="1536" y="346" width="501" height="386"/>
-    <SubTexture name="achievement_down" x="1551" y="1810" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="achievement_up" x="1188" y="1709" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="background_collection_0" x="630" y="513" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
+    <SubTexture name="achievement_card_finish" x="142" y="1641" width="137" height="106"/>
+    <SubTexture name="achievement_card_finish_big" x="2" y="540" width="497" height="387"/>
+    <SubTexture name="achievement_card_unfinish" x="2" y="1641" width="138" height="106"/>
+    <SubTexture name="achievement_card_unfinish_big" x="971" y="247" width="501" height="386"/>
+    <SubTexture name="achievement_down" x="1101" y="1581" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="achievement_up" x="777" y="1909" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="background_collection_0" x="1474" y="247" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
     <SubTexture name="background_collection_1" x="631" y="111" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
-    <SubTexture name="background_crtuserinfo" x="970" y="885" width="333" height="157"/>
+    <SubTexture name="background_crtuserinfo" x="563" y="601" width="333" height="157"/>
     <SubTexture name="background_date" x="631" y="84" width="346" height="25"/>
-    <SubTexture name="background_date_day" x="1536" y="247" width="54" height="97"/>
-    <SubTexture name="background_date_year" x="1592" y="247" width="75" height="96"/>
-    <SubTexture name="background_headicon" x="1927" y="1514" width="101" height="101"/>
-    <SubTexture name="background_icon_1" x="1088" y="1392" width="120" height="120"/>
-    <SubTexture name="background_iconlist" x="971" y="247" width="563" height="164"/>
-    <SubTexture name="background_nameboard" x="147" y="961" width="191" height="67"/>
-    <SubTexture name="background_selected_icon" x="1088" y="1150" width="267" height="119"/>
-    <SubTexture name="background_win_0" x="2" y="374" width="626" height="422"/>
-    <SubTexture name="background_win_1" x="1531" y="734" width="480" height="422"/>
-    <SubTexture name="birds_down" x="1496" y="1671" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="birds_up" x="1090" y="1865" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="button_0" x="1840" y="1514" width="84" height="88" frameX="-14" frameY="-9" frameWidth="112" frameHeight="112"/>
-    <SubTexture name="button_1" x="1637" y="1949" width="84" height="88" frameX="-14" frameY="-9" frameWidth="112" frameHeight="112"/>
-    <SubTexture name="button_2" x="1927" y="1617" width="82" height="88" frameX="-16" frameY="-9" frameWidth="112" frameHeight="112"/>
-    <SubTexture name="button_3" x="1551" y="1949" width="84" height="90" frameX="-14" frameY="-8" frameWidth="112" frameHeight="112"/>
-    <SubTexture name="button_4" x="1669" y="247" width="84" height="90" frameX="-14" frameY="-8" frameWidth="112" frameHeight="112"/>
-    <SubTexture name="button_5" x="1840" y="1514" width="84" height="88" frameX="-14" frameY="-9" frameWidth="112" frameHeight="112"/>
-    <SubTexture name="button_6" x="1807" y="1926" width="82" height="88" frameX="-16" frameY="-9" frameWidth="112" frameHeight="112"/>
-    <SubTexture name="button_7" x="1840" y="1514" width="84" height="88" frameX="-14" frameY="-9" frameWidth="112" frameHeight="112"/>
-    <SubTexture name="button_agreeChange_down" x="1836" y="1221" width="174" height="61"/>
-    <SubTexture name="button_agreeChange_up" x="1357" y="1195" width="162" height="57" frameX="-5" frameY="-2" frameWidth="174" frameHeight="61"/>
-    <SubTexture name="button_cancle_down" x="531" y="1962" width="110" height="61"/>
-    <SubTexture name="button_cancle_up" x="1011" y="1667" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
-    <SubTexture name="button_catalogue_down" x="1305" y="901" width="65" height="146" frameX="-43" frameY="0" frameWidth="153" frameHeight="166"/>
-    <SubTexture name="button_catalogue_up" x="2" y="1049" width="65" height="142" frameX="-43" frameY="-24" frameWidth="153" frameHeight="166"/>
-    <SubTexture name="button_changeUser_down" x="1470" y="413" width="63" height="30"/>
-    <SubTexture name="button_changeUser_up" x="1470" y="413" width="63" height="30"/>
-    <SubTexture name="button_close_small" x="340" y="1007" width="47" height="40"/>
-    <SubTexture name="button_deleteUser_down" x="1836" y="1158" width="174" height="61"/>
-    <SubTexture name="button_deleteUser_up" x="547" y="1671" width="162" height="59" frameX="-5" frameY="-1" frameWidth="174" frameHeight="61"/>
-    <SubTexture name="button_editUser_down" x="419" y="1962" width="110" height="61"/>
-    <SubTexture name="button_editUser_up" x="911" y="1671" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
+    <SubTexture name="background_date_day" x="501" y="736" width="54" height="97"/>
+    <SubTexture name="background_date_year" x="1191" y="1109" width="75" height="96"/>
+    <SubTexture name="background_headicon" x="526" y="1641" width="101" height="101"/>
+    <SubTexture name="background_icon_1" x="1916" y="1375" width="120" height="120"/>
+    <SubTexture name="background_iconlist" x="2" y="374" width="563" height="164"/>
+    <SubTexture name="background_nameboard" x="1275" y="656" width="191" height="67"/>
+    <SubTexture name="background_selected_icon" x="1778" y="833" width="267" height="119"/>
+    <SubTexture name="birds_down" x="896" y="1436" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="birds_up" x="622" y="1909" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="button_0" x="1790" y="1743" width="84" height="88" frameX="-14" frameY="-9" frameWidth="112" frameHeight="112"/>
+    <SubTexture name="button_1" x="1790" y="1653" width="84" height="88" frameX="-14" frameY="-9" frameWidth="112" frameHeight="112"/>
+    <SubTexture name="button_2" x="470" y="1536" width="82" height="88" frameX="-16" frameY="-9" frameWidth="112" frameHeight="112"/>
+    <SubTexture name="button_3" x="1337" y="1489" width="84" height="90" frameX="-14" frameY="-8" frameWidth="112" frameHeight="112"/>
+    <SubTexture name="button_4" x="1337" y="1397" width="84" height="90" frameX="-14" frameY="-8" frameWidth="112" frameHeight="112"/>
+    <SubTexture name="button_5" x="1790" y="1743" width="84" height="88" frameX="-14" frameY="-9" frameWidth="112" frameHeight="112"/>
+    <SubTexture name="button_6" x="386" y="1536" width="82" height="88" frameX="-16" frameY="-9" frameWidth="112" frameHeight="112"/>
+    <SubTexture name="button_7" x="1790" y="1743" width="84" height="88" frameX="-14" frameY="-9" frameWidth="112" frameHeight="112"/>
+    <SubTexture name="button_agreeChange_down" x="1270" y="1107" width="174" height="61"/>
+    <SubTexture name="button_agreeChange_up" x="1432" y="1321" width="162" height="57" frameX="-5" frameY="-2" frameWidth="174" frameHeight="61"/>
+    <SubTexture name="button_cancle_down" x="666" y="1498" width="110" height="61"/>
+    <SubTexture name="button_cancle_up" x="554" y="1581" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
+    <SubTexture name="button_catalogue_down" x="898" y="667" width="65" height="146" frameX="-43" frameY="0" frameWidth="153" frameHeight="166"/>
+    <SubTexture name="button_catalogue_up" x="898" y="815" width="65" height="142" frameX="-43" frameY="-24" frameWidth="153" frameHeight="166"/>
+    <SubTexture name="button_changeUser_down" x="501" y="540" width="63" height="30"/>
+    <SubTexture name="button_changeUser_up" x="501" y="540" width="63" height="30"/>
+    <SubTexture name="button_close_small" x="896" y="1191" width="47" height="40"/>
+    <SubTexture name="button_deleteUser_down" x="1270" y="1044" width="174" height="61"/>
+    <SubTexture name="button_deleteUser_up" x="1432" y="1260" width="162" height="59" frameX="-5" frameY="-1" frameWidth="174" frameHeight="61"/>
+    <SubTexture name="button_editUser_down" x="554" y="1498" width="110" height="61"/>
+    <SubTexture name="button_editUser_up" x="202" y="1581" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
     <SubTexture name="button_map" x="1006" y="2" width="824" height="243"/>
-    <SubTexture name="button_map_skin" x="454" y="1385" width="183" height="123"/>
-    <SubTexture name="button_ok_down" x="435" y="1671" width="110" height="60"/>
-    <SubTexture name="button_ok_up" x="811" y="1671" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
-    <SubTexture name="button_sound_0_down" x="340" y="914" width="36" height="36"/>
-    <SubTexture name="button_sound_0_up" x="2012" y="1283" width="34" height="30" frameX="0" frameY="-2" frameWidth="36" frameHeight="36"/>
-    <SubTexture name="button_sound_1_down" x="418" y="961" width="39" height="40"/>
-    <SubTexture name="button_sound_1_up" x="377" y="961" width="39" height="40"/>
-    <SubTexture name="button_start_down" x="307" y="1962" width="110" height="61"/>
-    <SubTexture name="button_start_up" x="711" y="1671" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
-    <SubTexture name="button_unFinish" x="1723" y="1926" width="82" height="88" frameX="-16" frameY="-10" frameWidth="112" frameHeight="112"/>
-    <SubTexture name="card_collection_0" x="792" y="1887" width="147" height="155"/>
-    <SubTexture name="card_collection_1" x="830" y="1514" width="147" height="155"/>
-    <SubTexture name="card_collection_10" x="735" y="1730" width="147" height="155"/>
-    <SubTexture name="card_collection_11" x="643" y="1889" width="147" height="155"/>
-    <SubTexture name="card_collection_12" x="941" y="1883" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
-    <SubTexture name="card_collection_13" x="979" y="1514" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
-    <SubTexture name="card_collection_2" x="586" y="1732" width="147" height="155"/>
-    <SubTexture name="card_collection_3" x="939" y="1345" width="147" height="155"/>
-    <SubTexture name="card_collection_4" x="884" y="1730" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
-    <SubTexture name="card_collection_5" x="939" y="1188" width="147" height="155"/>
-    <SubTexture name="card_collection_6" x="790" y="1195" width="147" height="155"/>
-    <SubTexture name="card_collection_7" x="641" y="1195" width="147" height="155"/>
-    <SubTexture name="card_collection_8" x="492" y="1195" width="147" height="155"/>
-    <SubTexture name="card_collection_9" x="681" y="1514" width="147" height="155"/>
-    <SubTexture name="card_collection_unfinish" x="147" y="798" width="147" height="155"/>
-    <SubTexture name="card_game_0" x="130" y="1514" width="303" height="235"/>
-    <SubTexture name="card_game_1" x="2" y="1766" width="303" height="235"/>
-    <SubTexture name="card_game_2" x="628" y="915" width="303" height="235"/>
-    <SubTexture name="card_game_3" x="1531" y="1158" width="303" height="235"/>
-    <SubTexture name="card_game_mask" x="307" y="1751" width="277" height="209" frameX="-13" frameY="-12" frameWidth="303" frameHeight="235"/>
-    <SubTexture name="catalogue_bg_header" x="970" y="802" width="402" height="65"/>
-    <SubTexture name="collection_down" x="1398" y="1831" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="collection_up" x="1350" y="1393" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="drag_sun" x="340" y="1395" width="112" height="112"/>
-    <SubTexture name="games_down" x="1617" y="1395" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="games_up" x="1128" y="1514" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="handbook_down" x="1033" y="1726" width="153" height="137" frameX="0" frameY="0" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="handbook_up" x="1357" y="1254" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="historical_relic_down" x="1436" y="1532" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="historical_relic_up" x="933" y="1049" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="icon_bird" x="219" y="1395" width="119" height="114"/>
-    <SubTexture name="icon_collection_0" x="251" y="1195" width="239" height="188"/>
-    <SubTexture name="icon_collection_1" x="1088" y="1049" width="269" height="99"/>
-    <SubTexture name="icon_collection_10" x="1372" y="944" width="157" height="249"/>
-    <SubTexture name="icon_collection_11" x="1088" y="1271" width="246" height="119"/>
+    <SubTexture name="button_map_skin" x="1275" y="725" width="183" height="123"/>
+    <SubTexture name="button_ok_down" x="778" y="1498" width="110" height="60"/>
+    <SubTexture name="button_ok_up" x="102" y="1581" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
+    <SubTexture name="button_sound_0_down" x="1695" y="1213" width="36" height="36"/>
+    <SubTexture name="button_sound_0_up" x="862" y="792" width="34" height="30" frameX="0" frameY="-2" frameWidth="36" frameHeight="36"/>
+    <SubTexture name="button_sound_1_down" x="1733" y="1202" width="39" height="40"/>
+    <SubTexture name="button_sound_1_up" x="1733" y="1160" width="39" height="40"/>
+    <SubTexture name="button_start_down" x="1790" y="1833" width="110" height="61"/>
+    <SubTexture name="button_start_up" x="2" y="1581" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
+    <SubTexture name="button_unFinish" x="302" y="1536" width="82" height="88" frameX="-16" frameY="-10" frameWidth="112" frameHeight="112"/>
+    <SubTexture name="card_collection_0" x="1343" y="1752" width="147" height="155"/>
+    <SubTexture name="card_collection_1" x="1194" y="1752" width="147" height="155"/>
+    <SubTexture name="card_collection_10" x="1045" y="1752" width="147" height="155"/>
+    <SubTexture name="card_collection_11" x="896" y="1752" width="147" height="155"/>
+    <SubTexture name="card_collection_12" x="952" y="1581" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
+    <SubTexture name="card_collection_13" x="803" y="1581" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
+    <SubTexture name="card_collection_14" x="654" y="1581" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
+    <SubTexture name="card_collection_2" x="747" y="1752" width="147" height="155"/>
+    <SubTexture name="card_collection_3" x="747" y="1341" width="147" height="155"/>
+    <SubTexture name="card_collection_4" x="1641" y="1752" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
+    <SubTexture name="card_collection_5" x="598" y="1752" width="147" height="155"/>
+    <SubTexture name="card_collection_6" x="1492" y="1752" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
+    <SubTexture name="card_collection_7" x="449" y="1752" width="147" height="155"/>
+    <SubTexture name="card_collection_8" x="300" y="1752" width="147" height="155"/>
+    <SubTexture name="card_collection_9" x="151" y="1752" width="147" height="155"/>
+    <SubTexture name="card_collection_unfinish" x="2" y="1752" width="147" height="155"/>
+    <SubTexture name="card_game_0" x="965" y="872" width="303" height="235"/>
+    <SubTexture name="card_game_1" x="1473" y="649" width="303" height="235"/>
+    <SubTexture name="card_game_2" x="557" y="760" width="303" height="235"/>
+    <SubTexture name="card_game_3" x="970" y="635" width="303" height="235"/>
+    <SubTexture name="card_game_mask" x="1454" y="886" width="277" height="209" frameX="-13" frameY="-12" frameWidth="303" frameHeight="235"/>
+    <SubTexture name="catalogue_bg_header" x="567" y="518" width="402" height="65"/>
+    <SubTexture name="collection_down" x="1697" y="1905" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="collection_up" x="467" y="1909" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="drag_sun" x="1591" y="1527" width="112" height="112"/>
+    <SubTexture name="games_down" x="1544" y="1905" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="games_up" x="312" y="1909" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="handbook_down" x="157" y="1909" width="153" height="137" frameX="0" frameY="0" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="handbook_up" x="2" y="1909" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="historical_relic_down" x="1391" y="1909" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="historical_relic_up" x="1879" y="1613" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="icon_bird" x="1916" y="1497" width="119" height="114"/>
+    <SubTexture name="icon_collection_0" x="1191" y="1207" width="239" height="188"/>
+    <SubTexture name="icon_collection_1" x="1777" y="954" width="269" height="99"/>
+    <SubTexture name="icon_collection_10" x="1432" y="1380" width="157" height="249"/>
+    <SubTexture name="icon_collection_11" x="1773" y="1254" width="246" height="119"/>
     <SubTexture name="icon_collection_12" x="1832" y="170" width="204" height="174" frameX="-71" frameY="-93" frameWidth="338" frameHeight="410"/>
-    <SubTexture name="icon_collection_13" x="389" y="1003" width="236" height="168"/>
-    <SubTexture name="icon_collection_2" x="2" y="1514" width="126" height="250"/>
-    <SubTexture name="icon_collection_3" x="379" y="798" width="247" height="161"/>
-    <SubTexture name="icon_collection_4" x="1836" y="1315" width="203" height="197"/>
-    <SubTexture name="icon_collection_5" x="2" y="1195" width="247" height="197"/>
-    <SubTexture name="icon_collection_6" x="2" y="798" width="143" height="245"/>
-    <SubTexture name="icon_collection_7" x="2" y="1395" width="215" height="115"/>
+    <SubTexture name="icon_collection_13" x="944" y="1266" width="236" height="168"/>
+    <SubTexture name="icon_collection_14" x="1275" y="850" width="177" height="192"/>
+    <SubTexture name="icon_collection_2" x="1596" y="1275" width="126" height="250"/>
+    <SubTexture name="icon_collection_3" x="1446" y="1097" width="247" height="161"/>
+    <SubTexture name="icon_collection_4" x="1814" y="634" width="203" height="197"/>
+    <SubTexture name="icon_collection_5" x="1774" y="1055" width="247" height="197"/>
+    <SubTexture name="icon_collection_6" x="1814" y="346" width="223" height="169"/>
+    <SubTexture name="icon_collection_7" x="1814" y="517" width="215" height="115"/>
     <SubTexture name="icon_collection_8" x="1832" y="2" width="207" height="166"/>
-    <SubTexture name="icon_collection_9" x="435" y="1514" width="244" height="155"/>
-    <SubTexture name="icon_lock" x="1755" y="247" width="70" height="48"/>
-    <SubTexture name="icon_star_gray" x="1470" y="696" width="59" height="55"/>
-    <SubTexture name="icon_star_red" x="1470" y="639" width="59" height="55"/>
-    <SubTexture name="icon_userhead_0" x="1843" y="1781" width="137" height="137"/>
-    <SubTexture name="icon_userhead_1" x="1788" y="1642" width="137" height="137"/>
-    <SubTexture name="icon_userhead_2" x="1704" y="1787" width="137" height="137"/>
-    <SubTexture name="icon_userhead_3" x="1649" y="1648" width="137" height="137"/>
-    <SubTexture name="label_0" x="863" y="1401" width="49" height="47"/>
-    <SubTexture name="label_1" x="863" y="1352" width="49" height="47"/>
-    <SubTexture name="label_2" x="1755" y="297" width="49" height="47"/>
-    <SubTexture name="line_complete_0" x="1876" y="1284" width="38" height="24"/>
-    <SubTexture name="line_complete_1" x="189" y="1030" width="40" height="17"/>
-    <SubTexture name="line_complete_2" x="459" y="989" width="48" height="10"/>
-    <SubTexture name="line_complete_3" x="1305" y="893" width="66" height="6"/>
-    <SubTexture name="line_complete_4" x="279" y="1030" width="46" height="15"/>
-    <SubTexture name="line_complete_5" x="1470" y="779" width="50" height="24"/>
-    <SubTexture name="line_complete_6" x="1954" y="1284" width="36" height="22"/>
-    <SubTexture name="line_long" x="970" y="869" width="381" height="14"/>
-    <SubTexture name="line_other" x="379" y="1173" width="196" height="19"/>
-    <SubTexture name="line_short" x="459" y="961" width="140" height="14"/>
-    <SubTexture name="line_uncomplete_0" x="1836" y="1284" width="38" height="24"/>
-    <SubTexture name="line_uncomplete_1" x="147" y="1030" width="40" height="17"/>
-    <SubTexture name="line_uncomplete_2" x="459" y="977" width="48" height="10"/>
-    <SubTexture name="line_uncomplete_3" x="1305" y="885" width="66" height="6"/>
-    <SubTexture name="line_uncomplete_4" x="231" y="1030" width="46" height="15"/>
-    <SubTexture name="line_uncomplete_5" x="1470" y="753" width="50" height="24"/>
-    <SubTexture name="line_uncomplete_6" x="1916" y="1284" width="36" height="22"/>
-    <SubTexture name="map_down" x="1343" y="1692" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="map_up" x="224" y="1049" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="module_start_down" x="1589" y="1534" width="110" height="112" frameX="-1" frameY="0" frameWidth="112" frameHeight="112"/>
-    <SubTexture name="module_start_up" x="1505" y="1395" width="110" height="112" frameX="-1" frameY="0" frameWidth="112" frameHeight="112"/>
-    <SubTexture name="module_video_down" x="751" y="1395" width="110" height="112" frameX="-1" frameY="0" frameWidth="112" frameHeight="112"/>
-    <SubTexture name="module_video_up" x="639" y="1395" width="110" height="112" frameX="-1" frameY="0" frameWidth="112" frameHeight="112"/>
-    <SubTexture name="progress_bg" x="2013" y="734" width="32" height="515"/>
+    <SubTexture name="icon_collection_9" x="945" y="1109" width="244" height="155"/>
+    <SubTexture name="icon_lock" x="898" y="601" width="70" height="48"/>
+    <SubTexture name="icon_star_gray" x="501" y="679" width="59" height="55"/>
+    <SubTexture name="icon_star_red" x="501" y="622" width="59" height="55"/>
+    <SubTexture name="icon_userhead_0" x="414" y="1091" width="137" height="137"/>
+    <SubTexture name="icon_userhead_1" x="1902" y="1891" width="137" height="137"/>
+    <SubTexture name="icon_userhead_2" x="1902" y="1752" width="137" height="137"/>
+    <SubTexture name="icon_userhead_3" x="414" y="952" width="137" height="137"/>
+    <SubTexture name="label_0" x="896" y="1008" width="49" height="47"/>
+    <SubTexture name="label_1" x="896" y="959" width="49" height="47"/>
+    <SubTexture name="label_2" x="501" y="887" width="49" height="47"/>
+    <SubTexture name="line_complete_0" x="1733" y="1270" width="38" height="24"/>
+    <SubTexture name="line_complete_1" x="1733" y="1029" width="40" height="17"/>
+    <SubTexture name="line_complete_2" x="896" y="1069" width="48" height="10"/>
+    <SubTexture name="line_complete_3" x="898" y="659" width="66" height="6"/>
+    <SubTexture name="line_complete_4" x="1306" y="1170" width="46" height="15"/>
+    <SubTexture name="line_complete_5" x="501" y="861" width="50" height="24"/>
+    <SubTexture name="line_complete_6" x="1268" y="1170" width="36" height="22"/>
+    <SubTexture name="line_long" x="563" y="585" width="381" height="14"/>
+    <SubTexture name="line_other" x="1275" y="635" width="196" height="19"/>
+    <SubTexture name="line_short" x="414" y="936" width="140" height="14"/>
+    <SubTexture name="line_uncomplete_0" x="1733" y="1244" width="38" height="24"/>
+    <SubTexture name="line_uncomplete_1" x="1733" y="1010" width="40" height="17"/>
+    <SubTexture name="line_uncomplete_2" x="896" y="1057" width="48" height="10"/>
+    <SubTexture name="line_uncomplete_3" x="898" y="651" width="66" height="6"/>
+    <SubTexture name="line_uncomplete_4" x="896" y="1339" width="46" height="15"/>
+    <SubTexture name="line_uncomplete_5" x="501" y="835" width="50" height="24"/>
+    <SubTexture name="line_uncomplete_6" x="1695" y="1251" width="36" height="22"/>
+    <SubTexture name="map_down" x="1238" y="1909" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="map_up" x="1724" y="1514" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="module_start_down" x="414" y="1631" width="110" height="112" frameX="-1" frameY="0" frameWidth="112" frameHeight="112"/>
+    <SubTexture name="module_start_up" x="302" y="1043" width="110" height="112" frameX="-1" frameY="0" frameWidth="112" frameHeight="112"/>
+    <SubTexture name="module_video_down" x="302" y="929" width="110" height="112" frameX="-1" frameY="0" frameWidth="112" frameHeight="112"/>
+    <SubTexture name="module_video_up" x="302" y="1631" width="110" height="112" frameX="-1" frameY="0" frameWidth="112" frameHeight="112"/>
+    <SubTexture name="progress_bg" x="862" y="824" width="32" height="515"/>
     <SubTexture name="progress_image" x="979" y="84" width="13" height="161"/>
     <SubTexture name="shade" x="2" y="2" width="1002" height="80"/>
-    <SubTexture name="small_title_down" x="2012" y="1251" width="34" height="30" frameX="0" frameY="-4" frameWidth="34" frameHeight="34"/>
-    <SubTexture name="small_title_up" x="296" y="922" width="32" height="32" frameX="-2" frameY="0" frameWidth="34" frameHeight="34"/>
-    <SubTexture name="team_down" x="1245" y="1848" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="team_up" x="69" y="1049" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="small_title_down" x="862" y="760" width="34" height="30" frameX="0" frameY="-4" frameWidth="34" frameHeight="34"/>
+    <SubTexture name="small_title_up" x="1778" y="649" width="32" height="32" frameX="-2" frameY="0" frameWidth="34" frameHeight="34"/>
+    <SubTexture name="team_down" x="1085" y="1909" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="team_up" x="1761" y="1375" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
     <SubTexture name="userCenter_bg" x="2" y="84" width="627" height="288"/>
-    <SubTexture name="userinfo_down" x="1283" y="1553" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="userinfo_up" x="1374" y="805" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="word_complete_0" x="1470" y="589" width="60" height="48"/>
-    <SubTexture name="word_complete_1" x="586" y="1889" width="47" height="53"/>
-    <SubTexture name="word_complete_2" x="296" y="860" width="42" height="60"/>
-    <SubTexture name="word_complete_3" x="340" y="856" width="36" height="56"/>
-    <SubTexture name="word_complete_4" x="933" y="915" width="35" height="53"/>
-    <SubTexture name="word_complete_5" x="1152" y="1653" width="39" height="54" frameX="-8" frameY="0" frameWidth="55" frameHeight="54"/>
-    <SubTexture name="word_complete_6" x="1193" y="1653" width="46" height="51"/>
-    <SubTexture name="word_complete_7" x="1470" y="492" width="61" height="45"/>
-    <SubTexture name="word_uncomplete_0" x="1470" y="539" width="60" height="48"/>
-    <SubTexture name="word_uncomplete_1" x="863" y="1450" width="47" height="53"/>
-    <SubTexture name="word_uncomplete_2" x="296" y="798" width="42" height="60"/>
-    <SubTexture name="word_uncomplete_3" x="340" y="798" width="36" height="56"/>
-    <SubTexture name="word_uncomplete_4" x="340" y="952" width="35" height="53"/>
-    <SubTexture name="word_uncomplete_5" x="1111" y="1667" width="39" height="54" frameX="-8" frameY="0" frameWidth="55" frameHeight="54"/>
-    <SubTexture name="word_uncomplete_6" x="1283" y="1500" width="46" height="51"/>
-    <SubTexture name="word_uncomplete_7" x="1470" y="445" width="61" height="45"/>
+    <SubTexture name="userinfo_down" x="932" y="1909" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="userinfo_up" x="1182" y="1397" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="word_complete_0" x="501" y="572" width="60" height="48"/>
+    <SubTexture name="word_complete_1" x="896" y="1136" width="47" height="53"/>
+    <SubTexture name="word_complete_2" x="1733" y="948" width="42" height="60"/>
+    <SubTexture name="word_complete_3" x="1695" y="1155" width="36" height="56"/>
+    <SubTexture name="word_complete_4" x="1724" y="1351" width="35" height="53"/>
+    <SubTexture name="word_complete_5" x="1733" y="1104" width="39" height="54" frameX="-8" frameY="0" frameWidth="55" frameHeight="54"/>
+    <SubTexture name="word_complete_6" x="896" y="1286" width="46" height="51"/>
+    <SubTexture name="word_complete_7" x="567" y="421" width="61" height="45"/>
+    <SubTexture name="word_uncomplete_0" x="567" y="468" width="60" height="48"/>
+    <SubTexture name="word_uncomplete_1" x="896" y="1081" width="47" height="53"/>
+    <SubTexture name="word_uncomplete_2" x="1733" y="886" width="42" height="60"/>
+    <SubTexture name="word_uncomplete_3" x="1695" y="1097" width="36" height="56"/>
+    <SubTexture name="word_uncomplete_4" x="1724" y="1296" width="35" height="53"/>
+    <SubTexture name="word_uncomplete_5" x="1733" y="1048" width="39" height="54" frameX="-8" frameY="0" frameWidth="55" frameHeight="54"/>
+    <SubTexture name="word_uncomplete_6" x="896" y="1233" width="46" height="51"/>
+    <SubTexture name="word_uncomplete_7" x="567" y="374" width="61" height="45"/>
 </TextureAtlas>

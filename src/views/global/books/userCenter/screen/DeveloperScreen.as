@@ -1,7 +1,9 @@
 package views.global.books.userCenter.screen
 {
+	import starling.display.Image;
 	import starling.events.Event;
 	
+	import views.global.books.BooksManager;
 	import views.global.books.events.BookEvent;
 
 	public class DeveloperScreen extends BaseScreen
@@ -12,8 +14,14 @@ package views.global.books.userCenter.screen
 		
 		override protected function initialize():void
 		{
-			super.initialize();
+			initPages();
 			dispatchEvent( new Event( BookEvent.InitViewPlayed ) );
+		}
+		
+		override protected function initPages():void
+		{
+			var image:Image = BooksManager.getImage("background_2");
+			this.addChild( image );
 		}
 		
 		override public function dispose():void

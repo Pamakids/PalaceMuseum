@@ -78,7 +78,7 @@ package views.global.books.userCenter
 		
 		private function initBackgroud():void
 		{
-			var image:Image=BooksManager.getImage("main_background");
+			var image:Image=BooksManager.getImage("main_background_1");
 			this.addChild(image);
 			image.touchable=false;
 		}

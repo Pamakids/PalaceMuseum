@@ -2,14 +2,14 @@ package views.global.books.components
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.geom.Point;
 	import flash.utils.getTimer;
-
+	
 	import controllers.MC;
-
+	
 	import models.SOService;
-
+	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -19,9 +19,10 @@ package views.global.books.components
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
-
+	
 	import views.Interlude;
 	import views.global.books.BooksManager;
+	import views.global.map.Map;
 
 	/**
 	 * 场景选择组件
@@ -78,21 +79,39 @@ package views.global.books.components
 			initActiveIcon();
 		}
 
+		private var crtScene:int;
+		private var crtModule:int;
+		private var fromMap:Boolean;
 		private function initActiveIcon():void
 		{
 			activeIcon=new Image(SKIN_VIDEO_UP);
 			activeIcon.pivotX=activeIcon.width >> 1;
 			activeIcon.pivotY=activeIcon.height >> 1;
 			var str:String=SOService.instance.getSO("lastScene") as String;
+			crtScene = int( str.charAt(1) );
+			crtModule = int( str.charAt(0) );
+			fromMap = !str.indexOf("map") == -1;
 			var i:int=0;
 			if (str && str != "end")
 			{
-				i=str.charAt(0) as int;
+				i=crtModule;
 				if (i != 0)
-					activeIcon.texture=SKIN_MODULE_UP;
+					activeIcon.texture = SKIN_MODULE_UP;
 			}
-			crtR=minR + i * d;
-			this.addChild(activeIcon);
+			if(i >= 4)		//御花园之后
+			{
+				if(i == 4)
+				{
+					if(crtScene >= 4)		//御花园	
+						i += 1;
+				}
+				else
+				{
+					i += 2;
+				}
+			}
+			this.addChild( activeIcon );
+			crtR = minR + i * d;
 			activeIcon.addEventListener(TouchEvent.TOUCH, onTriggered);
 		}
 
@@ -153,13 +172,99 @@ package views.global.books.components
 		private function clickHandler():void
 		{
 			var string:String=mapping[selectI];
-			var module:int=int(string.charAt(2));
-			var screen:int=int(string.charAt(4));
-			trace(module, screen);
 			if (string.charAt(0) == "m") //进入模块
-				(module != MC.instance.moduleIndex) ? MC.instance.gotoModule(module, screen) : BooksManager.closeCtrBook();
+			{
+				var module:int=int(string.charAt(2));
+				var screen:int=int(string.charAt(4));
+				trace(module, screen);
+				if( crtModule-1 == module )		//目标模块与当前模块相同
+				{
+					if(fromMap)
+					{
+						Map.show( null, module-1, module);
+						return;
+					}
+					if( module == 3 )		
+					{
+						if(screen == 0)		//去模块4
+						{
+							if(crtScene - 1 >= 3)
+							{
+								MC.instance.gotoModule( module, screen );
+							}
+							else
+							{
+								if(MC.instance.currentModule)
+								{
+									BooksManager.closeCtrBook();
+								}else
+								{
+									MC.instance.gotoModule( module, screen );
+								}
+							}
+						}else		//去御花园
+						{
+							if(crtScene - 1 < 3)	//当前处在非御花园区域
+							{
+								MC.instance.gotoModule( module, screen );
+							}else
+							{
+								if(MC.instance.currentModule)
+								{
+									BooksManager.closeCtrBook();
+								}else
+								{
+									MC.instance.gotoModule( module, screen );
+								}
+							}
+						}
+					}else
+					{
+						if(MC.instance.currentModule)
+							BooksManager.closeCtrBook();
+						else
+							MC.instance.gotoModule( module, screen );
+					}
+				}
+				else
+				{
+					MC.instance.gotoModule( module, screen );
+				}
+			}
 			else
+			{
 				Starling.current.nativeStage.addChild(new Interlude(string));
+			}
+			//			if (string.charAt(0) == "m") //进入模块
+			//			{
+			//				if(module == 3)		//御花园
+			//				{
+			//					if(screen == 3)
+			//					{
+			//						if( module == MC.instance.moduleIndex && MC.instance.currentModule && int(MC.instance.currentModule.crtScene.sceneName.charAt(-1))>=3 )
+			//						{
+			//							BooksManager.closeCtrBook();
+			//							return;
+			//						}
+			//						MC.instance.gotoModule(module, screen);
+			//					}else
+			//					{
+			//						if( module == MC.instance.moduleIndex && MC.instance.currentModule && int(MC.instance.currentModule.crtScene.sceneName.charAt(-1))<3 )
+			//						{
+			//							BooksManager.closeCtrBook();
+			//							return;
+			//						}
+			//						Map.show(null, module-1, module, true, true);
+			//					}
+			//					return;
+			//				}
+			//				if(module == MC.instance.moduleIndex && MC.instance.currentModule)
+			//					BooksManager.closeCtrBook();
+			//				else
+			//					MC.instance.gotoModule(module, screen);
+			//			}
+			//			else
+			//				Starling.current.nativeStage.addChild(new Interlude(string));
 		}
 
 		private var selectI:int=0;

@@ -88,7 +88,7 @@ package views.global.books.handbook
 		
 		private function initBackgroud():void
 		{
-			var image:Image=BooksManager.getImage("main_background");
+			var image:Image=BooksManager.getImage("main_background_0");
 			this.addChild(image);
 			image.touchable=false;
 		}
