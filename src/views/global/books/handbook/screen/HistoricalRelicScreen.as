@@ -2,14 +2,18 @@ package views.global.books.handbook.screen
 {
 	import feathers.core.PopUpManager;
 	
+	import models.SOService;
+	
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 	
 	import views.components.base.PalaceModule;
+	import views.global.books.BooksManager;
 	import views.global.books.events.BookEvent;
 	import views.global.books.userCenter.screen.BaseScreen;
+
 	/**
 	 * 文物
 	 * @author Administrator
@@ -31,9 +35,15 @@ package views.global.books.handbook.screen
 		
 		override protected function initialize():void
 		{
-			super.initialize();
+			initPages();
 			initLoad();
 			dispatchEventWith(BookEvent.Initialized);
+		}
+		
+		override protected function initPages():void
+		{
+			var image:Image = BooksManager.getImage("background_2");
+			this.addChild( image );
 		}
 		
 		private var load:Image;
@@ -88,6 +98,8 @@ package views.global.books.handbook.screen
 			cache=new Image(_assetsManager.getTexture("history_relic_" + crtPage));
 			this.addChild(cache);
 			cache.touchable=false;
+			
+			setSo();
 		}
 		
 		/**
@@ -185,6 +197,34 @@ package views.global.books.handbook.screen
 		{
 			cache.texture=_assetsManager.getTexture("history_relic_" + crtPage);
 			dispatchEventWith(BookEvent.ViewUpdated, false, crtPage);
+			setSo();
+		}
+		
+		private function setSo():void
+		{
+			var arr:Array = SOService.instance.getSO("progress_relic") as Array;
+			if(!arr)
+				arr = new Array(MAX_NUM);
+			arr[crtPage] = true;
+			SOService.instance.setSO("progress_relic", arr);
+			if(checkSO())
+				BooksManager.getCrtHandbook().showAchieve(32);
+		}
+		/**
+		 * 检测是否已完成成就
+		 * @return 
+		 */		
+		private function checkSO():Boolean
+		{
+			var arr:Array = SOService.instance.getSO("progress_relic") as Array;
+			if(!arr)
+				return false;
+			for(var i:int = 0;i<arr.length;i++)
+			{
+				if(!arr[i])
+					return false;
+			}
+			return true;
 		}
 		
 		override public function dispose():void
@@ -192,6 +232,7 @@ package views.global.books.handbook.screen
 			if (cache)
 				cache.removeFromParent(true);
 			_assetsManager.dispose();
+			super.dispose();
 		}
 	}
 }

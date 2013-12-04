@@ -29,11 +29,17 @@ package views.global.books.userCenter.screen
 		
 		override protected function initialize():void
 		{
-			super.initialize();
+			initPages();
 			initDatas();
 			initImages();
 			
 			dispatchEventWith(BookEvent.InitViewPlayed);
+		}
+		
+		override protected function initPages():void
+		{
+			var image:Image = BooksManager.getImage("background_2");
+			this.addChild( image );
 		}
 		
 		private var vecImage:Vector.<Image>;
@@ -158,12 +164,12 @@ package views.global.books.userCenter.screen
 			}
 		}
 		
-		private const order:Array = [0,1,2,3,4,12,5,6,7,9,8,13,10,11];
+		private const order:Array = [0,1,2,3,4,12,5,6,7,9,8,13,10,11,14];
 		private var source:Vector.<CollectionVO>;
 		private function initDatas():void
 		{
 			var arr:Array = BooksManager.getAssetsManager().getObject("collection").source;
-			max = order.length;
+			max = arr.length;
 			source = new Vector.<CollectionVO>(max);
 			var vo:CollectionVO;
 			var id:String;
