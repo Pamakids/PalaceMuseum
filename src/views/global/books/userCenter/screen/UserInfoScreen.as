@@ -3,19 +3,24 @@ package views.global.books.userCenter.screen
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	
+	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
 	
+	import controllers.DC;
 	import controllers.MC;
 	
 	import feathers.controls.Button;
+	import feathers.controls.text.TextFieldTextRenderer;
+	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
 	
 	import models.FontVo;
 	import models.SOService;
 	
+	import sound.SoundAssets;
+	
 	import starling.display.DisplayObject;
 	import starling.display.Image;
-	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -27,6 +32,7 @@ package views.global.books.userCenter.screen
 	import views.global.books.components.CurrentUserView;
 	import views.global.books.components.ModuleList;
 	import views.global.books.events.BookEvent;
+	import views.global.books.handbook.screen.BirdsScreen;
 	import views.global.books.userCenter.win.W_Alert;
 	import views.global.books.userCenter.win.W_ChooseUser;
 	import views.global.books.userCenter.win.W_DeleteUser;
@@ -59,19 +65,36 @@ package views.global.books.userCenter.screen
 		private function initSoundButton():void
 		{
 			check_BGM = new Button();
-			check_BGM.defaultSkin = BooksManager.getImage("button_sound_0_up");
-			check_BGM.defaultSelectedSkin = BooksManager.getImage("button_sound_0_down");
+			check_BGM.label = "音乐";
+			check_BGM.labelFactory = function():ITextRenderer{
+				var render:TextFieldTextRenderer = new TextFieldTextRenderer();
+				render.embedFonts = true;
+				render.textFormat = new TextFormat(FontVo.PALACE_FONT, 24, 0x610c0c);
+				return render;
+			};
+			check_BGM.defaultIcon = BooksManager.getImage("button_sound_0_up");
+			check_BGM.defaultSelectedIcon = BooksManager.getImage("button_sound_0_down");
 			this.addChild( check_BGM );
-			check_BGM.isSelected = false;
+			check_BGM.isSelected = SoundAssets.bgmVol == 0;
 			check_BGM.addEventListener(Event.TRIGGERED, onTriggered);
-			
+			check_BGM.x = 800;
+			check_BGM.y = 80;
 			
 			check_effect = new Button();
-			check_effect.defaultSkin = BooksManager.getImage("button_sound_1_up");
-			check_effect.defaultSelectedSkin = BooksManager.getImage("button_sound_1_down");
+			check_effect.label = "音效";
+			check_effect.labelFactory = function():ITextRenderer{
+				var render:TextFieldTextRenderer = new TextFieldTextRenderer();
+				render.embedFonts = true;
+				render.textFormat = new TextFormat(FontVo.PALACE_FONT, 24, 0x610c0c);
+				return render;
+			};
+			check_effect.defaultIcon = BooksManager.getImage("button_sound_1_up");
+			check_effect.defaultSelectedIcon = BooksManager.getImage("button_sound_1_down");
 			this.addChild( check_effect );
-			check_effect.isSelected = false;
+			check_effect.isSelected = SoundAssets.sfxVol == 0;
 			check_effect.addEventListener(Event.TRIGGERED, onTriggered);
+			check_effect.x = 800;
+			check_effect.y = 130;
 		}
 		
 		private function onTriggered(e:Event):void
@@ -79,37 +102,58 @@ package views.global.books.userCenter.screen
 			switch(e.target)
 			{
 				case check_BGM:
+					check_BGM.isSelected = !check_BGM.isSelected;
+					SoundAssets.bgmVol = (check_BGM.isSelected) ? 0 : 0.6;
+					trace(SoundAssets.bgmVol);
 					break;
 				case check_effect:
+					check_effect.isSelected = !check_effect.isSelected;
+					SoundAssets.sfxVol = (check_effect.isSelected) ? 0 : 0.6;
 					break;
 			}
 		}
 		
-		private var textfield_0:TextField;
-		private var textfield_1:TextField;
 		private function initTextfields():void
 		{
-			textfield_0 = new TextField(200, 50, "", FontVo.PALACE_FONT, 24, 0x333333);
-			this.addChild( textfield_0 );
+			var names:Array = ["成就", "卡片", "小鸟"];
+			var nums:Array = [0, 0, 0];
+			var maxs:Array = [
+				DC.instance.getAchievementData().length,
+				BooksManager.getAssetsManager().getObject("collection").source.length,
+				BirdsScreen.MAX_NUM
+			];
+			
+			var arr:Array = DC.instance.getAchievementData();
+			for(var i:int = 0;i<maxs[0];i++)
+			{
+				if(arr[i][2])
+					nums[0] ++;
+			}
+			for(i=0;i<maxs[1];i++)
+			{
+				if(DC.instance.testCollectionIsOpend(i.toString()))
+					nums[1] ++;
+			}
+			for(i=0;i<maxs[2];i++)
+			{
+				if(SOService.instance.getSO("birdCatched" + i))
+					nums[2] ++;
+			}
+			var tf:TextField;
+			var txt:String;
+			for(i=0;i<3;i++)
+			{
+				txt = names[i] + "： " + nums[i] + " / " + maxs[i];
+				tf = new TextField(200, 40, txt, FontVo.PALACE_FONT, 26, 0x610c0c);
+				tf.x = 540;
+				tf.y = 60 + i*40;
+				this.addChild( tf );
+				tf.touchable = false;
+				tf.hAlign = "left";
+			}
+			
 		}
 		
-//		private var mapButton:ElasticButton;
-//		private function initMapButton():void
-//		{
-//			mapButton=new ElasticButton(UserCenterManager.getImage("button_map_skin"), UserCenterManager.getImage("button_map_skin"));
-//			this.addChild(mapButton);
-//			mapButton.visible=mapVisible;
-//			mapButton.x=830;
-//			mapButton.y=535;
-//			mapButton.addEventListener(ElasticButton.CLICK, onClick);
-//		}
-
-//		private function onClick(e:Event):void
-//		{
-//			Map.show(null, -1, -1, true, true);
-//			MC.instance.switchLayer(true);
-//		}
-
 		private var moduleList:ModuleList;
 
 		private function initModuleList():void
@@ -299,12 +343,6 @@ package views.global.books.userCenter.screen
 
 		private var mapVisible:Boolean;
 
-//		public function setMapVisible(visible:Boolean):void
-//		{
-//			mapButton.visible=visible;
-//			dispatchEventWith(BookEvent.InitViewPlayed);
-//		}
-
 		private function initCrtUserView():void
 		{
 			//获取用户当前角色数据
@@ -331,6 +369,25 @@ package views.global.books.userCenter.screen
 			image.y=197;
 			this.addChild(image);
 			image.touchable=false;
+			
+			image = BooksManager.getImage("tf_bg");
+			image.x = 519;
+			image.y = 60;
+			image.alpha = .4;
+			image.touchable = false;
+			this.addChild( image );
+			image = BooksManager.getImage("tf_bg");
+			image.x = 519;
+			image.y = 100;
+			image.alpha = .4;
+			image.touchable = false;
+			this.addChild( image );
+			image = BooksManager.getImage("tf_bg");
+			image.x = 519;
+			image.y = 140;
+			image.alpha = .4;
+			image.touchable = false;
+			this.addChild( image );
 		}
 
 		override public function dispose():void

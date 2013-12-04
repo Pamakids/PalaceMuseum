@@ -107,11 +107,12 @@ package views.global.books.components
 				}
 				else
 				{
-					i += 2;
+					i += 1;
 				}
 			}
 			this.addChild( activeIcon );
 			crtR = minR + i * d;
+			selectI = i;
 			activeIcon.addEventListener(TouchEvent.TOUCH, onTriggered);
 		}
 
