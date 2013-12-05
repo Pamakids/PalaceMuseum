@@ -177,8 +177,7 @@ package views.global
 		public static function tweenPlay(isOut:Boolean, cb:Function):void
 		{
 			instance.visible=true;
-			instance.book.x=dx;
-			instance.book.y=10;
+			instance.showBookAndAvatar();
 			enable=true;
 			TweenLite.to(instance, 1, {x: isOut ? 10 : dx, onComplete: cb});
 		}

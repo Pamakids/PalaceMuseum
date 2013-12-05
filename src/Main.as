@@ -33,12 +33,11 @@ package
 		{
 //			SOService.instance.clear();
 //			SOService.instance.init();
-//			SOService.instance.setSO("lastScene", "44");
+			SOService.instance.setSO("lastScene", "11map");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
 			SoundAssets.init();
-//			addEventListener(UserBehaviorEvent.USERBEHAVIOR, onRecordUserBehavior);
 			//以免第一次初始化提示的时候卡顿
 			var label:TextField=new TextField(1, 1, '0', FontVo.PALACE_FONT, 16, 0x561a1a, true);
 			addChild(label);

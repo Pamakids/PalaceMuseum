@@ -134,13 +134,13 @@ package views.module1
 			addWindows();
 
 			addKing();
-			if (!SOService.instance.getSO("isfirst"))
-			{
-				SOService.instance.setSO("isfirst", true);
-				showFirstBook();
-			}
-			else
-				active();
+//			if (!SOService.instance.getSO("isfirst"))
+//			{
+//				SOService.instance.setSO("isfirst", true);
+//				showFirstBook();
+//			}
+//			else
+			active();
 		}
 
 		private function showFirstBook():void
