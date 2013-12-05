@@ -258,6 +258,8 @@ package views.components.base
 			var sceneName:String=StringUtils.getClassName(scene);
 			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
 			assetManager.enqueue(file);
+			if (crtScene)
+				crtScene.addLoading();
 			assetManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0 && callback != null)

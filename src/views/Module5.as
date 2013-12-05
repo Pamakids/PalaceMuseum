@@ -39,6 +39,8 @@ package views
 				var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
 				var path:String="assets/module3/scene31/dragMC."
 				assetManager.enqueue(file, path + "atf", path + "xml");
+				if (crtScene)
+					crtScene.addLoading();
 				assetManager.loadQueue(function(ratio:Number):void
 				{
 					if (ratio == 1.0 && callback != null)

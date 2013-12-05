@@ -447,7 +447,7 @@ package views.module2.scene21
 						gameSP.removeFromParent(true);
 						initResult();
 					}});
-				});
+				}, 2);
 			}});
 //			TweenLite.delayedCall(2, function():void
 //			{

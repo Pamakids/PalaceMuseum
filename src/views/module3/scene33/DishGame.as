@@ -605,7 +605,7 @@ package views.module3.scene33
 			gameOver=true;
 			timer.stop();
 
-			LionMC.instance.play((life > 0 && score > 0) ? 1 : 4, 0, 0, initResult);
+			LionMC.instance.play((life > 0 && score > 0) ? 1 : 4, 0, 0, initResult, 2);
 
 //			TweenLite.delayedCall(.5, initResult);
 		}

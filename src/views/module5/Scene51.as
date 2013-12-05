@@ -1,7 +1,6 @@
 package views.module5
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.manager.SoundManager;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -22,7 +21,6 @@ package views.module5
 	import views.components.LionMC;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
-	import views.global.books.BooksManager;
 
 	/**
 	 * 娱乐模块
@@ -87,7 +85,7 @@ package views.module5
 			PopUpManager.removePopUp(book, true);
 			book=null;
 
-			showCard("14");
+//			showCard("14");
 		}
 
 		private function addPeople():void

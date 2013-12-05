@@ -43,7 +43,7 @@ package views
 				var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
 				var path:String="assets/module1/scene12/kingExp"
 				assetManager.enqueue(file, path + ".atf", path + "2.atf",
-					path + ".xml", path + "2.xml", "assets/games/game31/mapEdge.png");
+									 path + ".xml", path + "2.xml");
 				assetManager.loadQueue(function(ratio:Number):void
 				{
 					if (ratio == 1.0 && callback != null)

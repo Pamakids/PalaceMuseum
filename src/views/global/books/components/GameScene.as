@@ -1,6 +1,9 @@
 package views.global.books.components
 {
 	import flash.filesystem.File;
+	import flash.utils.getTimer;
+
+	import controllers.UserBehaviorAnalysis;
 
 	import feathers.core.PopUpManager;
 
@@ -14,6 +17,7 @@ package views.global.books.components
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceModule;
 	import views.components.base.PalaceScene;
+	import views.global.TopBar;
 	import views.module2.scene21.JigsawGame;
 	import views.module3.scene32.MenuGame;
 	import views.module3.scene33.DishGame;
@@ -88,12 +92,30 @@ package views.global.books.components
 			initGame(crtGameIndex);
 		}
 
+		override protected function onStage(e:Event):void
+		{
+			super.onStage(e);
+		}
+
+		override protected function init():void
+		{
+			initTime=getTimer();
+			UserBehaviorAnalysis.trackView(sceneName);
+		}
+
 		override public function dispose():void
 		{
 			if (_loadImage)
 				_loadImage.dispose();
 			if (am)
 				am.dispose();
+			if (initTime > 0)
+			{
+				disposeTime=getTimer();
+				UserBehaviorAnalysis.trackTime("stayTime", disposeTime - initTime, sceneName);
+				initTime=-1;
+			}
+			removeChildren(0, -1, true);
 		}
 
 		public var playedCallBack:Function;

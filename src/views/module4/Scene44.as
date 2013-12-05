@@ -30,7 +30,7 @@ package views.module4
 	{
 		private var _W:Number=1664;
 
-		private var bg2:Image;
+		private var bg2:Sprite;
 		private var birdLayer:Sprite;
 		private var fg:Sprite;
 		private var king:Sprite;
@@ -44,7 +44,8 @@ package views.module4
 
 			flowerPos=assetManager.getObject("flowerPos");
 
-			bg2=getImage("bg44");
+			bg2=new Sprite();
+			bg2.addChild(getImage("bg44"));
 			bg2.x=1024 - _W >> 1;
 			addChild(bg2);
 
@@ -64,13 +65,63 @@ package views.module4
 			addBtrees();
 			addFlowers();
 			addTrees();
+			addLion();
 			addKing();
 
 			moveBG(200)
 			outMove=true;
 
 			addEventListener(TouchEvent.TOUCH, onTouch);
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			addEventListener(starling.events.Event.ENTER_FRAME, onEnterFrame);
+		}
+
+		private var h0:String="石子做的画\n古朴别致的彩石路面，是御花园的一大特色。不同颜色的卵石，精心铺成900多幅丰富多彩的图案，有人物、花卉、景物、戏剧等，沿路观赏，逸趣横生。";
+		private var h1:String="为什么只有御花园有树？\n紫禁城里只有御花园有树，是为了怕树上隐藏刺客，威胁皇帝安全。御花园有不少奇花异草，这种两棵树的枝干合生在一起的“连理柏”，也是令人惊叹的植物瑰宝。";
+		private var h2:String="堆秀山\n这座假山高14米，完全是由奇形怪状的石块堆砌而成，因此而得名“堆秀山”。山上有些石块酷似鸡、狗、猪、猴等动物，形状各异，活泼可爱。";
+		private var h3:String="御花园的最高点\n站在山上的这座“御景亭”里，可以俯瞰宫苑，还可以远眺紫禁城、景山。每年的中秋节和重阳节，皇帝和后妃们都会来这儿登高赏月、饮酒作诗。";
+
+		private function addLion():void
+		{
+			pt=new Point(315, 340);
+			tail=getImage("tail0001");
+			tail.scaleX=tail.scaleY=.5;
+			addChild(tail);
+			fg.addChild(tail);
+			tail.x=pt.x;
+			tail.y=pt.y;
+			tail.addEventListener(TouchEvent.TOUCH, onTailTouch);
+
+			lionMC=new MovieClip(assetManager.getTextures("lionPeep"), 24);
+			Starling.juggler.add(lionMC);
+			lionMC.loop=false;
+			lionMC.stop();
+			lionMC.visible=false;
+			lionMC.addEventListener(Event.COMPLETE, onPlayingMC);
+			lionMC.x=pt.x + 6;
+			lionMC.y=pt.y - 30;
+			fg.addChild(lionMC);
+		}
+
+		private function onTailTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(tail, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			playMC();
+		}
+
+		private function playMC():void
+		{
+			tail.visible=tail.touchable=false;
+			lionMC.visible=true;
+			lionMC.play();
+		}
+
+		protected function onPlayingMC(event:Event):void
+		{
+			lionMC.stop();
+			lionMC.visible=false;
+			tail.visible=tail.touchable=true;
 		}
 
 		private var outMove:Boolean;
@@ -83,7 +134,7 @@ package views.module4
 			t1.x=160 + t1.pivotX;
 			t1.y=-71 + t1.pivotY;
 			fg.addChild(t1);
-			t1.addEventListener(TouchEvent.TOUCH, onTreeTouch);
+//			t1.addEventListener(TouchEvent.TOUCH, onTreeTouch);
 
 			var t2:Image=getImage("treeb2");
 			t2.pivotX=t2.width >> 1;
@@ -104,7 +155,6 @@ package views.module4
 		{
 			king=new Sprite();
 			king.addChild(getImage("king-1"));
-//			king.touchable=false;
 			king.addEventListener(TouchEvent.TOUCH, onKingTouch);
 			addChild(king);
 			king.x=1024 - king.width >> 1;
@@ -113,9 +163,10 @@ package views.module4
 
 		private function onKingTouch(e:TouchEvent):void
 		{
+			e.stopImmediatePropagation()
 			var tc:Touch=e.getTouch(king, TouchPhase.ENDED);
 			if (tc)
-				Prompt.showTXT(512, 600, "哇，连石子路都这么漂亮！", 20, null, this);
+				Prompt.showTXT(512, 600, "哇，好气派的花园，咦，小狮子去哪了？", 20, null, this);
 		}
 
 		private var windX:Number;
@@ -298,6 +349,11 @@ package views.module4
 
 		override public function dispose():void
 		{
+			if (lionMC)
+			{
+				lionMC.stop();
+				Starling.juggler.remove(lionMC);
+			}
 			SoundManager.instance.stop("gamebg52");
 			TweenLite.killTweensOf(playNote);
 			TweenLite.killTweensOf(this);
@@ -363,7 +419,7 @@ package views.module4
 			var sy:Number=r.y + Math.random() * r.height;
 			var color:String=Math.random() > .5 ? "y" : "p"; //黄,紫
 			var scale:Number=Math.random() * .6 + .2;
-			var bird:MovieClip=new MovieClip(assetManager.getTextures(color + "bird"));
+			var bird:starling.display.MovieClip=new starling.display.MovieClip(assetManager.getTextures(color + "bird"));
 			bird.scaleX=(toleft ? -1 : 1) * scale; //水平翻转
 			bird.scaleY=scale;
 			birdLayer.addChild(bird);
@@ -389,7 +445,12 @@ package views.module4
 
 		private var count:int=0;
 
-		private function onEnterFrame(e:Event):void
+		private var tail:Image;
+
+		private var pt:Point;
+		private var lionMC:MovieClip;
+
+		private function onEnterFrame(e:starling.events.Event):void
 		{
 			if (outMove)
 			{
@@ -465,6 +526,10 @@ package views.module4
 				}
 				case TouchPhase.ENDED:
 				{
+					if (dpt && Point.distance(dpt, pt) < 10)
+					{
+						checkArea(tc.getLocation(stage));
+					}
 					dpt=null;
 					break;
 				}
@@ -474,6 +539,45 @@ package views.module4
 				}
 			}
 		}
+
+		private function checkArea(pt:Point):void
+		{
+			var rect:Rectangle;
+
+			var fpt:Point=fg.globalToLocal(pt);
+			for (var i:int=0; i < fgAreaArr.length; i++)
+			{
+				rect=fgAreaArr[i];
+				if (rect.containsPoint(fpt))
+				{
+					showHint(this["h" + i], fg, fpt, i == 1 ? 7 : 1)
+					return;
+				}
+			}
+
+			var bpt:Point=bg2.globalToLocal(pt);
+			for (var j:int=0; j < bgAreaArr.length; j++)
+			{
+				rect=bgAreaArr[j];
+				if (rect.containsPoint(bpt))
+				{
+					showHint(this["h" + (j + 2)], bg2, bpt, j == 1 ? 7 : 1)
+					return;
+				}
+			}
+		}
+
+		private function showHint(str:String, pr:Sprite, pt:Point, al:int=1):void
+		{
+			if (p)
+				p.playHide();
+			p=Prompt.showTXT(pt.x, pt.y, str, 20, null, pr, al, true);
+		}
+
+		private var p:Prompt;
+
+		private var fgAreaArr:Array=[new Rectangle(980, 559, 193, 205), new Rectangle(321, 5, 182, 269)];
+		private var bgAreaArr:Array=[new Rectangle(540, 198, 432, 184), new Rectangle(705, 37, 146, 105)];
 
 		private function moveBG(dx:Number):void
 		{

@@ -130,22 +130,11 @@ package views.module3
 			game=null;
 		}
 
-		override protected function sceneOver():void
-		{
-			removeMask();
-			super.sceneOver();
-		}
-
 		override protected function nextScene(e:Event=null):void
 		{
-			TopBar.enable=false;
-			if (nextButton && nextButton.parent)
-				nextButton.removeFromParent(true);
+			super.nextScene(e);
 			var scale:Number=1.2;
-			TweenLite.to(this, 3, {scaleX: scale, scaleY: scale, x: -1024 * (scale - 1),
-							 onComplete: function():void {
-								 dispatchEvent(new Event("gotoNext", true));
-							 }});
+			TweenLite.to(this, 3, {scaleX: scale, scaleY: scale, x: -1024 * (scale - 1)});
 		}
 	}
 }

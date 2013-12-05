@@ -87,6 +87,8 @@ package views.components
 					var t:TextField=new TextField(isK ? bgImage.width - 30 : bgImage.width - 5, isK ? bgImage.height - 10 : bgImage.height - 20, content, FontVo.PALACE_FONT, fontSize, 0x561a1a, true);
 					t.x=bgImage.x + isK ? 15 : 3;
 					t.y=bgImage.y + isK ? 10 : 5;
+					if (bgAlign == 7)
+						t.y+=20;
 					if (bg == "bg-task")
 					{
 						t.y+=10;
@@ -120,6 +122,11 @@ package views.components
 				else
 				{
 					addChildAt(bgImage, 0);
+					if (bgAlign == 7)
+					{
+						bgImage.y=bgImage.height;
+						bgImage.scaleY=-1
+					}
 				}
 				algin=bgAlign;
 			}
