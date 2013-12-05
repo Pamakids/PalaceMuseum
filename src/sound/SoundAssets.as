@@ -261,7 +261,13 @@ package sound
 			_bgmVol=value;
 			SOService.instance.setSO(BGM, value);
 			if (crtBGM)
-				scDic[crtBGM]=sm.play(crtBGM, 0, bgmVol);
+			{
+				var sc:SoundChannel=scDic[crtBGM];
+				if (sc)
+					sc.soundTransform.volume=bgmVol;
+				else
+					scDic[crtBGM]=sm.play(crtBGM, 0, bgmVol);
+			}
 		}
 
 		private static var _sfxVol:Number;
