@@ -190,7 +190,6 @@ package views.global.books.components
 			{
 				var module:int=int(string.charAt(2));
 				var screen:int=int(string.charAt(4)) - 1;
-				trace(module, screen);
 				if (crtModule - 1 == module) //目标模块与当前模块相同
 				{
 					if (fromMap)
@@ -206,7 +205,7 @@ package views.global.books.components
 						{
 							if (crtScene - 1 >= 3)
 							{
-								MC.instance.gotoModule(module, screen);
+								MC.instance.gotoModule(module, Math.max(crtScene - 1, screen));
 							}
 							else
 							{
@@ -216,7 +215,7 @@ package views.global.books.components
 								}
 								else
 								{
-									MC.instance.gotoModule(module, screen);
+									MC.instance.gotoModule(module, Math.max(crtScene - 1, screen));
 								}
 							}
 						}
@@ -224,7 +223,7 @@ package views.global.books.components
 						{
 							if (crtScene - 1 < 3) //当前处在非御花园区域
 							{
-								MC.instance.gotoModule(module, screen);
+								MC.instance.gotoModule(module, Math.max(crtScene - 1, screen));
 							}
 							else
 							{
@@ -234,7 +233,7 @@ package views.global.books.components
 								}
 								else
 								{
-									MC.instance.gotoModule(module, screen);
+									MC.instance.gotoModule(module, Math.max(crtScene - 1, screen));
 								}
 							}
 						}
@@ -244,7 +243,7 @@ package views.global.books.components
 						if (MC.instance.currentModule)
 							BooksManager.closeCtrBook();
 						else
-							MC.instance.gotoModule(module, screen);
+							MC.instance.gotoModule(module, Math.max(crtScene - 1, screen));
 					}
 				}
 				else

@@ -37,7 +37,11 @@ package
 			main.showStats=Capabilities.isDebugger;
 			main.antiAliasing=16;
 
+			var mcLayer:Sprite=new Sprite();
+			addChild(mcLayer);
+
 			MC.instance.stage=this;
+			MC.instance.mcLayer=mcLayer;
 		}
 	}
 }

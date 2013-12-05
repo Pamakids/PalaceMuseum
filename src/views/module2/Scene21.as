@@ -1,7 +1,6 @@
 package views.module2
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
@@ -147,7 +146,7 @@ package views.module2
 			kingHead.play();
 			Starling.juggler.add(kingHead);
 			kingHead.scaleX=kingHead.scaleY=.8;
-			headHolder.addChild(kingHead);
+			headHolder.addChildAt(kingHead, 0);
 		}
 
 		private var expArr:Array=["kingHappy", "kingLook", "KingNaughty", "kingStrange"];
@@ -607,6 +606,33 @@ package views.module2
 			addChild(mapGame);
 			mapGame.addEventListener(PalaceGame.GAME_OVER, onGamePlayed);
 			mapGame.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);
+		}
+
+		override protected function nextScene(e:Event=null):void
+		{
+			if (kingHead)
+			{
+				kingHead.stop();
+				Starling.juggler.remove(kingHead);
+				kingHead.removeFromParent(true);
+				kingHead=null;
+			}
+
+			var tempHead:Image=getImage("kingStrange0001");
+			tempHead.scaleX=tempHead.scaleY=.8;
+			headHolder.addChild(tempHead);
+
+			map.touchable=can2.touchable=false;
+
+			assetManager.removeTextureAtlas("bug");
+			assetManager.removeTextureAtlas("mapPiece");
+			assetManager.removeTextureAtlas("kingExp");
+
+			assetManager.removeTexture("map");
+			assetManager.removeTexture("mapEdge");
+
+
+			super.nextScene(e);
 		}
 	}
 }

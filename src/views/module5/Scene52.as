@@ -196,6 +196,9 @@ package views.module5
 
 		private var king:MovieClip;
 
+		private var lvl:int;
+		private var win:Boolean;
+
 		private function closeCurtains(closeCallback:Function=null):void
 		{
 			TweenLite.to(curtainL, 1, {x: 0});
@@ -214,41 +217,43 @@ package views.module5
 			game.onOperaSwitch=onOperaSwitch;
 			gameHolder.addChild(game);
 			game.addEventListener(PalaceGame.GAME_OVER, onGameOver);
-			game.addEventListener("nextGame", onPlayGame2);
+			game.addEventListener("nextGame", getGameInfo);
 			game.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 		}
 
-		private function onPlayGame2(e:Event):void
+		private function onPlayGame2(e:Event=null):void
 		{
 			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void {
 				king.play();
-				Prompt.showTXT(king.x + 20, king.y + 135, "太过瘾了，看得我眼花缭乱！", 20, getGameInfo, null, 3);
+				Prompt.showTXT(king.x + 20, king.y + 135, "太过瘾了，看得我眼花缭乱！", 20, gotoGame2, null, 3);
 			}});
 		}
 
-		private function getGameInfo(e:Event=null):void
+		private function gotoGame2():void
 		{
 			Starling.juggler.remove(king);
 			king.removeFromParent(true);
 			king=null;
-			var lvl:int=game.gamelevel;
+			initGame2(lvl);
+		}
+
+		private function getGameInfo(e:Event=null):void
+		{
+			lvl=game.gamelevel;
+			win=game.isWin;
 			if (game.isWin)
 			{
 				if (lvl == 0)
 					showCard("10", function():void {
-						showAchievement(28, function():void {
-							initGame2(lvl);
-						});
+						showAchievement(28, onPlayGame2);
 					});
 				else
 					showCard("11", function():void {
-						showAchievement(29, function():void {
-							initGame2(lvl);
-						});
+						showAchievement(29, onPlayGame2);
 					});
 			}
 			else
-				initGame2(lvl);
+				onPlayGame2;
 
 			game.removeFromParent(true);
 			game=null;

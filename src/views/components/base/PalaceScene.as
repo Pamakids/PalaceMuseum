@@ -27,6 +27,7 @@ package views.components.base
 
 	import sound.SoundAssets;
 
+	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
@@ -213,6 +214,22 @@ package views.components.base
 			else
 				nextButton.visible=true;
 			TailBar.hide();
+			addLoading();
+		}
+
+		public function addLoading():void
+		{
+			if (nextButton)
+			{
+				var loading:MovieClip=new MovieClip(MC.assetManager.getTextures("loadingHalo"), 15);
+				Starling.juggler.add(loading);
+				loading.loop=true;
+				loading.play();
+				nextButton.addChild(loading);
+				loading.x=8;
+				loading.y=32;
+				loading.scaleY=.98
+			}
 		}
 
 		protected function hideNext():void
@@ -239,8 +256,6 @@ package views.components.base
 			TweenLite.killTweensOf(shakeNext);
 			dispatchEvent(new Event("gotoNext", true));
 		}
-
-//		private var delayIndex:int;
 
 		protected var bg:Image;
 

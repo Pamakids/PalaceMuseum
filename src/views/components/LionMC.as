@@ -62,8 +62,9 @@ package views.components
 				play(int(Math.random() * mcArr.length));
 		}
 
-		public function play(type:int=0, _x:Number=0, _y:Number=0, cb:Function=null):void
+		public function play(type:int=0, _x:Number=0, _y:Number=0, cb:Function=null, loops:int=1):void
 		{
+			var count:int=0;
 			SoundAssets.playSFX("lionshow", true);
 			TailBar.hide();
 			showLion(type);
@@ -80,14 +81,17 @@ package views.components
 				lion.gotoAndPlay(1);
 				var compFunc:Function=function(e:Event):void {
 					if (lion.currentFrame == lion.totalFrames) {
+						count++;
+						if (count != loops)
+							return;
 						lion.stop();
 						TailBar.show();
 						lion.removeEventListener(Event.FRAME_CONSTRUCTED, compFunc);
 						isSayingOver=true;
 						if (cb != null)
 							cb();
+						MC.instance.main.removeMask();
 					}
-					MC.instance.main.removeMask();
 				}
 				lion.addEventListener(Event.FRAME_CONSTRUCTED, compFunc);
 			}});

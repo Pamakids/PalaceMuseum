@@ -64,13 +64,58 @@ package views.module4
 			addBtrees();
 			addFlowers();
 			addTrees();
+			addLion();
 			addKing();
 
 			moveBG(200)
 			outMove=true;
 
 			addEventListener(TouchEvent.TOUCH, onTouch);
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			addEventListener(starling.events.Event.ENTER_FRAME, onEnterFrame);
+		}
+
+		private function addLion():void
+		{
+			pt=new Point(315, 340);
+			tail=getImage("tail0001");
+			tail.scaleX=tail.scaleY=.5;
+			addChild(tail);
+			fg.addChild(tail);
+			tail.x=pt.x;
+			tail.y=pt.y;
+			tail.addEventListener(TouchEvent.TOUCH, onTailTouch);
+
+			lionMC=new MovieClip(assetManager.getTextures("lionPeep"), 24);
+			Starling.juggler.add(lionMC);
+			lionMC.loop=false;
+			lionMC.stop();
+			lionMC.visible=false;
+			lionMC.addEventListener(Event.COMPLETE, onPlayingMC);
+			lionMC.x=pt.x + 6;
+			lionMC.y=pt.y - 30;
+			fg.addChild(lionMC);
+		}
+
+		private function onTailTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(tail, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			playMC();
+		}
+
+		private function playMC():void
+		{
+			tail.visible=tail.touchable=false;
+			lionMC.visible=true;
+			lionMC.play();
+		}
+
+		protected function onPlayingMC(event:Event):void
+		{
+			lionMC.stop();
+			lionMC.visible=false;
+			tail.visible=tail.touchable=true;
 		}
 
 		private var outMove:Boolean;
@@ -104,7 +149,6 @@ package views.module4
 		{
 			king=new Sprite();
 			king.addChild(getImage("king-1"));
-//			king.touchable=false;
 			king.addEventListener(TouchEvent.TOUCH, onKingTouch);
 			addChild(king);
 			king.x=1024 - king.width >> 1;
@@ -298,6 +342,11 @@ package views.module4
 
 		override public function dispose():void
 		{
+			if (lionMC)
+			{
+				lionMC.stop();
+				Starling.juggler.remove(lionMC);
+			}
 			SoundManager.instance.stop("gamebg52");
 			TweenLite.killTweensOf(playNote);
 			TweenLite.killTweensOf(this);
@@ -363,7 +412,7 @@ package views.module4
 			var sy:Number=r.y + Math.random() * r.height;
 			var color:String=Math.random() > .5 ? "y" : "p"; //黄,紫
 			var scale:Number=Math.random() * .6 + .2;
-			var bird:MovieClip=new MovieClip(assetManager.getTextures(color + "bird"));
+			var bird:starling.display.MovieClip=new starling.display.MovieClip(assetManager.getTextures(color + "bird"));
 			bird.scaleX=(toleft ? -1 : 1) * scale; //水平翻转
 			bird.scaleY=scale;
 			birdLayer.addChild(bird);
@@ -389,7 +438,12 @@ package views.module4
 
 		private var count:int=0;
 
-		private function onEnterFrame(e:Event):void
+		private var tail:Image;
+
+		private var pt:Point;
+		private var lionMC:MovieClip;
+
+		private function onEnterFrame(e:starling.events.Event):void
 		{
 			if (outMove)
 			{

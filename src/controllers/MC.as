@@ -5,6 +5,7 @@ package controllers
 
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 
 	import feathers.core.PopUpManager;
 
@@ -54,16 +55,16 @@ package controllers
 		}
 
 		private var _moduleIndex:int=-1;
-		private var contentLayer:Sprite;
+		private var contentLayer:starling.display.Sprite;
 		public var currentModule:PalaceModule;
 
 		public var main:Container;
 		private var modules:Array=[Module1, Module2, Module3, Module4, Module5];
 
 		public var stage:PalaceMuseum;
-		public var topBarLayer:Sprite;
-		private var centerLayer:Sprite;
-		private var mapLayer:Sprite;
+		public var topBarLayer:starling.display.Sprite;
+		private var centerLayer:starling.display.Sprite;
+		private var mapLayer:starling.display.Sprite;
 
 		public function init(main:Container):void
 		{
@@ -93,34 +94,38 @@ package controllers
 
 		public function addMC(mc:MovieClip):void
 		{
-			stage.addChild(mc);
-			mc.visible=(BooksManager.getCrtUserCenter() == null);
+			mcLayer.addChild(mc);
+//			mc.visible=(BooksManager.getCrtUserCenter() == null);
 		}
 
 		public function removeMC(mc:MovieClip):void
 		{
-			if (stage.contains(mc))
-				stage.removeChild(mc);
+			if (mcLayer.contains(mc))
+				mcLayer.removeChild(mc);
 		}
+
+		public var mcLayer:flash.display.Sprite;
 
 		public function hideMC():void
 		{
-			for (var i:int=0; i < MC.instance.stage.numChildren; i++)
-			{
-				var obj:flash.display.DisplayObject=stage.getChildAt(i);
-				if (obj is MovieClip)
-					obj.visible=false;
-			}
+			mcLayer.visible=false;
+//			for (var i:int=0; i < mcLayer.numChildren; i++)
+//			{
+//				var obj:flash.display.DisplayObject=mcLayer.getChildAt(i);
+//				if (obj is MovieClip)
+//					obj.visible=false;
+//			}
 		}
 
 		public function showMC():void
 		{
-			for (var i:int=0; i < MC.instance.stage.numChildren; i++)
-			{
-				var obj:flash.display.DisplayObject=stage.getChildAt(i);
-				if (obj is MovieClip)
-					obj.visible=true;
-			}
+			mcLayer.visible=true;
+//			for (var i:int=0; i < mcLayer.numChildren; i++)
+//			{
+//				var obj:flash.display.DisplayObject=stage.getChildAt(i);
+//				if (obj is MovieClip)
+//					obj.visible=true;
+//			}
 		}
 
 		public function get moduleIndex():int
@@ -201,13 +206,13 @@ package controllers
 
 		private function removeAllMC():void
 		{
-			for (var i:int=0; i < stage.numChildren; i++)
-			{
-				var d:flash.display.DisplayObject=stage.getChildAt(i);
-				if (d is MovieClip)
-					stage.removeChild(d);
-			}
-
+			mcLayer.removeChildren();
+//			for (var i:int=stage.numChildren - 1; i >= 0; i--)
+//			{
+//				var d:flash.display.DisplayObject=stage.getChildAt(i);
+//				if (d is MovieClip)
+//					stage.removeChild(d);
+//			}
 		}
 
 		private function onEnd():void
@@ -253,10 +258,10 @@ package controllers
 
 		private function initLayers():void
 		{
-			contentLayer=new Sprite();
-			centerLayer=new Sprite();
-			mapLayer=new Sprite();
-			topBarLayer=new Sprite();
+			contentLayer=new starling.display.Sprite();
+			centerLayer=new starling.display.Sprite();
+			mapLayer=new starling.display.Sprite();
+			topBarLayer=new starling.display.Sprite();
 
 			main.addChild(contentLayer);
 			main.addChild(centerLayer);
