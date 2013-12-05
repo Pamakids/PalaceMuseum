@@ -47,6 +47,11 @@ package views.global.books.components
 		private var probar:ProgressBar;
 		private function initProbar():void
 		{
+			var image:Image = BooksManager.getImage("progress_main");
+			this.addChild( image );
+			image.x = 590;
+			image.y = 72;
+			image.touchable = false;
 			probar = new ProgressBar();
 			probar.maximum = 100;
 			probar.minimum = 0;
@@ -54,8 +59,8 @@ package views.global.books.components
 			probar.fillSkin = BooksManager.getImage("progress_image");
 			this.addChild( probar );
 			probar.direction = ProgressBar.DIRECTION_VERTICAL;
-			probar.x = 590;
-			probar.y = 72;
+			probar.x = 600;
+			probar.y = 105;
 			probar.touchable = false;
 		}
 		

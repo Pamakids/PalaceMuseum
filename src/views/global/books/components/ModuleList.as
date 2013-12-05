@@ -148,7 +148,6 @@ package views.global.books.components
 						}
 						targetR=minR + selectI * d;
 						animationStart(targetR);
-						play.visible=true;
 						break;
 				}
 			}
@@ -456,6 +455,7 @@ package views.global.books.components
 				i=vecImage.indexOf(e.target as Image);
 				if (!isComplete(i))
 					return;
+				play.visible = false;
 				selectI=i;
 				var targetR:Number=minR + selectI * d;
 				activeIcon.texture=SKIN_ICON_SUN;
@@ -468,6 +468,7 @@ package views.global.books.components
 			moving=true;
 			TweenLite.to(this, 1, {crtR: targetR, ease: Cubic.easeOut, onComplete: function():void {
 				moving=false;
+				play.visible=true;
 			}});
 			var tarR:Number=arrR[selectI];
 			TweenLite.to(pointer, 1, {rotation: tarR, ease: Cubic.easeOut});
