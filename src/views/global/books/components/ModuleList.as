@@ -2,13 +2,13 @@ package views.global.books.components
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.geom.Point;
-
+	
 	import controllers.MC;
-
+	
 	import models.SOService;
-
+	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -18,8 +18,9 @@ package views.global.books.components
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
-
+	
 	import views.Interlude;
+	import views.components.ElasticButton;
 	import views.global.books.BooksManager;
 	import views.global.map.Map;
 
@@ -48,10 +49,6 @@ package views.global.books.components
 		private const maxR:Number=minR + 7 * d;
 		private var activeIcon:Image;
 
-		private var SKIN_VIDEO_UP:Texture=BooksManager.getTexture("module_video_up");
-		private var SKIN_VIDEO_DOWN:Texture=BooksManager.getTexture("module_video_down");
-		private var SKIN_MODULE_UP:Texture=BooksManager.getTexture("module_start_up");
-		private var SKIN_MODULE_DOWN:Texture=BooksManager.getTexture("module_start_down");
 		private var SKIN_ICON_SUN:Texture=BooksManager.getTexture("drag_sun");
 
 		private function init():void
@@ -64,26 +61,20 @@ package views.global.books.components
 			initPlayBtn();
 		}
 
-		private var play:Image;
+		private var play:ElasticButton;
 
 		private function initPlayBtn():void
 		{
-			play=BooksManager.getImage("btn_play");
-			play.pivotX=play.width >> 1;
-			play.pivotY=play.height >> 1;
+			play=new ElasticButton(BooksManager.getImage("btn_play"));
+			addChild(play);
 			play.x=centerS.x + 4;
 			play.y=centerS.y + 3;
-			this.addChild(play);
-			play.addEventListener(TouchEvent.TOUCH, onPlay);
+			play.addEventListener(ElasticButton.CLICK, onPlay);
 		}
 
-		private function onPlay(e:TouchEvent):void
+		private function onPlay():void
 		{
-			var touch:Touch=e.getTouch(play);
-			if (touch && touch.phase == TouchPhase.ENDED)
-			{
-				clickHandler();
-			}
+			clickHandler();
 		}
 
 		private var crtScene:int;
@@ -103,8 +94,6 @@ package views.global.books.components
 			if (str && str != "end")
 			{
 				i=crtModule;
-				if (i != 0)
-					activeIcon.texture=SKIN_MODULE_UP;
 			}
 			if (i >= 4) //御花园之后
 			{
@@ -154,7 +143,6 @@ package views.global.books.components
 						}
 						targetR=minR + selectI * d;
 						animationStart(targetR);
-						play.visible=true;
 						break;
 				}
 			}
@@ -371,21 +359,6 @@ package views.global.books.components
 			this.addChild(image);
 			image.touchable=false;
 
-//			var shape:Shape = new Shape();
-//			centerS = localToGlobal(centerS);
-//			shape.graphics.beginFill(0x0333, 0.2);
-//			shape.graphics.drawCircle(60, 60, 60);
-//			shape.graphics.endFill();
-//			var bd:BitmapData = new BitmapData(120, 120);
-//			bd.draw( shape );
-//			var bp:Bitmap = new Bitmap(bd);
-//			image = new Image(Texture.fromBitmap(bp));
-//			this.addChild( image );
-//			image.pivotX = image.pivotY = 60;
-//			image.x = centerS.x;
-//			image.y = centerS.y;
-
-
 			pointer=new Quad(66, 4, 0x0);
 			pointer.alpha=.4;
 			pointer.pivotY=pointer.height >> 1;
@@ -476,6 +449,7 @@ package views.global.books.components
 				i=vecImage.indexOf(e.target as Image);
 				if (!isComplete(i))
 					return;
+				play.visible = false;
 				selectI=i;
 				var targetR:Number=minR + selectI * d;
 				activeIcon.texture=SKIN_ICON_SUN;
@@ -488,16 +462,18 @@ package views.global.books.components
 			moving=true;
 			TweenLite.to(this, 1, {crtR: targetR, ease: Cubic.easeOut, onComplete: function():void {
 				moving=false;
+				play.visible=true;
 			}});
 			var tarR:Number=arrR[selectI];
-			TweenLite.to(pointer, 1, {rotation: tarR, ease: Cubic.easeOut, onComplete: function():void {
-//				play.visible = true;
-			}});
+			TweenLite.to(pointer, 1, {rotation: tarR, ease: Cubic.easeOut});
 		}
 
 		override public function dispose():void
 		{
 			TweenLite.killTweensOf(this);
+			if(play)
+				play.removeFromParent(true);
+			
 			for each (var image:Image in vecImage)
 			{
 				image.removeEventListener(TouchEvent.TOUCH, onTouch);
@@ -508,7 +484,7 @@ package views.global.books.components
 				activeIcon.removeEventListener(TouchEvent.TOUCH, onTriggered);
 				activeIcon.removeFromParent(true);
 			}
-			SKIN_ICON_SUN=SKIN_MODULE_DOWN=SKIN_MODULE_UP=SKIN_VIDEO_DOWN=SKIN_VIDEO_UP=null;
+			SKIN_ICON_SUN=null;
 			super.dispose();
 		}
 	}
