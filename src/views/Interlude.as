@@ -76,7 +76,7 @@ package views
 			initialize();
 			if (Capabilities.isDebugger)
 			{
-				stage.addEventListener(MouseEvent.MOUSE_DOWN, onStage);
+				stage.addEventListener(MouseEvent.CLICK, onStage);
 			}
 		}
 
