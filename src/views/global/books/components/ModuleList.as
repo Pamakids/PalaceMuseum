@@ -2,13 +2,13 @@ package views.global.books.components
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.geom.Point;
-
+	
 	import controllers.MC;
-
+	
 	import models.SOService;
-
+	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -18,8 +18,9 @@ package views.global.books.components
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
-
+	
 	import views.Interlude;
+	import views.components.ElasticButton;
 	import views.global.books.BooksManager;
 	import views.global.map.Map;
 
@@ -60,26 +61,20 @@ package views.global.books.components
 			initPlayBtn();
 		}
 
-		private var play:Image;
+		private var play:ElasticButton;
 
 		private function initPlayBtn():void
 		{
-			play=BooksManager.getImage("btn_play");
-			play.pivotX=play.width >> 1;
-			play.pivotY=play.height >> 1;
+			play=new ElasticButton(BooksManager.getImage("btn_play"));
+			addChild(play);
 			play.x=centerS.x + 4;
 			play.y=centerS.y + 3;
-			this.addChild(play);
-			play.addEventListener(TouchEvent.TOUCH, onPlay);
+			play.addEventListener(ElasticButton.CLICK, onPlay);
 		}
 
-		private function onPlay(e:TouchEvent):void
+		private function onPlay():void
 		{
-			var touch:Touch=e.getTouch(play);
-			if (touch && touch.phase == TouchPhase.ENDED)
-			{
-				clickHandler();
-			}
+			clickHandler();
 		}
 
 		private var crtScene:int;
@@ -148,7 +143,6 @@ package views.global.books.components
 						}
 						targetR=minR + selectI * d;
 						animationStart(targetR);
-						play.visible=true;
 						break;
 				}
 			}
@@ -456,6 +450,7 @@ package views.global.books.components
 				i=vecImage.indexOf(e.target as Image);
 				if (!isComplete(i))
 					return;
+				play.visible = false;
 				selectI=i;
 				var targetR:Number=minR + selectI * d;
 				activeIcon.texture=SKIN_ICON_SUN;
@@ -468,6 +463,7 @@ package views.global.books.components
 			moving=true;
 			TweenLite.to(this, 1, {crtR: targetR, ease: Cubic.easeOut, onComplete: function():void {
 				moving=false;
+				play.visible=true;
 			}});
 			var tarR:Number=arrR[selectI];
 			TweenLite.to(pointer, 1, {rotation: tarR, ease: Cubic.easeOut});
@@ -476,6 +472,9 @@ package views.global.books.components
 		override public function dispose():void
 		{
 			TweenLite.killTweensOf(this);
+			if(play)
+				play.removeFromParent(true);
+			
 			for each (var image:Image in vecImage)
 			{
 				image.removeEventListener(TouchEvent.TOUCH, onTouch);
