@@ -48,10 +48,6 @@ package views.global.books.components
 		private const maxR:Number=minR + 7 * d;
 		private var activeIcon:Image;
 
-		private var SKIN_VIDEO_UP:Texture=BooksManager.getTexture("module_video_up");
-		private var SKIN_VIDEO_DOWN:Texture=BooksManager.getTexture("module_video_down");
-		private var SKIN_MODULE_UP:Texture=BooksManager.getTexture("module_start_up");
-		private var SKIN_MODULE_DOWN:Texture=BooksManager.getTexture("module_start_down");
 		private var SKIN_ICON_SUN:Texture=BooksManager.getTexture("drag_sun");
 
 		private function init():void
@@ -103,8 +99,6 @@ package views.global.books.components
 			if (str && str != "end")
 			{
 				i=crtModule;
-				if (i != 0)
-					activeIcon.texture=SKIN_MODULE_UP;
 			}
 			if (i >= 4) //御花园之后
 			{
@@ -372,21 +366,6 @@ package views.global.books.components
 			this.addChild(image);
 			image.touchable=false;
 
-//			var shape:Shape = new Shape();
-//			centerS = localToGlobal(centerS);
-//			shape.graphics.beginFill(0x0333, 0.2);
-//			shape.graphics.drawCircle(60, 60, 60);
-//			shape.graphics.endFill();
-//			var bd:BitmapData = new BitmapData(120, 120);
-//			bd.draw( shape );
-//			var bp:Bitmap = new Bitmap(bd);
-//			image = new Image(Texture.fromBitmap(bp));
-//			this.addChild( image );
-//			image.pivotX = image.pivotY = 60;
-//			image.x = centerS.x;
-//			image.y = centerS.y;
-
-
 			pointer=new Quad(66, 4, 0x0);
 			pointer.alpha=.4;
 			pointer.pivotY=pointer.height >> 1;
@@ -491,9 +470,7 @@ package views.global.books.components
 				moving=false;
 			}});
 			var tarR:Number=arrR[selectI];
-			TweenLite.to(pointer, 1, {rotation: tarR, ease: Cubic.easeOut, onComplete: function():void {
-//				play.visible = true;
-			}});
+			TweenLite.to(pointer, 1, {rotation: tarR, ease: Cubic.easeOut});
 		}
 
 		override public function dispose():void
@@ -509,7 +486,7 @@ package views.global.books.components
 				activeIcon.removeEventListener(TouchEvent.TOUCH, onTriggered);
 				activeIcon.removeFromParent(true);
 			}
-			SKIN_ICON_SUN=SKIN_MODULE_DOWN=SKIN_MODULE_UP=SKIN_VIDEO_DOWN=SKIN_VIDEO_UP=null;
+			SKIN_ICON_SUN=null;
 			super.dispose();
 		}
 	}
