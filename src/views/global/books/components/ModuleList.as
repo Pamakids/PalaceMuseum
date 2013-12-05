@@ -2,13 +2,13 @@ package views.global.books.components
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
+
 	import flash.geom.Point;
-	
+
 	import controllers.MC;
-	
+
 	import models.SOService;
-	
+
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -18,11 +18,11 @@ package views.global.books.components
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
-	
+
 	import views.Interlude;
 	import views.global.books.BooksManager;
 	import views.global.map.Map;
-	
+
 	/**
 	 * 场景选择组件
 	 * @author Administrator
@@ -33,12 +33,12 @@ package views.global.books.components
 		{
 			init();
 		}
-		
-		private var moving:Boolean = false;
-		
+
+		private var moving:Boolean=false;
+
 		private const viewWidth:uint=968;
 		private const viewHeight:uint=464;
-		
+
 		private var vecImage:Vector.<Image>;
 		private const btnCount:uint=8;
 		private const center:Point=new Point(viewWidth / 2, viewHeight + 400);
@@ -47,13 +47,13 @@ package views.global.books.components
 		private const minR:Number=-Math.PI / 2 - 3.5 * d;
 		private const maxR:Number=minR + 7 * d;
 		private var activeIcon:Image;
-		
+
 		private var SKIN_VIDEO_UP:Texture=BooksManager.getTexture("module_video_up");
 		private var SKIN_VIDEO_DOWN:Texture=BooksManager.getTexture("module_video_down");
 		private var SKIN_MODULE_UP:Texture=BooksManager.getTexture("module_start_up");
 		private var SKIN_MODULE_DOWN:Texture=BooksManager.getTexture("module_start_down");
 		private var SKIN_ICON_SUN:Texture=BooksManager.getTexture("drag_sun");
-		
+
 		private function init():void
 		{
 			initBackGround();
@@ -63,68 +63,70 @@ package views.global.books.components
 			initActiveIcon();
 			initPlayBtn();
 		}
-		
+
 		private var play:Image;
+
 		private function initPlayBtn():void
 		{
-			play = BooksManager.getImage("btn_play");
-			play.pivotX = play.width >> 1;
-			play.pivotY = play.height >> 1;
-			play.x = centerS.x + 4;
-			play.y = centerS.y + 3;
-			this.addChild( play );
+			play=BooksManager.getImage("btn_play");
+			play.pivotX=play.width >> 1;
+			play.pivotY=play.height >> 1;
+			play.x=centerS.x + 4;
+			play.y=centerS.y + 3;
+			this.addChild(play);
 			play.addEventListener(TouchEvent.TOUCH, onPlay);
 		}
-		
+
 		private function onPlay(e:TouchEvent):void
 		{
-			var touch:Touch = e.getTouch( play );
-			if(touch && touch.phase == TouchPhase.ENDED)
+			var touch:Touch=e.getTouch(play);
+			if (touch && touch.phase == TouchPhase.ENDED)
 			{
 				clickHandler();
 			}
 		}
-		
+
 		private var crtScene:int;
 		private var crtModule:int;
 		private var fromMap:Boolean;
+
 		private function initActiveIcon():void
 		{
 			activeIcon=new Image(SKIN_ICON_SUN);
 			activeIcon.pivotX=activeIcon.width >> 1;
 			activeIcon.pivotY=activeIcon.height >> 1;
 			var str:String=SOService.instance.getSO("lastScene") as String;
-			crtScene = int( str.charAt(1) );
-			crtModule = int( str.charAt(0) );
-			fromMap = !str.indexOf("map") == -1;
+			crtScene=int(str.charAt(1));
+			crtModule=int(str.charAt(0));
+			fromMap=str.indexOf("map") >= 0;
 			var i:int=0;
 			if (str && str != "end")
 			{
 				i=crtModule;
 				if (i != 0)
-					activeIcon.texture = SKIN_MODULE_UP;
+					activeIcon.texture=SKIN_MODULE_UP;
 			}
-			if(i >= 4)		//御花园之后
+			if (i >= 4) //御花园之后
 			{
-				if(i == 4)
+				if (i == 4)
 				{
-					if(crtScene >= 4)		//御花园	
-						i += 1;
+					if (crtScene >= 3) //御花园	
+						i+=1;
 				}
 				else
 				{
-					i += 1;
+					i+=1;
 				}
 			}
-			this.addChild( activeIcon );
-			crtR = minR + i * d;
-			selectI = i;
+			this.addChild(activeIcon);
+			crtR=minR + i * d;
+			selectI=i;
 			activeIcon.addEventListener(TouchEvent.TOUCH, onTriggered);
 		}
-		
+
 		private function onTriggered(e:TouchEvent):void
 		{
-			if(moving)
+			if (moving)
 				return;
 			var touch:Touch=e.getTouch(activeIcon);
 			var point:Point;
@@ -133,7 +135,7 @@ package views.global.books.components
 				switch (touch.phase)
 				{
 					case TouchPhase.BEGAN:
-						play.visible = false;
+						play.visible=false;
 						break;
 					case TouchPhase.MOVED:
 						point=touch.getLocation(this);
@@ -152,72 +154,102 @@ package views.global.books.components
 						}
 						targetR=minR + selectI * d;
 						animationStart(targetR);
-						play.visible = true;
+						play.visible=true;
 						break;
 				}
 			}
 		}
-		
+
+		private function gotoModule(module:int, screen:int):void
+		{
+			if (MC.instance.currentModule && MC.instance.currentModule.crtScene)
+			{
+				var ms:String=MC.instance.currentModule.crtScene.sceneName;
+				var m:int=int(ms.charAt(5));
+				var s:int=int(ms.charAt(6));
+				trace(m, s)
+				if (m - 1 == module)
+				{
+					BooksManager.closeCtrBook();
+				}
+				else
+				{
+					MC.instance.gotoModule(module, screen);
+				}
+			}
+			else
+			{
+
+			}
+		}
+
 		private function clickHandler():void
 		{
 			var string:String=mapping[selectI];
 			if (string.charAt(0) == "m") //进入模块
 			{
 				var module:int=int(string.charAt(2));
-				var screen:int=int(string.charAt(4));
+				var screen:int=int(string.charAt(4)) - 1;
 				trace(module, screen);
-				if( crtModule-1 == module )		//目标模块与当前模块相同
+				if (crtModule - 1 == module) //目标模块与当前模块相同
 				{
-					if(fromMap)
+					if (fromMap)
 					{
-						Map.show( null, module-1, module);
+						if (!Map.map)
+							Map.show(null, module - 1, module);
+						BooksManager.closeCtrBook();
 						return;
 					}
-					if( module == 3 )		
+					if (module == 3)
 					{
-						if(screen == 0)		//去模块4
+						if (screen <= 0) //去模块4
 						{
-							if(crtScene - 1 >= 3)
+							if (crtScene - 1 >= 3)
 							{
-								MC.instance.gotoModule( module, screen );
+								MC.instance.gotoModule(module, screen);
 							}
 							else
 							{
-								if(MC.instance.currentModule)
+								if (MC.instance.currentModule)
 								{
 									BooksManager.closeCtrBook();
-								}else
-								{
-									MC.instance.gotoModule( module, screen );
 								}
-							}
-						}else		//去御花园
-						{
-							if(crtScene - 1 < 3)	//当前处在非御花园区域
-							{
-								MC.instance.gotoModule( module, screen );
-							}else
-							{
-								if(MC.instance.currentModule)
+								else
 								{
-									BooksManager.closeCtrBook();
-								}else
-								{
-									MC.instance.gotoModule( module, screen );
+									MC.instance.gotoModule(module, screen);
 								}
 							}
 						}
-					}else
+						else //去御花园
+						{
+							if (crtScene - 1 < 3) //当前处在非御花园区域
+							{
+								MC.instance.gotoModule(module, screen);
+							}
+							else
+							{
+								if (MC.instance.currentModule)
+								{
+									BooksManager.closeCtrBook();
+								}
+								else
+								{
+									MC.instance.gotoModule(module, screen);
+								}
+							}
+						}
+					}
+					else
 					{
-						if(MC.instance.currentModule)
+						if (MC.instance.currentModule)
 							BooksManager.closeCtrBook();
 						else
-							MC.instance.gotoModule( module, screen );
+							MC.instance.gotoModule(module, screen);
 					}
 				}
 				else
 				{
-					MC.instance.gotoModule( module, screen );
+					MC.instance.gotoModule(module, screen);
 				}
 			}
 			else
@@ -255,10 +287,10 @@ package views.global.books.components
 			//			else
 			//				Starling.current.nativeStage.addChild(new Interlude(string));
 		}
-		
-		
+
+
 		private var selectI:int=0;
-		
+
 		private function initBtns():void
 		{
 			var r:Number;
@@ -275,7 +307,7 @@ package views.global.books.components
 				image.addEventListener(TouchEvent.TOUCH, onTouch);
 			}
 		}
-		
+
 		private const mapping:Array=[
 			"assets/video/intro.mp4",
 			"m_0_0",
@@ -285,8 +317,8 @@ package views.global.books.components
 			"m_3_3",
 			"m_4_0",
 			"assets/video/end.mp4"
-		];
-		
+			];
+
 		private function isComplete(i:int):Boolean
 		{
 //						return true;
@@ -304,9 +336,9 @@ package views.global.books.components
 			}
 			return false;
 		}
-		
+
 		private var _crtR:Number;
-		
+
 		public function set crtR(r:Number):void
 		{
 			if (_crtR == r)
@@ -314,18 +346,18 @@ package views.global.books.components
 			_crtR=r;
 			setPositionByRadian(activeIcon, _crtR);
 		}
-		
+
 		public function get crtR():Number
 		{
 			return _crtR;
 		}
-		
+
 		private function setPositionByRadian(obj:DisplayObject, r:Number):void
 		{
 			obj.x=center.x + radius * Math.cos(r);
 			obj.y=center.y + radius * Math.sin(r);
 		}
-		
+
 		private function initBackGround():void
 		{
 			var image:Image=BooksManager.getImage("userCenter_bg");
@@ -333,13 +365,13 @@ package views.global.books.components
 			image.y=93;
 			this.addChild(image);
 			image.touchable=false;
-			
-			image = BooksManager.getImage("bg_sundial");
-			image.x = 386;
-			image.y = 246;
-			this.addChild( image );
-			image.touchable = false;
-			
+
+			image=BooksManager.getImage("bg_sundial");
+			image.x=386;
+			image.y=246;
+			this.addChild(image);
+			image.touchable=false;
+
 //			var shape:Shape = new Shape();
 //			centerS = localToGlobal(centerS);
 //			shape.graphics.beginFill(0x0333, 0.2);
@@ -353,37 +385,37 @@ package views.global.books.components
 //			image.pivotX = image.pivotY = 60;
 //			image.x = centerS.x;
 //			image.y = centerS.y;
-			
-			
-			pointer = new Quad(66, 4, 0x0);
-			pointer.alpha = .4;
-			pointer.pivotY = pointer.height >> 1;
-			pointer.x = centerS.x;
-			pointer.y = centerS.y;
-			this.addChild( pointer );
-			pointer.touchable = false;
-			pointer.rotation = arrR[selectI];
-			
-			image = BooksManager.getImage("focus_0");
-			image.x = 445;
-			image.y = 238;
+
+
+			pointer=new Quad(66, 4, 0x0);
+			pointer.alpha=.4;
+			pointer.pivotY=pointer.height >> 1;
+			pointer.x=centerS.x;
+			pointer.y=centerS.y;
+			this.addChild(pointer);
+			pointer.touchable=false;
+			pointer.rotation=arrR[selectI];
+
+			image=BooksManager.getImage("focus_0");
+			image.x=445;
+			image.y=238;
 			this.addChild(image);
-			image.touchable = false;
+			image.touchable=false;
 		}
-		
-		private var centerS:Point = new Point(482, 332);
-		private const arrR:Array = [
-			-Math.PI/2,
-			-10*Math.PI/180,
-			1*Math.PI/180,
-			20*Math.PI/180,
-			50*Math.PI/180,
-			140*Math.PI/180,
-			158*Math.PI/180,
-			-Math.PI/2+2*Math.PI
-		];
+
+		private var centerS:Point=new Point(482, 332);
+		private const arrR:Array=[
+			-Math.PI / 2,
+			-10 * Math.PI / 180,
+			1 * Math.PI / 180,
+			20 * Math.PI / 180,
+			50 * Math.PI / 180,
+			140 * Math.PI / 180,
+			158 * Math.PI / 180,
+			-Math.PI / 2 + 2 * Math.PI
+			];
 		private var pointer:Quad;
-		
+
 		private const wordPosition:Array=[
 			new Point(135, 199),
 			new Point(222, 160),
@@ -393,7 +425,7 @@ package views.global.books.components
 			new Point(596, 128),
 			new Point(695, 157),
 			new Point(768, 196)
-		];
+			];
 		private const linePosition:Array=[
 			new Point(141, 123),
 			new Point(238, 82),
@@ -402,8 +434,8 @@ package views.global.books.components
 			new Point(568, 60),
 			new Point(688, 82),
 			new Point(791, 128)
-		];
-		
+			];
+
 		private function initLines():void
 		{
 			var image:Image;
@@ -418,7 +450,7 @@ package views.global.books.components
 				this.addChild(image);
 			}
 		}
-		
+
 		private function initWords():void
 		{
 			var image:Image;
@@ -433,9 +465,9 @@ package views.global.books.components
 				this.addChild(image);
 			}
 		}
-		
+
 		private var startObj:Object;
-		
+
 		private function onTouch(e:TouchEvent):void
 		{
 			var i:int;
@@ -451,19 +483,19 @@ package views.global.books.components
 				animationStart(targetR);
 			}
 		}
-		
+
 		private function animationStart(targetR:Number):void
 		{
-			moving = true;
+			moving=true;
 			TweenLite.to(this, 1, {crtR: targetR, ease: Cubic.easeOut, onComplete: function():void {
-				moving = false;
+				moving=false;
 			}});
-			var tarR:Number = arrR[selectI];
-			TweenLite.to(pointer, 1, {rotation: tarR, ease: Cubic.easeOut, onComplete:function():void {
+			var tarR:Number=arrR[selectI];
+			TweenLite.to(pointer, 1, {rotation: tarR, ease: Cubic.easeOut, onComplete: function():void {
 //				play.visible = true;
 			}});
 		}
-		
+
 		override public function dispose():void
 		{
 			TweenLite.killTweensOf(this);

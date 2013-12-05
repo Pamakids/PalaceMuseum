@@ -1,9 +1,7 @@
 package sound
 {
-	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 
-	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	import flash.utils.Dictionary;
@@ -159,7 +157,7 @@ package sound
 			if (bv != null)
 				bgmVol=bv as Number
 			else
-				bgmVol=.5;
+				bgmVol=.6;
 //			bgmVol=.5;
 		}
 
@@ -207,7 +205,7 @@ package sound
 			if (sc)
 			{
 				trace("fadeOut", sound)
-//				TweenMax.killTweensOf(sc, true);
+//				TweenMax.killTweensOf(sc);
 				TweenMax.to(sc, FADEINOUTDELAY, {volume: 0, onComplete: function():void {
 					sm.stop(sound);
 				}});
@@ -221,7 +219,7 @@ package sound
 			{
 				trace("fadeIn", sound)
 				scDic[sound]=sc;
-//				TweenMax.killTweensOf(sc, true);
+//				TweenMax.killTweensOf(sc);
 				TweenMax.to(sc, FADEINOUTDELAY, {volume: bgmVol});
 			}
 		}
@@ -264,7 +262,7 @@ package sound
 			{
 				var sc:SoundChannel=scDic[crtBGM];
 				if (sc)
-					sc.soundTransform.volume=bgmVol;
+					sc.soundTransform=new SoundTransform(bgmVol);
 				else
 					scDic[crtBGM]=sm.play(crtBGM, 0, bgmVol);
 			}
