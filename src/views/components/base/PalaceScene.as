@@ -214,7 +214,7 @@ package views.components.base
 			else
 				nextButton.visible=true;
 			TailBar.hide();
-			addLoading();
+//			addLoading();
 		}
 
 		public function addLoading():void
