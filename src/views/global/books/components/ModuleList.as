@@ -3,14 +3,9 @@ package views.global.books.components
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
 	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.Shape;
 	import flash.geom.Point;
 	
 	import controllers.MC;
-	
-	import feathers.controls.Button;
 	
 	import models.SOService;
 	
@@ -19,7 +14,6 @@ package views.global.books.components
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -261,6 +255,7 @@ package views.global.books.components
 			//			else
 			//				Starling.current.nativeStage.addChild(new Interlude(string));
 		}
+		
 		
 		private var selectI:int=0;
 		
