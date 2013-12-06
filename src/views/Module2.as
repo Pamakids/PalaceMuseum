@@ -42,8 +42,7 @@ package views
 				var sceneName:String=StringUtils.getClassName(scene);
 				var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
 				var path:String="assets/module1/scene12/kingExp"
-				assetManager.enqueue(file, path + ".atf", path + "2.atf",
-									 path + ".xml", path + "2.xml");
+				assetManager.enqueue(file, path + ".atf", path + ".xml");
 				assetManager.loadQueue(function(ratio:Number):void
 				{
 					if (ratio == 1.0 && callback != null)

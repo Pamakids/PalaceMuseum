@@ -149,7 +149,7 @@ package views.module2
 			headHolder.addChildAt(kingHead, 0);
 		}
 
-		private var expArr:Array=["kingHappy", "kingLook", "KingNaughty", "kingStrange"];
+		private var expArr:Array=["kingHappy", "kingLook", "KingNaughty"];
 
 		private function onCanTouch(e:TouchEvent):void
 		{
@@ -618,21 +618,23 @@ package views.module2
 				kingHead=null;
 			}
 
-			var tempHead:Image=getImage("kingStrange0001");
+			touchable=false;
+
+			var tempHead:Image=getImage("kingHappy0001");
 			tempHead.scaleX=tempHead.scaleY=.8;
 			headHolder.addChild(tempHead);
 
-			map.touchable=can2.touchable=false;
+//			assetManager.removeTextureAtlas("kingExp");
+//			assetManager.removeTextureAtlas("m3s1");
 
 			assetManager.removeTextureAtlas("bug");
 			assetManager.removeTextureAtlas("mapPiece");
-			assetManager.removeTextureAtlas("kingExp");
-
 			assetManager.removeTexture("map");
 			assetManager.removeTexture("mapEdge");
 
+			TweenLite.delayedCall(.1, super.nextScene);
 
-			super.nextScene(e);
+//			super.nextScene(e);
 		}
 	}
 }

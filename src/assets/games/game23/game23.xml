@@ -1,61 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:70b3da4827a5f979769440ca77020713$ -->
+<!-- $TexturePacker:SmartUpdate:c3336ba3db0a259f2d9585181ee0c9de$ -->
 <TextureAtlas imagePath="game23.png">
-    <SubTexture name="body-countdown" x="2004" y="270" width="42" height="42"/>
-    <SubTexture name="dish-hand" x="1937" y="988" width="108" height="211"/>
-    <SubTexture name="dish-hint" x="2" y="83" width="700" height="607" frameX="-45" frameY="-6" frameWidth="754" frameHeight="623"/>
-    <SubTexture name="dish-jar" x="704" y="406" width="296" height="256" frameX="-2" frameY="0" frameWidth="298" frameHeight="256"/>
-    <SubTexture name="dish-king-bg" x="704" y="83" width="298" height="321"/>
-    <SubTexture name="dish-pin-poison" x="1446" y="840" width="63" height="171"/>
-    <SubTexture name="dish-pin" x="1446" y="667" width="63" height="171"/>
+    <SubTexture name="body-countdown" x="2004" y="418" width="42" height="42"/>
+    <SubTexture name="dish-hand" x="1064" y="841" width="108" height="211"/>
+    <SubTexture name="dish-hint" x="2" y="464" width="624" height="655"/>
+    <SubTexture name="dish-info" x="2" y="83" width="637" height="379"/>
+    <SubTexture name="dish-jar" x="641" y="406" width="296" height="256" frameX="-2" frameY="0" frameWidth="298" frameHeight="256"/>
+    <SubTexture name="dish-king-bg" x="641" y="83" width="298" height="321"/>
+    <SubTexture name="dish-pin-poison" x="941" y="256" width="63" height="171"/>
+    <SubTexture name="dish-pin" x="941" y="83" width="63" height="171"/>
     <SubTexture name="dish-table" x="1028" y="2" width="856" height="583"/>
-    <SubTexture name="dish1" x="1210" y="868" width="223" height="223"/>
-    <SubTexture name="dish2" x="1534" y="587" width="281" height="212"/>
-    <SubTexture name="dish3" x="704" y="664" width="259" height="188"/>
-    <SubTexture name="dish4" x="1435" y="1087" width="209" height="219"/>
-    <SubTexture name="dish5" x="1817" y="644" width="225" height="225"/>
-    <SubTexture name="dish6" x="1511" y="801" width="233" height="170"/>
-    <SubTexture name="dish7" x="1210" y="667" width="234" height="199"/>
-    <SubTexture name="dish8" x="965" y="667" width="243" height="207" frameX="-19" frameY="-8" frameWidth="281" frameHeight="225"/>
-    <SubTexture name="flyMC0001" x="108" y="1285" width="104" height="94" frameX="-13" frameY="-9" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0002" x="1646" y="1294" width="112" height="92" frameX="-9" frameY="-9" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0003" x="2" y="970" width="98" height="92" frameX="-16" frameY="-8" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0004" x="1886" y="364" width="116" height="92" frameX="-7" frameY="-6" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0005" x="116" y="786" width="112" height="88" frameX="-9" frameY="-8" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0006" x="1886" y="182" width="120" height="86" frameX="-5" frameY="-8" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0007" x="300" y="692" width="104" height="88" frameX="-13" frameY="-5" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0008" x="1886" y="2" width="122" height="90" frameX="-4" frameY="-1" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0009" x="1886" y="458" width="114" height="88" frameX="-8" frameY="-5" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0010" x="1886" y="94" width="120" height="86" frameX="-5" frameY="-8" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0011" x="212" y="968" width="100" height="88" frameX="-15" frameY="-8" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0012" x="1886" y="270" width="116" height="92" frameX="-7" frameY="-6" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0013" x="102" y="970" width="108" height="90" frameX="-11" frameY="-10" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0014" x="2" y="786" width="112" height="88" frameX="-9" frameY="-13" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0015" x="230" y="784" width="96" height="90" frameX="-17" frameY="-13" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0016" x="2" y="1093" width="110" height="94" frameX="-10" frameY="-10" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0017" x="110" y="1189" width="102" height="92" frameX="-14" frameY="-13" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0018" x="190" y="692" width="108" height="90" frameX="-10" frameY="-16" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0019" x="96" y="692" width="92" height="92" frameX="-18" frameY="-15" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0020" x="2" y="1189" width="106" height="94" frameX="-11" frameY="-14" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0021" x="2" y="876" width="98" height="92" frameX="-15" frameY="-17" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0022" x="108" y="1388" width="104" height="92" frameX="-12" frameY="-18" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0023" x="102" y="876" width="88" height="92" frameX="-20" frameY="-18" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0024" x="2" y="1285" width="104" height="94" frameX="-12" frameY="-15" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0025" x="114" y="1093" width="98" height="92" frameX="-15" frameY="-16" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0026" x="192" y="876" width="106" height="90" frameX="-11" frameY="-17" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0027" x="2" y="692" width="92" height="92" frameX="-18" frameY="-14" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0028" x="2" y="1482" width="110" height="94" frameX="-9" frameY="-11" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0029" x="2" y="1388" width="104" height="92" frameX="-12" frameY="-12" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="flyMC0030" x="1886" y="548" width="112" height="94" frameX="-9" frameY="-9" frameWidth="130" frameHeight="110"/>
-    <SubTexture name="lifeboard" x="1646" y="1211" width="198" height="81"/>
-    <SubTexture name="menu-hard-down" x="1746" y="871" width="220" height="115"/>
-    <SubTexture name="menu-hard" x="1725" y="988" width="210" height="107" frameX="0" frameY="-6" frameWidth="220" frameHeight="115"/>
-    <SubTexture name="menu-simple-down" x="1511" y="973" width="212" height="112"/>
-    <SubTexture name="menu-simple" x="1646" y="1097" width="202" height="112" frameX="-8" frameY="0" frameWidth="212" frameHeight="112"/>
-    <SubTexture name="progress" x="1002" y="640" width="486" height="25" frameX="-14" frameY="-12" frameWidth="530" frameHeight="51"/>
-    <SubTexture name="progressbg" x="1002" y="587" width="530" height="51"/>
-    <SubTexture name="record" x="1846" y="1293" width="187" height="187"/>
+    <SubTexture name="dish1" x="628" y="664" width="223" height="223"/>
+    <SubTexture name="dish2" x="1471" y="633" width="281" height="212"/>
+    <SubTexture name="dish3" x="1754" y="633" width="259" height="188"/>
+    <SubTexture name="dish4" x="853" y="841" width="209" height="219"/>
+    <SubTexture name="dish5" x="1175" y="812" width="225" height="225"/>
+    <SubTexture name="dish6" x="1175" y="640" width="233" height="170"/>
+    <SubTexture name="dish7" x="939" y="640" width="234" height="199"/>
+    <SubTexture name="dish8" x="1754" y="823" width="243" height="207" frameX="-19" frameY="-8" frameWidth="281" frameHeight="225"/>
+    <SubTexture name="flyMC0001" x="1643" y="1302" width="104" height="94" frameX="-13" frameY="-9" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0002" x="1591" y="1033" width="112" height="92" frameX="-9" frameY="-9" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0003" x="628" y="1064" width="98" height="92" frameX="-16" frameY="-8" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0004" x="1886" y="512" width="116" height="92" frameX="-7" frameY="-6" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0005" x="1889" y="1122" width="112" height="88" frameX="-9" frameY="-8" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0006" x="1886" y="330" width="120" height="86" frameX="-5" frameY="-8" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0007" x="1749" y="1396" width="104" height="88" frameX="-13" frameY="-5" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0008" x="1886" y="150" width="122" height="90" frameX="-4" frameY="-1" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0009" x="1591" y="847" width="114" height="88" frameX="-8" frameY="-5" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0010" x="1886" y="242" width="120" height="86" frameX="-5" frameY="-8" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0011" x="818" y="1062" width="100" height="88" frameX="-15" frameY="-8" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0012" x="1886" y="418" width="116" height="92" frameX="-7" frameY="-6" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0013" x="1647" y="1210" width="108" height="90" frameX="-11" frameY="-10" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0014" x="1890" y="1032" width="112" height="88" frameX="-9" frameY="-13" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0015" x="818" y="1152" width="96" height="90" frameX="-17" frameY="-13" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0016" x="1174" y="1128" width="110" height="94" frameX="-10" frameY="-10" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0017" x="1855" y="1402" width="102" height="92" frameX="-14" frameY="-13" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0018" x="1064" y="1054" width="108" height="90" frameX="-10" frameY="-16" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0019" x="1120" y="1224" width="92" height="92" frameX="-18" frameY="-15" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0020" x="1535" y="1223" width="106" height="94" frameX="-11" frameY="-14" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0021" x="1020" y="1146" width="98" height="92" frameX="-15" frameY="-17" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0022" x="1855" y="1308" width="104" height="92" frameX="-12" frameY="-18" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0023" x="728" y="1064" width="88" height="92" frameX="-20" frameY="-18" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0024" x="1865" y="1212" width="104" height="94" frameX="-12" frameY="-15" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0025" x="920" y="1062" width="98" height="92" frameX="-15" frameY="-16" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0026" x="1757" y="1210" width="106" height="90" frameX="-11" frameY="-17" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0027" x="916" y="1156" width="92" height="92" frameX="-18" frameY="-14" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0028" x="1535" y="1127" width="110" height="94" frameX="-9" frameY="-11" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0029" x="1749" y="1302" width="104" height="92" frameX="-12" frameY="-12" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="flyMC0030" x="1591" y="937" width="112" height="94" frameX="-9" frameY="-9" frameWidth="130" frameHeight="110"/>
+    <SubTexture name="lifeboard" x="628" y="889" width="198" height="81"/>
+    <SubTexture name="menu-hard-down" x="1402" y="1036" width="183" height="87"/>
+    <SubTexture name="menu-hard" x="1705" y="1032" width="183" height="87"/>
+    <SubTexture name="menu-simple-down" x="1705" y="1121" width="182" height="87"/>
+    <SubTexture name="menu-simple" x="1174" y="1039" width="182" height="87"/>
+    <SubTexture name="progress" x="1471" y="606" width="486" height="25" frameX="-14" frameY="-12" frameWidth="530" frameHeight="51"/>
+    <SubTexture name="progressbg" x="939" y="587" width="530" height="51"/>
+    <SubTexture name="record" x="1402" y="847" width="187" height="187"/>
+    <SubTexture name="sbtn-down" x="1358" y="1125" width="175" height="170"/>
+    <SubTexture name="sbtn" x="1886" y="2" width="147" height="146" frameX="-11" frameY="-10" frameWidth="175" frameHeight="170"/>
     <SubTexture name="scorebg" x="2" y="2" width="1024" height="79"/>
-    <SubTexture name="scoreboard" x="1850" y="1201" width="188" height="90"/>
+    <SubTexture name="scoreboard" x="628" y="972" width="188" height="90"/>
 </TextureAtlas>

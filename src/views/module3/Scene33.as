@@ -33,8 +33,8 @@ package views.module3
 		private var game:DishGame;
 
 		private var chatArr:Array=["chatking1", "chatlion1", "chatking2", "chatlion3", "chatlion2"];
-		private var cardXArr:Array=[438, 488, 537, 584];
-		private var cardY:Number=510;
+		private var cardXArr:Array=[351, 448, 543, 621];
+		private var cardY:Number=511;
 
 		private var chatIndex:int;
 

@@ -3,7 +3,6 @@ package views.module3.scene33
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
-	import com.pamakids.manager.SoundManager;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -91,23 +90,22 @@ package views.module3.scene33
 		{
 			addChild(startSP);
 			var hint:Image=getImage("dish-hint")
-//			hint.x=46;
-//			hint.y=51;
+			hint.x=206;
+			hint.y=45;
 			startSP.addChild(hint);
 
-			startBtn=new ElasticButton(getImage("game-start"));
-			startBtn.shadow=getImage("game-start-down")
+			startBtn=new ElasticButton(getImage("sbtn"), getImage("sbtn-down"));
 			startSP.addChild(startBtn);
-			startBtn.x=856;
-			startBtn.y=665;
+			startBtn.x=837;
+			startBtn.y=552;
 			startBtn.addEventListener(ElasticButton.CLICK, onStart);
 			shakeNext();
 
 			var sbHolder:Sprite=new Sprite();
 			sBtn=getImage("menu-simple");
 			sBtnD=getImage("menu-simple-down");
-			sbHolder.x=250;
-			sbHolder.y=630;
+			sbHolder.x=311;
+			sbHolder.y=477;
 			sbHolder.addChild(sBtn);
 			sbHolder.addChild(sBtnD);
 			startSP.addChild(sbHolder);
@@ -116,8 +114,8 @@ package views.module3.scene33
 			var hbHolder:Sprite=new Sprite();
 			hBtn=getImage("menu-hard");
 			hBtnD=getImage("menu-hard-down");
-			hbHolder.x=445;
-			hbHolder.y=630;
+			hbHolder.x=308;
+			hbHolder.y=562;
 			hbHolder.addChild(hBtn);
 			hbHolder.addChild(hBtnD);
 			startSP.addChild(hbHolder);
@@ -195,10 +193,30 @@ package views.module3.scene33
 			removeChild(startSP);
 			addChild(gameSP);
 			initBG();
+
+			addMask(.7, false);
+			intro=getImage("dish-info");
+			intro.x=175;
+			intro.y=124;
+			addChild(intro);
+			addEventListener(TouchEvent.TOUCH, onSkipIntro);
+		}
+
+		private function onSkipIntro(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(this, TouchPhase.ENDED);
+			if (!tc)
+				return;
+			intro.removeFromParent(true);
+			removeEventListener(TouchEvent.TOUCH, onSkipIntro);
+			removeMask();
+
 			initAreas();
 			initDishes();
 			initPin();
 			initInfo();
+
+			playKing(Math.random() > .5 ? 0 : 2);
 
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
@@ -305,7 +323,7 @@ package views.module3.scene33
 			SoundAssets.playSFX("dishon");
 			for (var i:int=0; i < dishNum; i++)
 			{
-				addOneDish(i);
+				addOneDish(i, true);
 			}
 		}
 
@@ -936,6 +954,8 @@ package views.module3.scene33
 		private var hBtn:Image;
 		private var hBtnD:Image;
 		private var _gamelevel:int;
+
+		private var intro:Image;
 
 		private function initAreas():void
 		{
