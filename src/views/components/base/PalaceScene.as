@@ -10,23 +10,23 @@ package views.components.base
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.pamakids.palace.utils.StringUtils;
-	
+
 	import flash.geom.Point;
 	import flash.utils.getTimer;
-	
+
 	import assets.global.handbook.BirdAssets;
-	
+
 	import controllers.MC;
 	import controllers.UserBehaviorAnalysis;
-	
+
 	import feathers.core.PopUpManager;
-	
+
 	import models.AchieveVO;
 	import models.FontVo;
 	import models.SOService;
-	
+
 	import sound.SoundAssets;
-	
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -36,7 +36,7 @@ package views.components.base
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.CollectionCard;
 	import views.components.Craw;
 	import views.components.ElasticButton;

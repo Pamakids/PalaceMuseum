@@ -1,8 +1,9 @@
 package views.module2.scene22
 {
-	import com.pamakids.manager.SoundManager;
+	import com.pamakids.manager.LoadManager;
 	import com.pamakids.palace.utils.SPUtils;
 
+	import flash.display.Bitmap;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
@@ -40,9 +41,7 @@ package views.module2.scene22
 			addChild(getImage("tele-bg"));
 
 			addView();
-
 			addRing();
-
 			addTele();
 
 			var king:Image=getImage("tele-king");
@@ -59,7 +58,46 @@ package views.module2.scene22
 			arm.touchable=false;
 
 			addClose();
+			addMask();
 
+			LoadManager.instance.loadImage("assets/dynamic/view1.jpg", loaded1);
+			LoadManager.instance.loadImage("assets/dynamic/view2.jpg", loaded2);
+		}
+
+		private var img1:Image;
+		private var img2:Image;
+
+		private function loaded1(bp:Bitmap):void
+		{
+			img1=Image.fromBitmap(bp);
+			bp=null;
+			if (img2)
+				showView();
+		}
+
+		private function loaded2(bp:Bitmap):void
+		{
+			img2=Image.fromBitmap(bp);
+			bp=null;
+			if (img1)
+				showView();
+		}
+
+		private function showView():void
+		{
+			removeMask();
+
+			view.img1=img1;
+			view.img2=img2;
+			view.viewPortHeight=view.viewPortWidth=440;
+			view.x=view.pivotX=centerPT.x;
+			view.y=view.pivotY=centerPT.y;
+			view.scale=.1;
+
+			view.initLion(getImage("lionsit"), getImage("lionstand"));
+
+			ring2.addEventListener(TouchEvent.TOUCH, onRing2Touch);
+			telHolder.addEventListener(TouchEvent.TOUCH, onTeleTouch);
 			if (SOService.instance.checkHintCount(teleHint))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
@@ -127,8 +165,6 @@ package views.module2.scene22
 
 			addChild(ring1);
 			addChild(ring2);
-
-			ring2.addEventListener(TouchEvent.TOUCH, onRing2Touch);
 		}
 
 		private var dpt:Point;
@@ -145,33 +181,32 @@ package views.module2.scene22
 				{
 					dpt=tc.getLocation(stage);
 					SoundAssets.stopSFX("ringrolling");
-					ringBlock=false;
 					if (Point.distance(currentPosA, centerPT) < 210)
 						actionIndex=0; //move
 					else
+					{
+						ringBlock=false;
 						actionIndex=1; //rotate
+					}
 					break;
 				}
 
 				case TouchPhase.MOVED:
 				{
-					if (!ringBlock)
-					{
-						if (actionIndex == 0)
-							moveView(tc.getMovement(this));
-						else if (actionIndex == 1)
-							rotateRing(tc, ring2);
-					}
+					if (actionIndex == 0)
+						moveView(tc.getMovement(this));
+					else if (actionIndex == 1 && !ringBlock)
+						rotateRing(tc, ring2);
 					break;
 				}
 				case TouchPhase.ENDED:
 				{
 					var pt:Point=tc.getLocation(stage)
-					if (dpt && Point.distance(pt, dpt) < 10)
+					if (dpt && Point.distance(pt, dpt) < 10 && ringBlock)
 						checkViewPoint(pt);
 					dpt=null;
 					SoundAssets.stopSFX("ringrolling");
-					ringBlock=false;
+//					ringBlock=false;
 					actionIndex=-1
 					break;
 				}
@@ -188,8 +223,9 @@ package views.module2.scene22
 			if (view.scale < 1)
 				return;
 			var vpt:Point=view.globalToLocal(pt);
-			if (lionRect.containsPoint(vpt))
+			if (lionRect && lionRect.containsPoint(vpt))
 			{
+				lionRect=null;
 				view.standUp=false;
 				dispatchEvent(new Event("lionFound", true));
 			}
@@ -240,7 +276,6 @@ package views.module2.scene22
 		private function updataBlur():Number
 		{
 			var ty:Number=Math.abs(tele3.y / maxY);
-//			var rt1:Number=Math.abs(ring1.rotation) * 2 / Math.PI;
 			var rt2:Number=Math.abs(ring2.rotation) * 2 / Math.PI;
 
 			var blur:Number=Math.abs(ty - rt2) * 10;
@@ -260,14 +295,6 @@ package views.module2.scene22
 
 			view=new ViewHolder();
 			addChild(view);
-			view.img1=getImage("view1");
-			view.img2=getImage("view2");
-			view.viewPortHeight=view.viewPortWidth=440;
-			view.x=view.pivotX=centerPT.x;
-			view.y=view.pivotY=centerPT.y;
-			view.scale=.1;
-
-			view.initLion(getImage("lionsit"), getImage("lionstand"));
 
 			addChild(mask);
 		}
@@ -291,8 +318,6 @@ package views.module2.scene22
 			telHolder.x=687;
 			telHolder.y=545;
 			telHolder.rotation=-Math.PI * 2 / 5;
-
-			telHolder.addEventListener(TouchEvent.TOUCH, onTeleTouch);
 		}
 
 		private var maxY:int=150;
@@ -319,7 +344,6 @@ package views.module2.scene22
 		private var ringMoved:Boolean;
 		private var ringBlock:Boolean;
 
-//		private var lionRect:Rectangle=new Rectangle(1211, 214, 74, 81);
 		private var lionRect:Rectangle=new Rectangle(1222, 208, 54, 84);
 
 		private function onTeleTouch(e:TouchEvent):void
@@ -399,6 +423,10 @@ package views.module2.scene22
 				eye.removeFromParent(true);
 				eye=null;
 			}
+			if (img1)
+				img1.removeFromParent(true);
+			if (img2)
+				img2.removeFromParent(true);
 			super.dispose();
 		}
 	}
