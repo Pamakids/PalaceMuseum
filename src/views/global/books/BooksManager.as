@@ -110,7 +110,8 @@ package views.global.books
 			_userCenter=null;
 			_handbook = null;
 //			MC.instance.switchLayer(true);
-			_assetsManager.dispose();
+			if(_assetsManager)
+				_assetsManager.dispose();
 		}
 
 		private static var _handbook:Handbook;

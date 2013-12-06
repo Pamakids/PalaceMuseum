@@ -12,7 +12,6 @@ package views.global.books.handbook.screen
 	import views.components.base.PalaceModule;
 	import views.global.books.BooksManager;
 	import views.global.books.events.BookEvent;
-	import views.global.books.handbook.Handbook;
 	import views.global.books.userCenter.screen.BaseScreen;
 
 	/**
@@ -99,7 +98,7 @@ package views.global.books.handbook.screen
 			cache=new Image(_assetsManager.getTexture("content_page_" + crtPage));
 			this.addChild(cache);
 			cache.touchable=false;
-			setSo()
+			setSo();
 		}
 
 		private function setSo():void
@@ -169,7 +168,7 @@ package views.global.books.handbook.screen
 		{
 			var texture:Texture=_assetsManager.getTexture("content_page_" + pageIndex);
 			if (texture)
-				_assetsManager.removeTexture(name, true);
+				_assetsManager.removeTexture("content_page_" + pageIndex, true);
 		}
 
 		/**

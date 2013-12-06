@@ -142,7 +142,7 @@ package views.global.books.handbook.screen
 		{
 			var texture:Texture=_assetsManager.getTexture("history_relic_" + pageIndex);
 			if (texture)
-				_assetsManager.removeTexture(name, true);
+				_assetsManager.removeTexture("history_relic_" + pageIndex, true);
 		}
 		
 		/**

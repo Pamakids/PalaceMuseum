@@ -20,7 +20,6 @@ package views.global.books.handbook.screen
 		override protected function initialize():void
 		{
 			initPages();
-			initImage();
 			initButton();
 			TweenLite.delayedCall( 0.1, dispatchEventWith, [BookEvent.InitViewPlayed] );
 		}
@@ -34,7 +33,6 @@ package views.global.books.handbook.screen
 		private function initButton():void
 		{
 			btn=new ElasticButton(BooksManager.getImage("button_map"));
-//			btn.shadow=UserCenterManager.getImage("button_map");
 			addChild(btn);
 			btn.x=(viewWidth>>1) - 12;
 			btn.y=viewHeight>>1;
@@ -45,15 +43,6 @@ package views.global.books.handbook.screen
 		{
 			Map.show(null,-1,-1,true, true);
 			MC.instance.switchLayer(true);
-		}
-		
-		private function initImage():void
-		{
-			var image:Image = BooksManager.getImage( "userCenter_bg" );
-			image.x=185;
-			image.y=293;
-			this.addChild(image);
-			image.touchable=false;
 		}
 		
 		override public function dispose():void

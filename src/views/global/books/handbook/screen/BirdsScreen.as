@@ -56,17 +56,29 @@ package views.global.books.handbook.screen
 		public function initView(pageIndex:int):void
 		{
 			crtPage=pageIndex;
+			initTextures();
 			initImages();
 			initPageNums();
 			dispatchEventWith(BookEvent.InitViewPlayed);
 		}
-
+		
+		private function initTextures():void
+		{
+			_assetsManager.addTexture("bird_uncollection", getTexture("birdUn"));
+			if(ifCollected(crtPage))
+				_assetsManager.addTexture("bird_collection_"+crtPage, getTexture("bird" + crtPage));
+			if(crtPage>0 && ifCollected(crtPage-1))
+				_assetsManager.addTexture("bird_collection_"+(crtPage-1), getTexture("bird" + (crtPage-1)));
+			if(crtPage < MAX_NUM-1 && ifCollected(crtPage+1))
+				_assetsManager.addTexture("bird_collection_"+(crtPage+1), getTexture("bird" + (crtPage+1)));
+			trace(1);
+		}
 
 		private var cache:Image;
 
 		private function initImages():void
 		{
-			cache=new Image(ifCollected(crtPage) ? getTexture("bird" + crtPage) : getTexture("birdUn"));
+			cache=new Image(ifCollected(crtPage) ? _assetsManager.getTexture("bird_collection_"+crtPage) : _assetsManager.getTexture("bird_uncollection"));
 			this.addChild(cache);
 			cache.touchable=false;
 		}
@@ -86,6 +98,8 @@ package views.global.books.handbook.screen
 				dispatchEventWith(BookEvent.ViewUpdateFail);
 				return;
 			}
+			loadByPageIndex(crtPage - 2);
+			clearByPageIndex(crtPage + 1);
 			this.crtPage-=1;
 			updateView();
 		}
@@ -100,10 +114,25 @@ package views.global.books.handbook.screen
 				dispatchEventWith(BookEvent.ViewUpdateFail);
 				return;
 			}
+			clearByPageIndex(crtPage - 1);
+			loadByPageIndex(crtPage + 2);
 			this.crtPage+=1;
 			updateView();
 		}
-
+		
+		private function loadByPageIndex(page:int):void
+		{
+			if (page < 0 || page > MAX_NUM - 1 || !ifCollected(page))
+				return;
+			_assetsManager.addTexture("bird_collection_"+page, getTexture("bird"+page));
+		}
+		
+		private function clearByPageIndex(page:int):void
+		{
+			var texture:Texture = _assetsManager.getTexture("bird_collection_"+page);
+			if(texture)
+				_assetsManager.removeTexture("bird_collection_"+page);
+		}
 
 		/**
 		 * 更新至指定页
@@ -125,7 +154,8 @@ package views.global.books.handbook.screen
 		 */
 		private function updateView():void
 		{
-			cache.texture=ifCollected(crtPage) ? getTexture("bird" + crtPage) : getTexture("birdUn");
+			trace(_assetsManager.getTextures().length);
+			cache.texture=ifCollected(crtPage) ? _assetsManager.getTexture("bird_collection_"+crtPage) : _assetsManager.getTexture("bird_uncollection");
 			page_0.text = String(crtPage*2+1)+" / "+String(MAX_NUM*2);
 			page_1.text = String(crtPage*2+2)+" / "+String(MAX_NUM*2);
 			dispatchEventWith(BookEvent.ViewUpdated, false, crtPage);
