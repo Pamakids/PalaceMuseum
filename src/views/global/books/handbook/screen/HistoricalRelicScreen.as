@@ -42,7 +42,7 @@ package views.global.books.handbook.screen
 		
 		override protected function initPages():void
 		{
-			var image:Image = BooksManager.getImage("background_2");
+			var image:Image = BooksManager.getImage("background_0");
 			this.addChild( image );
 		}
 		
@@ -75,14 +75,14 @@ package views.global.books.handbook.screen
 		public function initView(pageIndex:int):void
 		{
 			crtPage=pageIndex;
-			_assetsManager.enqueue("assets/global/userCenter/history_relic_" + crtPage + ".png");
+			_assetsManager.enqueue("assets/global/handbook/history_relic_" + crtPage + ".png");
 			_assetsManager.loadQueue(function(ratio:Number):void {
 				if (ratio == 1)
 				{
 					if (crtPage > 0)
-						_assetsManager.enqueue("assets/global/userCenter/history_relic_" + String(crtPage-1) + ".png");
+						_assetsManager.enqueue("assets/global/handbook/history_relic_" + String(crtPage-1) + ".png");
 					if (crtPage < HandbookScreen.MAX_NUM - 1)
-						_assetsManager.enqueue("assets/global/userCenter/history_relic_" + String(crtPage+1) + ".png");
+						_assetsManager.enqueue("assets/global/handbook/history_relic_" + String(crtPage+1) + ".png");
 					_assetsManager.loadQueue(function(r:Number):void {});
 					initImages();
 					removeLoad();
@@ -153,7 +153,7 @@ package views.global.books.handbook.screen
 		{
 			if (pageIndex < 0 || pageIndex > HandbookScreen.MAX_NUM - 1)
 				return;
-			_assetsManager.enqueue("assets/global/userCenter/history_relic_" + pageIndex + ".png");
+			_assetsManager.enqueue("assets/global/handbook/history_relic_" + pageIndex + ".png");
 			_assetsManager.loadQueue(function(ratio:Number):void {
 				if (ratio == 1)
 					trace("资源加载完成");
@@ -175,14 +175,14 @@ package views.global.books.handbook.screen
 			_assetsManager.dispose();
 			initLoad();
 			this.crtPage = page;
-			_assetsManager.enqueue("assets/global/userCenter/history_relic_" + page + ".png");
+			_assetsManager.enqueue("assets/global/handbook/history_relic_" + page + ".png");
 			_assetsManager.loadQueue(function(ratio:Number):void {
 				if (ratio == 1)
 				{
 					if (crtPage > 0)
-						_assetsManager.enqueue("assets/global/userCenter/history_relic_" + String(crtPage-1) + ".png");
+						_assetsManager.enqueue("assets/global/handbook/history_relic_" + String(crtPage-1) + ".png");
 					if (crtPage < HandbookScreen.MAX_NUM - 1)
-						_assetsManager.enqueue("assets/global/userCenter/history_relic_" + String(crtPage+1) + ".png");
+						_assetsManager.enqueue("assets/global/handbook/history_relic_" + String(crtPage+1) + ".png");
 					_assetsManager.loadQueue(function(r:Number):void {});
 					updateView();
 					removeLoad();
