@@ -1,6 +1,6 @@
 package views.global.books.handbook.screen
 {
-	import assets.global.userCenter.BirdAssets;
+	import assets.global.handbook.BirdAssets;
 	
 	import models.FontVo;
 	import models.SOService;

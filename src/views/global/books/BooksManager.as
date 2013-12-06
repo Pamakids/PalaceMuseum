@@ -2,6 +2,7 @@ package views.global.books
 {
 	import com.greensock.TweenMax;
 	
+	import flash.display.MovieClip;
 	import flash.filesystem.File;
 	
 	import controllers.MC;
@@ -17,6 +18,7 @@ package views.global.books
 	import views.global.TopBar;
 	import views.global.books.handbook.Handbook;
 	import views.global.books.userCenter.UserCenter;
+	import views.global.map.Map;
 
 	/**
 	 * 用户中心管理类
@@ -24,7 +26,6 @@ package views.global.books
 	 */
 	public class BooksManager
 	{
-		private static var loaded:Boolean=false;
 		private static var _instance:BooksManager;
 
 		private static var _assetsManager:AssetManager;
@@ -54,10 +55,7 @@ package views.global.books
 			_page=page;
 			_closeable=closeable;
 			_mapVisible=mapVisible;
-			if (!loaded)
-				loadAssets();
-			else
-				showHandler();
+			loadAssets();
 		}
 
 		private static function showHandler():void
@@ -112,6 +110,7 @@ package views.global.books
 			_userCenter=null;
 			_handbook = null;
 //			MC.instance.switchLayer(true);
+			_assetsManager.dispose();
 		}
 
 		private static var _handbook:Handbook;
@@ -147,37 +146,54 @@ package views.global.books
 			loadFunc();
 		}
 
-		private static var _loadImage:Image;
+		private static var _loadImage:Object;
 
 		private static function initLoadImage():void
 		{
-			_loadImage=new Image(Texture.fromBitmap(new PalaceModule.loading()));
-			_loadImage.pivotX=_loadImage.width >> 1;
-			_loadImage.pivotY=_loadImage.height >> 1;
-			container.addChild(_loadImage);
-			_loadImage.x=1024 - 100;
-			_loadImage.y=768 - 100;
-			_loadImage.scaleX=_loadImage.scaleY=.5;
-			_loadImage.addEventListener(Event.ENTER_FRAME, function(e:Event):void
+			if(!MC.instance.currentModule && (!Map.map || !Map.map.visible))
 			{
-				_loadImage.rotation+=0.2;
-			});
+				_loadImage=new LoadingMC();
+				MC.instance.addMC(_loadImage as MovieClip);
+				_loadImage.x=1024 - 172;
+				_loadImage.y=768 - 126;
+				_loadImage.play();
+			}else
+			{
+				_loadImage=new Image(Texture.fromBitmap(new PalaceModule.loading()));
+				_loadImage.pivotX=_loadImage.width >> 1;
+				_loadImage.pivotY=_loadImage.height >> 1;
+				container.addChild(_loadImage as Image);
+				_loadImage.x=1024 - 100;
+				_loadImage.y=768 - 100;
+				_loadImage.scaleX=_loadImage.scaleY=.5;
+				_loadImage.addEventListener(Event.ENTER_FRAME, function(e:Event):void
+				{
+					_loadImage.rotation+=0.2;
+				});
+			}
 		}
 
 		private static function loadFunc():void
 		{
+			if(!_assetsManager)
+				_assetsManager = new AssetManager();
+			_assetsManager.dispose();
 			_assetsManager=new AssetManager();
-			_assetsManager.enqueue(
-				File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"),
-				"json/collection.json",
-				"json/catalogue.json"
+			if(!_book)		//用户中心
+				_assetsManager.enqueue(
+					File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"),
+					"json/collection.json"
+				);
+			else		//手册
+				_assetsManager.enqueue(
+					File.applicationDirectory.resolvePath("assets/global/handbook/mainUI"),
+					"json/catalogue.json"
 				);
 			_assetsManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)
 				{
 					removeLoadImage();
-					loaded=true;
 					showHandler();
 				}
 			});
@@ -186,8 +202,16 @@ package views.global.books
 
 		private static function removeLoadImage():void
 		{
-			_loadImage.removeFromParent(true);
-			_loadImage=null;
+			if(_loadImage is MovieClip)
+			{
+				MC.instance.removeMC(_loadImage as MovieClip);
+				_loadImage.stop();
+				_loadImage=null;
+			}else
+			{
+				_loadImage.removeFromParent(true);
+				_loadImage=null;
+			}
 		}
 
 		private static var container:DisplayObjectContainer;

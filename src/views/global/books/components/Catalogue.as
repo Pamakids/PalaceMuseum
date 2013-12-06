@@ -5,8 +5,8 @@ package views.global.books.components
 	
 	import flash.text.TextFormat;
 	
+	import feathers.controls.Button;
 	import feathers.controls.List;
-	import feathers.controls.ProgressBar;
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
@@ -39,30 +39,47 @@ package views.global.books.components
 			parseJson();
 			initBG();
 			initScroll();
-			initProbar();
+//			initProbar();
 			initHeaders();
 			initList();
+			initBackBtn();
 		}
 		
-		private var probar:ProgressBar;
-		private function initProbar():void
+		private var backBtn:Button;
+		private function initBackBtn():void
 		{
-			var image:Image = BooksManager.getImage("progress_main");
-			this.addChild( image );
-			image.x = 590;
-			image.y = 72;
-			image.touchable = false;
-			probar = new ProgressBar();
-			probar.maximum = 100;
-			probar.minimum = 0;
-			probar.backgroundSkin = BooksManager.getImage("progress_bg");
-			probar.fillSkin = BooksManager.getImage("progress_image");
-			this.addChild( probar );
-			probar.direction = ProgressBar.DIRECTION_VERTICAL;
-			probar.x = 600;
-			probar.y = 105;
-			probar.touchable = false;
+			backBtn = new Button();
+			backBtn.defaultSkin = BooksManager.getImage("button_close_small");
+			backBtn.x = 600;
+			backBtn.y = 40;
+			this.addChild( backBtn );
+			backBtn.addEventListener(Event.TRIGGERED, onBack);
 		}
+		
+		private function onBack():void
+		{
+			BooksManager.getCrtHandbook().hideCatalogue();
+		}
+		
+//		private var probar:ProgressBar;
+//		private function initProbar():void
+//		{
+//			var image:Image = BooksManager.getImage("progress_main");
+//			this.addChild( image );
+//			image.x = 590;
+//			image.y = 72;
+//			image.touchable = false;
+//			probar = new ProgressBar();
+//			probar.maximum = 100;
+//			probar.minimum = 0;
+//			probar.backgroundSkin = BooksManager.getImage("progress_bg");
+//			probar.fillSkin = BooksManager.getImage("progress_image");
+//			this.addChild( probar );
+//			probar.direction = ProgressBar.DIRECTION_VERTICAL;
+//			probar.x = 600;
+//			probar.y = 105;
+//			probar.touchable = false;
+//		}
 		
 		private var moving:Boolean  = false;
 		public function updateView(index:int):void
@@ -181,15 +198,15 @@ package views.global.books.components
 			scroll.width = 540;
 			scroll.height = 530;
 			scroll.layout = layoutForScroll;
-			scroll.addEventListener(Event.SCROLL, onScroll);
+//			scroll.addEventListener(Event.SCROLL, onScroll);
 		}
 		
-		private function onScroll():void
-		{
-			var i:int = 100*scroll.verticalScrollPosition/scroll.maxVerticalScrollPosition;
-			i = Math.min( 100, Math.max( 0, i ) );
-			probar.value = i;
-		}
+//		private function onScroll():void
+//		{
+//			var i:int = 100*scroll.verticalScrollPosition/scroll.maxVerticalScrollPosition;
+//			i = Math.min( 100, Math.max( 0, i ) );
+//			probar.value = i;
+//		}
 		
 		private var crtIndex:int = -1;
 		
