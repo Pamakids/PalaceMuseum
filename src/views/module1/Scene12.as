@@ -374,7 +374,7 @@ package views.module1
 			}
 		}
 
-		private var expArr:Array=["kingHappy", "kingLook", "KingNaughty", "kingStrange"];
+		private var expArr:Array=["kingHappy", "kingLook", "KingNaughty"];
 
 		private var kingHead:MovieClip;
 

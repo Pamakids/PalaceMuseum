@@ -112,11 +112,11 @@ package controllers
 							var st:SoundTransform=new SoundTransform(_vol);
 							o.channel.soundTransform=st;
 						}
-						trace('Sound ' + target + ' is replaying');
+//						trace('Sound ' + target + ' is replaying');
 					}
 					else
 					{
-						trace('Sound ' + target + ' is playing');
+//						trace('Sound ' + target + ' is playing');
 					}
 					return o.channel;
 				}
@@ -138,7 +138,7 @@ package controllers
 			{
 				if (!o)
 				{
-					throw new Error('Sound:' + target + ' is not added or configed');
+//					throw new Error('Sound:' + target + ' is not added or configed');
 				}
 				else
 				{
