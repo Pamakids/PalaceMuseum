@@ -214,7 +214,7 @@ package sound
 
 		public static function fadeIn(sound:String):void
 		{
-			var sc:SoundChannel=sm.play(sound);
+			var sc:SoundChannel=sm.play(sound, 0, 0);
 			if (sc)
 			{
 				trace("fadeIn", sound)
