@@ -85,7 +85,8 @@ package views.components
 						if (count != loops)
 							return;
 						lion.stop();
-						TailBar.show();
+						if (loops == 1)
+							TailBar.show();
 						lion.removeEventListener(Event.FRAME_CONSTRUCTED, compFunc);
 						isSayingOver=true;
 						if (cb != null)

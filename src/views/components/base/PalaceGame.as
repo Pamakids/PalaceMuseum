@@ -183,10 +183,12 @@ package views.components.base
 			if (fromCenter)
 				assetManager.dispose()
 			else
+			{
 				assetManager=null;
+				MC.instance.topBarLayer.visible=true;
+				MC.instance.showMC();
+			}
 			super.dispose();
-			MC.instance.topBarLayer.visible=true;
-			MC.instance.showMC();
 		}
 
 		/**
