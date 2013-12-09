@@ -161,25 +161,30 @@ package views.module2
 					initFindGame();
 		}
 
+		private function kingChat1():void
+		{
+			Prompt.showTXT(headHolder.x + 150, headHolder.y + 70, chat3, 20, lionChat1, this);
+		}
+
 		private function lionChat1():void
 		{
-			LionMC.instance.say(chat2, 0, 50, 520, kingChat2, 20, .6);
+			LionMC.instance.say(chat2, 0, 50, 520, lionChat2, 20, .6);
 		}
+
+//		private function kingChat2():void
+//		{
+//			Prompt.showTXT(headHolder.x + 150, headHolder.y + 70, chat3, 20, lionChat2, this);
+//		}
 
 		private function lionChat2():void
 		{
 			LionMC.instance.say(chat4, 0, 50, 520, getReady, 20, .6, true);
 		}
 
-		private function kingChat1():void
-		{
-			Prompt.showTXT(headHolder.x + 150, headHolder.y + 70, chat1, 20, lionChat1, this);
-		}
-
-		private function kingChat2():void
-		{
-			Prompt.showTXT(headHolder.x + 150, headHolder.y + 70, chat3, 20, lionChat2, this);
-		}
+		private var chat1:String="长大后，皇帝还要上学吗？";
+		private var chat2:String="无论多么繁忙，皇帝们从来不放松学习。";
+		private var chat3:String="这么多书，都…都要看吗？";
+		private var chat4:String="猜猜哪两本是皇帝每天必读的书，都是与前代皇帝治国之道相关的书。";
 
 		private function getReady():void
 		{
@@ -483,11 +488,6 @@ package views.module2
 
 
 		}
-
-		private var chat1:String="长大后，皇帝还要上学吗？";
-		private var chat2:String="无论多么繁忙，皇帝们从来不放松学习。";
-		private var chat3:String="这么多书，都…都要看吗？";
-		private var chat4:String="猜猜哪两本是皇帝每天必读的书，都是与前代皇帝治国之道相关的书。";
 
 		private var headHolder:Sprite;
 

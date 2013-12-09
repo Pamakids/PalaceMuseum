@@ -622,7 +622,8 @@ package views.module5.scene52
 
 				if (!operagameresult || operagameresult < score)
 				{
-					scoreTXT.text=recordTXT.text=score.toString();
+					scoreTXT.text=score.toString();
+					recordTXT.text=score.toString();
 					isRecord=true;
 					SOService.instance.setSO(gameResult, score);
 				}
