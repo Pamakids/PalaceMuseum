@@ -675,35 +675,43 @@ package views.module3.scene33
 				t2.y=370;
 				endSP.addChild(t2);
 
-				var scoreTXT:TextField=new TextField(200, 100, "");
-				scoreTXT.fontSize=48;
-				scoreTXT.color=0xb83d00;
-				scoreTXT.x=490;
-				scoreTXT.y=280;
-				scoreTXT.vAlign="top"
-				scoreTXT.hAlign="right";
-				endSP.addChild(scoreTXT);
-
-				var recordTXT:TextField=new TextField(100, 40, "");
-				recordTXT.fontSize=24;
-				recordTXT.color=0xb83d00;
-				recordTXT.x=520;
-				recordTXT.y=370;
-				recordTXT.vAlign="top"
-				recordTXT.hAlign="right";
-				endSP.addChild(recordTXT);
+				var scoreTXT:String;
+				var recordTXT:String;
 
 				if (!dishgameresult || dishgameresult < score)
 				{
-					scoreTXT.text=recordTXT.text=score.toString();
+					scoreTXT=recordTXT=score.toString();
 					isRecord=true;
 					SOService.instance.setSO(gameResultlvl, score);
 				}
 				else
 				{
-					scoreTXT.text=score.toString();
-					recordTXT.text=dishgameresult.toString();
+					scoreTXT=score.toString();
+					recordTXT=dishgameresult.toString();
 				}
+
+				var scoreTF:TextField=new TextField(200, 100, scoreTXT);
+				scoreTF.fontSize=48;
+				scoreTF.color=0xb83d00;
+				scoreTF.x=490;
+				scoreTF.y=280;
+				scoreTF.vAlign="top"
+				scoreTF.hAlign="right";
+				endSP.addChild(scoreTF);
+
+				var recordTF:TextField=new TextField(100, 40, recordTXT);
+				recordTF.fontSize=24;
+				recordTF.color=0xb83d00;
+				recordTF.x=520;
+				recordTF.y=370;
+				recordTF.vAlign="top"
+				recordTF.hAlign="right";
+				endSP.addChild(recordTF);
+
+//				TweenLite.delayedCall(.1, function():void {
+//					scoreTF.text=scoreTF.text;
+//					recordTF.text=recordTF.text;
+//				});
 			}
 			else
 			{

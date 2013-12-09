@@ -557,6 +557,11 @@ package views.module3.scene32
 			recordTF.y=390;
 			endSP.addChild(recordTF);
 
+//			TweenLite.delayedCall(.1, function():void {
+//				resultTF.text=resultTF.text;
+//				recordTF.text=recordTF.text;
+//			});
+
 			var rsBtn:ElasticButton=new ElasticButton(getImage("restart"));
 			rsBtn.shadow=getImage("restart-light");
 			rsBtn.x=512;

@@ -604,34 +604,42 @@ package views.module5.scene52
 				t2.y=370;
 				endHolder.addChild(t2);
 
-				var scoreTXT:TextField=new TextField(220, 100, "");
-				scoreTXT.fontSize=48;
-				scoreTXT.color=0xb83d00;
-				scoreTXT.x=470;
-				scoreTXT.y=285;
-				scoreTXT.vAlign="top";
-				scoreTXT.hAlign="right";
-				endHolder.addChild(scoreTXT);
-
-				var recordTXT:TextField=new TextField(100, 40, "");
-				recordTXT.fontSize=24;
-				recordTXT.color=0xb83d00;
-				recordTXT.x=520;
-				recordTXT.y=370;
-				endHolder.addChild(recordTXT);
+				var scoreTXT:String;
+				var recordTXT:String;
 
 				if (!operagameresult || operagameresult < score)
 				{
-					scoreTXT.text=score.toString();
-					recordTXT.text=score.toString();
+					scoreTXT=score.toString();
+					recordTXT=score.toString();
 					isRecord=true;
 					SOService.instance.setSO(gameResult, score);
 				}
 				else
 				{
-					scoreTXT.text=score.toString();
-					recordTXT.text=operagameresult.toString();
+					scoreTXT=score.toString();
+					recordTXT=operagameresult.toString();
 				}
+
+				var scoreTF:TextField=new TextField(220, 100, scoreTXT);
+				scoreTF.fontSize=48;
+				scoreTF.color=0xb83d00;
+				scoreTF.x=470;
+				scoreTF.y=285;
+				scoreTF.vAlign="top";
+				scoreTF.hAlign="right";
+				endHolder.addChild(scoreTF);
+
+				var recordTF:TextField=new TextField(100, 40, recordTXT);
+				recordTF.fontSize=24;
+				recordTF.color=0xb83d00;
+				recordTF.x=520;
+				recordTF.y=370;
+				endHolder.addChild(recordTF);
+
+				TweenLite.delayedCall(.1, function():void {
+					scoreTF.text=scoreTF.text;
+					recordTF.text=recordTF.text;
+				});
 			}
 			else
 			{
