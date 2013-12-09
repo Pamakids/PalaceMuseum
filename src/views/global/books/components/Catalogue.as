@@ -50,7 +50,7 @@ package views.global.books.components
 		{
 			backBtn = new Button();
 			backBtn.defaultSkin = BooksManager.getImage("button_close_small");
-			backBtn.x = 506;
+			backBtn.x = 510;
 			backBtn.y = 26;
 			this.addChild( backBtn );
 			backBtn.addEventListener(Event.TRIGGERED, onBack);

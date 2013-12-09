@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:2ccb517e6eea5200d91d499fe3f00365$ -->
+<!-- $TexturePacker:SmartUpdate:c33a90f039ab96bd92e860fbd6bb4967$ -->
 <TextureAtlas imagePath="assets.png">
-    <SubTexture name="birds_down" x="863" y="599" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="birds_up" x="867" y="460" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="button_catalogue_down" x="557" y="738" width="65" height="146" frameX="-43" frameY="0" frameWidth="153" frameHeight="166"/>
-    <SubTexture name="button_catalogue_up" x="624" y="738" width="65" height="142" frameX="-43" frameY="-24" frameWidth="153" frameHeight="166"/>
-    <SubTexture name="button_close_small" x="557" y="935" width="48" height="47"/>
+    <SubTexture name="birds_down" x="563" y="707" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="birds_up" x="563" y="568" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="button_catalogue_down" x="924" y="460" width="97" height="115" frameX="-12" frameY="0" frameWidth="109" frameHeight="133"/>
+    <SubTexture name="button_catalogue_up" x="716" y="707" width="103" height="109" frameX="0" frameY="-24" frameWidth="109" frameHeight="133"/>
+    <SubTexture name="button_close_small" x="873" y="478" width="48" height="47"/>
     <SubTexture name="button_map" x="2" y="84" width="824" height="243"/>
-    <SubTexture name="catalogue_bg" x="2" y="362" width="553" height="641"/>
-    <SubTexture name="catalogue_bg_header" x="557" y="362" width="402" height="65"/>
-    <SubTexture name="handbook_down" x="712" y="429" width="153" height="137" frameX="0" frameY="0" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="handbook_up" x="557" y="429" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="historical_relic_down" x="710" y="568" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="catalogue_bg" x="2" y="362" width="559" height="633"/>
+    <SubTexture name="catalogue_bg_header" x="563" y="362" width="402" height="65"/>
+    <SubTexture name="handbook_down" x="718" y="429" width="153" height="137" frameX="0" frameY="0" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="handbook_up" x="563" y="429" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="historical_relic_down" x="871" y="577" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
     <SubTexture name="historical_relic_up" x="828" y="223" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
-    <SubTexture name="label_0" x="557" y="886" width="49" height="47"/>
-    <SubTexture name="label_1" x="961" y="411" width="49" height="47"/>
-    <SubTexture name="label_2" x="961" y="362" width="49" height="47"/>
-    <SubTexture name="map_down" x="557" y="568" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
+    <SubTexture name="label_0" x="873" y="429" width="49" height="47"/>
+    <SubTexture name="label_1" x="967" y="411" width="49" height="47"/>
+    <SubTexture name="label_2" x="967" y="362" width="49" height="47"/>
+    <SubTexture name="map_down" x="718" y="568" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
     <SubTexture name="map_up" x="828" y="84" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>
     <SubTexture name="shade" x="2" y="2" width="1002" height="80"/>
     <SubTexture name="small_title_down" x="983" y="84" width="34" height="30" frameX="0" frameY="-4" frameWidth="34" frameHeight="34"/>
