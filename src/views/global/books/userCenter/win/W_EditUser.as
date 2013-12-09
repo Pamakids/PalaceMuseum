@@ -78,8 +78,7 @@ package views.global.books.userCenter.win
 			button_close.defaultSkin=BooksManager.getImage("button_close_small");
 			button_close.addEventListener(Event.TRIGGERED, closeWindow);
 			this.addChild(button_close);
-			button_close.x=420;
-			button_close.y=20;
+			button_close.x=432;
 
 			button_delete=new Button();
 			button_delete.defaultSkin=BooksManager.getImage("button_deleteUser_up");
