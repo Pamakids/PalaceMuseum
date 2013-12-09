@@ -177,7 +177,7 @@ package views.module2
 
 		private var chat1:String="这些新鲜玩意儿是什么？";
 		private var chat2:String="都是洋人老师带来的西洋仪器。"
-		private var chat3:String="皇帝是个热爱科学的孩子，这些仪器你至少要学会一样！文房四宝也要会用。"
+		private var chat3:String="西方传教士东来，皇帝也要与时俱进啊，这些仪器你至少要学会一样！"
 
 		private var nameArr:Array=["thermo", "tele", "prism"];
 		private var labelPosArr:Array=[new Point(198, 552),

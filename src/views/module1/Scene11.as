@@ -55,7 +55,7 @@ package views.module1
 
 		private var windowStrArr:Array=[];
 
-		private var lionHint1:String="懒蛋，皇帝是不能睡懒觉的，每天几乎都在5点起床。"
+		private var lionHint1:String="想做个好皇帝可不能总想着偷懒啊。"
 		private var lionHint2:String="别怯场，快来猜猜皇帝到底睡在哪一间呢？"
 
 		private var hint0:String="皇帝不能多睡会儿么？";
