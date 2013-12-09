@@ -204,12 +204,14 @@ package views.module4
 				removeImg(img, i);
 			}
 
-			TweenLite.delayedCall((i + 1) * .2 + 1, addChoose);
+			TweenLite.delayedCall((i + 1) * effDelay + 1, addChoose);
 		}
+
+		private var effDelay:Number=.4;
 
 		private function removeImg(img:Image, i:int):void
 		{
-			TweenLite.delayedCall((memorialArr.length - i + 1) * .2, function():void {
+			TweenLite.delayedCall((memorialArr.length - i + 1) * effDelay, function():void {
 				img.removeFromParent(true);
 			});
 		}
