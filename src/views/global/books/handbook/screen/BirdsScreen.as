@@ -1,7 +1,5 @@
 package views.global.books.handbook.screen
 {
-	import flash.utils.Dictionary;
-	
 	import assets.global.handbook.BirdAssets;
 	
 	import models.FontVo;
@@ -186,7 +184,11 @@ package views.global.books.handbook.screen
 		 */
 		private function updateView():void
 		{
-			cache = getImage( ifCollected(crtPage) ? "bird"+crtPage : "birdUn" );
+			cache.texture = ifCollected(crtPage) ? getTexture( "bird"+crtPage ) : getTexture("birdUn");
+//			cache.removeFromParent(true);
+//			cache = getImage( ifCollected(crtPage) ? "bird"+crtPage : "birdUn" );
+//			this.addChild( cache );
+//			cache.touchable  = false;
 //			cache.texture=ifCollected(crtPage) ? _assetsManager["bird_collection_"+crtPage] : _assetsManager["bird_uncollection"];
 			page_0.text = String(crtPage*2+1)+" / "+String(MAX_NUM*2);
 			page_1.text = String(crtPage*2+2)+" / "+String(MAX_NUM*2);

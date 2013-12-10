@@ -326,6 +326,11 @@ package views.global.books.handbook
 				sprite.visible = false;
 				turnToForCata(obj[0], obj[1]);
 			}});
+			this.addChildAt( cataBtn, this.getChildIndex(_tabBar));
+			cataBtn.isSelected = false;
+			cataBtn.touchable = true;
+			cataBtn.x = 90;
+			cataBtn.y = 10;
 		}
 		
 		private function turnToForCata(screen:int, page:int):void
