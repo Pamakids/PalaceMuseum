@@ -1,7 +1,5 @@
 package views.global.books.handbook.screen
 {
-	import assets.global.handbook.BirdAssets;
-	
 	import feathers.core.PopUpManager;
 	
 	import models.FontVo;
@@ -84,34 +82,30 @@ package views.global.books.handbook.screen
 		public function initView(pageIndex:int):void
 		{
 			crtPage=pageIndex;
-			initTextures();
-			initImages();
-			initPageNums();
-			removeLoad();
-			dispatchEventWith(BookEvent.InitViewPlayed);
+			_assetsManager.enqueue("assets/global/handbook/bird_uncollection.png");
+			if( ifCollected( crtPage ) )
+				_assetsManager.enqueue("assets/global/handbook/bird_collection_" + crtPage + ".png");
+			_assetsManager.loadQueue(function(ratio:Number):void {
+				if (ratio == 1)
+				{
+					if (crtPage > 0 && ifCollected(crtPage-1))
+						_assetsManager.enqueue("assets/global/handbook/bird_collection_" + String(crtPage-1) + ".png");
+					if (crtPage < HandbookScreen.MAX_NUM - 1 && ifCollected(crtPage+1))
+						_assetsManager.enqueue("assets/global/handbook/bird_collection_" + String(crtPage+1) + ".png");
+					_assetsManager.loadQueue(function(r:Number):void {});
+					initImages();
+					initPageNums();
+					removeLoad();
+					dispatchEventWith(BookEvent.InitViewPlayed);
+				}
+			});
 		}
 		
-		
-		
-		private function initTextures():void
-		{
-			_assetsManager.enqueue("");
-			
-//			_assetsManager["bird_uncollection"] = getTexture("birdUn");
-//			if(ifCollected(crtPage))
-//				_assetsManager["bird_collection_"+crtPage] = getTexture("bird" + crtPage);
-//			if(crtPage>0 && ifCollected(crtPage-1))
-//				_assetsManager["bird_collection_"+(crtPage-1)] = getTexture("bird" + (crtPage-1));
-//			if(crtPage < MAX_NUM-1 && ifCollected(crtPage+1))
-//				_assetsManager["bird_collection_"+(crtPage+1)] = getTexture("bird" + (crtPage+1));
-		}
-
 		private var cache:Image;
 
 		private function initImages():void
 		{
-			cache = getImage(ifCollected(crtPage) ? "bird"+crtPage : "birdUn");
-//			cache=new Image(ifCollected(crtPage) ? _assetsManager["bird_collection_"+crtPage] : _assetsManager["bird_uncollection"]);
+			cache=new Image(ifCollected(crtPage) ? _assetsManager.getTexture("bird_collection_" + crtPage) : _assetsManager.getTexture("bird_uncollection"));
 			this.addChild(cache);
 			cache.touchable=false;
 		}
@@ -131,8 +125,8 @@ package views.global.books.handbook.screen
 				dispatchEventWith(BookEvent.ViewUpdateFail);
 				return;
 			}
-//			loadByPageIndex(crtPage - 2);
-//			clearByPageIndex(crtPage + 1);
+			loadByPageIndex(crtPage - 2);
+			clearByPageIndex(crtPage + 1);
 			this.crtPage-=1;
 			updateView();
 		}
@@ -147,28 +141,37 @@ package views.global.books.handbook.screen
 				dispatchEventWith(BookEvent.ViewUpdateFail);
 				return;
 			}
-//			clearByPageIndex(crtPage - 1);
-//			loadByPageIndex(crtPage + 2);
+			clearByPageIndex(crtPage - 1);
+			loadByPageIndex(crtPage + 2);
 			this.crtPage+=1;
 			updateView();
 		}
 		
-//		private function loadByPageIndex(page:int):void
-//		{
-//			if (page < 0 || page > MAX_NUM - 1 || !ifCollected(page))
-//				return;
-//			_assetsManager["bird_collection_"+page] = getTexture("bird"+page);
-//		}
-//		
-//		private function clearByPageIndex(page:int):void
-//		{
-//			var texture:Texture = _assetsManager["bird_collection_"+page];
-//			if(texture)
-//			{
-//				texture.dispose();
-//				delete _assetsManager["bird_collection_"+page];
-//			}
-//		}
+		/**
+		 * 清除纹理以释放资源
+		 * @param pageIndex
+		 */
+		private function clearByPageIndex(pageIndex:int):void
+		{
+			var texture:Texture=_assetsManager.getTexture("bird_collection_" + pageIndex);
+			if (texture)
+				_assetsManager.removeTexture("bird_collection_" + pageIndex, true);
+		}
+		
+		/**
+		 * 动态加载纹理
+		 * @param pageIndex
+		 */
+		private function loadByPageIndex(pageIndex:int):void
+		{
+			if (pageIndex < 0 || pageIndex > HandbookScreen.MAX_NUM - 1 || !ifCollected(pageIndex))
+				return;
+			_assetsManager.enqueue("assets/global/handbook/bird_collection_" + pageIndex + ".png");
+			_assetsManager.loadQueue(function(ratio:Number):void {
+				if (ratio == 1)
+					trace("资源加载完成");
+			});
+		}
 
 		/**
 		 * 更新至指定页
@@ -181,8 +184,25 @@ package views.global.books.handbook.screen
 				dispatchEventWith(BookEvent.ViewUpdateFail);
 				return;
 			}
-			crtPage = page;
-			updateView();
+			//清除缓存纹理
+			_assetsManager.dispose();
+			initLoad();
+			this.crtPage = page;
+			_assetsManager.enqueue("assets/global/handbook/bird_uncollection.png");
+			if(ifCollected(crtPage))
+				_assetsManager.enqueue("assets/global/handbook/bird_collection_" + page + ".png");
+			_assetsManager.loadQueue(function(ratio:Number):void {
+				if (ratio == 1)
+				{
+					if (crtPage > 0 && ifCollected(crtPage-1))
+						_assetsManager.enqueue("assets/global/handbook/bird_collection_" + String(crtPage-1) + ".png");
+					if (crtPage < HandbookScreen.MAX_NUM - 1 && ifCollected(crtPage+1) )
+						_assetsManager.enqueue("assets/global/handbook/bird_collection_" + String(crtPage+1) + ".png");
+					_assetsManager.loadQueue(function(r:Number):void {});
+					updateView();
+					removeLoad();
+				}
+			});
 		}
 		
 		/**
@@ -190,12 +210,7 @@ package views.global.books.handbook.screen
 		 */
 		private function updateView():void
 		{
-			cache.texture = ifCollected(crtPage) ? getTexture( "bird"+crtPage ) : getTexture("birdUn");
-//			cache.removeFromParent(true);
-//			cache = getImage( ifCollected(crtPage) ? "bird"+crtPage : "birdUn" );
-//			this.addChild( cache );
-//			cache.touchable  = false;
-//			cache.texture=ifCollected(crtPage) ? _assetsManager["bird_collection_"+crtPage] : _assetsManager["bird_uncollection"];
+			cache.texture=_assetsManager.getTexture( ifCollected(crtPage) ? "bird_collection_" + crtPage : "bird_uncollection");
 			page_0.text = String(crtPage*2+1)+" / "+String(MAX_NUM*2);
 			page_1.text = String(crtPage*2+2)+" / "+String(MAX_NUM*2);
 			dispatchEventWith(BookEvent.ViewUpdated, false, crtPage);
@@ -209,22 +224,8 @@ package views.global.books.handbook.screen
 				page_0.removeFromParent(true);
 			if(page_1)
 				page_1.removeFromParent(true);
-//			for each(var text:Texture in _assetsManager)
-//			{
-//				text.dispose();
-//			}
-//			_assetsManager=null;
+			_assetsManager.dispose();
 			super.dispose();
-		}
-
-		private function getTexture(name:String):Texture
-		{
-			return Texture.fromBitmap(new BirdAssets[name]());
-		}
-		
-		private function getImage(name:String):Image
-		{
-			return Image.fromBitmap( new BirdAssets[name]() );
 		}
 	}
 }
