@@ -45,10 +45,12 @@ package views.global
 			ribbon.x=_RX;
 			ribbon.y=ah - rh >> 1;
 
-			book.x=-_BW;
+//			book.x=-_BW;
+			book.x=1024;
 			book.y=ah - bh >> 1;
 
-			avatar.x=1024;
+//			avatar.x=1024;
+			avatar.x=-_AW;
 			avatar.y=0;
 		}
 
@@ -75,8 +77,8 @@ package views.global
 				ribbon.touchable=true;
 				hidding=false;
 			}});
-			TweenLite.to(book, .3, {x: -_BW});
-			TweenLite.to(avatar, .3, {x: 1024});
+			TweenLite.to(book, .3, {x: 1024});
+			TweenLite.to(avatar, .3, {x: -_AW});
 		}
 
 		private function showBookAndAvatar():void
@@ -88,8 +90,8 @@ package views.global
 
 			ribbon.touchable=false;
 			TweenLite.to(ribbon, .3, {alpha: 0});
-			TweenLite.to(book, .8, {x: 0});
-			TweenLite.to(avatar, .8, {x: 1024 - _AW});
+			TweenLite.to(book, .8, {x: 1024 - _BW});
+			TweenLite.to(avatar, .8, {x: 0});
 			TweenLite.delayedCall(4, hideBookAndAvatar);
 			hidding=false;
 		}
@@ -150,8 +152,8 @@ package views.global
 
 			ribbon.x=_RX;
 			ribbon.alpha=1;
-			book.x=-_BW;
-			avatar.x=1024;
+			book.x=1024;
+			avatar.x=-_AW;
 
 			ribbon.touchable=true;
 		}
