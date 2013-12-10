@@ -3,7 +3,6 @@ package views.module1
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
-	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.SPUtils;
 
 	import flash.display.MovieClip;
@@ -13,8 +12,6 @@ package views.module1
 	import flash.utils.Dictionary;
 
 	import controllers.MC;
-
-	import models.SOService;
 
 	import sound.SoundAssets;
 
