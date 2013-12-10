@@ -75,10 +75,10 @@ package views.global.books.handbook
 		{
 			cataBtn = new Button();
 			cataBtn.defaultSkin = BooksManager.getImage("button_catalogue_up");
-			cataBtn.downSkin = BooksManager.getImage("button_catalogue_down");
+			cataBtn.defaultSelectedSkin = BooksManager.getImage("button_catalogue_down");
 			this.addChild( cataBtn );
-			cataBtn.x = 55;
-			cataBtn.y = 4;
+			cataBtn.x = 90;
+			cataBtn.y = 10;
 			cataBtn.addEventListener(Event.TRIGGERED, openCatalogue);
 		}
 		
@@ -292,6 +292,11 @@ package views.global.books.handbook
 				sprite.addChild( cata );
 				cata.addEventListener(Event.CHANGE, catalogueChange);
 			}
+			sprite.addChildAt( cataBtn, 1 );
+			cataBtn.isSelected = true;
+			cataBtn.touchable = false;
+			cataBtn.x = mask.x + 90;
+			cataBtn.y = mask.y + 20;
 			sprite.visible = true;
 			sprite.alpha = 1;
 			mask.alpha = .5;
@@ -306,6 +311,11 @@ package views.global.books.handbook
 			TweenLite.to(cata, 0.8, {scaleX: 0, scaleY: 0, onComplete: function():void{
 				sprite.visible = false;
 			}});
+			this.addChildAt( cataBtn, this.getChildIndex(_tabBar));
+			cataBtn.isSelected = false;
+			cataBtn.touchable = true;
+			cataBtn.x = 90;
+			cataBtn.y = 10;
 		}
 		
 		private function catalogueChange(e:Event):void
