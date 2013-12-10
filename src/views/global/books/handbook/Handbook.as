@@ -310,10 +310,10 @@ package views.global.books.handbook
 			TweenLite.to(sprite, 0.8, {alpha: 0});
 			TweenLite.to(cata, 0.8, {scaleX: 0, scaleY: 0, onComplete: function():void{
 				sprite.visible = false;
+				cataBtn.touchable = true;
 			}});
 			this.addChildAt( cataBtn, this.getChildIndex(_tabBar));
 			cataBtn.isSelected = false;
-			cataBtn.touchable = true;
 			cataBtn.x = 90;
 			cataBtn.y = 10;
 		}
@@ -325,10 +325,10 @@ package views.global.books.handbook
 			TweenLite.to(cata, 0.8, {scaleX: 0, scaleY: 0, onComplete: function():void{
 				sprite.visible = false;
 				turnToForCata(obj[0], obj[1]);
+				cataBtn.touchable = true;
 			}});
 			this.addChildAt( cataBtn, this.getChildIndex(_tabBar));
 			cataBtn.isSelected = false;
-			cataBtn.touchable = true;
 			cataBtn.x = 90;
 			cataBtn.y = 10;
 		}
