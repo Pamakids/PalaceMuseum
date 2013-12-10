@@ -41,7 +41,7 @@ package views.module4
 		private var acc:Accelerometer;
 
 		private var cardArr:Array=[new Point(571, 146), new Point(1890, 151),
-								   new Point(122, 113), new Point(2333, 114), new Point(1215, 111)];
+								   new Point(122, 113), new Point(2333, 114), new Point(1500, 40)];
 
 		public function Scene41(am:AssetManager=null)
 		{
