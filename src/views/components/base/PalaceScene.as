@@ -9,12 +9,12 @@ package views.components.base
 {
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
+	import com.pamakids.manager.LoadManager;
 	import com.pamakids.palace.utils.StringUtils;
 
+	import flash.display.Bitmap;
 	import flash.geom.Point;
 	import flash.utils.getTimer;
-
-	import assets.global.handbook.BirdAssets;
 
 	import controllers.MC;
 	import controllers.UserBehaviorAnalysis;
@@ -71,17 +71,26 @@ package views.components.base
 			if (value < 0)
 				return;
 			if (!checkBird())
+			{
+				var img:Image;
+				LoadManager.instance.loadImage("assets/global/handbook/bird_collection_" + birdIndex + ".png",
+											   function(b:Bitmap):void {
+												   if (b)
+													   img=Image.fromBitmap(b);
+												   b=null;
+											   });
+
 				TweenLite.delayedCall(10, function():void {
-					var cls:Class=BirdAssets["bird" + birdIndex];
-					if (!cls)
-						return;
-					var img:Image=Image.fromBitmap(new cls());
+//					var cls:Class=BirdAssets["bird" + birdIndex];
+//					if (!cls)
+//						return;
 					if (img)
 					{
 						initBird(img);
 						UserBehaviorAnalysis.trackEvent("collect", "bird", "", birdIndex);
 					}
 				});
+			}
 		}
 
 

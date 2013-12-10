@@ -25,7 +25,6 @@ package views.components
 
 		public var img:Image;
 		public var bird:MovieClip;
-//		public var bg:Image;
 		public var close:ElasticButton;
 		private var speedX:Number;
 		private var speedY:Number;
@@ -82,15 +81,11 @@ package views.components
 		{
 			TweenMax.pauseAll();
 			SOService.instance.setSO("birdCatched" + crtIndex, true);
-//			var num:Object=SOService.instance.getSO("bird_count");
-//			if (!num)
-//				num=1;
-//			else
-//				num=int(num) + 1;
-//			SOService.instance.setSO("bird_count", num);
 
 			PopUpManager.addPopUp(this, true, false);
-			TweenLite.to(bird, 1, {x: 470, y: 28, rotation: 0});
+			TweenLite.to(bird, 1, {x: 470, y: 28, rotation: 0, onComplete: function():void {
+				bird.stop();
+			}});
 
 			img.pivotX=img.width >> 1;
 			img.pivotY=img.height >> 1;
