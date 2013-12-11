@@ -1,18 +1,18 @@
 package views.global.books
 {
 	import com.greensock.TweenMax;
-	
+
 	import flash.display.MovieClip;
 	import flash.filesystem.File;
-	
+
 	import controllers.MC;
-	
+
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.LionMC;
 	import views.components.base.PalaceModule;
 	import views.global.TopBar;
@@ -39,7 +39,7 @@ package views.global.books
 		private static var _screen:int;
 		private static var _closeable:Boolean;
 		private static var _mapVisible:Boolean;
-		
+
 		/**
 		 * @param book			0 用户中心/ 1 手册
 		 * @param screen
@@ -50,7 +50,7 @@ package views.global.books
 		public static function showBooks(book:int, screen:int=1, page:int=0, closeable:Boolean=true, mapVisible=true):void
 		{
 			MC.instance.topBarLayer.visible=false;
-			_book = book;
+			_book=book;
 			_screen=screen;
 			_page=page;
 			_closeable=closeable;
@@ -70,7 +70,7 @@ package views.global.books
 //				return;
 //			}
 			MC.instance.main.removeMask();
-			if(_book == 0)
+			if (_book == 0)
 			{
 				if (!_userCenter)
 				{
@@ -78,20 +78,23 @@ package views.global.books
 					_userCenter=new UserCenter();
 				}
 				_userCenter.turnTo(_screen, _page, _closeable, _mapVisible);
-				container.addChild( _userCenter );
-			}else
+				container.addChild(_userCenter);
+			}
+			else
 			{
-				if(!_handbook)
+				if (!_handbook)
 				{
 					TweenMax.pauseAll();
-					_handbook = new Handbook();
+					_handbook=new Handbook();
 				}
 				_handbook.turnTo(_screen, _page, _closeable);
-				container.addChild( _handbook );
+				container.addChild(_handbook);
 			}
-			
+
 			MC.instance.hideMC();
 			LionMC.instance.hide();
+
+			MC.instance.switchLayer(false);
 		}
 
 		/**关闭方法*/
@@ -100,17 +103,17 @@ package views.global.books
 			TweenMax.resumeAll();
 			if (_userCenter)
 				_userCenter.removeFromParent(true);
-			if(_handbook)
-				_handbook.removeFromParent( true );
+			if (_handbook)
+				_handbook.removeFromParent(true);
 			MC.instance.showMC();
 			LionMC.instance.show();
 			TopBar.enable=true;
 			MC.instance.topBarLayer.visible=true;
 			TopBar.show();
 			_userCenter=null;
-			_handbook = null;
+			_handbook=null;
 //			MC.instance.switchLayer(true);
-			if(_assetsManager)
+			if (_assetsManager)
 				_assetsManager.dispose();
 		}
 
@@ -121,6 +124,7 @@ package views.global.books
 		{
 			return _userCenter;
 		}
+
 		public static function getCrtHandbook():Handbook
 		{
 			return _handbook;
@@ -151,14 +155,15 @@ package views.global.books
 
 		private static function initLoadImage():void
 		{
-			if(!MC.instance.currentModule && (!Map.map || !Map.map.visible))
+			if (!MC.instance.currentModule && (!Map.map || !Map.map.visible))
 			{
 				_loadImage=new LoadingMC();
 				MC.instance.addMC(_loadImage as MovieClip);
 				_loadImage.x=1024 - 172;
 				_loadImage.y=768 - 126;
 				_loadImage.play();
-			}else
+			}
+			else
 			{
 				_loadImage=new Image(Texture.fromBitmap(new PalaceModule.loading()));
 				_loadImage.pivotX=_loadImage.width >> 1;
@@ -176,20 +181,20 @@ package views.global.books
 
 		private static function loadFunc():void
 		{
-			if(!_assetsManager)
-				_assetsManager = new AssetManager();
+			if (!_assetsManager)
+				_assetsManager=new AssetManager();
 			_assetsManager.dispose();
 			_assetsManager=new AssetManager();
-			if(!_book)		//用户中心
+			if (!_book) //用户中心
 				_assetsManager.enqueue(
 					File.applicationDirectory.resolvePath("assets/global/userCenter/mainUI"),
 					"json/collection.json"
-				);
-			else		//手册
+					);
+			else //手册
 				_assetsManager.enqueue(
 					File.applicationDirectory.resolvePath("assets/global/handbook/mainUI"),
 					"json/catalogue.json"
-				);
+					);
 			_assetsManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0)
@@ -203,12 +208,13 @@ package views.global.books
 
 		private static function removeLoadImage():void
 		{
-			if(_loadImage is MovieClip)
+			if (_loadImage is MovieClip)
 			{
 				MC.instance.removeMC(_loadImage as MovieClip);
 				_loadImage.stop();
 				_loadImage=null;
-			}else
+			}
+			else
 			{
 				_loadImage.removeFromParent(true);
 				_loadImage=null;

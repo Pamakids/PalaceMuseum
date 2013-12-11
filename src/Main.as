@@ -22,6 +22,7 @@ package
 	import starling.utils.AssetManager;
 
 	import views.Interlude;
+	import views.components.PalaceGuide;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
 	import views.global.books.BooksManager;
@@ -31,9 +32,9 @@ package
 	{
 		public function Main()
 		{
-//			SOService.instance.clear();
+			SOService.instance.clear();
 //			SOService.instance.init();
-//			SOService.instance.setSO("lastScene", "41");
+//			SOService.instance.setSO("lastScene", "11map");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
@@ -58,6 +59,11 @@ package
 			});
 
 			Map.loadAssets();
+
+			if (!lastScene)
+			{
+				PalaceGuide.init();
+			}
 		}
 
 		private function onRecordUserBehavior(e:UserBehaviorEvent):void
@@ -149,7 +155,15 @@ package
 		{
 			if (!_lastScene)
 			{
-				Map.show();
+				var cb:Function=function():void {
+					touchable=false;
+					MC.needGuide=true;
+					Map.show();
+				};
+				if (!PalaceGuide.assetManager)
+					PalaceGuide.init(cb)
+				else
+					cb();
 				return;
 			}
 
