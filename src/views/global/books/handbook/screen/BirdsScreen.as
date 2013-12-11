@@ -12,6 +12,7 @@ package views.global.books.handbook.screen
 	import starling.utils.AssetManager;
 	
 	import views.components.base.PalaceModule;
+	import views.global.books.BooksManager;
 	import views.global.books.events.BookEvent;
 	import views.global.books.userCenter.screen.BaseScreen;
 
@@ -36,6 +37,13 @@ package views.global.books.handbook.screen
 			initPages();
 			initLoad();
 			dispatchEventWith(BookEvent.Initialized);
+		}
+		
+		override protected function initPages():void
+		{
+			var image:Image = BooksManager.getImage("background_2");
+			this.addChild( image );
+			image.y = 10;
 		}
 		
 		private var load:Image;
@@ -108,10 +116,12 @@ package views.global.books.handbook.screen
 			cache=new Image(ifCollected(crtPage) ? _assetsManager.getTexture("bird_collection_" + crtPage) : _assetsManager.getTexture("bird_uncollection"));
 			this.addChild(cache);
 			cache.touchable=false;
+			cache.y = 10;
 		}
 
 		private function ifCollected(page:uint):Boolean
 		{
+			return true;
 			return SOService.instance.getSO("birdCatched" + page);
 		}
 
@@ -164,7 +174,7 @@ package views.global.books.handbook.screen
 		 */
 		private function loadByPageIndex(pageIndex:int):void
 		{
-			if (pageIndex < 0 || pageIndex > HandbookScreen.MAX_NUM - 1 || !ifCollected(pageIndex))
+			if (pageIndex < 0 || pageIndex > MAX_NUM - 1 || !ifCollected(pageIndex))
 				return;
 			_assetsManager.enqueue("assets/global/handbook/bird_collection_" + pageIndex + ".png");
 			_assetsManager.loadQueue(function(ratio:Number):void {
