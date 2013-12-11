@@ -229,7 +229,7 @@ package views.global.map
 			buttonShow=_buttonShow;
 			var msIndex:String=SOService.instance.getSO("lastScene") as String;
 			if (!msIndex)
-				msIndex="00map";
+				msIndex="11map";
 			if (!fromCenter && to >= 0)
 				msIndex=(to + 1).toString() + "1map";
 			else if (msIndex.lastIndexOf("map") < 0)
@@ -402,6 +402,11 @@ package views.global.map
 
 		private function flipedHandler(e:Event=null):void
 		{
+			if (MC.needGuide)
+			{
+				showGuide();
+				return;
+			}
 			var comFunc:Function=function():void
 			{
 				initCloseButton();
@@ -449,6 +454,16 @@ package views.global.map
 //			}
 //			resetLockHolder();
 			positionKing(centerPoint[showFromCenter ? mc.moduleIndex : from]);
+		}
+
+		private function showGuide():void
+		{
+			TweenLite.to(flipAnimation, 5, {delay: 1, y: 0, ease: Cubic.easeOut, onComplete: function():void {
+				TopBar.instance.showBookAndAvatar(false);
+				MC.instance.addGuide(1, function():void {
+					TopBar.instance.bookClickedHandler();
+				});
+			}});
 		}
 
 		/**

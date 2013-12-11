@@ -1,7 +1,6 @@
 package views.module1.scene13
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.manager.SoundManager;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -18,7 +17,6 @@ package views.module1.scene13
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
-	import views.components.InfoSwitch;
 	import views.components.base.PalaceGame;
 
 	public class Clock extends PalaceGame

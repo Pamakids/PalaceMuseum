@@ -81,7 +81,7 @@ package views.global
 			TweenLite.to(avatar, .3, {x: -_AW});
 		}
 
-		private function showBookAndAvatar():void
+		public function showBookAndAvatar(autoHide:Boolean=true):void
 		{
 			TweenLite.killDelayedCallsTo(hideBookAndAvatar);
 			TweenLite.killTweensOf(book);
@@ -92,7 +92,8 @@ package views.global
 			TweenLite.to(ribbon, .3, {alpha: 0});
 			TweenLite.to(book, .8, {x: 1024 - _BW});
 			TweenLite.to(avatar, .8, {x: 0});
-			TweenLite.delayedCall(4, hideBookAndAvatar);
+			if (autoHide)
+				TweenLite.delayedCall(4, hideBookAndAvatar);
 			hidding=false;
 		}
 
@@ -109,7 +110,7 @@ package views.global
 
 		private static var dx:Number=-90;
 
-		private function bookClickedHandler():void
+		public function bookClickedHandler():void
 		{
 			MC.instance.main.addMask(0);
 			UserBehaviorAnalysis.trackEvent("click", "book");
