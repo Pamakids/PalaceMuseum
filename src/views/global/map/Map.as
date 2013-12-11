@@ -404,6 +404,7 @@ package views.global.map
 		{
 			if (MC.needGuide)
 			{
+//				LionMC.instance.say("先进入手册看看吧！", 0, 0, 0, showGuide);
 				showGuide();
 				return;
 			}
@@ -459,9 +460,11 @@ package views.global.map
 		private function showGuide():void
 		{
 			TweenLite.to(flipAnimation, 5, {delay: 1, y: 0, ease: Cubic.easeOut, onComplete: function():void {
-				TopBar.instance.showBookAndAvatar(false);
-				MC.instance.addGuide(1, function():void {
-					TopBar.instance.bookClickedHandler();
+				LionMC.instance.say("先进入手册看看吧！", 0, 0, 0, function():void {
+					TopBar.instance.showBookAndAvatar(false);
+					MC.instance.addGuide(1, function():void {
+						TopBar.instance.bookClickedHandler();
+					});
 				});
 			}});
 		}

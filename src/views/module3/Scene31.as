@@ -2,11 +2,9 @@ package views.module3
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Elastic;
-	import com.pamakids.manager.SoundManager;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.utils.getTimer;
 
 	import feathers.core.PopUpManager;
 
@@ -48,6 +46,12 @@ package views.module3
 			desk.y=768 - 496;
 			addChild(desk);
 			desk.touchable=false;
+
+			var dishes:Image=getImage("dishes");
+			dishes.touchable=false;
+			dishes.x=472;
+			dishes.y=375;
+			addChild(dishes);
 
 			addKing();
 
@@ -167,7 +171,7 @@ package views.module3
 				king.addEventListener(Event.COMPLETE, onKingPlayed);
 				king.play();
 				TweenLite.delayedCall(1.3, function():void {
-					p=Prompt.showTXT(king.x + 150, king.y + 135, "急什么，再让我看一会儿…", 20, null, null, 3, false);
+					p=Prompt.showTXT(864, 617, "急什么，再让我看一会儿…", 20, null, null, 3, false);
 					SoundAssets.playSFX("kingdragged");
 				});
 			}

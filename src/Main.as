@@ -21,10 +21,12 @@ package
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
+	import views.EndScene;
 	import views.Interlude;
 	import views.components.PalaceGuide;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
+	import views.global.TopBar;
 	import views.global.books.BooksManager;
 	import views.global.map.Map;
 
@@ -32,9 +34,9 @@ package
 	{
 		public function Main()
 		{
-			SOService.instance.clear();
+//			SOService.instance.clear();
 //			SOService.instance.init();
-//			SOService.instance.setSO("lastScene", "11map");
+//			SOService.instance.setSO("lastScene", "32");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
@@ -153,6 +155,10 @@ package
 
 		private function parseMS(_lastScene:String):void
 		{
+			var fin:EndScene=new EndScene(restart);
+			addChild(fin);
+
+			TopBar.show();
 			if (!_lastScene)
 			{
 				var cb:Function=function():void {

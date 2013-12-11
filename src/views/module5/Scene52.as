@@ -217,7 +217,7 @@ package views.module5
 			game.onOperaSwitch=onOperaSwitch;
 			gameHolder.addChild(game);
 			game.addEventListener(PalaceGame.GAME_OVER, onGameOver);
-			game.addEventListener("nextGame", getGameInfo);
+			game.addEventListener("nextGame", onGameOver);
 			game.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 		}
 
@@ -245,15 +245,15 @@ package views.module5
 			{
 				if (lvl == 0)
 					showCard("10", function():void {
-						showAchievement(28, onPlayGame2);
+						showAchievement(28, gotoGame2);
 					});
 				else
 					showCard("11", function():void {
-						showAchievement(29, onPlayGame2);
+						showAchievement(29, gotoGame2);
 					});
 			}
 			else
-				onPlayGame2;
+				gotoGame2();
 
 			game.removeFromParent(true);
 			game=null;

@@ -1,9 +1,9 @@
-package assets.loadings
+package assets.embed
 {
 
-	public class LoadingAssets
+	public class EmbedAssets
 	{
-		public function LoadingAssets()
+		public function EmbedAssets()
 		{
 		}
 
@@ -12,5 +12,8 @@ package assets.loadings
 
 		[Embed(source="loading2.png")]
 		public static var module2Loading:Class;
+
+		[Embed(source="messageBG.png")]
+		public static var messageBG:Class;
 	}
 }

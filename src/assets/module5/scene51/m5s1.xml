@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:96b27243ef962c680dac4159751c1d4c$ -->
+<!-- $TexturePacker:SmartUpdate:ea7920662d44edd134c0913bcbf01aae$ -->
 <TextureAtlas imagePath="m5s1.png">
-    <SubTexture name="collection_card_14" x="601" y="2" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
-    <SubTexture name="dachen1" x="601" y="404" width="230" height="165"/>
-    <SubTexture name="dachen2" x="833" y="546" width="112" height="93"/>
-    <SubTexture name="intro-stage" x="2" y="2" width="597" height="488" frameX="-87" frameY="-63" frameWidth="809" frameHeight="656"/>
-    <SubTexture name="label0" x="941" y="40" width="68" height="36"/>
-    <SubTexture name="label1" x="941" y="2" width="68" height="36"/>
-    <SubTexture name="taihou" x="833" y="404" width="173" height="140"/>
+    <SubTexture name="collection_card_14" x="623" y="2" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
+    <SubTexture name="dachen1" x="623" y="404" width="230" height="165"/>
+    <SubTexture name="dachen2" x="855" y="404" width="112" height="93"/>
+    <SubTexture name="intro-stage" x="2" y="2" width="619" height="462" frameX="-81" frameY="-58" frameWidth="775" frameHeight="576"/>
+    <SubTexture name="label0" x="925" y="499" width="68" height="36"/>
+    <SubTexture name="label1" x="855" y="499" width="68" height="36"/>
+    <SubTexture name="taihou" x="2" y="571" width="173" height="140"/>
 </TextureAtlas>

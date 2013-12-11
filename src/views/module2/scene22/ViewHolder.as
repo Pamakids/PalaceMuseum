@@ -13,24 +13,24 @@ package views.module2.scene22
 	public class ViewHolder extends Sprite
 	{
 		private var _img1:Image;
-		private var _img2:Image;
+//		private var _img2:Image;
 
-		public function get img2():Image
-		{
-			return _img2;
-		}
-
-		public function set img2(value:Image):void
-		{
-			if (!_img2)
-			{
-				_img2=value;
-				addChild(_img2);
-				_img2.x=_width;
-				this._width+=_img2.width;
-				this.clipRect=new Rectangle(0, 0, _width, _height);
-			}
-		}
+//		public function get img2():Image
+//		{
+//			return _img2;
+//		}
+//
+//		public function set img2(value:Image):void
+//		{
+//			if (!_img2)
+//			{
+//				_img2=value;
+//				addChild(_img2);
+//				_img2.x=_width;
+//				this._width+=_img2.width;
+//				this.clipRect=new Rectangle(0, 0, _width, _height);
+//			}
+//		}
 
 		private var _scale:Number=1;
 		public var viewPortWidth:Number=0;
@@ -69,6 +69,7 @@ package views.module2.scene22
 				addChild(_img1);
 				this._width=_img1.width;
 				this._height=_img1.height;
+				this.clipRect=new Rectangle(0, 0, _width, _height);
 			}
 		}
 
@@ -130,17 +131,19 @@ package views.module2.scene22
 			stand=img2;
 
 			addChild(sit);
-			sit.x=1211;
-			sit.y=214;
+			sit.x=1211 + ox;
+			sit.y=214 + oy;
 
 			addChild(stand);
-			stand.x=1222;
-			stand.y=208;
+			stand.x=1222 + ox;
+			stand.y=208 + oy;
 
 			sit.visible=stand.touchable=false;
 		}
 
 		private var _standUp:Boolean;
+		private var ox:Number=-557
+		private var oy:Number=0;
 
 		public function get standUp():Boolean
 		{
