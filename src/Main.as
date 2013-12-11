@@ -32,9 +32,9 @@ package
 	{
 		public function Main()
 		{
-			SOService.instance.clear();
+//			SOService.instance.clear();
 //			SOService.instance.init();
-//			SOService.instance.setSO("lastScene", "11map");
+			SOService.instance.setSO("lastScene", "11map");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
