@@ -12,6 +12,7 @@ package views.global.books.handbook.screen
 	import starling.utils.AssetManager;
 	
 	import views.components.base.PalaceModule;
+	import views.global.books.BooksManager;
 	import views.global.books.events.BookEvent;
 	import views.global.books.userCenter.screen.BaseScreen;
 
@@ -36,6 +37,12 @@ package views.global.books.handbook.screen
 			initPages();
 			initLoad();
 			dispatchEventWith(BookEvent.Initialized);
+		}
+		
+		override protected function initPages():void
+		{
+			var image:Image = BooksManager.getImage("background_2");
+			this.addChild( image );
 		}
 		
 		private var load:Image;
