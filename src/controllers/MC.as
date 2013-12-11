@@ -11,8 +11,6 @@ package controllers
 
 	import models.SOService;
 
-	import sound.SoundAssets;
-
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
@@ -30,6 +28,7 @@ package controllers
 	import views.Module4;
 	import views.Module5;
 	import views.components.LionMC;
+	import views.components.PalaceGuide;
 	import views.components.Prompt;
 	import views.components.base.Container;
 	import views.components.base.PalaceModule;
@@ -53,6 +52,11 @@ package controllers
 		public function MC()
 		{
 		}
+
+		/**
+		 * 是否需要新手引导
+		 * */
+		public static var needGuide:Boolean=false;
 
 		private var _moduleIndex:int=-1;
 		private var contentLayer:starling.display.Sprite;
@@ -318,6 +322,17 @@ package controllers
 			var i2:int=Math.max(index1, index2);
 			main.setChildIndex(centerLayer, i1);
 			main.setChildIndex(mapLayer, i2);
+		}
+
+		/**
+		 * 检查MC.needGuide / 流程结束后设为true
+		 * @param index 引导索引
+		 * @param cb 回调
+		 */
+		public function addGuide(index:int, cb:Function):void
+		{
+			var guide:PalaceGuide=new PalaceGuide(index, cb);
+			main.addChild(guide);
 		}
 	}
 }
