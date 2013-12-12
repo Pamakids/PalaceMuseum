@@ -20,6 +20,7 @@ package views.global.books.userCenter.screen
 		{
 			var image:Image = BooksManager.getImage("background_0");
 			this.addChild( image );
+			image.height += 6;
 		}
 		
 		public var viewHeight:Number;
