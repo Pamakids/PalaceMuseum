@@ -58,6 +58,7 @@ package views.global.books.components
 			initWords();
 			initBtns();
 			initActiveIcon();
+			initPointer();
 			initPlayBtn();
 		}
 
@@ -359,20 +360,23 @@ package views.global.books.components
 			this.addChild(image);
 			image.touchable=false;
 
-			pointer=new Quad(66, 4, 0x0);
-			pointer.alpha=.4;
-			pointer.pivotY=pointer.height >> 1;
-			pointer.x=centerS.x;
-			pointer.y=centerS.y;
-			this.addChild(pointer);
-			pointer.touchable=false;
-			pointer.rotation=arrR[selectI];
-
 			image=BooksManager.getImage("focus_0");
 			image.x=445;
 			image.y=238;
 			this.addChild(image);
 			image.touchable=false;
+		}
+		
+		private function initPointer():void
+		{
+			pointer=new Quad(66, 4, 0x0);
+			pointer.alpha=.4;
+			pointer.pivotY=pointer.height >> 1;
+			pointer.x=centerS.x;
+			pointer.y=centerS.y;
+			this.addChildAt(pointer, 2);
+			pointer.touchable=false;
+			pointer.rotation=arrR[selectI];
 		}
 
 		private var centerS:Point=new Point(482, 332);

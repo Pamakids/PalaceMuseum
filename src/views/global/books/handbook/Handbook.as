@@ -130,7 +130,7 @@ package views.global.books.handbook
 			]);
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;
 			_tabBar.gap=1;
-			_tabBar.x=200;
+			_tabBar.x=204;
 			_tabBar.y=15;
 			this.addChild(_tabBar);
 			_tabBar.addEventListener(Event.CHANGE, tabs_changeHandler);
@@ -192,7 +192,7 @@ package views.global.books.handbook
 					width: contentWidth, height: contentHeight,
 					viewWidth: contentWidth, viewHeight: contentHeight
 				}));
-			_navigator.x=28;
+			_navigator.x=27;
 			_navigator.y=89;
 			this.addChild(_navigator);
 			_navigator.addEventListener(TouchEvent.TOUCH, onTouch);
@@ -206,7 +206,7 @@ package views.global.books.handbook
 			animation.addEventListener(Event.COMPLETE, playedAnimation);
 			animation.visible=false;
 			animation.touchable=false;
-			animation.x=28;
+			animation.x=27;
 			animation.y=89;
 		}
 		private var textureL:Texture; //初始页左侧纹理
@@ -440,7 +440,7 @@ package views.global.books.handbook
 			else //pageDown
 				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
 			animation.start(pageUp);
-			SoundAssets.playSFX("centerflip");
+			SoundAssets.playSFX("centerflip", true);
 		}
 		
 		private var played_4:Boolean = false;
