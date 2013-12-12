@@ -14,7 +14,7 @@ package views.components.base
 	import flash.filesystem.File;
 	import flash.geom.Point;
 
-	import assets.loadings.LoadingAssets;
+	import assets.embed.EmbedAssets;
 
 	import controllers.MC;
 
@@ -84,7 +84,7 @@ package views.components.base
 			var bg:Image=Image.fromBitmap(new gameBG());
 			tfHolder.addChild(bg);
 
-			qa=LoadingAssets[moduleName + "Loading"];
+			qa=EmbedAssets[moduleName + "Loading"];
 			if (qa)
 			{
 				var img:Image=Image.fromBitmap(new qa());
@@ -96,8 +96,8 @@ package views.components.base
 				}
 				else
 				{
-					img.x=177;
-					img.y=108;
+					img.x=100;
+					img.y=100;
 				}
 				return;
 			}

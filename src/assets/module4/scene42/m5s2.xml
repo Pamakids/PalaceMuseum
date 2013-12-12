@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:c20cf3791686ec502900fb5c0519e882$ -->
+<!-- $TexturePacker:SmartUpdate:a183513825ac34b309dcb81f484b9ee8$ -->
 <TextureAtlas imagePath="m5s2.png">
-    <SubTexture name="collection_card_13" x="2" y="474" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
-    <SubTexture name="collection_card_8" x="619" y="404" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
-    <SubTexture name="collection_card_9" x="619" y="2" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
-    <SubTexture name="continue" x="2" y="876" width="328" height="107"/>
-    <SubTexture name="intro-seal" x="2" y="2" width="615" height="470" frameX="-80" frameY="-82" frameWidth="809" frameHeight="656"/>
+    <SubTexture name="collection_card_13" x="2" y="510" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
+    <SubTexture name="collection_card_8" x="627" y="404" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
+    <SubTexture name="collection_card_9" x="627" y="2" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
+    <SubTexture name="continue" x="2" y="912" width="328" height="107"/>
+    <SubTexture name="intro-seal" x="2" y="2" width="623" height="506" frameX="-78" frameY="-58" frameWidth="775" frameHeight="576"/>
     <SubTexture name="memorial-hand" x="575" y="1243" width="239" height="211"/>
-    <SubTexture name="memorial1" x="2" y="1422" width="241" height="435"/>
-    <SubTexture name="memorial2" x="2" y="985" width="241" height="435"/>
-    <SubTexture name="memorial3" x="332" y="914" width="241" height="435"/>
+    <SubTexture name="memorial1" x="2" y="1458" width="241" height="435"/>
+    <SubTexture name="memorial2" x="2" y="1021" width="241" height="435"/>
+    <SubTexture name="memorial3" x="332" y="950" width="241" height="435"/>
     <SubTexture name="memorial4" x="593" y="806" width="241" height="435"/>
-    <SubTexture name="memorialBlank" x="342" y="474" width="249" height="438"/>
+    <SubTexture name="memorialBlank" x="342" y="510" width="249" height="438"/>
     <SubTexture name="noBtn-down" x="836" y="887" width="107" height="79"/>
     <SubTexture name="noBtn" x="929" y="968" width="91" height="63" frameX="-8" frameY="-8" frameWidth="107" frameHeight="79"/>
     <SubTexture name="yesBtn-down" x="836" y="806" width="107" height="79"/>

@@ -3,7 +3,7 @@ package views
 	import flash.filesystem.File;
 	import flash.geom.Point;
 
-	import assets.loadings.LoadingAssets;
+	import assets.embed.EmbedAssets;
 
 	import sound.SoundAssets;
 

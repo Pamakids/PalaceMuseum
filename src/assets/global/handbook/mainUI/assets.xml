@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:b76ceba69404f231c8dd06c94702af3d$ -->
+<!-- $TexturePacker:SmartUpdate:c33a90f039ab96bd92e860fbd6bb4967$ -->
 <TextureAtlas imagePath="assets.png">
     <SubTexture name="birds_down" x="563" y="707" width="151" height="137" frameX="-1" frameY="0" frameWidth="153" frameHeight="155"/>
     <SubTexture name="birds_up" x="563" y="568" width="153" height="137" frameX="0" frameY="-18" frameWidth="153" frameHeight="155"/>

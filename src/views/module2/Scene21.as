@@ -178,7 +178,9 @@ package views.module2
 
 		private function lionChat2():void
 		{
-			LionMC.instance.say(chat4, 0, 50, 520, getReady, 20, .6, true);
+			TweenLite.delayedCall(1, function():void {
+				LionMC.instance.say(chat4, 0, 50, 520, getReady, 20, .6, true);
+			});
 		}
 
 		private var chat1:String="长大后，皇帝还要上学吗？";

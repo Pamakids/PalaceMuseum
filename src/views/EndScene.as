@@ -1,23 +1,93 @@
 package views
 {
+	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
+
+	import assets.embed.EmbedAssets;
+
 	import controllers.DC;
+	import controllers.UserBehaviorAnalysis;
+
+	import feathers.controls.TextInput;
+	import feathers.controls.text.TextFieldTextEditor;
 
 	import models.FontVo;
 	import models.SOService;
 
 	import starling.display.Image;
+	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 
+	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
 
 	public class EndScene extends PalaceGame
 	{
 		private var callback:Function;
 
+		private var messageHolder:Sprite;
+
+		private var ti:TextInput;
+
+		private var countTF:TextField;
+
 		public function EndScene(cb:Function)
 		{
 			callback=cb;
+
+			messageHolder=new Sprite();
+			addChild(messageHolder);
+
+			var messageBG:Image=Image.fromBitmap(new EmbedAssets.messageBG());
+			messageHolder.addChild(messageBG);
+
+			countTF=new TextField(86, 29, "0/120", FontVo.PALACE_FONT, 22, 0x409b92);
+			messageHolder.addChild(countTF);
+			countTF.x=625;
+			countTF.y=323;
+			countTF.touchable=false;
+
+			ti=new TextInput();
+			ti.x=336;
+			ti.y=130;
+			ti.width=369;
+			ti.height=191;
+			ti.textEditorFactory=function stepperTextEditorFactory():TextFieldTextEditor {
+				var tf:TextFieldTextEditor=new TextFieldTextEditor();
+				tf.textFormat=new TextFormat(FontVo.PALACE_FONT, 18);
+				tf.textFormat.leading=11;
+				tf.embedFonts=true;
+				tf.multiline=true;
+				tf.wordWrap=true;
+				return tf;
+			};
+			ti.maxChars=120;
+			messageHolder.addChild(ti);
+
+			var sendBtn:ElasticButton=new ElasticButton(getImage("send"), getImage("send-shadow"));
+			messageHolder.addChild(sendBtn);
+			sendBtn.x=508;
+			sendBtn.y=350;
+			sendBtn.addEventListener(ElasticButton.CLICK, sendMessage);
+
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+
+		private function onEnterFrame(e:Event):void
+		{
+			countTF.text=ti.text.length.toString() + "/200"
+		}
+
+		private function sendMessage(e:Event):void
+		{
+			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+
+			var message:String=ti.text;
+			UserBehaviorAnalysis.trackEvent("message", message);
+
+			messageHolder.removeFromParent(true);
+
 			addBG();
 			addPanel();
 			addContent();

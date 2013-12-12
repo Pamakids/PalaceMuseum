@@ -60,35 +60,36 @@ package views.module2.scene22
 			addClose();
 			addMask();
 
-			LoadManager.instance.loadImage("assets/dynamic/view1.jpg", loaded1);
-			LoadManager.instance.loadImage("assets/dynamic/view2.jpg", loaded2);
+			LoadManager.instance.loadImage("assets/dynamic/view.jpg", loaded1);
+//			LoadManager.instance.loadImage("assets/dynamic/view2.jpg", loaded2);
 		}
 
 		private var img1:Image;
-		private var img2:Image;
+
+//		private var img2:Image;
 
 		private function loaded1(bp:Bitmap):void
 		{
 			img1=Image.fromBitmap(bp);
-			bp=null;
-			if (img2)
-				showView();
+//			bp=null;
+//			if (img2)
+			showView();
 		}
 
-		private function loaded2(bp:Bitmap):void
-		{
-			img2=Image.fromBitmap(bp);
-			bp=null;
-			if (img1)
-				showView();
-		}
+//		private function loaded2(bp:Bitmap):void
+//		{
+//			img2=Image.fromBitmap(bp);
+//			bp=null;
+//			if (img1)
+//				showView();
+//		}
 
 		private function showView():void
 		{
 			removeMask();
 
 			view.img1=img1;
-			view.img2=img2;
+//			view.img2=img2;
 			view.viewPortHeight=view.viewPortWidth=440;
 			view.x=view.pivotX=centerPT.x;
 			view.y=view.pivotY=centerPT.y;
@@ -344,7 +345,7 @@ package views.module2.scene22
 		private var ringMoved:Boolean;
 		private var ringBlock:Boolean;
 
-		private var lionRect:Rectangle=new Rectangle(1222, 208, 54, 84);
+		private var lionRect:Rectangle=new Rectangle(1222 - 557, 208, 54, 84);
 
 		private function onTeleTouch(e:TouchEvent):void
 		{
@@ -425,8 +426,8 @@ package views.module2.scene22
 			}
 			if (img1)
 				img1.removeFromParent(true);
-			if (img2)
-				img2.removeFromParent(true);
+//			if (img2)
+//				img2.removeFromParent(true);
 			super.dispose();
 		}
 	}
