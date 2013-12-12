@@ -31,7 +31,9 @@ package views.global.books.handbook
 	import starling.textures.Texture;
 	
 	import views.components.ElasticButton;
+	import views.components.PalaceGuide;
 	import views.components.SoftPaperAnimation;
+	import views.global.TopBar;
 	import views.global.books.BooksManager;
 	import views.global.books.components.Catalogue;
 	import views.global.books.handbook.screen.BirdsScreen;
@@ -68,6 +70,12 @@ package views.global.books.handbook
 			initNavigator();
 			initAnimation();
 			initRender();
+			
+			if(MC.needGuide)
+			{
+				MC.instance.addGuide(2, openCatalogue);
+			}
+				
 		}
 		
 		private var cataBtn:Button;
@@ -302,7 +310,6 @@ package views.global.books.handbook
 			mask.alpha = .5;
 			cata.scaleX = cata.scaleY = 1;
 			cata.updateView(0);
-			
 		}
 		
 		public function hideCatalogue():void
@@ -436,6 +443,8 @@ package views.global.books.handbook
 			SoundAssets.playSFX("centerflip");
 		}
 		
+		private var played_4:Boolean = false;
+		private var played_5:Boolean = false;
 		private function playedAnimation():void
 		{
 			hideAnimation();
@@ -443,6 +452,29 @@ package views.global.books.handbook
 			{
 				Map.show(null, -1, -1, true, true);
 				MC.instance.switchLayer( true );
+			}
+			
+			if(MC.needGuide)
+			{
+				if(!played_4)
+				{
+					played_4 = true;
+					MC.instance.addGuide(4, function():void{
+						pageUp=false;
+						showAnimation();
+						(_navigator.activeScreen as Object).pageDown();
+					});
+					return;
+				}
+				if(!played_5)
+				{
+					played_5 = true;
+					MC.instance.addGuide(5, function():void{
+						BooksManager.closeCtrBook();
+						PalaceGuide.disposeAll();
+						Map.show();
+					});
+				}
 			}
 		}
 		

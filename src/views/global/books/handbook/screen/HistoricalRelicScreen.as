@@ -2,10 +2,12 @@ package views.global.books.handbook.screen
 {
 	import feathers.core.PopUpManager;
 	
+	import models.FontVo;
 	import models.SOService;
 	
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 	
@@ -28,7 +30,7 @@ package views.global.books.handbook.screen
 		/**
 		 * 手册总页数（左右为1页）
 		 */
-		public static const MAX_NUM:int=8;
+		public static const MAX_NUM:int=5;
 		
 		private var _assetsManager:AssetManager;
 		private var crtPage:int;
@@ -85,11 +87,27 @@ package views.global.books.handbook.screen
 						_assetsManager.enqueue("assets/global/handbook/history_relic_" + String(crtPage+1) + ".png");
 					_assetsManager.loadQueue(function(r:Number):void {});
 					initImages();
+					initPageNums();
 					removeLoad();
 					dispatchEventWith(BookEvent.InitViewPlayed);
 					
 				}
 			});
+		}
+		
+		private var page_0:TextField;
+		private var page_1:TextField;
+		private function initPageNums():void
+		{
+			var n:int = MAX_NUM * 2;
+			page_0 = new TextField(100, 40, String(crtPage*2+1)+" / "+n.toString(), FontVo.PALACE_FONT, 22, 0x932720);
+			page_1 = new TextField(100, 40, String(crtPage*2+2)+" / "+n.toString(), FontVo.PALACE_FONT, 22, 0x932720);
+			page_0.touchable = page_1.touchable = false;
+			page_0.x = 196;
+			page_1.x = 680;
+			page_0.y = page_1.y = 590;
+			this.addChild( page_0 );
+			this.addChild( page_1 );
 		}
 		
 		private var cache:Image;
@@ -196,6 +214,8 @@ package views.global.books.handbook.screen
 		private function updateView():void
 		{
 			cache.texture=_assetsManager.getTexture("history_relic_" + crtPage);
+			page_0.text = String(crtPage*2+1)+" / "+String(MAX_NUM*2);
+			page_1.text = String(crtPage*2+2)+" / "+String(MAX_NUM*2);
 			dispatchEventWith(BookEvent.ViewUpdated, false, crtPage);
 			setSo();
 		}
@@ -231,6 +251,10 @@ package views.global.books.handbook.screen
 		{
 			if (cache)
 				cache.removeFromParent(true);
+			if(page_0)
+				page_0.removeFromParent(true);
+			if(page_1)
+				page_1.removeFromParent(true);
 			_assetsManager.dispose();
 			super.dispose();
 		}

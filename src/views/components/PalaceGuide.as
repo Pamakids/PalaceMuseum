@@ -101,9 +101,9 @@ package views.components
 
 		private function exceed():void
 		{
+			MC.instance.main.touchable=false;
 			callBack();
 			this.removeFromParent(true);
-			MC.instance.main.touchable=false;
 		}
 
 		private function touchHandler2(e:TouchEvent):void

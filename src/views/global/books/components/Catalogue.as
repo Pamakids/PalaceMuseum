@@ -5,6 +5,8 @@ package views.global.books.components
 	
 	import flash.text.TextFormat;
 	
+	import controllers.MC;
+	
 	import feathers.controls.Button;
 	import feathers.controls.List;
 	import feathers.controls.ScrollContainer;
@@ -124,6 +126,12 @@ package views.global.books.components
 			TweenLite.delayedCall(0.05, function():void{
 				TweenLite.to(list, 0.5, {height: list.maxVerticalScrollPosition, alpha: 1, ease: Cubic.easeIn, onComplete: function():void{
 					moving = false;
+					if(MC.needGuide)
+					{
+						MC.instance.addGuide(3, function():void{
+							dispatchEventWith(Event.CHANGE, false, [0, 2]);
+						});
+					}
 				}});
 			});
 		}
