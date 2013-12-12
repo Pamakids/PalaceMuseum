@@ -73,10 +73,18 @@ package views.components.base
 			if (!checkBird())
 			{
 				var img:Image;
+				var bg:Image;
 				LoadManager.instance.loadImage("assets/global/handbook/bird_collection_" + birdIndex + ".png",
 											   function(b:Bitmap):void {
 												   if (b)
 													   img=Image.fromBitmap(b);
+												   b=null;
+											   });
+
+				LoadManager.instance.loadImage("assets/global/handbook/mainUI/background_2.png",
+											   function(b:Bitmap):void {
+												   if (b)
+													   bg=Image.fromBitmap(b);
 												   b=null;
 											   });
 
@@ -86,7 +94,7 @@ package views.components.base
 //						return;
 					if (img)
 					{
-						initBird(img);
+						initBird(img, bg);
 						UserBehaviorAnalysis.trackEvent("collect", "bird", "", birdIndex);
 					}
 				});
@@ -120,10 +128,11 @@ package views.components.base
 			addChild(bg);
 		}
 
-		private function initBird(img:Image):void
+		private function initBird(img:Image, bg:Image):void
 		{
 			var bird:PalaceBird=new PalaceBird();
 			bird.crtIndex=birdIndex;
+			bird.bg=bg;
 			bird.img=img;
 			var mc:MovieClip=new MovieClip(MC.assetManager.getTextures("bird"), 18);
 //			mc.scaleX=mc.scaleY=.5;

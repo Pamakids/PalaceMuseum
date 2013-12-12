@@ -34,7 +34,7 @@ package
 		{
 //			SOService.instance.clear();
 //			SOService.instance.init();
-			SOService.instance.setSO("lastScene", "11map");
+//			SOService.instance.setSO("lastScene", "22");
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
@@ -88,20 +88,16 @@ package
 		private function initialize():void
 		{
 			onStart(null);
-//			if (!lastScene)
-//				showStart();
-//			else
-//				startGame();
 		}
 
 		[Embed(source="/assets/start/title.png")]
 		public static var Title:Class
 
-		[Embed(source="/assets/start/sb1.png")]
-		public static var StartBtn:Class
-
-		[Embed(source="/assets/start/sb2.png")]
-		public static var StartBtn2:Class
+//		[Embed(source="/assets/start/sb1.png")]
+//		public static var StartBtn:Class
+//
+//		[Embed(source="/assets/start/sb2.png")]
+//		public static var StartBtn2:Class
 
 		public function showStart():void
 		{

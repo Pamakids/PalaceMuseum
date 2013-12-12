@@ -87,14 +87,18 @@ package views.components
 				bird.stop();
 			}});
 
-			img.pivotX=img.width >> 1;
-			img.pivotY=img.height >> 1;
-			img.x=512;
-			img.y=430;
-			img.scaleX=img.scaleY=.2;
-			addChildAt(img, 0);
+			var holder:Sprite=new Sprite();
+			holder.addChild(bg);
+			holder.addChild(img);
 
-			TweenLite.to(img, 1, {scaleX: .9, scaleY: .9});
+			holder.pivotX=img.width >> 1;
+			holder.pivotY=img.height >> 1;
+			holder.x=512;
+			holder.y=430;
+			holder.scaleX=holder.scaleY=.2;
+			addChildAt(holder, 0);
+
+			TweenLite.to(holder, 1, {scaleX: .9, scaleY: .9});
 
 			close.x=950;
 			close.y=140;
@@ -121,5 +125,7 @@ package views.components
 			}
 			super.dispose();
 		}
+
+		public var bg:Image;
 	}
 }
