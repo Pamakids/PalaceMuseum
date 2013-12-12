@@ -111,7 +111,7 @@ package views.global.books.userCenter
 			]);
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;
 			_tabBar.gap=1;
-			_tabBar.x=43;
+			_tabBar.x=50;
 			_tabBar.y=15;
 			this.addChild(_tabBar);
 			_tabBar.addEventListener(Event.CHANGE, tabs_changeHandler);
@@ -319,7 +319,7 @@ package views.global.books.userCenter
 			else //pageDown
 				animation.setSoftPageTexture(textureL, textureR, targetL, targetR);
 			animation.start(pageUp);
-			SoundAssets.playSFX("centerflip");
+			SoundAssets.playSFX("centerflip", true);
 		}
 
 		private function playedAnimation():void

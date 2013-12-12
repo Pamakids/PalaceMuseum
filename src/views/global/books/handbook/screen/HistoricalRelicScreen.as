@@ -46,6 +46,7 @@ package views.global.books.handbook.screen
 		{
 			var image:Image = BooksManager.getImage("background_0");
 			this.addChild( image );
+			image.height += 6;
 		}
 		
 		private var load:Image;

@@ -27,6 +27,7 @@ package views.global.books.handbook.screen
 		{
 			var image:Image = BooksManager.getImage("background_1");
 			this.addChild( image );
+			image.height += 6;
 		}
 		
 		private var btn:ElasticButton;
