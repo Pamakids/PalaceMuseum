@@ -122,7 +122,12 @@ package views.global
 			if (index == -1)
 				BooksManager.showBooks(1, 0);
 			else
-				BooksManager.showBooks(1, 0, index);
+			{
+				if (index >= 5)
+					index=0;
+				else
+					BooksManager.showBooks(1, 0, index);
+			}
 		}
 
 		public static var parent:Sprite;
