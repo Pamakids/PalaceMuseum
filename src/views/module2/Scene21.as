@@ -171,15 +171,11 @@ package views.module2
 			LionMC.instance.say(chat2, 0, 50, 520, lionChat2, 20, .6);
 		}
 
-//		private function kingChat2():void
-//		{
-//			Prompt.showTXT(headHolder.x + 150, headHolder.y + 70, chat3, 20, lionChat2, this);
-//		}
-
 		private function lionChat2():void
 		{
-			TweenLite.delayedCall(1, function():void {
-				LionMC.instance.say(chat4, 0, 50, 520, getReady, 20, .6, true);
+			TweenLite.delayedCall(.5, function():void {
+				getReady();
+				LionMC.instance.say(chat4, 0, 50, 520, null, 20, .6, true);
 			});
 		}
 

@@ -369,35 +369,10 @@ package views.module1
 			sp.touchable=false;
 			if (sp.x == windowXPosArr[windowIndex])
 			{
-				SoundAssets.playSFX("opendoor");
 				crtWinSelected=true;
-				showAchievement(1);
-				okEff=new Sprite();
-				okEff.addChild(getImage("ok-effect"));
-				SPUtils.registSPCenter(okEff, 5);
-				okEff.x=sp.x;
-				okEff.y=sp.y;
-				fg.addChild(okEff);
-				okEff.alpha=0;
-				TweenLite.to(okEff, 2, {alpha: 1});
-				var tx:Number;
-				if (sp.x > width / 2)
-					tx=1024 - bg.width;
-				else
-					tx=0;
-
-				var dx:Number=(tx - fg.x) * 2;
-
-				TweenLite.to(bg, 2, {x: bg.x + dx / 5});
-				TweenLite.to(mg, 2, {x: mg.x + dx / 3});
-				TweenLite.to(fg, 2, {x: tx});
-
-				TweenLite.to(this, 2, {scaleX: 1.2, scaleY: 1.2, onComplete: function():void
-				{
-					TweenLite.to(king, 1, {alpha: 0});
-					TailBar.hide();
-					TweenLite.delayedCall(1.5, resetView);
-				}});
+				showAchievement(1, function():void {
+					endEff(sp)
+				});
 			}
 			else
 			{
@@ -408,6 +383,37 @@ package views.module1
 					showWindowHint(sp);
 				}});
 			}
+		}
+
+		private function endEff(sp:Sprite):void
+		{
+			SoundAssets.playSFX("opendoor");
+			okEff=new Sprite();
+			okEff.addChild(getImage("ok-effect"));
+			SPUtils.registSPCenter(okEff, 5);
+			okEff.x=sp.x;
+			okEff.y=sp.y;
+			fg.addChild(okEff);
+			okEff.alpha=0;
+			TweenLite.to(okEff, 2, {alpha: 1});
+			var tx:Number;
+			if (sp.x > width / 2)
+				tx=1024 - bg.width;
+			else
+				tx=0;
+
+			var dx:Number=(tx - fg.x) * 2;
+
+			TweenLite.to(bg, 2, {x: bg.x + dx / 5});
+			TweenLite.to(mg, 2, {x: mg.x + dx / 3});
+			TweenLite.to(fg, 2, {x: tx});
+
+			TweenLite.to(this, 2, {scaleX: 1.2, scaleY: 1.2, onComplete: function():void
+			{
+				TweenLite.to(king, 1, {alpha: 0});
+				TailBar.hide();
+				TweenLite.delayedCall(1.5, resetView);
+			}});
 		}
 
 		private function resetView():void

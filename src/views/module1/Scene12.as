@@ -125,6 +125,43 @@ package views.module1
 
 			boxHolder.addChild(box);
 			boxHolder.addChild(boxCover);
+
+			var hintSP:Sprite=new Sprite();
+			addChild(hintSP);
+			hintSP.x=700;
+			hintSP.y=550;
+			hintSP.scaleX=-1;
+
+			boxHint=getImage("clothhintarrow");
+			hintSP.addChild(boxHint);
+			boxHint.visible=false;
+			boxHint.alpha=0;
+
+			TweenLite.to(boxHint, 8.5, {alpha: 1, onComplete: function():void {
+				boxHint.visible=true;
+				addEventListener(Event.ENTER_FRAME, onHintMove);
+			}});
+		}
+
+		private function onHintMove(e:Event):void
+		{
+			if (!boxHint)
+				removeEventListener(Event.ENTER_FRAME, onHintMove);
+			else
+			{
+				if (boxHint.x > 30)
+				{
+					boxHint.x=30
+					boxHint.scaleX=boxHint.scaleY=1;
+				}
+				else if (boxHint.x < 0)
+				{
+					boxHint.x=0
+					boxHint.scaleX=boxHint.scaleY=.99;
+				}
+				boxHint.x+=boxHint.scaleX == 1 ? -1.5 : 1.5;
+				boxHint.y-=boxHint.scaleX == 1 ? -.3 : .3;
+			}
 		}
 
 		private var posArr:Array=[new Point(90, 560), new Point(530, 200), new Point(530, 610)];
@@ -188,6 +225,13 @@ package views.module1
 			var tc:Touch=e.getTouch(box, TouchPhase.ENDED);
 			if (tc)
 			{
+				if (boxHint)
+				{
+					removeEventListener(Event.ENTER_FRAME, onHintMove);
+					TweenLite.killTweensOf(boxHint);
+					boxHint.removeFromParent(true);
+					boxHint=null;
+				}
 				box.removeEventListener(TouchEvent.TOUCH, onClickBox);
 				var quiz:ClothPuzzle=new ClothPuzzle(assetManager);
 
@@ -253,7 +297,7 @@ package views.module1
 			}
 			else
 			{
-				var _index:int=Math.random() > .6 ? 1 : (Math.random() > .5 ? 2 : 3);
+				var _index:int=Math.random() > .6 ? 1 : (Math.random() > .5 ? 1 : 2);
 				playKing(_index);
 			}
 			showKnowledge(type, isWin);
@@ -457,6 +501,8 @@ package views.module1
 
 		private var kingDelay:TweenLite;
 //		private var lastTask:Boolean;
+
+		private var boxHint:Image;
 	}
 }
 
