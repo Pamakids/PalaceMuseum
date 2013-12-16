@@ -12,6 +12,8 @@ package views.module4
 
 	import controllers.SoundManager;
 
+	import sound.SoundAssets;
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -432,7 +434,7 @@ package views.module4
 			var dx:Number=r.x + (toleft ? -1 : 1) * (300 + Math.random() * 900);
 			var dy:Number=-100 - Math.random() * 200; //保证出屏幕
 			var delay:Number=3 + Math.random() * 3;
-			assetManager.playSound("bird", 0, 0, new SoundTransform(scale));
+			assetManager.playSound("bird", 0, 0, new SoundTransform(scale * SoundAssets.sfxVol));
 			TweenLite.to(bird, delay, {x: dx, y: dy, onComplete: function():void {
 				Starling.juggler.remove(bird);
 				bird.stop();
