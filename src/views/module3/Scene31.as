@@ -5,6 +5,7 @@ package views.module3
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.media.SoundTransform;
 
 	import feathers.core.PopUpManager;
 
@@ -110,7 +111,6 @@ package views.module3
 
 		private function onChiefPlayed(e:Event):void
 		{
-			trace(chef.width, chef.height)
 			chef.stop();
 			Prompt.showTXT(chefArea.x + chefArea.width - 50, chefArea.y + chefArea.height / 4, chef_hint, 20, function():void {
 				showAchievement(15);
@@ -132,7 +132,10 @@ package views.module3
 				if (hotarea.containsPoint(pt))
 					openBook()
 				else if (chefArea.containsPoint(pt) && chef.currentFrame == 0)
+				{
+					assetManager.playSound("chefclick", 0, 0, new SoundTransform(SoundAssets.sfxVol));
 					chef.play();
+				}
 				else if (area1.containsPoint(pt))
 					Prompt.showTXT(area1.x + area1.width / 2, area1.y + area1.height / 2, fish_hint, 20, null, null, 3)
 				else if (area2.containsPoint(pt))
