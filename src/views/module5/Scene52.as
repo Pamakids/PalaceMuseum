@@ -68,7 +68,7 @@ package views.module5
 			king.x=714;
 			king.y=768;
 			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void {
-				Prompt.showTXT(king.x + 20, king.y + 135, "从没见过这么神奇的戏台子，我得去后面仔细瞧瞧。", 20, lionSay, null, 3);
+				Prompt.showTXT(king.x + 20, king.y + 135, "从来没见过这么神奇的戏台子，我得仔细瞧瞧", 20, lionSay, null, 3);
 			}});
 		}
 

@@ -112,11 +112,14 @@ package views.module3
 		{
 			trace(chef.width, chef.height)
 			chef.stop();
-			showAchievement(15);
+			Prompt.showTXT(chefArea.x + chefArea.width - 50, chefArea.y + chefArea.height / 4, chef_hint, 20, function():void {
+				showAchievement(15);
+			})
 		}
 
-		private var fish_hint:String="皇帝的饭菜，用料讲究，营养丰富";
-		private var dish_hint:String="身为一国之君，当然要尝遍天下美食";
+		private var fish_hint:String="两只羊，五只鸡……皇帝每天的食材都是有分例的";
+		private var dish_hint:String="皇帝的饭菜，用料讲究，营养丰富";
+		private var chef_hint:String="被皇帝钦点的御厨拿手菜，可是莫大的荣耀。";
 		private var area1:Rectangle=new Rectangle(931, 179, 69, 102);
 		private var area2:Rectangle=new Rectangle(879, 311, 145, 185);
 

@@ -112,12 +112,11 @@ package views.components
 
 			if (bgAlign > 0)
 			{
-				if (bgAlign % 3 == 0)
+				if (bgAlign == 3)
 				{
-					//水平翻转
-					var flip:FlipImage=new FlipImage(bgImage.texture, true, false);
-					flip.location=1;
-					addChildAt(flip, 0);
+					addChildAt(bgImage, 0);
+					bgImage.x=bgImage.width;
+					bgImage.scaleX=-1
 				}
 				else
 				{

@@ -50,10 +50,10 @@ package views.module3
 		private var cardEnable:Boolean;
 
 		private var chatking1:String="哇！当皇帝真好，有这么多好吃的！";
-		private var chatking2:String="太慢了，我自己来！";
+		private var chatking2:String="吃个饭还要当心被人下毒啊……";
 
-		private var chatlion1:String="别急，试菜的公公还没用银牌试毒呢？";
-		private var chatlion2:String="翻翻请求接见的大臣递交的膳牌。 皇亲贵族用红头牌子，大臣用绿头牌子。"; //task
+		private var chatlion1:String="别急，每道菜要用银牌试毒呢？";
+		private var chatlion2:String="吃过饭就要开工喽，膳牌可不是菜单，上面写的是请求面见皇帝的大臣的名字，\n选择一下吧。"; //task
 		private var chatlion3:String="试毒要用银牌哟！";
 
 		public function Scene33(am:AssetManager=null)
