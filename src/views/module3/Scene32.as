@@ -17,7 +17,6 @@ package views.module3
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
-	import views.global.TopBar;
 	import views.module3.scene32.MenuGame;
 
 	/**
@@ -50,7 +49,7 @@ package views.module3
 
 			addCraw(new Point(463, 461));
 
-			LionMC.instance.say("皇帝吃的饭菜，名称很讲究，看你能否给菜名对号入座。", 0, 0, 0, function():void {
+			LionMC.instance.say("宫里的饭菜起名字时常常图个吉利，看你能否给这些吉祥菜名对号入座。", 0, 0, 0, function():void {
 				birdIndex=5;
 			}, 20, .6, true);
 		}
@@ -80,7 +79,7 @@ package views.module3
 		}
 
 		private var hint1:String="皇帝在哪里传膳，桌子就要搬到哪里去！";
-		private var hint2:String="八个热菜四个凉菜，赶紧端！";
+		private var hint2:String="赶紧端！";
 		private var inGame:Boolean;
 
 		private function playMenuGame():void

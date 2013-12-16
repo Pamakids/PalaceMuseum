@@ -97,12 +97,12 @@ package views.global.books.components
 			this.addChild( background );
 			viewWidth = background.width;
 			
-			label_0 = new TextField(246, 200, "", FontVo.PALACE_FONT, 20, 0x492115);
+			label_0 = new TextField(246, 220, "", FontVo.PALACE_FONT, 20, 0x492115);
 			this.addChild( label_0 );
 			label_0.x = (background.width - label_0.width >> 1) + 4;
-			label_0.y = 100;
+			label_0.y = 80;
 			label_0.hAlign = "left";
-			label_0.vAlign = "top";
+			label_0.vAlign = "center";
 			
 			label_1 = new TextField(300, 50, "", FontVo.PALACE_FONT, 30, 0x782c14);
 			this.addChild( label_1 );
