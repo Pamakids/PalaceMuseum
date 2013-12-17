@@ -3,7 +3,7 @@ package views
 	import com.greensock.TweenLite;
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.DPIUtil;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -19,11 +19,11 @@ package views
 	import flash.net.NetStream;
 	import flash.system.Capabilities;
 	import flash.utils.getTimer;
-
+	
 	import models.Const;
-
+	
 	import sound.SoundAssets;
-
+	
 	import starling.core.Starling;
 
 	/**
@@ -35,6 +35,9 @@ package views
 		[Embed(source="../assets/video/pass.png")]
 		private static const BtnSkin:Class;
 
+		[Embed(source="../assets/video/bg.png")]
+		private static const BG:Class;
+		
 		private var videoURL:String;
 		private var stream:NetStream;
 		private var stageVideo:StageVideo;
@@ -42,8 +45,6 @@ package views
 		private var connection:NetConnection;
 		private var button:Sprite;
 
-		private var viewWidth:int;
-		private var viewHeight:int;
 		private var startHandler:Function;
 		private var stopHandler:Function;
 		private var passable:Boolean
@@ -55,14 +56,12 @@ package views
 		 * @param onStart		视频开始时回调
 		 * @param onStop		视频结束时回调
 		 */
-		public function Interlude(videoURL:String, passable:Boolean=true, onStart:Function=null, onStop:Function=null, width:int=Const.WIDTH, height:int=Const.HEIGHT)
+		public function Interlude(videoURL:String, passable:Boolean=true, onStart:Function=null, onStop:Function=null)
 		{
 			this.videoURL=videoURL;
 			this.passable=passable;
 			this.startHandler=onStart;
 			this.stopHandler=onStop;
-			this.viewWidth=width;
-			this.viewHeight=height;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 
@@ -87,11 +86,18 @@ package views
 
 		private function initialize():void
 		{
+			initBG();
 			initShape();
 			initButton();
 			initConnection();
 		}
-
+		
+		private function initBG():void
+		{
+			var bg:Bitmap = new BG();
+			this.addChild( bg );
+		}
+		
 		private function initShape():void
 		{
 			shape=new Shape();
@@ -108,8 +114,8 @@ package views
 				const gap:int=20;
 				const bitmap:Bitmap=new BtnSkin();
 				button=new Sprite();
-				button.x=(viewWidth - bitmap.width - gap) * DPIUtil.getDPIScale();
-				button.y=(viewHeight - bitmap.height - gap) * DPIUtil.getDPIScale();
+				button.x=839 * DPIUtil.getDPIScale();
+				button.y=673 * DPIUtil.getDPIScale();
 				button.scaleX=button.scaleY=DPIUtil.getDPIScale();
 				button.addChild(bitmap);
 				this.addChild(button);
@@ -191,7 +197,7 @@ package views
 
 			stageVideo=stage.stageVideos[0];
 			stageVideo.attachNetStream(stream);
-			stageVideo.viewPort=new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+			stageVideo.viewPort=new Rectangle(123, 86, 704*DPIUtil.getDPIScale(), 528*DPIUtil.getDPIScale());
 			stream.play(videoURL);
 		}
 

@@ -26,7 +26,7 @@ package views.global.books.handbook.screen
 		/**
 		 * 手册总页数（左右为1页）
 		 */
-		public static const MAX_NUM:int=5;
+		public static const MAX_NUM:int=11;
 
 		public function HandbookScreen()
 		{
