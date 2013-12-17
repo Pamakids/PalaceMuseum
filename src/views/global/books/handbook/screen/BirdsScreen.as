@@ -22,7 +22,7 @@ package views.global.books.handbook.screen
 	 */	
 	public class BirdsScreen extends BaseScreen
 	{
-		public static const MAX_NUM:int=8;
+		public static const MAX_NUM:int=9;
 
 		public function BirdsScreen()
 		{
