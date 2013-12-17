@@ -92,9 +92,29 @@
 		"items":
 		[
 			{
+				"type":		"0",
+				"explain":	"皇帝怎么吃饭？",
+				"page":		"5"
+			},
+			{
+				"type":		"0",
+				"explain":	"皇帝的餐具",
+				"page":		"7"
+			},
+			{
+				"type":		"0",
+				"explain":	"猜猜哪个皇帝最爱吃火锅",
+				"page":		"8"
+			},
+			{
 				"type":		"2",
-				"explain":	"“抠门”的道光皇帝",
+				"explain":	"膳单",
 				"page":		"4"
+			},
+			{
+				"type":		"2",
+				"explain":	"千叟宴",
+				"page":		"8"
 			},
 			{
 				"type":		"2",
@@ -112,6 +132,16 @@
 		"name": "常朝",
 		"items":
 		[
+			{
+				"type":		"0",
+				"explain":	"御门听政",
+				"page":		"9"
+			},
+			{
+				"type":		"0",
+				"explain":	"皇帝具体是怎么工作的？",
+				"page":		"10"
+			},
 			{
 				"type":		"2",
 				"explain":	"大臣上朝敢迟到吗？",
