@@ -45,6 +45,12 @@ package views.components
 
 			this.addEventListener(TouchEvent.TOUCH, onTouch);
 			this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+
+			if (!SOService.instance.getSO("firstBird"))
+			{
+				SOService.instance.setSO("firstBird", true)
+				p=Prompt.showTXT(0, 0, "抓我、抓我", 20, null, this);
+			}
 		}
 
 		private var degree1:Number=Math.PI / 360
@@ -54,6 +60,11 @@ package views.components
 			count+=degree1 * 30;
 			bird.x+=speedX;
 			bird.y=Math.cos(count) * 50 + birdY;
+			if (p)
+			{
+				p.x=bird.x + 30;
+				p.y=bird.y + 30;
+			}
 			if (bird.y < -200)
 			{
 				this.removeEventListener(TouchEvent.TOUCH, onTouch);
@@ -80,6 +91,8 @@ package views.components
 		private function open():void
 		{
 			TweenMax.pauseAll();
+			if (p)
+				p.playHide();
 			SOService.instance.setSO("birdCatched" + crtIndex, true);
 
 			PopUpManager.addPopUp(this, true, false);
@@ -127,5 +140,7 @@ package views.components
 		}
 
 		public var bg:Image;
+
+		private var p:Prompt;
 	}
 }

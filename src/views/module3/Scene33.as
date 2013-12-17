@@ -33,8 +33,8 @@ package views.module3
 		private var game:DishGame;
 
 		private var chatArr:Array=["chatking1", "chatlion1", "chatking2", "chatlion3", "chatlion2"];
-		private var cardXArr:Array=[351, 448, 543, 621];
-		private var cardY:Number=511;
+		private var cardXArr:Array=[309, 435, 556, 650];
+		private var cardY:Number=504;
 
 		private var chatIndex:int;
 
@@ -153,7 +153,7 @@ package views.module3
 			addChild(foodHolder);
 			food=getImage("food");
 			food.x=304;
-			food.y=470;
+			food.y=450;
 			foodHolder.addChild(food);
 
 			pin=getImage("pin23");
@@ -173,13 +173,13 @@ package views.module3
 			kingHungry.loop=true;
 			kingHungry.play();
 			kingHungry.x=569;
-			kingHungry.y=28;
+			kingHungry.y=32;
 
 			kingHolder.touchable=false;
 			kingHolder.addEventListener(TouchEvent.TOUCH, onKingTouch);
 
 			var table:Image=getImage("table23");
-			table.y=483;
+			table.y=457;
 			addChild(table);
 		}
 
@@ -235,6 +235,7 @@ package views.module3
 				isT=true;
 				dx=180;
 				dy=590;
+				birdIndex=8;
 				if (SOService.instance.checkHintCount(silverCardClickHint))
 					addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			}

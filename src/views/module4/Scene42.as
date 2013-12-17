@@ -167,6 +167,7 @@ package views.module4
 		{
 			TopBar.hide();
 			TailBar.hide();
+			bg.touchable=false;
 			drawScene=new palace_paper(isTop ? topIndex : bottomIndex, callBack);
 			MC.instance.stage.addChild(drawScene);
 		}
@@ -220,6 +221,8 @@ package views.module4
 		{
 			count++;
 			TopBar.show();
+
+			bg.touchable=true;
 
 			if (count == 2)
 			{

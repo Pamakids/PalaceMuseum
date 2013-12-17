@@ -175,7 +175,7 @@ package views.components
 		 * @param _callBack
 		 * @param fontSize
 		 */
-		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20, maskA:Number=.6, isTask:Boolean=false):void
+		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20, maskA:Number=.6, isTask:Boolean=false, hideDelay:Number=3):void
 		{
 			SoundAssets.playSFX("lionshow");
 			maskA=Math.max(0, Math.min(.6, maskA));
@@ -218,7 +218,7 @@ package views.components
 										   callBack=null;
 									   }
 									   MC.instance.main.removeMask();
-								   }, MC.instance.main, 1, false, 3, isTask);
+								   }, MC.instance.main, 1, false, hideDelay, isTask);
 							   }});
 		}
 

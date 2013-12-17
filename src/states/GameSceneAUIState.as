@@ -43,7 +43,7 @@ package states
 			//TouchManager.getInstance().addEventListener(ATouchEvent.NEW_TOUCH, __onNewTouch)
 
 			//this.fusion.interactive = false
-			this.fusion.y=127
+			this.fusion.y=151
 
 		}
 
@@ -63,7 +63,7 @@ package states
 			{
 				img=new ImagePuppet
 				img.embed(ImgAssets.getBgRef(Config.SCENE_INDEX))
-				this.fusion.addElement(img, 0, 35)
+				this.fusion.addElement(img, 0, 10)
 			}
 
 			// tip...
@@ -113,10 +113,11 @@ package states
 					{
 						mPaper=new Paper
 						sprite.addChild(mPaper)
+						mPaper.height=586;
 					}
 				}
 
-				this.fusion.addElement(mBoard, 0, 35)
+				this.fusion.addElement(mBoard, 0, 15)
 			}
 		}
 

@@ -22,8 +22,20 @@ package assets
 		[Embed(source="data/buttons/btnE.png")]
 		public static const btnE:Class
 
-		[Embed(source="data/buttons/btnEffect.png")]
-		public static const btnEffect:Class
+		[Embed(source="data/buttons/btnAEffect.png")]
+		public static const btnAEffect:Class
+
+		[Embed(source="data/buttons/btnBEffect.png")]
+		public static const btnBEffect:Class
+
+		[Embed(source="data/buttons/btnCEffect.png")]
+		public static const btnCEffect:Class
+
+		[Embed(source="data/buttons/btnDEffect.png")]
+		public static const btnDEffect:Class
+
+		[Embed(source="data/buttons/btnEEffect.png")]
+		public static const btnEEffect:Class
 
 		[Embed(source="data/buttons/button_next_down.png")]
 		public static const btn_close:Class

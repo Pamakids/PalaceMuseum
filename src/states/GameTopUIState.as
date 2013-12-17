@@ -36,7 +36,11 @@ package states
 			var stats:Fusion
 			var img:ImagePuppet
 
-			AgonyUI.addImageButtonData(BtnAssets.btnEffect, "btnEffect", ImageButtonType.BUTTON_RELEASE)
+//			AgonyUI.addImageButtonData(BtnAssets.btnAEffect, "btnAEffect", ImageButtonType.BUTTON_RELEASE)
+//			AgonyUI.addImageButtonData(BtnAssets.btnBEffect, "btnBEffect", ImageButtonType.BUTTON_RELEASE)
+//			AgonyUI.addImageButtonData(BtnAssets.btnCEffect, "btnCEffect", ImageButtonType.BUTTON_RELEASE)
+//			AgonyUI.addImageButtonData(BtnAssets.btnDEffect, "btnDEffect", ImageButtonType.BUTTON_RELEASE)
+//			AgonyUI.addImageButtonData(BtnAssets.btnEEffect, "btnEEffect", ImageButtonType.BUTTON_RELEASE)
 
 			mPaper=DrawingManager.getInstance().paper
 
@@ -55,7 +59,7 @@ package states
 
 			// A
 			{
-				mBtnA=new ImageButton("btnEffect")
+				mBtnA=new ImageButton("btnAEffect")
 				this.fusion.addElement(mBtnA, 93, 64)
 				mBtnA.addEventListener(AEvent.CLICK, onTranslate)
 
@@ -70,7 +74,7 @@ package states
 
 			// B
 			{
-				mBtnB=new ImageButton("btnEffect")
+				mBtnB=new ImageButton("btnBEffect")
 				mBtnB.userData=1
 				this.fusion.addElement(mBtnB, 42, 0, LayoutType.B__A, LayoutType.BA)
 				mBtnB.addEventListener(AEvent.CLICK, onBrushStateChange)
@@ -86,7 +90,7 @@ package states
 
 			// C
 			{
-				mBtnC=new ImageButton("btnEffect")
+				mBtnC=new ImageButton("btnCEffect")
 				mBtnC.userData=2
 				this.fusion.addElement(mBtnC, 42, 0, LayoutType.B__A, LayoutType.BA)
 				mBtnC.addEventListener(AEvent.CLICK, onBrushStateChange)
@@ -101,7 +105,7 @@ package states
 
 			// tips...
 			{
-				imgBtn=new ImageButton("btnEffect")
+				imgBtn=new ImageButton("btnDEffect")
 				this.fusion.addElement(imgBtn, 42, 0, LayoutType.B__A, LayoutType.BA)
 				imgBtn.image.visible=false
 
@@ -119,7 +123,7 @@ package states
 
 			// complete
 			{
-				mFinishBtn=new ImageButton("btnEffect")
+				mFinishBtn=new ImageButton("btnEEffect")
 				this.fusion.addElement(mFinishBtn, 42, 0, LayoutType.B__A, LayoutType.BA)
 				mFinishBtn.image.visible=false
 				this.onPaperClear(null)

@@ -125,8 +125,7 @@ package views.global
 			{
 				if (index >= 5)
 					index=0;
-				else
-					BooksManager.showBooks(1, 0, index);
+				BooksManager.showBooks(1, 0, index);
 			}
 		}
 

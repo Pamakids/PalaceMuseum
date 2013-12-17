@@ -1,7 +1,6 @@
 package states
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.manager.SoundManager;
 
 	import Firefly.Paper;
 
@@ -26,8 +25,6 @@ package states
 
 	public class GameTopAUIState extends UIState
 	{
-
-
 		public static const TURN_TO_NEXT_TIP:String="turnToNextTip"
 
 		public static const TAKE_PHOTO:String="takePhoto"
@@ -43,7 +40,11 @@ package states
 			var stats:Fusion
 			var img:ImagePuppet
 
-			AgonyUI.addImageButtonData(BtnAssets.btnEffect, "btnEffect", ImageButtonType.BUTTON_RELEASE)
+			AgonyUI.addImageButtonData(BtnAssets.btnAEffect, "btnAEffect", ImageButtonType.BUTTON_RELEASE)
+			AgonyUI.addImageButtonData(BtnAssets.btnBEffect, "btnBEffect", ImageButtonType.BUTTON_RELEASE)
+			AgonyUI.addImageButtonData(BtnAssets.btnCEffect, "btnCEffect", ImageButtonType.BUTTON_RELEASE)
+			AgonyUI.addImageButtonData(BtnAssets.btnDEffect, "btnDEffect", ImageButtonType.BUTTON_RELEASE)
+			AgonyUI.addImageButtonData(BtnAssets.btnEEffect, "btnEEffect", ImageButtonType.BUTTON_RELEASE)
 
 			this.fusion.spaceWidth=AgonyUI.fusion.spaceWidth
 			this.fusion.spaceHeight=AgonyUI.fusion.spaceHeight
@@ -60,8 +61,8 @@ package states
 
 			// A
 			{
-				mBtnA=new ImageButton("btnEffect")
-				this.fusion.addElement(mBtnA, 93, 50)
+				mBtnA=new ImageButton("btnAEffect")
+				this.fusion.addElement(mBtnA, 0, 8)
 				mBtnA.addEventListener(AEvent.CLICK, onTranslate)
 
 				{
@@ -75,9 +76,9 @@ package states
 
 			// B
 			{
-				mBtnB=new ImageButton("btnEffect")
+				mBtnB=new ImageButton("btnBEffect")
 				mBtnB.userData=1
-				this.fusion.addElement(mBtnB, 42, 0, LayoutType.B__A, LayoutType.BA)
+				this.fusion.addElement(mBtnB, -20, 0, LayoutType.B__A, LayoutType.BA)
 				//mBtnB.addEventListener(AEvent.CLICK, onBrushStateChange)
 
 
@@ -91,9 +92,9 @@ package states
 
 			// C
 			{
-				mBtnC=new ImageButton("btnEffect")
+				mBtnC=new ImageButton("btnCEffect")
 				mBtnC.userData=2
-				this.fusion.addElement(mBtnC, 42, 0, LayoutType.B__A, LayoutType.BA)
+				this.fusion.addElement(mBtnC, -16, 0, LayoutType.B__A, LayoutType.BA)
 				mBtnC.addEventListener(AEvent.CLICK, onPaperClear)
 
 				{
@@ -106,8 +107,8 @@ package states
 
 			// tips...
 			{
-				imgBtn=new ImageButton("btnEffect")
-				this.fusion.addElement(imgBtn, 42, 0, LayoutType.B__A, LayoutType.BA)
+				imgBtn=new ImageButton("btnDEffect")
+				this.fusion.addElement(imgBtn, -3, 0, LayoutType.B__A, LayoutType.BA)
 				imgBtn.image.visible=false
 
 				{
@@ -124,8 +125,8 @@ package states
 
 			// complete
 			{
-				mFinishBtn=new ImageButton("btnEffect")
-				this.fusion.addElement(mFinishBtn, 42, 0, LayoutType.B__A, LayoutType.BA)
+				mFinishBtn=new ImageButton("btnEEffect")
+				this.fusion.addElement(mFinishBtn, -11, 0, LayoutType.B__A, LayoutType.BA)
 				mFinishBtn.image.visible=false
 //				this.onPaperClear(null)
 
@@ -193,7 +194,7 @@ package states
 			{
 				mTranslateImg=new ImagePuppet
 				mTranslateImg.embed(ImgAssets.getTranslateRef(Config.SCENE_INDEX), false)
-				AgonyUI.fusion.addElement(mTranslateImg, 0, 162)
+				AgonyUI.fusion.addElement(mTranslateImg, 0, 202)
 			}
 			else
 			{
