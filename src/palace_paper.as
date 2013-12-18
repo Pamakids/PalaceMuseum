@@ -18,6 +18,7 @@ package
 		public function palace_paper(index:int=0, onComplete:Function=null)
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage)
+			trace(index)
 			Config.SCENE_INDEX=index
 			Config.onComplete=onComplete
 		}

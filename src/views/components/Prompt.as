@@ -164,7 +164,16 @@ package views.components
 			var bg:String="hint-bg" + (isKnowledge ? "-k" : "") + bgSize;
 			bg=isTask ? "bg-task" : bg
 			var delay:int=hideDelay == 0 ? 0 : hideDelay + Math.max(bgSize.length / 2 - 1, 0);
-			return show(_x, _y, bg, _content, 1, delay, callBack, _parent, false, _size, bgAlign);
+			return show(_x, _y, bg, _content, 1, delay + getDelay(_content.length), callBack, _parent, false, _size, bgAlign);
+		}
+
+		private static function getDelay(length:int):Number
+		{
+			if (length < 10)
+				return .5;
+			else if (length > 25)
+				return 2.5
+			return 1.5;
 		}
 
 		private function initLable(content:String):TextField

@@ -3,7 +3,7 @@ package views
 	import com.greensock.TweenLite;
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.utils.DPIUtil;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -19,11 +19,11 @@ package views
 	import flash.net.NetStream;
 	import flash.system.Capabilities;
 	import flash.utils.getTimer;
-	
+
 	import models.Const;
-	
+
 	import sound.SoundAssets;
-	
+
 	import starling.core.Starling;
 
 	/**
@@ -37,7 +37,7 @@ package views
 
 		[Embed(source="../assets/video/bg.png")]
 		private static const BG:Class;
-		
+
 		private var videoURL:String;
 		private var stream:NetStream;
 		private var stageVideo:StageVideo;
@@ -63,6 +63,7 @@ package views
 			this.startHandler=onStart;
 			this.stopHandler=onStop;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAdded);
+			this.scaleX=this.scaleY=DPIUtil.getDPIScale();
 		}
 
 		private var shape:Shape;
@@ -91,14 +92,13 @@ package views
 			initButton();
 			initConnection();
 		}
-		
+
 		private function initBG():void
 		{
-			var bg:Bitmap = new BG();
-			this.addChild( bg );
-			bg.scaleX = bg.scaleY = DPIUtil.getDPIScale();
+			var bg:Bitmap=new BG();
+			this.addChild(bg);
 		}
-		
+
 		private function initShape():void
 		{
 			shape=new Shape();
@@ -115,9 +115,9 @@ package views
 				const gap:int=20;
 				const bitmap:Bitmap=new BtnSkin();
 				button=new Sprite();
-				button.x=839 * DPIUtil.getDPIScale();
-				button.y=673 * DPIUtil.getDPIScale();
-				button.scaleX=button.scaleY=DPIUtil.getDPIScale();
+				button.x=839
+				button.y=673
+//				button.scaleX=button.scaleY=DPIUtil.getDPIScale();
 				button.addChild(bitmap);
 				this.addChild(button);
 				button.visible=false;
@@ -198,7 +198,8 @@ package views
 
 			stageVideo=stage.stageVideos[0];
 			stageVideo.attachNetStream(stream);
-			stageVideo.viewPort=new Rectangle(123, 86, 704*DPIUtil.getDPIScale(), 528*DPIUtil.getDPIScale());
+			var sc:Number=DPIUtil.getDPIScale();
+			stageVideo.viewPort=new Rectangle(123 * sc, 86 * sc, 704 * sc, 528 * sc);
 			stream.play(videoURL);
 		}
 

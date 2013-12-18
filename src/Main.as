@@ -24,7 +24,6 @@ package
 	import views.Interlude;
 	import views.components.PalaceGuide;
 	import views.components.base.Container;
-	import views.components.base.PalaceModule;
 	import views.global.books.BooksManager;
 	import views.global.map.Map;
 
@@ -32,9 +31,12 @@ package
 	{
 		public function Main()
 		{
-//			SOService.instance.clear();
-//			SOService.instance.init();
-//			SOService.instance.setSO("lastScene", "31");
+			if (Capabilities.isDebugger)
+			{
+//				SOService.instance.clear();
+//				SOService.instance.init();
+//				SOService.instance.setSO("lastScene", "42");
+			}
 			super(Const.WIDTH, Const.HEIGHT);
 			scaleX=scaleY=scale;
 			MC.instance.init(this);
@@ -90,7 +92,7 @@ package
 			onStart(null);
 		}
 
-		[Embed(source="/assets/start/title.png")]
+		[Embed(source="/assets/start/title.jpg")]
 		public static var Title:Class
 
 //		[Embed(source="/assets/start/sb1.png")]
@@ -102,9 +104,9 @@ package
 		public function showStart():void
 		{
 			startHolder=new Sprite();
-			startHolder.addChild(Image.fromBitmap(new PalaceModule.gameBG()));
+//			startHolder.addChild(Image.fromBitmap(new PalaceModule.gameBG()));
 			var title:Image=Image.fromBitmap(new Title());
-			title.x=171;
+//			title.x=171;
 			startHolder.addChild(title);
 			addChild(startHolder);
 //			var startBtn:ElasticButton=new ElasticButton(Image.fromBitmap(new StartBtn()));

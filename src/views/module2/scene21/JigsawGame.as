@@ -65,7 +65,7 @@ package views.module2.scene21
 
 		private function onStartTouch(e:Event):void
 		{
-			startBtn.addEventListener(TouchEvent.TOUCH, onStartTouch);
+			startBtn.removeEventListener(TouchEvent.TOUCH, onStartTouch);
 			startSP.touchable=false;
 			TweenLite.delayedCall(1, function():void {
 				TweenLite.to(startSP, 1, {y: -768,

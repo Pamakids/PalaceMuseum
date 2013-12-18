@@ -134,12 +134,14 @@ package views.module4
 			}
 
 			var index2:int=Math.random() * indexArr.length;
-			topIndex=indexArr[index];
-			indexArr.splice(index, 1);
+			topIndex=indexArr[index2];
+			indexArr.splice(index2, 1);
 			memorialTop=getImage("memorial" + (topIndex + 1).toString());
 			memorialHolder.addChild(memorialTop);
 			memorialTop.x=-9 * gap;
 			memorialTop.y=-9 * gap;
+
+			trace(bottomIndex, topIndex)
 
 			memorialHolder.x=posX;
 			memorialHolder.y=outPosY;
@@ -159,7 +161,7 @@ package views.module4
 			if (tc)
 			{
 				memorialTop.removeEventListener(TouchEvent.TOUCH, onTopMemorialTouch);
-				initDraw(topIndex);
+				initDraw(true);
 			}
 		}
 
@@ -167,6 +169,7 @@ package views.module4
 		{
 			TopBar.hide();
 			TailBar.hide();
+			bg.touchable=false;
 			drawScene=new palace_paper(isTop ? topIndex : bottomIndex, callBack);
 			MC.instance.stage.addChild(drawScene);
 		}
@@ -220,6 +223,8 @@ package views.module4
 		{
 			count++;
 			TopBar.show();
+
+			bg.touchable=true;
 
 			if (count == 2)
 			{
@@ -279,7 +284,7 @@ package views.module4
 			if (!tc)
 				return;
 			memorialBottom.removeEventListener(TouchEvent.TOUCH, onBottonMemorialTouch);
-			initDraw(bottomIndex);
+			initDraw(false);
 		}
 
 		private function onNo():void

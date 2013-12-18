@@ -699,6 +699,10 @@ package views.module3.scene33
 				scoreTF.hAlign="right";
 				endSP.addChild(scoreTF);
 
+				TweenLite.delayedCall(.2, function():void {
+					scoreTF.text=scoreTXT;
+				})
+
 				var recordTF:TextField=new TextField(100, 40, recordTXT);
 				recordTF.fontSize=24;
 				recordTF.color=0xb83d00;
