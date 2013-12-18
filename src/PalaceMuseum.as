@@ -23,6 +23,8 @@ package
 			this.scaleX=this.scaleY=DPIUtil.getDPIScale();
 			UserBehaviorAnalysis.init();
 
+			UserBehaviorAnalysis.trackView("OPENAPP");
+
 			TweenPlugin.activate([ShakeEffect]);
 			TweenPlugin.activate([MotionBlurPlugin]);
 

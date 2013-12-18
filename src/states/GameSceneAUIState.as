@@ -62,6 +62,7 @@ package states
 			// bgA
 			{
 				img=new ImagePuppet
+				trace(Config.SCENE_INDEX)
 				img.embed(ImgAssets.getBgRef(Config.SCENE_INDEX))
 				this.fusion.addElement(img, 0, 10)
 			}

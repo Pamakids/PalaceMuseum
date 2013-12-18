@@ -81,7 +81,7 @@ package views.module3
 		private function lionSay():void
 		{
 			LionMC.instance.say("皇帝怎么能进御膳房呢！", 2, 0, 0, function():void {
-				addEventListener(TouchEvent.TOUCH, onTouch);
+				bg.addEventListener(TouchEvent.TOUCH, onTouch);
 			});
 		}
 
@@ -95,6 +95,7 @@ package views.module3
 			chef.y=62;
 			chef.stop();
 			addChild(chef);
+			chef.touchable=false;
 		}
 
 		override public function dispose():void
@@ -125,7 +126,7 @@ package views.module3
 
 		private function onTouch(e:TouchEvent):void
 		{
-			var tc:Touch=e.getTouch(this, TouchPhase.ENDED);
+			var tc:Touch=e.getTouch(bg, TouchPhase.ENDED);
 			if (tc)
 			{
 				var pt:Point=tc.getLocation(this);

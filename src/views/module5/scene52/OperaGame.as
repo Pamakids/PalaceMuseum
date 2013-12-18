@@ -157,6 +157,7 @@ package views.module5.scene52
 
 		private function onStartClick(e:Event):void
 		{
+			startHolder.touchable=false;
 			if (!fromCenter)
 			{
 				if (onOperaSwitch != null)
@@ -620,7 +621,7 @@ package views.module5.scene52
 					recordTXT=operagameresult.toString();
 				}
 
-				var scoreTF:TextField=new TextField(220, 100, scoreTXT);
+				var scoreTF:TextField=new TextField(200, 100, scoreTXT);
 				scoreTF.fontSize=48;
 				scoreTF.color=0xb83d00;
 				scoreTF.x=470;
@@ -628,6 +629,9 @@ package views.module5.scene52
 				scoreTF.vAlign="top";
 				scoreTF.hAlign="right";
 				endHolder.addChild(scoreTF);
+				TweenLite.delayedCall(.2, function():void {
+					scoreTF.text=scoreTXT;
+				})
 
 				var recordTF:TextField=new TextField(100, 40, recordTXT);
 				recordTF.fontSize=24;

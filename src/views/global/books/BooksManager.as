@@ -75,6 +75,7 @@ package views.global.books
 				if (!_userCenter)
 				{
 					TweenMax.pauseAll();
+					LionMC.instance.playHide();
 					_userCenter=new UserCenter();
 				}
 				_userCenter.turnTo(_screen, _page, _closeable, _mapVisible);
