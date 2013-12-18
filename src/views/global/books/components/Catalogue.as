@@ -129,7 +129,7 @@ package views.global.books.components
 					if(MC.needGuide)
 					{
 						MC.instance.addGuide(3, function():void{
-							dispatchEventWith(Event.CHANGE, false, [0, 2]);
+							dispatchEventWith(Event.CHANGE, false, [1, 0]);
 						});
 					}
 				}});
