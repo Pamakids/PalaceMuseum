@@ -9,6 +9,8 @@ package views.module4
 
 	import feathers.core.PopUpManager;
 
+	import models.PosVO;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;

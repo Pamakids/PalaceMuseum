@@ -402,7 +402,7 @@ package views.module2
 
 			var pr:Sprite=book.parent as Sprite;
 			var pt:Point=new Point(book.x + book.width / 2, book.y + book.height / 2);
-			var gpt:Point=pr.localToGlobal(pt);
+			var gpt:Point=this.globalToLocal(pr.localToGlobal(pt));
 			var align:int=1;
 			if (checkAlign(book))
 				align=3;
@@ -421,8 +421,8 @@ package views.module2
 				playKing(int(Math.random() * expArr.length))
 				if (p)
 					p.playHide();
-				var dx:Number=gpt.x / DPIUtil.getDPIScale();
-				var dy:Number=gpt.y / DPIUtil.getDPIScale();
+				var dx:Number=gpt.x;
+				var dy:Number=gpt.y;
 				dy=dy < 150 ? 150 : dy;
 				p=Prompt.showTXT(dx, dy, book.bookname, 20, null, this, align, true)
 			}

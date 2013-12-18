@@ -9,6 +9,8 @@
 	import flash.display.Sprite;
 	import flash.filters.BlurFilter;
 
+	import models.PosVO;
+
 	import org.agony2d.Agony;
 	import org.agony2d.input.ATouchEvent;
 	import org.agony2d.input.Touch;
@@ -61,7 +63,8 @@
 //			addEventListener(MouseEvent.MOUSE_DOWN, _mouseDown);
 //			addEventListener(MouseEvent.MOUSE_UP, _mouseUp);
 			TouchManager.getInstance().addEventListener(ATouchEvent.NEW_TOUCH, _mouseDown, 1000000)
-			bmd=new BitmapData(1024 * DPIUtil.getDPIScale(), 508 * DPIUtil.getDPIScale(), true, 0x0);
+			var sc:Number=PosVO.scale;
+			bmd=new BitmapData(1024 * sc, 508 * sc, true, 0x0);
 			bm=new Bitmap(bmd);
 			addChild(bm);
 

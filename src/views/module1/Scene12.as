@@ -46,7 +46,6 @@ package views.module1
 
 		private var boxCover:Sprite;
 		private var _opened:Boolean;
-		private var scale:Number=DPIUtil.getDPIScale();
 
 		public function get opened():Boolean
 		{

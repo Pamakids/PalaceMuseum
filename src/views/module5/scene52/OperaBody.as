@@ -170,7 +170,7 @@ package views.module5.scene52
 
 			var pt:Point=tc.getLocation(stage);
 
-			var dx:Number=pt.x / DPIUtil.getDPIScale() - stagePt.x
+			var dx:Number=this.parent.globalToLocal(pt).x - stagePt.x
 			var maxDX:Number=Math.min(Math.abs(dx), stagePt.y / 2);
 			var dy:Number=stagePt.y * stagePt.y - maxDX * maxDX;
 			var _rot:Number=Math.atan2(maxDX, stagePt.y);

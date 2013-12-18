@@ -13,6 +13,7 @@ package states
 	import assets.ImgAssets;
 
 	import models.Config;
+	import models.PosVO;
 
 	import org.agony2d.Agony;
 	import org.agony2d.notify.AEvent;
@@ -43,7 +44,11 @@ package states
 			//TouchManager.getInstance().addEventListener(ATouchEvent.NEW_TOUCH, __onNewTouch)
 
 			//this.fusion.interactive = false
-			this.fusion.y=151
+//			this.fusion.y=151
+
+			fusion.scaleX=fusion.scaleY=PosVO.scale;
+			fusion.x=PosVO.OffsetX;
+			fusion.y=151 + PosVO.OffsetY;
 
 		}
 
@@ -114,6 +119,7 @@ package states
 					{
 						mPaper=new Paper
 						sprite.addChild(mPaper)
+						mPaper.width=1030;
 						mPaper.height=586;
 					}
 				}
@@ -175,7 +181,7 @@ package states
 		private var mTipRefList:Array
 		private var mPhoto:ImagePuppet
 
-
+		private var clickAble:Boolean=true;
 
 		private function onTurnToNextTip(e:AEvent):void
 		{
@@ -193,20 +199,30 @@ package states
 
 		private function onTakePhoto(e:AEvent):void
 		{
+			if (!clickAble)
+				return;
 			var roll:CameraRoll
 			var BA:BitmapData
+
+			if (mPhoto)
+			{
+				TweenLite.killTweensOf(mPhoto)
+				mPhoto.kill()
+				mPhoto=null
+			}
 
 			BA=new BitmapData(this.fusion.spaceWidth, this.fusion.spaceHeight, true, 0x0)
 			BA.draw(this.fusion.displayObject)
 			{
+				clickAble=false;
 				mPhoto=new ImagePuppet(5)
 				mPhoto.bitmapData=BA
 				mPhoto.scaleX=1
 				mPhoto.scaleY=1
-				AgonyUI.fusion.addElement(mPhoto, AgonyUI.fusion.spaceWidth / 2, AgonyUI.fusion.spaceHeight / 2 - 100)
-				TweenLite.to(mPhoto, 1.6, {scaleX: 0.8, scaleY: 0.8, ease: Cubic.easeOut, onComplete: function():void {
-					TweenLite.to(mPhoto, 0.7, {alpha: 0.4, onComplete: function():void {
-
+				this.fusion.addElement(mPhoto, AgonyUI.fusion.spaceWidth / 2, AgonyUI.fusion.spaceHeight / 2 - 100)
+				TweenLite.to(mPhoto, 1, {scaleX: 0.8, scaleY: 0.8, ease: Cubic.easeOut, onComplete: function():void {
+					TweenLite.to(mPhoto, 0.5, {alpha: 0, onComplete: function():void {
+						clickAble=true;
 						mPhoto.kill()
 						mPhoto=null
 					}})

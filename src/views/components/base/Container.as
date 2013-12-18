@@ -10,14 +10,11 @@ package views.components.base
 
 	public class Container extends Sprite
 	{
-		protected var scale:Number;
-
 		public function Container(width:Number=0, height:Number=0)
 		{
 			super();
 			this.width=width;
 			this.height=height;
-			scale=DPIUtil.getDPIScale();
 			addEventListener(Event.ADDED_TO_STAGE, onStage);
 		}
 

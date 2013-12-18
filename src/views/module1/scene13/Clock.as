@@ -102,7 +102,7 @@ package views.module1.scene13
 
 		private function onTouch(e:TouchEvent):void
 		{
-			var tc:Touch=e.getTouch(stage);
+			var tc:Touch=e.getTouch(this);
 			if (!tc || ended)
 				return;
 			var pt:Point=tc.getLocation(this);

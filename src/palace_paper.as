@@ -7,6 +7,7 @@ package
 
 	import models.Config;
 	import models.DrawingManager;
+	import models.PosVO;
 	import models.StateManager;
 
 	import org.agony2d.Agony;
@@ -41,7 +42,6 @@ package
 		private function doInitAgony2d():void
 		{
 			Agony.startup(stage, 1024, 768, "medium")
-
 		}
 
 		private function doInitAgonyUI():void
