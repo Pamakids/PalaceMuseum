@@ -1,8 +1,6 @@
 package views
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.manager.SoundManager;
-	import com.pamakids.utils.DPIUtil;
 
 	import flash.display.Bitmap;
 	import flash.display.Shape;
@@ -20,7 +18,7 @@ package views
 	import flash.system.Capabilities;
 	import flash.utils.getTimer;
 
-	import models.Const;
+	import models.PosVO;
 
 	import sound.SoundAssets;
 
@@ -63,7 +61,11 @@ package views
 			this.startHandler=onStart;
 			this.stopHandler=onStop;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAdded);
-			this.scaleX=this.scaleY=DPIUtil.getDPIScale();
+//			this.scaleX=this.scaleY=DPIUtil.getDPIScale();
+
+			this.scaleX=this.scaleY=PosVO.scale;
+			this.x=PosVO.OffsetX;
+			this.y=PosVO.OffsetY;
 		}
 
 		private var shape:Shape;
@@ -198,8 +200,10 @@ package views
 
 			stageVideo=stage.stageVideos[0];
 			stageVideo.attachNetStream(stream);
-			var sc:Number=DPIUtil.getDPIScale();
-			stageVideo.viewPort=new Rectangle(123 * sc, 86 * sc, 704 * sc, 528 * sc);
+//			var sc:Number=DPIUtil.getDPIScale();
+			var sc:Number=PosVO.scale;
+//			this.scaleX=this.scaleY=PosVO.scale;
+			stageVideo.viewPort=new Rectangle(123 * sc + PosVO.OffsetX, 86 * sc + PosVO.OffsetY, 704 * sc, 528 * sc);
 			stream.play(videoURL);
 		}
 

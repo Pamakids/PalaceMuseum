@@ -38,8 +38,6 @@ package views.module1.scene12
 		private var currentPositionDic:Dictionary;
 		private var correctPositionDic:Dictionary;
 
-		private var scale:Number=DPIUtil.getDPIScale();
-
 		override public function dispose():void
 		{
 			am=null;
@@ -294,20 +292,21 @@ package views.module1.scene12
 		{
 			if (ready)
 			{
-				var touch:Touch=event.getTouch(stage);
+				var touch:Touch=event.getTouch(this);
 				if (!touch)
 					return;
 				var p:Point;
+				var pt:Point=touch.getLocation(this);
 				if (touch.phase == TouchPhase.BEGAN)
 				{
-					checkPointInRect(new Point(touch.globalX / scale, touch.globalY / scale), true);
+					checkPointInRect(pt, true);
 					if (dragingCloth)
 					{
 						if (correctCircleDic[dragingCloth].alpha > 0)
 							dragingCloth=null;
 						else
 						{
-							downPoint=new Point(touch.globalX / scale, touch.globalY / scale);
+							downPoint=pt;
 							setChildIndex(dragingCloth, numChildren - 1);
 						}
 					}
@@ -317,14 +316,14 @@ package views.module1.scene12
 					if (dragingCloth)
 					{
 						p=currentPositionDic[dragingCloth];
-						dragingCloth.x=p.x + (touch.globalX / scale - downPoint.x) + itemWidth / 2;
-						dragingCloth.y=p.y + (touch.globalY / scale - downPoint.y) + itemHeight / 2;
+						dragingCloth.x=p.x + (pt.x - downPoint.x) + itemWidth / 2;
+						dragingCloth.y=p.y + (pt.y - downPoint.y) + itemHeight / 2;
 					}
 				}
 				else if (touch.phase == TouchPhase.ENDED)
 				{
 					if (dragingCloth)
-						checkPointInRect(new Point(touch.globalX / scale, touch.globalY / scale));
+						checkPointInRect(pt);
 				}
 			}
 		}

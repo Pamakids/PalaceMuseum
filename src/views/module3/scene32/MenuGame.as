@@ -4,8 +4,6 @@ package views.module3.scene32
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Quad;
-	import com.pamakids.manager.SoundManager;
-	import com.pamakids.utils.DPIUtil;
 
 	import flash.events.AccelerometerEvent;
 	import flash.events.TimerEvent;
@@ -54,8 +52,6 @@ package views.module3.scene32
 		private var dx:Number;
 		private var dy:Number;
 
-		private var scale:Number;
-
 		private var space:Space;
 
 		private var originalMenuArr:Array=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
@@ -74,7 +70,6 @@ package views.module3.scene32
 		{
 			super(am);
 
-			scale=DPIUtil.getDPIScale();
 			addBG();
 
 			addClose();
@@ -356,7 +351,7 @@ package views.module3.scene32
 
 		private function onTouch(e:TouchEvent):void
 		{
-			var tc:Touch=e.getTouch(stage);
+			var tc:Touch=e.getTouch(this);
 			if (!tc)
 				return;
 

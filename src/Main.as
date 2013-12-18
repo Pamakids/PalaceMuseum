@@ -1,6 +1,9 @@
 package
 {
+	import com.pamakids.utils.DPIUtil;
+
 	import flash.filesystem.File;
+	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 
 	import controllers.MC;
@@ -10,6 +13,7 @@ package
 
 	import models.Const;
 	import models.FontVo;
+	import models.PosVO;
 	import models.SOService;
 
 	import sound.SoundAssets;
@@ -38,7 +42,15 @@ package
 //				SOService.instance.setSO("lastScene", "42");
 			}
 			super(Const.WIDTH, Const.HEIGHT);
-			scaleX=scaleY=scale;
+
+			this.clipRect=new Rectangle(0, 0, 1024, 768);
+
+//			var scale:Number=DPIUtil.getDPIScale();
+//			scaleX=scaleY=scale;
+			this.scaleX=this.scaleY=PosVO.scale;
+			this.x=PosVO.OffsetX;
+			this.y=PosVO.OffsetY;
+
 			MC.instance.init(this);
 			SoundAssets.init();
 			//以免第一次初始化提示的时候卡顿

@@ -117,7 +117,7 @@ package views.module1.scene13
 			if (inited)
 				return;
 			inited=true;
-			scale=DPIUtil.getDPIScale();
+//			scale=DPIUtil.getDPIScale();
 			addEventListener(TouchEvent.TOUCH, onTouch);
 
 			areaSize=size - 1;
@@ -163,8 +163,7 @@ package views.module1.scene13
 			{
 				var startIndex:int=int(i / areaSize) * size + i % areaSize;
 				var block:Block=blockArr[startIndex];
-				var pt:Point=blockHolder.localToGlobal(new Point(block.x, block.y));
-				var rect:Rectangle=new Rectangle(pt.x / scale - Block.GAP / 2, pt.y / scale - Block.GAP / 2, Block.GAP * 2, Block.GAP * 2);
+				var rect:Rectangle=new Rectangle(block.x - Block.GAP / 2, block.y - Block.GAP / 2, Block.GAP * 2, Block.GAP * 2);
 				twisterAreaArr[i]=rect;
 			}
 		}
@@ -190,8 +189,8 @@ package views.module1.scene13
 
 				if (!downPointA)
 				{
-					var pa:Point=touchA.getLocation(stage);
-					var pb:Point=touchB.getLocation(stage);
+					var pa:Point=touchA.getLocation(this);
+					var pb:Point=touchB.getLocation(this);
 					if (checkTwisterArea(pa, pb))
 					{
 						downPointA=pa;
@@ -335,8 +334,8 @@ package views.module1.scene13
 			for (var i:int=0; i < twisterAreaArr.length; i++)
 			{
 				var rect:Rectangle=twisterAreaArr[i];
-				var pa:Point=new Point(_pa.x / scale, _pa.y / scale);
-				var pb:Point=new Point(_pb.x / scale, _pb.y / scale);
+				var pa:Point=new Point(_pa.x, _pa.y);
+				var pb:Point=new Point(_pb.x, _pb.y);
 
 				if (rect.containsPoint(pa) && rect.containsPoint(pb))
 				{
@@ -364,7 +363,7 @@ package views.module1.scene13
 		private var readyToGo:Boolean;
 		private var startIndex:int;
 		public var isOver:Boolean;
-		private var scale:Number;
+//		private var scale:Number;
 
 		private var shape:Shape;
 

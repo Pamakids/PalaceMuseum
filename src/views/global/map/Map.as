@@ -502,24 +502,24 @@ package views.global.map
 
 		private function touchHandler(e:TouchEvent):void
 		{
-			var t:Touch=e.getTouch(stage);
+			var t:Touch=e.getTouch(this);
 			var item:Object;
 			if (!t)
 				return;
-			var p:Point=new Point(t.globalX, t.globalY);
+			var p:Point=t.getLocation(this);
 			var toy:Number;
 			switch (t.phase)
 			{
 				case TouchPhase.BEGAN:
 					TweenLite.killTweensOf(flipAnimation);
-					downPoint=new Point(t.globalX, t.globalY);
+					downPoint=p;
 					downY=flipAnimation.y;
 					break;
 				case TouchPhase.MOVED:
 					if (!downPoint)
 						return;
 					toy=p.y - downPoint.y;
-					var yv:Number=downY + toy / scale;
+					var yv:Number=downY + toy;
 					if (yv > 0)
 						yv=0;
 					else if (yv < height - flipAnimation.height)
@@ -529,13 +529,13 @@ package views.global.map
 				case TouchPhase.ENDED:
 					if (!downPoint)
 						return;
-					var upPoint:Point=new Point(t.globalX, t.globalY);
-					var distance:Number=Point.distance(downPoint, upPoint) / scale;
+					var upPoint:Point=p;
+					var distance:Number=Point.distance(downPoint, upPoint);
 					if (distance < 10)
 					{
 						if (changing)
 							return;
-						upPoint=flipAnimation.globalToLocal(upPoint);
+						upPoint=flipAnimation.globalToLocal(this.localToGlobal(upPoint));
 //						trace('up point:', upPoint);
 						for (var i:int; i < hotspots.length; i++)
 						{

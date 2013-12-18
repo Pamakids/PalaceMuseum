@@ -8,6 +8,7 @@ package states
 	import assets.ImgAssets;
 
 	import models.Config;
+	import models.PosVO;
 	import models.StateManager;
 
 	import org.agony2d.Agony;
@@ -48,6 +49,10 @@ package states
 
 			this.fusion.spaceWidth=AgonyUI.fusion.spaceWidth
 			this.fusion.spaceHeight=AgonyUI.fusion.spaceHeight
+
+			fusion.scaleX=fusion.scaleY=PosVO.scale;
+			fusion.x=PosVO.OffsetX;
+			fusion.y=PosVO.OffsetY;
 
 			// bgAAA
 			{

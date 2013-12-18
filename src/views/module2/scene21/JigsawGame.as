@@ -45,7 +45,6 @@ package views.module2.scene21
 		{
 			super(am);
 
-			scale=DPIUtil.getDPIScale();
 			addBG();
 
 			addClose();

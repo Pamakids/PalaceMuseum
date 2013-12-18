@@ -2,7 +2,6 @@ package views.module3
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Bounce;
-	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -26,9 +25,6 @@ package views.module3
 	 */
 	public class Scene32 extends PalaceScene
 	{
-
-		private var scale:Number;
-
 		private var areaArr:Vector.<Rectangle>=new Vector.<Rectangle>();
 
 		private var game:MenuGame;
@@ -37,7 +33,6 @@ package views.module3
 		{
 			super(am);
 			crtKnowledgeIndex=8;
-			scale=DPIUtil.getDPIScale();
 
 			addBG("bg-22");
 
