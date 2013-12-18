@@ -96,6 +96,7 @@ package views
 		{
 			var bg:Bitmap = new BG();
 			this.addChild( bg );
+			bg.scaleX = bg.scaleY = DPIUtil.getDPIScale();
 		}
 		
 		private function initShape():void
