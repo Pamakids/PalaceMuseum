@@ -8,6 +8,7 @@ package views.global.books.userCenter.screen
 	import controllers.DC;
 
 	import models.FontVo;
+	import models.PosVO;
 
 	import starling.display.Image;
 	import starling.display.Quad;
@@ -133,7 +134,6 @@ package views.global.books.userCenter.screen
 			if (!image)
 			{
 				var point:Point=globalToLocal(new Point());
-
 				container=new Sprite();
 				this.addChild(container);
 				container.x=point.x;

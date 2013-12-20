@@ -76,7 +76,7 @@ package views.components
 			x=_x < 512 ? (-175 - mcWidth * 2) : (1124 + mcWidth);
 			y=_y;
 			MC.instance.main.addMask();
-			tl=TweenMax.to(this, .8, {x: _x, y: _y, motionBlur: true, onComplete: function():void
+			tl=TweenMax.to(this, .8, {x: _x, y: _y, motionBlur: MC.isIOS, onComplete: function():void
 			{
 				lion.gotoAndPlay(1);
 				var compFunc:Function=function(e:Event):void {
@@ -204,7 +204,7 @@ package views.components
 			}
 
 			MC.instance.main.addMask(maskA);
-			tl=TweenMax.to(this, .8, {x: _x, y: _y, motionBlur: true, ease: Quad.easeIn,
+			tl=TweenMax.to(this, .8, {x: _x, y: _y, motionBlur: MC.isIOS, ease: Quad.easeIn,
 							   onComplete: function():void
 							   {
 								   addEventListener(MouseEvent.CLICK, onClick);

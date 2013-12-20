@@ -154,10 +154,14 @@ package views.global.books
 
 		private static var _loadImage:Object;
 
+		private static var _loadBG:Image;
+
 		private static function initLoadImage():void
 		{
 			if (!MC.instance.currentModule && (!Map.map || !Map.map.visible))
 			{
+				_loadBG=Image.fromBitmap(new PalaceModule.gameBG());
+				MC.instance.main.addChildAt(_loadBG, 0);
 				_loadImage=new LoadingMC();
 				MC.instance.addMC(_loadImage as MovieClip);
 				_loadImage.x=1024 - 172;
@@ -219,6 +223,12 @@ package views.global.books
 			{
 				_loadImage.removeFromParent(true);
 				_loadImage=null;
+			}
+
+			if (_loadBG)
+			{
+				_loadBG.removeFromParent(true);
+				_loadBG=null;
 			}
 		}
 
