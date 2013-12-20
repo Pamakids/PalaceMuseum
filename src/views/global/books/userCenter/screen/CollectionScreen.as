@@ -8,6 +8,7 @@ package views.global.books.userCenter.screen
 	import controllers.DC;
 
 	import models.CollectionVO;
+	import models.PosVO;
 
 	import starling.display.Image;
 	import starling.display.Quad;
@@ -17,9 +18,9 @@ package views.global.books.userCenter.screen
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 
-	import views.global.books.events.BookEvent;
 	import views.global.books.BooksManager;
 	import views.global.books.components.CollectionShow;
+	import views.global.books.events.BookEvent;
 
 	public class CollectionScreen extends BaseScreen
 	{

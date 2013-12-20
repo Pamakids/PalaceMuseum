@@ -1,16 +1,16 @@
 package views.global.books.handbook.screen
 {
 	import feathers.core.PopUpManager;
-	
+
 	import models.FontVo;
 	import models.SOService;
-	
+
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.base.PalaceModule;
 	import views.global.books.BooksManager;
 	import views.global.books.events.BookEvent;
@@ -42,12 +42,12 @@ package views.global.books.handbook.screen
 			initLoad();
 			dispatchEventWith(BookEvent.Initialized);
 		}
-		
+
 		override protected function initPages():void
 		{
-			var image:Image = BooksManager.getImage("background_0");
-			this.addChild( image );
-			image.height += 6;
+			var image:Image=BooksManager.getImage("background_0");
+			this.addChild(image);
+			image.height+=6;
 		}
 
 		private var load:Image;
@@ -60,7 +60,7 @@ package views.global.books.handbook.screen
 			load.x=1024 - 100;
 			load.y=768 - 100;
 			load.scaleX=load.scaleY=.5;
-			PopUpManager.addPopUp(load);
+			PopUpManager.addPopUp(load, true, false);
 			load.addEventListener(Event.ENTER_FRAME, function(e:Event):void
 			{
 				load.rotation+=0.2;
@@ -84,9 +84,9 @@ package views.global.books.handbook.screen
 				if (ratio == 1)
 				{
 					if (crtPage > 0)
-						_assetsManager.enqueue("assets/global/handbook/content_page_" + String(crtPage-1) + ".png");
+						_assetsManager.enqueue("assets/global/handbook/content_page_" + String(crtPage - 1) + ".png");
 					if (crtPage < HandbookScreen.MAX_NUM - 1)
-						_assetsManager.enqueue("assets/global/handbook/content_page_" + String(crtPage+1) + ".png");
+						_assetsManager.enqueue("assets/global/handbook/content_page_" + String(crtPage + 1) + ".png");
 					_assetsManager.loadQueue(function(r:Number):void {});
 					initImages();
 					initPageNums();
@@ -98,20 +98,22 @@ package views.global.books.handbook.screen
 
 		private var page_0:TextField;
 		private var page_1:TextField;
+
 		private function initPageNums():void
 		{
-			var n:int = MAX_NUM * 2;
-			page_0 = new TextField(100, 40, String(crtPage*2+1)+" / "+n.toString(), FontVo.PALACE_FONT, 22, 0x932720);
-			page_1 = new TextField(100, 40, String(crtPage*2+2)+" / "+n.toString(), FontVo.PALACE_FONT, 22, 0x932720);
-			page_0.touchable = page_1.touchable = false;
-			page_0.x = 196;
-			page_1.x = 680;
-			page_0.y = page_1.y = 590;
-			this.addChild( page_0 );
-			this.addChild( page_1 );
+			var n:int=MAX_NUM * 2;
+			page_0=new TextField(100, 40, String(crtPage * 2 + 1) + " / " + n.toString(), FontVo.PALACE_FONT, 22, 0x932720);
+			page_1=new TextField(100, 40, String(crtPage * 2 + 2) + " / " + n.toString(), FontVo.PALACE_FONT, 22, 0x932720);
+			page_0.touchable=page_1.touchable=false;
+			page_0.x=196;
+			page_1.x=680;
+			page_0.y=page_1.y=590;
+			this.addChild(page_0);
+			this.addChild(page_1);
 		}
-		
+
 		private var cache:Image;
+
 		private function initImages():void
 		{
 			cache=new Image(_assetsManager.getTexture("content_page_" + crtPage));
@@ -122,31 +124,32 @@ package views.global.books.handbook.screen
 
 		private function setSo():void
 		{
-			var arr:Array = SOService.instance.getSO("progress_handbook") as Array;
-			if(!arr)
-				arr = new Array(MAX_NUM);
-			arr[crtPage] = true;
+			var arr:Array=SOService.instance.getSO("progress_handbook") as Array;
+			if (!arr)
+				arr=new Array(MAX_NUM);
+			arr[crtPage]=true;
 			SOService.instance.setSO("progress_handbook", arr);
-			if(checkSO())
+			if (checkSO())
 				BooksManager.getCrtHandbook().showAchieve(31);
 		}
+
 		/**
 		 * 检测是否已完成成就
-		 * @return 
-		 */		
+		 * @return
+		 */
 		private function checkSO():Boolean
 		{
-			var arr:Array = SOService.instance.getSO("progress_handbook") as Array;
-			if(!arr)
+			var arr:Array=SOService.instance.getSO("progress_handbook") as Array;
+			if (!arr)
 				return false;
-			for(var i:int = 0;i<arr.length;i++)
+			for (var i:int=0; i < arr.length; i++)
 			{
-				if(!arr[i])
+				if (!arr[i])
 					return false;
 			}
 			return true;
 		}
-		
+
 		/**
 		 * 上翻一页，翻页失败会派发UserCenter.ViewUpdateFail事件
 		 */
@@ -204,10 +207,10 @@ package views.global.books.handbook.screen
 					trace("资源加载完成");
 			});
 		}
-		
+
 		public function updateByPage(page:int):void
 		{
-			if (crtPage == page || page > MAX_NUM-1 || page < 0)
+			if (crtPage == page || page > MAX_NUM - 1 || page < 0)
 			{
 				dispatchEventWith(BookEvent.ViewUpdateFail);
 				return;
@@ -215,15 +218,15 @@ package views.global.books.handbook.screen
 			//清除缓存纹理
 			_assetsManager.dispose();
 			initLoad();
-			this.crtPage = page;
+			this.crtPage=page;
 			_assetsManager.enqueue("assets/global/handbook/content_page_" + page + ".png");
 			_assetsManager.loadQueue(function(ratio:Number):void {
 				if (ratio == 1)
 				{
 					if (crtPage > 0)
-						_assetsManager.enqueue("assets/global/handbook/content_page_" + String(crtPage-1) + ".png");
+						_assetsManager.enqueue("assets/global/handbook/content_page_" + String(crtPage - 1) + ".png");
 					if (crtPage < HandbookScreen.MAX_NUM - 1)
-						_assetsManager.enqueue("assets/global/handbook/content_page_" + String(crtPage+1) + ".png");
+						_assetsManager.enqueue("assets/global/handbook/content_page_" + String(crtPage + 1) + ".png");
 					_assetsManager.loadQueue(function(r:Number):void {});
 					updateView();
 					removeLoad();
@@ -237,10 +240,10 @@ package views.global.books.handbook.screen
 		private function updateView():void
 		{
 			cache.texture=_assetsManager.getTexture("content_page_" + crtPage);
-			page_0.text = String(crtPage*2+1)+" / "+String(MAX_NUM*2);
-			page_1.text = String(crtPage*2+2)+" / "+String(MAX_NUM*2);
+			page_0.text=String(crtPage * 2 + 1) + " / " + String(MAX_NUM * 2);
+			page_1.text=String(crtPage * 2 + 2) + " / " + String(MAX_NUM * 2);
 			dispatchEventWith(BookEvent.ViewUpdated, false, crtPage);
-			
+
 			setSo();
 		}
 
@@ -248,9 +251,9 @@ package views.global.books.handbook.screen
 		{
 			if (cache)
 				cache.removeFromParent(true);
-			if(page_0)
+			if (page_0)
 				page_0.removeFromParent(true);
-			if(page_1)
+			if (page_1)
 				page_1.removeFromParent(true);
 			_assetsManager.dispose();
 			super.dispose();

@@ -58,6 +58,8 @@ package controllers
 		 * */
 		public static var needGuide:Boolean=false;
 
+		public static var isIOS:Boolean;
+
 		private var _moduleIndex:int=-1;
 		private var contentLayer:starling.display.Sprite;
 		public var currentModule:PalaceModule;
@@ -77,7 +79,7 @@ package controllers
 			PopUpManager.root=main;
 			PopUpManager.overlayFactory=function defaultOverlayFactory():starling.display.DisplayObject
 			{
-				const quad:Quad=new Quad(1024, 768, 0x000000);
+				const quad:Quad=new Quad(1024, 768, 0);
 				quad.alpha=.4;
 				return quad;
 			};

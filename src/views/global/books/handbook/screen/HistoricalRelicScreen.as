@@ -59,7 +59,7 @@ package views.global.books.handbook.screen
 			load.x=1024 - 100;
 			load.y=768 - 100;
 			load.scaleX=load.scaleY=.5;
-			PopUpManager.addPopUp(load);
+			PopUpManager.addPopUp(load, true, false);
 			load.addEventListener(Event.ENTER_FRAME, function(e:Event):void
 			{
 				load.rotation+=0.2;

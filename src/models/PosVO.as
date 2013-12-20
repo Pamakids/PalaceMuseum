@@ -14,10 +14,7 @@ package models
 
 		public static function init():void
 		{
-			if (Capabilities.isDebugger)
-				arr=[1, 0, 0];
-			else
-				arr=DPIUtil.getAndroidSize();
+			arr=DPIUtil.getAndroidSize();
 		}
 
 		public static function get scale():Number

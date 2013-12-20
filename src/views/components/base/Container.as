@@ -1,7 +1,6 @@
 package views.components.base
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.utils.DPIUtil;
 
 	import starling.display.Quad;
 	import starling.display.Sprite;

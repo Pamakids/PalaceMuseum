@@ -25,16 +25,21 @@ package
 		public function PalaceMuseum()
 		{
 			PosVO.init();
-//			var scale:Number=DPIUtil.getDPIScale();
-			this.scaleX=this.scaleY=PosVO.scale;
+			var scale:Number=PosVO.scale;
+			this.scaleX=this.scaleY=scale;
 			this.x=PosVO.OffsetX;
 			this.y=PosVO.OffsetY;
 
-			var msk:Shape=new Shape();
-			this.addChild(msk);
-			msk.graphics.beginFill(0);
-			msk.graphics.drawRect(0, 0, 1024, 768)
-			this.mask=msk;
+			var isFit:Boolean=PosVO.OffsetX == 0 && PosVO.OffsetY == 0
+
+			if (!isFit)
+			{
+				var msk:Shape=new Shape();
+				addChild(msk);
+				msk.graphics.beginFill(0);
+				msk.graphics.drawRect(0, 0, 1024, 768)
+				mask=msk;
+			}
 
 			UserBehaviorAnalysis.init();
 			UserBehaviorAnalysis.trackView("OPENAPP");
@@ -45,13 +50,16 @@ package
 			stage.align=StageAlign.TOP_LEFT;
 			stage.scaleMode=StageScaleMode.NO_SCALE;
 
+			MC.isIOS=Capabilities.os.toLocaleLowerCase().indexOf("iPhone") >= 0;
+
 			Starling.multitouchEnabled=true;
-			Starling.handleLostContext=false;
+			Starling.handleLostContext=!MC.isIOS;
+
 			var main:Starling=new Starling(Main, stage);
 			main.start();
 			main.showStats=Capabilities.isDebugger;
 			main.antiAliasing=16;
-			main.viewPort=new Rectangle(0, 0, 1024, 768);
+			main.viewPort=new Rectangle(PosVO.OffsetX, PosVO.OffsetY, 1024 * scale, 768 * scale);
 
 			var mcLayer:Sprite=new Sprite();
 			addChild(mcLayer);

@@ -77,7 +77,7 @@ package views.global.books.components
 			_loadImage.x=1024 - 100;
 			_loadImage.y=768 - 100;
 			_loadImage.scaleX=_loadImage.scaleY=.5;
-			PopUpManager.addPopUp(_loadImage);
+			PopUpManager.addPopUp(_loadImage, true, false);
 
 			_loadImage.addEventListener(Event.ENTER_FRAME, function(e:Event):void
 			{
