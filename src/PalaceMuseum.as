@@ -3,7 +3,6 @@ package
 	import com.greensock.plugins.MotionBlurPlugin;
 	import com.greensock.plugins.ShakeEffect;
 	import com.greensock.plugins.TweenPlugin;
-	import com.pamakids.utils.DPIUtil;
 
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -26,7 +25,6 @@ package
 		{
 			if (Capabilities.isDebugger)
 			{
-//				DPIUtil.testType="pad"
 //				DPIUtil.testType="s1"
 //				DPIUtil.testType="tv"
 //				DPIUtil.testType="pad3"
@@ -59,10 +57,12 @@ package
 			stage.align=StageAlign.TOP_LEFT;
 			stage.scaleMode=StageScaleMode.NO_SCALE;
 
-			MC.isIOS=Capabilities.os.toLowerCase().indexOf("iphone") >= 0;
+//			MC.isIOS=Capabilities.os.toLowerCase().indexOf("iphone") >= 0;
+			MC.isIOS=true;
 
 			Starling.multitouchEnabled=true;
-			Starling.handleLostContext=!MC.isIOS;
+//			Starling.handleLostContext=!MC.isIOS;
+			Starling.handleLostContext=false;
 
 			var main:Starling=new Starling(Main, stage);
 			main.start();

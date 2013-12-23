@@ -22,6 +22,7 @@ package views.module2.scene22
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceGame;
+	import views.components.base.PalaceModule;
 
 	public class Telescope extends PalaceGame
 	{
@@ -58,10 +59,35 @@ package views.module2.scene22
 			arm.touchable=false;
 
 			addClose();
+
 			addMask();
+			addLoading()
 
 			LoadManager.instance.loadImage("assets/dynamic/view.jpg", loaded1);
 //			LoadManager.instance.loadImage("assets/dynamic/view2.jpg", loaded2);
+		}
+
+		private function addLoading():void
+		{
+			loader=Image.fromBitmap(new PalaceModule.loading());
+			loader.pivotX=loader.width >> 1;
+			loader.pivotY=loader.height >> 1;
+			loader.x=512;
+			loader.y=386;
+			addChild(loader);
+			addEventListener(Event.ENTER_FRAME, loading);
+		}
+
+		private function loading(e:Event):void
+		{
+			loader.rotation+=.1;
+		}
+
+		private function removeLoading():void
+		{
+			removeEventListener(Event.ENTER_FRAME, loading);
+			loader.removeFromParent(true);
+			loader=null;
 		}
 
 		private var img1:Image;
@@ -87,6 +113,7 @@ package views.module2.scene22
 		private function showView():void
 		{
 			removeMask();
+			removeLoading();
 
 			view.img1=img1;
 //			view.img2=img2;
@@ -346,6 +373,8 @@ package views.module2.scene22
 		private var ringBlock:Boolean;
 
 		private var lionRect:Rectangle=new Rectangle(1222 - 557, 208, 54, 84);
+
+		private var loader:Image;
 
 		private function onTeleTouch(e:TouchEvent):void
 		{

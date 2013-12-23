@@ -289,7 +289,28 @@ package views.module3.scene33
 			else
 			{
 				gameOverHandler();
+				return;
 			}
+
+			if (totalTime < 5 * hz)
+			{
+				if (!redAlert)
+				{
+					redAlert=getImage("redAlert")
+					redAlert.alpha=0;
+					addChild(redAlert);
+					redAlert.touchable=false;
+				}
+				redAlert.alpha=getAlpha(totalTime % alertHZ);
+			}
+		}
+
+		private var alertHZ:int=30
+
+		private function getAlpha(num:Number):Number
+		{
+			var a:Number=num >= alertHZ / 2 ? (alertHZ - 1 - num) : num
+			return a / (alertHZ / 2);
 		}
 
 		private function initPin():void
@@ -620,6 +641,12 @@ package views.module3.scene33
 
 		private function gameOverHandler():void
 		{
+			if (redAlert)
+			{
+				redAlert.removeFromParent(true);
+				redAlert=null
+			}
+
 			gameOver=true;
 			timer.stop();
 
@@ -700,6 +727,7 @@ package views.module3.scene33
 				endSP.addChild(scoreTF);
 
 				TweenLite.delayedCall(.2, function():void {
+					scoreTF.redraw();
 					scoreTF.text=scoreTXT;
 				})
 
@@ -968,6 +996,7 @@ package views.module3.scene33
 		private var _gamelevel:int;
 
 		private var intro:Image;
+		private var redAlert:Image;
 
 		private function initAreas():void
 		{

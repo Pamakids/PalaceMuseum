@@ -225,11 +225,13 @@ package views.module1.scene13
 			}
 		}
 
+		private var contentArea:Rectangle=new Rectangle(337, 8, 218, 93);
+
 		private function onContentTouch(e:TouchEvent):void
 		{
 			var img:Image=e.currentTarget as Image;
 			var tc:Touch=e.getTouch(img, TouchPhase.BEGAN);
-			if (tc)
+			if (tc && contentArea.containsPoint(tc.getLocation(img)))
 				dispatchEvent(new Event("gotoBook"));
 		}
 
