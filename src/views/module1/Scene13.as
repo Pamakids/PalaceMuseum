@@ -4,8 +4,11 @@ package views.module1
 	import com.greensock.TweenMax;
 
 	import flash.geom.Point;
+	import flash.media.SoundTransform;
 
 	import feathers.core.PopUpManager;
+
+	import sound.SoundAssets;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -94,6 +97,11 @@ package views.module1
 			if (!tc)
 				return;
 			pendant.touchable=false;
+
+			var snd:String="p" + (1 + int(Math.random() * 5)).toString();
+			trace(snd)
+			assetManager.playSound(snd, 0, 0, new SoundTransform(SoundAssets.sfxVol));
+
 			var delay:Number=2 + Math.random() * 2;
 			var angle:Number=2 * Math.random() * Math.PI / 10 - Math.PI / 10
 			TweenMax.to(pendant, delay, {shake: {rotation: angle, numShakes: 3}, onComplete: function():void

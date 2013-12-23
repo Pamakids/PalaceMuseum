@@ -2,7 +2,6 @@ package views.module1.scene12
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -431,6 +430,7 @@ package views.module1.scene12
 		{
 			if (!sp)
 				return;
+			SoundAssets.playSFX("blockmatch");
 			var img1:Sprite=sp.getChildAt(0) as Sprite;
 			var img2:Image=sp.getChildAt(1) as Image;
 

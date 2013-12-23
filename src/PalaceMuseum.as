@@ -19,12 +19,21 @@ package
 
 	import starling.core.Starling;
 
-	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x663333")]
+	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x554040")]
 	public class PalaceMuseum extends Sprite
 	{
 		public function PalaceMuseum()
 		{
+			if (Capabilities.isDebugger)
+			{
+//				DPIUtil.testType="pad"
+//				DPIUtil.testType="s1"
+//				DPIUtil.testType="tv"
+//				DPIUtil.testType="pad3"
+//				DPIUtil.testType="gs3"
+			}
 			PosVO.init();
+
 			var scale:Number=PosVO.scale;
 			this.scaleX=this.scaleY=scale;
 			this.x=PosVO.OffsetX;
@@ -50,7 +59,7 @@ package
 			stage.align=StageAlign.TOP_LEFT;
 			stage.scaleMode=StageScaleMode.NO_SCALE;
 
-			MC.isIOS=Capabilities.os.toLocaleLowerCase().indexOf("iPhone") >= 0;
+			MC.isIOS=Capabilities.os.toLowerCase().indexOf("iphone") >= 0;
 
 			Starling.multitouchEnabled=true;
 			Starling.handleLostContext=!MC.isIOS;

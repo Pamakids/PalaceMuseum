@@ -65,7 +65,7 @@ package views.module4
 
 		private function openBook():void
 		{
-			book=new ItemIntro(4, new Rectangle(447, 451, 240, 69));
+			book=new ItemIntro(4, new Rectangle(473, 473, 240, 69));
 			var close:ElasticButton=new ElasticButton(getImage("button_close"), getImage("button_close_down"));
 			book.addIntro(getImage("intro-bg"), getImage("intro-seal"), close);
 			book.addEventListener(ItemIntro.CLOSE, onClose);

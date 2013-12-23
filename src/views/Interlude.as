@@ -199,11 +199,10 @@ package views
 			stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
 
 			stageVideo=stage.stageVideos[0];
-			stageVideo.attachNetStream(stream);
-//			var sc:Number=DPIUtil.getDPIScale();
+
 			var sc:Number=PosVO.scale;
-//			this.scaleX=this.scaleY=PosVO.scale;
 			stageVideo.viewPort=new Rectangle(123 * sc + PosVO.OffsetX, 86 * sc + PosVO.OffsetY, 704 * sc, 528 * sc);
+			stageVideo.attachNetStream(stream);
 			stream.play(videoURL);
 		}
 
