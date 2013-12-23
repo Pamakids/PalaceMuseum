@@ -1,7 +1,6 @@
 package views
 {
 	import flash.text.TextFormat;
-	import flash.text.TextFormatAlign;
 
 	import assets.embed.EmbedAssets;
 
@@ -13,6 +12,8 @@ package views
 
 	import models.FontVo;
 	import models.SOService;
+
+	import sound.SoundAssets;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -88,6 +89,8 @@ package views
 
 			messageHolder.removeFromParent(true);
 
+			SoundAssets.playBGM("fireworks");
+
 			addBG();
 			addPanel();
 			addContent();
@@ -147,6 +150,7 @@ package views
 
 		override protected function onCloseClick(e:Event):void
 		{
+			SoundAssets.stopBGM(true);
 			if (callback != null)
 				callback();
 			callback=null;

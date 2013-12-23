@@ -9,6 +9,7 @@ package views.module1
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.media.SoundTransform;
 	import flash.utils.Dictionary;
 
 	import controllers.MC;
@@ -45,7 +46,7 @@ package views.module1
 		private var crtTarget:Sprite;
 
 		private var dpt:Point;
-		private var windowIndex:uint;
+		private var windowIndex:int;
 		private var windowXPosArr:Array=[415, 630, 1040, 1250];
 		private var windowY:int=250;
 		private var windowArr:Vector.<Sprite>=new Vector.<Sprite>();
@@ -88,7 +89,7 @@ package views.module1
 			super(am);
 			windowStrArr=[hint6, hint3, hint5, hint6];
 			crtKnowledgeIndex=1;
-			windowIndex=Math.random() > .5 ? 0 : 3;
+			windowIndex=(Math.random() < .5) ? 0 : 3;
 
 			bg=new Sprite();
 			bg.x=512;
@@ -291,10 +292,12 @@ package views.module1
 			else if (hotzone2.containsPoint(pt))
 			{
 				showHint(hotzone2.x + hotzone2.width / 2, hotzone2.y + hotzone2.height / 2, hint2, 1, fg);
+				SoundAssets.playSFX("windowwrong", true);
 			}
 			else if (hotzone3.containsPoint(pt))
 			{
 				showHint(hotzone3.x + hotzone3.width / 2, hotzone3.y + hotzone3.height / 2, hint4, 3, fg, 3);
+				SoundAssets.playSFX("windowwrong", true);
 			}
 		}
 
@@ -376,7 +379,7 @@ package views.module1
 			}
 			else
 			{
-				SoundAssets.playSFX("windowwrong");
+				SoundAssets.playSFX("windowwrong", true);
 				TweenMax.to(sp, 1, {shake: {rotation: .05, numShakes: 4}, onComplete: function():void
 				{
 					sp.touchable=true;
@@ -397,7 +400,7 @@ package views.module1
 			okEff.alpha=0;
 			TweenLite.to(okEff, 2, {alpha: 1});
 			var tx:Number;
-			if (sp.x > width / 2)
+			if (sp.x > 1024 / 2)
 				tx=1024 - bg.width;
 			else
 				tx=0;

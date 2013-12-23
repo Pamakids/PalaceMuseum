@@ -17,7 +17,7 @@ package sound
 		}
 
 		public static var initArr:Array=["main", "camera", "happy", "sad", "buttonclick", "centerflip", "gamerecord", "lionshow",
-										 "getachieve", "getcard", "mapbgm"];
+										 "getachieve", "getcard", "mapbgm", "fireworks"];
 		[Embed(source="/sound/main.mp3")] //done
 		public static var main:Class;
 		[Embed(source="/sound/camera.mp3")] //done
@@ -40,9 +40,11 @@ package sound
 		public static var getcard:Class;
 		[Embed(source="/sound/mapbgm.mp3")] //done
 		public static var mapbgm:Class;
+		[Embed(source="/sound/fireworks.mp3")] //done
+		public static var fireworks:Class;
 
 		public static var module1:Array=["lighton", "opendoor", "step", "dresson", "switching", "clockmatch", "clockroll",
-										 "windowwrong", "boxopen", "boxscale", "twistermatch", "twisting", "s11bgm"];
+										 "windowwrong", "boxopen", "boxscale", "twistermatch", "twisting", "s11bgm", "blockmatch"];
 		[Embed(source="/sound/11lighton.mp3")] //done
 		public static var lighton:Class;
 		[Embed(source="/sound/11opendoor.mp3")] //done
@@ -137,7 +139,7 @@ package sound
 		public static var gamescene:Array=['dishon', 'dishout', 'fly', 'kingeat', 'kingpoison',
 										   'blockfall', 'blockmatch',
 										   'gamebg52', 'bodyfall', 'maskok', 'maskwrong'];
-		public static var loopArr:Array=["main", "gamebg52", "mapbgm", "s11bgm", "s41bgm"];
+		public static var loopArr:Array=["main", "gamebg52", "mapbgm", "s11bgm", "s41bgm", "fireworks"];
 
 		public static function init():void
 		{
@@ -224,10 +226,15 @@ package sound
 			}
 		}
 
-		public static function stopBGM():void
+		public static function stopBGM(force:Boolean=false):void
 		{
 			if (crtBGM)
-				fadeOut(crtBGM)
+			{
+				if (force)
+					sm.stop(crtBGM);
+				else
+					fadeOut(crtBGM)
+			}
 			crtBGM="";
 		}
 

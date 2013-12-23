@@ -135,6 +135,7 @@ package views.module3
 				else if (chefArea.containsPoint(pt) && chef.currentFrame == 0)
 				{
 					assetManager.playSound("chefclick", 0, 0, new SoundTransform(SoundAssets.sfxVol));
+					assetManager.playSound("chef2", 0, 0, new SoundTransform(SoundAssets.sfxVol));
 					chef.play();
 				}
 				else if (area1.containsPoint(pt))
