@@ -38,15 +38,16 @@ package
 			}
 			super();
 
-			MC.instance.init(this);
 			SoundAssets.init();
+			showStart();
+
+			MC.instance.init(this);
 			//以免第一次初始化提示的时候卡顿
 			var label:TextField=new TextField(1, 1, '0', FontVo.PALACE_FONT, 16, 0x561a1a, true);
 			addChild(label);
 			label.x=-10;
 			label.y=-10;
 
-			showStart();
 
 			var am:AssetManager=new AssetManager();
 			var f:File=File.applicationDirectory.resolvePath("assets/common");
@@ -108,6 +109,7 @@ package
 //			title.x=171;
 			startHolder.addChild(title);
 			addChild(startHolder);
+			SoundAssets.playSFX("dang", false, 1);
 //			var startBtn:ElasticButton=new ElasticButton(Image.fromBitmap(new StartBtn()));
 //			startBtn.shadow=Image.fromBitmap(new StartBtn2());
 //			startBtn.x=512;

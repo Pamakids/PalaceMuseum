@@ -2,8 +2,6 @@ package views.module5.scene52
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Bounce;
-	import com.pamakids.manager.SoundManager;
-	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
 

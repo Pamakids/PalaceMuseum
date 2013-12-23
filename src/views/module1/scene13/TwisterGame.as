@@ -1,8 +1,6 @@
 package views.module1.scene13
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.manager.SoundManager;
-	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -117,7 +115,6 @@ package views.module1.scene13
 			if (inited)
 				return;
 			inited=true;
-//			scale=DPIUtil.getDPIScale();
 			addEventListener(TouchEvent.TOUCH, onTouch);
 
 			areaSize=size - 1;
