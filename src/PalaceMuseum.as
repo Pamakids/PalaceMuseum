@@ -18,13 +18,19 @@ package
 
 	import starling.core.Starling;
 
+	import utils.DPIUtil;
+
 	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x554040")]
 	public class PalaceMuseum extends Sprite
 	{
 		public function PalaceMuseum()
 		{
+			stage.align=StageAlign.TOP_LEFT;
+			stage.scaleMode=StageScaleMode.NO_SCALE;
+
 			if (Capabilities.isDebugger)
 			{
+				DPIUtil.testType="pad"
 //				DPIUtil.testType="s1"
 //				DPIUtil.testType="tv"
 //				DPIUtil.testType="pad3"
@@ -53,9 +59,6 @@ package
 
 			TweenPlugin.activate([ShakeEffect]);
 			TweenPlugin.activate([MotionBlurPlugin]);
-
-			stage.align=StageAlign.TOP_LEFT;
-			stage.scaleMode=StageScaleMode.NO_SCALE;
 
 //			MC.isIOS=Capabilities.os.toLowerCase().indexOf("iphone") >= 0;
 			MC.isIOS=true;

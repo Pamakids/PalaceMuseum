@@ -1,8 +1,6 @@
 ﻿package Firefly
 {
 
-	import com.pamakids.utils.DPIUtil;
-
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;

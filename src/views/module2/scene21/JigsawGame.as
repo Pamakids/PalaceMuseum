@@ -4,8 +4,6 @@ package views.module2.scene21
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Quad;
-	import com.pamakids.manager.SoundManager;
-	import com.pamakids.utils.DPIUtil;
 
 	import flash.display.Bitmap;
 	import flash.events.TimerEvent;

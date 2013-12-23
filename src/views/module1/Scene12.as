@@ -1,7 +1,6 @@
 package views.module1
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
 

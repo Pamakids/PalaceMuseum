@@ -1,8 +1,6 @@
 package models
 {
-	import com.pamakids.utils.DPIUtil;
-
-	import flash.system.Capabilities;
+	import utils.DPIUtil;
 
 	public class PosVO
 	{

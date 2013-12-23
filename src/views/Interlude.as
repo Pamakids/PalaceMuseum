@@ -61,7 +61,6 @@ package views
 			this.startHandler=onStart;
 			this.stopHandler=onStop;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAdded);
-//			this.scaleX=this.scaleY=DPIUtil.getDPIScale();
 
 			this.scaleX=this.scaleY=PosVO.scale;
 			this.x=PosVO.OffsetX;
@@ -119,7 +118,6 @@ package views
 				button=new Sprite();
 				button.x=839
 				button.y=673
-//				button.scaleX=button.scaleY=DPIUtil.getDPIScale();
 				button.addChild(bitmap);
 				this.addChild(button);
 				button.visible=false;

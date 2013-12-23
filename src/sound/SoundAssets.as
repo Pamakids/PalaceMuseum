@@ -17,7 +17,7 @@ package sound
 		}
 
 		public static var initArr:Array=["main", "camera", "happy", "sad", "buttonclick", "centerflip", "gamerecord", "lionshow",
-										 "getachieve", "getcard", "mapbgm"];
+										 "getachieve", "getcard", "mapbgm", "dang"];
 		[Embed(source="/sound/main.mp3")] //done
 		public static var main:Class;
 		[Embed(source="/sound/camera.mp3")] //done
@@ -40,6 +40,8 @@ package sound
 		public static var getcard:Class;
 		[Embed(source="/sound/mapbgm.mp3")] //done
 		public static var mapbgm:Class;
+		[Embed(source="/sound/dang.mp3")] //done
+		public static var dang:Class;
 //		[Embed(source="/sound/fireworks.mp3")] //done
 //		public static var fireworks:Class;
 
@@ -238,11 +240,11 @@ package sound
 			crtBGM="";
 		}
 
-		public static function playSFX(_name:String, forceStop:Boolean=false):void
+		public static function playSFX(_name:String, forceStop:Boolean=false, forceVol:Number=0):void
 		{
 			if (forceStop)
 				sm.stop(_name);
-			sm.play(_name, 0, sfxVol);
+			sm.play(_name, 0, forceVol == 0 ? sfxVol : forceVol);
 		}
 
 		public static function stopSFX(_name:String):void
