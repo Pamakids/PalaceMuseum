@@ -103,7 +103,7 @@ package views.module3
 			if (chef)
 			{
 				chef.stop()
-				Starling.juggler.add(chef);
+				Starling.juggler.remove(chef);
 				chef.removeFromParent(true);
 				chef=null;
 			}

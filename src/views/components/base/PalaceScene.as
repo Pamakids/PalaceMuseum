@@ -92,7 +92,7 @@ package views.components.base
 //					var cls:Class=BirdAssets["bird" + birdIndex];
 //					if (!cls)
 //						return;
-					if (img)
+					if (img && bg)
 					{
 						initBird(img, bg);
 						UserBehaviorAnalysis.trackEvent("collect", "bird", "", birdIndex);

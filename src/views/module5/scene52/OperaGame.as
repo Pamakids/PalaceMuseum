@@ -3,7 +3,6 @@ package views.module5.scene52
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
-	import com.pamakids.manager.SoundManager;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -260,11 +259,37 @@ package views.module5.scene52
 			else
 			{
 				gameOverHandler();
+				return;
 			}
+
+			if (totalTime < 5 * hz)
+			{
+				if (!redAlert)
+				{
+					redAlert=getImage("redAlert")
+					redAlert.alpha=0;
+					addChild(redAlert);
+					redAlert.touchable=false;
+				}
+				redAlert.alpha=getAlpha(totalTime % alertHZ);
+			}
+		}
+
+		private var alertHZ:int=30
+
+		private function getAlpha(num:Number):Number
+		{
+			var a:Number=num >= alertHZ / 2 ? (alertHZ - 1 - num) : num
+			return a / (alertHZ / 2);
 		}
 
 		private function gameOverHandler():void
 		{
+			if (redAlert)
+			{
+				redAlert.removeFromParent(true);
+				redAlert=null
+			}
 			SoundAssets.stopBGM();
 			gameOver=true;
 			timer.stop();
@@ -550,6 +575,7 @@ package views.module5.scene52
 		private var sanguoBtn:Sprite;
 
 		private var startBtn:ElasticButton;
+		private var redAlert:Image;
 
 		public function get score():int
 		{
@@ -630,6 +656,7 @@ package views.module5.scene52
 				scoreTF.hAlign="right";
 				endHolder.addChild(scoreTF);
 				TweenLite.delayedCall(.2, function():void {
+					scoreTF.redraw();
 					scoreTF.text=scoreTXT;
 				})
 
@@ -670,8 +697,8 @@ package views.module5.scene52
 				TweenLite.delayedCall(2, function():void {
 					var nextShowBtn:ElasticButton=new ElasticButton(getImage("startShow"));
 					nextShowBtn.shadow=getImage("startShow-light");
-					nextShowBtn.x=1024 - 200;
-					nextShowBtn.y=768 - 100;
+					nextShowBtn.x=730 + 125;
+					nextShowBtn.y=621 + 60;
 					endHolder.addChild(nextShowBtn);
 					nextShowBtn.addEventListener(ElasticButton.CLICK, onNextShow);
 				});

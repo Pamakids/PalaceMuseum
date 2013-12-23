@@ -1,7 +1,6 @@
 package
 {
 	import flash.filesystem.File;
-	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 
 	import controllers.MC;
@@ -10,7 +9,6 @@ package
 	import events.UserBehaviorEvent;
 
 	import models.FontVo;
-	import models.PosVO;
 	import models.SOService;
 
 	import sound.SoundAssets;
@@ -36,7 +34,7 @@ package
 			{
 //				SOService.instance.clear();
 //				SOService.instance.init();
-//				SOService.instance.setSO("lastScene", "42");
+//				SOService.instance.setSO("lastScene", "21map");
 			}
 			super();
 

@@ -93,7 +93,7 @@ package views.module2
 			addCraw(new Point(590, 632));
 			addCraw(new Point(908, 461));
 
-			addMask(.2);
+			addMask(.6);
 			king=new Sprite();
 			var kingImg:Image=getImage("kingHead")
 			king.addChild(kingImg);

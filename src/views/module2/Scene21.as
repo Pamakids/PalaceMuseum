@@ -1,7 +1,6 @@
 package views.module2
 {
 	import com.greensock.TweenLite;
-	import com.pamakids.utils.DPIUtil;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -190,6 +189,39 @@ package views.module2
 			ready=true;
 			if (SOService.instance.checkHintCount(shelfHintCount))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame);
+
+			TweenLite.delayedCall(8, function():void {
+				addHint(0);
+				addHint(1);
+				addEventListener(Event.ENTER_FRAME, onHintBlink);
+			});
+		}
+
+		private var reverse0:Boolean;
+		private var reverse1:Boolean;
+
+		private function onHintBlink(e:Event):void
+		{
+			if (bookHint0)
+			{
+				if (bookHint0.alpha == 0)
+					reverse0=true;
+				if (bookHint0.alpha == 1)
+					reverse0=false;
+				bookHint0.alpha+=reverse0 ? .02 : -.02;
+			}
+
+			if (bookHint1)
+			{
+				if (bookHint1.alpha == 0)
+					reverse1=true;
+				if (bookHint1.alpha == 1)
+					reverse1=false;
+				bookHint1.alpha+=reverse1 ? .02 : -.02;
+			}
+
+			if (!bookHint0 && !bookHint1)
+				removeEventListener(Event.ENTER_FRAME, onHintBlink);
 		}
 
 		private var shelfHintCount:String="shelfHintCount";
@@ -461,6 +493,7 @@ package views.module2
 
 		private function showBigBook(index:int, pt:Point):void
 		{
+			removeHint(index);
 			crtIndex=index;
 			crtPt=pt;
 			bigBook=new Sprite();
@@ -483,9 +516,63 @@ package views.module2
 			bigBook.scaleY=.1;
 			PopUpManager.addPopUp(bigBook, true, false)
 			TweenLite.to(bigBook, 1, {scaleX: 1, scaleY: 1});
-
-
 		}
+
+		private function removeHint(index:int):void
+		{
+			if (index == 1)
+			{
+				book0Clicked=true;
+				if (bookHint0)
+					bookHint0.removeFromParent(true);
+				bookHint0=null;
+			}
+			else
+			{
+				book1Clicked=true;
+				if (bookHint1)
+					bookHint1.removeFromParent(true);
+				bookHint1=null;
+			}
+		}
+
+		private var book0Clicked:Boolean;
+		private var book1Clicked:Boolean;
+
+		private function addHint(index:int):void
+		{
+			if (index == 0)
+			{
+				if (book0Clicked)
+					return;
+				if (!bookHint0)
+				{
+					bookHint0=getImage("bookhint1");
+					shelfL.addChild(bookHint0);
+					bookHint0.touchable=false;
+					bookHint0.alpha=0;
+					bookHint0.x=83;
+					bookHint0.y=41;
+				}
+			}
+			else
+			{
+				if (book1Clicked)
+					return;
+				if (!bookHint1)
+				{
+					bookHint1=getImage("bookhint2");
+					shelfR.addChild(bookHint1);
+					bookHint1.touchable=false;
+					bookHint1.alpha=0;
+					bookHint1.x=138;
+					bookHint1.y=343;
+				}
+			}
+		}
+
+		private var bookHint0:Image;
+		private var bookHint1:Image;
 
 		private var headHolder:Sprite;
 

@@ -17,7 +17,7 @@ package sound
 		}
 
 		public static var initArr:Array=["main", "camera", "happy", "sad", "buttonclick", "centerflip", "gamerecord", "lionshow",
-										 "getachieve", "getcard", "mapbgm", "fireworks"];
+										 "getachieve", "getcard", "mapbgm"];
 		[Embed(source="/sound/main.mp3")] //done
 		public static var main:Class;
 		[Embed(source="/sound/camera.mp3")] //done
@@ -40,8 +40,8 @@ package sound
 		public static var getcard:Class;
 		[Embed(source="/sound/mapbgm.mp3")] //done
 		public static var mapbgm:Class;
-		[Embed(source="/sound/fireworks.mp3")] //done
-		public static var fireworks:Class;
+//		[Embed(source="/sound/fireworks.mp3")] //done
+//		public static var fireworks:Class;
 
 		public static var module1:Array=["lighton", "opendoor", "step", "dresson", "switching", "clockmatch", "clockroll",
 										 "windowwrong", "boxopen", "boxscale", "twistermatch", "twisting", "s11bgm", "blockmatch"];
