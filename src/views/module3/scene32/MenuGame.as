@@ -68,6 +68,7 @@ package views.module3.scene32
 
 		public function MenuGame(am:AssetManager=null)
 		{
+			bigGame=true;
 			super(am);
 
 			addBG();

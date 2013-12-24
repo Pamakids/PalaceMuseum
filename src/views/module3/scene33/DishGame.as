@@ -78,6 +78,7 @@ package views.module3.scene33
 
 		public function DishGame(am:AssetManager=null)
 		{
+			bigGame=true;
 			super(am);
 			addBG();
 

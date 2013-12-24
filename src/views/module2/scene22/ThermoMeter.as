@@ -6,6 +6,8 @@ package views.module2.scene22
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Touch;
@@ -137,6 +139,7 @@ package views.module2.scene22
 				if (rect.containsPoint(pt) && index == i)
 				{
 					item.removeEventListener(TouchEvent.TOUCH, onItemTouch);
+					SoundAssets.playSFX("blockmatch", true);
 					TweenLite.to(item, .5, {x: rect.x + offsetsArr[index].x, y: rect.y + offsetsArr[index].y, scaleX: .7, scaleY: .7});
 					var light:Sprite=lightArr[index];
 					TweenLite.to(light.clipRect, .5, {x: 0, onComplete: function():void {

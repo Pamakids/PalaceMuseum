@@ -30,7 +30,7 @@ package
 
 			if (Capabilities.isDebugger)
 			{
-				DPIUtil.testType="pad"
+//				DPIUtil.testType="pad"
 //				DPIUtil.testType="s1"
 //				DPIUtil.testType="tv"
 //				DPIUtil.testType="pad3"
@@ -71,7 +71,9 @@ package
 			main.start();
 			main.showStats=Capabilities.isDebugger;
 			main.antiAliasing=16;
-			main.viewPort=new Rectangle(PosVO.OffsetX, PosVO.OffsetY, 1024 * scale, 768 * scale);
+			var rect:Rectangle=new Rectangle(PosVO.OffsetX, PosVO.OffsetY, 1024 * scale, 768 * scale)
+			trace(rect)
+			main.viewPort=rect;
 
 			var mcLayer:Sprite=new Sprite();
 			addChild(mcLayer);

@@ -1,5 +1,7 @@
 package
 {
+	import com.greensock.TweenLite;
+
 	import flash.filesystem.File;
 	import flash.system.Capabilities;
 
@@ -9,6 +11,7 @@ package
 	import events.UserBehaviorEvent;
 
 	import models.FontVo;
+	import models.PosVO;
 	import models.SOService;
 
 	import sound.SoundAssets;
@@ -34,9 +37,11 @@ package
 			{
 //				SOService.instance.clear();
 //				SOService.instance.init();
-//				SOService.instance.setSO("lastScene", "21map");
+//				SOService.instance.setSO("lastScene", "11map");
 			}
 			super();
+
+			this.scaleX=this.scaleY=PosVO.scale;
 
 			SoundAssets.init();
 			showStart();
@@ -109,7 +114,9 @@ package
 //			title.x=171;
 			startHolder.addChild(title);
 			addChild(startHolder);
-			SoundAssets.playSFX("dang", false, 1);
+			TweenLite.delayedCall(1, function():void {
+				SoundAssets.playSFX("dang", false, 1);
+			});
 //			var startBtn:ElasticButton=new ElasticButton(Image.fromBitmap(new StartBtn()));
 //			startBtn.shadow=Image.fromBitmap(new StartBtn2());
 //			startBtn.x=512;

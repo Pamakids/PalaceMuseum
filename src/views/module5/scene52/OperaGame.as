@@ -8,6 +8,9 @@ package views.module5.scene52
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
+	import flash.utils.getTimer;
+
+	import controllers.UserBehaviorAnalysis;
 
 	import events.OperaSwitchEvent;
 
@@ -35,6 +38,7 @@ package views.module5.scene52
 	{
 		public function OperaGame(am:AssetManager=null)
 		{
+			bigGame=true;
 			SoundAssets.stopBGM();
 			super(am);
 			addBG();
@@ -106,6 +110,13 @@ package views.module5.scene52
 					var e:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.OPEN);
 					onOperaSwitch(e);}
 			});
+		}
+
+		override protected function init():void
+		{
+			lastBGM=SoundAssets.crtBGM;
+			initTime=getTimer();
+			UserBehaviorAnalysis.trackView(gameName);
 		}
 
 		public var onOperaSwitch:Function;
@@ -242,10 +253,10 @@ package views.module5.scene52
 			timeprogress.clipRect=new Rectangle(30, 0, 470, 51);
 
 			initScore();
-			initTime();
+			initTimer();
 		}
 
-		private function initTime():void
+		private function initTimer():void
 		{
 			timer=new Timer(1000 / hz);
 			timer.addEventListener(TimerEvent.TIMER, onTimer);

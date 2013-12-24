@@ -50,7 +50,7 @@ package states
 			this.fusion.spaceWidth=AgonyUI.fusion.spaceWidth
 			this.fusion.spaceHeight=AgonyUI.fusion.spaceHeight
 
-			fusion.scaleX=fusion.scaleY=PosVO.scale;
+//			fusion.scaleX=fusion.scaleY=PosVO.scale;
 			fusion.x=PosVO.OffsetX;
 			fusion.y=PosVO.OffsetY;
 

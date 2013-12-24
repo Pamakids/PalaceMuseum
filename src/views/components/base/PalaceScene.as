@@ -113,7 +113,6 @@ package views.components.base
 			Prompt.parent=this;
 			assetManager=am;
 			MC.instance.main.removeMask();
-			SoundAssets.playBGM("main");
 		}
 
 		private function checkBird():Boolean
@@ -167,6 +166,7 @@ package views.components.base
 		{
 			initTime=getTimer();
 			UserBehaviorAnalysis.trackView(sceneName);
+			SoundAssets.playBGM("main");
 		}
 
 		override public function dispose():void
