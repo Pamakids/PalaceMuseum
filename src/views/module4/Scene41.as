@@ -7,6 +7,9 @@ package views.module4
 	import flash.events.AccelerometerEvent;
 	import flash.geom.Point;
 	import flash.sensors.Accelerometer;
+	import flash.utils.getTimer;
+
+	import controllers.UserBehaviorAnalysis;
 
 	import models.SOService;
 
@@ -66,6 +69,15 @@ package views.module4
 				bgHolder.addChild(card);
 			}
 
+			peopleHolder=new Sprite();
+			bgHolder.addChild(peopleHolder);
+
+			var pillar:Image=getImage("pillar");
+			bgHolder.addChild(pillar);
+			pillar.x=519;
+			pillar.y=511;
+			pillar.touchable=false;
+
 			king=new Sprite();
 			var kingImg:Image=getImage("kingHead")
 			king.addChild(kingImg);
@@ -82,7 +94,12 @@ package views.module4
 			lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
 
 			lionChat1();
+		}
 
+		override protected function init():void
+		{
+			initTime=getTimer();
+			UserBehaviorAnalysis.trackView(sceneName);
 			SoundAssets.playBGM("s41bgm");
 		}
 
@@ -177,17 +194,10 @@ package views.module4
 
 		private function addCraws():void
 		{
-			peopleHolder=new Sprite();
-			bgHolder.addChild(peopleHolder);
 			for (var i:int=0; i < crawPosArr.length; i++)
 			{
 				addCraw(crawPosArr[i], onCrowTouch, bgHolder, i);
 			}
-			var pillar:Image=getImage("pillar");
-			bgHolder.addChild(pillar);
-			pillar.x=519;
-			pillar.y=511;
-			pillar.touchable=false;
 		}
 
 		private function onCrowTouch(e:TouchEvent):void
@@ -330,7 +340,8 @@ package views.module4
 		override public function dispose():void
 		{
 			super.dispose();
-			acc.removeEventListener(AccelerometerEvent.UPDATE, onUpdate);
+			if (acc)
+				acc.removeEventListener(AccelerometerEvent.UPDATE, onUpdate);
 		}
 
 		private var shakeHintCount:String="shakeHintCount";

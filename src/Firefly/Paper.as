@@ -61,8 +61,7 @@
 //			addEventListener(MouseEvent.MOUSE_DOWN, _mouseDown);
 //			addEventListener(MouseEvent.MOUSE_UP, _mouseUp);
 			TouchManager.getInstance().addEventListener(ATouchEvent.NEW_TOUCH, _mouseDown, 1000000)
-			var sc:Number=PosVO.scale;
-			bmd=new BitmapData(1024 * sc, 508 * sc, true, 0x0);
+			bmd=new BitmapData(1024, 508, true, 0x0);
 			bm=new Bitmap(bmd);
 			addChild(bm);
 
@@ -109,7 +108,10 @@
 			var touch:Touch
 
 			touch=e.touch
-			if (!bm.hitTestPoint(touch.stageX, touch.stageY) || mIsTranslateState)
+
+//			trace(bm.getBounds(stage), touch.stageX, touch.stageY, mIsTranslateState)
+
+			if (!bm.getBounds(stage).contains(touch.stageX, touch.stageY) || mIsTranslateState)
 			{
 				return
 			}

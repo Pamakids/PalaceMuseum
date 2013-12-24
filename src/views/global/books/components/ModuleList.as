@@ -2,13 +2,13 @@ package views.global.books.components
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
+
 	import flash.geom.Point;
-	
+
 	import controllers.MC;
-	
+
 	import models.SOService;
-	
+
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -18,7 +18,7 @@ package views.global.books.components
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
-	
+
 	import views.Interlude;
 	import views.components.ElasticButton;
 	import views.global.books.BooksManager;
@@ -192,9 +192,9 @@ package views.global.books.components
 					{
 						if (screen <= 0) //去模块4
 						{
-							if (crtScene - 1 >= 3)
+							if (crtScene >= 3) //当前处在御花园区域
 							{
-								MC.instance.gotoModule(module, Math.max(crtScene - 1, screen));
+								MC.instance.gotoModule(module, screen);
 							}
 							else
 							{
@@ -210,7 +210,7 @@ package views.global.books.components
 						}
 						else //去御花园
 						{
-							if (crtScene - 1 < 3) //当前处在非御花园区域
+							if (crtScene < 3) //当前处在非御花园区域
 							{
 								MC.instance.gotoModule(module, Math.max(crtScene - 1, screen));
 							}
@@ -366,7 +366,7 @@ package views.global.books.components
 			this.addChild(image);
 			image.touchable=false;
 		}
-		
+
 		private function initPointer():void
 		{
 			pointer=new Quad(66, 4, 0x0);
@@ -453,7 +453,7 @@ package views.global.books.components
 				i=vecImage.indexOf(e.target as Image);
 				if (!isComplete(i))
 					return;
-				play.visible = false;
+				play.visible=false;
 				selectI=i;
 				var targetR:Number=minR + selectI * d;
 				activeIcon.texture=SKIN_ICON_SUN;
@@ -475,9 +475,9 @@ package views.global.books.components
 		override public function dispose():void
 		{
 			TweenLite.killTweensOf(this);
-			if(play)
+			if (play)
 				play.removeFromParent(true);
-			
+
 			for each (var image:Image in vecImage)
 			{
 				image.removeEventListener(TouchEvent.TOUCH, onTouch);

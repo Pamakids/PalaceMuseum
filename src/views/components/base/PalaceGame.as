@@ -11,6 +11,8 @@ package views.components.base
 
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -120,8 +122,15 @@ package views.components.base
 			MC.instance.hideMC();
 		}
 
+		protected var lastBGM:String;
+
 		override protected function init():void
 		{
+			if (bigGame)
+			{
+				lastBGM=SoundAssets.crtBGM
+				SoundAssets.playBGM("gameBGM");
+			}
 			initTime=getTimer();
 			UserBehaviorAnalysis.trackView(gameName);
 		}
@@ -163,6 +172,8 @@ package views.components.base
 			dispatchEvent(new Event(PalaceGame.GAME_OVER));
 		}
 
+		protected var bigGame:Boolean;
+
 		/**
 		 *
 		 */
@@ -174,6 +185,8 @@ package views.components.base
 
 		override public function dispose():void
 		{
+			if (lastBGM && bigGame)
+				SoundAssets.playBGM(lastBGM);
 			if (initTime > 0)
 			{
 				disposeTime=getTimer();

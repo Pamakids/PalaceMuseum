@@ -6,6 +6,7 @@ package states
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.geom.Matrix;
 	import flash.media.CameraRoll;
 
 	import Firefly.Paper;
@@ -46,7 +47,7 @@ package states
 			//this.fusion.interactive = false
 //			this.fusion.y=151
 
-			fusion.scaleX=fusion.scaleY=PosVO.scale;
+//			fusion.scaleX=fusion.scaleY=PosVO.scale;
 			fusion.x=PosVO.OffsetX;
 			fusion.y=151 + PosVO.OffsetY;
 
@@ -121,6 +122,7 @@ package states
 						sprite.addChild(mPaper)
 						mPaper.width=1030;
 						mPaper.height=586;
+//						mPaper.scaleX=mPaper.scaleY=PosVO.scale;
 					}
 				}
 
@@ -212,15 +214,16 @@ package states
 			}
 
 			BA=new BitmapData(this.fusion.spaceWidth, this.fusion.spaceHeight, true, 0x0)
-			BA.draw(this.fusion.displayObject)
+			BA.draw(this.fusion.displayObject, new Matrix(1 / Agony.pixelRatio, 0, 0, 1 / Agony.pixelRatio))
 			{
+				var sc:Number=PosVO.scale;
 				clickAble=false;
 				mPhoto=new ImagePuppet(5)
 				mPhoto.bitmapData=BA
-				mPhoto.scaleX=1
-				mPhoto.scaleY=1
+				mPhoto.scaleX=sc
+				mPhoto.scaleY=sc
 				this.fusion.addElement(mPhoto, AgonyUI.fusion.spaceWidth / 2, AgonyUI.fusion.spaceHeight / 2 - 100)
-				TweenLite.to(mPhoto, 1, {scaleX: 0.8, scaleY: 0.8, ease: Cubic.easeOut, onComplete: function():void {
+				TweenLite.to(mPhoto, 1, {scaleX: 0.8 * sc, scaleY: 0.8 * sc, ease: Cubic.easeOut, onComplete: function():void {
 					TweenLite.to(mPhoto, 0.5, {alpha: 0, onComplete: function():void {
 						clickAble=true;
 						mPhoto.kill()

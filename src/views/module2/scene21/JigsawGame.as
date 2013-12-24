@@ -41,6 +41,7 @@ package views.module2.scene21
 
 		public function JigsawGame(am:AssetManager=null)
 		{
+			bigGame=true;
 			super(am);
 
 			addBG();

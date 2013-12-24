@@ -17,7 +17,7 @@ package sound
 		}
 
 		public static var initArr:Array=["main", "camera", "happy", "sad", "buttonclick", "centerflip", "gamerecord", "lionshow",
-										 "getachieve", "getcard", "mapbgm", "dang"];
+										 "getachieve", "getcard", "mapbgm", "dang", "gameBGM"];
 		[Embed(source="/sound/main.mp3")] //done
 		public static var main:Class;
 		[Embed(source="/sound/camera.mp3")] //done
@@ -40,6 +40,8 @@ package sound
 		public static var getcard:Class;
 		[Embed(source="/sound/mapbgm.mp3")] //done
 		public static var mapbgm:Class;
+		[Embed(source="/sound/gameBGM.mp3")] //done
+		public static var gameBGM:Class;
 		[Embed(source="/sound/dang.mp3")] //done
 		public static var dang:Class;
 //		[Embed(source="/sound/fireworks.mp3")] //done
@@ -75,7 +77,7 @@ package sound
 		public static var s11bgm:Class;
 
 		public static var module2:Array=['bug', 'drum', 'shelfin', 'shelfout',
-										 "flute", "scrollout", "dragonlighton", "ringblock", "ringrolling", "telescale"];
+										 "flute", "scrollout", "dragonlighton", "ringblock", "ringrolling", "telescale", "blockmatch"];
 		[Embed(source="/sound/21bug.mp3")] //done
 		public static var bug:Class;
 		[Embed(source="/sound/21drum.mp3")] //done
@@ -122,7 +124,7 @@ package sound
 		[Embed(source="/sound/s41bgm.mp3")] //done
 		public static var s41bgm:Class;
 
-		public static var module5:Array=['cough', 'sigh', 'gamebg52', 'fire', "bodyfall", "maskok", "maskwrong"];
+		public static var module5:Array=['cough', 'sigh', 'gamebg52', 'fire', "bodyfall", "maskok", "maskwrong", "taihou"];
 		[Embed(source="/sound/51cough.mp3")] //done
 		public static var cough:Class;
 		[Embed(source="/sound/51sigh.mp3")] //done
@@ -137,11 +139,13 @@ package sound
 		public static var maskok:Class;
 		[Embed(source="/sound/52maskwrong.mp3")] //done
 		public static var maskwrong:Class;
+		[Embed(source="/sound/51taihou.mp3")] //done
+		public static var taihou:Class;
 
 		public static var gamescene:Array=['dishon', 'dishout', 'fly', 'kingeat', 'kingpoison',
 										   'blockfall', 'blockmatch',
 										   'gamebg52', 'bodyfall', 'maskok', 'maskwrong'];
-		public static var loopArr:Array=["main", "gamebg52", "mapbgm", "s11bgm", "s41bgm", "fireworks"];
+		public static var loopArr:Array=["main", "gamebg52", "mapbgm", "s11bgm", "s41bgm", "fireworks", "gameBGM"];
 
 		public static function init():void
 		{

@@ -11,8 +11,10 @@ package views.module1
 	import flash.geom.Rectangle;
 	import flash.media.SoundTransform;
 	import flash.utils.Dictionary;
+	import flash.utils.getTimer;
 
 	import controllers.MC;
+	import controllers.UserBehaviorAnalysis;
 
 	import sound.SoundAssets;
 
@@ -113,8 +115,6 @@ package views.module1
 			addChild(fg);
 
 			onFGLoaded();
-
-			SoundAssets.playBGM("s11bgm");
 		}
 
 		/**
@@ -158,6 +158,13 @@ package views.module1
 			}
 			TopBar.tweenPlay(true, showBook);
 			TweenLite.delayedCall(5, hideBook);
+		}
+
+		override protected function init():void
+		{
+			initTime=getTimer();
+			UserBehaviorAnalysis.trackView(sceneName);
+			SoundAssets.playBGM("s11bgm");
 		}
 
 		private function showLionTask():void

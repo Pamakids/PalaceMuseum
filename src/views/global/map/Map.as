@@ -12,6 +12,9 @@ package views.global.map
 	import controllers.MC;
 	import controllers.UserBehaviorAnalysis;
 
+	import feathers.controls.ScrollContainer;
+	import feathers.layout.VerticalLayout;
+
 	import models.Const;
 	import models.SOService;
 
@@ -75,7 +78,6 @@ package views.global.map
 		 * 		有已解锁的标签
 		 */
 
-		private var viewContainer:Sprite;
 		private var mapData:Object;
 
 //		private var flipAnimation:FlipAnimation;
@@ -114,7 +116,6 @@ package views.global.map
 
 		public function Map(from:int=-1, to:int=-1)
 		{
-			this.viewContainer=new Sprite();
 			this.from=from;
 			this.to=to;
 			super(Map.assetManager, Const.WIDTH, Const.HEIGHT);
@@ -272,6 +273,7 @@ package views.global.map
 		 * */
 		public function clear(status:int=0):void
 		{
+			removeEventListener(Event.ENTER_FRAME, onScrolling);
 			if (initTime > 0)
 			{
 				disposeTime=getTimer();
@@ -354,13 +356,57 @@ package views.global.map
 //			flipAnimation.height=height;
 //			addChild(flipAnimation);
 
+			scroller=new ScrollContainer();
+			var lo:VerticalLayout=new VerticalLayout();
+			lo.gap=0;
+			lo.horizontalAlign=VerticalLayout.HORIZONTAL_ALIGN_LEFT;
+			scroller.layout=lo;
+			scroller.width=1024 + 300;
+			scroller.height=768 + 20;
+
 			flipAnimation=new Sprite();
 			flipAnimation.addChildAt(getImage("mapBG"), 0);
-			addChild(flipAnimation);
+//			addChild(flipAnimation);
 			positionKing();
+
+			top=getImage("mapTop");
+			botttom=getImage("mapBotton");
+//			botttom.pivotY=21;
+
+			addChild(top);
+			scroller.addChild(flipAnimation);
+			addChild(botttom);
+
+			addChild(scroller);
+
+			topH=top.height;
+			mapH=1344;
+			bottomH=botttom.height;
+
+			scroller.verticalScrollPosition=mapH - 768;
 			flipedHandler();
-			flipAnimation.y=-460.8;
+
+			scroller.elasticity=.22
+
+			addEventListener(Event.ENTER_FRAME, onScrolling);
 		}
+
+		private var pt:Point=new Point();
+
+		private function onScrolling(e:Event):void
+		{
+			if (scroller && top && botttom)
+			{
+				var vp:Number=-scroller.verticalScrollPosition
+				vp=this.globalToLocal(flipAnimation.localToGlobal(pt)).y;
+				top.y=vp - topH + 10;
+				botttom.y=vp + mapH - 10;
+			}
+		}
+
+		private var topH:Number;
+		private var mapH:Number;
+		private var bottomH:Number;
 
 		override public function dispose():void
 		{
@@ -419,7 +465,8 @@ package views.global.map
 //					showCenterBtn();
 				addEventListener(TouchEvent.TOUCH, touchHandler);
 				positionSun(showFromCenter ? mc.moduleIndex : from);
-				TweenLite.to(flipAnimation, 5, {delay: 1, y: 0, ease: Cubic.easeOut});
+				scroller.scrollToPosition(0, 0, 5);
+//				TweenLite.to(flipAnimation, 5, {delay: 1, y: 0, ease: Cubic.easeOut});
 			};
 			var lionSay:Function=function():void
 			{
@@ -515,17 +562,17 @@ package views.global.map
 					downPoint=p;
 					downY=flipAnimation.y;
 					break;
-				case TouchPhase.MOVED:
-					if (!downPoint)
-						return;
-					toy=p.y - downPoint.y;
-					var yv:Number=downY + toy;
-					if (yv > 0)
-						yv=0;
-					else if (yv < height - flipAnimation.height)
-						yv=height - flipAnimation.height;
-					flipAnimation.y=yv;
-					break;
+//				case TouchPhase.MOVED:
+//					if (!downPoint)
+//						return;
+//					toy=p.y - downPoint.y;
+//					var yv:Number=downY + toy;
+//					if (yv > 0)
+//						yv=0;
+//					else if (yv < height - flipAnimation.height)
+//						yv=height - flipAnimation.height;
+//					flipAnimation.y=yv;
+//					break;
 				case TouchPhase.ENDED:
 					if (!downPoint)
 						return;
@@ -833,6 +880,12 @@ package views.global.map
 		private var preSky:Image;
 		private var desSky:Image;
 		public static var showCenterBtn:Function;
+
+		private var scroller:ScrollContainer;
+
+		private var top:Image;
+
+		private var botttom:Image;
 
 		/**
 		 *

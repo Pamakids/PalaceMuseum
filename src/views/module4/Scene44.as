@@ -169,7 +169,11 @@ package views.module4
 			e.stopImmediatePropagation()
 			var tc:Touch=e.getTouch(king, TouchPhase.ENDED);
 			if (tc)
-				Prompt.showTXT(512, 600, "哇，好气派的花园，咦，小狮子去哪了？", 20, null, this);
+			{
+				if (kingP)
+					kingP.playHide();
+				kingP=Prompt.showTXT(512, 600, "哇，好气派的花园，咦，小狮子去哪了？", 20, null, this);
+			}
 		}
 
 		private var windX:Number;
@@ -309,6 +313,8 @@ package views.module4
 
 		private function startPlayNotes():void
 		{
+			if (kingP)
+				kingP.playHide();
 			king.removeFromParent(true);
 
 			king=new Sprite();
@@ -459,7 +465,12 @@ package views.module4
 			{
 				count++;
 				if (count > 60)
+				{
+					if (kingP)
+						kingP.playHide();
+					kingP=Prompt.showTXT(512, 600, "哇，好气派的花园，咦，小狮子去哪了？", 20, null, this);
 					outMove=false;
+				}
 				moveBG(-10);
 			}
 			if (!isFree)
@@ -503,13 +514,21 @@ package views.module4
 			return (speed > 0 ? -1 : 1) * getRandomSpeed();
 		}
 
+		private var kingP:Prompt;
+
 		private function onTouch(event:TouchEvent):void
 		{
 			var tc:Touch=event.getTouch(this);
 			if (!tc)
 				return;
 			var pt:Point=tc.getLocation(this);
-			outMove=false;
+			if (outMove)
+			{
+				if (kingP)
+					kingP.playHide();
+				kingP=Prompt.showTXT(512, 600, "哇，好气派的花园，咦，小狮子去哪了？", 20, null, this);
+				outMove=false;
+			}
 			switch (tc.phase)
 			{
 				case TouchPhase.BEGAN:

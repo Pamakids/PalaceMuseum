@@ -138,6 +138,8 @@ package views.module5
 				SoundAssets.playSFX("cough");
 			else if (index == 1)
 				SoundAssets.playSFX("sigh");
+			else if (index == 2)
+				SoundAssets.playSFX("taihou");
 		}
 
 		private var ready:Boolean;
