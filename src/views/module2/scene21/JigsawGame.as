@@ -438,6 +438,7 @@ package views.module2.scene21
 			bgHolder.addChild(edge);
 			edge.alpha=0;
 			TweenLite.to(edge, 3, {alpha: 3, onComplete: function():void {
+				SoundAssets.playSFX("gameWin");
 				LionMC.instance.play(1, 0, 0, function():void {
 					TweenLite.to(timeHolder, 1, {x: 1024});
 					TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn, onComplete: function():void {
@@ -447,15 +448,6 @@ package views.module2.scene21
 					}});
 				}, 2);
 			}});
-//			TweenLite.delayedCall(2, function():void
-//			{
-//				TweenLite.to(timeHolder, 1, {x: 1024});
-//				TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn, onComplete: function():void {
-//					timeHolder.removeFromParent(true);
-//					gameSP.removeFromParent(true);
-//					initResult();
-//				}});
-//			});
 		}
 
 		private function initResult():void

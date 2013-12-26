@@ -2,6 +2,7 @@ package views.module4
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Back;
+	import com.greensock.easing.Quad;
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.SPUtils;
 
@@ -59,7 +60,6 @@ package views.module4
 			bgHolder.addChild(bg2);
 			bgW=bgHolder.width;
 			bgHolder.x=-300;
-//			bgHolder.x=(1024 - bgW) / 2;
 			addChild(bgHolder);
 
 			for (var i:int=0; i < cardArr.length; i++)
@@ -84,8 +84,8 @@ package views.module4
 			var kingImg:Image=getImage("kingHead")
 			king.addChild(kingImg);
 			SPUtils.registSPCenter(king, 2);
-			bgHolder.addChild(king);
-			king.x=bgW / 2 - 125;
+			addChild(king);
+			king.x=512 - 125;
 			king.y=768;
 
 			var lion:Image=getImage("lionHead");
@@ -95,7 +95,7 @@ package views.module4
 
 			var dx:Number=1024 - bgW >> 1
 
-			TweenLite.to(bgHolder, 2.5, {x: dx, ease: Back.easeInOut, onComplete: function():void {
+			TweenLite.to(bgHolder, 3, {x: dx, ease: Quad.easeInOut, onComplete: function():void {
 				kingImg.addEventListener(TouchEvent.TOUCH, onKingTouch);
 				lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
 				lionChat1();

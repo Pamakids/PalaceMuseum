@@ -305,7 +305,9 @@ package views.module5.scene52
 			gameOver=true;
 			timer.stop();
 
-			LionMC.instance.play((life > 0 && score > 0) ? 1 : 4, 0, 0, initResult, 2);
+			var _win:Boolean=life > 0 && score > 0
+			SoundAssets.playSFX(_win ? "gameWin" : "gameLose");
+			LionMC.instance.play(_win ? 1 : 4, 0, 0, initResult, 2);
 
 //			TweenLite.delayedCall(2, initResult);
 		}
@@ -642,19 +644,19 @@ package views.module5.scene52
 					recordTXT=operagameresult.toString();
 				}
 
-				var scoreTF:TextField=new TextField(200, 100, scoreTXT);
+				var scoreTF:TextField=new TextField(200 + 200, 100, scoreTXT);
 				scoreTF.fontSize=48;
 				scoreTF.color=0xb83d00;
-				scoreTF.x=470;
+				scoreTF.x=470 - 200;
 				scoreTF.y=285;
 				scoreTF.vAlign="top";
 				scoreTF.hAlign="right";
 				endHolder.addChild(scoreTF);
 
-				TweenLite.delayedCall(.2, function():void {
-					scoreTF.redraw();
-					scoreTF.text=scoreTXT;
-				})
+//				TweenLite.delayedCall(.2, function():void {
+//					scoreTF.redraw();
+//					scoreTF.text=scoreTXT;
+//				})
 
 				var recordTF:TextField=new TextField(100, 40, recordTXT);
 				recordTF.fontSize=24;
