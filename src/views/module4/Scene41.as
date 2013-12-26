@@ -1,6 +1,7 @@
 package views.module4
 {
 	import com.greensock.TweenLite;
+	import com.greensock.easing.Back;
 	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.SPUtils;
 
@@ -57,7 +58,8 @@ package views.module4
 			bgHolder.addChild(bg1);
 			bgHolder.addChild(bg2);
 			bgW=bgHolder.width;
-			bgHolder.x=(1024 - bgW) / 2;
+			bgHolder.x=-300;
+//			bgHolder.x=(1024 - bgW) / 2;
 			addChild(bgHolder);
 
 			for (var i:int=0; i < cardArr.length; i++)
@@ -82,18 +84,22 @@ package views.module4
 			var kingImg:Image=getImage("kingHead")
 			king.addChild(kingImg);
 			SPUtils.registSPCenter(king, 2);
-			addChild(king);
-			king.x=512 - 125;
+			bgHolder.addChild(king);
+			king.x=bgW / 2 - 125;
 			king.y=768;
-			kingImg.addEventListener(TouchEvent.TOUCH, onKingTouch);
 
 			var lion:Image=getImage("lionHead");
 			lion.x=king.width;
 			lion.y=king.height - lion.height;
 			king.addChild(lion);
-			lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
 
-			lionChat1();
+			var dx:Number=1024 - bgW >> 1
+
+			TweenLite.to(bgHolder, 2.5, {x: dx, ease: Back.easeInOut, onComplete: function():void {
+				kingImg.addEventListener(TouchEvent.TOUCH, onKingTouch);
+				lion.addEventListener(TouchEvent.TOUCH, onLionTouch);
+				lionChat1();
+			}});
 		}
 
 		override protected function init():void
@@ -176,14 +182,66 @@ package views.module4
 		{
 			addCraws();
 
-			acc=new Accelerometer();
-			acc.addEventListener(AccelerometerEvent.UPDATE, onUpdate);
+			bgHolder.addEventListener(TouchEvent.TOUCH, onTouch);
 
-			if (SOService.instance.checkHintCount(shakeHintCount))
-				needHint=true;
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+//			acc=new Accelerometer();
+//			acc.addEventListener(AccelerometerEvent.UPDATE, onUpdate);
+//
+//			if (SOService.instance.checkHintCount(shakeHintCount))
+//				needHint=true;
+//			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 
 			TailBar.show();
+		}
+
+		private var dragging:Boolean;
+
+		private function onTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(this);
+			if (!tc)
+				return;
+
+			switch (tc.phase)
+			{
+				case TouchPhase.BEGAN:
+				{
+					dragging=true;
+					break;
+				}
+
+				case TouchPhase.MOVED:
+				{
+					if (dragging)
+					{
+						speedX=tc.getMovement(this).x;
+
+						bgHolder.x+=speedX / 2;
+						if (bgHolder.x > 0)
+						{
+							leftHit=true;
+							bgHolder.x=0;
+						}
+						else if (bgHolder.x < 1024 - bgW)
+						{
+							bgHolder.x=1024 - bgW;
+							rightHit=true;
+						}
+					}
+					break;
+				}
+
+				case TouchPhase.ENDED:
+				{
+					dragging=false;
+					break;
+				}
+
+				default:
+				{
+					break;
+				}
+			}
 		}
 
 		private var crawPosArr:Array=[new Point(1278, 708), new Point(1064, 490), new Point(1488, 490)];
@@ -202,13 +260,13 @@ package views.module4
 
 		private function onCrowTouch(e:TouchEvent):void
 		{
+			e.stopImmediatePropagation();
 			var craw:Craw=e.currentTarget as Craw;
 			if (!craw)
 				return;
 			var tc:Touch=e.getTouch(craw, TouchPhase.ENDED);
 			if (!tc)
 				return;
-
 			showChancellor(craw);
 
 		}
@@ -221,12 +279,14 @@ package views.module4
 			craw.touchable=false;
 			checkArr[index]=true;
 			var dx:Number;
+			var show:Boolean;
 			switch (index)
 			{
 				case 0:
 				{
 					if (!chancellor)
 					{
+						show=true;
 						chancellor=getImage("chancellor");
 						chancellor.x=peoplePosArr[index].x;
 						chancellor.y=peoplePosArr[index].y;
@@ -246,6 +306,7 @@ package views.module4
 				{
 					if (!wen)
 					{
+						show=true
 						wen=getImage("wen");
 						wen.x=peoplePosArr[index].x;
 						wen.y=peoplePosArr[index].y;
@@ -270,6 +331,7 @@ package views.module4
 				{
 					if (!wu)
 					{
+						show=true;
 						wu=getImage("wu");
 						wu.x=peoplePosArr[index].x;
 						wu.y=peoplePosArr[index].y;
@@ -298,6 +360,9 @@ package views.module4
 				}
 			}
 
+			if (show)
+				SoundAssets.playSFX("popup");
+
 			for each (var b:Boolean in checkArr)
 			{
 				if (!b)
@@ -308,6 +373,7 @@ package views.module4
 
 		private function onChancellorTouch(e:TouchEvent):void
 		{
+			e.stopImmediatePropagation()
 			var tc:Touch=e.getTouch(chancellor, TouchPhase.ENDED);
 			if (tc)
 				showHint(chancellor.x + 50, chancellor.y, hintArr[0]);
@@ -315,6 +381,7 @@ package views.module4
 
 		private function onWenTouch(e:TouchEvent):void
 		{
+			e.stopImmediatePropagation()
 			var tc:Touch=e.getTouch(wen, TouchPhase.ENDED);
 			if (tc)
 				showHint(wen.x + 200, wen.y + 20, hintArr[1]);
@@ -322,6 +389,7 @@ package views.module4
 
 		private function onWuTouch(e:TouchEvent):void
 		{
+			e.stopImmediatePropagation()
 			var tc:Touch=e.getTouch(wu, TouchPhase.ENDED);
 			if (tc)
 				showHint(wu.x + 50, wu.y + 20, hintArr[2]);

@@ -36,8 +36,7 @@ package
 			if (Capabilities.isDebugger)
 			{
 //				SOService.instance.clear();
-//				SOService.instance.init();
-//				SOService.instance.setSO("lastScene", "11map");
+//				SOService.instance.setSO("lastScene", "41");
 			}
 			super();
 
@@ -100,29 +99,15 @@ package
 		[Embed(source="/assets/start/title.jpg")]
 		public static var Title:Class
 
-//		[Embed(source="/assets/start/sb1.png")]
-//		public static var StartBtn:Class
-//
-//		[Embed(source="/assets/start/sb2.png")]
-//		public static var StartBtn2:Class
-
 		public function showStart():void
 		{
 			startHolder=new Sprite();
-//			startHolder.addChild(Image.fromBitmap(new PalaceModule.gameBG()));
 			var title:Image=Image.fromBitmap(new Title());
-//			title.x=171;
 			startHolder.addChild(title);
 			addChild(startHolder);
 			TweenLite.delayedCall(1, function():void {
 				SoundAssets.playSFX("dang", false, 1);
 			});
-//			var startBtn:ElasticButton=new ElasticButton(Image.fromBitmap(new StartBtn()));
-//			startBtn.shadow=Image.fromBitmap(new StartBtn2());
-//			startBtn.x=512;
-//			startBtn.y=488;
-//			startHolder.addChild(startBtn);
-//			startBtn.addEventListener(ElasticButton.CLICK, onStart);
 		}
 
 		private function onStart(e:Event):void

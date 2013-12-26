@@ -611,22 +611,6 @@ package views.module5.scene52
 				win.x=1024 - win.width >> 1;
 				win.y=30;
 
-				for (var i:int=0; i < life; i++)
-				{
-					var star1:Image=getImage("star-red");
-					star1.x=412 + i * 76;
-					star1.y=214;
-					endHolder.addChild(star1);
-				}
-
-				for (var j:int=life; j < 3; j++)
-				{
-					var star2:Image=getImage("star-grey");
-					star2.x=412 + j * 76;
-					star2.y=214;
-					endHolder.addChild(star2);
-				}
-
 				var operagameresult:int=SOService.instance.getSO(gameResult + gamelevel.toString()) as int;
 
 				var t1:TextField=new TextField(200, 100, "得分：", FontVo.PALACE_FONT, 48, 0xb83d00);
@@ -650,7 +634,7 @@ package views.module5.scene52
 					scoreTXT=score.toString();
 					recordTXT=score.toString();
 					isRecord=true;
-					SOService.instance.setSO(gameResult, score);
+					SOService.instance.setSO(gameResult + gamelevel.toString(), score);
 				}
 				else
 				{
@@ -666,6 +650,7 @@ package views.module5.scene52
 				scoreTF.vAlign="top";
 				scoreTF.hAlign="right";
 				endHolder.addChild(scoreTF);
+
 				TweenLite.delayedCall(.2, function():void {
 					scoreTF.redraw();
 					scoreTF.text=scoreTXT;
@@ -677,11 +662,6 @@ package views.module5.scene52
 				recordTF.x=520;
 				recordTF.y=370;
 				endHolder.addChild(recordTF);
-
-				TweenLite.delayedCall(.1, function():void {
-					scoreTF.text=scoreTF.text;
-					recordTF.text=recordTF.text;
-				});
 			}
 			else
 			{
@@ -721,6 +701,7 @@ package views.module5.scene52
 			}
 
 			function openCallback():void {
+				addStars(life, endHolder);
 				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
 				if (isRecord)
 					showRecord();

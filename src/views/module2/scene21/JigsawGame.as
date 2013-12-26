@@ -297,13 +297,13 @@ package views.module2.scene21
 				var dx:Number=50 + Math.random() * 900 - px;
 				var dy:Number=Math.random() * 50 + 530 + gamelevel * 40;
 				var dr:Number=Math.random() * Math.PI * 2;
-				//				dr=0;
+//				dr=0;
 				TweenLite.to(cell, 1, {x: dx, y: dy, rotation: dr, scaleX: cellScale, scaleY: cellScale});
 			}
 
 			TweenLite.to(timeHolder, 1, {x: 822, onComplete: function():void {
 				ready=true;
-				time=new Timer(33);
+				time=new Timer(1000 / 30);
 				time.addEventListener(TimerEvent.TIMER, onTimer);
 				time.start();
 //				gameOver(); //test
@@ -499,7 +499,7 @@ package views.module2.scene21
 			t1.vAlign="top";
 			t1.hAlign="left";
 			t1.x=332;
-			t1.y=277;
+			t1.y=277 + 20;
 			endSP.addChild(t1);
 			var t2:TextField=new TextField(200, 40, "最快：", FontVo.PALACE_FONT, 26, 0xb83d00);
 			t2.vAlign="top";
@@ -512,7 +512,7 @@ package views.module2.scene21
 			resultTF.fontSize=48;
 			resultTF.color=0xb83d00;
 			resultTF.x=468;
-			resultTF.y=277;
+			resultTF.y=277 + 20;
 			resultTF.vAlign="top";
 			resultTF.hAlign="left";
 			endSP.addChild(resultTF);
@@ -536,8 +536,15 @@ package views.module2.scene21
 			rsBtn.y=520;
 			endSP.addChild(rsBtn);
 
-			TweenLite.to(endSP, 1, {y: 0, onComplete: function():void {
+			var starNum:int=1;
+			if (_count / 30 < (4 * 60))
+				starNum=2
+			if (_count / 30 < (2 * 60 + 50))
+				starNum=3;
 
+			TweenLite.to(endSP, 1, {y: 0, onComplete: function():void {
+				if (gamelevel == 1)
+					addStars(starNum, endSP, 234);
 				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
 				if (delayFunction)
 					delayFunction();

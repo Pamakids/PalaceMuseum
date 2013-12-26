@@ -146,6 +146,7 @@ package views.module1
 			clock.x=50;
 			clock.y=25;
 			clock.reset();
+			SoundAssets.playSFX("popup");
 			PopUpManager.addPopUp(clock, true, false);
 		}
 
@@ -215,6 +216,7 @@ package views.module1
 				game.addEventListener(PalaceGame.GAME_OVER, closeGame);
 				gameHolder.addChild(game);
 			}
+			SoundAssets.playSFX("popup");
 			PopUpManager.addPopUp(gameHolder, true, false);
 		}
 

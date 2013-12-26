@@ -10,6 +10,8 @@ package views.module2
 
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -38,14 +40,13 @@ package views.module2
 	public class Scene22 extends PalaceScene
 	{
 
+		private var thermoGame:ThermoMeter;
 		private var teleGame:Telescope;
-
 		private var prismGame:TriangularPrism;
 
 		private var prism:Image;
 		private var thermo:Image;
 		private var tele:Image;
-		private var thermoGame:ThermoMeter;
 
 		private var hint0:String="造纸家弟子的传世之作－宣纸\n\n宣纸因产自唐代宣州\n（今安徽泾县）而得名，\n它易书写，不褪色，\n少虫蛀，寿命长。";
 		private var hint1:String="仙鹤带来的制砚灵感－端砚\n\n端砚产自广东省端州\n（今肇庆）， 端砚石质优良，\n雕刻精美，研出的墨汁细滑。";
@@ -223,6 +224,7 @@ package views.module2
 				return;
 			if (index == 4)
 			{
+				SoundAssets.playSFX("popup");
 				book=new ItemIntro(2, new Rectangle(82, 452, 260, 90));
 				close=new ElasticButton(getImage("button_close"), getImage("button_close_down"));
 				book.addIntro(getImage("intro-bg"), getImage("intro-waterpot"), close);
@@ -326,6 +328,7 @@ package views.module2
 
 		private function initTelescope():void
 		{
+			SoundAssets.playSFX("popup");
 			teleGame=new Telescope(assetManager)
 			addChild(teleGame);
 			teleGame.addEventListener(PalaceGame.GAME_OVER, onTelePlayed)
@@ -338,14 +341,14 @@ package views.module2
 				addLabel(1);
 				setClicked(1);
 			}
-//			if (teleGame.isWin)
-//				showAchievement(13);
+			showEnd(teleGame.isWin)
 			teleGame.removeFromParent(true);
 			teleGame=null;
 		}
 
 		private function initPrism():void
 		{
+			SoundAssets.playSFX("popup");
 			prismGame=new TriangularPrism(assetManager);
 			addChild(prismGame);
 			prismGame.addEventListener(PalaceGame.GAME_OVER, onPrismPlayed)
@@ -368,12 +371,14 @@ package views.module2
 				addLabel(2);
 				setClicked(2);
 			}
+			showEnd(prismGame.isWin)
 			prismGame.removeFromParent(true);
 			prismGame=null;
 		}
 
 		private function initThermo():void
 		{
+			SoundAssets.playSFX("popup");
 			thermoGame=new ThermoMeter(assetManager);
 			addChild(thermoGame);
 			thermoGame.addEventListener(PalaceGame.GAME_OVER, onThermoPlayed)
@@ -386,15 +391,25 @@ package views.module2
 				addLabel(0);
 				setClicked(0);
 			}
-			if (thermoGame.isWin)
+			showEnd(thermoGame.isWin)
+			thermoGame.removeFromParent(true);
+			thermoGame=null;
+		}
+
+		private var isEnd:Boolean
+
+		private function showEnd(b:Boolean):void
+		{
+			if (isEnd)
+				return;
+			isEnd=true;
+			if (b)
 			{
 				TailBar.hide();
 				showAchievement(11, sceneOver);
 			}
 			else
 				sceneOver();
-			thermoGame.removeFromParent(true);
-			thermoGame=null;
 
 		}
 	}

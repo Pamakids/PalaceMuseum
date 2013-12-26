@@ -54,7 +54,7 @@ package views.module3.scene33
 		private var pinNormal:Image;
 		private var pinPoison:Image;
 		private var _poisonTest:Boolean;
-		private var crtDish:Dish;
+//		private var crtDish:Dish;
 		private var speedX:Number;
 		private var speedY:Number;
 		private var upHand:Sprite;
@@ -460,48 +460,48 @@ package views.module3.scene33
 					{
 						TweenLite.killTweensOf(dish);
 						dishHolder.setChildIndex(dish, dishHolder.numChildren - 1);
-						crtDish=dish;
+//						crtDish=dish;
 					}
 					break;
 				}
 
 				case TouchPhase.MOVED:
 				{
-					if (crtDish)
+//					if (crtDish)
 					{
-						var move:Point=tc.getMovement(crtDish);
+						var move:Point=tc.getMovement(dish);
 						speedX=move.x;
 						speedY=move.y;
-						crtDish.x=pt.x;
-						crtDish.y=pt.y;
+						dish.x=pt.x;
+						dish.y=pt.y;
 					}
 					break;
 				}
 
 				case TouchPhase.ENDED:
 				{
-					if (crtDish)
+//					if (crtDish)
 					{
-						if (checkArea(crtDish))
+						if (checkArea(dish))
 						{
-							crtDish.removeEventListener(TouchEvent.TOUCH, onDishTouch);
+							dish.removeEventListener(TouchEvent.TOUCH, onDishTouch);
 						}
 						else
 						{
 							var speed:Number=Math.sqrt(speedX * speedX + speedY * speedY);
 							if (speed > 10)
 							{
-								crtDish.isFlying=true;
+								dish.isFlying=true;
 								var angle:Number=Math.atan2(speedY, speedX);
 								if (speed > 30)
 									speed=30;
-								crtDish.speedX=Math.cos(angle) * speed;
-								crtDish.speedY=Math.sin(angle) * speed;
-								crtDish.removeEventListener(TouchEvent.TOUCH, onDishTouch);
+								dish.speedX=Math.cos(angle) * speed;
+								dish.speedY=Math.sin(angle) * speed;
+								dish.removeEventListener(TouchEvent.TOUCH, onDishTouch);
 							}
 							else
 							{
-								crtDish.tweenMove();
+								dish.tweenMove();
 							}
 						}
 					}
@@ -509,7 +509,7 @@ package views.module3.scene33
 					//reset
 					speedX=0;
 					speedY=0;
-					crtDish=null;
+//					crtDish=null;
 					break;
 				}
 
@@ -671,21 +671,21 @@ package views.module3.scene33
 				win.x=1024 - win.width >> 1;
 				win.y=30;
 
-				for (var i:int=0; i < life; i++)
-				{
-					var star1:Image=getImage("star-red");
-					star1.x=412 + i * 76;
-					star1.y=214;
-					endSP.addChild(star1);
-				}
-
-				for (var j:int=life; j < 3; j++)
-				{
-					var star2:Image=getImage("star-grey");
-					star2.x=412 + j * 76;
-					star2.y=214;
-					endSP.addChild(star2);
-				}
+//				for (var i:int=0; i < life; i++)
+//				{
+//					var star1:Image=getImage("star-red");
+//					star1.x=412 + i * 76;
+//					star1.y=214;
+//					endSP.addChild(star1);
+//				}
+//
+//				for (var j:int=life; j < 3; j++)
+//				{
+//					var star2:Image=getImage("star-grey");
+//					star2.x=412 + j * 76;
+//					star2.y=214;
+//					endSP.addChild(star2);
+//				}
 
 				var gameResultlvl:String=gameResult + gamelevel.toString();
 				var dishgameresult:int=SOService.instance.getSO(gameResultlvl) as int;
@@ -763,6 +763,8 @@ package views.module3.scene33
 			TweenLite.to(gameSP, .5, {x: 1024});
 
 			TweenLite.to(endSP, .5, {x: 0, onComplete: function():void {
+				if (gamelevel == 1)
+					addStars(life, endSP, 214);
 				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
 				closeBtn.visible=closeBtn.touchable=true;
 				if (isRecord)

@@ -13,6 +13,8 @@ package views
 	import models.FontVo;
 	import models.SOService;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -71,6 +73,8 @@ package views
 			sendBtn.addEventListener(ElasticButton.CLICK, sendMessage);
 
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+
+			SoundAssets.playBGM("gameBGM");
 		}
 
 		private function onEnterFrame(e:Event):void

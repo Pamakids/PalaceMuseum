@@ -167,7 +167,7 @@ package views.module3.scene32
 
 			addEventListener(TouchEvent.TOUCH, onTouch);
 
-			time=new Timer(33);
+			time=new Timer(1000 / 30);
 			time.addEventListener(TimerEvent.TIMER, onTimer);
 			time.start();
 		}
@@ -499,7 +499,7 @@ package views.module3.scene32
 
 			var resultTXT:String;
 			var recordTXT:String;
-			var delayFunction:Function;
+			var delayFunction:Function=null;
 
 			if (!menugameresult)
 			{
@@ -510,7 +510,6 @@ package views.module3.scene32
 			else if (_count < menugameresult)
 			{
 				SOService.instance.setSO(gameResultlvl, _count);
-//				delayFunction=showRecord;
 				resultTXT=recordTXT=getStringFormTime(_count);
 			}
 			else
@@ -528,7 +527,7 @@ package views.module3.scene32
 			t1.vAlign="top";
 			t1.hAlign="left";
 			t1.x=332;
-			t1.y=277;
+			t1.y=277 + 20;
 			endSP.addChild(t1);
 			var t2:TextField=new TextField(200, 40, "最快：", FontVo.PALACE_FONT, 26, 0xb83d00);
 			t2.vAlign="top";
@@ -541,7 +540,7 @@ package views.module3.scene32
 			resultTF.fontSize=48;
 			resultTF.color=0xb83d00;
 			resultTF.x=468;
-			resultTF.y=277;
+			resultTF.y=277 + 20;
 			resultTF.vAlign="top";
 			resultTF.hAlign="left";
 			endSP.addChild(resultTF);
@@ -553,10 +552,11 @@ package views.module3.scene32
 			recordTF.y=390;
 			endSP.addChild(recordTF);
 
-//			TweenLite.delayedCall(.1, function():void {
-//				resultTF.text=resultTF.text;
-//				recordTF.text=recordTF.text;
-//			});
+			var starNum:int=1;
+			if (_count / 30 < 40)
+				starNum=2;
+			if (_count / 30 < 20)
+				starNum=3;
 
 			var rsBtn:ElasticButton=new ElasticButton(getImage("restart"));
 			rsBtn.shadow=getImage("restart-light");
@@ -565,9 +565,10 @@ package views.module3.scene32
 			endSP.addChild(rsBtn);
 
 			TweenLite.to(endSP, 1, {y: 0, onComplete: function():void {
-
+				if (gamelevel == 1)
+					addStars(starNum, endSP, 234);
 				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
-				if (delayFunction)
+				if (delayFunction != null)
 					delayFunction();
 				else
 					closeBtn.visible=closeBtn.touchable=true;
