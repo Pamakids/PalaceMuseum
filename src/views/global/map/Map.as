@@ -382,13 +382,10 @@ package views.global.map
 			topH=top.height;
 			mapH=1344;
 			bottomH=botttom.height;
-
-			scroller.verticalScrollPosition=mapH - 768;
-			flipedHandler();
-
 			scroller.elasticity=.22
 
-			addEventListener(Event.ENTER_FRAME, onScrolling);
+			flipedHandler();
+
 		}
 
 		private var pt:Point=new Point();
@@ -448,6 +445,8 @@ package views.global.map
 
 		private function flipedHandler(e:Event=null):void
 		{
+			scroller.verticalScrollPosition=mapH - 768;
+			addEventListener(Event.ENTER_FRAME, onScrolling);
 			if (MC.needGuide)
 			{
 //				LionMC.instance.say("先进入手册看看吧！", 0, 0, 0, showGuide);

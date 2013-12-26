@@ -91,8 +91,6 @@ package views
 
 			messageHolder.removeFromParent(true);
 
-//			SoundAssets.playBGM("fireworks");
-
 			addBG();
 			addPanel();
 			addContent();
@@ -152,7 +150,7 @@ package views
 
 		override protected function onCloseClick(e:Event):void
 		{
-//			SoundAssets.stopBGM(true);
+			SoundAssets.stopBGM(true);
 			if (callback != null)
 				callback();
 			callback=null;

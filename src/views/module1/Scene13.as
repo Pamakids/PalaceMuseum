@@ -60,6 +60,7 @@ package views.module1
 
 		override protected function init():void
 		{
+			super.init();
 			addBG("bg13");
 
 			for (var i:int=0; i < 6; i++)

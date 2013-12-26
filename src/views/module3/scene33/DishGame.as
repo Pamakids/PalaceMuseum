@@ -651,7 +651,9 @@ package views.module3.scene33
 			gameOver=true;
 			timer.stop();
 
-			LionMC.instance.play((life > 0 && score > 0) ? 1 : 4, 0, 0, initResult, 2);
+			var _win:Boolean=life > 0 && score > 0
+			SoundAssets.playSFX(_win ? "gameWin" : "gameLose");
+			LionMC.instance.play(_win ? 1 : 4, 0, 0, initResult, 2);
 
 //			TweenLite.delayedCall(.5, initResult);
 		}
@@ -690,7 +692,7 @@ package views.module3.scene33
 				var gameResultlvl:String=gameResult + gamelevel.toString();
 				var dishgameresult:int=SOService.instance.getSO(gameResultlvl) as int;
 
-				var t1:TextField=new TextField(200, 100, "得分：", FontVo.PALACE_FONT, 48, 0xb83d00);
+				var t1:TextField=new TextField(200 + 200, 100, "得分：", FontVo.PALACE_FONT, 48, 0xb83d00);
 				t1.vAlign="top";
 				t1.hAlign="left";
 				t1.x=332;

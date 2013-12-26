@@ -88,6 +88,7 @@ package views.module1
 
 		override protected function init():void
 		{
+			super.init();
 			taskType=int(Math.random() * clothArr.length);
 
 			bgHolder=new Sprite();

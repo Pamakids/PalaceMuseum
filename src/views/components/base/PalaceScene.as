@@ -105,7 +105,7 @@ package views.components.base
 
 		public function PalaceScene(am:AssetManager=null)
 		{
-			super();
+			addEventListener(Event.ADDED_TO_STAGE, onStage);
 			if (sceneName.indexOf("scene") == 0)
 			{
 				var str:String=sceneName.substr(5, 2);
@@ -159,7 +159,8 @@ package views.components.base
 
 		override protected function onStage(e:Event):void
 		{
-			super.onStage(e);
+			addEventListener(Event.REMOVED_FROM_STAGE, onRemoved);
+			init();
 			TopBar.show();
 		}
 

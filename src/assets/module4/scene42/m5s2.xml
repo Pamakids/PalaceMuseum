@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:e0ee1224f85a47af45de9ae6be6d9434$ -->
+<!-- $TexturePacker:SmartUpdate:906105013875d1f62e28c5f861eab718$ -->
 <TextureAtlas imagePath="m5s2.png">
     <SubTexture name="collection_card_13" x="2" y="514" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
     <SubTexture name="collection_card_8" x="655" y="404" width="338" height="400" frameX="0" frameY="-10" frameWidth="338" frameHeight="410"/>
