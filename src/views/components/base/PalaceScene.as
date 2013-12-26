@@ -9,6 +9,7 @@ package views.components.base
 {
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
+	import com.greensock.easing.Quad;
 	import com.pamakids.manager.LoadManager;
 	import com.pamakids.palace.utils.StringUtils;
 
@@ -350,22 +351,28 @@ package views.components.base
 			cardShow.y=768 / 2;
 			PopUpManager.addPopUp(cardShow, true, false);
 
+			var haloSP:Sprite=new Sprite();
+
+			cardShow.addChild(haloSP);
+			haloSP.scaleX=1.25;
+			haloSP.scaleY=.8;
+
 			var halo:Image=getImage("halo")
-			cardShow.addChild(halo);
 			halo.pivotX=halo.width >> 1;
 			halo.pivotY=halo.height >> 1;
+			haloSP.addChild(halo);
 
-			halo.scaleX=halo.scaleY=.5;
 			halo.rotation=0;
-			TweenLite.to(halo, 2.5, {scaleX: 1, scaleY: 1, rotation: Math.PI, onComplete: function():void
-			{
-				halo.visible=false;
-				TweenLite.delayedCall(.5, function():void
-				{
-					PopUpManager.removePopUp(cardShow);
-					cardShow.dispose()
-				});
-			}});
+			TweenLite.to(halo, 2.5, {rotation: Math.PI, ease: Quad.easeOut,
+							 onComplete: function():void
+							 {
+								 halo.visible=false;
+								 TweenLite.delayedCall(.5, function():void
+								 {
+									 PopUpManager.removePopUp(cardShow);
+									 cardShow.dispose()
+								 });
+							 }});
 
 			var card:CollectionCard=new CollectionCard(callback);
 			card.addChild(getImage("collection_card_" + _cardName));

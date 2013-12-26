@@ -30,7 +30,7 @@ package
 
 			if (Capabilities.isDebugger)
 			{
-//				DPIUtil.testType="pad"
+				DPIUtil.testType="pad"
 //				DPIUtil.testType="s1"
 //				DPIUtil.testType="tv"
 //				DPIUtil.testType="pad3"

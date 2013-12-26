@@ -363,7 +363,7 @@ package views.module1.scene12
 								}});
 								return;
 							}
-							SoundAssets.playSFX("switching");
+							SoundAssets.playSFX("switching", true);
 							TweenLite.to(dragingCloth, 0.5, {x: p.x + clothXOffset, y: p.y + clothYOffset, ease: Cubic.easeOut});
 							TweenLite.to(i, 0.5, {x: dp.x + clothXOffset, y: dp.y + clothYOffset, ease: Cubic.easeOut, onComplete: function():void
 							{
@@ -430,7 +430,7 @@ package views.module1.scene12
 		{
 			if (!sp)
 				return;
-			SoundAssets.playSFX("blockmatch");
+			SoundAssets.playSFX("blockmatch", true);
 			var img1:Sprite=sp.getChildAt(0) as Sprite;
 			var img2:Image=sp.getChildAt(1) as Image;
 

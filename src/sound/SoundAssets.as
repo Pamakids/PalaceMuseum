@@ -16,14 +16,15 @@ package sound
 		{
 		}
 
-		public static var initArr:Array=["main", "camera", "happy", "sad", "buttonclick", "centerflip", "gamerecord", "lionshow",
-										 "getachieve", "getcard", "mapbgm", "dang", "gameBGM"];
+		public static var initArr:Array=["main", "camera", "bingo", "sad", "buttonclick", "centerflip", "gamerecord", "lionshow",
+										 "getachieve", "getcard", "mapbgm", "dang", "gameBGM",
+										 "kinghappy", "kinglook", "kingnaughty", "popup", "starsound"];
 		[Embed(source="/sound/main.mp3")] //done
 		public static var main:Class;
 		[Embed(source="/sound/camera.mp3")] //done
 		public static var camera:Class;
-		[Embed(source="/sound/kinghappy.mp3")] //done
-		public static var happy:Class;
+		[Embed(source="/sound/bingosound.mp3")] //done
+		public static var bingo:Class;
 		[Embed(source="/sound/kingsad.mp3")] //done
 		public static var sad:Class;
 		[Embed(source="/sound/buttonclick.mp3")] //done
@@ -44,8 +45,16 @@ package sound
 		public static var gameBGM:Class;
 		[Embed(source="/sound/dang.mp3")] //done
 		public static var dang:Class;
-//		[Embed(source="/sound/fireworks.mp3")] //done
-//		public static var fireworks:Class;
+		[Embed(source="/sound/kinghappy.mp3")] //done
+		public static var kinghappy:Class;
+		[Embed(source="/sound/kinglook.mp3")] //done
+		public static var kinglook:Class;
+		[Embed(source="/sound/kingnaughty.mp3")] //done
+		public static var kingnaughty:Class;
+		[Embed(source="/sound/popup.mp3")] //done
+		public static var popup:Class;
+		[Embed(source="/sound/starsound.mp3")] //done
+		public static var starsound:Class;
 
 		public static var module1:Array=["lighton", "opendoor", "step", "dresson", "switching", "clockmatch", "clockroll",
 										 "windowwrong", "boxopen", "boxscale", "twistermatch", "twisting", "s11bgm", "blockmatch"];

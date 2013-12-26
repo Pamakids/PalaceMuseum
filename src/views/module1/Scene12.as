@@ -3,6 +3,7 @@ package views.module1
 	import com.greensock.TweenLite;
 
 	import flash.geom.Point;
+	import flash.media.SoundTransform;
 
 	import models.FontVo;
 	import models.SOService;
@@ -22,6 +23,7 @@ package views.module1
 	import starling.utils.AssetManager;
 
 	import views.components.LionMC;
+	import views.components.PalaceStars;
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 	import views.global.TailBar;
@@ -290,8 +292,10 @@ package views.module1
 			if (type == clothArr[taskType])
 			{
 				isWin=true;
-				SoundAssets.playSFX("happy");
+//				SoundAssets.playSFX("bingo");
 				playKing(0);
+
+				new PalaceStars(512, 450, this);
 			}
 			else
 			{
@@ -349,6 +353,7 @@ package views.module1
 
 		private function initCircle():void
 		{
+			assetManager.playSound("12clothfly", 0, 0, new SoundTransform(SoundAssets.sfxVol));
 			circle.sp1=frontSP;
 			circle.sp2=backSP;
 			circle.initCircle();
@@ -465,7 +470,11 @@ package views.module1
 				kingHead=null;
 			}
 
-			kingHead=new MovieClip(assetManager.getTextures(expArr[expressionIndex]), 18);
+			var exp:String=expArr[expressionIndex];
+
+			SoundAssets.playSFX(exp.toLowerCase(), true);
+
+			kingHead=new MovieClip(assetManager.getTextures(exp), 18);
 			kingHead.loop=0;
 			kingHead.play();
 			Starling.juggler.add(kingHead);

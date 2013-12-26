@@ -6,6 +6,8 @@ package views.module3
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
+	import sound.SoundAssets;
+
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -53,7 +55,7 @@ package views.module3
 		{
 			if (inGame)
 				return;
-			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED);
+			var tc:Touch=e.getTouch(this, TouchPhase.ENDED);
 			if (!tc)
 				return;
 			var pt:Point=tc.getLocation(this);
@@ -80,6 +82,7 @@ package views.module3
 		private function playMenuGame():void
 		{
 //			removeEventListener(TouchEvent.TOUCH, onTouch);
+			SoundAssets.playSFX("popup");
 			inGame=true;
 			game=new MenuGame(assetManager);
 			game.x=280;

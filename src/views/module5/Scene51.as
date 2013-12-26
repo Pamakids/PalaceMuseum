@@ -72,6 +72,7 @@ package views.module5
 
 		private function openBook():void
 		{
+			SoundAssets.playSFX("popup");
 			book=new ItemIntro(0, null);
 			var close:ElasticButton=new ElasticButton(getImage("button_close"), getImage("button_close_down"));
 			book.addIntro(getImage("intro-bg"), getImage("intro-stage"), close);

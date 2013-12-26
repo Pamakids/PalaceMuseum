@@ -481,10 +481,10 @@ package views.global.map
 				else
 					comFunc();
 			};
-			if (flipAnimation.scaleX == 1)
-				lionSay();
-			else
-				TweenLite.to(flipAnimation, 1.5, {x: 0, scaleX: 1, scaleY: 1, onComplete: lionSay});
+//			if (flipAnimation.scaleX == 1)
+			lionSay();
+//			else
+//				TweenLite.to(flipAnimation, 1.5, {x: 0, scaleX: 1, scaleY: 1, onComplete: lionSay});
 
 			if (!pathHolder)
 			{
@@ -506,14 +506,23 @@ package views.global.map
 
 		private function showGuide():void
 		{
-			TweenLite.to(flipAnimation, 5, {delay: 1, y: 0, ease: Cubic.easeOut, onComplete: function():void {
+			scroller.scrollToPosition(0, 0, 5);
+			TweenLite.delayedCall(5, function():void {
 				LionMC.instance.say("我就是神通广大的小石狮子。我们先来学习使用《皇帝速成手册》，遇到问题随时找我！", 0, 0, 0, function():void {
 					TopBar.instance.showBookAndAvatar(false);
 					MC.instance.addGuide(1, function():void {
 						TopBar.instance.bookClickedHandler();
 					});
 				}, 20, .6, true, 30);
-			}});
+			});
+//			TweenLite.to(flipAnimation, 5, {delay: 1, y: 0, ease: Cubic.easeOut, onComplete: function():void {
+//				LionMC.instance.say("我就是神通广大的小石狮子。我们先来学习使用《皇帝速成手册》，遇到问题随时找我！", 0, 0, 0, function():void {
+//					TopBar.instance.showBookAndAvatar(false);
+//					MC.instance.addGuide(1, function():void {
+//						TopBar.instance.bookClickedHandler();
+//					});
+//				}, 20, .6, true, 30);
+//			}});
 		}
 
 		/**

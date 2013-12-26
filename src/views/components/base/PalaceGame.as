@@ -1,6 +1,8 @@
 package views.components.base
 {
 	import com.greensock.TweenLite;
+	import com.greensock.easing.Back;
+	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Quad;
 	import com.pamakids.palace.utils.StringUtils;
 
@@ -258,7 +260,7 @@ package views.components.base
 			var panel:Image=getImage("win-panel");
 			addChild(panel);
 
-			addStars(gamelevel == 1 ? numStars : -1, pr);
+			addStars(gamelevel == 1 ? numStars : -1, pr, 0);
 
 			var txt1:String=type == 0 ? "时间" : "得分";
 			var txt2:String=type == 0 ? "最快" : "最高";
@@ -266,21 +268,42 @@ package views.components.base
 			var recordTxt:String=type == 0 ? getStringFormTime(record) : record.toString();
 		}
 
-		private function addStars(num:int, pr:Sprite):void
+		protected function addStars(num:int, pr:Sprite, _y:Number=214):void
 		{
-			if (num < 0)
+			if (num <= 0)
 				return;
+
+			var ns:int=SOService.instance.getSO(gameName + "NumStars") as int;
+			if (!ns || ns < num)
+				SOService.instance.setSO(gameName + "NumStars", num);
+
 			for (var i:int=0; i < num; i++)
 			{
-				var starG:Image=getImage("star-grey")
-				pr.addChild(starG);
+				var starR:Image=getImage("star-red")
+				pr.addChild(starR);
+				starEff(starR, i, _y);
 			}
 
 			for (var j:int=num; j < 3; j++)
 			{
-				var starR:Image=getImage("star-red")
-				pr.addChild(starR);
+				var starG:Image=getImage("star-grey")
+				pr.addChild(starG);
+				starEff(starG, j, _y);
 			}
+		}
+
+		private function starEff(star:Image, index:int, _y:Number):void
+		{
+			star.x=412 + 38 + index * 76;
+			star.y=_y + 36;
+			star.pivotX=star.width >> 1;
+			star.pivotY=star.height >> 1;
+			star.scaleX=star.scaleY=.1;
+			star.visible=false;
+			TweenLite.delayedCall(index * .3 + .3, function():void {
+				star.visible=true;
+				TweenLite.to(star, .5, {scaleX: 1, scaleY: 1, ease: Back.easeOut});
+			});
 		}
 
 		private function initRsBtn(win:Boolean, pr:Sprite):void

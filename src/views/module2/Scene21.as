@@ -4,6 +4,7 @@ package views.module2
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.media.SoundTransform;
 
 	import feathers.core.PopUpManager;
 
@@ -23,6 +24,7 @@ package views.module2
 
 	import views.components.ElasticButton;
 	import views.components.LionMC;
+	import views.components.PalaceStars;
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
@@ -140,7 +142,10 @@ package views.module2
 				kingHead=null;
 			}
 
-			kingHead=new MovieClip(assetManager.getTextures(expArr[index]), 18);
+			var exp:String=expArr[index];
+			SoundAssets.playSFX(exp.toLowerCase(), true);
+
+			kingHead=new MovieClip(assetManager.getTextures(exp), 18);
 			kingHead.loop=0;
 			kingHead.play();
 			Starling.juggler.add(kingHead);
@@ -189,12 +194,6 @@ package views.module2
 			ready=true;
 			if (SOService.instance.checkHintCount(shelfHintCount))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame);
-
-			TweenLite.delayedCall(8, function():void {
-				addHint(0);
-				addHint(1);
-				addEventListener(Event.ENTER_FRAME, onHintBlink);
-			});
 		}
 
 		private var reverse0:Boolean;
@@ -401,6 +400,15 @@ package views.module2
 		{
 			if (_shelfOpen == value)
 				return;
+			if (value && !firstOpen)
+			{
+				firstOpen=true;
+				TweenLite.delayedCall(8, function():void {
+					addHint(0);
+					addHint(1);
+					addEventListener(Event.ENTER_FRAME, onHintBlink);
+				});
+			}
 			_shelfOpen=value;
 			SoundAssets.stopSFX(value ? "shelfin" : "shelfout");
 			SoundAssets.playSFX(value ? "shelfout" : "shelfin");
@@ -441,11 +449,13 @@ package views.module2
 			if (book.bookname.indexOf("圣训") >= 0)
 			{
 				playKing(0);
+				new PalaceStars(gpt.x, gpt.y + 15, pr)
 				showBigBook(0, gpt);
 			}
 			else if (book.bookname.indexOf("实录") >= 0)
 			{
 				playKing(0);
+				new PalaceStars(gpt.x, gpt.y + 15, pr)
 				showBigBook(1, gpt);
 			}
 			else
@@ -606,6 +616,7 @@ package views.module2
 				book.x=spt.x;
 				book.y=spt.y;
 				book.touchable=false;
+				assetManager.playSound("21bookfly", 0, 0, new SoundTransform(SoundAssets.sfxVol));
 				TweenLite.to(book, .5, {x: dpt.x, y: dpt.y, onComplete: checkOver});
 				TweenLite.to(shadowArr[index], .5, {alpha: 0});
 			}
@@ -627,6 +638,7 @@ package views.module2
 		private var book2Found:Boolean;
 		private var crtIndex:int;
 		private var crtPt:Point;
+		private var firstOpen:Boolean;
 
 		private function initGame():void
 		{

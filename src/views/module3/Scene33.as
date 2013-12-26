@@ -17,6 +17,7 @@ package views.module3
 
 	import views.components.ElasticButton;
 	import views.components.LionMC;
+	import views.components.PalaceStars;
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
@@ -432,14 +433,13 @@ package views.module3
 				kingHolder.touchable=lion.touchable=false;
 
 				if (b.index == 3)
+				{
+					new PalaceStars(b.x, b.y, this);
 					Prompt.showTXT(150, 445, "果然是平民少年，更体会百姓的疾苦。", 20,
 								   function():void {
 									   showAchievement(20, moveTable);
 								   }, this);
-//					LionMC.instance.say("果然是平民少年，更体会百姓的疾苦。", 0, 0, 0, 
-//						function():void {
-//						showAchievement(20, moveTable);
-//					})
+				}
 				else
 					Prompt.showTXT(150, 445, "嗯，做的有模有样，表现不错。", 20, moveTable, this);
 //				LionMC.instance.say("按照规矩办事，表现不错。", 0, 0, 0, moveTable);

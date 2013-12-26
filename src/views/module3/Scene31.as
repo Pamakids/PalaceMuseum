@@ -147,6 +147,7 @@ package views.module3
 
 		private function openBook():void
 		{
+			SoundAssets.playSFX("popup");
 			book=new Sprite();
 			book.addChild(getImage("book21"));
 			close=new ElasticButton(getImage("button_close"));

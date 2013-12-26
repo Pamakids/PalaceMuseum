@@ -73,7 +73,7 @@ package controllers
 		/**
 		 * 游戏是否有难度区分:0 有， 1 没有
 		 */
-		private const gameLevels:Array=[1, 0, 1, 1];
+		private const gameLevels:Array=[1, 1, 1, 1];
 
 		/**
 		 * 获取游戏数据
@@ -97,6 +97,8 @@ package controllers
 						numStars: 0
 					};
 				obj.isOpend=SOService.instance.getSO(obj.className);
+				var ns:int=SOService.instance.getSO(obj.className + "NumStars") as int;
+				obj.numStars=ns ? ns : 0;
 				if (gameLevels[i] == 0) //无难度划分
 				{
 					if (SOService.instance.getSO(obj.className))
