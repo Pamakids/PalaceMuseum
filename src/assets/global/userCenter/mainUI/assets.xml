@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:816323644b28d98bae47818d142cbd2f$ -->
+<!-- $TexturePacker:SmartUpdate:5266586dc5193834f0788acc2c16dfad$ -->
 <TextureAtlas imagePath="assets.png">
     <SubTexture name="achievement_card_finish" x="88" y="1731" width="137" height="106"/>
     <SubTexture name="achievement_card_finish_big" x="2" y="508" width="497" height="387"/>
@@ -51,22 +51,22 @@
     <SubTexture name="button_start_down" x="1933" y="983" width="110" height="61"/>
     <SubTexture name="button_start_up" x="1535" y="292" width="98" height="57" frameX="-4" frameY="-3" frameWidth="110" frameHeight="61"/>
     <SubTexture name="button_unFinish" x="88" y="1321" width="82" height="88" frameX="-16" frameY="-10" frameWidth="112" frameHeight="112"/>
-    <SubTexture name="card_collection_0" x="747" y="1842" width="147" height="155"/>
-    <SubTexture name="card_collection_1" x="747" y="1421" width="147" height="155"/>
-    <SubTexture name="card_collection_10" x="598" y="1842" width="147" height="155"/>
+    <SubTexture name="card_collection_0" x="747" y="1421" width="147" height="155"/>
+    <SubTexture name="card_collection_1" x="598" y="1842" width="147" height="155"/>
+    <SubTexture name="card_collection_10" x="449" y="1842" width="147" height="155"/>
     <SubTexture name="card_collection_11" x="1492" y="1842" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
     <SubTexture name="card_collection_12" x="1343" y="1894" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
     <SubTexture name="card_collection_13" x="1194" y="1870" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
     <SubTexture name="card_collection_14" x="1343" y="1741" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
     <SubTexture name="card_collection_15" x="1194" y="1717" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
-    <SubTexture name="card_collection_2" x="449" y="1842" width="147" height="155"/>
-    <SubTexture name="card_collection_3" x="300" y="1842" width="147" height="155"/>
+    <SubTexture name="card_collection_2" x="300" y="1842" width="147" height="155"/>
+    <SubTexture name="card_collection_3" x="151" y="1842" width="147" height="155"/>
     <SubTexture name="card_collection_4" x="1045" y="1842" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
-    <SubTexture name="card_collection_5" x="151" y="1842" width="147" height="155"/>
+    <SubTexture name="card_collection_5" x="308" y="1460" width="147" height="155"/>
     <SubTexture name="card_collection_6" x="896" y="1842" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
-    <SubTexture name="card_collection_7" x="308" y="1460" width="147" height="155"/>
-    <SubTexture name="card_collection_8" x="151" y="1421" width="147" height="155"/>
-    <SubTexture name="card_collection_9" x="2" y="1421" width="147" height="155"/>
+    <SubTexture name="card_collection_7" x="151" y="1421" width="147" height="155"/>
+    <SubTexture name="card_collection_8" x="2" y="1421" width="147" height="155"/>
+    <SubTexture name="card_collection_9" x="747" y="1842" width="147" height="151" frameX="0" frameY="-4" frameWidth="147" frameHeight="155"/>
     <SubTexture name="card_collection_unfinish" x="2" y="1842" width="147" height="155"/>
     <SubTexture name="card_game_0" x="629" y="723" width="303" height="235"/>
     <SubTexture name="card_game_1" x="630" y="486" width="303" height="235"/>
