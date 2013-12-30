@@ -7,6 +7,7 @@ package views.module1
 
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.media.SoundTransform;
@@ -443,8 +444,17 @@ package views.module1
 				MC.instance.addMC(eunuch);
 				eunuch.play();
 				eunuch.addEventListener(Event.FRAME_CONSTRUCTED, onPlayMC);
-				TweenLite.to(eunuch, 5, {x: 780, onComplete: sceneOver});
+				TweenLite.to(eunuch, 5, {x: 780, onComplete: function():void {
+					ep=Prompt.showTXT(724, 445, "新的一天\n开始了。", 20, null, null, 3, false, 5);
+					eunuch.addEventListener(MouseEvent.CLICK, onEClick);
+					sceneOver();
+				}});
 			}});
+		}
+
+		private function onEClick(e:MouseEvent):void
+		{
+			ep=Prompt.showTXT(724, 445, "新的一天\n开始了。", 20, null, null, 3, false, 5);
 		}
 
 		protected function onPlayMC(event:Event):void
@@ -461,6 +471,7 @@ package views.module1
 			super.dispose();
 			if (eunuch)
 			{
+				eunuch.removeEventListener(MouseEvent.CLICK, onEClick);
 				eunuch.stop();
 				MC.instance.removeMC(eunuch);
 				eunuch=null;
@@ -562,6 +573,8 @@ package views.module1
 
 		private var ga:Image;
 		private var touchReady:Boolean;
+
+		private var ep:Prompt;
 
 		public function get offsetX():Number
 		{
