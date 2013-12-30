@@ -305,6 +305,7 @@ package views.global.map
 			visible=false;
 			closeButton.visible=false;
 			changing=false;
+
 //			if (UserCenterManager.getCrtUserCenter() != null)
 //				MC.instance.switchLayer(false);
 //			else
@@ -349,13 +350,6 @@ package views.global.map
 
 		private function initFlipAnimation():void
 		{
-//			flipAnimation=new FlipAnimation(assetManager.getTexture("mapBG"), 4, 3);
-//			flipAnimation.backcover=assetManager.getTexture('map_back');
-//			flipAnimation.addEventListener('completed', flipedHandler);
-//			flipAnimation.width=width;
-//			flipAnimation.height=height;
-//			addChild(flipAnimation);
-
 			scroller=new ScrollContainer();
 			var lo:VerticalLayout=new VerticalLayout();
 			lo.gap=0;
@@ -366,12 +360,10 @@ package views.global.map
 
 			flipAnimation=new Sprite();
 			flipAnimation.addChildAt(getImage("mapBG"), 0);
-//			addChild(flipAnimation);
 			positionKing();
 
 			top=getImage("mapTop");
 			botttom=getImage("mapBotton");
-//			botttom.pivotY=21;
 
 			addChild(top);
 			scroller.addChild(flipAnimation);
@@ -385,7 +377,6 @@ package views.global.map
 			scroller.elasticity=.22
 
 			flipedHandler();
-
 		}
 
 		private var pt:Point=new Point();
@@ -512,7 +503,7 @@ package views.global.map
 					MC.instance.addGuide(1, function():void {
 						TopBar.instance.bookClickedHandler();
 					});
-				}, 20, .6, true, 30);
+				}, 20, .6, true, 10);
 			});
 //			TweenLite.to(flipAnimation, 5, {delay: 1, y: 0, ease: Cubic.easeOut, onComplete: function():void {
 //				LionMC.instance.say("我就是神通广大的小石狮子。我们先来学习使用《皇帝速成手册》，遇到问题随时找我！", 0, 0, 0, function():void {
