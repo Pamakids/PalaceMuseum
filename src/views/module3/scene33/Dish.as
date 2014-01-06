@@ -25,8 +25,8 @@ package views.module3.scene33
 		public var isFlying:Boolean;
 		public var isPoison:Boolean;
 		private var _pt:Point;
-		public var speedX:Number;
-		public var speedY:Number;
+		public var speedX:Number=0;
+		public var speedY:Number=0;
 		private var _isBad:Boolean;
 
 		public function get isBad():Boolean
@@ -118,6 +118,8 @@ package views.module3.scene33
 
 		public function tweenMove(callback:Function=null):void
 		{
+			speedX=0;
+			speedY=0;
 			TweenLite.to(this, .3, {x: pt.x, y: pt.y, onComplete: callback});
 		}
 

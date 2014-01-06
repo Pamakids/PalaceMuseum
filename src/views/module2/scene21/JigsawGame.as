@@ -439,6 +439,8 @@ package views.module2.scene21
 			edge.alpha=0;
 			TweenLite.to(edge, 3, {alpha: 3, onComplete: function():void {
 				SoundAssets.playSFX("gameWin");
+				lowerBGM();
+				TweenLite.delayedCall(6.5, resumeBGM);
 				LionMC.instance.play(1, 0, 0, function():void {
 					TweenLite.to(timeHolder, 1, {x: 1024});
 					TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn, onComplete: function():void {

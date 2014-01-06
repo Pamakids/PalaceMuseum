@@ -2,7 +2,6 @@ package views.components.base
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Back;
-	import com.greensock.easing.Bounce;
 	import com.greensock.easing.Quad;
 	import com.pamakids.palace.utils.StringUtils;
 
@@ -187,6 +186,7 @@ package views.components.base
 
 		override public function dispose():void
 		{
+			resumeBGM();
 			if (lastBGM && bigGame)
 				SoundAssets.playBGM(lastBGM);
 			if (initTime > 0)
@@ -205,6 +205,23 @@ package views.components.base
 			}
 			super.dispose();
 		}
+
+		protected function lowerBGM():void
+		{
+			lastBGMVol=SoundAssets.bgmVol;
+			var vol:Number=lastBGMVol * .2;
+			if (vol)
+				SoundAssets.bgmVol=vol;
+		}
+
+		protected function resumeBGM():void
+		{
+			if (lastBGMVol)
+				SoundAssets.bgmVol=lastBGMVol;
+			lastBGMVol=0;
+		}
+
+		private var lastBGMVol:Number;
 
 		/**
 		 *

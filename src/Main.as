@@ -36,7 +36,7 @@ package
 			if (Capabilities.isDebugger)
 			{
 //				SOService.instance.clear();
-//				SOService.instance.setSO("lastScene", "11");
+				SOService.instance.setSO("lastScene", "42");
 			}
 			super();
 
@@ -132,7 +132,8 @@ package
 		private function initIntro():void
 		{
 			inito=new Interlude("assets/video/intro.mp4", true, null, startGame);
-			Starling.current.nativeStage.addChild(inito);
+			MC.instance.stage.addChild(inito);
+//			Starling.current.nativeStage.addChild(inito);
 		}
 
 		private function startGame():void

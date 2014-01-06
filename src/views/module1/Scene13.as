@@ -6,6 +6,8 @@ package views.module1
 	import flash.geom.Point;
 	import flash.media.SoundTransform;
 
+	import controllers.MC;
+
 	import feathers.core.PopUpManager;
 
 	import sound.SoundAssets;
@@ -201,28 +203,31 @@ package views.module1
 
 		private function initGame():void
 		{
-			if (!gameHolder)
+			if (gameHolder)
 			{
-				gameHolder=new Sprite();
-				gameHolder.x=512;
-				gameHolder.y=768 / 2;
-
-				var gameBG:Sprite=new Sprite();
-				gameBG.addChild(getImage("bggame13"));
-				gameBG.pivotX=gameBG.width >> 1;
-				gameBG.pivotY=gameBG.height >> 1;
-				gameHolder.addChild(gameBG);
-
-				game=new TwisterGame(assetManager);
-				game.addEventListener(PalaceGame.GAME_OVER, closeGame);
-				gameHolder.addChild(game);
+				gameHolder.removeFromParent(true);
+				gameHolder=null;
 			}
+			gameHolder=new Sprite();
+			gameHolder.x=512;
+			gameHolder.y=768 / 2;
+
+			var gameBG:Sprite=new Sprite();
+			gameBG.addChild(getImage("bggame13"));
+			gameBG.pivotX=gameBG.width >> 1;
+			gameBG.pivotY=gameBG.height >> 1;
+			gameHolder.addChild(gameBG);
+
+			game=new TwisterGame(assetManager);
+			game.addEventListener(PalaceGame.GAME_OVER, closeGame);
+			gameHolder.addChild(game);
 			SoundAssets.playSFX("popup");
 			PopUpManager.addPopUp(gameHolder, true, false);
 		}
 
 		private function closeGame(e:Event):void
 		{
+			MC.instance.main.removeMask();
 			if (game.isOver)
 			{
 				if (!gamePlayed)
@@ -230,8 +235,7 @@ package views.module1
 					TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
 					{
 						gamePlayed=true;
-						PopUpManager.removePopUp(gameHolder);
-						game.dispose2();
+						PopUpManager.removePopUp(gameHolder, true);
 						game=null;
 						gameHolder=null;
 						showCard("1", function():void {
@@ -243,8 +247,7 @@ package views.module1
 				{
 					TweenLite.to(gameHolder, 1, {scaleX: .1, scaleY: .1, onComplete: function():void
 					{
-						PopUpManager.removePopUp(gameHolder);
-						game.dispose2();
+						PopUpManager.removePopUp(gameHolder, true);
 						game=null;
 						gameHolder=null;
 					}});
@@ -262,7 +265,7 @@ package views.module1
 		{
 			if (game)
 			{
-				game.dispose2();
+				game.dispose();
 				game=null;
 				gameHolder=null;
 			}

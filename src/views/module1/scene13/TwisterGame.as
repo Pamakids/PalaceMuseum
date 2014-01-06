@@ -99,15 +99,6 @@ package views.module1.scene13
 
 		private var degress6:Number=Math.PI / 60;
 
-		override public function dispose():void
-		{
-		}
-
-		public function dispose2():void
-		{
-			super.dispose();
-		}
-
 		private var twistHint:String="twistHintCount";
 
 		override protected function init():void
