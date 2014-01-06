@@ -7,6 +7,8 @@ package states
 	import assets.BtnAssets;
 	import assets.ImgAssets;
 
+	import controllers.MC;
+
 	import models.Config;
 	import models.PosVO;
 	import models.StateManager;
@@ -50,7 +52,8 @@ package states
 			this.fusion.spaceWidth=AgonyUI.fusion.spaceWidth
 			this.fusion.spaceHeight=AgonyUI.fusion.spaceHeight
 
-//			fusion.scaleX=fusion.scaleY=PosVO.scale;
+			if (!MC.isIOS)
+				fusion.scaleX=fusion.scaleY=PosVO.scale;
 			fusion.x=PosVO.OffsetX;
 			fusion.y=PosVO.OffsetY;
 

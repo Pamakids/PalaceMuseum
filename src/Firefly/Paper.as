@@ -6,6 +6,7 @@
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.filters.BlurFilter;
+	import flash.geom.Point;
 
 	import models.PosVO;
 
@@ -120,8 +121,9 @@
 				Agony.process.dispatchDirectEvent(PAPER_DIRTY)
 				mDirty=true
 			}
-			oldX=_mc.x=mouseX
-			oldY=_mc.y=mouseY
+			var pt:Point=this.globalToLocal(new Point(touch.stageX, touch.stageY));
+			oldX=_mc.x=pt.x
+			oldY=_mc.y=pt.y
 			oldScale=1;
 			_mc.startDrag(true);
 			_mc.visible=true;
@@ -133,9 +135,12 @@
 
 		private function _addBrush(e:AEvent):void
 		{
+			var touch:Touch=e.target as Touch;
+
+			var pt:Point=this.globalToLocal(new Point(touch.stageX, touch.stageY));
 			//计算距离
-			var disX:Number=mouseX - oldX;
-			var disY:Number=mouseY - oldY;
+			var disX:Number=pt.x - oldX;
+			var disY:Number=pt.y - oldY;
 			var dis:Number=Math.sqrt(disX * disX + disY * disY);
 			//改变笔触的大小,越快越小
 			if (dis > 0)
@@ -166,8 +171,8 @@
 				brush.y=(disY / count) * (i + 1) + oldY;
 			}
 			oldScale=scale;
-			oldX=mouseX;
-			oldY=mouseY;
+			oldX=pt.x;
+			oldY=pt.y;
 			bmd.draw(paper_mc);
 			//删除填充
 			brush_mc.removeChildren();

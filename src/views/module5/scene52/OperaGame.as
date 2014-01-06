@@ -307,6 +307,8 @@ package views.module5.scene52
 
 			var _win:Boolean=life > 0 && score > 0
 			SoundAssets.playSFX(_win ? "gameWin" : "gameLose");
+			lowerBGM();
+			TweenLite.delayedCall(_win ? 6.5 : 4.5, resumeBGM);
 			LionMC.instance.play(_win ? 1 : 4, 0, 0, initResult, 2);
 
 //			TweenLite.delayedCall(2, initResult);

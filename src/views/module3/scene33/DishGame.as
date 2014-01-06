@@ -55,8 +55,6 @@ package views.module3.scene33
 		private var pinPoison:Image;
 		private var _poisonTest:Boolean;
 //		private var crtDish:Dish;
-		private var speedX:Number;
-		private var speedY:Number;
 		private var upHand:Sprite;
 		private var downHand:Sprite;
 
@@ -450,7 +448,7 @@ package views.module3.scene33
 			if (!tc)
 				return;
 
-			var pt:Point=tc.getLocation(this);
+//			var pt:Point=tc.getLocation(this);
 
 			switch (tc.phase)
 			{
@@ -470,10 +468,12 @@ package views.module3.scene33
 //					if (crtDish)
 					{
 						var move:Point=tc.getMovement(dish);
-						speedX=move.x;
-						speedY=move.y;
-						dish.x=pt.x;
-						dish.y=pt.y;
+						dish.speedX=move.x;
+						dish.speedY=move.y;
+						dish.x+=dish.speedX;
+						dish.y+=dish.speedY;
+//						dish.x=pt.x;
+//						dish.y=pt.y;
 					}
 					break;
 				}
@@ -488,11 +488,11 @@ package views.module3.scene33
 						}
 						else
 						{
-							var speed:Number=Math.sqrt(speedX * speedX + speedY * speedY);
+							var speed:Number=Math.sqrt(dish.speedX * dish.speedX + dish.speedY * dish.speedY);
 							if (speed > 10)
 							{
 								dish.isFlying=true;
-								var angle:Number=Math.atan2(speedY, speedX);
+								var angle:Number=Math.atan2(dish.speedY, dish.speedX);
 								if (speed > 30)
 									speed=30;
 								dish.speedX=Math.cos(angle) * speed;
@@ -507,8 +507,8 @@ package views.module3.scene33
 					}
 
 					//reset
-					speedX=0;
-					speedY=0;
+//					speedX=0;
+//					speedY=0;
 //					crtDish=null;
 					break;
 				}
@@ -653,6 +653,8 @@ package views.module3.scene33
 
 			var _win:Boolean=life > 0 && score > 0
 			SoundAssets.playSFX(_win ? "gameWin" : "gameLose");
+			lowerBGM();
+			TweenLite.delayedCall(_win ? 6.5 : 4.5, resumeBGM);
 			LionMC.instance.play(_win ? 1 : 4, 0, 0, initResult, 2);
 
 //			TweenLite.delayedCall(.5, initResult);

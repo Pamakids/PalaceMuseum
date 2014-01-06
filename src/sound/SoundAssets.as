@@ -226,7 +226,7 @@ package sound
 			if (sc)
 			{
 				trace("fadeOut", sound)
-//				TweenMax.killTweensOf(sc);
+				TweenMax.killTweensOf(sc);
 				TweenMax.to(sc, FADEINOUTDELAY, {volume: 0, onComplete: function():void {
 					sm.stop(sound);
 				}});
@@ -240,7 +240,7 @@ package sound
 			{
 				trace("fadeIn", sound)
 				scDic[sound]=sc;
-//				TweenMax.killTweensOf(sc);
+				TweenMax.killTweensOf(sc);
 				TweenMax.to(sc, FADEINOUTDELAY, {volume: bgmVol});
 			}
 		}

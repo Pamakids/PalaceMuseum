@@ -452,6 +452,8 @@ package views.module3.scene32
 						time.stop();
 						endFunction=function():void {
 							SoundAssets.playSFX("gameWin");
+							lowerBGM();
+							TweenLite.delayedCall(6.5, resumeBGM);
 							LionMC.instance.play(1, 0, 0, gameOver, 2);
 						}
 					}

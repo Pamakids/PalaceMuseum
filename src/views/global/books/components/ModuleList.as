@@ -242,7 +242,8 @@ package views.global.books.components
 			}
 			else
 			{
-				Starling.current.nativeStage.addChild(new Interlude(string));
+				MC.instance.stage.addChild(new Interlude(string));
+//				Starling.current.nativeStage.addChild(new Interlude(string));
 			}
 			//			if (string.charAt(0) == "m") //进入模块
 			//			{

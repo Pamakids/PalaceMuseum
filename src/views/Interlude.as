@@ -10,6 +10,7 @@ package views
 	import flash.events.MouseEvent;
 	import flash.events.NetStatusEvent;
 	import flash.events.SecurityErrorEvent;
+	import flash.events.TouchEvent;
 	import flash.geom.Rectangle;
 	import flash.media.StageVideo;
 	import flash.media.Video;
@@ -62,9 +63,9 @@ package views
 			this.stopHandler=onStop;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAdded);
 
-			this.scaleX=this.scaleY=PosVO.scale;
-			this.x=PosVO.OffsetX;
-			this.y=PosVO.OffsetY;
+//			this.scaleX=this.scaleY=PosVO.scale;
+//			this.x=PosVO.OffsetX;
+//			this.y=PosVO.OffsetY;
 		}
 
 		private var shape:Shape;
@@ -72,7 +73,10 @@ package views
 		private function onAdded(e:Event):void
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
-			SoundAssets.stopBGM();
+
+			lastBGM=SoundAssets.crtBGM;
+			SoundAssets.stopBGM(true);
+
 			Starling.current.stage3D.visible=false;
 			initialize();
 			if (Capabilities.isDebugger)
@@ -121,6 +125,7 @@ package views
 				button.addChild(bitmap);
 				this.addChild(button);
 				button.visible=false;
+				button.addEventListener(TouchEvent.TOUCH_BEGIN, passHandler);
 				button.addEventListener(MouseEvent.CLICK, passHandler);
 			}
 		}
@@ -177,6 +182,7 @@ package views
 
 		private var start:uint;
 		private const seconds:uint=8;
+		private var lastBGM:String;
 
 		private function onEnterFrame(e:Event):void
 		{
@@ -221,6 +227,11 @@ package views
 		{
 			if (!stage)
 				return;
+
+			if (lastBGM)
+				SoundAssets.playBGM(lastBGM);
+			lastBGM="";
+
 			stage.removeEventListener(MouseEvent.MOUSE_DOWN, onStage);
 			Starling.current.stage3D.visible=true;
 			TweenLite.killTweensOf(shape);

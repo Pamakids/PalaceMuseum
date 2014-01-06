@@ -21,5 +21,8 @@ package assets.embed
 
 		[Embed(source="messageBG.png")]
 		public static var messageBG:Class;
+
+		[Embed(source="cursor.png")]
+		public static var cursor:Class;
 	}
 }

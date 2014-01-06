@@ -13,6 +13,8 @@ package states
 
 	import assets.ImgAssets;
 
+	import controllers.MC;
+
 	import models.Config;
 	import models.PosVO;
 
@@ -47,9 +49,14 @@ package states
 			//this.fusion.interactive = false
 //			this.fusion.y=151
 
-//			fusion.scaleX=fusion.scaleY=PosVO.scale;
+			var dx:Number=151;
+			if (!MC.isIOS)
+			{
+				fusion.scaleX=fusion.scaleY=PosVO.scale;
+				dx=dx * PosVO.scale;
+			}
 			fusion.x=PosVO.OffsetX;
-			fusion.y=151 + PosVO.OffsetY;
+			fusion.y=dx + PosVO.OffsetY;
 
 		}
 
@@ -217,6 +224,7 @@ package states
 			BA.draw(this.fusion.displayObject, new Matrix(1 / Agony.pixelRatio, 0, 0, 1 / Agony.pixelRatio))
 			{
 				var sc:Number=PosVO.scale;
+				sc=1;
 				clickAble=false;
 				mPhoto=new ImagePuppet(5)
 				mPhoto.bitmapData=BA

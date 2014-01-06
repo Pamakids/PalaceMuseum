@@ -10,9 +10,9 @@ package models
 		{
 		}
 
-		public static function init():void
+		public static function init(sx:Number=1024, sy:Number=768):void
 		{
-			arr=DPIUtil.getAndroidSize();
+			arr=DPIUtil.getAndroidSize(sx, sy);
 		}
 
 		public static function get scale():Number

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   creationComplete="creationCompleteHandler(event)"
+			   applicationDPI="160"
+			   backgroundColor="0x66ccff"
+			   addedToStage="application1_addedToStageHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+
+			import control.Controller;
+
+			import starling.core.Starling;
+
+			import utils.PosVO;
+			import utils.TouchEventUtils;
+
+			private var socket:Socket;
+
+			private var main:Starling;
+			private var rect:Rectangle;
+
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				Controller.app=this;
+			}
+
+			protected function connect():void
+			{
+				if (socket != null)
+				{
+				}
+				socket=new Socket();
+
+				socket.addEventListener(IOErrorEvent.IO_ERROR, onError);
+				socket.addEventListener(Event.CONNECT, connectHandler);
+				socket.addEventListener(Event.CLOSE, closeHandler);
+
+				socket.connect(ip.text, int(port.text));
+			}
+
+			private function connectHandler(event:Event):void
+			{
+				this.visible=false;
+				connectError.text="连接成功";
+				currentState="connected";
+			}
+
+			private function closeHandler(event:Event):void
+			{
+				this.visible=true;
+				connectError.text="连接断开";
+				currentState="not_connected";
+			}
+
+			protected function onError(event:IOErrorEvent):void
+			{
+				connectError.text="ip/端口错误,或服务器问题,请稍后重试"
+			}
+
+			public function send(e:TouchEvent):void
+			{
+				if (currentState == "connected")
+				{
+					var o:Object=TouchEventUtils.touchToObj(e.type, e.localX, e.localY, e.touchPointID);
+					socket.writeObject({command: "touch", data: o});
+					socket.flush();
+				}
+			}
+
+			protected function application1_addedToStageHandler(event:Event):void
+			{
+				PosVO.init(stage.fullScreenWidth, stage.fullScreenHeight);
+				var scale:Number=PosVO.scale;
+				rect=new Rectangle(PosVO.OffsetX, PosVO.OffsetY, 1024 * scale, 768 * scale)
+
+				Starling.multitouchEnabled=true;
+				Starling.handleLostContext=true;
+
+				main=new Starling(Main, stage, rect);
+				main.start();
+				main.showStats=Capabilities.isDebugger;
+				main.antiAliasing=16;
+			}
+		]]>
+	</fx:Script>
+
+	<s:states>
+		<s:State name="not_connected"/>
+		<s:State name="connected"/>
+	</s:states>
+
+	<s:VGroup width="100%"
+			  height="100%"
+			  includeIn="not_connected"
+			  verticalAlign="middle"
+			  horizontalAlign="center">
+		<s:Label text="IP:"/>
+		<s:TextInput id="ip"
+					 text="192.168.1.106"
+					 textAlign="center"/>
+		<s:Label text="Port:"/>
+		<s:TextInput id="port"
+					 text="1234"
+					 textAlign="center"/>
+		<s:Button label="Connect"
+				  click="connect()"/>
+		<s:Label id="connectError"/>
+	</s:VGroup>
+
+	<s:Label text="Remote Controller"
+			 includeIn="connected"
+			 fontSize="22"
+			 fontWeight="bold"
+			 mouseEnabled="false"
+			 mouseChildren="false"/>
+
+</s:Application>
