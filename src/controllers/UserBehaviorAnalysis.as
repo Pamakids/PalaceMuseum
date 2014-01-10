@@ -38,12 +38,12 @@ package controllers
 		{
 			if (Capabilities.os.indexOf("Windows") >= 0)
 				return;
-			trace("initAnalyst")
-			UMeng.instance.init("52897e3b56240b9bf21d435e", "Appstore", Capabilities.isDebugger);
-			UID=UMeng.instance.getUDID();
-			var analytics:Analytics=Analytics.getInstance();
-			tracker=analytics.getTracker(GA_ID);
-			trackEvent("login", "user", UID);
+//			trace("initAnalyst")
+//			UMeng.instance.init("52897e3b56240b9bf21d435e", "Appstore", Capabilities.isDebugger);
+//			UID=UMeng.instance.getUDID();
+//			var analytics:Analytics=Analytics.getInstance();
+//			tracker=analytics.getTracker(GA_ID);
+//			trackEvent("login", "user", UID);
 		}
 
 		/**

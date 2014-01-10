@@ -309,7 +309,7 @@ package views.global.books.handbook
 			sprite.alpha = 1;
 			mask.alpha = .5;
 			cata.scaleX = cata.scaleY = 1;
-			cata.updateView(0);
+			cata.updateView( 0 );
 		}
 		
 		public function hideCatalogue():void
