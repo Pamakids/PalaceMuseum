@@ -1,8 +1,12 @@
 package views
 {
+	import controllers.MC;
+
 	import sound.SoundAssets;
 
+	import views.components.ElasticButton;
 	import views.components.base.PalaceModule;
+	import views.global.TopBar;
 	import views.module4.Scene41;
 	import views.module4.Scene42;
 	import views.module4.Scene43;
@@ -23,6 +27,28 @@ package views
 			addLoading();
 
 			loadAssets(skipIndex, addNext);
+		}
+
+		override protected function addNext():void
+		{
+			TopBar.enable=true;
+			MC.instance.main.removeMask();
+			removeLoading();
+			if (skipIndex < 0 || skipIndex == 2)
+			{
+				var next:ElasticButton=new ElasticButton(getImage("nextButton"));
+				addChild(next);
+				next.pivotX=next.width >> 1;
+				next.pivotY=33;
+				next.x=1024 - 100;
+				next.y=768 - 100;
+				next.addEventListener(ElasticButton.CLICK, initScene);
+			}
+			else
+			{
+				sceneIndex=skipIndex;
+				loadScene(sceneIndex);
+			}
 		}
 	}
 }

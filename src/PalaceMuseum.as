@@ -4,7 +4,8 @@ package
 	import com.greensock.plugins.MotionBlurPlugin;
 	import com.greensock.plugins.ShakeEffect;
 	import com.greensock.plugins.TweenPlugin;
-	
+	import com.pamakids.palace.utils.MiTVKeyCode;
+
 	import flash.desktop.NativeApplication;
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
@@ -13,6 +14,8 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -21,23 +24,32 @@ package
 	import flash.net.NetworkInterface;
 	import flash.system.Capabilities;
 	import flash.text.TextField;
-	
+
 	import assets.embed.EmbedAssets;
-	
+
+	import be.aboutme.airserver.AIRServer;
+	import be.aboutme.airserver.Client;
+	import be.aboutme.airserver.endpoints.socket.SocketEndPoint;
+	import be.aboutme.airserver.endpoints.socket.handlers.amf.AMFSocketClientHandlerFactory;
+	import be.aboutme.airserver.events.AIRServerEvent;
+	import be.aboutme.airserver.events.MessageReceivedEvent;
+
 	import controllers.MC;
 	import controllers.UserBehaviorAnalysis;
-	
+
 	import models.PosVO;
-	
+
 	import sound.SoundAssets;
-	
+
 	import starling.core.Starling;
+
+	import utils.TouchEventUtils;
 
 	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x554040")]
 	public class PalaceMuseum extends Sprite
 	{
 		private var ipTXT:TextField;
-//		private var server:AIRServer;
+		private var server:AIRServer;
 
 		public function PalaceMuseum()
 		{
@@ -73,7 +85,7 @@ package
 			Starling.multitouchEnabled=true;
 			Starling.handleLostContext=false;
 
-			var android:Boolean=true;
+			var android:Boolean=false;
 			if (android)
 			{
 				Starling.handleLostContext=true;
@@ -95,9 +107,105 @@ package
 			MC.instance.stage=this;
 			MC.instance.mcLayer=mcLayer;
 
-			var tv:Boolean=true;
+			var tv:Boolean=false;
 			if (tv)
-				initRemoteServer();
+				initTVRemoter();
+//			initRemoteServer();
+		}
+
+		private function initTVRemoter():void
+		{
+			cursor=new EmbedAssets.cursor();
+			addChild(cursor);
+			cursor.x=512;
+			cursor.y=384;
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+		}
+
+		private var mouseDirection:int=-1;
+		private var cursor:Bitmap;
+
+		protected function onEnterFrame(e:Event):void
+		{
+			if (mouseDirection >= 0)
+			{
+				cursor.x+=mouseDirection % 2 == 0 ? (mouseDirection - 1) * 15 : 0;
+				cursor.y+=mouseDirection % 2 == 0 ? 0 : (mouseDirection - 2) * 15;
+			}
+
+			if (cursor.x < 0)
+				cursor.x=0;
+			else if (cursor.x > 1024)
+				cursor.x=1024;
+
+			if (cursor.y < 0)
+				cursor.y=0;
+			else if (cursor.y > 768)
+				cursor.y=768;
+		}
+
+		protected function onKeyDown(e:KeyboardEvent):void
+		{
+			switch (e.keyCode)
+			{
+				case MiTVKeyCode.LEFT: //37
+				case MiTVKeyCode.UP: //38
+				case MiTVKeyCode.RIGHT: //39
+				case MiTVKeyCode.DOWN: //40
+					mouseDirection=e.keyCode - MiTVKeyCode.LEFT;
+					break;
+
+				case MiTVKeyCode.OK: //13
+				{
+					remoteMouse(true);
+					break;
+				}
+
+				default:
+				{
+					break;
+				}
+			}
+		}
+
+		private function remoteMouse(down:Boolean):void
+		{
+			var pt:Point=new Point(cursor.x, cursor.y);
+			var o:Object={type: down ? TouchEvent.TOUCH_BEGIN : TouchEvent.TOUCH_END, x: pt.x, y: pt.y, id: 0}
+			var e1:TouchEvent=TouchEventUtils.objToTouch(o, this);
+			var e2:MouseEvent=TouchEventUtils.objToMouse(o, this);
+			stage.dispatchEvent(e1);
+			if (e2)
+			{
+				stage.dispatchEvent(e2);
+			}
+
+		}
+
+		protected function onKeyUp(e:KeyboardEvent):void
+		{
+			switch (e.keyCode)
+			{
+				case MiTVKeyCode.LEFT: //37
+				case MiTVKeyCode.UP: //38
+				case MiTVKeyCode.RIGHT: //39
+				case MiTVKeyCode.DOWN: //40
+					mouseDirection=-1;
+					break;
+
+				case MiTVKeyCode.OK: //13
+				{
+					remoteMouse(false);
+					break;
+				}
+
+				default:
+				{
+					break;
+				}
+			}
 		}
 
 		protected function onActive(event:Event):void
@@ -123,12 +231,12 @@ package
 			ipTXT.mouseEnabled=false;
 			GetAddress();
 
-//			server=new AIRServer();
-//			server.addEndPoint(new SocketEndPoint(1234, new AMFSocketClientHandlerFactory()));
-//			server.addEventListener(AIRServerEvent.CLIENT_ADDED, onClientAdded);
-//			server.addEventListener(AIRServerEvent.CLIENT_REMOVED, onClientRemoved);
-//			server.addEventListener(MessageReceivedEvent.MESSAGE_RECEIVED, messageReceivedHandler, false, 0, true);
-//			server.start();
+			server=new AIRServer();
+			server.addEndPoint(new SocketEndPoint(1234, new AMFSocketClientHandlerFactory()));
+			server.addEventListener(AIRServerEvent.CLIENT_ADDED, onClientAdded);
+			server.addEventListener(AIRServerEvent.CLIENT_REMOVED, onClientRemoved);
+			server.addEventListener(MessageReceivedEvent.MESSAGE_RECEIVED, messageReceivedHandler, false, 0, true);
+			server.start();
 
 //			if (Starling.multitouchEnabled)
 			{
@@ -197,22 +305,22 @@ package
 
 		private var cursorArr:Vector.<Bitmap>
 
-//		protected function onClientRemoved(event:AIRServerEvent):void
-//		{
-//			if (currentClient)
-//				currentClient=null;
-//			ipTXT.text="请连接IP       " + currentAddress;
-//		}
+		protected function onClientRemoved(event:AIRServerEvent):void
+		{
+			if (currentClient)
+				currentClient=null;
+			ipTXT.text="请连接IP       " + currentAddress;
+		}
 
-//		protected function onClientAdded(event:AIRServerEvent):void
-//		{
-//			if (currentClient)
-//				currentClient.close();
-//			currentClient=event.client;
-//			ipTXT.text="已连接遥控器"
-//		}
+		protected function onClientAdded(event:AIRServerEvent):void
+		{
+			if (currentClient)
+				currentClient.close();
+			currentClient=event.client;
+			ipTXT.text="已连接遥控器"
+		}
 
-//		private var currentClient:Client;
+		private var currentClient:Client;
 
 		public function GetAddress():void
 		{
@@ -246,28 +354,32 @@ package
 			}
 		}
 
-//		protected function messageReceivedHandler(event:MessageReceivedEvent):void
-//		{
-//			switch (event.message.command)
-//			{
-//				case "touch":
-//				{
-//					var e1:TouchEvent=TouchEventUtils.objToTouch(event.message.data, this);
-//					var e2:MouseEvent=TouchEventUtils.objToMouse(event.message.data, this);
-//					stage.dispatchEvent(e1);
-//					if (e2)
-//					{
-//						stage.dispatchEvent(e2);
-//					}
-//					break;
-//				}
-//
-//				default:
-//				{
-//					break;
-//				}
-//			}
-//		}
+		protected function messageReceivedHandler(event:MessageReceivedEvent):void
+		{
+			switch (event.message.command)
+			{
+				case "touch":
+				{
+					var arr:Array=event.message.data;
+					for each (var o:Object in arr)
+					{
+						var e1:TouchEvent=TouchEventUtils.objToTouch(o, this);
+						var e2:MouseEvent=TouchEventUtils.objToMouse(o, this);
+						stage.dispatchEvent(e1);
+						if (e2)
+						{
+							stage.dispatchEvent(e2);
+						}
+					}
+					break;
+				}
+
+				default:
+				{
+					break;
+				}
+			}
+		}
 	}
 }
 
