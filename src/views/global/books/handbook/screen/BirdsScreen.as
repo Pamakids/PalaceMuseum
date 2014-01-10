@@ -22,7 +22,7 @@ package views.global.books.handbook.screen
 	 */
 	public class BirdsScreen extends BaseScreen
 	{
-		public static const MAX_NUM:int=9;
+		public static const MAX_NUM:int=11;
 
 		public function BirdsScreen()
 		{
@@ -123,6 +123,7 @@ package views.global.books.handbook.screen
 
 		private function ifCollected(page:uint):Boolean
 		{
+			return true;
 			return SOService.instance.getSO("birdCatched" + page);
 		}
 

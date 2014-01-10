@@ -206,15 +206,8 @@ package views.global.books.components
 			scroll.width = 540;
 			scroll.height = 530;
 			scroll.layout = layoutForScroll;
-//			scroll.addEventListener(Event.SCROLL, onScroll);
 		}
 		
-//		private function onScroll():void
-//		{
-//			var i:int = 100*scroll.verticalScrollPosition/scroll.maxVerticalScrollPosition;
-//			i = Math.min( 100, Math.max( 0, i ) );
-//			probar.value = i;
-//		}
 		
 		private var crtIndex:int = -1;
 		

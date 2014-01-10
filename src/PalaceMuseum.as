@@ -4,7 +4,7 @@ package
 	import com.greensock.plugins.MotionBlurPlugin;
 	import com.greensock.plugins.ShakeEffect;
 	import com.greensock.plugins.TweenPlugin;
-
+	
 	import flash.desktop.NativeApplication;
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
@@ -13,7 +13,6 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
-	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -22,32 +21,23 @@ package
 	import flash.net.NetworkInterface;
 	import flash.system.Capabilities;
 	import flash.text.TextField;
-
+	
 	import assets.embed.EmbedAssets;
-
-	import be.aboutme.airserver.AIRServer;
-	import be.aboutme.airserver.Client;
-	import be.aboutme.airserver.endpoints.socket.SocketEndPoint;
-	import be.aboutme.airserver.endpoints.socket.handlers.amf.AMFSocketClientHandlerFactory;
-	import be.aboutme.airserver.events.AIRServerEvent;
-	import be.aboutme.airserver.events.MessageReceivedEvent;
-
+	
 	import controllers.MC;
 	import controllers.UserBehaviorAnalysis;
-
+	
 	import models.PosVO;
-
+	
 	import sound.SoundAssets;
-
+	
 	import starling.core.Starling;
-
-	import utils.TouchEventUtils;
 
 	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x554040")]
 	public class PalaceMuseum extends Sprite
 	{
 		private var ipTXT:TextField;
-		private var server:AIRServer;
+//		private var server:AIRServer;
 
 		public function PalaceMuseum()
 		{
@@ -133,12 +123,12 @@ package
 			ipTXT.mouseEnabled=false;
 			GetAddress();
 
-			server=new AIRServer();
-			server.addEndPoint(new SocketEndPoint(1234, new AMFSocketClientHandlerFactory()));
-			server.addEventListener(AIRServerEvent.CLIENT_ADDED, onClientAdded);
-			server.addEventListener(AIRServerEvent.CLIENT_REMOVED, onClientRemoved);
-			server.addEventListener(MessageReceivedEvent.MESSAGE_RECEIVED, messageReceivedHandler, false, 0, true);
-			server.start();
+//			server=new AIRServer();
+//			server.addEndPoint(new SocketEndPoint(1234, new AMFSocketClientHandlerFactory()));
+//			server.addEventListener(AIRServerEvent.CLIENT_ADDED, onClientAdded);
+//			server.addEventListener(AIRServerEvent.CLIENT_REMOVED, onClientRemoved);
+//			server.addEventListener(MessageReceivedEvent.MESSAGE_RECEIVED, messageReceivedHandler, false, 0, true);
+//			server.start();
 
 //			if (Starling.multitouchEnabled)
 			{
@@ -207,22 +197,22 @@ package
 
 		private var cursorArr:Vector.<Bitmap>
 
-		protected function onClientRemoved(event:AIRServerEvent):void
-		{
-			if (currentClient)
-				currentClient=null;
-			ipTXT.text="请连接IP       " + currentAddress;
-		}
+//		protected function onClientRemoved(event:AIRServerEvent):void
+//		{
+//			if (currentClient)
+//				currentClient=null;
+//			ipTXT.text="请连接IP       " + currentAddress;
+//		}
 
-		protected function onClientAdded(event:AIRServerEvent):void
-		{
-			if (currentClient)
-				currentClient.close();
-			currentClient=event.client;
-			ipTXT.text="已连接遥控器"
-		}
+//		protected function onClientAdded(event:AIRServerEvent):void
+//		{
+//			if (currentClient)
+//				currentClient.close();
+//			currentClient=event.client;
+//			ipTXT.text="已连接遥控器"
+//		}
 
-		private var currentClient:Client;
+//		private var currentClient:Client;
 
 		public function GetAddress():void
 		{
@@ -256,28 +246,28 @@ package
 			}
 		}
 
-		protected function messageReceivedHandler(event:MessageReceivedEvent):void
-		{
-			switch (event.message.command)
-			{
-				case "touch":
-				{
-					var e1:TouchEvent=TouchEventUtils.objToTouch(event.message.data, this);
-					var e2:MouseEvent=TouchEventUtils.objToMouse(event.message.data, this);
-					stage.dispatchEvent(e1);
-					if (e2)
-					{
-						stage.dispatchEvent(e2);
-					}
-					break;
-				}
-
-				default:
-				{
-					break;
-				}
-			}
-		}
+//		protected function messageReceivedHandler(event:MessageReceivedEvent):void
+//		{
+//			switch (event.message.command)
+//			{
+//				case "touch":
+//				{
+//					var e1:TouchEvent=TouchEventUtils.objToTouch(event.message.data, this);
+//					var e2:MouseEvent=TouchEventUtils.objToMouse(event.message.data, this);
+//					stage.dispatchEvent(e1);
+//					if (e2)
+//					{
+//						stage.dispatchEvent(e2);
+//					}
+//					break;
+//				}
+//
+//				default:
+//				{
+//					break;
+//				}
+//			}
+//		}
 	}
 }
 
