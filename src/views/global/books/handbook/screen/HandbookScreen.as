@@ -32,6 +32,21 @@ package views.global.books.handbook.screen
 		{
 			_assetsManager=new AssetManager();
 		}
+		
+		/**
+		 * 获取页面内容所指向的模块索引
+		 */		
+		public function get mapCrtPageToModule():int
+		{
+			//各模块内最后一个典故的页码
+			const maxPageOfModules:Array = [2,4,6,8,10];
+			for(var i:int = 0;i<maxPageOfModules.length;i++)
+			{
+				if(crtPage <= maxPageOfModules[i])
+					return i;
+			}
+			return 0;
+		}
 
 		private var _assetsManager:AssetManager;
 		private var crtPage:int;
