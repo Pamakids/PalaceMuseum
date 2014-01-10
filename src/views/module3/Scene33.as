@@ -236,7 +236,7 @@ package views.module3
 				isT=true;
 				dx=180;
 				dy=590;
-				birdIndex=8;
+				birdIndex=6;
 				if (SOService.instance.checkHintCount(silverCardClickHint))
 					addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			}
