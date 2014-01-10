@@ -19,6 +19,9 @@ package assets.embed
 		[Embed(source="loading4.png")]
 		public static var module4Loading:Class;
 
+		[Embed(source="loading5.png")]
+		public static var module5Loading:Class;
+
 		[Embed(source="messageBG.png")]
 		public static var messageBG:Class;
 

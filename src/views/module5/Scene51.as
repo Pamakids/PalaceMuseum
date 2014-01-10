@@ -86,7 +86,7 @@ package views.module5
 			PopUpManager.removePopUp(book, true);
 			book=null;
 
-//			showCard("14");
+			showCard("14");
 		}
 
 		private function addPeople():void

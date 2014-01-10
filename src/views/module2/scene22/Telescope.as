@@ -156,12 +156,14 @@ package views.module2.scene22
 					hintHand.y=484;
 					hintRing.x=563;
 					hintRing.y=56;
+					hintRing.visible=false;
 
 					hintShow.addChild(hintHand);
 					hintShow.addChild(hintRing);
 
 					addChild(hintShow);
 					hintShow.touchable=false;
+					hintShow.alpha=0;
 				}
 				else
 				{
@@ -171,7 +173,7 @@ package views.module2.scene22
 						isReverse=false;
 					hintShow.alpha+=isReverse ? -.05 : .05;
 					hintHand.visible=!handMoved;
-					hintRing.visible=!ringMoved;
+					hintRing.visible=!ringMoved && handMoved;
 				}
 			}
 		}
@@ -298,7 +300,8 @@ package views.module2.scene22
 				SoundAssets.playSFX("ringblock", true);
 				ringBlock=true;
 			}
-			ringMoved=true;
+			if (handMoved)
+				ringMoved=true;
 		}
 
 		private function updataBlur():Number
@@ -412,7 +415,8 @@ package views.module2.scene22
 
 					isZoomed=true;
 
-					handMoved=true;
+					if (tele3.y == -maxY)
+						handMoved=true;
 
 					if (isRingMoved)
 						isWin=true;

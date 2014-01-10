@@ -722,19 +722,14 @@ package views.module3.scene33
 					recordTXT=dishgameresult.toString();
 				}
 
-				var scoreTF:TextField=new TextField(200, 100, scoreTXT);
-				scoreTF.fontSize=48;
-				scoreTF.color=0xb83d00;
-				scoreTF.x=490;
-				scoreTF.y=280;
-				scoreTF.vAlign="top"
-				scoreTF.hAlign="right";
-				endSP.addChild(scoreTF);
-
-				TweenLite.delayedCall(.2, function():void {
-					scoreTF.redraw();
-					scoreTF.text=scoreTXT;
-				})
+				TweenLite.delayedCall(1, function():void {
+					var scoreTF:TextField=new TextField(300, 100, scoreTXT);
+					scoreTF.fontSize=48;
+					scoreTF.color=0xb83d00;
+					scoreTF.x=500 - 40;
+					scoreTF.y=285 - 22;
+					endSP.addChild(scoreTF);
+				});
 
 				var recordTF:TextField=new TextField(100, 40, recordTXT);
 				recordTF.fontSize=24;
@@ -744,11 +739,6 @@ package views.module3.scene33
 				recordTF.vAlign="top"
 				recordTF.hAlign="right";
 				endSP.addChild(recordTF);
-
-//				TweenLite.delayedCall(.1, function():void {
-//					scoreTF.text=scoreTF.text;
-//					recordTF.text=recordTF.text;
-//				});
 			}
 			else
 			{

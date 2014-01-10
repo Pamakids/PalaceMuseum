@@ -1,5 +1,6 @@
 package sound
 {
+	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 
 	import flash.media.SoundChannel;
@@ -226,21 +227,24 @@ package sound
 			if (sc)
 			{
 				trace("fadeOut", sound)
-				TweenMax.killTweensOf(sc);
+				TweenLite.killTweensOf(sc);
 				TweenMax.to(sc, FADEINOUTDELAY, {volume: 0, onComplete: function():void {
 					sm.stop(sound);
+					delete scDic[sound];
 				}});
 			}
 		}
 
 		public static function fadeIn(sound:String):void
 		{
-			var sc:SoundChannel=sm.play(sound, 0, 0);
+			var sc:SoundChannel=scDic[sound];
+			if (!sc)
+				sc=sm.play(sound, 0, 0);
 			if (sc)
 			{
 				trace("fadeIn", sound)
 				scDic[sound]=sc;
-				TweenMax.killTweensOf(sc);
+				TweenLite.killTweensOf(sc);
 				TweenMax.to(sc, FADEINOUTDELAY, {volume: bgmVol});
 			}
 		}
