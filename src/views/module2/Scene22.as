@@ -65,7 +65,7 @@ package views.module2
 		{
 			super(am);
 			hintArr=[hint0, hint1, hint2, hint3]
-			crtKnowledgeIndex=6;
+			crtKnowledgeIndex=5;
 			addBG("bg32");
 
 			thermo=getImage("thermometer32");

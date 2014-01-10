@@ -34,7 +34,7 @@ package views.module3
 		public function Scene32(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=8;
+			crtKnowledgeIndex=6;
 
 			addBG("bg-22");
 

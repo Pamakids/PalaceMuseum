@@ -60,7 +60,7 @@ package views.module3
 		public function Scene33(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=9;
+			crtKnowledgeIndex=7;
 
 			addBG("bg23");
 			addKing();

@@ -42,7 +42,7 @@ package views.module4
 		public function Scene44(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=11;
+			crtKnowledgeIndex=10;
 
 			flowerPos=assetManager.getObject("flowerPos");
 

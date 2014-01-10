@@ -51,7 +51,7 @@ package views.module4
 		public function Scene41(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=10;
+			crtKnowledgeIndex=8;
 			bgHolder=new Sprite();
 			var bg1:Image=getImage("bg41l");
 			var bg2:Image=getImage("bg41r");

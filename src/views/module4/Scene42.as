@@ -35,7 +35,7 @@ package views.module4
 		public function Scene42(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=11;
+			crtKnowledgeIndex=9;
 			addBG("bg52");
 
 			hand=getImage("memorial-hand");

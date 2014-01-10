@@ -46,7 +46,7 @@ package views.module2
 		public function Scene21(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=5;
+			crtKnowledgeIndex=4;
 			addBG("bg31")
 
 			addShelfs();
