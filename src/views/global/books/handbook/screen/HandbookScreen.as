@@ -218,8 +218,8 @@ package views.global.books.handbook.screen
 				return;
 			_assetsManager.enqueue("assets/global/handbook/content_page_" + pageIndex + ".png");
 			_assetsManager.loadQueue(function(ratio:Number):void {
-				if (ratio == 1)
-					trace("资源加载完成");
+//				if (ratio == 1)
+//					trace("资源加载完成");
 			});
 		}
 

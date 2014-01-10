@@ -123,8 +123,6 @@ package views.global
 				BooksManager.showBooks(1, 0);
 			else
 			{
-				if (index >= 5)
-					index=0;
 				BooksManager.showBooks(1, 0, index);
 			}
 		}

@@ -18,7 +18,7 @@ package views.module4
 		public function Scene43(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=11;
+			crtKnowledgeIndex=10;
 			addBG("bg43");
 //			addChild(getImage("bg43"));
 

@@ -21,9 +21,8 @@ package views.module1
 		public function Scene14(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=4;
+			crtKnowledgeIndex=3;
 			addBG("bg14");
-//			addChild(getImage("bg14"));
 
 			king=new OperaBody();
 			king.body=getImage("kingbody");

@@ -51,7 +51,7 @@ package views.module4
 		public function Scene41(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=10;
+			crtKnowledgeIndex=8;
 			bgHolder=new Sprite();
 			var bg1:Image=getImage("bg41l");
 			var bg2:Image=getImage("bg41r");
@@ -166,7 +166,7 @@ package views.module4
 
 		private function chatOver():void
 		{
-			birdIndex=6;
+			birdIndex=7;
 			removeMask();
 			king.touchable=false;
 			TweenLite.to(king, 1, {y: 768 + 311, onComplete: getReady});

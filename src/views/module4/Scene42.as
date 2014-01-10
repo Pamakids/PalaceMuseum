@@ -35,7 +35,7 @@ package views.module4
 		public function Scene42(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=11;
+			crtKnowledgeIndex=9;
 			addBG("bg52");
 
 			hand=getImage("memorial-hand");
@@ -63,7 +63,7 @@ package views.module4
 
 		private function openBook():void
 		{
-			book=new ItemIntro(4, new Rectangle(473, 485, 240, 69));
+			book=new ItemIntro(7, new Rectangle(473, 485, 240, 69));
 			var close:ElasticButton=new ElasticButton(getImage("button_close"), getImage("button_close_down"));
 			book.addIntro(getImage("intro-bg"), getImage("intro-seal"), close);
 			book.addEventListener(ItemIntro.CLOSE, onClose);
@@ -152,7 +152,7 @@ package views.module4
 				memorialTop.addEventListener(TouchEvent.TOUCH, onTopMemorialTouch);
 			}});
 
-			birdIndex=7;
+			birdIndex=8;
 		}
 
 		private function onTopMemorialTouch(e:TouchEvent):void

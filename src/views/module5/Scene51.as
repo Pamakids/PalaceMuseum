@@ -48,7 +48,7 @@ package views.module5
 		public function Scene51(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=12;
+			crtKnowledgeIndex=11;
 			addBG("bg51");
 
 			addPeople();

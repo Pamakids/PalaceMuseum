@@ -57,7 +57,7 @@ package views.module1
 		public function Scene13(am:AssetManager)
 		{
 			super(am);
-			crtKnowledgeIndex=4;
+			crtKnowledgeIndex=3;
 		}
 
 		override protected function init():void

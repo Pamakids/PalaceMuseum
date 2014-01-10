@@ -47,7 +47,7 @@ package views.module5
 		public function Scene52(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=13;
+			crtKnowledgeIndex=11;
 			gameHolder=new Sprite();
 			addChild(gameHolder);
 
