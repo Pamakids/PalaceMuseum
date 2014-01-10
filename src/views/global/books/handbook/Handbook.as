@@ -309,7 +309,10 @@ package views.global.books.handbook
 			sprite.alpha = 1;
 			mask.alpha = .5;
 			cata.scaleX = cata.scaleY = 1;
-			cata.updateView( 0 );
+			if(_navigator.activeScreenID == MAP)
+				cata.updateView( 0 );
+			else
+				cata.updateView( (_navigator.activeScreen as Object).mapCrtPageToModule );
 		}
 		
 		public function hideCatalogue():void
@@ -448,11 +451,11 @@ package views.global.books.handbook
 		private function playedAnimation():void
 		{
 			hideAnimation();
-			if(_navigator.activeScreen is MapScreen)
-			{
-				Map.show(null, -1, -1, true, true);
-				MC.instance.switchLayer( true );
-			}
+//			if(_navigator.activeScreen is MapScreen)
+//			{
+//				Map.show(null, -1, -1, true, true);
+//				MC.instance.switchLayer( true );
+//			}
 			
 			if(MC.needGuide)
 			{

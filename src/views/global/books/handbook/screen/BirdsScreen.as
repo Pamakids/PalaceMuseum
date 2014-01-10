@@ -1,16 +1,16 @@
 package views.global.books.handbook.screen
 {
 	import feathers.core.PopUpManager;
-
+	
 	import models.FontVo;
 	import models.SOService;
-
+	
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.base.PalaceModule;
 	import views.global.books.BooksManager;
 	import views.global.books.events.BookEvent;
@@ -23,7 +23,21 @@ package views.global.books.handbook.screen
 	public class BirdsScreen extends BaseScreen
 	{
 		public static const MAX_NUM:int=11;
-
+		/**
+		 * 获取页面内容所指向的模块索引
+		 */		
+		public function get mapCrtPageToModule():int
+		{
+			//各模块内最后一个典故的页码
+			const maxPageOfModules:Array = [1,3,6,8,10];
+			for(var i:int = 0;i<maxPageOfModules.length;i++)
+			{
+				if(crtPage <= maxPageOfModules[i])
+					return i;
+			}
+			return 0;
+		}
+		
 		public function BirdsScreen()
 		{
 			_assetsManager=new AssetManager();
