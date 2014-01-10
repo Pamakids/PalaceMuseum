@@ -511,12 +511,12 @@ package views.module3.scene32
 			}
 			else if (_count < menugameresult)
 			{
+				delayFunction=showRecord;
 				SOService.instance.setSO(gameResultlvl, _count);
 				resultTXT=recordTXT=getStringFormTime(_count);
 			}
 			else
 			{
-				delayFunction=showRecord;
 				resultTXT=getStringFormTime(_count);
 				recordTXT=getStringFormTime(menugameresult);
 			}

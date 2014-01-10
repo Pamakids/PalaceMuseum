@@ -4,6 +4,7 @@ package
 	import com.greensock.plugins.MotionBlurPlugin;
 	import com.greensock.plugins.ShakeEffect;
 	import com.greensock.plugins.TweenPlugin;
+	import com.pamakids.palace.utils.MiTVKeyCode;
 
 	import flash.desktop.NativeApplication;
 	import flash.display.Bitmap;
@@ -13,6 +14,7 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	import flash.geom.Point;
@@ -83,7 +85,7 @@ package
 			Starling.multitouchEnabled=true;
 			Starling.handleLostContext=false;
 
-			var android:Boolean=true;
+			var android:Boolean=false;
 			if (android)
 			{
 				Starling.handleLostContext=true;
@@ -105,9 +107,105 @@ package
 			MC.instance.stage=this;
 			MC.instance.mcLayer=mcLayer;
 
-			var tv:Boolean=true;
+			var tv:Boolean=false;
 			if (tv)
-				initRemoteServer();
+				initTVRemoter();
+//			initRemoteServer();
+		}
+
+		private function initTVRemoter():void
+		{
+			cursor=new EmbedAssets.cursor();
+			addChild(cursor);
+			cursor.x=512;
+			cursor.y=384;
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+		}
+
+		private var mouseDirection:int=-1;
+		private var cursor:Bitmap;
+
+		protected function onEnterFrame(e:Event):void
+		{
+			if (mouseDirection >= 0)
+			{
+				cursor.x+=mouseDirection % 2 == 0 ? (mouseDirection - 1) * 15 : 0;
+				cursor.y+=mouseDirection % 2 == 0 ? 0 : (mouseDirection - 2) * 15;
+			}
+
+			if (cursor.x < 0)
+				cursor.x=0;
+			else if (cursor.x > 1024)
+				cursor.x=1024;
+
+			if (cursor.y < 0)
+				cursor.y=0;
+			else if (cursor.y > 768)
+				cursor.y=768;
+		}
+
+		protected function onKeyDown(e:KeyboardEvent):void
+		{
+			switch (e.keyCode)
+			{
+				case MiTVKeyCode.LEFT: //37
+				case MiTVKeyCode.UP: //38
+				case MiTVKeyCode.RIGHT: //39
+				case MiTVKeyCode.DOWN: //40
+					mouseDirection=e.keyCode - MiTVKeyCode.LEFT;
+					break;
+
+				case MiTVKeyCode.OK: //13
+				{
+					remoteMouse(true);
+					break;
+				}
+
+				default:
+				{
+					break;
+				}
+			}
+		}
+
+		private function remoteMouse(down:Boolean):void
+		{
+			var pt:Point=new Point(cursor.x, cursor.y);
+			var o:Object={type: down ? TouchEvent.TOUCH_BEGIN : TouchEvent.TOUCH_END, x: pt.x, y: pt.y, id: 0}
+			var e1:TouchEvent=TouchEventUtils.objToTouch(o, this);
+			var e2:MouseEvent=TouchEventUtils.objToMouse(o, this);
+			stage.dispatchEvent(e1);
+			if (e2)
+			{
+				stage.dispatchEvent(e2);
+			}
+
+		}
+
+		protected function onKeyUp(e:KeyboardEvent):void
+		{
+			switch (e.keyCode)
+			{
+				case MiTVKeyCode.LEFT: //37
+				case MiTVKeyCode.UP: //38
+				case MiTVKeyCode.RIGHT: //39
+				case MiTVKeyCode.DOWN: //40
+					mouseDirection=-1;
+					break;
+
+				case MiTVKeyCode.OK: //13
+				{
+					remoteMouse(false);
+					break;
+				}
+
+				default:
+				{
+					break;
+				}
+			}
 		}
 
 		protected function onActive(event:Event):void
@@ -262,12 +360,16 @@ package
 			{
 				case "touch":
 				{
-					var e1:TouchEvent=TouchEventUtils.objToTouch(event.message.data, this);
-					var e2:MouseEvent=TouchEventUtils.objToMouse(event.message.data, this);
-					stage.dispatchEvent(e1);
-					if (e2)
+					var arr:Array=event.message.data;
+					for each (var o:Object in arr)
 					{
-						stage.dispatchEvent(e2);
+						var e1:TouchEvent=TouchEventUtils.objToTouch(o, this);
+						var e2:MouseEvent=TouchEventUtils.objToMouse(o, this);
+						stage.dispatchEvent(e1);
+						if (e2)
+						{
+							stage.dispatchEvent(e2);
+						}
 					}
 					break;
 				}

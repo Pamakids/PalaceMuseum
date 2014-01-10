@@ -180,13 +180,11 @@ package views.module3
 				king.addEventListener(Event.COMPLETE, onKingPlayed);
 				king.play();
 				TweenLite.delayedCall(1.3, function():void {
-					p=Prompt.showTXT(864, 617, "急什么，再让我看一会儿…", 20, null, null, 3, false);
+					Prompt.showTXT(864, 617, "急什么，再让我看一会儿…", 20, sceneOver, null, 3, false);
 					SoundAssets.playSFX("kingdragged");
 				});
 			}
 		}
-
-		private var p:Prompt;
 
 		private function onKingPlayed(e:Event):void
 		{
@@ -194,7 +192,7 @@ package views.module3
 			Starling.juggler.remove(king);
 			king.removeFromParent(true);
 			king=null;
-			sceneOver();
+//			sceneOver();
 		}
 
 		private var hotarea:Rectangle=new Rectangle(280, 140, 210, 290);

@@ -646,19 +646,14 @@ package views.module5.scene52
 					recordTXT=operagameresult.toString();
 				}
 
-				var scoreTF:TextField=new TextField(200 + 200, 100, scoreTXT);
-				scoreTF.fontSize=48;
-				scoreTF.color=0xb83d00;
-				scoreTF.x=470 - 200;
-				scoreTF.y=285;
-				scoreTF.vAlign="top";
-				scoreTF.hAlign="right";
-				endHolder.addChild(scoreTF);
-
-//				TweenLite.delayedCall(.2, function():void {
-//					scoreTF.redraw();
-//					scoreTF.text=scoreTXT;
-//				})
+				TweenLite.delayedCall(1, function():void {
+					var scoreTF:TextField=new TextField(300, 100, scoreTXT);
+					scoreTF.fontSize=48;
+					scoreTF.color=0xb83d00;
+					scoreTF.x=500 - 40;
+					scoreTF.y=285 - 22;
+					endHolder.addChild(scoreTF);
+				});
 
 				var recordTF:TextField=new TextField(100, 40, recordTXT);
 				recordTF.fontSize=24;
