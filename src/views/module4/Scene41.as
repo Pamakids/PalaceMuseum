@@ -1,19 +1,16 @@
 package views.module4
 {
 	import com.greensock.TweenLite;
-	import com.greensock.easing.Back;
 	import com.greensock.easing.Quad;
-	import com.pamakids.manager.SoundManager;
 	import com.pamakids.palace.utils.SPUtils;
 
 	import flash.events.AccelerometerEvent;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.sensors.Accelerometer;
 	import flash.utils.getTimer;
 
 	import controllers.UserBehaviorAnalysis;
-
-	import models.SOService;
 
 	import sound.SoundAssets;
 
@@ -48,6 +45,11 @@ package views.module4
 		private var cardArr:Array=[new Point(571, 146), new Point(1890, 151),
 								   new Point(122, 113), new Point(2333, 114), new Point(1500, 40)];
 
+		private var cardTxtArr:Array=["崇楼","后左门","保和殿","后右门","崇楼"];
+		private var cardAreaArr:Array=[new Rectangle(157,129,208,147),new Rectangle(390,137,197,116),
+									   new Rectangle(1040,67,458,160),new Rectangle(1950,167,214,86),
+									   new Rectangle(2160,124,236,174)]  
+
 		public function Scene41(am:AssetManager=null)
 		{
 			super(am);
@@ -62,14 +64,14 @@ package views.module4
 			bgHolder.x=-300;
 			addChild(bgHolder);
 
-			for (var i:int=0; i < cardArr.length; i++)
-			{
-				var card:Image=getImage((i + 1).toString());
-				card.x=cardArr[i].x;
-				card.y=cardArr[i].y;
-				card.scaleX=card.scaleY=(i == 4 ? 130 : 78) / card.width;
-				bgHolder.addChild(card);
-			}
+//			for (var i:int=0; i < cardArr.length; i++)
+//			{
+//				var card:Image=getImage((i + 1).toString());
+//				card.x=cardArr[i].x;
+//				card.y=cardArr[i].y;
+//				card.scaleX=card.scaleY=(i == 4 ? 130 : 78) / card.width;
+//				bgHolder.addChild(card);
+//			}
 
 			peopleHolder=new Sprite();
 			bgHolder.addChild(peopleHolder);
@@ -202,6 +204,8 @@ package views.module4
 			if (!tc)
 				return;
 
+			var pt:Point=tc.getLocation(bgHolder);
+
 			switch (tc.phase)
 			{
 				case TouchPhase.BEGAN:
@@ -234,6 +238,7 @@ package views.module4
 				case TouchPhase.ENDED:
 				{
 					dragging=false;
+					checkArea(pt);
 					break;
 				}
 
@@ -242,6 +247,69 @@ package views.module4
 					break;
 				}
 			}
+		}
+
+		private function checkArea(pt:Point):void
+		{
+			for (var i:int = 0; i < cardAreaArr.length; i++) 
+			{
+				var rect:Rectangle=cardAreaArr[i];
+				if(rect.containsPoint(pt)){
+					var _x:Number;
+					var _y:Number;
+					var align:int;
+					switch(i)
+					{
+						case 0:
+						{
+							_x=rect.x+rect.width/2;  
+							_y=rect.y+50;
+							align=3;
+							break;
+						}
+
+						case 1:
+						{
+							_x=rect.x+rect.width-35;  
+							_y=rect.y+35;
+							align=1;
+							break;
+						}
+
+						case 2:
+						{
+							_x=rect.x+rect.width-20;  
+							_y=rect.y+60;
+							align=1;
+							break;
+						}
+
+						case 3:
+						{
+							_x=rect.x+29;  
+							_y=rect.y+23;
+							align=3;
+							break;
+						}
+
+						case 4:
+						{
+							_x=rect.x+rect.width-72;  
+							_y=rect.y+30;
+							align=1;
+							break;
+						}
+
+						default:
+						{
+							break;
+						}
+					}
+					showHint(_x,_y,cardTxtArr[i],align);
+					return;
+				}
+			}
+
 		}
 
 		private var crawPosArr:Array=[new Point(1278, 708), new Point(1064, 490), new Point(1488, 490)];
@@ -395,9 +463,9 @@ package views.module4
 				showHint(wu.x + 50, wu.y + 20, hintArr[2]);
 		}
 
-		private function showHint(_x:Number, _y:Number, content:String):void
+		private function showHint(_x:Number, _y:Number, content:String, align:int=1):void
 		{
-			Prompt.showTXT(_x, _y, content, 20, null, bgHolder, 1, true);
+			Prompt.showTXT(_x, _y, content, 20, null, bgHolder, align, true);
 		}
 
 		private var chancellor:Image;
