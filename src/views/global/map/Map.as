@@ -498,7 +498,9 @@ package views.global.map
 		{
 			scroller.scrollToPosition(0, 0, 5);
 			TweenLite.delayedCall(5, function():void {
+				TweenLite.delayedCall(4,MC.instance.stage.addClickHint);
 				LionMC.instance.say("我就是神通广大的小石狮子。我们先来学习使用《皇帝速成手册》，遇到问题随时找我！", 0, 0, 0, function():void {
+					MC.instance.stage.removeClickHint();
 					TopBar.instance.showBookAndAvatar(false);
 					MC.instance.addGuide(1, function():void {
 						TopBar.instance.bookClickedHandler();

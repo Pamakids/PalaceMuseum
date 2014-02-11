@@ -170,6 +170,34 @@ package
 			}
 		}
 
+		private var clickHint:Bitmap;
+		private var hintShowed:Boolean;
+
+		public function addClickHint():void
+		{
+			if(hintShowed)
+				return;
+			if(clickHint&&this.contains(clickHint))
+			{
+				removeChild(clickHint);
+				clickHint=null;
+			}
+			clickHint = new EmbedAssets.lionClick();
+			addChild(clickHint);
+			clickHint.x=218;
+			clickHint.y=678;
+
+		}
+
+		public function removeClickHint():void
+		{
+			hintShowed=true;
+			if(clickHint&&this.contains(clickHint))
+			{
+				removeChild(clickHint);
+			}
+		}
+
 		private function remoteMouse(down:Boolean):void
 		{
 			var pt:Point=new Point(cursor.x, cursor.y);

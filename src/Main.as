@@ -16,7 +16,6 @@ package
 
 	import sound.SoundAssets;
 
-	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -35,7 +34,7 @@ package
 		{
 			if (Capabilities.isDebugger)
 			{
-//				SOService.instance.clear();
+				SOService.instance.clear();
 //				SOService.instance.setSO("lastScene", "44");
 			}
 			super();
