@@ -27,5 +27,10 @@ package assets.embed
 
 		[Embed(source="cursor.png")]
 		public static var cursor:Class;
+
+		[Embed(source="lionClickHint.png")]
+		public static var lionClick:Class;
 	}
 }
+
+
