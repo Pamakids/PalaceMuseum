@@ -294,11 +294,12 @@ package views.module4
 			chooseWin.dispose();
 			MC.instance.stage.removeChild(drawScene);
 			drawScene=null;
+
+			removeMemorial(memorialBottom, playLion2);
+			return;
+
 			removeMemorial(memorialBottom, function():void {
 				showCard("8", playLion2);
-//				showCard("8", function():void {
-//					showAchievement(22, playLion2);
-//				});
 			});
 		}
 
