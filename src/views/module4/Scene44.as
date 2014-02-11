@@ -172,7 +172,7 @@ package views.module4
 			{
 				if (kingP)
 					kingP.playHide();
-				kingP=Prompt.showTXT(512, 600, "哇，好气派的花园，咦，小狮子去哪了？", 20, null, this);
+				kingP=Prompt.showTXT(512, 600, "小狮子呢？等等，左边亭子后面好像有什么东西...", 20, null, this);
 			}
 		}
 
@@ -613,3 +613,5 @@ package views.module4
 		}
 	}
 }
+
+
