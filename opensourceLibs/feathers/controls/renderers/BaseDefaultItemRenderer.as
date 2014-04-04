@@ -2135,7 +2135,7 @@ package feathers.controls.renderers
 				}
 				this.addChild(this.accessory);
 			}
-			
+
 			if(this.accessoryImage)
 			{
 				this.accessoryImage.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner.isScrolling;
@@ -2459,7 +2459,7 @@ package feathers.controls.renderers
 				(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_RIGHT) ||
 				(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_BOTTOM) ||
 				(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_LEFT)
-			))
+				))
 			{
 				relativeTo.x += offsetX;
 				relativeTo.y += offsetY;
@@ -2471,7 +2471,7 @@ package feathers.controls.renderers
 					(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_LEFT) ||
 					(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_BOTTOM) ||
 					(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_TOP)
-				))
+					))
 				{
 					relativeTo2.x += offsetX;
 					relativeTo2.y += offsetY;
@@ -2712,3 +2712,4 @@ package feathers.controls.renderers
 		}
 	}
 }
+

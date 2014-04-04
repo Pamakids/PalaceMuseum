@@ -35,7 +35,7 @@ package
 			if (Capabilities.isDebugger)
 			{
 				SOService.instance.clear();
-//				SOService.instance.setSO("lastScene", "44");
+				SOService.instance.setSO("lastScene", "51");
 			}
 			super();
 
@@ -92,11 +92,16 @@ package
 
 		private function initialize():void
 		{
+			if(!musicPlayed)
+				return;
+			if(MC.assetManager==null)
+				return;
 			onStart(null);
 		}
 
-		[Embed(source="/assets/start/title.jpg")]
+		[Embed(source="/assets/start/title.png")]
 		public static var Title:Class
+		private var musicPlayed:Boolean;
 
 		public function showStart():void
 		{
@@ -106,6 +111,11 @@ package
 			addChild(startHolder);
 			TweenLite.delayedCall(1, function():void {
 				SoundAssets.playSFX("dang", false, 1);
+			});
+
+			TweenLite.delayedCall(4.8,function():void{
+				musicPlayed=true;
+				initialize();
 			});
 		}
 
@@ -130,8 +140,13 @@ package
 
 		private function initIntro():void
 		{
-			inito=new Interlude("assets/video/intro.mp4", true, null, startGame);
-			MC.instance.stage.addChild(inito);
+			if(MC.isIOS)
+			{
+				inito=new Interlude("assets/video/intro.mp4", true, null, startGame);
+				MC.instance.stage.addChild(inito);
+			}
+			else
+				startGame()
 //			Starling.current.nativeStage.addChild(inito);
 		}
 
@@ -146,6 +161,7 @@ package
 		{
 			if (!_lastScene)
 			{
+				MC.instance.stage.hintShowed=false;
 				var cb:Function=function():void {
 					touchable=false;
 					MC.needGuide=true;

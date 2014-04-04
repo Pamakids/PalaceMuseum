@@ -56,8 +56,7 @@ package views.module5
 			LionMC.instance.say(" 待各位落座，演出就\n正式开始。", 0, 0, 0, function():void {
 				ready=true;
 				bg.addEventListener(TouchEvent.TOUCH, onBGTouch);
-			}, 20, .6, true);
-
+			}, 20, true);
 		}
 
 		private function onBGTouch(e:TouchEvent):void
@@ -160,3 +159,5 @@ package views.module5
 		}
 	}
 }
+
+

@@ -314,6 +314,12 @@ package views.module5.scene52
 				}
 				TweenLite.delayedCall(.51, function():void {
 					b.touchable=true;
+
+					for each (var pt2:PalaceParticle in particleArr) 
+					{
+						pt2.removeFromParent(true);
+						pt2=null;
+					}
 					particleArr=[];
 				});
 
@@ -557,3 +563,5 @@ package views.module5.scene52
 		}
 	}
 }
+
+

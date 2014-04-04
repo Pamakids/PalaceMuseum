@@ -5,6 +5,9 @@ package views.module1
 	import flash.geom.Point;
 
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
 	import views.components.Prompt;
@@ -24,6 +27,8 @@ package views.module1
 			crtKnowledgeIndex=3;
 			addBG("bg14");
 
+			bg.addEventListener(TouchEvent.TOUCH,onBGTouch);
+
 			king=new OperaBody();
 			king.body=getImage("kingbody");
 			king.head=getImage("kinghead");
@@ -35,6 +40,13 @@ package views.module1
 			king.touchable=false;
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			TweenLite.delayedCall(1, moveKing);
+		}
+
+		private function onBGTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(bg,TouchPhase.ENDED);
+			if(tc&&p)
+				p.playHide();
 		}
 
 		override public function dispose():void
@@ -63,19 +75,21 @@ package views.module1
 				king.shake();
 		}
 
+		private var p:Prompt;
+
 		private function kingSay():void
 		{
-			Prompt.showTXT(pos2.x + 10, pos2.y - 20, txt1, 20, momSay);
+			p=Prompt.showTXT(pos2.x + 10, pos2.y - 20, txt1, 20, momSay);
 		}
 
 		private function momSay():void
 		{
-			Prompt.showTXT(pos3.x, pos3.y, txt2, 20, kingSay2);
+			p=Prompt.showTXT(pos3.x, pos3.y, txt2, 20, kingSay2);
 		}
 
 		private function kingSay2():void
 		{
-			Prompt.showTXT(pos2.x + 10, pos2.y - 20, txt3, 20, moveKingBack);
+			p=Prompt.showTXT(pos2.x + 10, pos2.y - 20, txt3, 20, moveKingBack);
 		}
 
 		private var talkIndex:int=0;
@@ -92,10 +106,10 @@ package views.module1
 				if (talkIndex == 9)
 				{
 					pos=this["pos1"];
-					Prompt.showTXT(pos.x + 10, pos.y - 20, txt, 20);
+					p=Prompt.showTXT(pos.x + 10, pos.y - 20, txt, 20);
 				}
 				else
-					Prompt.showTXT(pos.x + 10, pos.y - 20, txt, 20, sayNext);
+					p=Prompt.showTXT(pos.x + 10, pos.y - 20, txt, 20, sayNext);
 			}
 
 			if (talkIndex == 3)
@@ -128,3 +142,5 @@ package views.module1
 		private var king:OperaBody;
 	}
 }
+
+

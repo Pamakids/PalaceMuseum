@@ -172,15 +172,15 @@ package views.module2
 
 		private function lionChat1():void
 		{
-			LionMC.instance.say(chat2, 0, 50, 520, lionChat2, 20, .6);
+			LionMC.instance.say2(chat2, 0, 50, 520, lionChat2, 20);
 		}
 
 		private function lionChat2():void
 		{
-			TweenLite.delayedCall(.5, function():void {
-				getReady();
-				LionMC.instance.say(chat4, 0, 50, 520, null, 20, .6, true);
-			});
+//			TweenLite.delayedCall(.5, function():void {
+			getReady();
+			LionMC.instance.say3(chat4, 0, 50, 520, null, 20, true);
+//			});
 		}
 
 		private var chat1:String="长大后，皇帝还要上学吗？";
@@ -705,33 +705,30 @@ package views.module2
 			mapGame.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 		}
 
-		override protected function nextScene(e:Event=null):void
-		{
-			if (kingHead)
-			{
-				kingHead.stop();
-				Starling.juggler.remove(kingHead);
-				kingHead.removeFromParent(true);
-				kingHead=null;
-			}
-
-			touchable=false;
-
-			var tempHead:Image=getImage("kingHappy0001");
-			tempHead.scaleX=tempHead.scaleY=.8;
-			headHolder.addChild(tempHead);
-
-//			assetManager.removeTextureAtlas("kingExp");
-//			assetManager.removeTextureAtlas("m3s1");
-
-			assetManager.removeTextureAtlas("bug");
-			assetManager.removeTextureAtlas("mapPiece");
-			assetManager.removeTexture("map");
-			assetManager.removeTexture("mapEdge");
-
-			TweenLite.delayedCall(.1, super.nextScene);
-
-//			super.nextScene(e);
-		}
+//		override protected function nextScene(e:Event=null):void
+//		{
+//			if (kingHead)
+//			{
+//				kingHead.stop();
+//				Starling.juggler.remove(kingHead);
+//				kingHead.removeFromParent(true);
+//				kingHead=null;
+//			}
+//
+//			touchable=false;
+//
+//			var tempHead:Image=getImage("kingHappy0001");
+//			tempHead.scaleX=tempHead.scaleY=.8;
+//			headHolder.addChild(tempHead);
+//
+//			assetManager.removeTextureAtlas("bug");
+//			assetManager.removeTextureAtlas("mapPiece");
+//			assetManager.removeTexture("map");
+//			assetManager.removeTexture("mapEdge");
+//
+//			TweenLite.delayedCall(.1, super.nextScene);
+//		}
 	}
 }
+
+

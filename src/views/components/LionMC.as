@@ -57,7 +57,7 @@ package views.components
 		public function replay():void
 		{
 			if (lastContent)
-				say(lastContent, lastType, lastX, lastY, null, 20, lastMask, lastTask);
+				say(lastContent, lastType, lastX, lastY, null, 20, lastTask,3,lastMask);
 			else
 				play(int(Math.random() * mcArr.length));
 		}
@@ -175,7 +175,7 @@ package views.components
 		 * @param _callBack
 		 * @param fontSize
 		 */
-		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20, maskA:Number=.6, isTask:Boolean=false, hideDelay:Number=3):void
+		public function say(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, fontSize:int=20,  isTask:Boolean=false, hideDelay:Number=3,maskA:Number=.4):void
 		{
 			SoundAssets.playSFX("lionshow");
 			maskA=Math.max(0, Math.min(.6, maskA));
@@ -222,6 +222,75 @@ package views.components
 							   }});
 		}
 
+		public function say2(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, 
+							 fontSize:int=20,  isTask:Boolean=false, hideDelay:Number=3,maskA:Number=.4):void
+		{
+			SoundAssets.playSFX("lionshow");
+			maskA=Math.max(0, Math.min(.6, maskA));
+			TailBar.hide();
+
+			showLion(_type);
+			if (!_x && !_y)
+			{
+				_x=50;
+				_y=520;
+			}
+			x=_x < 512 ? (-175 - mcWidth * 2) : (1124 + mcWidth);
+			y=_y;
+			callBack=_callBack;
+			if (p)
+			{
+				p.visible=true;
+				p.callback=null;
+				p.playHide();
+			}
+
+			MC.instance.main.addMask(maskA);
+			tl=TweenMax.to(this, .8, {x: _x, y: _y, motionBlur: MC.isIOS, ease: Quad.easeIn,
+							   onComplete: function():void
+							   {
+								   lion.gotoAndPlay(1);
+								   p=Prompt.showTXT(isTask ? (x + 160) : (x + mcWidth + 30), isTask ? (y + 120) : y, content, fontSize, function():void
+								   {
+									   if (callBack != null) {
+										   callBack();
+										   callBack=null;
+									   }
+								   }, MC.instance.main, 1, false, hideDelay, isTask);
+								   addEventListener(MouseEvent.CLICK, onClick);
+							   }});
+		}
+
+		public function say3(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, 
+							 fontSize:int=20,  isTask:Boolean=false, hideDelay:Number=3,maskA:Number=.4):void
+		{
+			lastType=_type;
+			lastX=_x;
+			lastY=_y;
+			lastContent=content;
+			lastMask=maskA;
+			lastTask=isTask;
+
+			callBack=_callBack;
+			if (p)
+			{
+				p.visible=true;
+				p.callback=null;
+				p.playHide();
+			}
+			p=Prompt.showTXT(isTask ? (x + 160) : (x + mcWidth + 30), isTask ? (y + 120) : y, content, fontSize, function():void
+			{
+				TailBar.show();
+				isSayingOver=true;
+				MC.instance.main.removeMask();
+				if (callBack != null) {
+					callBack();
+					callBack=null;
+				}
+			}, MC.instance.main, 1, false, hideDelay, isTask);
+			addEventListener(MouseEvent.CLICK, onClick);
+		}
+
 		/**
 		 *
 		 */
@@ -250,3 +319,5 @@ package views.components
 		}
 	}
 }
+
+

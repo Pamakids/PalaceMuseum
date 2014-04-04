@@ -48,7 +48,7 @@ package views.module3
 
 			LionMC.instance.say("宫里的饭菜起名字时常常图个吉利，看你能否给这些吉祥菜名对号入座。", 0, 0, 0, function():void {
 				birdIndex=5;
-			}, 20, .6, true);
+			}, 20, true);
 		}
 
 		private function onTouch(e:TouchEvent):void
@@ -127,11 +127,13 @@ package views.module3
 			game=null;
 		}
 
-		override protected function nextScene(e:Event=null):void
-		{
-			super.nextScene(e);
-			var scale:Number=1.2;
-			TweenLite.to(this, 3, {scaleX: scale, scaleY: scale, x: -1024 * (scale - 1)});
-		}
+//		override protected function nextScene(e:Event=null):void
+//		{
+//			super.nextScene(e);
+//			var scale:Number=1.2;
+//			TweenLite.to(this, 3, {scaleX: scale, scaleY: scale, x: -1024 * (scale - 1)});
+//		}
 	}
 }
+
+

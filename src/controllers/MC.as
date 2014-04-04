@@ -204,8 +204,12 @@ package controllers
 				clearCrtModule();
 				LionMC.instance.hide();
 				SOService.instance.setSO("lastScene", "end");
-				var end:Interlude=new Interlude("assets/video/end.mp4", true, null, onEnd);
-				stage.addChild(end);
+				if(MC.isIOS){
+					var end:Interlude=new Interlude("assets/video/end.mp4", true, null, onEnd);
+					stage.addChild(end);
+				}
+				else
+					onEnd();
 //				Starling.current.nativeStage.addChild(end);
 				SoundManager.instance.stopAll();
 			}
@@ -339,3 +343,5 @@ package controllers
 		}
 	}
 }
+
+

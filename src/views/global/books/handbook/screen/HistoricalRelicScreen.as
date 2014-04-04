@@ -61,6 +61,7 @@ package views.global.books.handbook.screen
 		override protected function initPages():void
 		{
 			var image:Image=BooksManager.getImage("background_0");
+			image.scaleX=image.scaleY=2;
 			this.addChild(image);
 			image.height+=6;
 		}
@@ -72,8 +73,8 @@ package views.global.books.handbook.screen
 			load=new Image(Texture.fromBitmap(new PalaceModule.loading()));
 			load.pivotX=load.width >> 1;
 			load.pivotY=load.height >> 1;
-			load.x=1024 - 100;
-			load.y=768 - 100;
+			load.x=1024/2;
+			load.y=768 /2;
 			load.scaleX=load.scaleY=.5;
 			PopUpManager.addPopUp(load, true, false);
 			load.addEventListener(Event.ENTER_FRAME, function(e:Event):void
@@ -280,3 +281,5 @@ package views.global.books.handbook.screen
 		}
 	}
 }
+
+

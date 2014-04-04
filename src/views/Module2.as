@@ -19,6 +19,7 @@ package views
 			SoundAssets.addModuleSnd(moduleName);
 			skipIndex=_skipIndex;
 			sceneArr=[Scene21, Scene22];
+			birdArr=[2,3];
 
 			Q1="皇帝爱学习吗？"
 			A1="清朝皇帝喜爱学习－儒家经典、汉语诗文、满文、蒙文和骑马射箭，样样要精通。"
@@ -37,12 +38,24 @@ package views
 				index=0
 			if (index == 0)
 			{
+				if(assetManager)
+					assetManager.purge()
+				assetManager=null;
 				assetManager=new AssetManager();
 				var scene:Class=sceneArr[index] as Class;
 				var sceneName:String=StringUtils.getClassName(scene);
 				var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
 				var path:String="assets/module1/scene12/kingExp"
-				assetManager.enqueue(file, path + ".atf", path + ".xml");
+				var birdIndex:int=birdArr[index];
+				if(birdIndex<0||checkBird(birdIndex))
+				{
+					assetManager.enqueue(file, path + ".atf", path + ".xml");
+				}else{
+					assetManager.enqueue(file, path + ".atf", path + ".xml");
+					assetManager.enqueue("assets/global/handbook/bird_collection_" + birdIndex + ".png",
+										 "assets/global/handbook/mainUI/background_2.png");
+				}
+//				assetManager.enqueue(file, path + ".atf", path + ".xml");
 				assetManager.loadQueue(function(ratio:Number):void
 				{
 					if (ratio == 1.0 && callback != null)
@@ -54,3 +67,5 @@ package views
 		}
 	}
 }
+
+

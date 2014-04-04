@@ -36,8 +36,8 @@ package particle
 			if (particleSystem)
 			{
 				particleSystem.stop(true);
-				removeChild(particleSystem);
 				Starling.juggler.remove(particleSystem);
+				particleSystem.removeFromParent(true);
 				particleSystem=null;
 			}
 			super.dispose();

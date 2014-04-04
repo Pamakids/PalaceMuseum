@@ -9,7 +9,6 @@ package starling.display
 	import starling.display.graphics.Plane;
 	import starling.display.graphics.RoundedRectangle;
 	import starling.display.graphics.Stroke;
-	import starling.display.graphics.StrokeVertex;
 	import starling.display.materials.IMaterial;
 	import starling.display.shaders.fragment.TextureFragmentShader;
 	import starling.display.util.CurveUtil;
@@ -18,27 +17,26 @@ package starling.display
 	public class Graphics
 	{
 		// Shared texture fragment shader used across all graphics drawn via graphics API.
-		protected static var textureFragmentShader	:TextureFragmentShader = new TextureFragmentShader();
-		protected const BEZIER_ERROR:Number = 0.75;
+		private static var textureFragmentShader	:TextureFragmentShader = new TextureFragmentShader();
+		private const BEZIER_ERROR:Number = 0.75;
 		
-		protected var _currentX				:Number;
-		protected var _currentY				:Number;
-		protected var _currentStroke		:Stroke;
-		protected var _currentFill			:Fill;
+		private var _currentX				:Number;
+		private var _currentY				:Number;
+		private var _currentStroke			:Stroke;
+		private var _currentFill			:Fill;
 		
-		protected var _fillColor				:uint;
-		protected var _fillAlpha				:Number;
-		protected var _strokeThickness		:Number;
-      	protected var _strokeColor			:uint;
-		protected var _strokeAlpha			:Number;
-		protected var _strokeTexture			:Texture;
-		protected var _strokeMaterial			:IMaterial;
+		private var _fillColor				:uint;
+		private var _fillAlpha				:Number;
+		private var _strokeThickness		:Number
+		private var _strokeColor			:uint;
+		private var _strokeAlpha			:Number;
+		private var _strokeTexture			:Texture;
+		private var _strokeMaterial			:IMaterial;
 		
-		protected var _container				:DisplayObjectContainer;
-		protected var _strokeInterrupted		:Boolean;
-
-     
-        public function Graphics(displayObjectContainer:DisplayObjectContainer)
+		private var _container				:DisplayObjectContainer;
+		private var _strokeInterrupted		:Boolean;
+		
+		public function Graphics(displayObjectContainer:DisplayObjectContainer)
 		{
 			_container = displayObjectContainer;
 		}
@@ -65,16 +63,15 @@ package starling.display
 			_fillColor 	= NaN;
 			_fillAlpha 	= NaN;
 			_currentFill= null;
-			clearCurrentStroke();
-         
-        }
+			_currentStroke = null;
+		}
 		
 		public function beginFill(color:uint, alpha:Number = 1.0):void
 		{
 			_fillColor = color;
 			_fillAlpha = alpha;
 			
-			createCurrentFill();
+			_currentFill = new Fill();
 			_currentFill.material.alpha = _fillAlpha;
 			_currentFill.material.color = color;
 			_container.addChild(_currentFill);
@@ -89,7 +86,7 @@ package starling.display
 			_fillColor = 0xFFFFFF;
 			_fillAlpha = 1;
 			
-			createCurrentFill();
+			_currentFill = new Fill();
 			_currentFill.material.fragmentShader = textureFragmentShader;
 			var texture:Texture = Texture.fromBitmapData( bitmap, false );
 			_currentFill.material.textures[0] = texture;
@@ -110,7 +107,7 @@ package starling.display
 			_fillColor = 0xFFFFFF;
 			_fillAlpha = 1;
 			
-			createCurrentFill();
+			_currentFill = new Fill();
 			_currentFill.material.fragmentShader = textureFragmentShader;
 			_currentFill.material.textures[0] = texture;
 			
@@ -130,7 +127,7 @@ package starling.display
 			_fillColor = 0xFFFFFF;
 			_fillAlpha = 1;
 			
-			createCurrentFill();
+			_currentFill = new Fill();
 			_currentFill.material = material;
 			
 			var m:Matrix;
@@ -161,7 +158,7 @@ package starling.display
 			
 			_fillColor 	= NaN;
 			_fillAlpha 	= NaN;
-			_currentFill = null;
+			_currentFill= null;
 		}
 		
 		public function drawCircle(x:Number, y:Number, radius:Number):void
@@ -341,7 +338,7 @@ package starling.display
 		
 		public function lineTexture(thickness:Number = NaN, texture:Texture = null):void
 		{
-         	_strokeThickness		= thickness;
+			_strokeThickness		= thickness;
 			_strokeColor			= 0xFFFFFF;
 			_strokeAlpha			= 1;
 			_strokeTexture 			= texture;
@@ -403,8 +400,7 @@ package starling.display
 			
 			if ( _currentStroke && ( _strokeInterrupted || _currentStroke.numVertices == 0 ) && isNaN(_currentX) == false )
 			{
-                _currentStroke.addVertex( _currentX, _currentY, _strokeThickness );
-
+				_currentStroke.addVertex( _currentX, _currentY, _strokeThickness );
 				_strokeInterrupted  = false;
 			}
 			
@@ -415,7 +411,7 @@ package starling.display
 			
 			if ( _currentStroke && _strokeThickness > 0 )
 			{
-               	_currentStroke.addVertex( x, y, _strokeThickness );
+				_currentStroke.addVertex( x, y, _strokeThickness );
 			}
 			
 			if (_currentFill) 
@@ -438,24 +434,24 @@ package starling.display
 			}
 			
 			var points:Vector.<Number> = CurveUtil.quadraticCurve(startX, startY, cx, cy, a2x, a2y, error);
-
-            var L:int = points.length;
-            for ( var i:int = 0; i < L; i+=2 )
-            {
-                var x:Number = points[i];
-                var y:Number = points[i+1];
-
-                if ( i == 0 && isNaN(_currentX) )
-                {
-                    moveTo( x, y );
-                }
-                else
-                {
-                    lineTo( x, y );
-                }
-            }
-
-            _currentX = a2x;
+			
+			var L:int = points.length;
+			for ( var i:int = 0; i < L; i+=2 )
+			{
+				var x:Number = points[i];
+				var y:Number = points[i+1];
+				
+				if ( i == 0 && isNaN(_currentX) )
+				{
+					moveTo( x, y );
+				}
+				else
+				{
+					lineTo( x, y );
+				}
+			}
+			
+			_currentX = a2x;
 			_currentY = a2y;
 		}
 		
@@ -473,76 +469,41 @@ package starling.display
 			var points:Vector.<Number> = CurveUtil.cubicCurve(startX, startY, c1x, c1y, c2x, c2y, a2x, a2y, error);
 			
 			var L:int = points.length;
-            for ( var i:int = 0; i < L; i+=2 )
-    		{
-	    		var x:Number = points[i];
-		    	var y:Number = points[i+1];
+			for ( var i:int = 0; i < L; i+=2 )
+			{
+				var x:Number = points[i];
+				var y:Number = points[i+1];
 				
-			   	if ( i == 0 && isNaN(_currentX) )
-			    {
-				    moveTo( x, y );
-			    }
-			    else
-			    {
-                    lineTo( x, y );
-                }
+				if ( i == 0 && isNaN(_currentX) )
+				{
+					moveTo( x, y );
+				}
+				else
+				{
+					lineTo( x, y );
+				}
 			}
-
 			_currentX = a2x;
 			_currentY = a2y;
 		}
-
 		
 		////////////////////////////////////////
-		// PROTECTED
+		// PRIVATE
 		////////////////////////////////////////
 		
-	/*	protected function clearCurrentFill() : void
-		{
-			if ( _currentFill != null )
-			{
-				_currentFill.dispose();
-				_currentFill = null;
-			}	
-		}
-		*/
-		protected function createCurrentFill() : void
-		{
-			// clearCurrentFill();
-			_currentFill = new Fill();
-		}
-		
-		
-		protected function createStroke() : Stroke
-		{ // Created to be able to extend class with different strokes for different folks.
-			return new Stroke();
-		}
-		
-		protected function clearCurrentStroke() : void
-		{
-			_currentStroke = null;
-			/*if ( _currentStroke != null )
-			{
-				_currentStroke.dispose();
-				_currentStroke = null;
-			}*/
-		}
-		
-		protected function beginStroke():void
+		private function beginStroke():void
 		{
 			disposeCurrentStroke();
-			_currentStroke = createStroke();
+			_currentStroke = new Stroke();
 			_currentStroke.material.color = _strokeColor;
 			_currentStroke.material.alpha = _strokeAlpha;
 			_container.addChild(_currentStroke);
 		}
 		
-		
-		
-		protected function beginTextureStroke():void
+		private function beginTextureStroke():void
 		{
 			disposeCurrentStroke();
-			_currentStroke = createStroke();
+			_currentStroke = new Stroke();
 			_currentStroke.material.fragmentShader = textureFragmentShader;
 			_currentStroke.material.textures[0] = _strokeTexture;
 			_currentStroke.material.color = _strokeColor;
@@ -550,15 +511,15 @@ package starling.display
 			_container.addChild(_currentStroke);
 		}
 		
-		protected function beginMaterialStroke():void
+		private function beginMaterialStroke():void
 		{
 			disposeCurrentStroke();
-			_currentStroke = createStroke();
+			_currentStroke = new Stroke();
 			_currentStroke.material = _strokeMaterial;
 			_container.addChild(_currentStroke);
 		}
 		
-		protected function disposeCurrentStroke():void
+		private function disposeCurrentStroke():void
 		{
 			if ( _currentStroke )
 			{
@@ -570,7 +531,5 @@ package starling.display
 				_currentStroke = null;
 			}
 		}
-
-
-    }
+	}
 }

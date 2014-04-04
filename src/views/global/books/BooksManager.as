@@ -115,7 +115,7 @@ package views.global.books
 			_handbook=null;
 //			MC.instance.switchLayer(true);
 			if (_assetsManager)
-				_assetsManager.dispose();
+				_assetsManager.purge();
 		}
 
 		private static var _handbook:Handbook;
@@ -174,8 +174,8 @@ package views.global.books
 				_loadImage.pivotX=_loadImage.width >> 1;
 				_loadImage.pivotY=_loadImage.height >> 1;
 				container.addChild(_loadImage as Image);
-				_loadImage.x=1024 - 100;
-				_loadImage.y=768 - 100;
+				_loadImage.x=1024/2;
+				_loadImage.y=768/2;
 				_loadImage.scaleX=_loadImage.scaleY=.5;
 				_loadImage.addEventListener(Event.ENTER_FRAME, function(e:Event):void
 				{
@@ -188,7 +188,7 @@ package views.global.books
 		{
 			if (!_assetsManager)
 				_assetsManager=new AssetManager();
-			_assetsManager.dispose();
+			_assetsManager.purge();
 			_assetsManager=new AssetManager();
 			if (!_book) //用户中心
 				_assetsManager.enqueue(
@@ -263,3 +263,5 @@ package views.global.books
 class MyClass
 {
 }
+
+

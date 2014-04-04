@@ -357,6 +357,7 @@ package views.global.books.userCenter.screen
 		override protected function initPages():void
 		{
 			var image:Image=BooksManager.getImage("background_2");
+			image.scaleX=image.scaleY=2;
 			this.addChild(image);
 			var texture:Texture=BooksManager.getTexture("line_long");
 			image=new Image(texture);

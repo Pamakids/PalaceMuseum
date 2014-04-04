@@ -61,14 +61,18 @@ package views.components.base
 		private var _height:Number;
 		private var mask:Quad;
 
-		public function addMask(_alpha:Number=.6, stopTouch:Boolean=true):void
+		public function addMask(_alpha:Number=.6, stopTouch:Boolean=true,callback:Function=null):void
 		{
 			removeMask();
 			mask=new Quad(1024, 768, 0, true);
 			mask.alpha=_alpha;
 			addChild(mask);
 			if (stopTouch)
-				mask.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent):void {e.stopImmediatePropagation()});
+				mask.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent):void {
+					e.stopImmediatePropagation()
+					if(callback!=null)
+						callback();
+				});
 		}
 
 		public function removeMask():void
@@ -93,3 +97,5 @@ package views.components.base
 		}
 	}
 }
+
+

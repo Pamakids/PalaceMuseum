@@ -8,6 +8,7 @@
 package views.components.base
 {
 	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 	import com.pamakids.palace.utils.StringUtils;
 
 	import flash.display.MovieClip;
@@ -17,12 +18,16 @@ package views.components.base
 	import assets.embed.EmbedAssets;
 
 	import controllers.MC;
+	import controllers.UserBehaviorAnalysis;
 
 	import models.FontVo;
+	import models.SOService;
 
 	import sound.SoundAssets;
 
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
@@ -64,9 +69,24 @@ package views.components.base
 			TopBar.hide();
 			TailBar.hide();
 			LionMC.instance.clear();
+
+			addEventListener("showNext",showNext);
+			addEventListener("hideNext",hideNext);
 		}
 
-		private static var load:MovieClip;
+		private function showNext():void
+		{
+			if(nextButton&&!nextButton.visible)
+				nextButton.visible=true;
+		}
+
+		private function hideNext():void
+		{
+			if(nextButton&&nextButton.visible)
+				nextButton.visible=false;
+		}
+
+		private static var load:flash.display.MovieClip;
 
 		protected var Q1:String="";
 		protected var A1:String="";
@@ -167,7 +187,8 @@ package views.components.base
 			load.x=1024 - 172;
 			load.y=768 - 126;
 			load.play();
-			addEventListener("gotoNext", nextScene);
+			addEventListener("sceneover",onSceneOver);
+//			addEventListener("gotoNext", nextScene);
 		}
 
 		protected function removeLoading():void
@@ -202,10 +223,40 @@ package views.components.base
 //		}
 
 		protected var sceneArr:Array=[];
+		protected var birdArr:Array=[];
 		protected var sceneIndex:int;
 
+		protected var capture:Image;
+
+		/**
+		 * 截屏
+		 * dispose scene
+		 * 加载下一场景
+		 * */
 		protected function nextScene(e:Event):void
 		{
+			UserBehaviorAnalysis.trackEvent("click", "next");
+			TopBar.enable=false;
+
+			if(crtScene)
+			{
+				if(capture)
+				{
+					capture.removeFromParent(true);
+					capture=null;
+				}
+				capture=new Image(crtScene.getCapture());
+				addChild(capture);
+				crtScene.removeFromParent(true);
+				crtScene=null;
+			}
+
+			if (nextButton){
+				nextButton.touchable=false;
+				this.setChildIndex(nextButton,numChildren-1);
+			}
+			TweenLite.killTweensOf(shakeNext);
+
 			addMask(0);
 			sceneIndex++;
 			loadAssets(sceneIndex, function():void {
@@ -216,6 +267,16 @@ package views.components.base
 
 		protected function loadScene(index:int):void
 		{
+			if(nextButton){
+				TweenLite.killDelayedCallsTo(this);
+				TweenMax.killTweensOf(nextButton);
+				nextButton.removeFromParent(true);
+				nextButton=null;
+			}
+			if(capture){
+				capture.removeFromParent(true);
+				capture=null;
+			}
 			if (crtScene)
 			{
 				crtScene.removeFromParent(true);
@@ -229,10 +290,60 @@ package views.components.base
 			}
 			else
 			{
-				removeEventListener("gotoNext", nextScene);
+//				removeEventListener("gotoNext", nextScene);
+				removeEventListener("sceneover",onSceneOver);
 				MC.instance.nextModule();
 			}
 		}
+
+		protected function shakeNext():void
+		{
+			if (nextButton)
+				TweenMax.to(nextButton, 1, {shake: {rotation: Math.PI / 12, numShakes: 4}, onComplete: function():void
+				{
+					TweenLite.delayedCall(5, shakeNext);
+				}});
+		}
+
+		public function addNextLoading():void
+		{
+			if (nextButton)
+			{
+				var loading:starling.display.MovieClip=new starling.display.MovieClip(MC.assetManager.getTextures("loadingHalo"), 15);
+				Starling.juggler.add(loading);
+				loading.loop=true;
+				loading.play();
+				nextButton.addChild(loading);
+				loading.x=8;
+				loading.y=32;
+				loading.scaleY=.98
+			}
+		}
+
+		/**
+		 * 场景结束
+		 * 添加下一页按钮
+		 * */
+		private function onSceneOver(e:Event):void
+		{
+			trace("addNext")
+			if (nextButton)
+			{
+				nextButton.removeFromParent(true);
+				nextButton=null;
+			}
+			nextButton=new ElasticButton(getImage("nextButton"));
+			nextButton.pivotX=nextButton.width >> 1;
+			nextButton.pivotY=33;
+			nextButton.x=1024 - 100;
+			nextButton.y=768 - 100;
+			nextButton.addEventListener(ElasticButton.CLICK, nextScene);
+			shakeNext();
+			addChildAt(nextButton,numChildren);
+			TailBar.hide();
+		}
+
+		protected var nextButton:ElasticButton;
 
 		override public function dispose():void
 		{
@@ -241,6 +352,13 @@ package views.components.base
 			{
 				crtScene.removeFromParent(true);
 				crtScene=null;
+			}
+			if (nextButton)
+			{
+				TweenLite.killDelayedCallsTo(this);
+				TweenMax.killTweensOf(nextButton);
+				nextButton.removeFromParent(true);
+				nextButton=null;
 			}
 			removeLoading();
 			if (assetManager)
@@ -253,18 +371,35 @@ package views.components.base
 		{
 			if (index < 0)
 				index=0;
+			if(assetManager)
+				assetManager.purge()
+			assetManager=null;
 			assetManager=new AssetManager();
 			var scene:Class=sceneArr[index] as Class;
 			var sceneName:String=StringUtils.getClassName(scene);
 			var file:File=File.applicationDirectory.resolvePath("assets/" + moduleName + "/" + sceneName);
-			assetManager.enqueue(file);
-			if (crtScene)
-				crtScene.addLoading();
+			var birdIndex:int=birdArr[index];
+			if(birdIndex<0||checkBird(birdIndex))
+			{
+				assetManager.enqueue(file);
+			}else{
+				assetManager.enqueue(file);
+				assetManager.enqueue("assets/global/handbook/bird_collection_" + birdIndex + ".png",
+									 "assets/global/handbook/mainUI/background_2.png");
+			}
+//			if (crtScene)
+			addNextLoading();
 			assetManager.loadQueue(function(ratio:Number):void
 			{
 				if (ratio == 1.0 && callback != null)
 					callback();
 			});
+		}
+
+		protected function checkBird(birdIndex:int):Boolean
+		{
+			var b:Boolean=SOService.instance.getSO("birdCatched" + birdIndex);
+			return b;
 		}
 	}
 }

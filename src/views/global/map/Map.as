@@ -33,6 +33,7 @@ package views.global.map
 
 	import views.components.ElasticButton;
 	import views.components.LionMC;
+	import views.components.PalaceStars;
 	import views.components.Prompt;
 	import views.components.base.PalaceModule;
 	import views.global.TailBar;
@@ -465,7 +466,7 @@ package views.global.map
 				{
 					to=i;
 					taskInitTime=getTimer();
-					LionMC.instance.say(tasks[i], 3, 0, 0, comFunc, 20, 1, true);
+					LionMC.instance.say(tasks[i], 3, 0, 0, comFunc, 20, true);
 					showTaskHint(i);
 				}
 				else
@@ -501,11 +502,12 @@ package views.global.map
 				TweenLite.delayedCall(4,MC.instance.stage.addClickHint);
 				LionMC.instance.say("我就是神通广大的小石狮子。我们先来学习使用《皇帝速成手册》，遇到问题随时找我！", 0, 0, 0, function():void {
 					MC.instance.stage.removeClickHint();
+					TopBar.instance.visible=true;
 					TopBar.instance.showBookAndAvatar(false);
 					MC.instance.addGuide(1, function():void {
 						TopBar.instance.bookClickedHandler();
 					});
-				}, 20, .6, true, 10);
+				}, 20, true, 10);
 			});
 //			TweenLite.to(flipAnimation, 5, {delay: 1, y: 0, ease: Cubic.easeOut, onComplete: function():void {
 //				LionMC.instance.say("我就是神通广大的小石狮子。我们先来学习使用《皇帝速成手册》，遇到问题随时找我！", 0, 0, 0, function():void {
@@ -639,6 +641,8 @@ package views.global.map
 										{
 											showKing(getCenterFromRect(r), null);
 										}
+
+										new PalaceStars(p.x,p.y,this);
 									}
 								}
 
@@ -857,7 +861,7 @@ package views.global.map
 			_index=_index > 0 ? _index : 0;
 			if (!sun)
 			{
-				sun=new MovieClip(assetManager.getTextures("sun"), 2);
+				sun=new MovieClip(assetManager.getTextures("sun"), .5);
 				sun.play();
 				sun.touchable=false;
 				Starling.juggler.add(sun);

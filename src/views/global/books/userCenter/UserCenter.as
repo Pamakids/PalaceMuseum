@@ -2,16 +2,16 @@ package views.global.books.userCenter
 {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
+
 	import controllers.MC;
-	
+
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
-	
+
 	import sound.SoundAssets;
-	
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -20,7 +20,7 @@ package views.global.books.userCenter
 	import starling.events.TouchPhase;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
-	
+
 	import views.components.ElasticButton;
 	import views.components.SoftPaperAnimation;
 	import views.global.books.BooksManager;
@@ -66,7 +66,7 @@ package views.global.books.userCenter
 			initAnimation();
 			initRender();
 		}
-		
+
 		private function initShade():void
 		{
 			var image:Image = BooksManager.getImage("shade");
@@ -75,12 +75,30 @@ package views.global.books.userCenter
 			image.y = 70;
 			image.touchable = false;
 		}
-		
+
 		private function initBackgroud():void
 		{
-			var image:Image=BooksManager.getImage("main_background_1");
-			this.addChild(image);
-			image.touchable=false;
+//			var image:Image=BooksManager.getImage("main_background_1");
+//			this.addChild(image);
+//			image.touchable=false;
+
+			var left:Image=BooksManager.getImage("main_background_1_left");
+			left.touchable=false;
+			addChild(left);
+
+			var right:Image=BooksManager.getImage("main_background_1_right");
+			right.touchable=false;
+			right.x=1024-right.width;
+			addChild(right);
+
+			var top:Image=BooksManager.getImage("main_background_1_top");
+			top.touchable=false;
+			addChild(top);
+
+			var bottom:Image=BooksManager.getImage("main_background_1_bottom");
+			bottom.y=768-bottom.height;
+			bottom.touchable=false;
+			addChild(bottom);
 		}
 		private var _tabBar:TabBar;
 
@@ -88,27 +106,27 @@ package views.global.books.userCenter
 		{
 			_tabBar=new TabBar();
 			_tabBar.dataProvider=new ListCollection([
-				{
-					defaultIcon: 	BooksManager.getImage("userinfo_up"),
-					selectedUpIcon:	BooksManager.getImage("userinfo_down")
-				},
-				{
-					defaultIcon:	BooksManager.getImage("achievement_up"),
-					selectedUpIcon:	BooksManager.getImage("achievement_down")
-				},
-				{
-					defaultIcon:	BooksManager.getImage("collection_up"),
-					selectedUpIcon:	BooksManager.getImage("collection_down")
-				},
-				{
-					defaultIcon:	BooksManager.getImage("games_up"),
-					selectedUpIcon:	BooksManager.getImage("games_down")
-				},
-				{
-					defaultIcon:	BooksManager.getImage("team_up"),
-					selectedUpIcon:	BooksManager.getImage("team_down")
-				}
-			]);
+													{
+														defaultIcon: 	BooksManager.getImage("userinfo_up"),
+														selectedUpIcon:	BooksManager.getImage("userinfo_down")
+													},
+													{
+														defaultIcon:	BooksManager.getImage("achievement_up"),
+														selectedUpIcon:	BooksManager.getImage("achievement_down")
+													},
+													{
+														defaultIcon:	BooksManager.getImage("collection_up"),
+														selectedUpIcon:	BooksManager.getImage("collection_down")
+													},
+													{
+														defaultIcon:	BooksManager.getImage("games_up"),
+														selectedUpIcon:	BooksManager.getImage("games_down")
+													},
+													{
+														defaultIcon:	BooksManager.getImage("team_up"),
+														selectedUpIcon:	BooksManager.getImage("team_down")
+													}
+													]);
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;
 			_tabBar.gap=1;
 			_tabBar.x=50;
@@ -133,48 +151,48 @@ package views.global.books.userCenter
 		{
 			_navigator=new ScreenNavigator();
 			_navigator.addScreen(USERINFO, new ScreenNavigatorItem(UserInfoScreen,
-				{
-					initialized: onInitialized,
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+																   {
+																	   initialized: onInitialized,
+																	   initViewPlayed: onInitViewPlayed
+																   },
+																   {
+																	   width: contentWidth, height: contentHeight,
+																	   viewWidth: contentWidth, viewHeight: contentHeight
+																   }));
 			_navigator.addScreen(ACHIEVEMENT, new ScreenNavigatorItem(AchievementScreen,
-				{
-					viewUpdated: onViewUpdated,
-					viewUpdateFail: onViewUpdateFail,
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+																	  {
+																		  viewUpdated: onViewUpdated,
+																		  viewUpdateFail: onViewUpdateFail,
+																		  initViewPlayed: onInitViewPlayed
+																	  },
+																	  {
+																		  width: contentWidth, height: contentHeight,
+																		  viewWidth: contentWidth, viewHeight: contentHeight
+																	  }));
 			_navigator.addScreen(COLLECTION, new ScreenNavigatorItem(CollectionScreen,
-				{
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+																	 {
+																		 initViewPlayed: onInitViewPlayed
+																	 },
+																	 {
+																		 width: contentWidth, height: contentHeight,
+																		 viewWidth: contentWidth, viewHeight: contentHeight
+																	 }));
 			_navigator.addScreen(GAMECENTER, new ScreenNavigatorItem(GameCenterScreen,
-				{
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+																	 {
+																		 initViewPlayed: onInitViewPlayed
+																	 },
+																	 {
+																		 width: contentWidth, height: contentHeight,
+																		 viewWidth: contentWidth, viewHeight: contentHeight
+																	 }));
 			_navigator.addScreen(DEVELOPER, new ScreenNavigatorItem(DeveloperScreen,
-				{
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+																	{
+																		initViewPlayed: onInitViewPlayed
+																	},
+																	{
+																		width: contentWidth, height: contentHeight,
+																		viewWidth: contentWidth, viewHeight: contentHeight
+																	}));
 			_navigator.x=28;
 			_navigator.y=89;
 			this.addChild(_navigator);
@@ -390,3 +408,5 @@ package views.global.books.userCenter
 		private var mapVisible:Boolean=true;
 	}
 }
+
+

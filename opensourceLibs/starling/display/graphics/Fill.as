@@ -7,8 +7,8 @@ package starling.display.graphics
 	{
 		public static const VERTEX_STRIDE	:int = 9;
 		
-		protected var fillVertices	:VertexList;
-		protected var _numVertices	:int;
+		private var fillVertices	:VertexList;
+		private var _numVertices	:int;
 		
 		public function Fill()
 		{
@@ -142,7 +142,7 @@ package starling.display.graphics
 		 * @return 
 		 * 
 		 */		
-		protected static function triangulate( vertices:VertexList, _numVertices:int, outputVertices:Vector.<Number>, outputIndices:Vector.<uint> ):void
+		private static function triangulate( vertices:VertexList, _numVertices:int, outputVertices:Vector.<Number>, outputIndices:Vector.<uint> ):void
 		{
 			vertices = VertexList.clone(vertices);
 			var openList:Vector.<VertexList> = convertToSimple(vertices);
@@ -252,7 +252,7 @@ package starling.display.graphics
 		 * @param vertexList
 		 * @return 
 		 */		
-		protected static function convertToSimple( vertexList:VertexList ):Vector.<VertexList>
+		private static function convertToSimple( vertexList:VertexList ):Vector.<VertexList>
 		{
 			var output:Vector.<VertexList> = new Vector.<VertexList>();
 			var outputLength:int = 0;
@@ -331,7 +331,7 @@ package starling.display.graphics
 			return output;
 		}
 		
-		protected static function flatten( vertexLists:Vector.<VertexList>, output:Vector.<Number> ):void
+		private static function flatten( vertexLists:Vector.<VertexList>, output:Vector.<Number> ):void
 		{
 			var L:int = vertexLists.length;
 			var index:int = 0;
@@ -349,7 +349,7 @@ package starling.display.graphics
 			}
 		}
 		
-		protected static function windingNumberAroundPoint( vertexList:VertexList, x:Number, y:Number ):int
+		private static function windingNumberAroundPoint( vertexList:VertexList, x:Number, y:Number ):int
 		{
 			var wn:int = 0;
 			var node:VertexList = vertexList.head;
@@ -397,7 +397,7 @@ package starling.display.graphics
 			return wn <= 0;
 		}
 		
-		protected static function windingNumber( vertexList:VertexList ):int
+		private static function windingNumber( vertexList:VertexList ):int
 		{
 			var wn:int = 0;
 			var node:VertexList = vertexList.head;
@@ -415,39 +415,39 @@ package starling.display.graphics
 			return wn;
 		}
 		
-		protected static function isLeft(v0x:Number, v0y:Number, v1x:Number, v1y:Number, px:Number, py:Number):Boolean
+		private static function isLeft(v0x:Number, v0y:Number, v1x:Number, v1y:Number, px:Number, py:Number):Boolean
 		{
 			return ((v1x - v0x) * (py - v0y) - (v1y - v0y) * (px - v0x)) < 0;
 		}
 		
-		protected static function isPointInTriangle(v0x:Number, v0y:Number, v1x:Number, v1y:Number, v2x:Number, v2y:Number, px:Number, py:Number ):Boolean
+		private static function isPointInTriangle(v0x:Number, v0y:Number, v1x:Number, v1y:Number, v2x:Number, v2y:Number, px:Number, py:Number ):Boolean
 		{
-			if ( isLeft( v0x, v0y, v1x, v1y, px, py ) ) return false;
-			if ( isLeft( v1x, v1y, v2x, v2y, px, py ) ) return false;
-			if ( isLeft( v2x, v2y, v0x, v0y, px, py ) ) return false;
+			//if ( isLeft( v0x, v0y, v1x, v1y, px, py ) ) return false;
+			//if ( isLeft( v1x, v1y, v2x, v2y, px, py ) ) return false;
+			//if ( isLeft( v2x, v2y, v0x, v0y, px, py ) ) return false;
 			
-			// Inline version of above ( this prevents the fill to be drawn on iOS with AIR > 3.6, so we roll back to isLeft())
-			//if ( ((v1x - v0x) * (py - v0y) - (px - v0x) * (v1y - v0y)) < 0 ) return false;
-			//if ( ((v2x - v1x) * (py - v1y) - (px - v1x) * (v2y - v1y)) < 0 ) return false;
-			//if ( ((v0x - v2x) * (py - v2y) - (px - v2x) * (v0y - v2y)) < 0 ) return false;
+			// Inline version of above
+			if ( ((v1x - v0x) * (py - v0y) - (px - v0x) * (v1y - v0y)) < 0 ) return false;
+			if ( ((v2x - v1x) * (py - v1y) - (px - v1x) * (v2y - v1y)) < 0 ) return false;
+			if ( ((v0x - v2x) * (py - v2y) - (px - v2x) * (v0y - v2y)) < 0 ) return false;
 			
 			return true;
 		}
 		
-		protected static function isReflex( v0x:Number, v0y:Number, v1x:Number, v1y:Number, v2x:Number, v2y:Number ):Boolean
+		private static function isReflex( v0x:Number, v0y:Number, v1x:Number, v1y:Number, v2x:Number, v2y:Number ):Boolean
 		{
-			if ( isLeft( v0x, v0y, v1x, v1y, v2x, v2y ) ) return false;
-			if ( isLeft( v1x, v1y, v2x, v2y, v0x, v0y ) ) return false;
+			//if ( isLeft( v0x, v0y, v1x, v1y, v2x, v2y ) ) return false;
+			//if ( isLeft( v1x, v1y, v2x, v2y, v0x, v0y ) ) return false;
 			
-			// Inline version of above ( this prevents the fill to be drawn on iOS with AIR > 3.6, so we roll back to isLeft())
-			//if ( ((v1x - v0x) * (v2y - v0y) - (v2x - v0x) * (v1y - v0y)) < 0 ) return false;
-			//if ( ((v2x - v1x) * (v0y - v1y) - (v0x - v1x) * (v2y - v1y)) < 0 ) return false;
+			// Inline version of above
+			if ( ((v1x - v0x) * (v2y - v0y) - (v2x - v0x) * (v1y - v0y)) < 0 ) return false;
+			if ( ((v2x - v1x) * (v0y - v1y) - (v0x - v1x) * (v2y - v1y)) < 0 ) return false;
 			
 			return true;
 		}
 		
-		protected static const EPSILON:Number = 0.0000001
-		static protected function intersection( a0:VertexList, a1:VertexList, b0:VertexList, b1:VertexList ):Vector.<Number>
+		private static const EPSILON:Number = 0.0000001
+		static private function intersection( a0:VertexList, a1:VertexList, b0:VertexList, b1:VertexList ):Vector.<Number>
 		{
 			var ux:Number = (a1.vertex[0]) - (a0.vertex[0]);
 			var uy:Number = (a1.vertex[1]) - (a0.vertex[1]);

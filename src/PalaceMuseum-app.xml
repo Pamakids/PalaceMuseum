@@ -14,7 +14,9 @@
 	</initialWindow>
 
 	<icon>
+		<image29x29>icon/29.png</image29x29>
 		<image50x50>icon/50.png</image50x50>
+		<image58x58>icon/58.png</image58x58>
 		<image72x72>icon/72.png</image72x72>
 		<image100x100>icon/100.png</image100x100>
 		<image144x144>icon/144.png</image144x144>
