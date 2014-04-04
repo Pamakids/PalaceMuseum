@@ -37,7 +37,7 @@ package feathers.core
 		 * @private
 		 */
 		private static const CENTERED_POPUPS:Vector.<DisplayObject> = new <DisplayObject>[];
-		
+
 		/**
 		 * A function that returns a display object to use as an overlay for
 		 * modal pop-ups.
@@ -119,7 +119,7 @@ package feathers.core
 		 * @private
 		 */
 		protected static var popUps:Vector.<DisplayObject> = new <DisplayObject>[];
-		
+
 		/**
 		 * Adds a pop-up to the stage.
 		 */
@@ -137,8 +137,8 @@ package feathers.core
 					customOverlayFactory = defaultOverlayFactory;
 				}
 				const overlay:DisplayObject = customOverlayFactory();
-				overlay.width = calculatedRoot.stage.stageWidth;
-				overlay.height = calculatedRoot.stage.stageHeight;
+//				overlay.width = calculatedRoot.stage.stageWidth;
+//				overlay.height = calculatedRoot.stage.stageHeight;
 				calculatedRoot.addChild(overlay);
 				POPUP_TO_OVERLAY[popUp] = overlay;
 			}
@@ -163,7 +163,7 @@ package feathers.core
 				centerPopUp(popUp);
 			}
 		}
-		
+
 		/**
 		 * Removes a pop-up from the stage.
 		 */
@@ -192,7 +192,7 @@ package feathers.core
 		{
 			return popUps.indexOf(popUp) == (popUps.length - 1);
 		}
-		
+
 		/**
 		 * Centers a pop-up on the stage.
 		 */
@@ -275,3 +275,4 @@ package feathers.core
 		}
 	}
 }
+

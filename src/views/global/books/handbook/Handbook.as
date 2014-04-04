@@ -1,24 +1,24 @@
 package views.global.books.handbook
 {
 	import com.greensock.TweenLite;
-	
+
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
+
 	import controllers.MC;
-	
+
 	import feathers.controls.Button;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
-	
+
 	import models.AchieveVO;
 	import models.FontVo;
 	import models.SOService;
-	
+
 	import sound.SoundAssets;
-	
+
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -29,7 +29,7 @@ package views.global.books.handbook
 	import starling.text.TextField;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
-	
+
 	import views.components.ElasticButton;
 	import views.components.PalaceGuide;
 	import views.components.SoftPaperAnimation;
@@ -41,24 +41,24 @@ package views.global.books.handbook
 	import views.global.books.handbook.screen.HistoricalRelicScreen;
 	import views.global.books.handbook.screen.MapScreen;
 	import views.global.map.Map;
-	
+
 	public class Handbook extends Sprite
 	{
 		private static const SPEED_UP:String="speed_up";
 		private static const HISTORICAL_RELIC:String="historical_relic";
 		private static const BIRDS:String="birds";
 		private static const MAP:String = "map";
-		
+
 		private var screenNames:Array;
-		
+
 		private const contentWidth:Number=968;
 		private const contentHeight:Number=664;
-		
+
 		public function Handbook()
 		{
 			init();
 		}
-		
+
 		private function init():void
 		{
 			this.screenNames=[SPEED_UP, HISTORICAL_RELIC, BIRDS, MAP];
@@ -70,14 +70,14 @@ package views.global.books.handbook
 			initNavigator();
 			initAnimation();
 			initRender();
-			
+
 			if(MC.needGuide)
 			{
 				MC.instance.addGuide(2, openCatalogue);
 			}
-				
+
 		}
-		
+
 		private var cataBtn:Button;
 		private function initCataBtn():void
 		{
@@ -89,7 +89,7 @@ package views.global.books.handbook
 			cataBtn.y = 10;
 			cataBtn.addEventListener(Event.TRIGGERED, openCatalogue);
 		}
-		
+
 		private function initShade():void
 		{
 			var image:Image = BooksManager.getImage("shade");
@@ -98,36 +98,37 @@ package views.global.books.handbook
 			image.y = 70;
 			image.touchable = false;
 		}
-		
+
 		private function initBackgroud():void
 		{
 			var image:Image=BooksManager.getImage("main_background_0");
+//			image.scaleX=image.scaleY=2;
 			this.addChild(image);
 			image.touchable=false;
 		}
 		private var _tabBar:TabBar;
-		
+
 		private function initTabBar():void
 		{
 			_tabBar=new TabBar();
 			_tabBar.dataProvider=new ListCollection([
-				{
-					defaultIcon: 	BooksManager.getImage("handbook_up"),
-					selectedUpIcon:	BooksManager.getImage("handbook_down")
-				},
-				{
-					defaultIcon:	BooksManager.getImage("historical_relic_up"),
-					selectedUpIcon:	BooksManager.getImage("historical_relic_down")
-				},
-				{
-					defaultIcon:	BooksManager.getImage("birds_up"),
-					selectedUpIcon:	BooksManager.getImage("birds_down")
-				},
-				{
-					defaultIcon:	BooksManager.getImage("map_up"),
-					selectedUpIcon:	BooksManager.getImage("map_down")
-				}
-			]);
+													{
+														defaultIcon: 	BooksManager.getImage("handbook_up"),
+														selectedUpIcon:	BooksManager.getImage("handbook_down")
+													},
+													{
+														defaultIcon:	BooksManager.getImage("historical_relic_up"),
+														selectedUpIcon:	BooksManager.getImage("historical_relic_down")
+													},
+													{
+														defaultIcon:	BooksManager.getImage("birds_up"),
+														selectedUpIcon:	BooksManager.getImage("birds_down")
+													},
+													{
+														defaultIcon:	BooksManager.getImage("map_up"),
+														selectedUpIcon:	BooksManager.getImage("map_down")
+													}
+													]);
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;
 			_tabBar.gap=1;
 			_tabBar.x=204;
@@ -136,7 +137,7 @@ package views.global.books.handbook
 			_tabBar.addEventListener(Event.CHANGE, tabs_changeHandler);
 		}
 		private var _backButton:ElasticButton;
-		
+
 		private function initBackButton():void
 		{
 			_backButton=new ElasticButton(new Image(MC.assetManager.getTexture("button_close")));
@@ -147,58 +148,58 @@ package views.global.books.handbook
 			_backButton.addEventListener(ElasticButton.CLICK, onTriggered);
 		}
 		private var _navigator:ScreenNavigator;
-		
+
 		private function initNavigator():void
 		{
 			_navigator=new ScreenNavigator();
 			_navigator.addScreen(SPEED_UP, new ScreenNavigatorItem(HandbookScreen,
-				{
-					initialized: onInitialized,
-					viewUpdated: onViewUpdated,
-					viewUpdateFail: onViewUpdateFail,
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+																   {
+																	   initialized: onInitialized,
+																	   viewUpdated: onViewUpdated,
+																	   viewUpdateFail: onViewUpdateFail,
+																	   initViewPlayed: onInitViewPlayed
+																   },
+																   {
+																	   width: contentWidth, height: contentHeight,
+																	   viewWidth: contentWidth, viewHeight: contentHeight
+																   }));
 			_navigator.addScreen(HISTORICAL_RELIC, new ScreenNavigatorItem(HistoricalRelicScreen,
-				{
-					initialized: onInitialized,
-					viewUpdated: onViewUpdated,
-					viewUpdateFail: onViewUpdateFail,
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+																		   {
+																			   initialized: onInitialized,
+																			   viewUpdated: onViewUpdated,
+																			   viewUpdateFail: onViewUpdateFail,
+																			   initViewPlayed: onInitViewPlayed
+																		   },
+																		   {
+																			   width: contentWidth, height: contentHeight,
+																			   viewWidth: contentWidth, viewHeight: contentHeight
+																		   }));
 			_navigator.addScreen(BIRDS, new ScreenNavigatorItem(BirdsScreen,
-				{
-					initialized: onInitialized,
-					viewUpdated: onViewUpdated,
-					viewUpdateFail: onViewUpdateFail,
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+																{
+																	initialized: onInitialized,
+																	viewUpdated: onViewUpdated,
+																	viewUpdateFail: onViewUpdateFail,
+																	initViewPlayed: onInitViewPlayed
+																},
+																{
+																	width: contentWidth, height: contentHeight,
+																	viewWidth: contentWidth, viewHeight: contentHeight
+																}));
 			_navigator.addScreen(MAP, new ScreenNavigatorItem(MapScreen,
-				{
-					initViewPlayed: onInitViewPlayed
-				},
-				{
-					width: contentWidth, height: contentHeight,
-					viewWidth: contentWidth, viewHeight: contentHeight
-				}));
+															  {
+																  initViewPlayed: onInitViewPlayed
+															  },
+															  {
+																  width: contentWidth, height: contentHeight,
+																  viewWidth: contentWidth, viewHeight: contentHeight
+															  }));
 			_navigator.x=27;
 			_navigator.y=89;
 			this.addChild(_navigator);
 			_navigator.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 		private var animation:SoftPaperAnimation;
-		
+
 		private function initAnimation():void
 		{
 			animation=new SoftPaperAnimation(contentWidth, contentHeight);
@@ -215,15 +216,15 @@ package views.global.books.handbook
 		private var targetR:Texture; //目标页右侧纹理
 		private var crtRender:RenderTexture; //当前页纹理数据源
 		private var targetRender:RenderTexture; //当前页纹理数据源
-		
+
 		private function initRender():void
 		{
 			crtRender=new RenderTexture(this.contentWidth, this.contentHeight, false);
 			targetRender=new RenderTexture(this.contentWidth, this.contentHeight, false);
 		}
-		
+
 		//eventListener----------------------------------------------------------------------------
-		
+
 		private function onInitialized(e:Event):void
 		{
 			var i:int=0;
@@ -241,7 +242,7 @@ package views.global.books.handbook
 			}
 			(_navigator.activeScreen as Object).initView(i);
 		}
-		
+
 		private function onInitViewPlayed(e:Event):void
 		{
 			if (!animation.visible)
@@ -250,7 +251,7 @@ package views.global.books.handbook
 			startAnimation(pageUp);
 			prevIndex=tarIndex;
 		}
-		
+
 		private function onViewUpdated(e:Event):void
 		{
 			switch (_navigator.activeScreenID)
@@ -268,17 +269,17 @@ package views.global.books.handbook
 			getTarTexture();
 			startAnimation(pageUp);
 		}
-		
+
 		private function onViewUpdateFail(e:Event):void
 		{
 			hideAnimation();
 		}
-		
+
 		private function onTriggered(e:Event):void
 		{
 			BooksManager.closeCtrBook();
 		}
-		
+
 		private var sprite:Sprite;
 		private var cata:Catalogue;
 		private var mask:Quad;
@@ -314,7 +315,7 @@ package views.global.books.handbook
 			else
 				cata.updateView( (_navigator.activeScreen as Object).mapCrtPageToModule );
 		}
-		
+
 		public function hideCatalogue():void
 		{
 			TweenLite.to(sprite, 0.8, {alpha: 0});
@@ -327,7 +328,7 @@ package views.global.books.handbook
 			cataBtn.x = 90;
 			cataBtn.y = 10;
 		}
-		
+
 		private function catalogueChange(e:Event):void
 		{
 			var obj:Object = e.data;
@@ -342,7 +343,7 @@ package views.global.books.handbook
 			cataBtn.x = 90;
 			cataBtn.y = 10;
 		}
-		
+
 		private function turnToForCata(screen:int, page:int):void
 		{
 			switch(screen)
@@ -365,9 +366,9 @@ package views.global.books.handbook
 					pageUp = crtPage_Birds > page;
 					crtPage_Birds = page;
 					break;
-				
+
 			}
-			
+
 			if(_tabBar.selectedIndex == screen)
 			{
 				showAnimation();
@@ -378,7 +379,7 @@ package views.global.books.handbook
 				_tabBar.selectedIndex = screen;
 			}
 		}
-		
+
 		private function onTouch(e:TouchEvent):void
 		{
 			var index:int=_tabBar.selectedIndex;
@@ -403,7 +404,7 @@ package views.global.books.handbook
 					break;
 			}
 		}
-		
+
 		private function tabs_changeHandler():void
 		{
 			if (animation.visible)
@@ -423,19 +424,19 @@ package views.global.books.handbook
 			showAnimation();
 			_navigator.showScreen(screenNames[tarIndex]);
 		}
-		
+
 		private function showAnimation():void
 		{
 			getCrtTexture();
 			animation.setFixPageTexture(textureL, textureR);
 			animation.visible=true;
 		}
-		
+
 		private function hideAnimation():void
 		{
 			animation.visible=false;
 		}
-		
+
 		private function startAnimation(pageUp:Boolean):void
 		{
 			if (pageUp) //pageUp
@@ -445,7 +446,7 @@ package views.global.books.handbook
 			animation.start(pageUp);
 			SoundAssets.playSFX("centerflip", true);
 		}
-		
+
 		private var played_4:Boolean = false;
 		private var played_5:Boolean = false;
 		private function playedAnimation():void
@@ -456,7 +457,7 @@ package views.global.books.handbook
 //				Map.show(null, -1, -1, true, true);
 //				MC.instance.switchLayer( true );
 //			}
-			
+
 			if(MC.needGuide)
 			{
 				if(!played_4)
@@ -480,28 +481,28 @@ package views.global.books.handbook
 				}
 			}
 		}
-		
+
 		/**
 		 * 用来屏蔽第一次tabBar的Change事件
 		 */
 		private var prevIndex:int=2;
 		private var tarIndex:int;
 		private var pageUp:Boolean=false;
-		
+
 		//子场景翻页控制
 		private var beginX:Number;
 		private const standardLength:Number=50; //翻页有效拖拽距离
 		private var crtPage_Handbook:int=0;
 		private var crtPage_Relic:int=0;
 		private var crtPage_Birds:int=0;
-		
+
 		private function getCrtTexture():void
 		{
 			crtRender.draw(_navigator.activeScreen);
 			textureL=Texture.fromTexture(crtRender, new Rectangle(0, 0, contentWidth / 2, contentHeight));
 			textureR=Texture.fromTexture(crtRender, new Rectangle(contentWidth / 2, 0, contentWidth / 2, contentHeight));
 		}
-		
+
 		private function getTarTexture():void
 		{
 			//从原场景中获取纹理
@@ -509,7 +510,7 @@ package views.global.books.handbook
 			targetL=Texture.fromTexture(targetRender, new Rectangle(0, 0, contentWidth / 2, contentHeight));
 			targetR=Texture.fromTexture(targetRender, new Rectangle(contentWidth / 2, 0, contentWidth / 2, contentHeight));
 		}
-		
+
 		override public function dispose():void
 		{
 			if(cataBtn)
@@ -528,7 +529,7 @@ package views.global.books.handbook
 				targetRender.dispose();
 			super.dispose();
 		}
-		
+
 		/**
 		 * 手册默认显示某一页
 		 * @param screen
@@ -547,7 +548,7 @@ package views.global.books.handbook
 			_navigator.showScreen(screenNames[screen]);
 			this._backButton.visible=closeable;
 		}
-		
+
 		public function showAchieve(index:int):void
 		{
 			if(SOService.instance.getSO(index + "_achieve"))
@@ -574,3 +575,5 @@ package views.global.books.handbook
 		}
 	}
 }
+
+

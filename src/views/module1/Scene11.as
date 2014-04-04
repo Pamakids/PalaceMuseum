@@ -10,7 +10,6 @@ package views.module1
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.media.SoundTransform;
 	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
 
@@ -60,10 +59,10 @@ package views.module1
 		private var lionHint2:String="别怯场，快来猜猜皇帝到底睡在哪一间呢？"
 
 		private var hint0:String="皇帝不能多睡会儿么？";
-		private var hint1:String="这是为皇贵妃准备的房间";
+		private var hint1:String="这不是皇帝的房间";
 		private var hint2:String="这是皇帝的休息室，他不在这里";
 		private var hint3:String="hint-pic1";
-		private var hint4:String="这是为皇后准备的房间";
+		private var hint4:String="这不是皇帝的房间";
 		private var hint5:String="hint-pic2";
 		private var hint6:String="皇帝寝室，但他今天在另一间休息";
 
@@ -469,6 +468,11 @@ package views.module1
 		override public function dispose():void
 		{
 			super.dispose();
+//			removeMC();
+		}
+
+		public function removeMC():void
+		{
 			if (eunuch)
 			{
 				eunuch.removeEventListener(MouseEvent.CLICK, onEClick);

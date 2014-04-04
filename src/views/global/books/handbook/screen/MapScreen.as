@@ -1,17 +1,17 @@
 package views.global.books.handbook.screen
 {
 	import com.greensock.TweenLite;
-	
+
 	import controllers.MC;
-	
+
 	import starling.display.Image;
-	
+
 	import views.components.ElasticButton;
 	import views.global.books.events.BookEvent;
 	import views.global.map.Map;
 	import views.global.books.BooksManager;
 	import views.global.books.userCenter.screen.BaseScreen;
-	
+
 	public class MapScreen extends BaseScreen
 	{
 		public function MapScreen()
@@ -26,10 +26,11 @@ package views.global.books.handbook.screen
 		override protected function initPages():void
 		{
 			var image:Image = BooksManager.getImage("background_1");
+			image.scaleX=image.scaleY=2;
 			this.addChild( image );
 			image.height += 6;
 		}
-		
+
 		private var btn:ElasticButton;
 		private function initButton():void
 		{
@@ -39,13 +40,13 @@ package views.global.books.handbook.screen
 			btn.y=viewHeight>>1;
 			btn.addEventListener(ElasticButton.CLICK, onTriggered);
 		}
-		
+
 		private function onTriggered():void
 		{
 			Map.show(null,-1,-1,true, true);
 			MC.instance.switchLayer(true);
 		}
-		
+
 		override public function dispose():void
 		{
 			if(btn)
@@ -54,3 +55,4 @@ package views.global.books.handbook.screen
 		}
 	}
 }
+

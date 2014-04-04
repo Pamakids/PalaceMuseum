@@ -20,6 +20,7 @@ package views.module1
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
+	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
 	import views.components.LionMC;
@@ -106,7 +107,7 @@ package views.module1
 		private function showLionHint(content:String, callback:Function=null, isTask:Boolean=false):void
 		{
 			var txt:String=json[content];
-			LionMC.instance.say(txt, 0, 0, 0, callback, 20, 1, isTask);
+			LionMC.instance.say(txt, 0, 0, 0, callback, 20, isTask);
 		}
 
 		private function addBox():void
@@ -348,6 +349,14 @@ package views.module1
 				headP=Prompt.showIMG(632, 200, img, cb, this);
 			else
 				headP=Prompt.showTXT(632, 200, txt2, 20, cb, this);
+		}
+
+		override public function getCapture():Texture{
+			for each (var c:Cloth2 in dataArr) 
+			{
+				c.filter=null;
+			}
+			return super.getCapture();
 		}
 
 		private var headP:Prompt;

@@ -8,13 +8,12 @@
 package views.components.base
 {
 	import com.greensock.TweenLite;
-	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
-	import com.pamakids.manager.LoadManager;
 	import com.pamakids.palace.utils.StringUtils;
 
-	import flash.display.Bitmap;
+	import flash.events.TimerEvent;
 	import flash.geom.Point;
+	import flash.utils.Timer;
 	import flash.utils.getTimer;
 
 	import controllers.MC;
@@ -28,13 +27,13 @@ package views.components.base
 
 	import sound.SoundAssets;
 
-	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
 	import starling.text.TextField;
+	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
@@ -73,34 +72,68 @@ package views.components.base
 				return;
 			if (!checkBird())
 			{
-				var img:Image;
-				var bg:Image;
-				LoadManager.instance.loadImage("assets/global/handbook/bird_collection_" + birdIndex + ".png",
-											   function(b:Bitmap):void {
-												   if (b)
-													   img=Image.fromBitmap(b);
-												   b=null;
-											   });
+				var birdUrl:String="bird_collection_" + birdIndex;
+				var t:Texture=assetManager.getTexture(birdUrl);
+				trace(birdUrl,t)
+				img =getImage(birdUrl);
+				bbg = getImage("background_2");
+				bbg.scaleX=bbg.scaleY=2;
+//				LoadManager.instance.loadImage("assets/global/handbook/bird_collection_" + birdIndex + ".png",
+//											   function(b:Bitmap):void {
+//												   if (b)
+//													   img=Image.fromBitmap(b);
+//												   b=null;
+//											   });
+//
+//				LoadManager.instance.loadImage("assets/global/handbook/mainUI/background_2.png",
+//											   function(b:Bitmap):void {
+//												   if (b)
+//													   bg=Image.fromBitmap(b);
+//												   b=null;
+//											   });
+				timer=new Timer(1000,10);
+				timer.addEventListener(TimerEvent.TIMER_COMPLETE,onComplete);
+				addEventListener("pauseTimer",pauseTimer);
+				addEventListener("resumeTimer",resumeTimer);
 
-				LoadManager.instance.loadImage("assets/global/handbook/mainUI/background_2.png",
-											   function(b:Bitmap):void {
-												   if (b)
-													   bg=Image.fromBitmap(b);
-												   b=null;
-											   });
+				timer.start();
 
-				TweenLite.delayedCall(10, function():void {
-//					var cls:Class=BirdAssets["bird" + birdIndex];
-//					if (!cls)
-//						return;
-					if (img && bg)
-					{
-						initBird(img, bg);
-						UserBehaviorAnalysis.trackEvent("collect", "bird", "", birdIndex);
-					}
-				});
+//				TweenLite.delayedCall(10, function():void {
+//					if (img && bg)
+//					{
+//						initBird(img, bg);
+//						UserBehaviorAnalysis.trackEvent("collect", "bird", "", birdIndex);
+//					}
+//				});
 			}
 		}
+
+		private function resumeTimer(e:Event):void
+		{
+			if(timer)
+				timer.start();
+		}
+
+		private function pauseTimer(e:Event):void
+		{
+			if(timer)
+				timer.stop();
+		}
+
+		protected function onComplete(event:TimerEvent):void
+		{
+			if (img && bbg)
+			{
+				initBird(img, bbg);
+				UserBehaviorAnalysis.trackEvent("collect", "bird", "", birdIndex);
+			}
+
+			timer.stop();
+			timer.removeEventListener(TimerEvent.TIMER_COMPLETE,onComplete);
+			timer=null;
+		}
+
+		private var timer:Timer;
 
 
 		public function PalaceScene(am:AssetManager=null)
@@ -173,19 +206,25 @@ package views.components.base
 
 		override public function dispose():void
 		{
+			if(timer)
+			{
+				timer.stop();
+				timer.removeEventListener(TimerEvent.TIMER_COMPLETE,onComplete);
+				timer=null;
+			}
 			if (initTime > 0)
 			{
 				disposeTime=getTimer();
 				UserBehaviorAnalysis.trackTime("stayTime", disposeTime - initTime, sceneName);
 				initTime=-1;
 			}
-			if (nextButton)
-			{
-				TweenLite.killDelayedCallsTo(this);
-				TweenMax.killTweensOf(nextButton);
-				nextButton.removeFromParent(true);
-				nextButton=null;
-			}
+//			if (nextButton)
+//			{
+//				TweenLite.killDelayedCallsTo(this);
+//				TweenMax.killTweensOf(nextButton);
+//				nextButton.removeFromParent(true);
+//				nextButton=null;
+//			}
 			if (assetManager)
 			{
 				assetManager.purge();
@@ -211,7 +250,7 @@ package views.components.base
 				return null;
 		}
 
-		protected var nextButton:ElasticButton;
+//		protected var nextButton:ElasticButton;
 
 		private var tfSP:Sprite;
 
@@ -219,69 +258,80 @@ package views.components.base
 
 		protected function sceneOver():void
 		{
+			trace("sceneover");
+			dispatchEvent(new Event("sceneover",true));
 			removeMask();
-			if (!nextButton)
-			{
-				nextButton=new ElasticButton(getImage("nextButton"));
-				addChild(nextButton);
-				nextButton.pivotX=nextButton.width >> 1;
-				nextButton.pivotY=33;
-				nextButton.x=1024 - 100;
-				nextButton.y=768 - 100;
-				nextButton.addEventListener(ElasticButton.CLICK, nextScene);
-				shakeNext();
-			}
-			else
-				nextButton.visible=true;
-			TailBar.hide();
-//			addLoading();
+//			if (!nextButton)
+//			{
+//				nextButton=new ElasticButton(getImage("nextButton"));
+//				addChild(nextButton);
+//				nextButton.pivotX=nextButton.width >> 1;
+//				nextButton.pivotY=33;
+//				nextButton.x=1024 - 100;
+//				nextButton.y=768 - 100;
+//				nextButton.addEventListener(ElasticButton.CLICK, nextScene);
+//				shakeNext();
+//			}
+//			else
+//				nextButton.visible=true;
+//			TailBar.hide();
 		}
 
-		public function addLoading():void
-		{
-			if (nextButton)
-			{
-				var loading:MovieClip=new MovieClip(MC.assetManager.getTextures("loadingHalo"), 15);
-				Starling.juggler.add(loading);
-				loading.loop=true;
-				loading.play();
-				nextButton.addChild(loading);
-				loading.x=8;
-				loading.y=32;
-				loading.scaleY=.98
-			}
-		}
+//		public function addLoading():void
+//		{
+//			if (nextButton)
+//			{
+//				var loading:MovieClip=new MovieClip(MC.assetManager.getTextures("loadingHalo"), 15);
+//				Starling.juggler.add(loading);
+//				loading.loop=true;
+//				loading.play();
+//				nextButton.addChild(loading);
+//				loading.x=8;
+//				loading.y=32;
+//				loading.scaleY=.98
+//			}
+//		}
 
-		protected function hideNext():void
-		{
-			if (nextButton)
-				nextButton.visible=false;
-		}
+//		protected function hideNext():void
+//		{
+//			if (nextButton)
+//				nextButton.visible=false;
+//		}
+//
+//		private function shakeNext():void
+//		{
+//			if (nextButton)
+//				TweenMax.to(nextButton, 1, {shake: {rotation: Math.PI / 12, numShakes: 4}, onComplete: function():void
+//				{
+//					TweenLite.delayedCall(5, shakeNext);
+//				}});
+//		}
 
-		private function shakeNext():void
-		{
-			if (nextButton)
-				TweenMax.to(nextButton, 1, {shake: {rotation: Math.PI / 12, numShakes: 4}, onComplete: function():void
-				{
-					TweenLite.delayedCall(5, shakeNext);
-				}});
-		}
-
-		protected function nextScene(e:Event=null):void
-		{
-			UserBehaviorAnalysis.trackEvent("click", "next");
-			TopBar.enable=false;
-			if (nextButton)
-				nextButton.touchable=false;
-			TweenLite.killTweensOf(shakeNext);
-			dispatchEvent(new Event("gotoNext", true));
-		}
+//		protected function nextScene(e:Event=null):void
+//		{
+//			UserBehaviorAnalysis.trackEvent("click", "next");
+//			TopBar.enable=false;
+//			if (nextButton)
+//				nextButton.touchable=false;
+//			TweenLite.killTweensOf(shakeNext);
+//			dispatchEvent(new Event("gotoNext", true));
+//		}
 
 		protected var bg:Image;
+
+		private var img:Image;
+
+		private var bbg:Image;
 
 		public function get sceneName():String
 		{
 			return StringUtils.getClassName(this);
+		}
+
+		public function getCapture():Texture{
+			var render:RenderTexture=new RenderTexture(1024,768);
+			render.draw(this);
+			return render;
 		}
 
 		protected function showAchievement(_achieveIndex:int, _callback:Function=null):void
@@ -292,6 +342,7 @@ package views.components.base
 					_callback();
 				return;
 			}
+			dispatchEvent(new Event("pauseTimer",true));
 			UserBehaviorAnalysis.trackEvent("collect", "achievement", "", _achieveIndex);
 			SoundAssets.playSFX("getachieve");
 			SOService.instance.setSO(_achieveIndex.toString() + "_achieve", true);
@@ -320,7 +371,7 @@ package views.components.base
 				TweenLite.killTweensOf(tfSP);
 				tf.text=txt;
 				tfSP.y=-170;
-				setChildIndex(tfSP, numChildren - 1);
+				addChildAt(tfSP, numChildren - 1);
 			}
 			TweenLite.to(tfSP, .5, {y: 0});
 			TweenLite.delayedCall(2.5, resetTFSP, [_callback]);
@@ -330,6 +381,7 @@ package views.components.base
 		{
 			TweenLite.to(tfSP, .5, {y: -170, onComplete: function():void {
 				removeMask();
+				dispatchEvent(new Event("resumeTimer",true));
 				if (cb != null)
 					cb();
 			}})
@@ -343,6 +395,7 @@ package views.components.base
 					callback();
 				return;
 			}
+			dispatchEvent(new Event("pauseTimer",true));
 			UserBehaviorAnalysis.trackEvent("collect", "card", "", int(_cardName));
 			SoundAssets.playSFX("getcard");
 			SOService.instance.setSO("collection_card_" + _cardName + "collected", true);
@@ -370,6 +423,7 @@ package views.components.base
 								 halo.visible=false;
 								 TweenLite.delayedCall(.5, function():void
 								 {
+									 dispatchEvent(new Event("resumeTimer",true));
 									 PopUpManager.removePopUp(cardShow);
 									 cardShow.dispose()
 								 });

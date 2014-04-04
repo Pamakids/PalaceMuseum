@@ -4,6 +4,7 @@ package
 	import com.greensock.plugins.MotionBlurPlugin;
 	import com.greensock.plugins.ShakeEffect;
 	import com.greensock.plugins.TweenPlugin;
+	import com.pamakids.FullFillBG;
 	import com.pamakids.palace.utils.MiTVKeyCode;
 
 	import flash.desktop.NativeApplication;
@@ -45,7 +46,7 @@ package
 
 	import utils.TouchEventUtils;
 
-	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x554040")]
+	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x351016")]
 	public class PalaceMuseum extends Sprite
 	{
 		private var ipTXT:TextField;
@@ -72,6 +73,8 @@ package
 				msk.graphics.beginFill(0);
 				msk.graphics.drawRect(0, 0, 1024, 768)
 				mask=msk;
+
+				stage.addChildAt(new FullFillBG(),0);
 			}
 
 			UserBehaviorAnalysis.init();
@@ -80,10 +83,9 @@ package
 			TweenPlugin.activate([ShakeEffect]);
 			TweenPlugin.activate([MotionBlurPlugin]);
 
-			MC.isIOS=true;
+
 
 			Starling.multitouchEnabled=true;
-			Starling.handleLostContext=false;
 
 			var android:Boolean=false;
 			if (android)
@@ -92,6 +94,9 @@ package
 				MC.isIOS=false;
 				NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, onActive);
 				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onDeActive);
+			}else{
+				Starling.handleLostContext=false;
+				MC.isIOS=true;
 			}
 
 			var rect:Rectangle=new Rectangle(PosVO.OffsetX, PosVO.OffsetY, 1024 * scale, 768 * scale)
@@ -152,7 +157,7 @@ package
 			{
 				case MiTVKeyCode.LEFT: //37
 				case MiTVKeyCode.UP: //38
-				case MiTVKeyCode.RIGHT: //39
+				case MiTVKeyCode.RIGHT: //39 
 				case MiTVKeyCode.DOWN: //40
 					mouseDirection=e.keyCode - MiTVKeyCode.LEFT;
 					break;
@@ -171,7 +176,7 @@ package
 		}
 
 		private var clickHint:Bitmap;
-		private var hintShowed:Boolean;
+		public var hintShowed:Boolean;
 
 		public function addClickHint():void
 		{

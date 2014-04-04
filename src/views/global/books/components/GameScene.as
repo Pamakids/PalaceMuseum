@@ -74,8 +74,8 @@ package views.global.books.components
 			_loadImage=new Image(Texture.fromBitmap(new PalaceModule.loading()));
 			_loadImage.pivotX=_loadImage.width >> 1;
 			_loadImage.pivotY=_loadImage.height >> 1;
-			_loadImage.x=1024 - 100;
-			_loadImage.y=768 - 100;
+			_loadImage.x=1024 /2;
+			_loadImage.y=768 /2;
 			_loadImage.scaleX=_loadImage.scaleY=.5;
 			PopUpManager.addPopUp(_loadImage, true, false);
 
@@ -136,3 +136,5 @@ package views.global.books.components
 		}
 	}
 }
+
+

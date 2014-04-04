@@ -46,7 +46,7 @@ package views.module4
 			hand.x=handPosX;
 			hand.y=handOutPosY;
 
-			LionMC.instance.say("国泰民安，近日奏章数量不多，皇上大可放心。", 0, 0, 0, addMemorials, 20, .6, true);
+			LionMC.instance.say("国泰民安，近日奏章数量不多，皇上大可放心。", 0, 0, 0, addMemorials, 20, true);
 
 			bg.addEventListener(TouchEvent.TOUCH, onBGTouch);
 		}

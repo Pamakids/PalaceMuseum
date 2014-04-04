@@ -84,7 +84,7 @@ package views.module1
 
 			LionMC.instance.say("为明天早起上个闹钟吧！\n花些时间熟悉一下\n皇帝的寝室。", 0, 0, 0, function():void {
 				birdIndex=1;
-			}, 20, .6, true);
+			}, 20, true);
 		}
 
 		private var pendantPosArr:Array=[new Point(299, 226), new Point(390, 192),

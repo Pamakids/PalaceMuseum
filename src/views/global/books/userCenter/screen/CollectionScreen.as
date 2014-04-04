@@ -40,6 +40,7 @@ package views.global.books.userCenter.screen
 		override protected function initPages():void
 		{
 			var image:Image=BooksManager.getImage("background_2");
+			image.scaleX=image.scaleY=2;
 			this.addChild(image);
 		}
 

@@ -768,7 +768,7 @@ package feathers.controls.renderers
 		 *
 		 * <p>In the following example, a custom content label properties are
 		 * customized:</p>
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * renderer.contentLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
 		 * renderer.contentLabelProperties.embedFonts = true;</listing>
@@ -1064,12 +1064,12 @@ package feathers.controls.renderers
 		/**
 		 * The minimum space, in pixels, between the component's left edge
 		 * and the component's content.
-		 * 
+		 *
 		 * <p>In the following example, the left padding is set to 20 pixels:</p>
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * renderer.paddingLeft = 20;</listing>
-		 * 
+		 *
 		 * @default 0
 		 */
 		public function get paddingLeft():Number
@@ -1463,3 +1463,5 @@ package feathers.controls.renderers
 		}
 	}
 }
+
+

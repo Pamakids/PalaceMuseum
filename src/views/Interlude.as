@@ -17,7 +17,9 @@ package views
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.system.Capabilities;
+	import flash.system.System;
 	import flash.utils.getTimer;
+	import flash.utils.setTimeout;
 
 	import models.PosVO;
 
@@ -247,6 +249,16 @@ package views
 				stream.removeEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
 				stream.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
 				stream.pause();
+//				stream.close();
+				stream=null;
+
+				System.gc();
+				System.gc();
+
+//				setTimeout(function():void{
+//					stream.close();
+//					stream=null;
+//				},100);
 			}
 			if (stageVideo)
 			{
@@ -269,3 +281,5 @@ package views
 		}
 	}
 }
+
+

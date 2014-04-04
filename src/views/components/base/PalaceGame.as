@@ -134,6 +134,9 @@ package views.components.base
 			}
 			initTime=getTimer();
 			UserBehaviorAnalysis.trackView(gameName);
+
+			dispatchEvent(new Event("pauseTimer",true));
+			dispatchEvent(new Event("hideNext",true));
 		}
 
 		/**
@@ -186,6 +189,7 @@ package views.components.base
 
 		override public function dispose():void
 		{
+			dispatchEvent(new Event("resumeTimer",true));
 			resumeBGM();
 			if (lastBGM && bigGame)
 				SoundAssets.playBGM(lastBGM);
@@ -204,6 +208,8 @@ package views.components.base
 				MC.instance.showMC();
 			}
 			super.dispose();
+
+			dispatchEvent(new Event("showNext",true));
 		}
 
 		protected function lowerBGM():void
@@ -382,3 +388,5 @@ package views.components.base
 		}
 	}
 }
+
+
