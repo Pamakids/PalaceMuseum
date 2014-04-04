@@ -2,14 +2,13 @@ package views.global.books.components
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.geom.Point;
-
+	
 	import controllers.MC;
-
+	
 	import models.SOService;
-
-	import starling.core.Starling;
+	
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
@@ -18,7 +17,8 @@ package views.global.books.components
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
-
+	import starling.utils.AssetManager;
+	
 	import views.Interlude;
 	import views.components.ElasticButton;
 	import views.global.books.BooksManager;
@@ -48,8 +48,9 @@ package views.global.books.components
 		private const minR:Number=-Math.PI / 2 - 3.5 * d;
 		private const maxR:Number=minR + 7 * d;
 		private var activeIcon:Image;
-
-		private var SKIN_ICON_SUN:Texture=BooksManager.getTexture("drag_sun");
+		private var a:AssetManager = MC.assetManager;
+		
+		private var SKIN_ICON_SUN:Texture=a.getTexture("drag_sun");
 
 		private function init():void
 		{
@@ -66,7 +67,7 @@ package views.global.books.components
 
 		private function initPlayBtn():void
 		{
-			play=new ElasticButton(BooksManager.getImage("btn_play"));
+			play=new ElasticButton(getImage("btn_play"));
 			addChild(play);
 			play.x=centerS.x + 4;
 			play.y=centerS.y + 3;
@@ -289,7 +290,7 @@ package views.global.books.components
 			for (var i:int=0; i < btnCount; i++)
 			{
 				r=minR + i * d;
-				image=isComplete(i) ? BooksManager.getImage("button_" + i) : BooksManager.getImage("button_unFinish");
+				image=isComplete(i) ? getImage("button_" + i) : getImage("button_unFinish");
 				image.pivotX=image.pivotY=image.width >> 1;
 				setPositionByRadian(image, r);
 				this.addChild(image);
@@ -350,19 +351,19 @@ package views.global.books.components
 
 		private function initBackGround():void
 		{
-			var image:Image=BooksManager.getImage("userCenter_bg");
+			var image:Image=getImage("userCenter_bg");
 			image.x=185;
 			image.y=93;
 			this.addChild(image);
 			image.touchable=false;
 
-			image=BooksManager.getImage("bg_sundial");
+			image=getImage("bg_sundial");
 			image.x=386;
 			image.y=246;
 			this.addChild(image);
 			image.touchable=false;
 
-			image=BooksManager.getImage("focus_0");
+			image=getImage("focus_0");
 			image.x=445;
 			image.y=238;
 			this.addChild(image);
@@ -421,7 +422,7 @@ package views.global.books.components
 			for (var i:int=0; i < linePosition.length; i++)
 			{
 				point=linePosition[i];
-				image=BooksManager.getImage(isComplete(i + 1) ? "line_complete_" + i : "line_uncomplete_" + i);
+				image=getImage(isComplete(i + 1) ? "line_complete_" + i : "line_uncomplete_" + i);
 				image.touchable=false;
 				image.x=point.x;
 				image.y=point.y;
@@ -436,7 +437,7 @@ package views.global.books.components
 			for (var i:int=0; i < wordPosition.length; i++)
 			{
 				point=wordPosition[i];
-				image=BooksManager.getImage(isComplete(i) ? "word_complete_" + i : "word_uncomplete_" + i);
+				image=getImage(isComplete(i) ? "word_complete_" + i : "word_uncomplete_" + i);
 				image.touchable=false;
 				image.x=point.x;
 				image.y=point.y;
@@ -472,6 +473,11 @@ package views.global.books.components
 			}});
 			var tarR:Number=arrR[selectI];
 			TweenLite.to(pointer, 1, {rotation: tarR, ease: Cubic.easeOut});
+		}
+		
+		private function getImage(name:String):Image
+		{
+			return new Image( a.getTexture(name) );
 		}
 
 		override public function dispose():void

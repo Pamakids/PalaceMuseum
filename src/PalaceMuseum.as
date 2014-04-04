@@ -44,13 +44,13 @@ package
 
 	import starling.core.Starling;
 
-	import utils.TouchEventUtils;
+//	import utils.TouchEventUtils;
 
 	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x351016")]
 	public class PalaceMuseum extends Sprite
 	{
 		private var ipTXT:TextField;
-		private var server:AIRServer;
+//		private var server:AIRServer;
 
 		public function PalaceMuseum()
 		{
@@ -112,22 +112,22 @@ package
 			MC.instance.stage=this;
 			MC.instance.mcLayer=mcLayer;
 
-			var tv:Boolean=false;
-			if (tv)
-				initTVRemoter();
+//			var tv:Boolean=false;
+//			if (tv)
+//				initTVRemoter();
 //			initRemoteServer();
 		}
 
-		private function initTVRemoter():void
-		{
-			cursor=new EmbedAssets.cursor();
-			addChild(cursor);
-			cursor.x=512;
-			cursor.y=384;
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-		}
+//		private function initTVRemoter():void
+//		{
+//			cursor=new EmbedAssets.cursor();
+//			addChild(cursor);
+//			cursor.x=512;
+//			cursor.y=384;
+//			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+//			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+//			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+//		}
 
 		private var mouseDirection:int=-1;
 		private var cursor:Bitmap;
@@ -151,29 +151,29 @@ package
 				cursor.y=768;
 		}
 
-		protected function onKeyDown(e:KeyboardEvent):void
-		{
-			switch (e.keyCode)
-			{
-				case MiTVKeyCode.LEFT: //37
-				case MiTVKeyCode.UP: //38
-				case MiTVKeyCode.RIGHT: //39 
-				case MiTVKeyCode.DOWN: //40
-					mouseDirection=e.keyCode - MiTVKeyCode.LEFT;
-					break;
-
-				case MiTVKeyCode.OK: //13
-				{
-					remoteMouse(true);
-					break;
-				}
-
-				default:
-				{
-					break;
-				}
-			}
-		}
+//		protected function onKeyDown(e:KeyboardEvent):void
+//		{
+//			switch (e.keyCode)
+//			{
+//				case MiTVKeyCode.LEFT: //37
+//				case MiTVKeyCode.UP: //38
+//				case MiTVKeyCode.RIGHT: //39 
+//				case MiTVKeyCode.DOWN: //40
+//					mouseDirection=e.keyCode - MiTVKeyCode.LEFT;
+//					break;
+//
+//				case MiTVKeyCode.OK: //13
+//				{
+//					remoteMouse(true);
+//					break;
+//				}
+//
+//				default:
+//				{
+//					break;
+//				}
+//			}
+//		}
 
 		private var clickHint:Bitmap;
 		public var hintShowed:Boolean;
@@ -203,43 +203,43 @@ package
 			}
 		}
 
-		private function remoteMouse(down:Boolean):void
-		{
-			var pt:Point=new Point(cursor.x, cursor.y);
-			var o:Object={type: down ? TouchEvent.TOUCH_BEGIN : TouchEvent.TOUCH_END, x: pt.x, y: pt.y, id: 0}
-			var e1:TouchEvent=TouchEventUtils.objToTouch(o, this);
-			var e2:MouseEvent=TouchEventUtils.objToMouse(o, this);
-			stage.dispatchEvent(e1);
-			if (e2)
-			{
-				stage.dispatchEvent(e2);
-			}
+//		private function remoteMouse(down:Boolean):void
+//		{
+//			var pt:Point=new Point(cursor.x, cursor.y);
+//			var o:Object={type: down ? TouchEvent.TOUCH_BEGIN : TouchEvent.TOUCH_END, x: pt.x, y: pt.y, id: 0}
+////			var e1:TouchEvent=TouchEventUtils.objToTouch(o, this);
+////			var e2:MouseEvent=TouchEventUtils.objToMouse(o, this);
+//			stage.dispatchEvent(e1);
+//			if (e2)
+//			{
+//				stage.dispatchEvent(e2);
+//			}
+//
+//		}
 
-		}
-
-		protected function onKeyUp(e:KeyboardEvent):void
-		{
-			switch (e.keyCode)
-			{
-				case MiTVKeyCode.LEFT: //37
-				case MiTVKeyCode.UP: //38
-				case MiTVKeyCode.RIGHT: //39
-				case MiTVKeyCode.DOWN: //40
-					mouseDirection=-1;
-					break;
-
-				case MiTVKeyCode.OK: //13
-				{
-					remoteMouse(false);
-					break;
-				}
-
-				default:
-				{
-					break;
-				}
-			}
-		}
+//		protected function onKeyUp(e:KeyboardEvent):void
+//		{
+//			switch (e.keyCode)
+//			{
+//				case MiTVKeyCode.LEFT: //37
+//				case MiTVKeyCode.UP: //38
+//				case MiTVKeyCode.RIGHT: //39
+//				case MiTVKeyCode.DOWN: //40
+//					mouseDirection=-1;
+//					break;
+//
+//				case MiTVKeyCode.OK: //13
+//				{
+//					remoteMouse(false);
+//					break;
+//				}
+//
+//				default:
+//				{
+//					break;
+//				}
+//			}
+//		}
 
 		protected function onActive(event:Event):void
 		{
@@ -256,29 +256,29 @@ package
 			TweenMax.pauseAll();
 		}
 
-		private function initRemoteServer():void
-		{
-			ipTXT=new TextField();
-			ipTXT.width=500;
-			addChild(ipTXT);
-			ipTXT.mouseEnabled=false;
-			GetAddress();
-
-			server=new AIRServer();
-			server.addEndPoint(new SocketEndPoint(1234, new AMFSocketClientHandlerFactory()));
-			server.addEventListener(AIRServerEvent.CLIENT_ADDED, onClientAdded);
-			server.addEventListener(AIRServerEvent.CLIENT_REMOVED, onClientRemoved);
-			server.addEventListener(MessageReceivedEvent.MESSAGE_RECEIVED, messageReceivedHandler, false, 0, true);
-			server.start();
-
-//			if (Starling.multitouchEnabled)
-			{
-				cursorArr=new Vector.<Bitmap>(10);
-				stage.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
-				stage.addEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
-				stage.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
-			}
-		}
+//		private function initRemoteServer():void
+//		{
+//			ipTXT=new TextField();
+//			ipTXT.width=500;
+//			addChild(ipTXT);
+//			ipTXT.mouseEnabled=false;
+//			GetAddress();
+//
+//			server=new AIRServer();
+//			server.addEndPoint(new SocketEndPoint(1234, new AMFSocketClientHandlerFactory()));
+//			server.addEventListener(AIRServerEvent.CLIENT_ADDED, onClientAdded);
+//			server.addEventListener(AIRServerEvent.CLIENT_REMOVED, onClientRemoved);
+//			server.addEventListener(MessageReceivedEvent.MESSAGE_RECEIVED, messageReceivedHandler, false, 0, true);
+//			server.start();
+//
+////			if (Starling.multitouchEnabled)
+//			{
+//				cursorArr=new Vector.<Bitmap>(10);
+//				stage.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
+//				stage.addEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
+//				stage.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
+//			}
+//		}
 
 		override public function addChild(child:DisplayObject):DisplayObject
 		{
@@ -338,22 +338,22 @@ package
 
 		private var cursorArr:Vector.<Bitmap>
 
-		protected function onClientRemoved(event:AIRServerEvent):void
-		{
-			if (currentClient)
-				currentClient=null;
-			ipTXT.text="请连接IP       " + currentAddress;
-		}
-
-		protected function onClientAdded(event:AIRServerEvent):void
-		{
-			if (currentClient)
-				currentClient.close();
-			currentClient=event.client;
-			ipTXT.text="已连接遥控器"
-		}
-
-		private var currentClient:Client;
+//		protected function onClientRemoved(event:AIRServerEvent):void
+//		{
+//			if (currentClient)
+//				currentClient=null;
+//			ipTXT.text="请连接IP       " + currentAddress;
+//		}
+//
+//		protected function onClientAdded(event:AIRServerEvent):void
+//		{
+//			if (currentClient)
+//				currentClient.close();
+//			currentClient=event.client;
+//			ipTXT.text="已连接遥控器"
+//		}
+//
+//		private var currentClient:Client;
 
 		public function GetAddress():void
 		{
@@ -387,32 +387,32 @@ package
 			}
 		}
 
-		protected function messageReceivedHandler(event:MessageReceivedEvent):void
-		{
-			switch (event.message.command)
-			{
-				case "touch":
-				{
-					var arr:Array=event.message.data;
-					for each (var o:Object in arr)
-					{
-						var e1:TouchEvent=TouchEventUtils.objToTouch(o, this);
-						var e2:MouseEvent=TouchEventUtils.objToMouse(o, this);
-						stage.dispatchEvent(e1);
-						if (e2)
-						{
-							stage.dispatchEvent(e2);
-						}
-					}
-					break;
-				}
-
-				default:
-				{
-					break;
-				}
-			}
-		}
+//		protected function messageReceivedHandler(event:MessageReceivedEvent):void
+//		{
+//			switch (event.message.command)
+//			{
+//				case "touch":
+//				{
+//					var arr:Array=event.message.data;
+//					for each (var o:Object in arr)
+//					{
+//						var e1:TouchEvent=TouchEventUtils.objToTouch(o, this);
+//						var e2:MouseEvent=TouchEventUtils.objToMouse(o, this);
+//						stage.dispatchEvent(e1);
+//						if (e2)
+//						{
+//							stage.dispatchEvent(e2);
+//						}
+//					}
+//					break;
+//				}
+//
+//				default:
+//				{
+//					break;
+//				}
+//			}
+//		}
 	}
 }
 

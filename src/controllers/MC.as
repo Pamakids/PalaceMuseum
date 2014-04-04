@@ -2,15 +2,15 @@ package controllers
 {
 	import com.greensock.TweenMax;
 	import com.pamakids.utils.Singleton;
-
+	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-
+	
 	import feathers.core.PopUpManager;
-
+	
 	import models.SOService;
-
+	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
@@ -19,7 +19,7 @@ package controllers
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-
+	
 	import views.EndScene;
 	import views.Interlude;
 	import views.Module1;
@@ -36,6 +36,7 @@ package controllers
 	import views.global.TopBar;
 	import views.global.books.BooksManager;
 	import views.global.map.Map;
+	import views.global.other.Menu;
 
 	/**
 	 * 主业务控制器
@@ -157,6 +158,7 @@ package controllers
 
 		public function gotoModule(index:int, sceneIndex:int=-1):void
 		{
+			MC.instance.hideMenu();
 			BooksManager.closeCtrBook();
 			if (Map.map)
 				Map.map.clear(0);
@@ -340,6 +342,22 @@ package controllers
 		{
 			var guide:PalaceGuide=new PalaceGuide(index, cb);
 			main.addChild(guide);
+		}
+		
+		public function showMenu():void
+		{
+			if(!menu)
+				menu = new Menu();
+			main.addChild( menu );
+		}
+		private var menu:Menu;
+		public function hideMenu():void
+		{
+			if(menu)
+			{
+				menu.removeFromParent(true);
+				menu = null
+			}
 		}
 	}
 }

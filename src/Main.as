@@ -174,13 +174,15 @@ package
 				return;
 			}
 
-			BooksManager.showBooks(0, 0, 0, false);
+//			BooksManager.showBooks(0, 0, 0, false);
+			MC.instance.showMenu();
 			return;
 
 			var moduleIndex:int=int(_lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(_lastScene.charAt(1)) - 1;
 			if (lastScene.indexOf("end") >= 0)
-				BooksManager.showBooks(0, 0, 0, false);
+//				BooksManager.showBooks(0, 0, 0, false);
+				MC.instance.showMenu();
 			else if (moduleIndex < 0 || sceneIndex < 0)
 				Map.show();
 			else if (_lastScene.lastIndexOf("map") < 0)
@@ -188,7 +190,8 @@ package
 				if (Capabilities.isDebugger)
 					MC.instance.gotoModule(moduleIndex, sceneIndex);
 				else
-					BooksManager.showBooks(0, 0, 0, false);
+					MC.instance.showMenu();
+//					BooksManager.showBooks(0, 0, 0, false);
 			}
 			else
 				Map.show(null, moduleIndex - 1, moduleIndex);
