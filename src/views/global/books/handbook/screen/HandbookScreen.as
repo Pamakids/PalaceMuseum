@@ -232,7 +232,7 @@ package views.global.books.handbook.screen
 				return;
 			}
 			//清除缓存纹理
-			_assetsManager.dispose();
+			_assetsManager.purge();
 			initLoad();
 			this.crtPage=page;
 			_assetsManager.enqueue("assets/global/handbook/content_page_" + page + ".png");
@@ -271,7 +271,7 @@ package views.global.books.handbook.screen
 				page_0.removeFromParent(true);
 			if (page_1)
 				page_1.removeFromParent(true);
-			_assetsManager.dispose();
+			_assetsManager.purge();
 			super.dispose();
 		}
 	}

@@ -8,7 +8,6 @@ package views.module2.scene22
 
 	import starling.display.Image;
 	import starling.display.Sprite;
-	import starling.filters.BlurFilter;
 
 	public class ViewHolder extends Sprite
 	{
@@ -38,8 +37,6 @@ package views.module2.scene22
 		public var _width:Number;
 		public var _height:Number;
 
-		private var blurF:BlurFilter;
-
 		public function get scale():Number
 		{
 			return _scale;
@@ -66,9 +63,25 @@ package views.module2.scene22
 			if (!_img1)
 			{
 				_img1=value;
-				addChild(_img1);
+				layer1.addChild(_img1);
 				this._width=_img1.width;
 				this._height=_img1.height;
+				this.clipRect=new Rectangle(0, 0, _width, _height);
+			}
+		}
+
+		private var _img2:Image;
+		public function get img2():Image
+		{
+			return _img2;
+		}
+
+		public function set img2(value:Image):void
+		{
+			if (!_img2)
+			{
+				_img2=value;
+				layer2.addChild(_img2);
 				this.clipRect=new Rectangle(0, 0, _width, _height);
 			}
 		}
@@ -101,44 +114,83 @@ package views.module2.scene22
 		{
 //			trace(value)
 			value=Math.max(0, Math.min(value, 10))
-			if (!this.filter)
-			{
-				blurF=new BlurFilter(value, value);
-				filter=blurF;
-			}
-			else
-				blurF.blurX=blurF.blurY=value;
+			layer2.alpha=value/10;
+//			if (!this.filter)
+//			{
+//				blurF=new BlurFilter(value, value);
+//				filter=blurF;
+//			}
+//			else
+//				blurF.blurX=blurF.blurY=value;
 		}
 
 		public function getBlur():Number
 		{
-			if (this.filter)
-				return blurF.blurX;
-			else
+			if(layer2){
+				return layer2.alpha*10;
+			}else{
 				return 0;
+			}
+//			if (this.filter)
+//				return blurF.blurX;
+//			else
+//				return 0;
 		}
+
+		private var layer1:Sprite;
+		private var layer2:Sprite;
+
+		private var lion1:Sprite;
+		private var lion2:Sprite;
 
 		public function ViewHolder()
 		{
+			layer1=new Sprite();
+			layer2=new Sprite();
+			addChild(layer1);
+			addChild(layer2);
 		}
 
 		private var sit:Image;
 		private var stand:Image;
 
-		public function initLion(img1:Image, img2:Image):void
+		private var sit2:Image;
+		private var stand2:Image;
+
+		public function initLion(img1:Image, img2:Image,img3:Image,img4:Image):void
 		{
 			sit=img1;
 			stand=img2;
 
-			addChild(sit);
-			sit.x=1211 + ox;
-			sit.y=214 + oy;
+			layer1.addChild(sit);
+			sit.x=220;
+			sit.y=156;
 
-			addChild(stand);
-			stand.x=1222 + ox;
-			stand.y=208 + oy;
+			layer1.addChild(stand);
+			stand.x=225;
+			stand.y=149;
 
-			sit.visible=stand.touchable=false;
+			sit.visible=false;
+
+
+			sit2=img3;
+			stand2=img4;
+
+			layer2.addChild(sit2);
+			sit2.x=sit.x;
+			sit2.y=sit.y;
+
+			layer2.addChild(stand2);
+			stand2.x=stand.x;
+			stand2.y=stand.y;
+
+			sit2.visible=false;
+		}
+
+		override public function dispose():void{
+			layer1.removeChildren(0,-1,true);
+			layer2.removeChildren(0,-1,true);
+			super.dispose();
 		}
 
 		private var _standUp:Boolean;
@@ -159,11 +211,20 @@ package views.module2.scene22
 			{
 				TweenLite.to(stand, .3, {y: dy1, ease: Quad.easeOut, onComplete: function():void {
 					TweenLite.to(stand, 2, {y: dy2, ease: Bounce.easeOut, onComplete: function():void {
-						sit.visible=sit.touchable=!value;
-						stand.visible=stand.touchable=value;
+						sit.visible=!value;
+						stand.visible=value;
+					}});
+				}});
+
+				TweenLite.to(stand2, .3, {y: dy1, ease: Quad.easeOut, onComplete: function():void {
+					TweenLite.to(stand2, 2, {y: dy2, ease: Bounce.easeOut, onComplete: function():void {
+						sit2.visible=!value;
+						stand2.visible=value;
 					}});
 				}});
 			}
 		}
 	}
 }
+
+

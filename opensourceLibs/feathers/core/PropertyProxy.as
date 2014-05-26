@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -26,7 +26,7 @@ package feathers.core
 		 */
 		public static function fromObject(source:Object, onChangeCallback:Function = null):PropertyProxy
 		{
-			const newValue:PropertyProxy = new PropertyProxy(onChangeCallback);
+			var newValue:PropertyProxy = new PropertyProxy(onChangeCallback);
 			for(var propertyName:String in source)
 			{
 				newValue[propertyName] = source[propertyName];
@@ -41,7 +41,7 @@ package feathers.core
 		{
 			if(onChangeCallback != null)
 			{
-				this._onChangeCallbacks.push(onChangeCallback);
+				this._onChangeCallbacks[this._onChangeCallbacks.length] = onChangeCallback;
 			}
 		}
 
@@ -80,13 +80,13 @@ package feathers.core
 		{
 			if(this.flash_proxy::isAttribute(name))
 			{
-				const nameAsString:String = name is QName ? QName(name).localName : name.toString();
+				var nameAsString:String = name is QName ? QName(name).localName : name.toString();
 				if(!this._storage.hasOwnProperty(nameAsString))
 				{
-					const subProxy:PropertyProxy = new PropertyProxy(subProxy_onChange);
+					var subProxy:PropertyProxy = new PropertyProxy(subProxy_onChange);
 					subProxy._subProxyName = nameAsString;
 					this._storage[nameAsString] = subProxy;
-					this._names.push(nameAsString);
+					this._names[this._names.length] = nameAsString;
 					this.fireOnChangeCallback(nameAsString);
 				}
 				return this._storage[nameAsString];
@@ -99,11 +99,11 @@ package feathers.core
 		 */
 		override flash_proxy function setProperty(name:*, value:*):void
 		{
-			const nameAsString:String = name is QName ? QName(name).localName : name.toString();
+			var nameAsString:String = name is QName ? QName(name).localName : name.toString();
 			this._storage[nameAsString] = value;
 			if(this._names.indexOf(nameAsString) < 0)
 			{
-				this._names.push(nameAsString);
+				this._names[this._names.length] = nameAsString;
 			}
 			this.fireOnChangeCallback(nameAsString);
 		}
@@ -113,13 +113,25 @@ package feathers.core
 		 */
 		override flash_proxy function deleteProperty(name:*):Boolean
 		{
-			const nameAsString:String = name is QName ? QName(name).localName : name.toString();
-			const index:int = this._names.indexOf(nameAsString);
-			if(index >= 0)
+			var nameAsString:String = name is QName ? QName(name).localName : name.toString();
+			var index:int = this._names.indexOf(nameAsString);
+			if(index == 0)
 			{
-				this._names.splice(index, 1);
+				this._names.shift();
 			}
-			const result:Boolean = delete this._storage[nameAsString];
+			else
+			{
+				var lastIndex:int = this._names.length - 1;
+				if(index == lastIndex)
+				{
+					this._names.pop();
+				}
+				else
+				{
+					this._names.splice(index, 1);
+				}
+			}
+			var result:Boolean = delete this._storage[nameAsString];
 			if(result)
 			{
 				this.fireOnChangeCallback(nameAsString);
@@ -152,7 +164,7 @@ package feathers.core
 		 */
 		override flash_proxy function nextValue(index:int):*
 		{
-			const name:* = this._names[index - 1];
+			var name:* = this._names[index - 1];
 			return this._storage[name];
 		}
 
@@ -161,7 +173,7 @@ package feathers.core
 		 */
 		public function addOnChangeCallback(callback:Function):void
 		{
-			this._onChangeCallbacks.push(callback);
+			this._onChangeCallbacks[this._onChangeCallbacks.length] = callback;
 		}
 
 		/**
@@ -169,11 +181,23 @@ package feathers.core
 		 */
 		public function removeOnChangeCallback(callback:Function):void
 		{
-			const index:int = this._onChangeCallbacks.indexOf(callback);
-			if(index >= 0)
+			var index:int = this._onChangeCallbacks.indexOf(callback);
+			if(index < 0)
 			{
-				this._onChangeCallbacks.splice(index, 1);
+				return;
 			}
+			if(index == 0)
+			{
+				this._onChangeCallbacks.shift();
+				return;
+			}
+			var lastIndex:int = this._onChangeCallbacks.length - 1;
+			if(index == lastIndex)
+			{
+				this._onChangeCallbacks.pop();
+				return;
+			}
+			this._onChangeCallbacks.splice(index, 1);
 		}
 
 		/**
@@ -181,7 +205,7 @@ package feathers.core
 		 */
 		private function fireOnChangeCallback(forName:String):void
 		{
-			const callbackCount:int = this._onChangeCallbacks.length;
+			var callbackCount:int = this._onChangeCallbacks.length;
 			for(var i:int = 0; i < callbackCount; i++)
 			{
 				var callback:Function = this._onChangeCallbacks[i] as Function;

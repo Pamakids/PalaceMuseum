@@ -99,8 +99,8 @@ package views.module3
 		{
 			game.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed)
 			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart)
-			game.removeChildren();
-			removeChild(game);
+			game.removeChildren(0,-1,true);
+			game.removeFromParent(true);
 			game=null;
 
 			game=new MenuGame(assetManager);

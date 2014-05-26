@@ -32,7 +32,7 @@ package views.module1.scene12
 			_offset=1 - Math.max(0, Math.min(1, (value * 10 - 4) / 6));
 			hat.y=hatY + _offset * 100;
 			hat.scaleX=hat.scaleY=Math.max(.5, Math.min(1, (value * 10 - 4) / 6));
-			blur=(1 - value) * 4;
+//			blur=(1 - value) * 4;
 			var c:uint=getColor(value);
 			hat.color=c;
 			cloth.color=c;
@@ -46,17 +46,17 @@ package views.module1.scene12
 			return rbg * 256 * 256 + rbg * 256 + rbg;
 		}
 
-		private function set blur(value:Number):void
-		{
-			value=Math.max(0, Math.min(value, 4))
-			if (!this.filter)
-			{
-				blurF=new BlurFilter(value, value);
-				filter=blurF;
-			}
-			else
-				blurF.blurX=blurF.blurY=value;
-		}
+//		private function set blur(value:Number):void
+//		{
+//			value=Math.max(0, Math.min(value, 4))
+//			if (!this.filter)
+//			{
+//				blurF=new BlurFilter(value, value);
+//				filter=blurF;
+//			}
+//			else
+//				blurF.blurX=blurF.blurY=value;
+//		}
 
 		private var hatY:Number=-395;
 		private var clothY:Number=-350;
@@ -87,3 +87,5 @@ package views.module1.scene12
 		}
 	}
 }
+
+

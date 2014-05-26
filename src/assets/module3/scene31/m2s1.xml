@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:31477bc31dc4f41015de01e87f66259d$ -->
+<!-- $TexturePacker:SmartUpdate:261972d198e1c060b16e9780a1dd28bb$ -->
 <TextureAtlas imagePath="m2s1.png">
     <SubTexture name="bg21" x="2" y="2" width="1024" height="768"/>
     <SubTexture name="book21" x="1028" y="2" width="937" height="766"/>
     <SubTexture name="dishes" x="1028" y="770" width="348" height="161"/>
-    <SubTexture name="fg21" x="2" y="772" width="1024" height="496"/>
+    <SubTexture name="fg21" x="2" y="772" width="1024" height="410" frameX="0" frameY="-86" frameWidth="1024" frameHeight="496"/>
 </TextureAtlas>

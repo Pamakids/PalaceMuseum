@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -13,6 +13,7 @@ package feathers.controls.supportClasses
 	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.display.Sprite;
+	import flash.events.TextEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -52,7 +53,7 @@ package feathers.controls.supportClasses
 		private var _text:String = "";
 
 		/**
-		 * @inheritDoc
+		 * @see feathers.controls.ScrollText#text
 		 */
 		public function get text():String
 		{
@@ -82,7 +83,7 @@ package feathers.controls.supportClasses
 		private var _isHTML:Boolean = false;
 
 		/**
-		 * Determines if the TextField should display the text as HTML or not.
+		 * @see feathers.controls.ScrollText#isHTML
 		 */
 		public function get isHTML():Boolean
 		{
@@ -108,9 +109,7 @@ package feathers.controls.supportClasses
 		private var _textFormat:TextFormat;
 
 		/**
-		 * The font and styles used to draw the text.
-		 *
-		 * @see flash.text.TextFormat
+		 * @see feathers.controls.ScrollText#textFormat
 		 */
 		public function get textFormat():TextFormat
 		{
@@ -133,12 +132,36 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
+		private var _disabledTextFormat:TextFormat;
+
+		/**
+		 * @see feathers.controls.ScrollText#disabledTextFormat
+		 */
+		public function get disabledTextFormat():TextFormat
+		{
+			return this._disabledTextFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledTextFormat(value:TextFormat):void
+		{
+			if(this._disabledTextFormat == value)
+			{
+				return;
+			}
+			this._disabledTextFormat = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _styleSheet:StyleSheet;
 
 		/**
-		 * The <code>StyleSheet</code> object to pass to the TextField.
-		 *
-		 * @see flash.text.StyleSheet
+		 * @see feathers.controls.ScrollText#styleSheet
 		 */
 		public function get styleSheet():StyleSheet
 		{
@@ -164,9 +187,7 @@ package feathers.controls.supportClasses
 		private var _embedFonts:Boolean = false;
 
 		/**
-		 * Determines if the TextField should use an embedded font or not.
-		 *
-		 * @see flash.text.TextField#embedFonts
+		 * @see feathers.controls.ScrollText#embedFonts
 		 */
 		public function get embedFonts():Boolean
 		{
@@ -192,9 +213,7 @@ package feathers.controls.supportClasses
 		private var _antiAliasType:String = AntiAliasType.ADVANCED;
 
 		/**
-		 * Same as the TextField property with the same name.
-		 *
-		 * @see flash.text.TextField#antiAliasType
+		 * @see feathers.controls.ScrollText#antiAliasType
 		 */
 		public function get antiAliasType():String
 		{
@@ -220,9 +239,7 @@ package feathers.controls.supportClasses
 		private var _background:Boolean = false;
 
 		/**
-		 * Same as the TextField property with the same name.
-		 *
-		 * @see flash.text.TextField#background
+		 * @see feathers.controls.ScrollText#background
 		 */
 		public function get background():Boolean
 		{
@@ -248,9 +265,7 @@ package feathers.controls.supportClasses
 		private var _backgroundColor:uint = 0xffffff;
 
 		/**
-		 * Same as the TextField property with the same name.
-		 *
-		 * @see flash.text.TextField#backgroundColor
+		 * @see feathers.controls.ScrollText#backgroundColor
 		 */
 		public function get backgroundColor():uint
 		{
@@ -276,9 +291,7 @@ package feathers.controls.supportClasses
 		private var _border:Boolean = false;
 
 		/**
-		 * Same as the TextField property with the same name.
-		 *
-		 * @see flash.text.TextField#border
+		 * @see feathers.controls.ScrollText#border
 		 */
 		public function get border():Boolean
 		{
@@ -304,9 +317,7 @@ package feathers.controls.supportClasses
 		private var _borderColor:uint = 0x000000;
 
 		/**
-		 * Same as the TextField property with the same name.
-		 *
-		 * @see flash.text.TextField#borderColor
+		 * @see feathers.controls.ScrollText#borderColor
 		 */
 		public function get borderColor():uint
 		{
@@ -332,9 +343,7 @@ package feathers.controls.supportClasses
 		private var _condenseWhite:Boolean = false;
 
 		/**
-		 * Same as the TextField property with the same name.
-		 *
-		 * @see flash.text.TextField#condenseWhite
+		 * @see feathers.controls.ScrollText#condenseWhite
 		 */
 		public function get condenseWhite():Boolean
 		{
@@ -360,9 +369,7 @@ package feathers.controls.supportClasses
 		private var _displayAsPassword:Boolean = false;
 
 		/**
-		 * Same as the TextField property with the same name.
-		 *
-		 * @see flash.text.TextField#displayAsPassword
+		 * @see feathers.controls.ScrollText#displayAsPassword
 		 */
 		public function get displayAsPassword():Boolean
 		{
@@ -388,9 +395,7 @@ package feathers.controls.supportClasses
 		private var _gridFitType:String = GridFitType.PIXEL;
 
 		/**
-		 * Same as the TextField property with the same name.
-		 *
-		 * @see flash.text.TextField#gridFitType
+		 * @see feathers.controls.ScrollText#gridFitType
 		 */
 		public function get gridFitType():String
 		{
@@ -416,9 +421,7 @@ package feathers.controls.supportClasses
 		private var _sharpness:Number = 0;
 
 		/**
-		 * Same as the TextField property with the same name.
-		 *
-		 * @see flash.text.TextField#sharpness
+		 * @see feathers.controls.ScrollText#sharpness
 		 */
 		public function get sharpness():Number
 		{
@@ -444,9 +447,7 @@ package feathers.controls.supportClasses
 		private var _thickness:Number = 0;
 
 		/**
-		 * Same as the TextField property with the same name.
-		 *
-		 * @see flash.text.TextField#thickness
+		 * @see feathers.controls.ScrollText#thickness
 		 */
 		public function get thickness():Number
 		{
@@ -479,7 +480,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("minVisibleWidth cannot be NaN");
 			}
@@ -500,7 +501,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("maxVisibleWidth cannot be NaN");
 			}
@@ -517,7 +518,8 @@ package feathers.controls.supportClasses
 
 		public function set visibleWidth(value:Number):void
 		{
-			if(this._visibleWidth == value || (isNaN(value) && isNaN(this._visibleWidth)))
+			if(this._visibleWidth == value ||
+				(value != value && this._visibleWidth != this._visibleWidth)) //isNaN
 			{
 				return;
 			}
@@ -538,7 +540,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("minVisibleHeight cannot be NaN");
 			}
@@ -559,7 +561,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("maxVisibleHeight cannot be NaN");
 			}
@@ -576,7 +578,8 @@ package feathers.controls.supportClasses
 
 		public function set visibleHeight(value:Number):void
 		{
-			if(this._visibleHeight == value || (isNaN(value) && isNaN(this._visibleHeight)))
+			if(this._visibleHeight == value ||
+				(value != value && this._visibleHeight != this._visibleHeight)) //isNaN
 			{
 				return;
 			}
@@ -741,14 +744,20 @@ package feathers.controls.supportClasses
 
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
-			const starlingViewPort:Rectangle = Starling.current.viewPort;
+			var starlingViewPort:Rectangle = Starling.current.viewPort;
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.parent.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
-			this._textFieldContainer.x = starlingViewPort.x + HELPER_POINT.x * Starling.contentScaleFactor;
-			this._textFieldContainer.y = starlingViewPort.y + HELPER_POINT.y * Starling.contentScaleFactor;
-			this._textFieldContainer.scaleX = matrixToScaleX(HELPER_MATRIX) * Starling.contentScaleFactor;
-			this._textFieldContainer.scaleY = matrixToScaleY(HELPER_MATRIX) * Starling.contentScaleFactor;
+			var nativeScaleFactor:Number = 1;
+			if(Starling.current.supportHighResolutions)
+			{
+				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+			}
+			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
+			this._textFieldContainer.x = starlingViewPort.x + HELPER_POINT.x * scaleFactor;
+			this._textFieldContainer.y = starlingViewPort.y + HELPER_POINT.y * scaleFactor;
+			this._textFieldContainer.scaleX = matrixToScaleX(HELPER_MATRIX) * scaleFactor;
+			this._textFieldContainer.scaleY = matrixToScaleY(HELPER_MATRIX) * scaleFactor;
 			this._textFieldContainer.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
 			this._textFieldContainer.visible = true;
 			this._textFieldContainer.alpha = parentAlpha * this.alpha;
@@ -760,23 +769,23 @@ package feathers.controls.supportClasses
 		override protected function initialize():void
 		{
 			this._textFieldContainer = new Sprite();
-			this._textFieldContainer.mouseChildren = this._textFieldContainer.mouseEnabled = false;
 			this._textFieldContainer.visible = false;
 			this._textField = new TextField();
 			this._textField.autoSize = TextFieldAutoSize.LEFT;
-			this._textField.selectable = this._textFieldContainer.mouseEnabled =
-				this._textField.mouseWheelEnabled = false;
+			this._textField.selectable = false;
+			this._textField.mouseWheelEnabled = false;
 			this._textField.wordWrap = true;
 			this._textField.multiline = true;
+			this._textField.addEventListener(TextEvent.LINK, textField_linkHandler);
 			this._textFieldContainer.addChild(this._textField);
 		}
 
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 
 			if(stylesInvalid)
 			{
@@ -797,11 +806,22 @@ package feathers.controls.supportClasses
 
 			if(dataInvalid || stylesInvalid)
 			{
-				if(this._textFormat)
+				if(this._styleSheet)
 				{
-					this._textField.defaultTextFormat = this._textFormat;
+					this._textField.styleSheet = this._styleSheet;
 				}
-				this._textField.styleSheet = this._styleSheet;
+				else
+				{
+					this._textField.styleSheet = null;
+					if(!this._isEnabled && this._disabledTextFormat)
+					{
+						this._textField.defaultTextFormat = this._disabledTextFormat;
+					}
+					else if(this._textFormat)
+					{
+						this._textField.defaultTextFormat = this._textFormat;
+					}
+				}
 				if(this._isHTML)
 				{
 					this._textField.htmlText = this._text;
@@ -813,10 +833,34 @@ package feathers.controls.supportClasses
 				this._scrollStep = this._textField.getLineMetrics(0).height * Starling.contentScaleFactor;
 			}
 
-			const calculatedVisibleWidth:Number = !isNaN(this._visibleWidth) ? this._visibleWidth : Math.max(this._minVisibleWidth, Math.min(this._maxVisibleWidth, this.stage.stageWidth));
+			var calculatedVisibleWidth:Number = this._visibleWidth;
+			if(calculatedVisibleWidth != calculatedVisibleWidth)
+			{
+				calculatedVisibleWidth = this.stage.stageWidth;
+				if(calculatedVisibleWidth < this._minVisibleWidth)
+				{
+					calculatedVisibleWidth = this._minVisibleWidth;
+				}
+				else if(calculatedVisibleWidth > this._maxVisibleWidth)
+				{
+					calculatedVisibleWidth = this._maxVisibleWidth;
+				}
+			}
 			this._textField.width = calculatedVisibleWidth - this._paddingLeft - this._paddingRight;
-			const totalContentHeight:Number = this._textField.height + this._paddingTop + this._paddingBottom;
-			const calculatedVisibleHeight:Number = !isNaN(this._visibleHeight) ? this._visibleHeight : Math.max(this._minVisibleHeight, Math.min(this._maxVisibleHeight, totalContentHeight));
+			var totalContentHeight:Number = this._textField.height + this._paddingTop + this._paddingBottom;
+			var calculatedVisibleHeight:Number = this._visibleHeight;
+			if(calculatedVisibleHeight != calculatedVisibleHeight)
+			{
+				calculatedVisibleHeight = totalContentHeight;
+				if(calculatedVisibleHeight < this._minVisibleHeight)
+				{
+					calculatedVisibleHeight = this._minVisibleHeight;
+				}
+				else if(calculatedVisibleHeight > this._maxVisibleHeight)
+				{
+					calculatedVisibleHeight = this._maxVisibleHeight;
+				}
+			}
 			sizeInvalid = this.setSizeInternal(calculatedVisibleWidth, totalContentHeight, false) || sizeInvalid;
 
 			if(sizeInvalid || scrollInvalid)
@@ -842,6 +886,11 @@ package feathers.controls.supportClasses
 		private function removedFromStageHandler(event:Event):void
 		{
 			Starling.current.nativeStage.removeChild(this._textFieldContainer);
+		}
+
+		protected function textField_linkHandler(event:TextEvent):void
+		{
+			this.dispatchEventWith(Event.TRIGGERED, false, event.text);
 		}
 	}
 }

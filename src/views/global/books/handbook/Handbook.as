@@ -11,6 +11,7 @@ package views.global.books.handbook
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TabBar;
+	import feathers.controls.ToggleButton;
 	import feathers.data.ListCollection;
 
 	import models.AchieveVO;
@@ -78,10 +79,10 @@ package views.global.books.handbook
 
 		}
 
-		private var cataBtn:Button;
+		private var cataBtn:ToggleButton;
 		private function initCataBtn():void
 		{
-			cataBtn = new Button();
+			cataBtn = new ToggleButton();
 			cataBtn.defaultSkin = BooksManager.getImage("button_catalogue_up");
 			cataBtn.defaultSelectedSkin = BooksManager.getImage("button_catalogue_down");
 			this.addChild( cataBtn );

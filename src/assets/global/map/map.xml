@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:d5ea1323e51142dcf3d073117f80753c$ -->
+<!-- $TexturePacker:SmartUpdate:ede4da8f9fa46933431b8488b2052670$ -->
 <TextureAtlas imagePath="map.png">
-    <SubTexture name="king" x="1646" y="2" width="40" height="40"/>
-    <SubTexture name="map-sun" x="1028" y="2" width="108" height="114"/>
-    <SubTexture name="map-type1" x="1688" y="2" width="36" height="42"/>
-    <SubTexture name="map-type2" x="1602" y="2" width="42" height="38"/>
-    <SubTexture name="map-type3" x="1468" y="2" width="44" height="46"/>
-    <SubTexture name="map-type4" x="1644" y="44" width="35" height="39"/>
-    <SubTexture name="map-type5" x="1514" y="2" width="42" height="45"/>
-    <SubTexture name="map-unlock1" x="1468" y="50" width="39" height="39"/>
-    <SubTexture name="map-unlock2" x="1514" y="49" width="40" height="39"/>
-    <SubTexture name="map-unlock3" x="1558" y="2" width="42" height="42"/>
-    <SubTexture name="map-unlock4" x="1558" y="46" width="40" height="39"/>
-    <SubTexture name="map-unlock5" x="1602" y="42" width="40" height="39"/>
+    <SubTexture name="king" x="526" y="1593" width="40" height="40"/>
+    <SubTexture name="map-sun" x="2" y="1593" width="108" height="114"/>
+    <SubTexture name="map-type1" x="488" y="1593" width="36" height="42"/>
+    <SubTexture name="map-type2" x="651" y="1593" width="42" height="38"/>
+    <SubTexture name="map-type3" x="442" y="1593" width="44" height="46"/>
+    <SubTexture name="map-type4" x="614" y="1634" width="35" height="39"/>
+    <SubTexture name="map-type5" x="442" y="1641" width="42" height="45"/>
+    <SubTexture name="map-unlock1" x="610" y="1593" width="39" height="39"/>
+    <SubTexture name="map-unlock2" x="572" y="1634" width="40" height="39"/>
+    <SubTexture name="map-unlock3" x="486" y="1641" width="42" height="42"/>
+    <SubTexture name="map-unlock4" x="568" y="1593" width="40" height="39"/>
+    <SubTexture name="map-unlock5" x="530" y="1635" width="40" height="39"/>
     <SubTexture name="mapBotton" x="2" y="288" width="1024" height="273"/>
     <SubTexture name="mapTop" x="2" y="2" width="1024" height="284"/>
     <SubTexture name="sky1" x="2" y="1387" width="1024" height="204"/>
@@ -21,7 +21,7 @@
     <SubTexture name="sky3" x="2" y="975" width="1024" height="204"/>
     <SubTexture name="sky4" x="2" y="769" width="1024" height="204"/>
     <SubTexture name="sky5" x="2" y="563" width="1024" height="204"/>
-    <SubTexture name="sun0001" x="1358" y="2" width="108" height="110"/>
-    <SubTexture name="sun0002" x="1248" y="2" width="108" height="110"/>
-    <SubTexture name="sun0003" x="1138" y="2" width="108" height="110"/>
+    <SubTexture name="sun0001" x="332" y="1593" width="108" height="110"/>
+    <SubTexture name="sun0002" x="222" y="1593" width="108" height="110"/>
+    <SubTexture name="sun0003" x="112" y="1593" width="108" height="110"/>
 </TextureAtlas>

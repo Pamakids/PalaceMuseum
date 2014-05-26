@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -10,8 +10,11 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusExtras;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;
+	import starling.events.Event;
 
 	/**
 	 * A container with layout, optional scrolling, a header, and an optional
@@ -38,15 +41,6 @@ package feathers.controls
 	 * var noButton:Button = new Button();
 	 * noButton.label = "No";
 	 * panel.addChild( noButton );</listing>
-	 *
-	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
-	 * may need some changes between now and the next version of Feathers to
-	 * account for overlooked requirements or other issues. Upgrading to future
-	 * versions of Feathers may involve manual changes to your code that uses
-	 * this component. The
-	 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>
-	 * will not go into effect until this component's status is upgraded from
-	 * beta to stable.</p>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/panel
 	 */
@@ -112,6 +106,20 @@ package feathers.controls
 		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
 
 		/**
+		 * The vertical scroll bar will be positioned on the right.
+		 *
+		 * @see feathers.controls.Scroller#verticalScrollBarPosition
+		 */
+		public static const VERTICAL_SCROLL_BAR_POSITION_RIGHT:String = "right";
+
+		/**
+		 * The vertical scroll bar will be positioned on the left.
+		 *
+		 * @see feathers.controls.Scroller#verticalScrollBarPosition
+		 */
+		public static const VERTICAL_SCROLL_BAR_POSITION_LEFT:String = "left";
+
+		/**
 		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
 		 *
 		 * @see feathers.controls.Scroller#interactionMode
@@ -131,6 +139,29 @@ package feathers.controls
 		 * @see feathers.controls.Scroller#interactionMode
 		 */
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
+
+		/**
+		 * @copy feathers.controls.Scroller#DECELERATION_RATE_NORMAL
+		 *
+		 * @see feathers.controls.Scroller#decelerationRate
+		 */
+		public static const DECELERATION_RATE_NORMAL:Number = 0.998;
+
+		/**
+		 * @copy feathers.controls.Scroller#DECELERATION_RATE_FAST
+		 *
+		 * @see feathers.controls.Scroller#decelerationRate
+		 */
+		public static const DECELERATION_RATE_FAST:Number = 0.99;
+
+		/**
+		 * The default <code>IStyleProvider</code> for all <code>Panel</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
 
 		/**
 		 * @private
@@ -205,6 +236,14 @@ package feathers.controls
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var footerName:String = DEFAULT_CHILD_NAME_FOOTER;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return Panel.styleProvider;
+		}
 
 		/**
 		 * @private
@@ -335,10 +374,9 @@ package feathers.controls
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 * to set the skin on the thumb which is in a <code>SimpleScrollBar</code>,
+		 * which is in a <code>List</code>, you can use the following syntax:</p>
+		 * <pre>list.verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
 		 * <p>Setting properties in a <code>headerFactory</code> function
 		 * instead of using <code>headerProperties</code> will result in better
@@ -378,7 +416,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -514,10 +552,9 @@ package feathers.controls
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 * to set the skin on the thumb which is in a <code>SimpleScrollBar</code>,
+		 * which is in a <code>List</code>, you can use the following syntax:</p>
+		 * <pre>list.verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
 		 * <p>Setting properties in a <code>footerFactory</code> function
 		 * instead of using <code>footerProperties</code> will result in better
@@ -556,7 +593,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -604,11 +641,21 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _ignoreHeaderResizing:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _ignoreFooterResizing:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
-			const headerFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_HEADER_FACTORY);
-			const footerFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOOTER_FACTORY);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var headerFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_HEADER_FACTORY);
+			var footerFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOOTER_FACTORY);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 
 			if(headerFactoryInvalid)
 			{
@@ -638,15 +685,20 @@ package feathers.controls
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
 
-			const oldHeaderWidth:Number = this.header.width;
-			const oldHeaderHeight:Number = this.header.height;
+			var oldIgnoreHeaderResizing:Boolean = this._ignoreHeaderResizing;
+			this._ignoreHeaderResizing = true;
+			var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
+			this._ignoreFooterResizing = true;
+
+			var oldHeaderWidth:Number = this.header.width;
+			var oldHeaderHeight:Number = this.header.height;
 			this.header.width = this.explicitWidth;
 			this.header.maxWidth = this._maxWidth;
 			this.header.height = NaN;
@@ -654,8 +706,8 @@ package feathers.controls
 
 			if(this.footer)
 			{
-				const oldFooterWidth:Number = this.footer.width;
-				const oldFooterHeight:Number = this.footer.height;
+				var oldFooterWidth:Number = this.footer.width;
+				var oldFooterHeight:Number = this.footer.height;
 				this.footer.width = this.explicitWidth;
 				this.footer.maxWidth = this._maxWidth;
 				this.footer.height = NaN;
@@ -692,6 +744,7 @@ package feathers.controls
 				this.footer.width = oldFooterWidth;
 				this.footer.height = oldFooterHeight;
 			}
+			this._ignoreFooterResizing = oldIgnoreFooterResizing;
 
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
@@ -709,24 +762,23 @@ package feathers.controls
 		 */
 		protected function createHeader():void
 		{
-			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
-			this.displayListBypassEnabled = false;
 			if(this.header)
 			{
+				this.header.removeEventListener(FeathersEventType.RESIZE, header_resizeHandler);
 				var displayHeader:DisplayObject = DisplayObject(this.header);
 				this._focusExtrasBefore.splice(this._focusExtrasBefore.indexOf(displayHeader), 1);
-				this.removeChild(displayHeader, true);
+				this.removeRawChild(displayHeader, true);
 				this.header = null;
 			}
 
-			const factory:Function = this._headerFactory != null ? this._headerFactory : defaultHeaderFactory;
-			const headerName:String = this._customHeaderName != null ? this._customHeaderName : this.headerName;
+			var factory:Function = this._headerFactory != null ? this._headerFactory : defaultHeaderFactory;
+			var headerName:String = this._customHeaderName != null ? this._customHeaderName : this.headerName;
 			this.header = IFeathersControl(factory());
-			this.header.nameList.add(headerName);
+			this.header.styleNameList.add(headerName);
+			this.header.addEventListener(FeathersEventType.RESIZE, header_resizeHandler);
 			displayHeader = DisplayObject(this.header);
-			this.addChild(displayHeader);
+			this.addRawChild(displayHeader);
 			this._focusExtrasBefore.push(displayHeader);
-			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
 		/**
@@ -742,13 +794,12 @@ package feathers.controls
 		 */
 		protected function createFooter():void
 		{
-			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
-			this.displayListBypassEnabled = false;
 			if(this.footer)
 			{
+				this.footer.removeEventListener(FeathersEventType.RESIZE, footer_resizeHandler);
 				var displayFooter:DisplayObject = DisplayObject(this.footer);
 				this._focusExtrasAfter.splice(this._focusExtrasAfter.indexOf(displayFooter), 1);
-				this.removeChild(displayFooter, true);
+				this.removeRawChild(displayFooter, true);
 				this.footer = null;
 			}
 
@@ -756,13 +807,13 @@ package feathers.controls
 			{
 				return;
 			}
-			const footerName:String = this._customFooterName != null ? this._customFooterName : this.footerName;
+			var footerName:String = this._customFooterName != null ? this._customFooterName : this.footerName;
 			this.footer = IFeathersControl(this._footerFactory());
-			this.footer.nameList.add(footerName);
+			this.footer.styleNameList.add(footerName);
+			this.footer.addEventListener(FeathersEventType.RESIZE, footer_resizeHandler);
 			displayFooter = DisplayObject(this.footer);
-			this.addChild(displayFooter);
+			this.addRawChild(displayFooter);
 			this._focusExtrasAfter.push(displayFooter);
-			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
 		/**
@@ -770,14 +821,10 @@ package feathers.controls
 		 */
 		protected function refreshHeaderStyles():void
 		{
-			const headerAsObject:Object = this.header;
 			for(var propertyName:String in this._headerProperties)
 			{
-				if(headerAsObject.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._headerProperties[propertyName];
-					this.header[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._headerProperties[propertyName];
+				this.header[propertyName] = propertyValue;
 			}
 		}
 
@@ -786,14 +833,10 @@ package feathers.controls
 		 */
 		protected function refreshFooterStyles():void
 		{
-			const footerAsObject:Object = this.footer;
 			for(var propertyName:String in this._footerProperties)
 			{
-				if(footerAsObject.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._footerProperties[propertyName];
-					this.footer[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._footerProperties[propertyName];
+				this.footer[propertyName] = propertyValue;
 			}
 		}
 
@@ -804,8 +847,10 @@ package feathers.controls
 		{
 			super.calculateViewPortOffsets(forceScrollBars);
 
-			const oldHeaderWidth:Number = this.header.width;
-			const oldHeaderHeight:Number = this.header.height;
+			var oldIgnoreHeaderResizing:Boolean = this._ignoreHeaderResizing;
+			this._ignoreHeaderResizing = true;
+			var oldHeaderWidth:Number = this.header.width;
+			var oldHeaderHeight:Number = this.header.height;
 			this.header.width = useActualBounds ? this.actualWidth : this.explicitWidth;
 			this.header.maxWidth = this._maxWidth;
 			this.header.height = NaN;
@@ -813,11 +858,14 @@ package feathers.controls
 			this._topViewPortOffset += this.header.height;
 			this.header.width = oldHeaderWidth;
 			this.header.height = oldHeaderHeight;
+			this._ignoreHeaderResizing = oldIgnoreHeaderResizing;
 
 			if(this.footer)
 			{
-				const oldFooterWidth:Number = this.footer.width;
-				const oldFooterHeight:Number = this.footer.height;
+				var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
+				this._ignoreFooterResizing = true;
+				var oldFooterWidth:Number = this.footer.width;
+				var oldFooterHeight:Number = this.footer.height;
 				this.footer.width = useActualBounds ? this.actualWidth : this.explicitWidth;
 				this.footer.maxWidth = this._maxWidth;
 				this.footer.height = NaN;
@@ -825,6 +873,7 @@ package feathers.controls
 				this._bottomViewPortOffset += this.footer.height;
 				this.footer.width = oldFooterWidth;
 				this.footer.height = oldFooterHeight;
+				this._ignoreFooterResizing = oldIgnoreFooterResizing;
 			}
 		}
 
@@ -835,17 +884,47 @@ package feathers.controls
 		{
 			super.layoutChildren();
 
+			var oldIgnoreHeaderResizing:Boolean = this._ignoreHeaderResizing;
+			this._ignoreHeaderResizing = true;
 			this.header.width = this.actualWidth;
 			this.header.height = NaN;
 			this.header.validate();
+			this._ignoreHeaderResizing = oldIgnoreHeaderResizing;
 
 			if(this.footer)
 			{
+				var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
+				this._ignoreFooterResizing = true;
 				this.footer.width = this.actualWidth;
 				this.footer.height = NaN;
 				this.footer.validate();
 				this.footer.y = this.actualHeight - this.footer.height;
+				this._ignoreFooterResizing = oldIgnoreFooterResizing;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function header_resizeHandler(event:Event):void
+		{
+			if(this._ignoreHeaderResizing)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function footer_resizeHandler(event:Event):void
+		{
+			if(this._ignoreFooterResizing)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }

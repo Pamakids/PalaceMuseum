@@ -1,15 +1,14 @@
 /*
 Feathers
-Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.core.FeathersControl;
-	import feathers.core.IFeathersControl;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.calculateScaleRatioToFit;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
@@ -20,12 +19,11 @@ package feathers.controls
 	import flash.ui.Keyboard;
 
 	import starling.core.Starling;
-	import starling.display.DisplayObject;
 	import starling.events.Event;
 
 	/**
-	 * Provides useful capabilities for a menu screen displayed by
-	 * <code>ScreenNavigator</code>.
+	 * A basic screen to be displayed by <code>ScreenNavigator</code>. Provides
+	 * layout capabilities, but no scrolling.
 	 *
 	 * <p>The following example provides a basic framework for a new screen:</p>
 	 *
@@ -43,13 +41,12 @@ package feathers.controls
 	 *         override protected function initialize():void
 	 *         {
 	 *             //runs once when screen is first added to the stage.
-	 *             //a good place to add children and things.
+	 *             //a good place to add children and set a layout.
 	 *         }
 	 *
 	 *         override protected function draw():void
 	 *         {
-	 *             //runs every time invalidate() is called
-	 *             //a good place for measurement and layout
+	 *             //override only if you want to do manual measurement and layout.
 	 *         }
 	 *     }
 	 * }</listing>
@@ -57,8 +54,17 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/screen
 	 * @see ScreenNavigator
 	 */
-	public class Screen extends FeathersControl implements IScreen
+	public class Screen extends LayoutGroup implements IScreen
 	{
+		/**
+		 * The default <code>IStyleProvider</code> for all <code>Screen</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
 		/**
 		 * Constructor.
 		 */
@@ -68,6 +74,14 @@ package feathers.controls
 			this.addEventListener(FeathersEventType.RESIZE, screen_resizeHandler);
 			super();
 			this.originalDPI = DeviceCapabilities.dpi;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return Screen.styleProvider;
 		}
 		
 		/**
@@ -336,47 +350,6 @@ package feathers.controls
 		 * @default null
 		 */
 		protected var searchButtonHandler:Function;
-
-		/**
-		 * @private
-		 */
-		override protected function draw():void
-		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
-			if(!needsWidth && !needsHeight)
-			{
-				return;
-			}
-
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
-			if(needsWidth || needsHeight)
-			{
-				var maxX:Number = isNaN(newWidth) ? 0 : newWidth;
-				var maxY:Number = isNaN(newHeight) ? 0 : newHeight;
-				const childCount:int = this.numChildren;
-				for(var i:int = 0; i < childCount; i++)
-				{
-					var child:DisplayObject = this.getChildAt(i);
-					if(child is IFeathersControl)
-					{
-						IFeathersControl(child).validate();
-					}
-					maxX = Math.max(maxX, child.x + child.width);
-					maxY = Math.max(maxY, child.y + child.height);
-				}
-				if(needsWidth)
-				{
-					newWidth = maxX;
-				}
-				if(needsHeight)
-				{
-					newHeight = maxY;
-				}
-			}
-			this.setSizeInternal(newWidth, newHeight, false);
-		}
 		
 		/**
 		 * @private
@@ -387,7 +360,7 @@ package feathers.controls
 			{
 				return;
 			}
-			const loaderInfo:LoaderInfo = DisplayObjectContainer(Starling.current.nativeStage.root).getChildAt(0).loaderInfo;
+			var loaderInfo:LoaderInfo = DisplayObjectContainer(Starling.current.nativeStage.root).getChildAt(0).loaderInfo;
 			//if originalWidth or originalHeight is NaN, it's because the Screen
 			//has been added to the display list, and we really need values now.
 			if(isNaN(this._originalWidth))

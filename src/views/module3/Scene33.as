@@ -2,6 +2,9 @@ package views.module3
 {
 	import com.greensock.TweenLite;
 
+	import flash.system.Capabilities;
+
+	import models.PosVO;
 	import models.SOService;
 
 	import starling.core.Starling;
@@ -22,6 +25,7 @@ package views.module3
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 	import views.global.TailBar;
+	import views.global.TopBar;
 	import views.module3.scene33.DishGame;
 
 	/**
@@ -33,7 +37,14 @@ package views.module3
 	{
 		private var game:DishGame;
 
-		private var chatArr:Array=["chatking1", "chatlion1", "chatking2", "chatlion3", "chatlion2"];
+		private var chatArr:Array=["哇！当皇帝真好，有这么多好吃的！",//0
+								   "别急，每道菜要用银牌试毒呢？",//1
+								   "吃个饭还要当心被人下毒啊……",//2
+								   "试毒要用银牌哟！",//3
+								   "吃过饭就要开工喽，膳牌可不是菜单，上面写的是请求面见皇帝的大臣的名字，\n选择一下吧。"]//4
+
+
+//			["chatking1", "chatlion1", "chatking2", "chatlion3", "chatlion2"];
 		private var cardXArr:Array=[309, 435, 556, 650];
 		private var cardY:Number=504;
 
@@ -92,6 +103,21 @@ package views.module3
 				lion.removeFromParent(true);
 				lion=null;
 			}
+			if (kingHungry)
+			{
+				kingHungry.stop();
+				Starling.juggler.remove(kingHungry);
+				kingHungry.removeFromParent(true);
+			}
+			kingHungry=null;
+			if(kingBody){
+				kingBody.removeFromParent(true);
+			}
+			if(game)
+			{
+				game.removeFromParent(true);
+			}
+			game=null;
 			super.dispose();
 		}
 
@@ -168,6 +194,11 @@ package views.module3
 			kingHolder=new Sprite();
 			addChild(kingHolder);
 
+			kingBody=getImage("kingBodyHungry");
+			kingHolder.addChild(kingBody);
+			kingBody.x=602-2;
+			kingBody.y=339+3;
+
 			kingHungry=new MovieClip(assetManager.getTextures("kingHungry"), 12);
 			kingHolder.addChild(kingHungry);
 			Starling.juggler.add(kingHungry);
@@ -215,7 +246,8 @@ package views.module3
 			var dx:Number;
 			var dy:Number;
 			var isK:Boolean;
-			if (chat.indexOf("king") >= 0)
+//			if (chat.indexOf("king") >= 0)
+			if(chatIndex==0||chatIndex==2)
 			{
 				isK=true;
 				dx=800;
@@ -230,7 +262,7 @@ package views.module3
 				dy=445;
 			}
 			var isT:Boolean;
-			if (chat == "chatlion3")
+			if (chatIndex==3)
 			{
 				kingHolder.touchable=lion.touchable=true;
 				isT=true;
@@ -240,19 +272,25 @@ package views.module3
 				if (SOService.instance.checkHintCount(silverCardClickHint))
 					addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			}
-			else if (chat == "chatlion2")
+			else if (chatIndex == 4)
 			{
 				lion.touchable=true;
 				dx=180;
 				dy=590;
 				isT=true;
 			}
-			var obj:Object={x: dx, y: dy, content: this[chat], isTask: isT};
+			var obj:Object={x: dx, y: dy, content: chat, isTask: isT};
 			if (isK)
 				kingChat=obj;
 			else
 				lionChat=obj;
-			Prompt.showTXT(dx, dy, this[chat], 20, nextChat, this, 1, false, 3, isT);
+			Prompt.showTXT(dx, dy, chat, 20, nextChat, this, 1, false, 3, isT);
+		}
+
+		override protected function init():void{
+			super.init();
+			if(PosVO.scale==1&&!Capabilities.isDebugger)
+				TopBar.hide();
 		}
 
 		private var kingChat:Object;
@@ -309,6 +347,8 @@ package views.module3
 
 		private var kingFull:MovieClip;
 
+		private var kingBody:Image;
+
 		private function nextChat():void
 		{
 			chatIndex++;
@@ -357,7 +397,13 @@ package views.module3
 			{
 				kingHungry.stop();
 				Starling.juggler.remove(kingHungry);
+				kingHungry.removeFromParent(true);
 			}
+			kingHungry=null;
+			if(kingBody){
+				kingBody.removeFromParent(true);
+			}
+			kingBody=null;
 			kingHolder.removeChildren();
 			var chair:Image=getImage("chair");
 			chair.x=211;
@@ -478,3 +524,5 @@ package views.module3
 		}
 	}
 }
+
+

@@ -5,9 +5,11 @@ package views.module2
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.system.Capabilities;
 
 	import feathers.core.PopUpManager;
 
+	import models.PosVO;
 	import models.SOService;
 
 	import sound.SoundAssets;
@@ -27,6 +29,7 @@ package views.module2
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
 	import views.global.TailBar;
+	import views.global.TopBar;
 	import views.global.books.BooksManager;
 	import views.module2.scene22.Telescope;
 	import views.module2.scene22.ThermoMeter;
@@ -48,10 +51,10 @@ package views.module2
 		private var thermo:Image;
 		private var tele:Image;
 
-		private var hint0:String="造纸家弟子的传世之作－宣纸\n\n宣纸因产自唐代宣州\n（今安徽泾县）而得名，\n它易书写，不褪色，\n少虫蛀，寿命长。";
-		private var hint1:String="仙鹤带来的制砚灵感－端砚\n\n端砚产自广东省端州\n（今肇庆）， 端砚石质优良，\n雕刻精美，研出的墨汁细滑。";
-		private var hint2:String="秦始皇的大将创制的笔－湖笔\n\n毛笔的冠军是浙江湖州地区\n产的湖笔，笔尖锋利，\n笔头饱满，易写耐用。";
-		private var hint3:String="能吃还能当药用的墨－徽墨\n\n徽墨因产于古徽州府\n(今安徽歙县)而得名，\n配方讲究，造型美观，\n耐磨耐用。";
+		private var hint0:String="宣纸因产自唐代宣州（今安徽泾县）而得名，它易书写，不退色，少虫蛀，寿命长。";
+		private var hint1:String="端砚产自广东省端州（今肇庆）， 端砚石质优良，研出的墨汁更加细滑。";
+		private var hint2:String="毛笔的冠军是浙江湖州产的湖笔，笔尖锋利，笔头饱满，易写耐用。";
+		private var hint3:String="徽墨因产于古徽州府(今安徽歙县)而得名，配方讲究，造型美观，耐磨耐用。";
 
 		private var posArr:Array=[new Point(13, 208), new Point(134, 158),
 								  new Point(330, 140), new Point(668, 177), new Point(577, 87)];
@@ -328,10 +331,22 @@ package views.module2
 
 		private function initTelescope():void
 		{
+			if(PosVO.scale==1){
+				showAchievement(13,function():void{
+					showEnd(true);
+				});
+				return;
+			}
 			SoundAssets.playSFX("popup");
 			teleGame=new Telescope(assetManager)
 			addChild(teleGame);
 			teleGame.addEventListener(PalaceGame.GAME_OVER, onTelePlayed)
+		}
+
+		override protected function init():void{
+			super.init();
+			if(PosVO.scale==1&&!Capabilities.isDebugger)
+				TopBar.hide();
 		}
 
 		private function onTelePlayed(e:Event):void
@@ -414,3 +429,5 @@ package views.module2
 		}
 	}
 }
+
+

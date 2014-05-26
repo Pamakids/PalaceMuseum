@@ -5,9 +5,11 @@ package views.module2
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.media.SoundTransform;
+	import flash.system.Capabilities;
 
 	import feathers.core.PopUpManager;
 
+	import models.PosVO;
 	import models.SOService;
 
 	import sound.SoundAssets;
@@ -28,8 +30,8 @@ package views.module2
 	import views.components.Prompt;
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceScene;
+	import views.global.TopBar;
 	import views.module2.scene21.FindGame;
-	import views.module2.scene21.JigsawGame;
 	import views.module2.scene21.ShelfBook;
 
 	/**
@@ -39,9 +41,9 @@ package views.module2
 	 */
 	public class Scene21 extends PalaceScene
 	{
-		private var mapGame:JigsawGame;
+//		private var mapGame:JigsawGame;
 
-		private var map:Image;
+//		private var map:Image;
 
 		public function Scene21(am:AssetManager=null)
 		{
@@ -54,12 +56,12 @@ package views.module2
 			addking();
 
 			can1=getImage("can1");
-			can1.y=291;
+			can1.y=403;
 			addChild(can1);
 			can1.touchable=false;
 
 			can2=getImage("can2");
-			can2.y=can1.y + can1.height;
+			can2.y=627;
 			addChild(can2);
 			can2.addEventListener(TouchEvent.TOUCH, onCanTouch);
 
@@ -72,18 +74,24 @@ package views.module2
 			curtainR.touchable=false;
 
 
-			map=getImage("map31");
-			map.x=484;
-			map.y=596;
-			addChild(map);
-			map.addEventListener(TouchEvent.TOUCH, onMapTouch);
+//			map=getImage("map31");
+//			map.x=484;
+//			map.y=596;
+//			addChild(map);
+//			map.addEventListener(TouchEvent.TOUCH, onMapTouch);
 
 			addCraw(new Point(125, 686));
-			addCraw(new Point(541, 581));
+//			addCraw(new Point(541, 581));
 
 			addSmallBooks();
 
 			kingChat1();
+		}
+
+		override protected function init():void{
+			super.init();
+			if(PosVO.scale==1&&!Capabilities.isDebugger)
+				TopBar.hide();
 		}
 
 		private function addSmallBooks():void
@@ -126,7 +134,7 @@ package views.module2
 
 			var hat:Image=getImage("hat");
 			hat.x=405;
-			hat.y=246;
+			hat.y=256;
 			kingHolder.addChild(hat);
 		}
 
@@ -145,7 +153,7 @@ package views.module2
 			var exp:String=expArr[index];
 			SoundAssets.playSFX(exp.toLowerCase(), true);
 
-			kingHead=new MovieClip(assetManager.getTextures(exp), 18);
+			kingHead=new MovieClip(assetManager.getTextures(exp), 9);
 			kingHead.loop=0;
 			kingHead.play();
 			Starling.juggler.add(kingHead);
@@ -153,7 +161,7 @@ package views.module2
 			headHolder.addChildAt(kingHead, 0);
 		}
 
-		private var expArr:Array=["kingHappy", "kingLook", "KingNaughty"];
+		private var expArr:Array=["KingHappy", "kingLook", "KingNaughty"];
 
 		private function onCanTouch(e:TouchEvent):void
 		{
@@ -274,14 +282,14 @@ package views.module2
 			}
 		}
 
-		private function onMapTouch(e:TouchEvent):void
-		{
-			if (!ready)
-				return;
-			var tc:Touch=e.getTouch(map, TouchPhase.ENDED);
-			if (tc)
-				initGame();
-		}
+//		private function onMapTouch(e:TouchEvent):void
+//		{
+//			if (!ready)
+//				return;
+//			var tc:Touch=e.getTouch(map, TouchPhase.ENDED);
+//			if (tc)
+//				initGame();
+//		}
 		private var canArea:Rectangle=new Rectangle(57, 550, 121, 218);
 
 		private var dataArrL:Array=[1, 2, 3, 7, 8, 9, 10, 11, 4, 5, 6];
@@ -296,27 +304,27 @@ package views.module2
 
 		private var nameArr:Array=[
 			"《实录》", //大图
-			"《学蒙语》\n与蒙古人的关系很重要，皇帝要会蒙语",
+			"《全唐诗》\n清初编辑的唐代诗歌总集",
 			"《大学》\n孔子及其门徒留下来的儒学入门读物",
 			"《资治通鉴》\n北宋司马光主编的编年体史书",
 			"《论语》\n记载孔子及其学生言行的一部书",
 			"《春秋》\n孔子修订的鲁国编年史",
 			"《三国志传》\n西晋陈寿所著关于三国时代历史的断代史",
 			"《史记》\n司马迁撰写的中国第一部纪传体通史",
-			"《全唐诗》\n清初编辑的唐代诗歌总集",
+			"《学蒙语》\n与蒙古人的关系很重要，皇帝要会蒙语",
 			"《古文渊鉴》\n康熙皇帝主持编辑的历代散文总集",
 			"《孟子》\n记载孟子及其学生言行的儒家经典",
-			"《学藏语》\n与藏族人的关系密切，皇帝要懂藏语",
+			"《历代题诗》\n各个朝代题诗的合集",
 			"《二十四孝》\n元代编辑的行孝故事合集",
 			"《礼记》\n记述秦汉以前典章制度、礼仪的一部书",
 			"《御注老子》\n唐宋明清的四位皇帝对《老子》的亲手注释",
-			"《历代题诗》\n各个朝代题诗的合集",
+			"《学藏语》\n与藏族人的关系密切，皇帝要懂藏语",
 			"《周易》\n相传周文王所著，以六十四卦表述宇宙间普遍的变化",
 			"《圣训》", //大图
 			"《明史》\n讲述明朝历史的纪传体断代史书",
 			"《中庸》\n孔子的孙子子思创作的儒学名著",
 			"《诗经》\n中国最早的诗歌总集",
-			"《尚书》\n中国最早的散文总集"
+			"《尚书》\n中国最古老的历史文献汇编"
 			];
 
 		private var lIndexArr:Array=[7, 10];
@@ -460,6 +468,10 @@ package views.module2
 			}
 			else
 			{
+				if(book.bookname.indexOf("学蒙语")>=0||book.bookname.indexOf("学藏语")>=0)
+				{
+					return;
+				}
 				playKing(int(Math.random() * expArr.length))
 				if (p)
 					p.playHide();
@@ -622,8 +634,10 @@ package views.module2
 			}
 		}
 
-		private var dpt0:Point=new Point(317, 600);
-		private var dpt1:Point=new Point(377, 600);
+		private var offX:Number=139;
+
+		private var dpt0:Point=new Point(317+offX, 600);
+		private var dpt1:Point=new Point(377+offX, 600);
 
 		private function checkOver():void
 		{
@@ -640,32 +654,32 @@ package views.module2
 		private var crtPt:Point;
 		private var firstOpen:Boolean;
 
-		private function initGame():void
-		{
-			mapGame=new JigsawGame(assetManager);
-			mapGame.addEventListener(PalaceGame.GAME_OVER, onGamePlayed)
-			mapGame.addEventListener(PalaceGame.GAME_RESTART, onGameRestart)
-			addChild(mapGame);
-			inGame=true;
-		}
+//		private function initGame():void
+//		{
+//			mapGame=new JigsawGame(assetManager);
+//			mapGame.addEventListener(PalaceGame.GAME_OVER, onGamePlayed)
+//			mapGame.addEventListener(PalaceGame.GAME_RESTART, onGameRestart)
+//			addChild(mapGame);
+//			inGame=true;
+//		}
 
-		private function onGamePlayed(e:Event):void
-		{
-			if (mapGame.isWin)
-				if (mapGame.gamelevel == 0)
-					showAchievement(8);
-				else
-					showCard("4", function():void {
-						showAchievement(9);
-					});
-			mapGame.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed)
-			mapGame.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart)
-			mapGame.removeChildren();
-			removeChild(mapGame);
-			mapGame=null;
-			gamePlayed=true;
-			inGame=false;
-		}
+//		private function onGamePlayed(e:Event):void
+//		{
+//			if (mapGame.isWin)
+//				if (mapGame.gamelevel == 0)
+//					showAchievement(8);
+//				else
+//					showCard("4", function():void {
+//						showAchievement(9);
+//					});
+//			mapGame.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed)
+//			mapGame.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart)
+//			mapGame.removeChildren();
+//			removeChild(mapGame);
+//			mapGame=null;
+//			gamePlayed=true;
+//			inGame=false;
+//		}
 
 		private function initFindGame():void
 		{
@@ -685,25 +699,25 @@ package views.module2
 				});
 			}
 			findGame.removeFromParent(true);
-			removeChild(mapGame);
+//			removeChild(mapGame);
 			findGame=null;
 			finded=true;
 			inGame=false;
 		}
 
-		private function onGameRestart(e:Event):void
-		{
-			mapGame.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed);
-			mapGame.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
-			mapGame.removeChildren();
-			removeChild(mapGame);
-			mapGame=null;
-
-			mapGame=new JigsawGame(assetManager);
-			addChild(mapGame);
-			mapGame.addEventListener(PalaceGame.GAME_OVER, onGamePlayed);
-			mapGame.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);
-		}
+//		private function onGameRestart(e:Event):void
+//		{
+//			mapGame.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed);
+//			mapGame.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
+//			mapGame.removeChildren();
+//			removeChild(mapGame);
+//			mapGame=null;
+//
+//			mapGame=new JigsawGame(assetManager);
+//			addChild(mapGame);
+//			mapGame.addEventListener(PalaceGame.GAME_OVER, onGamePlayed);
+//			mapGame.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);
+//		}
 
 //		override protected function nextScene(e:Event=null):void
 //		{

@@ -25,7 +25,6 @@ package
 	import views.Interlude;
 	import views.components.PalaceGuide;
 	import views.components.base.Container;
-	import views.global.books.BooksManager;
 	import views.global.map.Map;
 
 	public class Main extends Container
@@ -34,8 +33,8 @@ package
 		{
 			if (Capabilities.isDebugger)
 			{
-				SOService.instance.clear();
-				SOService.instance.setSO("lastScene", "51");
+//				SOService.instance.clear();
+//				SOService.instance.setSO("lastScene", "31");
 			}
 			super();
 
@@ -50,7 +49,6 @@ package
 			addChild(label);
 			label.x=-10;
 			label.y=-10;
-
 
 			var am:AssetManager=new AssetManager();
 			var f:File=File.applicationDirectory.resolvePath("assets/common");
@@ -142,7 +140,7 @@ package
 		{
 			if(MC.isIOS)
 			{
-				inito=new Interlude("assets/video/intro.mp4", true, null, startGame);
+				inito=new Interlude(0, true, null, startGame);
 				MC.instance.stage.addChild(inito);
 			}
 			else
@@ -175,11 +173,18 @@ package
 			}
 
 //			BooksManager.showBooks(0, 0, 0, false);
-			MC.instance.showMenu();
-			return;
+//			MC.instance.showMenu();
+//			return;
 
 			var moduleIndex:int=int(_lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(_lastScene.charAt(1)) - 1;
+
+			if(MC.isFinished())
+			{
+				MC.instance.showMenu();
+				return;
+			}
+
 			if (lastScene.indexOf("end") >= 0)
 //				BooksManager.showBooks(0, 0, 0, false);
 				MC.instance.showMenu();
@@ -187,10 +192,10 @@ package
 				Map.show();
 			else if (_lastScene.lastIndexOf("map") < 0)
 			{
-				if (Capabilities.isDebugger)
-					MC.instance.gotoModule(moduleIndex, sceneIndex);
-				else
-					MC.instance.showMenu();
+//				if (Capabilities.isDebugger)
+				MC.instance.gotoModule(moduleIndex, sceneIndex);
+//				else
+//					MC.instance.showMenu();
 //					BooksManager.showBooks(0, 0, 0, false);
 			}
 			else

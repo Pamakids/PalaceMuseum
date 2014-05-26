@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -9,13 +9,14 @@ package feathers.controls.renderers
 {
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
+	import feathers.skins.IStyleProvider;
 
 	import starling.events.Event;
 
 	/**
 	 * Based on <code>LayoutGroup</code>, this component is meant as a base
-	 * class for creating a custom item renderer. To start creating a custom
-	 * item renderer, override
+	 * class for creating a custom item renderer for a <code>List</code>
+	 * component.
 	 *
 	 * <p>Sub-components may be created and added inside <code>initialize()</code>.
 	 * This is a good place to add event listeners and to set the layout.</p>
@@ -33,10 +34,28 @@ package feathers.controls.renderers
 	public class LayoutGroupListItemRenderer extends LayoutGroup implements IListItemRenderer
 	{
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>LayoutGroupListItemRenderer</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function LayoutGroupListItemRenderer()
 		{
+			super();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return LayoutGroupListItemRenderer.styleProvider;
 		}
 
 		/**
@@ -60,6 +79,9 @@ package feathers.controls.renderers
 			this._index = value;
 		}
 
+		/**
+		 * @private
+		 */
 		protected var _owner:List;
 
 		/**
@@ -73,11 +95,23 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		public function set owner(value:List):void
+		{
+			if(this._owner == value)
+			{
+				return;
+			}
+			this._owner = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _data:Object;
 
 		/**
-		 * The item displayed by this renderer. This property is set by the
-		 * list, and should not be set manually.
+		 * @inheritDoc
 		 */
 		public function get data():Object
 		{
@@ -94,19 +128,6 @@ package feathers.controls.renderers
 				return;
 			}
 			this._data = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-
-		/**
-		 * @private
-		 */
-		public function set owner(value:List):void
-		{
-			if(this._owner == value)
-			{
-				return;
-			}
-			this._owner = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -151,17 +172,85 @@ package feathers.controls.renderers
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
+			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+
 			if(dataInvalid)
 			{
 				this.commitData();
 			}
+
+			if(scrollInvalid || sizeInvalid || layoutInvalid)
+			{
+				this._ignoreChildChanges = true;
+				this.preLayout();
+				this._ignoreChildChanges = false;
+			}
+
 			super.draw();
+
+			if(scrollInvalid || sizeInvalid || layoutInvalid)
+			{
+				this._ignoreChildChanges = true;
+				this.postLayout();
+				this._ignoreChildChanges = false;
+			}
+		}
+
+		/**
+		 * Makes final changes to the layout before it updates the item
+		 * renderer's children. If your layout requires changing the
+		 * <code>layoutData</code> property on the item renderer's
+		 * sub-components, override the <code>preLayout()</code> function to
+		 * make those changes.
+		 *
+		 * <p>In subclasses, if you create properties that affect the layout,
+		 * invalidate using <code>INVALIDATION_FLAG_LAYOUT</code> to trigger a
+		 * call to the <code>preLayout()</code> function when the component
+		 * validates.</p>
+		 *
+		 * <p>The final width and height of the item renderer are not yet known
+		 * when this function is called. It is meant mainly for adjusting values
+		 * used by fluid layouts, such as constraints or percentages. If you
+		 * need io access the final width and height of the item renderer,
+		 * override the <code>postLayout()</code> function instead.</p>
+		 *
+		 * @see #postLayout()
+		 */
+		protected function preLayout():void
+		{
+
+		}
+
+		/**
+		 * Called after the layout updates the item renderer's children. If any
+		 * children are excluded from the layout, you can update them in the
+		 * <code>postLayout()</code> function if you need to use the final width
+		 * and height in any calculations.
+		 *
+		 * <p>In subclasses, if you create properties that affect the layout,
+		 * invalidate using <code>INVALIDATION_FLAG_LAYOUT</code> to trigger a
+		 * call to the <code>postLayout()</code> function when the component
+		 * validates.</p>
+		 *
+		 * <p>To make changes to the layout before it updates the item
+		 * renderer's children, override the <code>preLayout()</code> function
+		 * instead.</p>
+		 *
+		 * @see #preLayout()
+		 */
+		protected function postLayout():void
+		{
+
 		}
 
 		/**
 		 * Updates the renderer to display the item's data. Override this
 		 * function to pass data to sub-components and react to data changes.
+		 *
+		 * <p>Don't forget to handle the case where the data is <code>null</code>.</p>
 		 */
 		protected function commitData():void
 		{
@@ -170,5 +259,3 @@ package feathers.controls.renderers
 
 	}
 }
-
-

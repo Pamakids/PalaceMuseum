@@ -138,7 +138,7 @@ package sound
 		[Embed(source="/sound/s41bgm.mp3")] //done
 		public static var s41bgm:Class;
 
-		public static var module5:Array=['cough', 'sigh', 'gamebg52', 'fire', "bodyfall", "maskok", "maskwrong", "taihou"];
+		public static var module5:Array=['kingdragged','cough', 'sigh', 'gamebg52', 'fire', "bodyfall", "maskok", "maskwrong", "taihou"];
 		[Embed(source="/sound/51cough.mp3")] //done
 		public static var cough:Class;
 		[Embed(source="/sound/51sigh.mp3")] //done
@@ -227,13 +227,20 @@ package sound
 			if (sc)
 			{
 				trace("fadeOut", sound)
-				TweenLite.killTweensOf(sc);
-				TweenMax.to(sc, FADEINOUTDELAY, {volume: 0, onComplete: function():void {
+				if(needFade){
+					TweenLite.killTweensOf(sc);
+					TweenMax.to(sc, FADEINOUTDELAY, {volume: 0, onComplete: function():void {
+						sm.stop(sound);
+						delete scDic[sound];
+					}});
+				}else{
 					sm.stop(sound);
 					delete scDic[sound];
-				}});
+				}
 			}
 		}
+
+		public static var needFade:Boolean=false;
 
 		public static function fadeIn(sound:String):void
 		{
@@ -244,8 +251,12 @@ package sound
 			{
 				trace("fadeIn", sound)
 				scDic[sound]=sc;
-				TweenLite.killTweensOf(sc);
-				TweenMax.to(sc, FADEINOUTDELAY, {volume: bgmVol});
+				if(needFade){
+					TweenLite.killTweensOf(sc);
+					TweenMax.to(sc, FADEINOUTDELAY, {volume: bgmVol});
+				}else{
+					sc.soundTransform=new SoundTransform(bgmVol);
+				}
 			}
 		}
 
@@ -317,3 +328,5 @@ package sound
 		public static const BGM:String="BGMVOL";
 	}
 }
+
+

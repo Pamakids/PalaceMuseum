@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -11,6 +11,7 @@ package feathers.controls
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundToNearest;
 
@@ -26,6 +27,21 @@ package feathers.controls
 
 	/**
 	 * Dispatched when the stepper's value changes.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
 	 *
 	 * @eventType starling.events.Event.CHANGE
 	 */
@@ -47,18 +63,9 @@ package feathers.controls
 	 * stepper.addEventListener( Event.CHANGE, stepper_changeHandler );
 	 * this.addChild( stepper );</listing>
 	 *
-	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
-	 * may need some changes between now and the next version of Feathers to
-	 * account for overlooked requirements or other issues. Upgrading to future
-	 * versions of Feathers may involve manual changes to your code that uses
-	 * this component. The
-	 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>
-	 * will not go into effect until this component's status is upgraded from
-	 * beta to stable.</p>
-	 *
 	 * @see http://wiki.starling-framework.org/feathers/numeric-stepper
 	 */
-	public class NumericStepper extends FeathersControl implements IFocusDisplayObject
+	public class NumericStepper extends FeathersControl implements IRange, IFocusDisplayObject
 	{
 		/**
 		 * @private
@@ -126,6 +133,15 @@ package feathers.controls
 		public static const BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL:String = "rightSideVertical";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>NumericStepper</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * @private
 		 */
 		protected static function defaultDecrementButtonFactory():Button
@@ -154,6 +170,7 @@ package feathers.controls
 		 */
 		public function NumericStepper()
 		{
+			super();
 			this.addEventListener(Event.REMOVED_FROM_STAGE, numericStepper_removedFromStageHandler);
 		}
 
@@ -230,6 +247,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var touchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return NumericStepper.styleProvider;
+		}
 
 		/**
 		 * @private
@@ -596,10 +621,9 @@ package feathers.controls
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 * to set the skin on the thumb which is in a <code>SimpleScrollBar</code>,
+		 * which is in a <code>List</code>, you can use the following syntax:</p>
+		 * <pre>list.verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
 		 * <p>Setting properties in a <code>decrementButtonFactory</code>
 		 * function instead of using <code>decrementButtonProperties</code> will
@@ -641,7 +665,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -806,10 +830,9 @@ package feathers.controls
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 * to set the skin on the thumb which is in a <code>SimpleScrollBar</code>,
+		 * which is in a <code>List</code>, you can use the following syntax:</p>
+		 * <pre>list.verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
 		 * <p>Setting properties in a <code>incrementButtonFactory</code>
 		 * function instead of using <code>incrementButtonProperties</code> will
@@ -851,7 +874,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -924,10 +947,10 @@ package feathers.controls
 		 * to the stepper:</p>
 		 *
 		 * <listing version="3.0">
-		 * stepper.incrementButtonFactory = function():TextInput
+		 * stepper.textInputFactory = function():TextInput
 		 * {
-		 *     var textInput:TextInput = new Button();
-		 *     textInput.textEditorProperties.backgroundSkin = new Image( texture );
+		 *     var textInput:TextInput = new TextInput();
+		 *     textInput.backgroundSkin = new Image( texture );
 		 *     return textInput;
 		 * };</listing>
 		 *
@@ -1015,10 +1038,9 @@ package feathers.controls
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 * to set the skin on the thumb which is in a <code>SimpleScrollBar</code>,
+		 * which is in a <code>List</code>, you can use the following syntax:</p>
+		 * <pre>list.verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
 		 * <p>Setting properties in a <code>textInputFactory</code> function
 		 * instead of using <code>textInputProperties</code> will result in
@@ -1059,7 +1081,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -1083,14 +1105,14 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			const decrementButtonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DECREMENT_BUTTON_FACTORY);
-			const incrementButtonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_INCREMENT_BUTTON_FACTORY);
-			const textInputFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_INPUT_FACTORY);
-			const focusInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOCUS);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var decrementButtonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DECREMENT_BUTTON_FACTORY);
+			var incrementButtonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_INCREMENT_BUTTON_FACTORY);
+			var textInputFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_INPUT_FACTORY);
+			var focusInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOCUS);
 
 			if(decrementButtonFactoryInvalid)
 			{
@@ -1175,8 +1197,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1187,11 +1209,11 @@ package feathers.controls
 
 			this.decrementButton.validate();
 			this.incrementButton.validate();
-			const oldTextInputWidth:Number = this.textInput.width;
-			const oldTextInputHeight:Number = this.textInput.height;
+			var oldTextInputWidth:Number = this.textInput.width;
+			var oldTextInputHeight:Number = this.textInput.height;
 			if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL)
 			{
-				const maxButtonWidth:Number = Math.max(this.decrementButton.width, this.incrementButton.width);
+				var maxButtonWidth:Number = Math.max(this.decrementButton.width, this.incrementButton.width);
 				this.textInput.minWidth = Math.max(0, this._minWidth - maxButtonWidth);
 				this.textInput.maxWidth = Math.max(0, this._maxWidth - maxButtonWidth);
 				this.textInput.width = Math.max(0, this.explicitWidth - maxButtonWidth)
@@ -1282,10 +1304,10 @@ package feathers.controls
 				this.decrementButton = null;
 			}
 
-			const factory:Function = this._decrementButtonFactory != null ? this._decrementButtonFactory : defaultDecrementButtonFactory;
-			const decrementButtonName:String = this._customDecrementButtonName != null ? this._customDecrementButtonName : this.decrementButtonName;
+			var factory:Function = this._decrementButtonFactory != null ? this._decrementButtonFactory : defaultDecrementButtonFactory;
+			var decrementButtonName:String = this._customDecrementButtonName != null ? this._customDecrementButtonName : this.decrementButtonName;
 			this.decrementButton = Button(factory());
-			this.decrementButton.nameList.add(decrementButtonName);
+			this.decrementButton.styleNameList.add(decrementButtonName);
 			this.decrementButton.addEventListener(TouchEvent.TOUCH, decrementButton_touchHandler);
 			this.addChild(this.decrementButton);
 		}
@@ -1309,10 +1331,10 @@ package feathers.controls
 				this.incrementButton = null;
 			}
 
-			const factory:Function = this._incrementButtonFactory != null ? this._incrementButtonFactory : defaultIncrementButtonFactory;
-			const incrementButtonName:String = this._customIncrementButtonName != null ? this._customIncrementButtonName : this.incrementButtonName;
+			var factory:Function = this._incrementButtonFactory != null ? this._incrementButtonFactory : defaultIncrementButtonFactory;
+			var incrementButtonName:String = this._customIncrementButtonName != null ? this._customIncrementButtonName : this.incrementButtonName;
 			this.incrementButton = Button(factory());
-			this.incrementButton.nameList.add(incrementButtonName);
+			this.incrementButton.styleNameList.add(incrementButtonName);
 			this.incrementButton.addEventListener(TouchEvent.TOUCH, incrementButton_touchHandler);
 			this.addChild(this.incrementButton);
 		}
@@ -1336,12 +1358,13 @@ package feathers.controls
 				this.textInput = null;
 			}
 
-			const factory:Function = this._textInputFactory != null ? this._textInputFactory : defaultTextInputFactory;
-			const textInputName:String = this._customTextInputName != null ? this._customTextInputName : this.textInputName;
+			var factory:Function = this._textInputFactory != null ? this._textInputFactory : defaultTextInputFactory;
+			var textInputName:String = this._customTextInputName != null ? this._customTextInputName : this.textInputName;
 			this.textInput = TextInput(factory());
-			this.textInput.nameList.add(textInputName);
+			this.textInput.styleNameList.add(textInputName);
 			this.textInput.addEventListener(FeathersEventType.ENTER, textInput_enterHandler);
 			this.textInput.addEventListener(FeathersEventType.FOCUS_OUT, textInput_focusOutHandler);
+			this.textInput.isFocusEnabled = this._focusManager == null;
 			this.addChild(this.textInput);
 		}
 
@@ -1352,11 +1375,8 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._decrementButtonProperties)
 			{
-				if(this.decrementButton.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._decrementButtonProperties[propertyName];
-					this.decrementButton[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._decrementButtonProperties[propertyName];
+				this.decrementButton[propertyName] = propertyValue;
 			}
 			this.decrementButton.label = this._decrementButtonLabel;
 		}
@@ -1368,11 +1388,8 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._incrementButtonProperties)
 			{
-				if(this.incrementButton.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._incrementButtonProperties[propertyName];
-					this.incrementButton[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._incrementButtonProperties[propertyName];
+				this.incrementButton[propertyName] = propertyValue;
 			}
 			this.incrementButton.label = this._incrementButtonLabel;
 		}
@@ -1384,11 +1401,8 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._textInputProperties)
 			{
-				if(this.textInput.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._textInputProperties[propertyName];
-					this.textInput[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._textInputProperties[propertyName];
+				this.textInput[propertyName] = propertyValue;
 			}
 		}
 
@@ -1413,7 +1427,7 @@ package feathers.controls
 		{
 			if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL)
 			{
-				const buttonHeight:Number = this.actualHeight / 2;
+				var buttonHeight:Number = this.actualHeight / 2;
 				this.incrementButton.y = 0;
 				this.incrementButton.height = buttonHeight;
 				this.incrementButton.validate();
@@ -1422,8 +1436,8 @@ package feathers.controls
 				this.decrementButton.height = buttonHeight;
 				this.decrementButton.validate();
 
-				const buttonWidth:Number = Math.max(this.decrementButton.width, this.incrementButton.width);
-				const buttonX:Number = this.actualWidth - buttonWidth;
+				var buttonWidth:Number = Math.max(this.decrementButton.width, this.incrementButton.width);
+				var buttonX:Number = this.actualWidth - buttonWidth;
 				this.decrementButton.x = buttonX;
 				this.incrementButton.x = buttonX;
 
@@ -1514,6 +1528,11 @@ package feathers.controls
 		override protected function focusInHandler(event:Event):void
 		{
 			super.focusInHandler(event);
+			if(this.textInput.isEditable)
+			{
+				this.textInput.setFocus();
+				this.textInput.selectRange(0, this.textInput.text.length);
+			}
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 
@@ -1523,6 +1542,7 @@ package feathers.controls
 		override protected function focusOutHandler(event:Event):void
 		{
 			super.focusOutHandler(event);
+			this.textInput.clearFocus();
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 
@@ -1531,7 +1551,7 @@ package feathers.controls
 		 */
 		protected function textInput_enterHandler(event:Event):void
 		{
-			const newValue:Number = parseFloat(this.textInput.text);
+			var newValue:Number = parseFloat(this.textInput.text);
 			if(!isNaN(newValue))
 			{
 				this.value = newValue;
@@ -1543,7 +1563,7 @@ package feathers.controls
 		 */
 		protected function textInput_focusOutHandler(event:Event):void
 		{
-			const newValue:Number = parseFloat(this.textInput.text);
+			var newValue:Number = parseFloat(this.textInput.text);
 			if(!isNaN(newValue))
 			{
 				this.value = newValue;
@@ -1630,14 +1650,12 @@ package feathers.controls
 			if(event.keyCode == Keyboard.HOME)
 			{
 				this.value = this._minimum;
-				return;
 			}
-			if(event.keyCode == Keyboard.END)
+			else if(event.keyCode == Keyboard.END)
 			{
 				this.value = this._maximum;
-				return;
 			}
-			if(event.keyCode == Keyboard.UP)
+			else if(event.keyCode == Keyboard.UP)
 			{
 				this.value += this._step;
 			}

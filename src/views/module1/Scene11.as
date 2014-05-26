@@ -56,15 +56,15 @@ package views.module1
 		private var windowStrArr:Array=[];
 
 		private var lionHint1:String="想做个好皇帝可不能总想着偷懒啊。"
-		private var lionHint2:String="别怯场，快来猜猜皇帝到底睡在哪一间呢？"
+		private var lionHint2:String="别紧张，快来猜猜皇帝到底睡在哪一间呢？"
 
 		private var hint0:String="皇帝不能多睡会儿么？";
 		private var hint1:String="这不是皇帝的房间";
-		private var hint2:String="这是皇帝的休息室，他不在这里";
+		private var hint2:String="这是小皇帝的休息室，他不在这里。";
 		private var hint3:String="hint-pic1";
 		private var hint4:String="这不是皇帝的房间";
 		private var hint5:String="hint-pic2";
-		private var hint6:String="皇帝寝室，但他今天在另一间休息";
+		private var hint6:String="这是小皇帝的寝室，但他今天在另一间休息。";
 
 		private var hotzone1:Rectangle=new Rectangle(48, 209, 140, 134); //窗-左
 		private var hotzone2:Rectangle=new Rectangle(746, 177, 158, 168); //门-中

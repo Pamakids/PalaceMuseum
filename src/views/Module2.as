@@ -49,9 +49,9 @@ package views
 				var birdIndex:int=birdArr[index];
 				if(birdIndex<0||checkBird(birdIndex))
 				{
-					assetManager.enqueue(file, path + ".atf", path + ".xml");
+					assetManager.enqueue(file, path + ".png", path + ".xml");
 				}else{
-					assetManager.enqueue(file, path + ".atf", path + ".xml");
+					assetManager.enqueue(file, path + ".png", path + ".xml");
 					assetManager.enqueue("assets/global/handbook/bird_collection_" + birdIndex + ".png",
 										 "assets/global/handbook/mainUI/background_2.png");
 				}

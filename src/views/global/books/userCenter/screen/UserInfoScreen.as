@@ -2,23 +2,24 @@ package views.global.books.userCenter.screen
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
+
 	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
-	
+
 	import controllers.DC;
 	import controllers.MC;
-	
+
 	import feathers.controls.Button;
+	import feathers.controls.ToggleButton;
 	import feathers.controls.text.TextFieldTextRenderer;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
-	
+
 	import models.FontVo;
 	import models.SOService;
-	
+
 	import sound.SoundAssets;
-	
+
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
@@ -27,7 +28,7 @@ package views.global.books.userCenter.screen
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.textures.Texture;
-	
+
 	import views.global.books.BooksManager;
 	import views.global.books.components.CurrentUserView;
 	import views.global.books.components.ModuleList;
@@ -59,12 +60,12 @@ package views.global.books.userCenter.screen
 
 			TweenLite.delayedCall(0.1, dispatchEventWith, [BookEvent.InitViewPlayed]);
 		}
-		
-		private var check_BGM:Button;
-		private var check_effect:Button;
+
+		private var check_BGM:ToggleButton;
+		private var check_effect:ToggleButton;
 		private function initSoundButton():void
 		{
-			check_BGM = new Button();
+			check_BGM = new ToggleButton();
 			check_BGM.label = "  音乐";
 			check_BGM.labelFactory = function():ITextRenderer{
 				var render:TextFieldTextRenderer = new TextFieldTextRenderer();
@@ -79,8 +80,8 @@ package views.global.books.userCenter.screen
 			check_BGM.addEventListener(Event.TRIGGERED, onTriggered);
 			check_BGM.x = 800;
 			check_BGM.y = 80;
-			
-			check_effect = new Button();
+
+			check_effect = new ToggleButton();
 			check_effect.label = "  音效";
 			check_effect.labelFactory = function():ITextRenderer{
 				var render:TextFieldTextRenderer = new TextFieldTextRenderer();
@@ -96,23 +97,23 @@ package views.global.books.userCenter.screen
 			check_effect.x = 800;
 			check_effect.y = 130;
 		}
-		
+
 		private function onTriggered(e:Event):void
 		{
 			switch(e.target)
 			{
 				case check_BGM:
-					check_BGM.isSelected = !check_BGM.isSelected;
-					SoundAssets.bgmVol = (check_BGM.isSelected) ? 0 : 0.6;
+//					check_BGM.isSelected = !check_BGM.isSelected;
+					SoundAssets.bgmVol = (!check_BGM.isSelected) ? 0 : 0.6;
 					trace(SoundAssets.bgmVol);
 					break;
 				case check_effect:
-					check_effect.isSelected = !check_effect.isSelected;
-					SoundAssets.sfxVol = (check_effect.isSelected) ? 0 : 0.6;
+//					check_effect.isSelected = !check_effect.isSelected;
+					SoundAssets.sfxVol = (!check_effect.isSelected) ? 0 : 0.6;
 					break;
 			}
 		}
-		
+
 		private function initTextfields():void
 		{
 			var names:Array = ["成就", "卡片", "小鸟"];
@@ -121,8 +122,8 @@ package views.global.books.userCenter.screen
 				DC.instance.getAchievementData().length,
 				BooksManager.getAssetsManager().getObject("collection").source.length,
 				BirdsScreen.MAX_NUM
-			];
-			
+				];
+
 			var arr:Array = DC.instance.getAchievementData();
 			for(var i:int = 0;i<maxs[0];i++)
 			{
@@ -151,9 +152,9 @@ package views.global.books.userCenter.screen
 				tf.touchable = false;
 				tf.hAlign = "left";
 			}
-			
+
 		}
-		
+
 		private var moduleList:ModuleList;
 
 		private function initModuleList():void
@@ -370,7 +371,7 @@ package views.global.books.userCenter.screen
 			image.y=197;
 			this.addChild(image);
 			image.touchable=false;
-			
+
 			image = BooksManager.getImage("tf_bg");
 			image.x = 519;
 			image.y = 60;
@@ -423,3 +424,5 @@ package views.global.books.userCenter.screen
 		}
 	}
 }
+
+

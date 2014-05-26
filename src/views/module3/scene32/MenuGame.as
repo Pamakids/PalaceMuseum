@@ -38,6 +38,7 @@ package views.module3.scene32
 	import views.components.ElasticButton;
 	import views.components.LionMC;
 	import views.components.base.PalaceGame;
+	import views.module1.scene13.Block;
 
 	public class MenuGame extends PalaceGame
 	{
@@ -170,6 +171,36 @@ package views.module3.scene32
 			time=new Timer(1000 / 30);
 			time.addEventListener(TimerEvent.TIMER, onTimer);
 			time.start();
+		}
+
+		override public function dispose():void
+		{
+			for each (var b:Body in blockArr) 
+			{
+				if(b)
+				{
+					b.userData.graphic.removeFromParent(true);
+					b=null;
+				}
+			}
+			blockArr=null;
+
+			if(acc)
+			{
+				acc.removeEventListener(AccelerometerEvent.UPDATE, onUpdate);
+			}
+			acc=null;
+			if(time){
+				time.addEventListener(TimerEvent.TIMER, onTimer);
+				time.stop()
+			}
+			time=null;
+			if(space){
+				space.clear()
+			}
+			space=null;
+			super.dispose();
+
 		}
 
 		private function initTime():void
@@ -700,3 +731,5 @@ package views.module3.scene32
 		}
 	}
 }
+
+

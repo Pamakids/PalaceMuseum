@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -14,6 +14,21 @@ package feathers.core
 
 	/**
 	 * Dispatched when the selection changes.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
 	 *
 	 * @eventType starling.events.Event.CHANGE
 	 */
@@ -60,6 +75,11 @@ package feathers.core
 		 * is no currently selected item, the item at index <code>0</code> will
 		 * be selected automatically.</p>
 		 *
+		 * <p>In the following example, selection is not required:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.isSelectionRequired = false;</listing>
+		 *
 		 * @default true
 		 */
 		public function get isSelectionRequired():Boolean
@@ -85,6 +105,11 @@ package feathers.core
 		
 		/**
 		 * The currently selected toggle.
+		 *
+		 * <p>In the following example, the selected item is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.selectedItem = radio;</listing>
 		 *
 		 * @default null
 		 */
@@ -113,6 +138,11 @@ package feathers.core
 		/**
 		 * The index of the currently selected toggle.
 		 *
+		 * <p>In the following example, the selected index is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.selectedIndex = 2;</listing>
+		 *
 		 * @default -1
 		 */
 		public function get selectedIndex():int
@@ -125,12 +155,12 @@ package feathers.core
 		 */
 		public function set selectedIndex(value:int):void
 		{
-			const itemCount:int = this._items.length;
+			var itemCount:int = this._items.length;
 			if(value < -1 || value >= itemCount)
 			{
 				throw new RangeError("Index " + value + " is out of range " + itemCount + " for ToggleGroup.");
 			}
-			const hasChanged:Boolean = this._selectedIndex != value;
+			var hasChanged:Boolean = this._selectedIndex != value;
 			this._selectedIndex = value;
 
 			//refresh all the items
@@ -155,6 +185,11 @@ package feathers.core
 		 * Adds a toggle to the group. If it is the first item added to the
 		 * group, and <code>isSelectionRequired</code> is <code>true</code>, it
 		 * will be selected automatically.
+		 *
+		 * <p>In the following example, an item is added to the toggle group:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.addItem( radio );</listing>
 		 */
 		public function addItem(item:IToggle):void
 		{
@@ -163,7 +198,7 @@ package feathers.core
 				throw new ArgumentError("IToggle passed to ToggleGroup addItem() must not be null.");
 			}
 			
-			const index:int = this._items.indexOf(item);
+			var index:int = this._items.indexOf(item);
 			if(index >= 0)
 			{
 				throw new IllegalOperationError("Cannot add an item to a ToggleGroup more than once.");
@@ -190,10 +225,15 @@ package feathers.core
 		 * selected and <code>isSelectionRequired</code> is <code>true</code>,
 		 * the final item will be selected. If <code>isSelectionRequired</code>
 		 * is <code>false</code> instead, no item will be selected.
+		 *
+		 * <p>In the following example, an item is removed from the toggle group:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.removeItem( radio );</listing>
 		 */
 		public function removeItem(item:IToggle):void
 		{
-			const index:int = this._items.indexOf(item);
+			var index:int = this._items.indexOf(item);
 			if(index < 0)
 			{
 				return;
@@ -219,10 +259,15 @@ package feathers.core
 
 		/**
 		 * Removes all toggles from the group. No item will be selected.
+		 *
+		 * <p>In the following example, all items are removed from the toggle group:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.removeAllItems();</listing>
 		 */
 		public function removeAllItems():void
 		{
-			const itemCount:int = this._items.length;
+			var itemCount:int = this._items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:IToggle = this._items.shift();
@@ -237,16 +282,29 @@ package feathers.core
 
 		/**
 		 * Determines if the group includes the specified item.
+		 *
+		 * <p>In the following example, we check if an item is in the toggle group:</p>
+		 *
+		 * <listing version="3.0">
+		 * if( group.hasItem( radio ) )
+		 * {
+		 *     // do something
+		 * }</listing>
 		 */
 		public function hasItem(item:IToggle):Boolean
 		{
-			const index:int = this._items.indexOf(item);
+			var index:int = this._items.indexOf(item);
 			return index >= 0;
 		}
 
 		/**
 		 * Returns the index of the specified item. Result will be <code>-1</code>
 		 * if the item has not been added to the group.
+		 *
+		 * <p>In the following example, an item's index is calculated:</p>
+		 *
+		 * <listing version="3.0">
+		 * var index:int = group.getItemIndex( radio );</listing>
 		 */
 		public function getItemIndex(item:IToggle):int
 		{
@@ -256,6 +314,11 @@ package feathers.core
 		/**
 		 * Changes the index of a specified item. Throws an <code>ArgumentError</code>
 		 * if the specified item hasn't already been added to this group.
+		 *
+		 * <p>In the following example, an item's index is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.setItemIndex( radio, 2 );</listing>
 		 */
 		public function setItemIndex(item:IToggle, index:int):void
 		{
@@ -298,8 +361,8 @@ package feathers.core
 				return;
 			}
 
-			const item:IToggle = IToggle(event.currentTarget);
-			const index:int = this._items.indexOf(item);
+			var item:IToggle = IToggle(event.currentTarget);
+			var index:int = this._items.indexOf(item);
 			if(item.isSelected || (this._isSelectionRequired && this._selectedIndex == index))
 			{
 				//don't let it deselect the item
