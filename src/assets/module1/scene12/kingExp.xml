@@ -1,79 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:c0ff34ea61273d4453a4b0f0317d9abd$ -->
+<!-- $TexturePacker:SmartUpdate:9ee5ae5d77fd354dbb2eb6d248f35654$ -->
 <TextureAtlas imagePath="kingExp.png">
-	<SubTexture name="KingNaughty0001" x="1364" y="2" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0002" x="1364" y="2" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0003" x="1137" y="2" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0004" x="910" y="2" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0005" x="683" y="2" width="225" height="260" frameX="-1" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0006" x="683" y="2" width="225" height="260" frameX="-1" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0007" x="683" y="2" width="225" height="260" frameX="-1" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0008" x="456" y="2" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0009" x="229" y="2" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0010" x="2" y="1574" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0011" x="2" y="1312" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0012" x="2" y="1050" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0013" x="2" y="788" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0014" x="2" y="526" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0015" x="2" y="264" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0016" x="2" y="2" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="KingNaughty0017" x="1364" y="2" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
-	<SubTexture name="kingHappy0001" x="1133" y="525" width="224" height="259"/>
-	<SubTexture name="kingHappy0002" x="1133" y="525" width="224" height="259"/>
-	<SubTexture name="kingHappy0003" x="907" y="525" width="224" height="259"/>
-	<SubTexture name="kingHappy0004" x="681" y="525" width="224" height="259"/>
-	<SubTexture name="kingHappy0005" x="455" y="525" width="224" height="259"/>
-	<SubTexture name="kingHappy0006" x="229" y="1568" width="224" height="259"/>
-	<SubTexture name="kingHappy0007" x="229" y="1307" width="224" height="259"/>
-	<SubTexture name="kingHappy0008" x="229" y="1046" width="224" height="259"/>
-	<SubTexture name="kingHappy0009" x="1359" y="525" width="224" height="257" frameX="0" frameY="-2" frameWidth="224" frameHeight="259"/>
-	<SubTexture name="kingHappy0010" x="229" y="1046" width="224" height="259"/>
-	<SubTexture name="kingHappy0011" x="229" y="1307" width="224" height="259"/>
-	<SubTexture name="kingHappy0012" x="229" y="1568" width="224" height="259"/>
-	<SubTexture name="kingHappy0013" x="455" y="525" width="224" height="259"/>
-	<SubTexture name="kingHappy0014" x="229" y="1568" width="224" height="259"/>
-	<SubTexture name="kingHappy0015" x="229" y="785" width="224" height="259"/>
-	<SubTexture name="kingHappy0016" x="1816" y="524" width="224" height="259"/>
-	<SubTexture name="kingHappy0017" x="229" y="525" width="224" height="257" frameX="0" frameY="-2" frameWidth="224" frameHeight="259"/>
-	<SubTexture name="kingHappy0018" x="1816" y="524" width="224" height="259"/>
-	<SubTexture name="kingHappy0019" x="229" y="785" width="224" height="259"/>
-	<SubTexture name="kingHappy0020" x="229" y="1568" width="224" height="259"/>
-	<SubTexture name="kingHappy0021" x="1590" y="524" width="224" height="259"/>
-	<SubTexture name="kingHappy0022" x="1364" y="264" width="224" height="259"/>
-	<SubTexture name="kingHappy0023" x="1133" y="525" width="224" height="259"/>
-	<SubTexture name="kingHappy0024" x="1133" y="525" width="224" height="259"/>
-	<SubTexture name="kingLook0001" x="1137" y="264" width="225" height="259" frameX="-1" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0002" x="910" y="264" width="225" height="259" frameX="-1" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0003" x="683" y="264" width="225" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0004" x="456" y="264" width="225" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0005" x="229" y="264" width="225" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0006" x="1805" y="1307" width="223" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0007" x="1580" y="1307" width="223" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0008" x="1355" y="1567" width="223" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0009" x="1130" y="1569" width="223" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0010" x="1130" y="1308" width="223" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0011" x="905" y="1567" width="223" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0012" x="680" y="1567" width="223" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0013" x="1355" y="1306" width="223" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0014" x="1130" y="1047" width="223" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0015" x="905" y="1047" width="223" height="259" frameX="-1" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0016" x="680" y="1047" width="223" height="259" frameX="-1" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0017" x="455" y="1568" width="223" height="259" frameX="-2" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0018" x="455" y="1307" width="223" height="259" frameX="-2" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0019" x="1805" y="1046" width="223" height="259" frameX="-3" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0020" x="1580" y="1046" width="223" height="259" frameX="-3" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0021" x="1355" y="1045" width="223" height="259" frameX="-3" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0022" x="1130" y="786" width="223" height="259" frameX="-4" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0023" x="905" y="786" width="223" height="259" frameX="-4" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0024" x="680" y="786" width="223" height="259" frameX="-4" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0025" x="455" y="786" width="223" height="259" frameX="-4" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0026" x="1809" y="785" width="223" height="259" frameX="-4" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0027" x="1584" y="785" width="223" height="259" frameX="-4" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0028" x="1359" y="784" width="223" height="259" frameX="-4" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0029" x="1818" y="263" width="225" height="259" frameX="-2" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0030" x="1591" y="263" width="225" height="259" frameX="-2" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0031" x="1818" y="2" width="225" height="259" frameX="-2" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0032" x="1591" y="2" width="225" height="259" frameX="-1" frameY="0" frameWidth="227" frameHeight="259"/>
-	<SubTexture name="kingLook0033" x="1137" y="264" width="225" height="259" frameX="-1" frameY="0" frameWidth="227" frameHeight="259"/>
+    <SubTexture name="KingHappy0001" x="1584" y="2" width="224" height="259"/>
+    <SubTexture name="KingHappy0002" x="1358" y="2" width="224" height="259"/>
+    <SubTexture name="KingHappy0003" x="1132" y="2" width="224" height="259"/>
+    <SubTexture name="KingHappy0004" x="906" y="2" width="224" height="259"/>
+    <SubTexture name="KingHappy0005" x="228" y="2" width="224" height="257" frameX="0" frameY="-2" frameWidth="224" frameHeight="259"/>
+    <SubTexture name="KingHappy0006" x="906" y="2" width="224" height="259"/>
+    <SubTexture name="KingHappy0007" x="1132" y="2" width="224" height="259"/>
+    <SubTexture name="KingHappy0008" x="680" y="2" width="224" height="259"/>
+    <SubTexture name="KingHappy0009" x="2" y="2" width="224" height="257" frameX="0" frameY="-2" frameWidth="224" frameHeight="259"/>
+    <SubTexture name="KingHappy0010" x="454" y="2" width="224" height="259"/>
+    <SubTexture name="KingHappy0011" x="1584" y="2" width="224" height="259"/>
+    <SubTexture name="KingNaughty0001" x="1591" y="524" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
+    <SubTexture name="KingNaughty0002" x="1364" y="524" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
+    <SubTexture name="KingNaughty0003" x="1137" y="524" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
+    <SubTexture name="KingNaughty0004" x="910" y="524" width="225" height="260" frameX="-1" frameY="0" frameWidth="227" frameHeight="260"/>
+    <SubTexture name="KingNaughty0005" x="683" y="524" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
+    <SubTexture name="KingNaughty0006" x="456" y="524" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
+    <SubTexture name="KingNaughty0007" x="229" y="524" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
+    <SubTexture name="KingNaughty0008" x="2" y="522" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
+    <SubTexture name="KingNaughty0009" x="1591" y="524" width="225" height="260" frameX="-2" frameY="0" frameWidth="227" frameHeight="260"/>
+    <SubTexture name="kingLook0001" x="454" y="263" width="225" height="259" frameX="-1" frameY="0" frameWidth="227" frameHeight="259"/>
+    <SubTexture name="kingLook0002" x="2" y="261" width="225" height="259" frameX="-1" frameY="0" frameWidth="227" frameHeight="259"/>
+    <SubTexture name="kingLook0003" x="1806" y="263" width="223" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
+    <SubTexture name="kingLook0004" x="1581" y="263" width="223" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
+    <SubTexture name="kingLook0005" x="1356" y="263" width="223" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
+    <SubTexture name="kingLook0006" x="1131" y="263" width="223" height="259" frameX="0" frameY="0" frameWidth="227" frameHeight="259"/>
+    <SubTexture name="kingLook0007" x="906" y="263" width="223" height="259" frameX="-3" frameY="0" frameWidth="227" frameHeight="259"/>
+    <SubTexture name="kingLook0008" x="681" y="263" width="223" height="259" frameX="-3" frameY="0" frameWidth="227" frameHeight="259"/>
+    <SubTexture name="kingLook0009" x="229" y="261" width="223" height="259" frameX="-4" frameY="0" frameWidth="227" frameHeight="259"/>
+    <SubTexture name="kingLook0010" x="1810" y="2" width="223" height="259" frameX="-4" frameY="0" frameWidth="227" frameHeight="259"/>
+    <SubTexture name="kingLook0011" x="454" y="263" width="225" height="259" frameX="-1" frameY="0" frameWidth="227" frameHeight="259"/>
 </TextureAtlas>

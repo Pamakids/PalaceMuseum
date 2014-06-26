@@ -5,35 +5,18 @@ package
 	import com.greensock.plugins.ShakeEffect;
 	import com.greensock.plugins.TweenPlugin;
 	import com.pamakids.FullFillBG;
-	import com.pamakids.palace.utils.MiTVKeyCode;
 
 	import flash.desktop.NativeApplication;
 	import flash.display.Bitmap;
-	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
-	import flash.events.TouchEvent;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.net.InterfaceAddress;
-	import flash.net.NetworkInfo;
-	import flash.net.NetworkInterface;
 	import flash.system.Capabilities;
-	import flash.text.TextField;
 
 	import assets.embed.EmbedAssets;
-
-	import be.aboutme.airserver.AIRServer;
-	import be.aboutme.airserver.Client;
-	import be.aboutme.airserver.endpoints.socket.SocketEndPoint;
-	import be.aboutme.airserver.endpoints.socket.handlers.amf.AMFSocketClientHandlerFactory;
-	import be.aboutme.airserver.events.AIRServerEvent;
-	import be.aboutme.airserver.events.MessageReceivedEvent;
 
 	import controllers.MC;
 	import controllers.UserBehaviorAnalysis;
@@ -49,7 +32,7 @@ package
 	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x351016")]
 	public class PalaceMuseum extends Sprite
 	{
-		private var ipTXT:TextField;
+//		private var ipTXT:TextField;
 //		private var server:AIRServer;
 
 		public function PalaceMuseum()
@@ -129,27 +112,27 @@ package
 //			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 //		}
 
-		private var mouseDirection:int=-1;
-		private var cursor:Bitmap;
+//		private var mouseDirection:int=-1;
+//		private var cursor:Bitmap;
 
-		protected function onEnterFrame(e:Event):void
-		{
-			if (mouseDirection >= 0)
-			{
-				cursor.x+=mouseDirection % 2 == 0 ? (mouseDirection - 1) * 15 : 0;
-				cursor.y+=mouseDirection % 2 == 0 ? 0 : (mouseDirection - 2) * 15;
-			}
-
-			if (cursor.x < 0)
-				cursor.x=0;
-			else if (cursor.x > 1024)
-				cursor.x=1024;
-
-			if (cursor.y < 0)
-				cursor.y=0;
-			else if (cursor.y > 768)
-				cursor.y=768;
-		}
+//		protected function onEnterFrame(e:Event):void
+//		{
+//			if (mouseDirection >= 0)
+//			{
+//				cursor.x+=mouseDirection % 2 == 0 ? (mouseDirection - 1) * 15 : 0;
+//				cursor.y+=mouseDirection % 2 == 0 ? 0 : (mouseDirection - 2) * 15;
+//			}
+//
+//			if (cursor.x < 0)
+//				cursor.x=0;
+//			else if (cursor.x > 1024)
+//				cursor.x=1024;
+//
+//			if (cursor.y < 0)
+//				cursor.y=0;
+//			else if (cursor.y > 768)
+//				cursor.y=768;
+//		}
 
 //		protected function onKeyDown(e:KeyboardEvent):void
 //		{
@@ -280,63 +263,63 @@ package
 //			}
 //		}
 
-		override public function addChild(child:DisplayObject):DisplayObject
-		{
-			var obj:DisplayObject=super.addChild(child);
-			if (ipTXT)
-				this.setChildIndex(ipTXT, this.numChildren - 1);
-			return obj;
-		}
+//		override public function addChild(child:DisplayObject):DisplayObject
+//		{
+//			var obj:DisplayObject=super.addChild(child);
+//			if (ipTXT)
+//				this.setChildIndex(ipTXT, this.numChildren - 1);
+//			return obj;
+//		}
 
-		protected function onTouchBegin(e:TouchEvent):void
-		{
-			var id:int=e.touchPointID;
-			if (!cursorArr[id])
-			{
-				cursorArr[id]=new EmbedAssets.cursor();
-				addChild(cursorArr[id]);
-			}
+//		protected function onTouchBegin(e:TouchEvent):void
+//		{
+//			var id:int=e.touchPointID;
+//			if (!cursorArr[id])
+//			{
+//				cursorArr[id]=new EmbedAssets.cursor();
+//				addChild(cursorArr[id]);
+//			}
+//
+//			this.setChildIndex(cursorArr[id], this.numChildren - 1);
+//
+//			var pt:Point=new Point(e.localX, e.localY)
+//			pt=this.globalToLocal(pt);
+//
+//			cursorArr[id].x=pt.x;
+//			cursorArr[id].y=pt.y;
+//			cursorArr[id].visible=true;
+//		}
+//
+//		protected function onTouchMove(e:TouchEvent):void
+//		{
+//			var id:int=e.touchPointID;
+//
+//			if (!cursorArr[id])
+//			{
+//				cursorArr[id]=new EmbedAssets.cursor();
+//				addChild(cursorArr[id]);
+//			}
+//
+//			var pt:Point=new Point(e.localX, e.localY)
+//			pt=this.globalToLocal(pt);
+//
+//			cursorArr[id].x=pt.x;
+//			cursorArr[id].y=pt.y;
+//		}
+//
+//		protected function onTouchEnd(e:TouchEvent):void
+//		{
+//			var id:int=e.touchPointID;
+//			if (!cursorArr[id])
+//			{
+//				cursorArr[id]=new EmbedAssets.cursor();
+//				addChild(cursorArr[id]);
+//			}
+//
+//			cursorArr[id].visible=false;
+//		}
 
-			this.setChildIndex(cursorArr[id], this.numChildren - 1);
-
-			var pt:Point=new Point(e.localX, e.localY)
-			pt=this.globalToLocal(pt);
-
-			cursorArr[id].x=pt.x;
-			cursorArr[id].y=pt.y;
-			cursorArr[id].visible=true;
-		}
-
-		protected function onTouchMove(e:TouchEvent):void
-		{
-			var id:int=e.touchPointID;
-
-			if (!cursorArr[id])
-			{
-				cursorArr[id]=new EmbedAssets.cursor();
-				addChild(cursorArr[id]);
-			}
-
-			var pt:Point=new Point(e.localX, e.localY)
-			pt=this.globalToLocal(pt);
-
-			cursorArr[id].x=pt.x;
-			cursorArr[id].y=pt.y;
-		}
-
-		protected function onTouchEnd(e:TouchEvent):void
-		{
-			var id:int=e.touchPointID;
-			if (!cursorArr[id])
-			{
-				cursorArr[id]=new EmbedAssets.cursor();
-				addChild(cursorArr[id]);
-			}
-
-			cursorArr[id].visible=false;
-		}
-
-		private var cursorArr:Vector.<Bitmap>
+//		private var cursorArr:Vector.<Bitmap>
 
 //		protected function onClientRemoved(event:AIRServerEvent):void
 //		{
@@ -355,37 +338,37 @@ package
 //
 //		private var currentClient:Client;
 
-		public function GetAddress():void
-		{
-			var interfaces:Vector.<NetworkInterface>=NetworkInfo.networkInfo.findInterfaces();
-			if (interfaces != null)
-			{
-				for each (var interfaceObj:NetworkInterface in interfaces)
-				{
-					if (interfaceObj.subInterfaces != null)
-					{
-						trace("# subinterfaces: " + interfaceObj.subInterfaces.length);
-					}
-					for each (var address:InterfaceAddress in interfaceObj.addresses)
-					{
-						check(address.ipVersion, address.address)
-					}
-				}
-			}
-		}
+//		public function GetAddress():void
+//		{
+//			var interfaces:Vector.<NetworkInterface>=NetworkInfo.networkInfo.findInterfaces();
+//			if (interfaces != null)
+//			{
+//				for each (var interfaceObj:NetworkInterface in interfaces)
+//				{
+//					if (interfaceObj.subInterfaces != null)
+//					{
+//						trace("# subinterfaces: " + interfaceObj.subInterfaces.length);
+//					}
+//					for each (var address:InterfaceAddress in interfaceObj.addresses)
+//					{
+//						check(address.ipVersion, address.address)
+//					}
+//				}
+//			}
+//		}
 
-		private var currentAddress:String;
+//		private var currentAddress:String;
 
 		private var lastBGM:String;
 
-		private function check(version:String, address:String):void
-		{
-			if (version.toLowerCase() == "ipv4" && address != "127.0.0.1")
-			{
-				currentAddress=address;
-				ipTXT.text="请连接IP       " + currentAddress;
-			}
-		}
+//		private function check(version:String, address:String):void
+//		{
+//			if (version.toLowerCase() == "ipv4" && address != "127.0.0.1")
+//			{
+//				currentAddress=address;
+//				ipTXT.text="请连接IP       " + currentAddress;
+//			}
+//		}
 
 //		protected function messageReceivedHandler(event:MessageReceivedEvent):void
 //		{

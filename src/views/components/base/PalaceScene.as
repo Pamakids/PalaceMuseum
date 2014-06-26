@@ -193,8 +193,8 @@ package views.components.base
 		override protected function onStage(e:Event):void
 		{
 			addEventListener(Event.REMOVED_FROM_STAGE, onRemoved);
-			init();
 			TopBar.show();
+			init();
 		}
 
 		override protected function init():void

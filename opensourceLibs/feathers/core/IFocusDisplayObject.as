@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -10,12 +10,42 @@ package feathers.core
 	/**
 	 * Dispatched when the display object receives focus.
 	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
 	 * @eventType feathers.events.FeathersEventType.FOCUS_IN
 	 */
 	[Event(name="focusIn",type="starling.events.Event")]
 
 	/**
 	 * Dispatched when the display object loses focus.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
 	 *
 	 * @eventType feathers.events.FeathersEventType.FOCUS_OUT
 	 */
@@ -40,6 +70,11 @@ package feathers.core
 
 		/**
 		 * Determines if this component can receive focus.
+		 *
+		 * <p>In the following example, the focus is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * object.isFocusEnabled = false;</listing>
 		 */
 		function get isFocusEnabled():Boolean;
 
@@ -51,6 +86,11 @@ package feathers.core
 		/**
 		 * The next object that will receive focus when the tab key is pressed.
 		 * If <code>null</code>, defaults to the next child on the display list.
+		 *
+		 * <p>In the following example, the next tab focus is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * object.nextTabFocus = otherObject;</listing>
 		 */
 		function get nextTabFocus():IFocusDisplayObject;
 
@@ -63,6 +103,11 @@ package feathers.core
 		 * The previous object that will receive focus when the tab key is
 		 * pressed while holding shift. If <code>null</code>, defaults to the
 		 * previous child on the display list.
+		 *
+		 * <p>In the following example, the previous tab focus is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * object.previousTabFocus = otherObject;</listing>
 		 */
 		function get previousTabFocus():IFocusDisplayObject;
 

@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -12,24 +12,44 @@ package feathers.core
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
+	import starling.events.EventDispatcher;
 
 	/**
 	 * Watches a container on the display list. As new display objects are
-	 * added, and if they match a specific type, they will be passed to initializer
-	 * functions to set properties, call methods, or otherwise modify them.
-	 * Useful for initializing skins and styles on UI controls.
+	 * added, and if they match a specific type, they will be passed to
+	 * initializer functions to set properties, call methods, or otherwise
+	 * modify them. Useful for initializing skins and styles on UI controls.
 	 *
 	 * <p>In the example below, the <code>buttonInitializer()</code> function
-	 * will be called when a <code>Button</code> is added to the display list:</p>
+	 * will be called when a <code>Button</code> is added to the display list,
+	 * and no values are specified in its <code>nameList</code> that match other
+	 * initializers:</p>
 	 *
 	 * <listing version="3.0">
 	 * setInitializerForClass(Button, buttonInitializer);</listing>
 	 *
-	 * <p>However, initializers are not called for subclasses. If a
-	 * <code>Check</code> is added to the display list (<code>Check</code>
-	 * extends <code>Button</code>), the <code>buttonInitializer()</code>
-	 * function will not be called. This important restriction allows subclasses
-	 * to have different skins, for instance.</p>
+	 * <p>You can specify a value in the button's <code>nameList</code> to call
+	 * a different initializer for a button. You might do this to apply
+	 * different skins for some buttons:</p>
+	 *
+	 * <listing version="3.0">
+	 * var button:Button = new Button();
+	 * button.label = "Click Me";
+	 * button.styleNameList.add( Button.ALTERNATE_NAME_CALL_TO_ACTION );
+	 * this.addChild( button );</listing>
+	 *
+	 * <p>The <code>callToActionButtonInitializer()</code> function will be called
+	 * when a <code>Button</code> with the <code>Button.ALTERNATE_NAME_CALL_TO_ACTION</code>
+	 * value is added to its <code>nameList</code>:</p>
+	 *
+	 * <listing version="3.0">
+	 * setInitializerForClass( Button, callToActionButtonInitializer, Button.ALTERNATE_NAME_CALL_TO_ACTION );</listing>
+	 *
+	 * <p>Initializers are not called for subclasses. If a <code>Check</code> is
+	 * added to the display list (<code>Check</code> extends
+	 * <code>Button</code>), the <code>buttonInitializer()</code> function will
+	 * not be called. This important restriction allows subclasses to have
+	 * different skins.</p>
 	 *
 	 * <p>You can target a specific subclass with the same initializer function
 	 * without adding it for all subclasses:</p>
@@ -54,12 +74,12 @@ package feathers.core
 	 * that you create yourself) will trigger the <code>buttonInitializer()</code>
 	 * function.</p>
 	 */
-	public class DisplayListWatcher
+	public class DisplayListWatcher extends EventDispatcher
 	{
 		/**
 		 * Constructor.
 		 *
-		 * @param topLevelContainer		The root display object to watch (not necessarily Starling's root object)
+		 * @param topLevelContainer		The root display object to watch (not necessarily Starling's stage or root object)
 		 */
 		public function DisplayListWatcher(topLevelContainer:DisplayObjectContainer)
 		{
@@ -71,13 +91,25 @@ package feathers.core
 		 * The minimum base class required before the AddedWatcher will check
 		 * to see if a particular display object has any initializers.
 		 *
+		 * <p>In the following example, the required base class is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * watcher.requiredBaseClass = Sprite;</listing>
+		 *
 		 * @default feathers.core.IFeathersControl
 		 */
 		public var requiredBaseClass:Class = IFeathersControl;
 
 		/**
 		 * Determines if only the object added should be processed or if its
-		 * children should be processed recursively.
+		 * children should be processed recursively. Disabling this property
+		 * may improve performance slightly, but it limits the capabilities of
+		 * <code>DisplayListWatcher</code>.
+		 *
+		 * <p>In the following example, children are not processed recursively:</p>
+		 *
+		 * <listing version="3.0">
+		 * watcher.processRecursively = false;</listing>
 		 *
 		 * @default true
 		 */
@@ -97,7 +129,11 @@ package feathers.core
 
 		/**
 		 * Determines if objects added to the display list are initialized only
-		 * once or every time that they are re-added.
+		 * once or every time that they are re-added. Disabling this property
+		 * will allow you to reinitialize a component when it is removed and
+		 * added to the display list. However, this may also unnecessarily
+		 * reinitialize components that have not changed, which will affect
+		 * performance.
 		 *
 		 * @default true
 		 */
@@ -122,7 +158,7 @@ package feathers.core
 			}
 			else
 			{
-				this.initializedObjects = null
+				this.initializedObjects = null;
 			}
 		}
 
@@ -207,6 +243,14 @@ package feathers.core
 
 		/**
 		 * Determines if an object is excluded from being watched.
+		 *
+		 * <p>In the following example, we check if a display object is excluded:</p>
+		 *
+		 * <listing version="3.0">
+		 * if( watcher.isExcluded( image ) )
+		 * {
+		 *     // this display object won't be processed by the watcher
+		 * }</listing>
 		 */
 		public function isExcluded(target:DisplayObject):Boolean
 		{
@@ -215,7 +259,7 @@ package feathers.core
 				return false;
 			}
 
-			const objectCount:int = this._excludedObjects.length;
+			var objectCount:int = this._excludedObjects.length;
 			for(var i:int = 0; i < objectCount; i++)
 			{
 				var object:DisplayObject = this._excludedObjects[i];
@@ -258,7 +302,7 @@ package feathers.core
 		 */
 		public function setInitializerForClassAndSubclasses(type:Class, initializer:Function):void
 		{
-			const index:int = this._initializerSuperTypes.indexOf(type);
+			var index:int = this._initializerSuperTypes.indexOf(type);
 			if(index < 0)
 			{
 				this._initializerSuperTypes.push(type);
@@ -275,7 +319,7 @@ package feathers.core
 			{
 				return this._initializerNoNameTypeMap[type] as Function;
 			}
-			const nameTable:Object = this._initializerNameTypeMap[type];
+			var nameTable:Object = this._initializerNameTypeMap[type];
 			if(!nameTable)
 			{
 				return null;
@@ -303,7 +347,7 @@ package feathers.core
 				return;
 			}
 
-			const nameTable:Object = this._initializerNameTypeMap[type];
+			var nameTable:Object = this._initializerNameTypeMap[type];
 			if(!nameTable)
 			{
 				return;
@@ -319,10 +363,55 @@ package feathers.core
 		public function clearInitializerForClassAndSubclasses(type:Class):void
 		{
 			delete this._initializerSuperTypeMap[type];
-			const index:int = this._initializerSuperTypes.indexOf(type);
+			var index:int = this._initializerSuperTypes.indexOf(type);
 			if(index >= 0)
 			{
 				this._initializerSuperTypes.splice(index, 1);
+			}
+		}
+
+		/**
+		 * Immediately initialize an object. Useful for initializing components
+		 * that are already on stage when this <code>DisplayListWatcher</code>
+		 * is created.
+		 *
+		 * <p>If the object has already been initialized, it won't be
+		 * initialized again. However, it's children may be initialized, if they
+		 * haven't been initialized yet.</p>
+		 */
+		public function initializeObject(target:DisplayObject):void
+		{
+			var targetAsRequiredBaseClass:DisplayObject = DisplayObject(target as requiredBaseClass);
+			if(targetAsRequiredBaseClass)
+			{
+				var isInitialized:Boolean = this._initializeOnce && this.initializedObjects[targetAsRequiredBaseClass];
+				if(!isInitialized)
+				{
+					if(this.isExcluded(target))
+					{
+						return;
+					}
+
+					if(this._initializeOnce)
+					{
+						this.initializedObjects[targetAsRequiredBaseClass] = true;
+					}
+					this.processAllInitializers(target);
+				}
+			}
+
+			if(this.processRecursively)
+			{
+				var targetAsContainer:DisplayObjectContainer = target as DisplayObjectContainer;
+				if(targetAsContainer)
+				{
+					var childCount:int = targetAsContainer.numChildren;
+					for(var i:int = 0; i < childCount; i++)
+					{
+						var child:DisplayObject = targetAsContainer.getChildAt(i);
+						this.initializeObject(child);
+					}
+				}
 			}
 		}
 		
@@ -331,7 +420,7 @@ package feathers.core
 		 */
 		protected function processAllInitializers(target:DisplayObject):void
 		{
-			const superTypeCount:int = this._initializerSuperTypes.length;
+			var superTypeCount:int = this._initializerSuperTypes.length;
 			for(var i:int = 0; i < superTypeCount; i++)
 			{
 				var type:Class = this._initializerSuperTypes[i];
@@ -350,28 +439,30 @@ package feathers.core
 		protected function applyAllStylesForTypeFromMaps(target:DisplayObject, type:Class, map:Dictionary, nameMap:Dictionary = null):void
 		{
 			var initializer:Function;
-			if(nameMap)
+			var hasNameInitializer:Boolean = false;
+			if(target is IFeathersControl && nameMap)
 			{
-				const nameTable:Object = nameMap[type];
+				var nameTable:Object = nameMap[type];
 				if(nameTable)
 				{
-					if(target is IFeathersControl)
+					var uiControl:IFeathersControl = IFeathersControl(target);
+					var nameList:TokenList = uiControl.nameList;
+					var nameCount:int = nameList.length;
+					for(var i:int = 0; i < nameCount; i++)
 					{
-						const uiControl:IFeathersControl = IFeathersControl(target);
-						for(var name:String in nameTable)
+						var name:String = nameList.item(i);
+						initializer = nameTable[name] as Function;
+						if(initializer != null)
 						{
-							if(uiControl.nameList.contains(name))
-							{
-								initializer = nameTable[name] as Function;
-								if(initializer != null)
-								{
-									initializer(target);
-									return;
-								}
-							}
+							hasNameInitializer = true;
+							initializer(target);
 						}
 					}
 				}
+			}
+			if(hasNameInitializer)
+			{
+				return;
 			}
 
 			initializer = map[type] as Function;
@@ -380,49 +471,13 @@ package feathers.core
 				initializer(target);
 			}
 		}
-
-		/**
-		 * @private
-		 */
-		protected function addObject(target:DisplayObject):void
-		{
-			const targetAsRequiredBaseClass:DisplayObject = DisplayObject(target as requiredBaseClass);
-			if(targetAsRequiredBaseClass)
-			{
-				const isInitialized:Boolean = this._initializeOnce && this.initializedObjects[targetAsRequiredBaseClass];
-				if(!isInitialized)
-				{
-					if(this.isExcluded(target))
-					{
-						return;
-					}
-
-					this.initializedObjects[targetAsRequiredBaseClass] = true;
-					this.processAllInitializers(target);
-				}
-			}
-
-			if(this.processRecursively)
-			{
-				const targetAsContainer:DisplayObjectContainer = target as DisplayObjectContainer;
-				if(targetAsContainer)
-				{
-					const childCount:int = targetAsContainer.numChildren;
-					for(var i:int = 0; i < childCount; i++)
-					{
-						var child:DisplayObject = targetAsContainer.getChildAt(i);
-						this.addObject(child);
-					}
-				}
-			}
-		}
 		
 		/**
 		 * @private
 		 */
 		protected function addedHandler(event:Event):void
 		{
-			this.addObject(event.target as DisplayObject);
+			this.initializeObject(event.target as DisplayObject);
 		}
 	}
 }

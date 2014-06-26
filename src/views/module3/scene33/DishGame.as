@@ -432,7 +432,7 @@ package views.module3.scene33
 
 		private function getPoison():Boolean
 		{
-			return Math.random() > .8;
+			return Math.random() > .9;
 		}
 
 		private function onDishTouch(e:TouchEvent):void
@@ -906,8 +906,22 @@ package views.module3.scene33
 		private function initBG():void
 		{
 			var table:Image=getImage("dish-table");
-			table.y=132;
-			gameSP.addChild(table);
+			if(!table){
+				var tableHolder:Sprite=new Sprite();
+				tableHolder.y=132;
+				gameSP.addChild(tableHolder);
+				var w:Number=59;
+				var num:int=1024/w+1;
+				for (var i:int = 0; i < num; i++) 
+				{
+					var table3:Image=getImage("dish-table2");
+					tableHolder.addChild(table3);
+					table3.x=w*i;
+				}
+			}else{
+				table.y=132;
+				gameSP.addChild(table);
+			}
 
 			kingHolder=new Sprite();
 			var kingBG:Image=getImage("dish-king-bg");
@@ -957,7 +971,7 @@ package views.module3.scene33
 				king.removeFromParent(true);
 				king=null;
 			}
-			king=new MovieClip(assetManager.getTextures(expArr[index]), 18);
+			king=new MovieClip(assetManager.getTextures(expArr[index]), 8);
 			king.x=kingArea.x + 50;
 			king.y=kingArea.y + 30;
 			kingHolder.addChild(king);
@@ -1006,3 +1020,5 @@ package views.module3.scene33
 		}
 	}
 }
+
+

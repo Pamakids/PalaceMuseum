@@ -7,6 +7,8 @@ package views.module5
 
 	import models.FontVo;
 
+	import sound.SoundAssets;
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -60,7 +62,7 @@ package views.module5
 			curtainR.x=1024 - offsetX;
 			addChild(curtainR);
 
-			king=new MovieClip(assetManager.getTextures("kingDrag"), 18);
+			king=new MovieClip(assetManager.getTextures("kingDrag"), 10);
 			addChild(king);
 			king.loop=false;
 			Starling.juggler.add(king);
@@ -69,6 +71,7 @@ package views.module5
 			king.y=768;
 			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void {
 				Prompt.showTXT(king.x + 20, king.y + 135, "从来没见过这么神奇的戏台子，我得仔细瞧瞧", 20, lionSay, null, 3);
+				SoundAssets.playSFX("kingdragged");
 			}});
 		}
 

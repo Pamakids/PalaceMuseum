@@ -2,15 +2,15 @@ package controllers
 {
 	import com.greensock.TweenMax;
 	import com.pamakids.utils.Singleton;
-	
+
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	
+
 	import feathers.core.PopUpManager;
-	
+
 	import models.SOService;
-	
+
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
@@ -19,7 +19,7 @@ package controllers
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
-	
+
 	import views.EndScene;
 	import views.Interlude;
 	import views.Module1;
@@ -207,7 +207,7 @@ package controllers
 				LionMC.instance.hide();
 				SOService.instance.setSO("lastScene", "end");
 				if(MC.isIOS){
-					var end:Interlude=new Interlude("assets/video/end.mp4", true, null, onEnd);
+					var end:Interlude=new Interlude(1, true, null, onEnd);
 					stage.addChild(end);
 				}
 				else
@@ -343,12 +343,12 @@ package controllers
 			var guide:PalaceGuide=new PalaceGuide(index, cb);
 			main.addChild(guide);
 		}
-		
+
 		public function showMenu():void
 		{
 			if(!menu)
 				menu = new Menu();
-			main.addChild( menu );
+			main.addChildAt( menu,main.getChildIndex(topBarLayer)-1 );
 		}
 		private var menu:Menu;
 		public function hideMenu():void
@@ -358,6 +358,11 @@ package controllers
 				menu.removeFromParent(true);
 				menu = null
 			}
+		}
+
+		public static function isFinished():Boolean
+		{
+			return SOService.instance.getSO("finished");
 		}
 	}
 }

@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -16,6 +16,7 @@ package feathers.controls
 	import feathers.events.CollectionEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
+	import feathers.skins.IStyleProvider;
 
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
@@ -25,6 +26,21 @@ package feathers.controls
 
 	/**
 	 * Dispatched when the selected item changes.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
 	 *
 	 * @eventType starling.events.Event.CHANGE
 	 */
@@ -36,6 +52,21 @@ package feathers.controls
 	 * provider. This event can be used to track which items currently have
 	 * renderers.
 	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The item renderer that was added</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
 	 * @eventType feathers.events.FeathersEventType.RENDERER_ADD
 	 */
 	[Event(name="rendererAdd",type="starling.events.Event")]
@@ -45,6 +76,21 @@ package feathers.controls
 	 * virtualized, item renderers may not exist for every item in the data
 	 * provider. This event can be used to track which items currently have
 	 * renderers.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The item renderer that was removed</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
 	 *
 	 * @eventType feathers.events.FeathersEventType.RENDERER_REMOVE
 	 */
@@ -120,6 +166,15 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>GroupedList</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * An alternate name to use with GroupedList to allow a theme to give it
 		 * an inset style. If a theme does not provide a skin for the inset
 		 * grouped list, the theme will automatically fall back to using the
@@ -127,14 +182,14 @@ package feathers.controls
 		 *
 		 * <p>An alternate name should always be added to a component's
 		 * <code>nameList</code> before the component is added to the stage for
-		 * the first time.</p>
+		 * the first time. If it is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the inset style is applied to a grouped
 		 * list:</p>
 		 *
 		 * <listing version="3.0">
 		 * var list:GroupedList = new GroupedList();
-		 * list.nameList.add( GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST );
+		 * list.styleNameList.add( GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST );
 		 * this.addChild( list );</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
@@ -287,6 +342,20 @@ package feathers.controls
 		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
 
 		/**
+		 * The vertical scroll bar will be positioned on the right.
+		 *
+		 * @see feathers.controls.Scroller#verticalScrollBarPosition
+		 */
+		public static const VERTICAL_SCROLL_BAR_POSITION_RIGHT:String = "right";
+
+		/**
+		 * The vertical scroll bar will be positioned on the left.
+		 *
+		 * @see feathers.controls.Scroller#verticalScrollBarPosition
+		 */
+		public static const VERTICAL_SCROLL_BAR_POSITION_LEFT:String = "left";
+
+		/**
 		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
 		 *
 		 * @see feathers.controls.Scroller#interactionMode
@@ -308,6 +377,20 @@ package feathers.controls
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
+		 * @copy feathers.controls.Scroller#DECELERATION_RATE_NORMAL
+		 *
+		 * @see feathers.controls.Scroller#decelerationRate
+		 */
+		public static const DECELERATION_RATE_NORMAL:Number = 0.998;
+
+		/**
+		 * @copy feathers.controls.Scroller#DECELERATION_RATE_FAST
+		 *
+		 * @see feathers.controls.Scroller#decelerationRate
+		 */
+		public static const DECELERATION_RATE_FAST:Number = 0.99;
+
+		/**
 		 * Constructor.
 		 */
 		public function GroupedList()
@@ -320,6 +403,14 @@ package feathers.controls
 		 * The guts of the List's functionality. Handles layout and selection.
 		 */
 		protected var dataViewPort:GroupedListDataViewPort;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return GroupedList.styleProvider;
+		}
 
 		/**
 		 * @private
@@ -374,7 +465,10 @@ package feathers.controls
 		protected var _dataProvider:HierarchicalCollection;
 
 		/**
-		 * The collection of data displayed by the list.
+		 * The collection of data displayed by the list. Changing this property
+		 * to a new value is considered a drastic change to the list's data, so
+		 * the horizontal and vertical scroll positions will be reset, and the
+		 * list's selection will be cleared.
 		 *
 		 * <p>The following example passes in a data provider and tells the item
 		 * renderer how to interpret the data:</p>
@@ -432,6 +526,10 @@ package feathers.controls
 		 * descriptors may be implemented with the
 		 * <code>IHierarchicalCollectionDataDescriptor</code> interface.</p>
 		 *
+		 * <p><em>Warning:</em> A Grouped List's data provider cannot contain
+		 * duplicate items. To display the same item in multiple item renderers,
+		 * you must use separate objects with the same properties.</p>
+		 *
 		 * @default null
 		 *
 		 * @see feathers.data.HierarchicalCollection
@@ -467,6 +565,9 @@ package feathers.controls
 			//the data is probably completely different
 			this.horizontalScrollPosition = 0;
 			this.verticalScrollPosition = 0;
+
+			//clear the selection for the same reason
+			this.setSelectedLocation(-1, -1);
 
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -604,7 +705,6 @@ package feathers.controls
 			{
 				return null;
 			}
-
 			return this._dataProvider.getItemAt(this._selectedGroupIndex, this._selectedItemIndex);
 		}
 
@@ -613,7 +713,12 @@ package feathers.controls
 		 */
 		public function set selectedItem(value:Object):void
 		{
-			const result:Vector.<int> = this._dataProvider.getItemLocation(value);
+			if(!this._dataProvider)
+			{
+				this.setSelectedLocation(-1, -1);
+				return;
+			}
+			var result:Vector.<int> = this._dataProvider.getItemLocation(value);
 			if(result.length == 2)
 			{
 				this.setSelectedLocation(result[0], result[1]);
@@ -844,10 +949,9 @@ package feathers.controls
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 * to set the skin on the thumb which is in a <code>SimpleScrollBar</code>,
+		 * which is in a <code>List</code>, you can use the following syntax:</p>
+		 * <pre>list.verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
 		 * <p>Setting properties in a <code>itemRendererFactory</code> function instead
 		 * of using <code>itemRendererProperties</code> will result in better
@@ -883,7 +987,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -1499,10 +1603,9 @@ package feathers.controls
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 * to set the skin on the thumb which is in a <code>SimpleScrollBar</code>,
+		 * which is in a <code>List</code>, you can use the following syntax:</p>
+		 * <pre>list.verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
 		 * <p>Setting properties in a <code>headerRendererFactory</code> function instead
 		 * of using <code>headerRendererProperties</code> will result in better
@@ -1538,7 +1641,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -1713,10 +1816,9 @@ package feathers.controls
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 * to set the skin on the thumb which is in a <code>SimpleScrollBar</code>,
+		 * which is in a <code>List</code>, you can use the following syntax:</p>
+		 * <pre>list.verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
 		 * <p>Setting properties in a <code>footerRendererFactory</code> function instead
 		 * of using <code>footerRendererProperties</code> will result in better
@@ -1752,7 +1854,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -1976,6 +2078,10 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
+			//clearing selection now so that the data provider setter won't
+			//cause a selection change that triggers events.
+			this._selectedGroupIndex = -1;
+			this._selectedItemIndex = -1;
 			this.dataProvider = null;
 			super.dispose();
 		}
@@ -1983,7 +2089,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function scrollToPosition(horizontalScrollPosition:Number, verticalScrollPosition:Number, animationDuration:Number = 0):void
+		override public function scrollToPosition(horizontalScrollPosition:Number, verticalScrollPosition:Number, animationDuration:Number = NaN):void
 		{
 			this.pendingItemIndex = -1;
 			super.scrollToPosition(horizontalScrollPosition, verticalScrollPosition, animationDuration);
@@ -1992,7 +2098,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
+		override public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = NaN):void
 		{
 			this.pendingGroupIndex = -1;
 			this.pendingItemIndex = -1;
@@ -2102,7 +2208,7 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			const hasLayout:Boolean = this._layout != null;
+			var hasLayout:Boolean = this._layout != null;
 
 			super.initialize();
 
@@ -2125,7 +2231,7 @@ package feathers.controls
 					this.verticalScrollPolicy = SCROLL_POLICY_ON;
 				}
 
-				const layout:VerticalLayout = new VerticalLayout();
+				var layout:VerticalLayout = new VerticalLayout();
 				layout.useVirtualLayout = true;
 				layout.paddingTop = layout.paddingRight = layout.paddingBottom =
 					layout.paddingLeft = 0;
@@ -2194,7 +2300,7 @@ package feathers.controls
 		{
 			if(this.pendingGroupIndex >= 0 && this.pendingItemIndex >= 0)
 			{
-				const item:Object = this._dataProvider.getItemAt(this.pendingGroupIndex, this.pendingItemIndex);
+				var item:Object = this._dataProvider.getItemAt(this.pendingGroupIndex, this.pendingItemIndex);
 				if(item is Object)
 				{
 					this.dataViewPort.getScrollPositionForIndex(this.pendingGroupIndex, this.pendingItemIndex, HELPER_POINT);
@@ -2313,7 +2419,7 @@ package feathers.controls
 				{
 					itemIndex = -1;
 					groupIndex++;
-					const groupCount:int = this._dataProvider.getLength();
+					var groupCount:int = this._dataProvider.getLength();
 					while(groupIndex < groupCount && itemIndex < 0)
 					{
 						if(this._dataProvider.getLength(groupIndex) > 0)

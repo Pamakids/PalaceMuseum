@@ -35,6 +35,9 @@ package views
 
 		public function EndScene(cb:Function)
 		{
+
+			SOService.instance.setSO("finished",true);
+
 			callback=cb;
 
 			messageHolder=new Sprite();
@@ -158,3 +161,5 @@ package views
 		}
 	}
 }
+
+

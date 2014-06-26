@@ -52,15 +52,15 @@ package views.global.books.userCenter.screen
 			var horizontalGap:int=15;
 			var paddingTop:int=90;
 			var verticalGap:int=60;
-
-			vecImage=new Vector.<Image>(max);
+			var l:int=source.length;
+			vecImage=new Vector.<Image>(l);
 			var image:Image;
 			var vo:CollectionVO;
 			var textureUn:Texture=BooksManager.getTexture("card_collection_unfinish");
 			itemWidth=textureUn.width;
 
 			var texture:Texture;
-			for (var i:int=0; i < max; i++)
+			for (var i:int=0; i < l; i++)
 			{
 				vo=source[i];
 				texture=vo.isCollected ? BooksManager.getTexture("card_collection_" + vo.id) : textureUn;
@@ -170,13 +170,16 @@ package views.global.books.userCenter.screen
 		}
 
 		private const order:Array=[0, 1, 2, 3, 4, 12, 5, 6, 7, 9, 8, 13, 10, 11, 14, 15];
-		private var source:Vector.<CollectionVO>;
+//		private const order:Array=[0, 1, 2, 3, 12, 5, 6, 7, 9, 8, 13, 10, 11, 14, 15];
+		private var source:Array;
+//		private var source:Vector.<CollectionVO>;
 
 		private function initDatas():void
 		{
 			var arr:Array=BooksManager.getAssetsManager().getObject("collection").source;
 			max=arr.length;
-			source=new Vector.<CollectionVO>(max);
+			var tmpArr:Vector.<CollectionVO>=new Vector.<CollectionVO>(max);
+//			source=new Vector.<CollectionVO>(max);
 			var vo:CollectionVO;
 			var id:String;
 			for (var i:int=0; i < max; i++)
@@ -188,8 +191,17 @@ package views.global.books.userCenter.screen
 				vo.content=arr[id].content;
 				vo.explain=arr[id].explain;
 				vo.isCollected=DC.instance.testCollectionIsOpend(id);
-				source[i]=vo;
+				tmpArr[i]=vo;
 			}
+
+			source=[];
+			for (var j:int = 0; j < tmpArr.length; j++) 
+			{
+				if(j!=4)
+					source.push(tmpArr[j]);
+			}
+
+			tmpArr=null;
 		}
 
 		override public function dispose():void

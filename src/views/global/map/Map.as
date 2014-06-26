@@ -299,6 +299,13 @@ package views.global.map
 				desSky=null;
 			}
 
+			if (rectHolder)
+			{
+				TweenLite.killTweensOf(rectHolder);
+				rectHolder.removeFromParent(true);
+				rectHolder=null;
+			}
+
 			var msIndex:String=SOService.instance.getSO("lastScene") as String;
 			if (msIndex && msIndex.lastIndexOf("map") >= 0)
 				SOService.instance.setSO("lastScene", msIndex.substr(0, 2));
@@ -434,7 +441,6 @@ package views.global.map
 
 		public var isTask:Boolean=true;
 		private var sunPosArr:Array=[new Point(949, 39), new Point(863, 22), new Point(713, 7), new Point(554, 0), new Point(217, 10), new Point(-200, 50)];
-
 		private function flipedHandler(e:Event=null):void
 		{
 			scroller.verticalScrollPosition=mapH - 768;
@@ -500,7 +506,7 @@ package views.global.map
 			scroller.scrollToPosition(0, 0, 5);
 			TweenLite.delayedCall(5, function():void {
 				TweenLite.delayedCall(4,MC.instance.stage.addClickHint);
-				LionMC.instance.say("我就是神通广大的小石狮子。我们先来学习使用《皇帝速成手册》，遇到问题随时找我！", 0, 0, 0, function():void {
+				LionMC.instance.say("我就是神通广大的小石狮子。我们先来学习使用\n《皇帝速成手册》，\n遇到问题随时找我！", 0, 0, 0, function():void {
 					MC.instance.stage.removeClickHint();
 					TopBar.instance.visible=true;
 					TopBar.instance.showBookAndAvatar(false);
@@ -561,9 +567,9 @@ package views.global.map
 			switch (t.phase)
 			{
 				case TouchPhase.BEGAN:
-					TweenLite.killTweensOf(flipAnimation);
+//					TweenLite.killTweensOf(flipAnimation);
 					downPoint=p;
-					downY=flipAnimation.y;
+//					downY=flipAnimation.y;
 					break;
 //				case TouchPhase.MOVED:
 //					if (!downPoint)
@@ -774,7 +780,7 @@ package views.global.map
 			rectHolder.graphics.clear();
 			rectHolder.graphics.lineStyle(2, 0xccff66);
 			rectHolder.graphics.drawRoundRect(r.x, r.y, r.width, r.height, 10);
-			TweenLite.to(rectHolder, 5, {alpha: 0});
+			TweenLite.to(rectHolder, 3, {alpha: 0});
 		}
 
 		private function showKing(point:Point, callback:Function):void
@@ -839,9 +845,9 @@ package views.global.map
 			else
 				hasTask=false;
 			visible=true;
-			TweenLite.killTweensOf(flipAnimation);
+//			TweenLite.killTweensOf(flipAnimation);
 //			flipAnimation.y=showFromCenter ? 0 : -460.8;
-			flipAnimation.y=-460.8;
+//			flipAnimation.y=-460.8;
 //			flipAnimation.height=height;
 			flipedHandler();
 //			if (ea)

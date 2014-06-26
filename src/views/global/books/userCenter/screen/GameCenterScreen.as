@@ -2,17 +2,22 @@ package views.global.books.userCenter.screen
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
+
+	import flash.system.Capabilities;
 	import flash.utils.Dictionary;
-	
+
 	import controllers.DC;
 	import controllers.MC;
-	
+
 	import feathers.core.PopUpManager;
-	
+
+	import models.PosVO;
+
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
-	
+
+	import views.global.TopBar;
 	import views.global.books.BooksManager;
 	import views.global.books.components.GameScene;
 	import views.global.books.components.ItemForGameList;
@@ -38,7 +43,7 @@ package views.global.books.userCenter.screen
 
 			dispatchEventWith(BookEvent.InitViewPlayed);
 		}
-		
+
 		override protected function initPages():void
 		{
 			var image:Image = BooksManager.getImage("background_2");
@@ -56,13 +61,13 @@ package views.global.books.userCenter.screen
 		 * 	]
 		 */
 		private var gameDatas:Array;
-		
+
 		private function getGameDatas():void
 		{
 			gameDatas=DC.instance.getGameDatas();
 		}
 		private var gameList:Vector.<ItemForGameList>;
-		
+
 		private function initGameList():void
 		{
 			const count:int=gameDatas.length;
@@ -77,22 +82,22 @@ package views.global.books.userCenter.screen
 				gameList[i]=item;
 			}
 		}
-		
+
 		private var w_game:W_Game;
-		
+
 		private function init_w_game(value:Object):void
 		{
 			w_game=new W_Game(value);
 			w_game.closeWinHandler=hideWinHandler;
 			w_game.startGameHandler=startGameHandler;
 		}
-		
+
 		private function show_W_game(value:Object):void
 		{
 			(!w_game) ? init_w_game(value) : w_game.resetData(value);
 			showWinHandler(w_game);
 		}
-		
+
 		private function showWinHandler(win:DisplayObject):void
 		{
 			PopUpManager.addPopUp(win, true, false);
@@ -100,10 +105,10 @@ package views.global.books.userCenter.screen
 			win.x=1024;
 			TweenLite.to(win, 0.3, {x: 1024 - win.width >> 1, ease: Cubic.easeIn});
 		}
-		
+
 		private function hideWinHandler(win:DisplayObject, onCompleted:Function=null, paras:Object=null):void
 		{
-			
+
 			var tween:TweenLite=TweenLite.to(win, 0.3, {x: 1024, ease: Cubic.easeOut, onComplete: function():void {
 				if (win) {
 					if (PopUpManager.isPopUp(win))
@@ -115,30 +120,38 @@ package views.global.books.userCenter.screen
 					onCompleted(paras);
 				delete twDic[win];
 			}});
-			
+
 			twDic[win]=tween;
 		}
 		private var twDic:Dictionary=new Dictionary();
-		private var gameScene:GameScene;
-		
+//		private var gameScene:GameScene;
+
 		private function startGameHandler(gameIndex:int):void
 		{
-			gameScene=new GameScene(gameIndex);
-			gameScene.playedCallBack=gamePlayedForW_game;
-			MC.instance.main.addChild(gameScene);
+			BooksManager.closeCtrBook();
+			Starling.juggler.delayCall(function():void{
+				var gameScene:GameScene=new GameScene(gameIndex);
+				gameScene.playedCallBack=function():void{
+					gameScene=null;
+				}
+				MC.instance.main.addChild(gameScene);
+			},.002);
+
 		}
-		
+
 		private function gamePlayedForW_game():void
 		{
+//			gameScene.removeFromParent(true);
+//			gameScene=null;
+
 			getGameDatas();
 			const max:int=gameDatas.length;
 			for (var i:int=0; i < max; i++)
 			{
 				gameList[i].data=gameDatas[i];
 			}
-			gameScene.removeFromParent(true);
 		}
-		
+
 
 		override public function dispose():void
 		{
@@ -148,9 +161,11 @@ package views.global.books.userCenter.screen
 			}
 			if (w_game)
 				w_game.removeFromParent(true);
-			if (gameScene)
-				gameScene.removeFromParent(true);
+//			if (gameScene)
+//				gameScene.removeFromParent(true);
 			super.dispose();
 		}
 	}
 }
+
+

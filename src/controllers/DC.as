@@ -68,8 +68,10 @@ package controllers
 		/**
 		 * 游戏数据名称集合
 		 */
-		private const classNames:Array=["menugame", "dishgame", "jigsawgame", "operagame"];
-		private const gameNames:Array=["吉祥菜名", "银牌试毒", "地图拼图", "粉墨登场"];
+		private const classNames:Array=["menugame", "dishgame", "operagame"];
+		private const gameNames:Array=["吉祥菜名", "银牌试毒", "粉墨登场"];
+//		private const classNames:Array=["menugame", "dishgame", "jigsawgame", "operagame"];
+//		private const gameNames:Array=["吉祥菜名", "银牌试毒", "地图拼图", "粉墨登场"];
 		/**
 		 * 游戏是否有难度区分:0 有， 1 没有
 		 */
@@ -88,7 +90,7 @@ package controllers
 		{
 			var datas:Array=[];
 			var obj:Object;
-			for (var i:int=0; i < 4; i++)
+			for (var i:int=0; i < classNames.length; i++)
 			{
 				obj={
 						name: gameNames[i],
@@ -135,3 +137,5 @@ package controllers
 		}
 	}
 }
+
+

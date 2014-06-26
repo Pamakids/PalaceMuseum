@@ -6,8 +6,11 @@ package views.module3
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.media.SoundTransform;
+	import flash.system.Capabilities;
 
 	import feathers.core.PopUpManager;
+
+	import models.PosVO;
 
 	import sound.SoundAssets;
 
@@ -26,6 +29,7 @@ package views.module3
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 	import views.global.TailBar;
+	import views.global.TopBar;
 
 	/**
 	 * 早膳模块
@@ -63,7 +67,7 @@ package views.module3
 
 		private function addKing():void
 		{
-			king=new MovieClip(assetManager.getTextures("kingDrag"), 18);
+			king=new MovieClip(assetManager.getTextures("kingDrag"), 10);
 			addChild(king);
 			king.loop=0;
 			Starling.juggler.add(king);
@@ -87,7 +91,7 @@ package views.module3
 
 		private function addChief():void
 		{
-			chef=new MovieClip(assetManager.getTextures("chief"), 18);
+			chef=new MovieClip(assetManager.getTextures("chief"), 10);
 			chef.addEventListener(Event.COMPLETE, onChiefPlayed);
 			Starling.juggler.add(chef);
 			chef.loop=0;
@@ -118,7 +122,7 @@ package views.module3
 			})
 		}
 
-		private var fish_hint:String="两只羊，五只鸡……皇帝每天的食材都是有分例的";
+		private var fish_hint:String="两只羊，五只鸡……皇帝每天的食材也有分例";
 		private var dish_hint:String="皇帝的饭菜，用料讲究，营养丰富";
 		private var chef_hint:String="被皇帝钦点的御厨拿手菜，可是莫大的荣耀。";
 		private var area1:Rectangle=new Rectangle(931, 179, 69, 102);
@@ -179,11 +183,17 @@ package views.module3
 				TailBar.hide();
 				king.addEventListener(Event.COMPLETE, onKingPlayed);
 				king.play();
-				TweenLite.delayedCall(1.3, function():void {
+				TweenLite.delayedCall(1, function():void {
 					Prompt.showTXT(864, 617, "急什么，再让我看一会儿…", 20, sceneOver, null, 3, false);
 					SoundAssets.playSFX("kingdragged");
 				});
 			}
+		}
+
+		override protected function init():void{
+			super.init();
+			if(PosVO.scale==1&&!Capabilities.isDebugger)
+				TopBar.hide();
 		}
 
 		private function onKingPlayed(e:Event):void
@@ -203,3 +213,5 @@ package views.module3
 		private var chef:MovieClip;
 	}
 }
+
+

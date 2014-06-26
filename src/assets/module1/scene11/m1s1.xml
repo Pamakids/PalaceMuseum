@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:a59393060fcc436084052a95d3e5becd$ -->
+<!-- $TexturePacker:SmartUpdate:5f7b4e26ce0d39e10f577d51a3997b37$ -->
 <TextureAtlas imagePath="m1s1.png">
-    <SubTexture name="hint-pic1" x="208" y="592" width="206" height="166"/>
-    <SubTexture name="hint-pic2" x="1" y="559" width="206" height="166"/>
-    <SubTexture name="king11" x="1" y="307" width="246" height="251"/>
-    <SubTexture name="lionHead" x="248" y="417" width="208" height="174"/>
+    <SubTexture name="hint-pic1" x="650" y="168" width="206" height="166"/>
+    <SubTexture name="hint-pic2" x="555" y="1" width="206" height="166"/>
+    <SubTexture name="king11" x="308" y="1" width="246" height="251"/>
+    <SubTexture name="lionHead" x="441" y="253" width="208" height="174"/>
     <SubTexture name="ok-effect" x="1" y="1" width="306" height="305"/>
-    <SubTexture name="window0-light" x="1" y="862" width="140" height="134"/>
-    <SubTexture name="window0-shadow" x="415" y="592" width="68" height="112" frameX="-38" frameY="-14" frameWidth="140" frameHeight="134"/>
-    <SubTexture name="window1" x="308" y="139" width="145" height="141"/>
-    <SubTexture name="window2" x="1" y="726" width="144" height="135"/>
-    <SubTexture name="window3" x="308" y="1" width="147" height="137"/>
-    <SubTexture name="window4" x="308" y="281" width="145" height="135"/>
+    <SubTexture name="window0-light" x="762" y="1" width="140" height="134"/>
+    <SubTexture name="window0-shadow" x="795" y="335" width="68" height="112" frameX="-38" frameY="-14" frameWidth="140" frameHeight="134"/>
+    <SubTexture name="window1" x="1" y="307" width="145" height="141"/>
+    <SubTexture name="window2" x="650" y="335" width="144" height="135"/>
+    <SubTexture name="window3" x="147" y="307" width="147" height="137"/>
+    <SubTexture name="window4" x="295" y="307" width="145" height="135"/>
 </TextureAtlas>

@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -35,6 +35,12 @@ package feathers.layout
 
 		/**
 		 * Determines if the ILayout should use this object or ignore it.
+		 *
+		 * <p>In the following example, the display object is excluded from
+		 * the layout:</p>
+		 *
+		 * <listing version="3.0">
+		 * object.includeInLayout = false;</listing>
 		 */
 		function get includeInLayout():Boolean;
 

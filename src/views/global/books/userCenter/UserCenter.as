@@ -53,7 +53,7 @@ package views.global.books.userCenter
 		}
 
 
-//initialize--------------------------------------------------------------------------------------
+		//initialize--------------------------------------------------------------------------------------
 		private function init():void
 		{
 			this.screenNames=[USERINFO, ACHIEVEMENT, COLLECTION, GAMECENTER, DEVELOPER];
@@ -78,27 +78,35 @@ package views.global.books.userCenter
 
 		private function initBackgroud():void
 		{
-//			var image:Image=BooksManager.getImage("main_background_1");
-//			this.addChild(image);
-//			image.touchable=false;
-
-			var left:Image=BooksManager.getImage("main_background_1_left");
-			left.touchable=false;
-			addChild(left);
-
-			var right:Image=BooksManager.getImage("main_background_1_right");
-			right.touchable=false;
-			right.x=1024-right.width;
-			addChild(right);
 
 			var top:Image=BooksManager.getImage("main_background_1_top");
 			top.touchable=false;
 			addChild(top);
+			//			top.scaleY=1.8;
 
-			var bottom:Image=BooksManager.getImage("main_background_1_bottom");
-			bottom.y=768-bottom.height;
-			bottom.touchable=false;
-			addChild(bottom);
+			var image:Image=BooksManager.getImage("main_background_1");
+			this.addChild(image);
+			image.y=768-image.height;
+
+			image.touchable=false;
+
+			//			var left:Image=BooksManager.getImage("main_background_1_left");
+			//			left.touchable=false;
+			//			addChild(left);
+			//
+			//			var right:Image=BooksManager.getImage("main_background_1_right");
+			//			right.touchable=false;
+			//			right.x=1024-right.width;
+			//			addChild(right);
+			//
+			//			var top:Image=BooksManager.getImage("main_background_1_top");
+			//			top.touchable=false;
+			//			addChild(top);
+			//
+			//			var bottom:Image=BooksManager.getImage("main_background_1_bottom");
+			//			bottom.y=768-bottom.height;
+			//			bottom.touchable=false;
+			//			addChild(bottom);
 		}
 		private var _tabBar:TabBar;
 
@@ -107,24 +115,24 @@ package views.global.books.userCenter
 			_tabBar=new TabBar();
 			_tabBar.dataProvider=new ListCollection([
 													{
-														defaultIcon: 	BooksManager.getImage("userinfo_up"),
-														selectedUpIcon:	BooksManager.getImage("userinfo_down")
+														defaultIcon: 	BooksManager.getImage("userinfo_up_new"),
+														selectedUpIcon:	BooksManager.getImage("userinfo_down_new")
 													},
 													{
-														defaultIcon:	BooksManager.getImage("achievement_up"),
-														selectedUpIcon:	BooksManager.getImage("achievement_down")
+														defaultIcon:	BooksManager.getImage("achievement_up_new"),
+														selectedUpIcon:	BooksManager.getImage("achievement_down_new")
 													},
 													{
-														defaultIcon:	BooksManager.getImage("collection_up"),
-														selectedUpIcon:	BooksManager.getImage("collection_down")
+														defaultIcon:	BooksManager.getImage("collection_up_new"),
+														selectedUpIcon:	BooksManager.getImage("collection_down_new")
 													},
 													{
-														defaultIcon:	BooksManager.getImage("games_up"),
-														selectedUpIcon:	BooksManager.getImage("games_down")
+														defaultIcon:	BooksManager.getImage("games_up_new"),
+														selectedUpIcon:	BooksManager.getImage("games_down_new")
 													},
 													{
-														defaultIcon:	BooksManager.getImage("team_up"),
-														selectedUpIcon:	BooksManager.getImage("team_down")
+														defaultIcon:	BooksManager.getImage("team_up_new"),
+														selectedUpIcon:	BooksManager.getImage("team_down_new")
 													}
 													]);
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;
@@ -223,21 +231,21 @@ package views.global.books.userCenter
 			targetRender=new RenderTexture(this.contentWidth, this.contentHeight, false);
 		}
 
-//eventListener----------------------------------------------------------------------------
+		//eventListener----------------------------------------------------------------------------
 
 		private function onInitialized(e:Event):void
 		{
 			switch (_navigator.activeScreenID)
 			{
-//				case HANDBOOK:
-//					(_navigator.activeScreen as HandbookScreen).initView(crtPage_Handbook);
-//					break;
-//				case USERINFO:
-//					(_navigator.activeScreen as UserInfoScreen).setMapVisible(mapVisible);
-//					break;
-//				case BIRDS:
-//					(_navigator.activeScreen as BirdScreen).initView(0);
-//					break;
+				//				case HANDBOOK:
+				//					(_navigator.activeScreen as HandbookScreen).initView(crtPage_Handbook);
+				//					break;
+				//				case USERINFO:
+				//					(_navigator.activeScreen as UserInfoScreen).setMapVisible(mapVisible);
+				//					break;
+				//				case BIRDS:
+				//					(_navigator.activeScreen as BirdScreen).initView(0);
+				//					break;
 			}
 		}
 
@@ -386,6 +394,19 @@ package views.global.books.userCenter
 				crtRender.dispose();
 			if (targetRender)
 				targetRender.dispose();
+
+			if (textureL)textureL.dispose();
+			textureL=null;
+			if (textureR)textureR.dispose();
+			textureR=null;
+			if (targetL)targetL.dispose();
+			targetL=null;
+			if (targetR)targetR.dispose();
+			targetR=null;
+			if (crtRender)crtRender.dispose();
+			crtRender=null;
+			if (targetRender)targetRender.dispose();
+			targetRender=null;
 			super.dispose();
 		}
 

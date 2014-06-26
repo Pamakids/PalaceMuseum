@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
 
 	import starling.display.DisplayObject;
@@ -43,10 +44,28 @@ package feathers.controls
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>ProgressBar</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function ProgressBar()
 		{
+			super();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return ProgressBar.styleProvider;
 		}
 
 		/**
@@ -257,7 +276,6 @@ package feathers.controls
 			if(this._backgroundSkin && this._backgroundSkin.parent != this)
 			{
 				this._backgroundSkin.visible = false;
-				this._backgroundSkin.touchable = false;
 				this.addChildAt(this._backgroundSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -302,7 +320,6 @@ package feathers.controls
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
 			{
 				this._backgroundDisabledSkin.visible = false;
-				this._backgroundDisabledSkin.touchable = false;
 				this.addChildAt(this._backgroundDisabledSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -375,7 +392,6 @@ package feathers.controls
 			if(this._fillSkin && this._fillSkin.parent != this)
 			{
 				this._fillSkin.visible = false;
-				this._fillSkin.touchable = false;
 				this.addChild(this._fillSkin);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -420,7 +436,6 @@ package feathers.controls
 			if(this._fillDisabledSkin && this._fillDisabledSkin.parent != this)
 			{
 				this._fillDisabledSkin.visible = false;
-				this._fillDisabledSkin.touchable = false;
 				this.addChild(this._fillDisabledSkin);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -601,9 +616,9 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
 			if(stylesInvalid || stateInvalid)
@@ -625,18 +640,20 @@ package feathers.controls
 
 			if(dataInvalid || sizeInvalid || stateInvalid || stylesInvalid)
 			{
-				this.currentFill.x = this._paddingLeft;
-				this.currentFill.y = this._paddingTop;
-				const percentage:Number = (this._value - this._minimum) / (this._maximum - this._minimum);
+				var percentage:Number = (this._value - this._minimum) / (this._maximum - this._minimum);
 				if(this._direction == DIRECTION_VERTICAL)
 				{
 					this.currentFill.width = this.actualWidth - this._paddingLeft - this._paddingRight;
 					this.currentFill.height = this._originalFillHeight + percentage * (this.actualHeight - this._paddingTop - this._paddingBottom - this._originalFillHeight);
+					this.currentFill.x = this._paddingLeft;
+					this.currentFill.y = this.actualHeight - this._paddingBottom - this.currentFill.height;
 				}
 				else
 				{
 					this.currentFill.width = this._originalFillWidth + percentage * (this.actualWidth - this._paddingLeft - this._paddingRight - this._originalFillWidth);
 					this.currentFill.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+					this.currentFill.x = this._paddingLeft;
+					this.currentFill.y = this._paddingTop;
 				}
 			}
 
@@ -660,8 +677,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;

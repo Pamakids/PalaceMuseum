@@ -3,25 +3,17 @@ package views
 	import com.greensock.TweenLite;
 
 	import flash.display.Bitmap;
+	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.events.NetStatusEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.events.TouchEvent;
-	import flash.geom.Rectangle;
-	import flash.media.StageVideo;
-	import flash.media.Video;
-	import flash.net.NetConnection;
-	import flash.net.NetStream;
+	import flash.media.Sound;
+	import flash.media.SoundChannel;
 	import flash.system.Capabilities;
-	import flash.system.System;
-	import flash.utils.getTimer;
-	import flash.utils.setTimeout;
-
-	import models.PosVO;
 
 	import sound.SoundAssets;
 
@@ -39,11 +31,11 @@ package views
 		[Embed(source="../assets/video/bg.png")]
 		private static const BG:Class;
 
-		private var videoURL:String;
-		private var stream:NetStream;
-		private var stageVideo:StageVideo;
-		private var video:Video;
-		private var connection:NetConnection;
+//		private var videoURL:String;
+//		private var stream:NetStream;
+//		private var stageVideo:StageVideo;
+//		private var video:Video;
+//		private var connection:NetConnection;
 		private var button:Sprite;
 
 		private var startHandler:Function;
@@ -57,9 +49,10 @@ package views
 		 * @param onStart		视频开始时回调
 		 * @param onStop		视频结束时回调
 		 */
-		public function Interlude(videoURL:String, passable:Boolean=true, onStart:Function=null, onStop:Function=null)
+		public function Interlude(_index:int, passable:Boolean=true, onStart:Function=null, onStop:Function=null)
 		{
-			this.videoURL=videoURL;
+			this.index=_index;
+//			this.videoURL=videoURL;
 			this.passable=passable;
 			this.startHandler=onStart;
 			this.stopHandler=onStop;
@@ -69,6 +62,21 @@ package views
 //			this.x=PosVO.OffsetX;
 //			this.y=PosVO.OffsetY;
 		}
+
+		private var arr:Array=[IntroMC,EndMC];
+		private var arr2:Array=[introSnd,endSnd];
+
+		[Embed(source="end.mp3")]
+		private static var endSnd:Class;
+
+		[Embed(source="intro.mp3")]
+		private static var introSnd:Class;
+
+		private var mc:MovieClip;
+		private var snd:Sound;
+		private var sndC:SoundChannel;
+
+		private var index:int=0;
 
 		private var shape:Shape;
 
@@ -80,10 +88,11 @@ package views
 			SoundAssets.stopBGM(true);
 
 			Starling.current.stage3D.visible=false;
+			Starling.current.stage.touchable=false;
 			initialize();
 			if (Capabilities.isDebugger)
 			{
-				stage.addEventListener(MouseEvent.CLICK, onStage);
+//				stage.addEventListener(MouseEvent.CLICK, onStage);
 			}
 		}
 
@@ -94,25 +103,75 @@ package views
 
 		private function initialize():void
 		{
-			initBG();
+			var os:String=Capabilities.os;
+			if(os.toLowerCase().indexOf('iphone')>=0)
+			{
+				var version:String=os.charAt(10);
+				if(Number(version)<7)
+				{
+					needBG=false;
+				}
+			}
+			if(needBG)
+				initBG();
 			initShape();
 			initButton();
-			initConnection();
+
+			stage.frameRate=24;
+			mc=new arr[index]();
+			mc.x=123; 
+			mc.y=86;
+//			mc.scaleX=mc.scaleY=PosVO.scale;
+			addChildAt(mc,0);
+			mc.addEventListener(Event.FRAME_CONSTRUCTED,onPlay);
+			snd=new arr2[index]();
+			sndC=snd.play();
+
+			TweenLite.to(shape, 1.5, {alpha: 0, onComplete: function():void {
+				shape.graphics.clear();
+				removeChild(shape);
+				shape=null;
+			}});
+
+			if (startHandler)
+				startHandler();
+			if (passable)
+			{
+//				start=getTimer();
+//				this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+				TweenLite.delayedCall(seconds,showSkip);
+			}
+
+//			initConnection();
+		} 
+
+		private function showSkip():void{
+			button.visible=true;
+		}
+
+		protected function onPlay(event:Event):void
+		{
+			if(!mc)
+				return ;
+			if(mc.currentFrame==mc.totalFrames)
+				dispose();
 		}
 
 		private function initBG():void
 		{
 			var bg:Bitmap=new BG();
 			this.addChild(bg);
+			bg.cacheAsBitmap=true;
 		}
 
 		private function initShape():void
 		{
 			shape=new Shape();
 			this.addChild(shape);
-			shape.graphics.beginFill(stage.color);
-			shape.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			shape.graphics.beginFill(0);
+			shape.graphics.drawRect(0, 0, 1024,768);
 			shape.graphics.endFill();
+			shape.cacheAsBitmap=true;
 		}
 
 		private function initButton():void
@@ -129,6 +188,7 @@ package views
 				button.visible=false;
 				button.addEventListener(TouchEvent.TOUCH_BEGIN, passHandler);
 				button.addEventListener(MouseEvent.CLICK, passHandler);
+				button.cacheAsBitmap=true;
 			}
 		}
 
@@ -138,79 +198,81 @@ package views
 			this.dispose();
 		}
 
-		private function initConnection():void
-		{
-			connection=new NetConnection();
-			connection.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
-			connection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
-			connection.connect(null);
-		}
+//		private function initConnection():void
+//		{
+//			connection=new NetConnection();
+//			connection.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
+//			connection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+//			connection.connect(null);
+//		}
 
 		protected function securityErrorHandler(event:SecurityErrorEvent):void
 		{
 			trace("securityErrorHandler: " + event);
 		}
 
-		protected function netStatusHandler(e:NetStatusEvent):void
-		{
-			switch (e.info.code)
-			{
-				case "NetConnection.Connect.Success":
-					connectStream();
-					break;
-				case "NetStream.Play.StreamNotFound":
-					trace("Unable to locate video: " + videoURL);
-					break;
-				case "NetStream.Play.Start":
-					trace("NetStream.Play.Start");
-					TweenLite.to(shape, 1.5, {alpha: 0, onComplete: function():void {
-						shape.graphics.clear();
-						shape=null;
-					}});
-					if (startHandler)
-						startHandler();
-					if (passable)
-					{
-						start=getTimer();
-						this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-					}
-					break;
-				case "NetStream.Play.Stop":
-					trace("NetStream.Play.Stop");
-					dispose();
-					break;
-			}
-		}
+//		protected function netStatusHandler(e:NetStatusEvent):void
+//		{
+//			switch (e.info.code)
+//			{
+//				case "NetConnection.Connect.Success":
+//					connectStream();
+//					break;
+//				case "NetStream.Play.StreamNotFound":
+//					trace("Unable to locate video: " + videoURL);
+//					break;
+//				case "NetStream.Play.Start":
+//					trace("NetStream.Play.Start");
+//					TweenLite.to(shape, 1.5, {alpha: 0, onComplete: function():void {
+//						shape.graphics.clear();
+//						removeChild(shape);
+//						shape=null;
+//					}});
+//					if (startHandler)
+//						startHandler();
+//					if (passable)
+//					{
+//						start=getTimer();
+//						this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+//					}
+//					break;
+//				case "NetStream.Play.Stop":
+//					trace("NetStream.Play.Stop");
+//					dispose();
+//					break;
+//			}
+//		}
 
-		private var start:uint;
+//		private var start:uint;
 		private const seconds:uint=8;
 		private var lastBGM:String;
 
-		private function onEnterFrame(e:Event):void
-		{
-			if (getTimer() - start >= seconds * 1000)
-			{
-				this.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-				button.visible=true;
-			}
-		}
+//		private function onEnterFrame(e:Event):void
+//		{
+//			if (getTimer() - start >= seconds * 1000)
+//			{
+//				this.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+//				button.visible=true;
+//			}
+//		}
 
-		private function connectStream():void
-		{
-			stream=new NetStream(connection);
-			stream.client={
-					onMetaData: onMetaData
-				};
-			stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
-			stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
-
-			stageVideo=stage.stageVideos[0];
-
-			var sc:Number=PosVO.scale;
-			stageVideo.viewPort=new Rectangle(123 * sc + PosVO.OffsetX, 86 * sc + PosVO.OffsetY, 704 * sc, 528 * sc);
-			stageVideo.attachNetStream(stream);
-			stream.play(videoURL);
-		}
+//		private function connectStream():void
+//		{
+//			stream=new NetStream(connection);
+//			stream.client={
+//					onMetaData: onMetaData
+//				};
+//			stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
+//			stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
+//
+//			stageVideo=stage.stageVideos[0];
+//
+//			var sc:Number=PosVO.scale;
+//			stageVideo.viewPort=new Rectangle(123 * sc + PosVO.OffsetX, 86 * sc + PosVO.OffsetY, 704 * sc, 528 * sc);
+//			stageVideo.attachNetStream(stream);
+//			stream.play(videoURL);
+//		}
+		private var needBG:Boolean=true;
 
 		private function onMetaData(_obj:Object):void
 		{
@@ -236,42 +298,52 @@ package views
 
 			stage.removeEventListener(MouseEvent.MOUSE_DOWN, onStage);
 			Starling.current.stage3D.visible=true;
+			Starling.current.stage.touchable=true;
 			TweenLite.killTweensOf(shape);
-			if (connection)
-			{
-				connection.removeEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
-				connection.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
-				connection.close();
-				connection=null
-			}
-			if (stream)
-			{
-				stream.removeEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
-				stream.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
-				stream.pause();
+//			if (connection)
+//			{
+//				connection.removeEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
+//				connection.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+//				connection.close();
+//				connection=null
+//			}
+//			if (stream)
+//			{
+//				stream.removeEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
+//				stream.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
+//				stream.pause();
 //				stream.close();
-				stream=null;
-
-				System.gc();
-				System.gc();
-
-//				setTimeout(function():void{
-//					stream.close();
-//					stream=null;
-//				},100);
-			}
-			if (stageVideo)
-			{
-				stageVideo.viewPort=new Rectangle(0, 0, 0, 0);
-				stageVideo=null;
-			}
-			if (video)
-			{
-				this.removeChild(video);
-				video.clear();
-				video=null;
-			}
+//				stream=null;
+//			}
+//			if (stageVideo)
+//			{
+//				stageVideo.viewPort=new Rectangle(0, 0, 0, 0);
+//				stageVideo=null;
+//			}
+//			if (video)
+//			{
+//				this.removeChild(video);
+//				video.clear();
+//				video=null;
+//			}
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
+
+			if(mc)
+			{
+				mc.removeEventListener(Event.FRAME_CONSTRUCTED,onPlay);
+				mc.stop();
+				this.removeChild(mc);
+			}
+			mc=null;
+			snd=null;
+			if(sndC)
+			{
+				sndC.stop();
+			}
+			sndC=null;
+
+			stage.frameRate=30;
+
 			if (stopHandler)
 				stopHandler();
 			this.startHandler=null;

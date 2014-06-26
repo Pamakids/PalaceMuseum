@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -9,10 +9,13 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
+	import flash.display3D.Context3DTextureFormat;
+	import flash.errors.IllegalOperationError;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -29,6 +32,7 @@ package feathers.controls
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
@@ -38,12 +42,43 @@ package feathers.controls
 	/**
 	 * Dispatched when the source content finishes loading.
 	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
 	 * @eventType starling.events.Event.COMPLETE
 	 */
 	[Event(name="complete",type="starling.events.Event")]
 
 	/**
 	 * Dispatched if an error occurs while loading the source content.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The <code>flash.events.ErrorEvent</code>
+	 *   dispatched by the loader.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
 	 *
 	 * @eventType feathers.events.FeathersEventType.ERROR
 	 */
@@ -100,6 +135,25 @@ package feathers.controls
 		protected static const ATF_FILE_EXTENSION:String = "atf";
 
 		/**
+		 * @private
+		 */
+		protected static var textureQueueHead:ImageLoader;
+
+		/**
+		 * @private
+		 */
+		protected static var textureQueueTail:ImageLoader;
+
+		/**
+		 * The default <code>IStyleProvider</code> for all <code>ImageLoader</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function ImageLoader()
@@ -132,7 +186,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _currentTextureFrame:Rectangle;
+		protected var _currentTextureWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var _currentTextureHeight:Number = NaN;
 
 		/**
 		 * @private
@@ -158,6 +217,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _isTextureOwner:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return ImageLoader.styleProvider;
+		}
 
 		/**
 		 * @private
@@ -200,6 +267,10 @@ package feathers.controls
 			if(this._source == value)
 			{
 				return;
+			}
+			if(this._isInTextureQueue)
+			{
+				this.removeFromTextureQueue();
 			}
 			this._source = value;
 			this.cleanupTexture();
@@ -419,6 +490,43 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private var _textureFormat:String = Context3DTextureFormat.BGRA;
+
+		/**
+		 * The texture format to use when creating a texture loaded from a URL.
+		 *
+		 * <p>In the following example, the image loader's texture format is set
+		 * to a custom value:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.textureFormat = Context3DTextureFormat.BGRA_PACKED;</listing>
+		 *
+		 * @default flash.display3d.Context3DTextureFormat.BGRA
+		 *
+		 * @see flash.display3d.Context3DTextureFormat
+		 */
+		public function get textureFormat():String
+		{
+			return this._textureFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set textureFormat(value:String):void
+		{
+			if(this._textureFormat == value)
+			{
+				return;
+			}
+			this._textureFormat = value;
+			this._lastURL = null;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		private var _snapToPixels:Boolean = false;
 
 		/**
@@ -493,9 +601,9 @@ package feathers.controls
 		 */
 		public function get originalSourceWidth():Number
 		{
-			if(this._currentTextureFrame)
+			if(this._currentTextureWidth == this._currentTextureWidth) //!isNaN
 			{
-				return this._currentTextureFrame.width;
+				return this._currentTextureWidth;
 			}
 			return 0;
 		}
@@ -508,9 +616,9 @@ package feathers.controls
 		 */
 		public function get originalSourceHeight():Number
 		{
-			if(this._currentTextureFrame)
+			if(this._currentTextureHeight == this._currentTextureHeight) //!isNaN
 			{
-				return this._currentTextureFrame.height;
+				return this._currentTextureHeight;
 			}
 			return 0;
 		}
@@ -555,6 +663,7 @@ package feathers.controls
 		 *
 		 * @default false
 		 *
+		 * @see #textureQueueDuration
 		 * @see feathers.controls.Scroller#event:scrollStart
 		 * @see feathers.controls.Scroller#event:scrollComplete
 		 * @see feathers.controls.Scroller#isScrolling
@@ -576,17 +685,85 @@ package feathers.controls
 			this._delayTextureCreation = value;
 			if(!this._delayTextureCreation)
 			{
-				if(this._pendingBitmapDataTexture)
+				this.processPendingTexture();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isInTextureQueue:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _textureQueuePrevious:ImageLoader;
+
+		/**
+		 * @private
+		 */
+		protected var _textureQueueNext:ImageLoader;
+
+		/**
+		 * @private
+		 */
+		protected var _accumulatedPrepareTextureTime:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _textureQueueDuration:Number = Number.POSITIVE_INFINITY;
+
+		/**
+		 * If <code>delayTextureCreation</code> is <code>true</code> and the
+		 * duration is not <code>Number.POSITIVE_INFINITY</code>, the loader
+		 * will be added to a queue where the textures are uploaded to the GPU
+		 * in sequence to avoid significantly affecting performance. Useful for
+		 * lists where many textures may need to be uploaded during scrolling.
+		 *
+		 * <p>If the duration is <code>Number.POSITIVE_INFINITY</code>, the
+		 * default value, the texture will not be uploaded until
+		 * <code>delayTextureCreation</code> is set to <code>false</code>. In
+		 * this situation, the loader will not be added to the queue, and other
+		 * loaders with a duration won't be affected.</p>
+		 *
+		 * <p>In the following example, the image loader's texture creation is
+		 * delayed by half a second:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.delayTextureCreation = true;
+		 * loader.textureQueueDuration = 0.5;</listing>
+		 *
+		 * @default Number.POSITIVE_INFINITY
+		 *
+		 * @see #delayTextureCreation
+		 */
+		public function get textureQueueDuration():Number
+		{
+			return this._textureQueueDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set textureQueueDuration(value:Number):void
+		{
+			if(this._textureQueueDuration == value)
+			{
+				return;
+			}
+			var oldDuration:Number = this._textureQueueDuration;
+			this._textureQueueDuration = value;
+			if(this._delayTextureCreation)
+			{
+				 if((this._pendingBitmapDataTexture || this._pendingRawTextureData) &&
+					oldDuration == Number.POSITIVE_INFINITY && this._textureQueueDuration < Number.POSITIVE_INFINITY)
 				{
-					const bitmapData:BitmapData = this._pendingBitmapDataTexture;
-					this._pendingBitmapDataTexture = null;
-					this.replaceBitmapDataTexture(bitmapData);
+					this.addToTextureQueue();
 				}
-				if(this._pendingRawTextureData)
+				else if(this._isInTextureQueue && this._textureQueueDuration == Number.POSITIVE_INFINITY)
 				{
-					const rawData:ByteArray = this._pendingRawTextureData;
-					this._pendingRawTextureData = null;
-					this.replaceRawTextureData(rawData);
+					this.removeFromTextureQueue();
 				}
 			}
 		}
@@ -816,9 +993,9 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
 			if(dataInvalid)
@@ -857,8 +1034,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -867,12 +1044,12 @@ package feathers.controls
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				if(this._currentTextureFrame)
+				if(this._currentTextureWidth == this._currentTextureWidth) //!isNaN
 				{
-					newWidth = this._currentTextureFrame.width * this._textureScale;
-					if(!needsHeight)
+					newWidth = this._currentTextureWidth * this._textureScale;
+					if(this._maintainAspectRatio && !needsHeight)
 					{
-						const heightScale:Number = this.explicitHeight / (this._currentTextureFrame.height * this._textureScale);
+						var heightScale:Number = this.explicitHeight / (this._currentTextureHeight * this._textureScale);
 						newWidth *= heightScale;
 					}
 				}
@@ -886,12 +1063,12 @@ package feathers.controls
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				if(this._currentTextureFrame)
+				if(this._currentTextureHeight == this._currentTextureHeight) //!isNaN
 				{
-					newHeight = this._currentTextureFrame.height * this._textureScale;
-					if(!needsWidth)
+					newHeight = this._currentTextureHeight * this._textureScale;
+					if(this._maintainAspectRatio && !needsWidth)
 					{
-						const widthScale:Number = this.explicitWidth / (this._currentTextureFrame.width * this._textureScale);
+						var widthScale:Number = this.explicitWidth / (this._currentTextureWidth * this._textureScale);
 						newHeight *= widthScale;
 					}
 				}
@@ -919,7 +1096,7 @@ package feathers.controls
 			}
 			else
 			{
-				const sourceURL:String = this._source as String;
+				var sourceURL:String = this._source as String;
 				if(!sourceURL)
 				{
 					this._lastURL = null;
@@ -1021,8 +1198,8 @@ package feathers.controls
 			{
 				HELPER_RECTANGLE.x = 0;
 				HELPER_RECTANGLE.y = 0;
-				HELPER_RECTANGLE.width = this._currentTextureFrame.width * this._textureScale;
-				HELPER_RECTANGLE.height = this._currentTextureFrame.height * this._textureScale;
+				HELPER_RECTANGLE.width = this._currentTextureWidth * this._textureScale;
+				HELPER_RECTANGLE.height = this._currentTextureHeight * this._textureScale;
 				HELPER_RECTANGLE2.x = 0;
 				HELPER_RECTANGLE2.y = 0;
 				HELPER_RECTANGLE2.width = this.actualWidth - this._paddingLeft - this._paddingRight;
@@ -1078,7 +1255,17 @@ package feathers.controls
 
 			//save the texture's frame so that we don't need to create a new
 			//rectangle every time that we want to access it.
-			this._currentTextureFrame = this._currentTexture.frame;
+			var frame:Rectangle = this._currentTexture.frame;
+			if(frame)
+			{
+				this._currentTextureWidth = frame.width;
+				this._currentTextureHeight = frame.height;
+			}
+			else
+			{
+				this._currentTextureWidth = this._currentTexture.width;
+				this._currentTextureHeight = this._currentTexture.height;
+			}
 			if(!this.image)
 			{
 				this.image = new Image(this._currentTexture);
@@ -1121,7 +1308,8 @@ package feathers.controls
 				this._pendingRawTextureData.clear();
 			}
 			this._currentTexture = null;
-			this._currentTextureFrame = null;
+			this._currentTextureWidth = NaN;
+			this._currentTextureHeight = NaN;
 			this._pendingBitmapDataTexture = null;
 			this._pendingRawTextureData = null;
 			this._textureBitmapData = null;
@@ -1135,7 +1323,7 @@ package feathers.controls
 		 */
 		protected function replaceBitmapDataTexture(bitmapData:BitmapData):void
 		{
-			this._texture = Texture.fromBitmapData(bitmapData, false);
+			this._texture = Texture.fromBitmapData(bitmapData, false, false, 1, this._textureFormat);
 			if(Starling.handleLostContext)
 			{
 				//we're saving it so that we can dispose it when we get a new
@@ -1181,19 +1369,167 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function addToTextureQueue():void
+		{
+			if(!this._delayTextureCreation)
+			{
+				throw new IllegalOperationError("Cannot add loader to delayed texture queue if delayTextureCreation is false.");
+			}
+			if(this._textureQueueDuration == Number.POSITIVE_INFINITY)
+			{
+				throw new IllegalOperationError("Cannot add loader to delayed texture queue if textureQueueDuration is Number.POSITIVE_INFINITY.");
+			}
+			if(this._isInTextureQueue)
+			{
+				throw new IllegalOperationError("Cannot add loader to delayed texture queue more than once.");
+			}
+			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, imageLoader_removedFromStageHandler);
+			this._isInTextureQueue = true;
+			if(textureQueueTail)
+			{
+				textureQueueTail._textureQueueNext = this;
+				this._textureQueuePrevious = textureQueueTail;
+				textureQueueTail = this;
+			}
+			else
+			{
+				textureQueueHead = this;
+				textureQueueTail = this;
+				this.preparePendingTexture();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeFromTextureQueue():void
+		{
+			if(!this._isInTextureQueue)
+			{
+				return;
+			}
+			var previous:ImageLoader = this._textureQueuePrevious;
+			var next:ImageLoader = this._textureQueueNext;
+			this._textureQueuePrevious = null;
+			this._textureQueueNext = null;
+			this._isInTextureQueue = false;
+			this.removeEventListener(starling.events.Event.REMOVED_FROM_STAGE, imageLoader_removedFromStageHandler);
+			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, processTextureQueue_enterFrameHandler);
+			if(previous)
+			{
+				previous._textureQueueNext = next;
+			}
+			if(next)
+			{
+				next._textureQueuePrevious = previous;
+			}
+			var wasHead:Boolean = textureQueueHead == this;
+			var wasTail:Boolean = textureQueueTail == this;
+			if(wasTail)
+			{
+				textureQueueTail = previous;
+				if(wasHead)
+				{
+					textureQueueHead = previous;
+				}
+			}
+			if(wasHead)
+			{
+				textureQueueHead = next;
+				if(wasTail)
+				{
+					textureQueueTail = next;
+				}
+			}
+			if(wasHead && textureQueueHead)
+			{
+				textureQueueHead.preparePendingTexture();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function preparePendingTexture():void
+		{
+			if(this._textureQueueDuration > 0)
+			{
+				this._accumulatedPrepareTextureTime = 0;
+				this.addEventListener(EnterFrameEvent.ENTER_FRAME, processTextureQueue_enterFrameHandler);
+			}
+			else
+			{
+				this.processPendingTexture();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function processPendingTexture():void
+		{
+			if(this._pendingBitmapDataTexture)
+			{
+				var bitmapData:BitmapData = this._pendingBitmapDataTexture;
+				this._pendingBitmapDataTexture = null;
+				this.replaceBitmapDataTexture(bitmapData);
+			}
+			if(this._pendingRawTextureData)
+			{
+				var rawData:ByteArray = this._pendingRawTextureData;
+				this._pendingRawTextureData = null;
+				this.replaceRawTextureData(rawData);
+			}
+			if(this._isInTextureQueue)
+			{
+				this.removeFromTextureQueue();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function processTextureQueue_enterFrameHandler(event:EnterFrameEvent):void
+		{
+			this._accumulatedPrepareTextureTime += event.passedTime;
+			if(this._accumulatedPrepareTextureTime >= this._textureQueueDuration)
+			{
+				this.removeEventListener(EnterFrameEvent.ENTER_FRAME, processTextureQueue_enterFrameHandler);
+				this.processPendingTexture();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function imageLoader_removedFromStageHandler(event:starling.events.Event):void
+		{
+			if(this._isInTextureQueue)
+			{
+				this.removeFromTextureQueue();
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function loader_completeHandler(event:flash.events.Event):void
 		{
-			const bitmap:Bitmap = Bitmap(this.loader.content);
+			var bitmap:Bitmap = Bitmap(this.loader.content);
 			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
 			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
 			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
 			this.loader = null;
 
 			this.cleanupTexture();
-			const bitmapData:BitmapData = bitmap.bitmapData;
+			var bitmapData:BitmapData = bitmap.bitmapData;
 			if(this._delayTextureCreation)
 			{
 				this._pendingBitmapDataTexture = bitmapData;
+				if(this._textureQueueDuration < Number.POSITIVE_INFINITY)
+				{
+					this.addToTextureQueue();
+				}
 			}
 			else
 			{
@@ -1221,7 +1557,7 @@ package feathers.controls
 		 */
 		protected function rawDataLoader_completeHandler(event:flash.events.Event):void
 		{
-			const rawData:ByteArray = ByteArray(this.urlLoader.data);
+			var rawData:ByteArray = ByteArray(this.urlLoader.data);
 			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
 			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_errorHandler);
 			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_errorHandler);
@@ -1231,6 +1567,10 @@ package feathers.controls
 			if(this._delayTextureCreation)
 			{
 				this._pendingRawTextureData = rawData;
+				if(this._textureQueueDuration < Number.POSITIVE_INFINITY)
+				{
+					this.addToTextureQueue();
+				}
 			}
 			else
 			{

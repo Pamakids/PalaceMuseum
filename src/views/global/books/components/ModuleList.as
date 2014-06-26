@@ -2,23 +2,24 @@ package views.global.books.components
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
+
 	import flash.geom.Point;
-	
+
 	import controllers.MC;
-	
+
 	import models.SOService;
-	
+
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.Interlude;
 	import views.components.ElasticButton;
 	import views.global.books.BooksManager;
@@ -30,12 +31,15 @@ package views.global.books.components
 	 */
 	public class ModuleList extends Sprite
 	{
-		public function ModuleList()
+		public function ModuleList(needBG:Boolean=true)
 		{
+			this.needBG=needBG;
 			init();
 		}
 
 		private var moving:Boolean=false;
+
+		private var needBG:Boolean;
 
 		private const viewWidth:uint=968;
 		private const viewHeight:uint=464;
@@ -49,7 +53,7 @@ package views.global.books.components
 		private const maxR:Number=minR + 7 * d;
 		private var activeIcon:Image;
 		private var a:AssetManager = MC.assetManager;
-		
+
 		private var SKIN_ICON_SUN:Texture=a.getTexture("drag_sun");
 
 		private function init():void
@@ -160,7 +164,10 @@ package views.global.books.components
 				trace(m, s)
 				if (m - 1 == module)
 				{
-					BooksManager.closeCtrBook();
+					if(needBG)
+						BooksManager.closeCtrBook();
+					else
+						dispatchEvent(new Event("closeMenu"));
 				}
 				else
 				{
@@ -186,7 +193,10 @@ package views.global.books.components
 					{
 						if (!Map.map)
 							Map.show(null, module - 1, module);
-						BooksManager.closeCtrBook();
+						if(needBG)
+							BooksManager.closeCtrBook();
+						else
+							dispatchEvent(new Event("closeMenu"));
 						return;
 					}
 					if (module == 3)
@@ -201,7 +211,10 @@ package views.global.books.components
 							{
 								if (MC.instance.currentModule)
 								{
-									BooksManager.closeCtrBook();
+									if(needBG)
+										BooksManager.closeCtrBook();
+									else
+										dispatchEvent(new Event("closeMenu"));
 								}
 								else
 								{
@@ -219,7 +232,10 @@ package views.global.books.components
 							{
 								if (MC.instance.currentModule)
 								{
-									BooksManager.closeCtrBook();
+									if(needBG)
+										BooksManager.closeCtrBook();
+									else
+										dispatchEvent(new Event("closeMenu"));
 								}
 								else
 								{
@@ -231,7 +247,10 @@ package views.global.books.components
 					else
 					{
 						if (MC.instance.currentModule)
-							BooksManager.closeCtrBook();
+							if(needBG)
+								BooksManager.closeCtrBook();
+							else
+								dispatchEvent(new Event("closeMenu"));
 						else
 							MC.instance.gotoModule(module, Math.max(crtScene - 1, screen));
 					}
@@ -244,7 +263,7 @@ package views.global.books.components
 			else
 			{
 				if(MC.isIOS)
-					MC.instance.stage.addChild(new Interlude(string));
+					MC.instance.stage.addChild(new Interlude(selectI==0?0:1));
 //				Starling.current.nativeStage.addChild(new Interlude(string));
 			}
 			//			if (string.charAt(0) == "m") //进入模块
@@ -354,7 +373,8 @@ package views.global.books.components
 			var image:Image=getImage("userCenter_bg");
 			image.x=185;
 			image.y=93;
-			this.addChild(image);
+			if(needBG)
+				this.addChild(image);
 			image.touchable=false;
 
 			image=getImage("bg_sundial");
@@ -377,7 +397,7 @@ package views.global.books.components
 			pointer.pivotY=pointer.height >> 1;
 			pointer.x=centerS.x;
 			pointer.y=centerS.y;
-			this.addChildAt(pointer, 2);
+			this.addChildAt(pointer, needBG?2:1);
 			pointer.touchable=false;
 			pointer.rotation=arrR[selectI];
 		}
@@ -474,7 +494,7 @@ package views.global.books.components
 			var tarR:Number=arrR[selectI];
 			TweenLite.to(pointer, 1, {rotation: tarR, ease: Cubic.easeOut});
 		}
-		
+
 		private function getImage(name:String):Image
 		{
 			return new Image( a.getTexture(name) );

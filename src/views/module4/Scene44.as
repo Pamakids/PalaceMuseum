@@ -262,7 +262,7 @@ package views.module4
 			var pos:Array;
 			for (var i:int=0; i < 15; i++)
 			{
-				str="flower" + (i + 1).toString();
+				str="flowers" + (i + 1).toString();
 				pos=flowerPos[str];
 
 				var flower:Flower=new Flower()

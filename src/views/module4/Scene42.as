@@ -48,7 +48,7 @@ package views.module4
 
 			LionMC.instance.say("国泰民安，近日奏章数量不多，皇上大可放心。", 0, 0, 0, addMemorials, 20, true);
 
-			bg.addEventListener(TouchEvent.TOUCH, onBGTouch);
+//			bg.addEventListener(TouchEvent.TOUCH, onBGTouch);
 		}
 
 		private function onBGTouch(e:TouchEvent):void
@@ -121,7 +121,7 @@ package views.module4
 			var index:int=Math.random() * indexArr.length;
 			bottomIndex=indexArr[index];
 			indexArr.splice(index, 1);
-			memorialBottom=getImage("memorial" + (bottomIndex + 1).toString());
+			memorialBottom=getImage("memorial1");
 			memorialHolder.addChild(memorialBottom);
 
 			for (var i:int=0; i < 8; i++)
@@ -136,7 +136,7 @@ package views.module4
 			var index2:int=Math.random() * indexArr.length;
 			topIndex=indexArr[index2];
 			indexArr.splice(index2, 1);
-			memorialTop=getImage("memorial" + (topIndex + 1).toString());
+			memorialTop=getImage("memorial1");
 			memorialHolder.addChild(memorialTop);
 			memorialTop.x=-9 * gap;
 			memorialTop.y=-9 * gap;
@@ -268,13 +268,17 @@ package views.module4
 			chooseWin.addChild(no);
 			no.addEventListener(ElasticButton.CLICK, onNo);
 
-			PopUpManager.addPopUp(chooseWin, true, false);
+			this.addMask(.6);
+			this.addChild(chooseWin);
+//			PopUpManager.addPopUp(chooseWin, true, false);
 		}
 
 		private function onYes(e:Event):void
 		{
 			chooseWin.touchable=false;
-			PopUpManager.removePopUp(chooseWin, true);
+			this.removeMask();
+			this.removeChild(chooseWin);
+//			PopUpManager.removePopUp(chooseWin, true);
 			memorialBottom.addEventListener(TouchEvent.TOUCH, onBottonMemorialTouch);
 		}
 
@@ -290,7 +294,9 @@ package views.module4
 		private function onNo():void
 		{
 			chooseWin.touchable=false;
-			PopUpManager.removePopUp(chooseWin);
+//			PopUpManager.removePopUp(chooseWin);
+			this.removeMask();
+			this.removeChild(chooseWin);
 			chooseWin.dispose();
 			MC.instance.stage.removeChild(drawScene);
 			drawScene=null;

@@ -1,16 +1,43 @@
 /*
 Feathers
-Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
+	import starling.events.Event;
+	import starling.events.EventDispatcher;
+
 	/**
-	 * A list of space-delimited tokens.
+	 * Dispatched when a token is added, removed, or toggled or if all tokens
+	 * have been replaced by setting the <code>value</code> property.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.CHANGE
 	 */
-	public class TokenList
+	[Event(name="change",type="starling.events.Event")]
+
+	/**
+	 * A list of space-delimited tokens. Obviously, since they are delimited by
+	 * spaces, tokens cannot contain spaces.
+	 */
+	public class TokenList extends EventDispatcher
 	{
 		/**
 		 * Constructor.
@@ -26,7 +53,7 @@ package feathers.core
 		protected var names:Vector.<String> = new <String>[];
 
 		/**
-		 * The tokens formated with space delimiters.
+		 * The tokens formatted with space delimiters.
 		 *
 		 * @default ""
 		 */
@@ -40,8 +67,13 @@ package feathers.core
 		 */
 		public function set value(value:String):void
 		{
+			if(this.value == value)
+			{
+				return;
+			}
 			this.names.length = 0;
 			this.names = Vector.<String>(value.split(" "));
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -71,12 +103,13 @@ package feathers.core
 		 */
 		public function add(name:String):void
 		{
-			const index:int = this.names.indexOf(name);
+			var index:int = this.names.indexOf(name);
 			if(index >= 0)
 			{
 				return;
 			}
-			this.names.push(name);
+			this.names[this.names.length] = name;
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -85,12 +118,8 @@ package feathers.core
 		 */
 		public function remove(name:String):void
 		{
-			const index:int = this.names.indexOf(name);
-			if(index < 0)
-			{
-				return;
-			}
-			this.names.splice(index,  1);
+			var index:int = this.names.indexOf(name);
+			this.removeAt(index);
 		}
 
 		/**
@@ -99,14 +128,15 @@ package feathers.core
 		 */
 		public function toggle(name:String):void
 		{
-			const index:int = this.names.indexOf(name);
+			var index:int = this.names.indexOf(name);
 			if(index < 0)
 			{
-				this.names.push(name);
+				this.names[this.names.length] = name;
+				this.dispatchEventWith(Event.CHANGE);
 			}
 			else
 			{
-				this.names.splice(index,  1);
+				this.removeAt(index);
 			}
 		}
 
@@ -116,6 +146,32 @@ package feathers.core
 		public function contains(name:String):Boolean
 		{
 			return this.names.indexOf(name) >= 0;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeAt(index:int):void
+		{
+			if(index < 0)
+			{
+				return;
+			}
+			if(index == 0)
+			{
+				this.names.shift();
+				this.dispatchEventWith(Event.CHANGE);
+				return;
+			}
+			var lastIndex:int = this.names.length - 1;
+			if(index == lastIndex)
+			{
+				this.names.pop();
+				this.dispatchEventWith(Event.CHANGE);
+				return;
+			}
+			this.names.splice(index,  1);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 	}

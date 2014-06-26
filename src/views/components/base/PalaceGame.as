@@ -119,8 +119,11 @@ package views.components.base
 		override protected function onStage(e:Event):void
 		{
 			super.onStage(e);
-			MC.instance.topBarLayer.visible=false;
-			MC.instance.hideMC();
+			if(!fromCenter)
+			{
+				MC.instance.topBarLayer.visible=false;
+				MC.instance.hideMC();
+			}
 		}
 
 		protected var lastBGM:String;
@@ -200,7 +203,7 @@ package views.components.base
 				initTime=-1;
 			}
 			if (fromCenter)
-				assetManager.dispose()
+				assetManager.purge();
 			else
 			{
 				assetManager=null;
@@ -293,7 +296,7 @@ package views.components.base
 
 		protected function addStars(num:int, pr:Sprite, _y:Number=214):void
 		{
-			if (num <= 0)
+			if (num <= 0||!isWin)
 				return;
 
 			var ns:int=SOService.instance.getSO(gameName + "NumStars") as int;

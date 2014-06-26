@@ -262,7 +262,8 @@ package views.components
 		}
 
 		public function say3(content:String, _type:int=0, _x:Number=0, _y:Number=0, _callBack:Function=null, 
-							 fontSize:int=20,  isTask:Boolean=false, hideDelay:Number=3,maskA:Number=.4):void
+							 fontSize:int=20,  isTask:Boolean=false, hideDelay:Number=3,maskA:Number=.4,
+							 over:Boolean=true,forceLocation:Boolean=false,saveCB:Boolean=true):void
 		{
 			lastType=_type;
 			lastX=_x;
@@ -271,25 +272,51 @@ package views.components
 			lastMask=maskA;
 			lastTask=isTask;
 
-			callBack=_callBack;
+			if(saveCB)
+				callBack2=_callBack;
+			else
+				callBack=_callBack;
 			if (p)
 			{
 				p.visible=true;
 				p.callback=null;
 				p.playHide();
 			}
-			p=Prompt.showTXT(isTask ? (x + 160) : (x + mcWidth + 30), isTask ? (y + 120) : y, content, fontSize, function():void
+			var dx:Number;
+			var dy:Number;
+			if(forceLocation){
+				dx=_x;
+				dy=_y;
+			}
+			else{
+				dx=isTask ? (x + 160) : (x + mcWidth + 30);
+				dy=isTask ? (y + 120) : y;
+			}
+			p=Prompt.showTXT(dx,dy,content, fontSize, function():void
 			{
-				TailBar.show();
-				isSayingOver=true;
-				MC.instance.main.removeMask();
-				if (callBack != null) {
-					callBack();
-					callBack=null;
+				if(over){
+					TailBar.show();
+					isSayingOver=true;
+					MC.instance.main.removeMask();
+				}
+				if(saveCB)
+				{callBack2=_callBack;
+
+					if (callBack2 != null) {
+						callBack2();
+						callBack2=null;
+					}
+				}else{
+					if (callBack != null) {
+						callBack();
+						callBack=null;
+					}
 				}
 			}, MC.instance.main, 1, false, hideDelay, isTask);
 			addEventListener(MouseEvent.CLICK, onClick);
 		}
+
+		private var callBack2:Function;
 
 		/**
 		 *

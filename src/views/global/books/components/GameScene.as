@@ -17,21 +17,19 @@ package views.global.books.components
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceModule;
 	import views.components.base.PalaceScene;
-	import views.global.TopBar;
-	import views.module2.scene21.JigsawGame;
 	import views.module3.scene32.MenuGame;
 	import views.module3.scene33.DishGame;
 	import views.module5.scene52.OperaGame;
 
 	public class GameScene extends PalaceScene
 	{
-		private var gamePathArr:Array=["22", "23", "31", "42"];
-		private var gameArr:Array=[MenuGame, DishGame, JigsawGame, OperaGame];
+		private var gamePathArr:Array=["22", "23", "42"];
+//		private var gamePathArr:Array=["22", "23", "31", "42"];
+		private var gameArr:Array=[MenuGame, DishGame, OperaGame];
+//		private var gameArr:Array=[MenuGame, DishGame, JigsawGame, OperaGame];
 
 		private var game:PalaceGame;
 		private var crtGameIndex:int;
-
-		private var am:AssetManager;
 
 		public function GameScene(gameIndex:int)
 		{
@@ -49,10 +47,14 @@ package views.global.books.components
 				trace(ratio)
 				if (ratio == 1.0)
 				{
-					am=_assets;
+					assetManager=_assets;
 					initGame(crtGameIndex);
 					_loadImage.removeFromParent(true);
 					_loadImage=null;
+
+					if(assetLoadedCB!=null)
+						assetLoadedCB();
+					assetLoadedCB=null;
 				}
 			});
 		}
@@ -60,7 +62,7 @@ package views.global.books.components
 		private function initGame(index:int):void
 		{
 			var cls:Class=gameArr[index];
-			game=new cls(am);
+			game=new cls(assetManager);
 			game.fromCenter=true;
 			addChild(game);
 			game.addEventListener(PalaceGame.GAME_OVER, onGamePlayed);
@@ -107,18 +109,20 @@ package views.global.books.components
 		{
 			if (_loadImage)
 				_loadImage.dispose();
-			if (am)
-				am.dispose();
+			if (assetManager)
+				assetManager.purge();
+			assetManager=null;
 			if (initTime > 0)
 			{
 				disposeTime=getTimer();
 				UserBehaviorAnalysis.trackTime("stayTime", disposeTime - initTime, sceneName);
 				initTime=-1;
 			}
-			removeChildren(0, -1, true);
+//			super.dispose();
 		}
 
 		public var playedCallBack:Function;
+		public var assetLoadedCB:Function;
 
 		private function onGamePlayed(e:Event):void
 		{
@@ -127,9 +131,10 @@ package views.global.books.components
 			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 			if (e)
 			{
-				if (playedCallBack)
-					playedCallBack();
 				game.dispose();
+				if (playedCallBack!=null)
+					playedCallBack();
+				playedCallBack=null;
 				this.removeFromParent(true);
 			}
 			game=null;

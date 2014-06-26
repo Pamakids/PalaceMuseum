@@ -4,8 +4,10 @@ package views.module1
 
 	import flash.geom.Point;
 	import flash.media.SoundTransform;
+	import flash.system.Capabilities;
 
 	import models.FontVo;
+	import models.PosVO;
 	import models.SOService;
 
 	import sound.SoundAssets;
@@ -28,6 +30,7 @@ package views.module1
 	import views.components.Prompt;
 	import views.components.base.PalaceScene;
 	import views.global.TailBar;
+	import views.global.TopBar;
 	import views.module1.scene12.Cloth2;
 	import views.module1.scene12.ClothCircle;
 	import views.module1.scene12.ClothPuzzle;
@@ -102,6 +105,9 @@ package views.module1
 			addBox();
 
 			showLionHint("hint-start", null, false);
+
+			if(PosVO.scale==1&&!Capabilities.isDebugger)
+				TopBar.hide();
 		}
 
 		private function showLionHint(content:String, callback:Function=null, isTask:Boolean=false):void
@@ -431,7 +437,7 @@ package views.module1
 			}
 		}
 
-		private var expArr:Array=["kingHappy", "kingLook", "KingNaughty"];
+		private var expArr:Array=["KingHappy", "kingLook", "KingNaughty"];
 
 		private var kingHead:MovieClip;
 
@@ -484,7 +490,7 @@ package views.module1
 
 			SoundAssets.playSFX(exp.toLowerCase(), true);
 
-			kingHead=new MovieClip(assetManager.getTextures(exp), 18);
+			kingHead=new MovieClip(assetManager.getTextures(exp), 9);
 			kingHead.loop=0;
 			kingHead.play();
 			Starling.juggler.add(kingHead);

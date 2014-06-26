@@ -127,7 +127,7 @@ package views.module1
 			TweenLite.to(king, 3, {x: pos1.x, y: pos1.y, onComplete: sayNext});
 		}
 
-		private var txt1:String="孩，孩儿给太后请安。";
+		private var txt1:String="孩，孩儿给\n太后请安。";
 		private var txt2:String="皇儿最近可好？都读了哪些书呢？";
 		private var txt3:String="回母后，孩儿一切安好，至于哪些书……";
 		private var txt4:String="咦，皇儿声音怎么有些奇怪？";
