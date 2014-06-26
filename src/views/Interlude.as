@@ -9,20 +9,11 @@ package views
 	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.events.NetStatusEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.events.TouchEvent;
-	import flash.geom.Rectangle;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
-	import flash.media.StageVideo;
-	import flash.media.Video;
-	import flash.net.NetConnection;
-	import flash.net.NetStream;
 	import flash.system.Capabilities;
-	import flash.utils.getTimer;
-
-	import models.PosVO;
 
 	import sound.SoundAssets;
 
@@ -112,7 +103,17 @@ package views
 
 		private function initialize():void
 		{
-			initBG();
+			var os:String=Capabilities.os;
+			if(os.toLowerCase().indexOf('iphone')>=0)
+			{
+				var version:String=os.charAt(10);
+				if(Number(version)<7)
+				{
+					needBG=false;
+				}
+			}
+			if(needBG)
+				initBG();
 			initShape();
 			initButton();
 
@@ -160,6 +161,7 @@ package views
 		{
 			var bg:Bitmap=new BG();
 			this.addChild(bg);
+			bg.cacheAsBitmap=true;
 		}
 
 		private function initShape():void
@@ -169,6 +171,7 @@ package views
 			shape.graphics.beginFill(0);
 			shape.graphics.drawRect(0, 0, 1024,768);
 			shape.graphics.endFill();
+			shape.cacheAsBitmap=true;
 		}
 
 		private function initButton():void
@@ -185,6 +188,7 @@ package views
 				button.visible=false;
 				button.addEventListener(TouchEvent.TOUCH_BEGIN, passHandler);
 				button.addEventListener(MouseEvent.CLICK, passHandler);
+				button.cacheAsBitmap=true;
 			}
 		}
 
@@ -268,6 +272,7 @@ package views
 //			stageVideo.attachNetStream(stream);
 //			stream.play(videoURL);
 //		}
+		private var needBG:Boolean=true;
 
 		private function onMetaData(_obj:Object):void
 		{

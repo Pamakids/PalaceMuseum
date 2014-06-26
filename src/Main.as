@@ -34,7 +34,7 @@ package
 			if (Capabilities.isDebugger)
 			{
 //				SOService.instance.clear();
-//				SOService.instance.setSO("lastScene", "31");
+				SOService.instance.setSO("lastScene", "21");
 			}
 			super();
 

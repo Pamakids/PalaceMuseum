@@ -11,6 +11,7 @@ package views
 	import views.components.base.PalaceModule;
 	import views.module2.Scene21;
 	import views.module2.Scene22;
+	import views.module2.Scene23;
 
 	public class Module2 extends PalaceModule
 	{
@@ -19,7 +20,7 @@ package views
 			SoundAssets.addModuleSnd(moduleName);
 			skipIndex=_skipIndex;
 			sceneArr=[Scene21, Scene22];
-			birdArr=[2,3];
+			birdArr=[-1,2,3];
 
 			Q1="皇帝爱学习吗？"
 			A1="清朝皇帝喜爱学习－儒家经典、汉语诗文、满文、蒙文和骑马射箭，样样要精通。"
