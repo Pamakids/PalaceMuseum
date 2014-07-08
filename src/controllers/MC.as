@@ -27,6 +27,7 @@ package controllers
 	import views.Module3;
 	import views.Module4;
 	import views.Module5;
+	import views.Module6;
 	import views.components.LionMC;
 	import views.components.PalaceGuide;
 	import views.components.Prompt;
@@ -66,7 +67,7 @@ package controllers
 		public var currentModule:PalaceModule;
 
 		public var main:Container;
-		private var modules:Array=[Module1, Module2, Module3, Module4, Module5];
+		private var modules:Array=[Module1, Module2, Module3, Module4, Module5, Module6];
 
 		public var stage:PalaceMuseum;
 		public var topBarLayer:starling.display.Sprite;
