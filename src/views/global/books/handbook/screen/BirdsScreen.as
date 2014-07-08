@@ -139,7 +139,7 @@ package views.global.books.handbook.screen
 
 		private function ifCollected(page:uint):Boolean
 		{
-			return true;
+//			return true;
 			return SOService.instance.getSO("birdCatched" + page);
 		}
 

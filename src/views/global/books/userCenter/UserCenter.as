@@ -195,7 +195,10 @@ package views.global.books.userCenter
 																	 }));
 			_navigator.addScreen(DEVELOPER, new ScreenNavigatorItem(DeveloperScreen,
 																	{
-																		initViewPlayed: onInitViewPlayed
+																		initialized: onInitialized,
+																		initViewPlayed: onInitViewPlayed,
+																		viewUpdated: onViewUpdated,
+																		viewUpdateFail: onViewUpdateFail
 																	},
 																	{
 																		width: contentWidth, height: contentHeight,
@@ -246,6 +249,9 @@ package views.global.books.userCenter
 				//				case BIRDS:
 				//					(_navigator.activeScreen as BirdScreen).initView(0);
 				//					break;
+				case DEVELOPER:
+					(_navigator.activeScreen as DeveloperScreen).initView(0);
+					break;
 			}
 		}
 
@@ -263,6 +269,7 @@ package views.global.books.userCenter
 			switch (_navigator.activeScreenID)
 			{
 				case ACHIEVEMENT:
+				case DEVELOPER:
 					getTarTexture();
 					startAnimation(pageUp);
 					break;
@@ -274,6 +281,7 @@ package views.global.books.userCenter
 			switch (_navigator.activeScreenID)
 			{
 				case ACHIEVEMENT:
+				case DEVELOPER:
 					hideAnimation();
 					break;
 			}
@@ -286,7 +294,7 @@ package views.global.books.userCenter
 
 		private function onTouch(e:TouchEvent):void
 		{
-			if (_tabBar.selectedIndex != 1 || animation.visible)
+			if ((_tabBar.selectedIndex != 1 && _tabBar.selectedIndex != 4) || animation.visible)
 				return;
 			var touch:Touch=e.getTouch(this);
 			var point:Point;
@@ -303,9 +311,9 @@ package views.global.books.userCenter
 						return;
 					pageUp=(beginX < point.x); //方向
 					showAnimation();
-					if (_navigator.activeScreen is AchievementScreen) //成就页面
+					if (_navigator.activeScreen is AchievementScreen || _navigator.activeScreen is DeveloperScreen) //成就页面
 					{
-						pageUp ? (_navigator.activeScreen as AchievementScreen).pageUp() : (_navigator.activeScreen as AchievementScreen).pageDown();
+						pageUp ? (_navigator.activeScreen as Object).pageUp() : (_navigator.activeScreen as Object).pageDown();
 					}
 					break;
 			}
