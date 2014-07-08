@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:1d0dfd5680b22855b471846f59ff4db6$ -->
+<!-- $TexturePacker:SmartUpdate:66de914ae31314331e59c874744c6286$ -->
 <TextureAtlas imagePath="assets.png">
     <SubTexture name="achievement_card_finish" x="1284" y="1411" width="137" height="106"/>
     <SubTexture name="achievement_card_finish_big" x="2" y="932" width="497" height="387"/>

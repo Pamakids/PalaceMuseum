@@ -68,8 +68,8 @@ package controllers
 		/**
 		 * 游戏数据名称集合
 		 */
-		private const classNames:Array=["menugame", "dishgame", "operagame"];
-		private const gameNames:Array=["吉祥菜名", "银牌试毒", "粉墨登场"];
+		private const classNames:Array=["archegame", "menugame", "dishgame", "operagame"];
+		private const gameNames:Array=["百步穿杨", "吉祥菜名", "银牌试毒", "粉墨登场"];
 //		private const classNames:Array=["menugame", "dishgame", "jigsawgame", "operagame"];
 //		private const gameNames:Array=["吉祥菜名", "银牌试毒", "地图拼图", "粉墨登场"];
 		/**
