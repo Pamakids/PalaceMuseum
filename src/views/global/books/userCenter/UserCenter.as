@@ -115,24 +115,24 @@ package views.global.books.userCenter
 			_tabBar=new TabBar();
 			_tabBar.dataProvider=new ListCollection([
 													{
-														defaultIcon: 	BooksManager.getImage("userinfo_up_new"),
-														selectedUpIcon:	BooksManager.getImage("userinfo_down_new")
+														defaultIcon: 	BooksManager.getImage("userinfo_up"),
+														selectedUpIcon:	BooksManager.getImage("userinfo_down")
 													},
 													{
-														defaultIcon:	BooksManager.getImage("achievement_up_new"),
-														selectedUpIcon:	BooksManager.getImage("achievement_down_new")
+														defaultIcon:	BooksManager.getImage("achievement_up"),
+														selectedUpIcon:	BooksManager.getImage("achievement_down")
 													},
 													{
-														defaultIcon:	BooksManager.getImage("collection_up_new"),
-														selectedUpIcon:	BooksManager.getImage("collection_down_new")
+														defaultIcon:	BooksManager.getImage("collection_up"),
+														selectedUpIcon:	BooksManager.getImage("collection_down")
 													},
 													{
-														defaultIcon:	BooksManager.getImage("games_up_new"),
-														selectedUpIcon:	BooksManager.getImage("games_down_new")
+														defaultIcon:	BooksManager.getImage("games_up"),
+														selectedUpIcon:	BooksManager.getImage("games_down")
 													},
 													{
-														defaultIcon:	BooksManager.getImage("team_up_new"),
-														selectedUpIcon:	BooksManager.getImage("team_down_new")
+														defaultIcon:	BooksManager.getImage("team_up"),
+														selectedUpIcon:	BooksManager.getImage("team_down")
 													}
 													]);
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;
