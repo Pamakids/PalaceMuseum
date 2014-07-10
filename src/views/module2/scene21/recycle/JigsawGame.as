@@ -1,190 +1,190 @@
-package views.module2.scene21
+package views.module2.scene21.recycle
 {
 	import com.greensock.TweenLite;
-	import com.greensock.TweenMax;
-	import com.greensock.easing.Bounce;
-	import com.greensock.easing.Quad;
 
 	import flash.display.Bitmap;
-	import flash.events.TimerEvent;
 	import flash.geom.Point;
-	import flash.utils.Timer;
-
-	import models.FontVo;
-	import models.SOService;
-
-	import sound.SoundAssets;
 
 	import starling.display.Image;
 	import starling.display.Sprite;
-	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.filters.BlurFilter;
 	import starling.filters.ColorMatrixFilter;
-	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
-	import views.components.ElasticButton;
-	import views.components.LionMC;
 	import views.components.base.PalaceGame;
+	import views.module2.scene21.Cell;
 
 	public class JigsawGame extends PalaceGame
 	{
-		[Embed(source="/assets/module2/scene21/map.png")]
+		[Embed(source="/assets/embed/art2.png")]
 		private var img:Class;
 
-		private var startSP:Sprite=new Sprite();
+//		private var startSP:Sprite=new Sprite();
 		private var gameSP:Sprite=new Sprite();
-		private var endSP:Sprite=new Sprite();
+//		private var endSP:Sprite=new Sprite();
 
 		public function JigsawGame(am:AssetManager=null)
 		{
-			bigGame=true;
 			super(am);
 
-			addBG();
+//			addBG();
+
+			addChild(getImage('artgamebg'));
+			var p1:Image=getImage('pillar-r');
+			p1.scaleX=-1;
+			addChild(p1);
+			p1.x=p1.width;
+
+			var p2:Image=getImage('pillar-r');
+			addChild(p2);
+			p2.x=1024-p2.width;
 
 			addClose();
 
-			addStart();
-
 			map=new img();
 
-			px=(1024 - map.width) / 2 - 100;
-			py=(768 - map.height) / 2 - 50;
+			px=161;
+			py=78;
+
+			addStart();
 		}
 
-		private function restartGame(e:Event=null):void
-		{
-			dispatchEvent(new Event(PalaceGame.GAME_RESTART));
-		}
+//		private function restartGame(e:Event=null):void
+//		{
+//			dispatchEvent(new Event(PalaceGame.GAME_RESTART));
+//		}
 
-		private function onStartTouch(e:Event):void
-		{
-			startBtn.removeEventListener(TouchEvent.TOUCH, onStartTouch);
-			startSP.touchable=false;
-			TweenLite.delayedCall(1, function():void {
-				TweenLite.to(startSP, 1, {y: -768,
-								 onComplete: function():void {
-									 startSP.dispose();
-									 initGameBG();
-									 initData(gamelevel);
-									 startGame();
-								 }});
-			});
-		}
+//		private function onStartTouch(e:Event):void
+//		{
+//			startBtn.removeEventListener(TouchEvent.TOUCH, onStartTouch);
+//			startSP.touchable=false;
+//			TweenLite.delayedCall(1, function():void {
+//				TweenLite.to(startSP, 1, {y: -768,
+//								 onComplete: function():void {
+//									 startSP.dispose();
+//									 initGameBG();
+//									 initData(gamelevel);
+//									 startGame();
+//								 }});
+//			});
+//		}
 
-		public function get gamelevel():int
-		{
-			return _gamelevel;
-		}
-
-		public function set gamelevel(value:int):void
-		{
-			_gamelevel=value;
-			if (!sBtn)
-				return;
-			switch (value)
-			{
-				case 0:
-				{
-					sBtn.visible=hBtnD.visible=false;
-					sBtnD.visible=hBtn.visible=true;
-					break;
-				}
-
-				case 1:
-				{
-					sBtn.visible=hBtnD.visible=true;
-					sBtnD.visible=hBtn.visible=false;
-					break;
-				}
-
-				default:
-				{
-					break;
-				}
-			}
-		}
+//		public function get gamelevel():int
+//		{
+//			return _gamelevel;
+//		}
+//
+//		public function set gamelevel(value:int):void
+//		{
+//			_gamelevel=value;
+//			if (!sBtn)
+//				return;
+//			switch (value)
+//			{
+//				case 0:
+//				{
+//					sBtn.visible=hBtnD.visible=false;
+//					sBtnD.visible=hBtn.visible=true;
+//					break;
+//				}
+//
+//				case 1:
+//				{
+//					sBtn.visible=hBtnD.visible=true;
+//					sBtnD.visible=hBtn.visible=false;
+//					break;
+//				}
+//
+//				default:
+//				{
+//					break;
+//				}
+//			}
+//		}
 
 		private function addStart():void
 		{
-			addChild(startSP);
+//			addChild(startSP);
 			setChildIndex(closeBtn, numChildren - 1);
-			var gameHint:Image=getImage("jigsaw-name");
-			gameHint.x=160;
-			gameHint.y=100;
-			startSP.addChild(gameHint);
+//			var gameHint:Image=getImage("jigsaw-name");
+//			gameHint.x=160;
+//			gameHint.y=100;
+//			startSP.addChild(gameHint);
+//
+//			var sbHolder:Sprite=new Sprite();
+//			sBtn=getImage("menu-simple");
+//			sBtnD=getImage("menu-simple-down");
+//			sbHolder.x=400;
+//			sbHolder.y=400;
+//			sbHolder.addChild(sBtn);
+//			sbHolder.addChild(sBtnD);
+//			startSP.addChild(sbHolder);
+//			sbHolder.addEventListener(TouchEvent.TOUCH, onSBTouch);
+//
+//			var hbHolder:Sprite=new Sprite();
+//			hBtn=getImage("menu-hard");
+//			hBtnD=getImage("menu-hard-down");
+//			hbHolder.x=415;
+//			hbHolder.y=505;
+//			hbHolder.addChild(hBtn);
+//			hbHolder.addChild(hBtnD);
+//			startSP.addChild(hbHolder);
+//			hbHolder.addEventListener(TouchEvent.TOUCH, onHBTouch);
+//
+//			startBtn=new ElasticButton(getImage("game-start"));
+//			startBtn.shadow=getImage("game-start-down");
+//			startBtn.x=891;
+//			startBtn.y=666;
+//			startSP.addChild(startBtn);
+//			startBtn.addEventListener(ElasticButton.CLICK, onStartTouch);
+//			shakeNext();
+//			gamelevel=0;
 
-			var sbHolder:Sprite=new Sprite();
-			sBtn=getImage("menu-simple");
-			sBtnD=getImage("menu-simple-down");
-			sbHolder.x=400;
-			sbHolder.y=400;
-			sbHolder.addChild(sBtn);
-			sbHolder.addChild(sBtnD);
-			startSP.addChild(sbHolder);
-			sbHolder.addEventListener(TouchEvent.TOUCH, onSBTouch);
+			initData(0);
 
-			var hbHolder:Sprite=new Sprite();
-			hBtn=getImage("menu-hard");
-			hBtnD=getImage("menu-hard-down");
-			hbHolder.x=415;
-			hbHolder.y=505;
-			hbHolder.addChild(hBtn);
-			hbHolder.addChild(hBtnD);
-			startSP.addChild(hbHolder);
-			hbHolder.addEventListener(TouchEvent.TOUCH, onHBTouch);
-
-			startBtn=new ElasticButton(getImage("game-start"));
-			startBtn.shadow=getImage("game-start-down");
-			startBtn.x=891;
-			startBtn.y=666;
-			startSP.addChild(startBtn);
-			startBtn.addEventListener(ElasticButton.CLICK, onStartTouch);
-			shakeNext();
-			gamelevel=0;
+			startGame();
 
 		}
 
-		private function shakeNext():void
-		{
-			if (startBtn)
-				TweenMax.to(startBtn, 1, {shake: {x: 5, numShakes: 4}, onComplete: function():void
-				{
-					TweenLite.delayedCall(5, shakeNext);
-				}});
-		}
+//		private function shakeNext():void
+//		{
+//			if (startBtn)
+//				TweenMax.to(startBtn, 1, {shake: {x: 5, numShakes: 4}, onComplete: function():void
+//				{
+//					TweenLite.delayedCall(5, shakeNext);
+//				}});
+//		}
 
-		private function showRecord():void
-		{
-			var recordIcon:Image=getImage("game-record");
-			endSP.addChild(recordIcon);
-			recordIcon.x=636;
-			recordIcon.y=342;
-			recordIcon.scaleX=recordIcon.scaleY=3;
-			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut,
-							 onComplete: function():void {
-								 SoundAssets.playSFX("gamerecord");
-								 closeBtn.visible=closeBtn.touchable=true;
-							 }});
-		}
+//		private function showRecord():void
+//		{
+//			var recordIcon:Image=getImage("game-record");
+//			endSP.addChild(recordIcon);
+//			recordIcon.x=636;
+//			recordIcon.y=342;
+//			recordIcon.scaleX=recordIcon.scaleY=3;
+//			TweenLite.to(recordIcon, .2, {scaleX: 1, scaleY: 1, ease: Quad.easeOut,
+//							 onComplete: function():void {
+//								 SoundAssets.playSFX("gamerecord");
+//								 closeBtn.visible=closeBtn.touchable=true;
+//							 }});
+//		}
 
-		private function onHBTouch(e:TouchEvent):void
-		{
-			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED)
-			if (tc)
-				gamelevel=1;
-		}
-
-		private function onSBTouch(e:TouchEvent):void
-		{
-			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED)
-			if (tc)
-				gamelevel=0;
-		}
+//		private function onHBTouch(e:TouchEvent):void
+//		{
+//			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED)
+//			if (tc)
+//				gamelevel=1;
+//		}
+//
+//		private function onSBTouch(e:TouchEvent):void
+//		{
+//			var tc:Touch=e.getTouch(stage, TouchPhase.ENDED)
+//			if (tc)
+//				gamelevel=0;
+//		}
 
 		private var _gamelevel:int;
 
@@ -206,40 +206,41 @@ package views.module2.scene21
 
 		private var px:Number;
 		private var py:Number;
-		private var startBtn:ElasticButton;
-		private var hBtn:Image;
-		private var hBtnD:Image;
-		private var sBtn:Image;
-		private var sBtnD:Image;
-		private var time:Timer;
-		private var timeHolder:Sprite;
-		private var lbl:TextField;
+//		private var startBtn:ElasticButton;
+//		private var hBtn:Image;
+//		private var hBtnD:Image;
+//		private var sBtn:Image;
+//		private var sBtnD:Image;
+//		private var time:Timer;
+//		private var timeHolder:Sprite;
+//		private var lbl:TextField;
 
-		private var analyst:BitmapAnalyst;
+//		private var analyst:BitmapAnalyst;
 
 		private var num:int;
 
 		public function initData(lvl:int):void
 		{
-			num=4 + lvl;
+			num=2;
 			var maxW:Number=map.width;
 			var maxH:Number=map.height;
-//			analyst=new BitmapAnalyst(map, num, num - 1);
+//			analyst=new BitmapAnalyst(map, num,num);
 //			analyst.level=gamelevel == 0 ? "easy" : "hard"
+//			analyst.level="easy";
 //			analyst.initAnalyst();
 //			bpArr=analyst.getBpArr();
 //			piv=analyst.getPivot();
 //			size=analyst.getSize();
 
-			piv=new Point(lvl ? 207 : 258, lvl ? 194 : 259);
-			size=new Point(maxW / num, maxH / (num - 1));
+			piv=new Point(319, 446);
+			size=new Point(maxW / num, maxH / num);
 		}
 
 		public function startGame():void
 		{
 			initGameBG();
 			initPlayGround();
-			initTime();
+//			initTime();
 			TweenLite.delayedCall(2, shuffle);
 		}
 
@@ -271,9 +272,9 @@ package views.module2.scene21
 //			}
 			for (var i:int=0; i < num; i++)
 			{
-				for (var j:int=0; j < num - 1; j++)
+				for (var j:int=0; j < num; j++)
 				{
-					var cell:Cell=new Cell(i, j, getImage((gamelevel == 0 ? "easy" : "hard") + i.toString() + j.toString()));
+					var cell:Cell=new Cell(i, j, getImage('easy' + i.toString() + j.toString()));
 					cell.pivotX=piv.x >> 1;
 					cell.pivotY=piv.y >> 1;
 					playground.addChild(cell);
@@ -288,53 +289,56 @@ package views.module2.scene21
 
 		}
 
-		private static var cellScale:Number=.7;
+		private static var cellScale:Number=.8;
+		private var bpArr:Array;
 
 		private function shuffle():void
 		{
 			for each (var cell:Cell in cellArr)
 			{
 				var dx:Number=50 + Math.random() * 900 - px;
-				var dy:Number=Math.random() * 50 + 530 + gamelevel * 40;
-				var dr:Number=Math.random() * Math.PI * 2;
-//				dr=0;
+				var dy:Number=Math.random() * 50 + 530;
+				var dr:Number=Math.random()*Math.PI;
 				TweenLite.to(cell, 1, {x: dx, y: dy, rotation: dr, scaleX: cellScale, scaleY: cellScale});
 			}
 
-			TweenLite.to(timeHolder, 1, {x: 822, onComplete: function():void {
+			TweenLite.delayedCall(1,function():void{
 				ready=true;
-				time=new Timer(1000 / 30);
-				time.addEventListener(TimerEvent.TIMER, onTimer);
-				time.start();
-//				gameOver(); //test
-			}});
+			});
+
+//			TweenLite.to(timeHolder, 1, {x: 822, onComplete: function():void {
+//				ready=true;
+//				time=new Timer(1000 / 30);
+//				time.addEventListener(TimerEvent.TIMER, onTimer);
+//				time.start();
+//			}});
 		}
 
-		protected function onTimer(event:TimerEvent):void
-		{
-			var crttime:int=time.currentCount;
+//		protected function onTimer(event:TimerEvent):void
+//		{
+//			var crttime:int=time.currentCount;
+//
+//			lbl.text=getStringFormTime(crttime);
+//		}
 
-			lbl.text=getStringFormTime(crttime);
-		}
-
-		private function initTime():void
-		{
-			timeHolder=new Sprite();
-			timeHolder.addChild(getImage("menu-timebar"));
-			lbl=new TextField(200, 50, "00:00:00");
-			lbl.fontSize=32;
-			lbl.color=0x83d00;
-			lbl.vAlign="top";
-			gameSP.addChild(lbl);
-			lbl.x=20;
-			lbl.y=25;
-
-			timeHolder.addChild(lbl);
-			timeHolder.x=1024;
-			timeHolder.y=100;
-
-			addChild(timeHolder);
-		}
+//		private function initTime():void
+//		{
+//			timeHolder=new Sprite();
+//			timeHolder.addChild(getImage("menu-timebar"));
+//			lbl=new TextField(200, 50, "00:00:00");
+//			lbl.fontSize=32;
+//			lbl.color=0x83d00;
+//			lbl.vAlign="top";
+//			gameSP.addChild(lbl);
+//			lbl.x=20;
+//			lbl.y=25;
+//
+//			timeHolder.addChild(lbl);
+//			timeHolder.x=1024;
+//			timeHolder.y=100;
+//
+//			addChild(timeHolder);
+//		}
 
 		private function onCellTouch(e:TouchEvent):void
 		{
@@ -416,7 +420,7 @@ package views.module2.scene21
 
 				if (playground.numChildren == 0)
 				{
-					time.stop();
+//					time.stop();
 					TweenLite.to(cell, 1, {x: cell.tx, y: cell.ty, rotation: 0, onComplete: gameOver});
 				}
 				else
@@ -428,124 +432,130 @@ package views.module2.scene21
 
 		private function gameOver():void
 		{
-			TweenLite.to(okHolder, .5, {alpha: 0});
-			TweenLite.to(colorBG, 1, {alpha: 1, onComplete: addEdge});
-		}
+			var text:Image=getImage('text2');
+			addChild(text);
+			text.x=652;
+			text.y=24;
 
-		private function addEdge():void
-		{
-			var edge:Image=getImage("mapEdge");
-			bgHolder.addChild(edge);
-			edge.alpha=0;
-			TweenLite.to(edge, 3, {alpha: 3, onComplete: function():void {
-				SoundAssets.playSFX("gameWin");
-				lowerBGM();
-				TweenLite.delayedCall(6.5, resumeBGM);
-				LionMC.instance.play(1, 0, 0, function():void {
-					TweenLite.to(timeHolder, 1, {x: 1024});
-					TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn, onComplete: function():void {
-						timeHolder.removeFromParent(true);
-						gameSP.removeFromParent(true);
-						initResult();
-					}});
-				}, 2);
-			}});
-		}
-
-		private function initResult():void
-		{
 			isWin=true;
-			var _count:int=time.currentCount;
-			addChild(endSP);
-			setChildIndex(closeBtn, numChildren - 1);
-			endSP.y=-768;
-
-			var gameResultlvl:String=gameResult + gamelevel.toString();
-			var jigsawgameresult:int=SOService.instance.getSO(gameResultlvl) as int;
-
-			var resultTXT:String;
-			var recordTXT:String;
-			var delayFunction:Function;
-
-			if (!jigsawgameresult)
-			{
-				SOService.instance.setSO(gameResultlvl, _count);
-				delayFunction=showRecord;
-				resultTXT=recordTXT=getStringFormTime(_count);
-			}
-			else if (_count < jigsawgameresult)
-			{
-				SOService.instance.setSO(gameResultlvl, _count);
-				delayFunction=showRecord;
-				resultTXT=recordTXT=getStringFormTime(_count);
-			}
-			else
-			{
-				resultTXT=getStringFormTime(_count);
-				recordTXT=getStringFormTime(jigsawgameresult);
-			}
-			var panel:Image=getImage("win-panel");
-			panel.x=1024 - panel.width >> 1;
-			panel.y=50;
-			endSP.addChild(panel);
-
-			var t1:TextField=new TextField(200, 100, "用时：", FontVo.PALACE_FONT, 48, 0xb83d00);
-			t1.vAlign="top";
-			t1.hAlign="left";
-			t1.x=332;
-			t1.y=277 + 20;
-			endSP.addChild(t1);
-			var t2:TextField=new TextField(200, 40, "最快：", FontVo.PALACE_FONT, 26, 0xb83d00);
-			t2.vAlign="top";
-			t2.hAlign="left";
-			t2.x=362;
-			t2.y=390;
-			endSP.addChild(t2);
-
-			var resultTF:TextField=new TextField(400, 100, resultTXT);
-			resultTF.fontSize=48;
-			resultTF.color=0xb83d00;
-			resultTF.x=468;
-			resultTF.y=277 + 20;
-			resultTF.vAlign="top";
-			resultTF.hAlign="left";
-			endSP.addChild(resultTF);
-
-
-			var recordTF:TextField=new TextField(150, 40, recordTXT);
-			recordTF.fontSize=26;
-			recordTF.color=0x602508;
-			recordTF.x=482;
-			recordTF.y=390;
-			endSP.addChild(recordTF);
-
-//			TweenLite.delayedCall(.1, function():void {
-//				resultTF.text=resultTF.text;
-//				recordTF.text=recordTF.text;
-//			});
-
-			var rsBtn:ElasticButton=new ElasticButton(getImage("restart"));
-			rsBtn.shadow=getImage("restart-light");
-			rsBtn.x=512;
-			rsBtn.y=520;
-			endSP.addChild(rsBtn);
-
-			var starNum:int=1;
-			if (_count / 30 < (4 * 60))
-				starNum=2
-			if (_count / 30 < (2 * 60 + 50))
-				starNum=3;
-
-			TweenLite.to(endSP, 1, {y: 0, onComplete: function():void {
-				if (gamelevel == 1)
-					addStars(starNum, endSP, 234);
-				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
-				if (delayFunction)
-					delayFunction();
-				else
-					closeBtn.visible=closeBtn.touchable=true;
-			}});
+			TweenLite.to(okHolder, .5, {alpha: 0});
+			TweenLite.to(colorBG, 1, {alpha: 1});
 		}
+
+//		private function addEdge():void
+//		{
+//			var edge:Image=getImage("mapEdge");
+//			bgHolder.addChild(edge);
+//			edge.alpha=0;
+//			TweenLite.to(edge, 3, {alpha: 3, onComplete: function():void {
+//				SoundAssets.playSFX("gameWin");
+//				lowerBGM();
+//				TweenLite.delayedCall(6.5, resumeBGM);
+//				LionMC.instance.play(1, 0, 0, function():void {
+//					TweenLite.to(timeHolder, 1, {x: 1024});
+//					TweenLite.to(gameSP, 1.2, {y: -768, ease: Bounce.easeIn, onComplete: function():void {
+//						timeHolder.removeFromParent(true);
+//						gameSP.removeFromParent(true);
+//						initResult();
+//					}});
+//				}, 2);
+//			}});
+//		}
+
+//		private function initResult():void
+//		{
+//			isWin=true;
+//			var _count:int=time.currentCount;
+//			addChild(endSP);
+//			setChildIndex(closeBtn, numChildren - 1);
+//			endSP.y=-768;
+//
+//			var gameResultlvl:String=gameResult + gamelevel.toString();
+//			var jigsawgameresult:int=SOService.instance.getSO(gameResultlvl) as int;
+//
+//			var resultTXT:String;
+//			var recordTXT:String;
+//			var delayFunction:Function;
+//
+//			if (!jigsawgameresult)
+//			{
+//				SOService.instance.setSO(gameResultlvl, _count);
+//				delayFunction=showRecord;
+//				resultTXT=recordTXT=getStringFormTime(_count);
+//			}
+//			else if (_count < jigsawgameresult)
+//			{
+//				SOService.instance.setSO(gameResultlvl, _count);
+//				delayFunction=showRecord;
+//				resultTXT=recordTXT=getStringFormTime(_count);
+//			}
+//			else
+//			{
+//				resultTXT=getStringFormTime(_count);
+//				recordTXT=getStringFormTime(jigsawgameresult);
+//			}
+//			var panel:Image=getImage("win-panel");
+//			panel.x=1024 - panel.width >> 1;
+//			panel.y=50;
+//			endSP.addChild(panel);
+//
+//			var t1:TextField=new TextField(200, 100, "用时：", FontVo.PALACE_FONT, 48, 0xb83d00);
+//			t1.vAlign="top";
+//			t1.hAlign="left";
+//			t1.x=332;
+//			t1.y=277 + 20;
+//			endSP.addChild(t1);
+//			var t2:TextField=new TextField(200, 40, "最快：", FontVo.PALACE_FONT, 26, 0xb83d00);
+//			t2.vAlign="top";
+//			t2.hAlign="left";
+//			t2.x=362;
+//			t2.y=390;
+//			endSP.addChild(t2);
+//
+//			var resultTF:TextField=new TextField(400, 100, resultTXT);
+//			resultTF.fontSize=48;
+//			resultTF.color=0xb83d00;
+//			resultTF.x=468;
+//			resultTF.y=277 + 20;
+//			resultTF.vAlign="top";
+//			resultTF.hAlign="left";
+//			endSP.addChild(resultTF);
+//
+//
+//			var recordTF:TextField=new TextField(150, 40, recordTXT);
+//			recordTF.fontSize=26;
+//			recordTF.color=0x602508;
+//			recordTF.x=482;
+//			recordTF.y=390;
+//			endSP.addChild(recordTF);
+//
+////			TweenLite.delayedCall(.1, function():void {
+////				resultTF.text=resultTF.text;
+////				recordTF.text=recordTF.text;
+////			});
+//
+//			var rsBtn:ElasticButton=new ElasticButton(getImage("restart"));
+//			rsBtn.shadow=getImage("restart-light");
+//			rsBtn.x=512;
+//			rsBtn.y=520;
+//			endSP.addChild(rsBtn);
+//
+//			var starNum:int=1;
+//			if (_count / 30 < (4 * 60))
+//				starNum=2
+//			if (_count / 30 < (2 * 60 + 50))
+//				starNum=3;
+//
+//			TweenLite.to(endSP, 1, {y: 0, onComplete: function():void {
+//				if (gamelevel == 1)
+//					addStars(starNum, endSP, 234);
+//				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
+//				if (delayFunction)
+//					delayFunction();
+//				else
+//					closeBtn.visible=closeBtn.touchable=true;
+//			}});
+//		}
 
 		private function initGameBG():void
 		{
@@ -586,3 +596,5 @@ package views.module2.scene21
 //		}
 	}
 }
+
+

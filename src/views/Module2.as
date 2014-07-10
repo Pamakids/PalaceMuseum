@@ -11,7 +11,6 @@ package views
 	import views.components.base.PalaceModule;
 	import views.module2.Scene21;
 	import views.module2.Scene22;
-	import views.module2.Scene23;
 
 	public class Module2 extends PalaceModule
 	{
