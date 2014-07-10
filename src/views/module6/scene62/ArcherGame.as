@@ -1,8 +1,16 @@
 package views.module6.scene62
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Quad;
+
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.utils.AssetManager;
 
 	import views.components.base.PalaceGame;
@@ -25,12 +33,38 @@ package views.module6.scene62
 			initSky();
 			initConstruction();
 			initWall();
+
 			initField();
+			initTargets();
 
 			initKing();
 
+			enterKing();
+
 			startMove();
+			kingJump();
 		}
+
+		private var totaltime:Number=60;
+		private var rate:Number=30;
+
+		private function initTargets():void
+		{
+			var totals:Number=rate*totaltime;
+			var distance:Number=totals*fieldSpeed;
+			var num:int=distance/targetGAP;
+
+			for (var i:int = 0; i < num; i++) 
+			{
+				var target:Target=new Target(getImage('target-base'),getImage('target'));
+				field.addChild(target);
+				target.x=1024+(i+1)*targetGAP;
+				target.y=500;
+				targetArr.push(target);
+			}
+		}
+
+		private var targetGAP:Number=800;
 
 		private var _level:int;
 
@@ -54,7 +88,79 @@ package views.module6.scene62
 
 		private function initKing():void
 		{
+			king=new Sprite();
+
+			king.y=557;
+			king.x=-800;
+
+			addChild(king);
+
+			king.addChild(getImage('horse'));
+			var kingMC:MovieClip=new MovieClip(assetManager.getTextures('king'),1);
+			king.addChild(kingMC);
+			kingMC.x=114;
+			kingMC.y=-157;
+			Starling.juggler.add(kingMC);
+			kingMC.stop();
 		}
+
+		private function kingJump():void
+		{
+			var land:Boolean=(king.y==580);
+			var dy:Number=land?557:580;
+			var fun:Function=land?Quad.easeOut:Quad.easeIn;
+			var obj:Object={y:dy,ease:fun,onComplete:kingJump}
+			TweenLite.to(king,.25,obj);
+		}
+
+		private function kingShoot():void
+		{
+			var mc:MovieClip=king.getChildAt(1) as MovieClip;
+			mc.currentFrame=1;
+			Starling.juggler.delayCall(function():void{
+				mc.currentFrame=0;
+			},.15);
+		}
+
+		private var kingX:Number=-150
+
+		private function enterKing():void
+		{
+			TweenLite.to(king,2,{x:kingX,ease:Quad.easeOut,onComplete:function():void{
+				bgMoving=true;
+				iniContrller();
+			}});
+		}
+
+		private var arrowX:Number=458;
+
+		private function iniContrller():void
+		{
+			addEventListener(TouchEvent.TOUCH,onTouch);
+		}
+
+		private function onTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(this,TouchPhase.ENDED);
+			if(tc)
+			{
+				initArrow();
+				kingShoot();
+			}
+		}
+
+		private function initArrow():void
+		{
+			var arrow:Arrow=new Arrow(getImage('arrow'));
+			arrow.x=arrowX+king.x;
+			arrow.y=564;
+			field.addChild(arrow);
+			arrowArr.push(arrow);
+
+			arrow.rotation=-Math.PI/6;
+		}
+
+		private var arrowArr:Array=[];
 
 		private function startMove():void
 		{
@@ -78,6 +184,8 @@ package views.module6.scene62
 		private var construction2:Image;
 
 		private var field:Sprite;
+
+		private var king:Sprite;
 
 		private function initConstruction():void
 		{
@@ -125,8 +233,13 @@ package views.module6.scene62
 			sky2.x=sky1.width;
 		}
 
+		private var bgMoving:Boolean=false;
+		private var targetArr:Array=[];
+
 		private function onEnterFrame(e:Event):void
 		{
+			if(!bgMoving)
+				return;
 			moveConstruction();
 			moveWall();
 			moveFiled();
@@ -142,6 +255,7 @@ package views.module6.scene62
 				addJar();
 
 			moveCloudsAndJars();
+			moveTargetsAndArrows();
 
 		}
 
@@ -179,7 +293,7 @@ package views.module6.scene62
 					return;
 			}
 			var jar:Image=getImage('jar');
-			field.addChild(jar);
+			field.addChildAt(jar,3);
 			jar.x=1024+100;
 			jar.y=208;
 			jarArr.unshift(jar);
@@ -227,6 +341,34 @@ package views.module6.scene62
 
 			if(construction2.x<-construction2.width)
 				construction2.x=construction1.x+construction1.width;
+		}
+
+		private var arrowSpeedX:Number=10;
+		private var arrowSpeedY:Number=-15;
+
+		private function moveTargetsAndArrows():void
+		{
+			for each (var target:Target in targetArr) 
+			{
+				target.x-=fieldSpeed;
+			}
+
+			for each (var arrow:Arrow in arrowArr) 
+			{
+				arrow.x+=arrowSpeedX;
+				arrow.y+=arrowSpeedY;
+				var scale:Number=arrow.scaleX-.02;
+				if(scale>=.5)
+					arrow.scaleX=arrow.scaleY=scale;
+				else
+					arrow.removeFromParent(true);
+			}
+		}
+
+		private function checkHit(arrow:Arrow):Boolean
+		{
+			// TODO Auto Generated method stub
+			return false;
 		}
 	}
 }
