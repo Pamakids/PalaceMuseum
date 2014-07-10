@@ -1,30 +1,31 @@
 package
 {
 	import com.greensock.TweenLite;
-
+	
 	import flash.filesystem.File;
 	import flash.system.Capabilities;
-
+	
 	import controllers.MC;
 	import controllers.UserBehaviorAnalysis;
-
+	
 	import events.UserBehaviorEvent;
-
+	
 	import models.FontVo;
 	import models.PosVO;
 	import models.SOService;
-
+	
 	import sound.SoundAssets;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-
+	
 	import views.Interlude;
 	import views.components.PalaceGuide;
 	import views.components.base.Container;
+	import views.global.books.BooksManager;
 	import views.global.map.Map;
 
 	public class Main extends Container
@@ -172,9 +173,9 @@ package
 				return;
 			}
 
-//			BooksManager.showBooks(0, 0, 0, false);
+			BooksManager.showBooks(0, 0, 0, false);
 //			MC.instance.showMenu();
-//			return;
+			return;
 
 			var moduleIndex:int=int(_lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(_lastScene.charAt(1)) - 1;

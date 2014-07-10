@@ -58,6 +58,7 @@ package views.global.books.userCenter.screen
 		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "", numStars: 0},
 		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "", numStars: 0},
 		 * 		{name: "gameName", iconIndex: 1, resultEasy: "", resultHard: "", numStars: 0}
+		 * 		...
 		 * 	]
 		 */
 		private var gameDatas:Array;

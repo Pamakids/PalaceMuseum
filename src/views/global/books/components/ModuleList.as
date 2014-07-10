@@ -2,13 +2,13 @@ package views.global.books.components
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.geom.Point;
-
+	
 	import controllers.MC;
-
+	
 	import models.SOService;
-
+	
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
@@ -19,7 +19,7 @@ package views.global.books.components
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
+	
 	import views.Interlude;
 	import views.components.ElasticButton;
 	import views.global.books.BooksManager;
@@ -45,12 +45,12 @@ package views.global.books.components
 		private const viewHeight:uint=464;
 
 		private var vecImage:Vector.<Image>;
-		private const btnCount:uint=8;
-		private const center:Point=new Point(viewWidth / 2, viewHeight + 400);
-		private const radius:uint=800;
-		private const d:Number=0.14;
-		private const minR:Number=-Math.PI / 2 - 3.5 * d;
-		private const maxR:Number=minR + 7 * d;
+		private const btnCount:uint=9;
+		private const center:Point=new Point(viewWidth / 2, viewHeight + 200);
+		private const radius:uint=600;
+		private const d:Number=0.19;
+		private const minR:Number=-Math.PI / 2 - d * (btnCount-1)/2;
+		private const maxR:Number=minR + (btnCount-1) * d;
 		private var activeIcon:Image;
 		private var a:AssetManager = MC.assetManager;
 
@@ -322,6 +322,7 @@ package views.global.books.components
 			"assets/video/intro.mp4",
 			"m_0_0",
 			"m_1_0",
+			"m_0_0",		//插入骑射场景
 			"m_2_0",
 			"m_3_0",
 			"m_3_3",
@@ -331,7 +332,7 @@ package views.global.books.components
 
 		private function isComplete(i:int):Boolean
 		{
-//						return true;
+						return true;
 			if (i == 0)
 				return true;
 			var str:String=mapping[i];
@@ -416,24 +417,26 @@ package views.global.books.components
 		private var pointer:Quad;
 
 		private const wordPosition:Array=[
-			new Point(135, 199),
-			new Point(222, 160),
-			new Point(321, 128),
-			new Point(419, 112),
-			new Point(512, 113),
-			new Point(596, 128),
-			new Point(695, 157),
-			new Point(768, 196)
-			];
+			new Point(118, 240),
+			new Point(190, 178),
+			new Point(272, 136),
+			new Point(366, 112),
+			new Point(472, 106),
+			new Point(560, 112),
+			new Point(656, 140),
+			new Point(706, 182),
+			new Point(768, 238)
+		];
 		private const linePosition:Array=[
-			new Point(141, 123),
-			new Point(238, 82),
-			new Point(356, 59),
-			new Point(452, 57),
-			new Point(568, 60),
-			new Point(688, 82),
-			new Point(791, 128)
-			];
+			new Point(94, 176),
+			new Point(190, 111),
+			new Point(294, 75),
+			new Point(409, 62),
+			new Point(521, 64),
+			new Point(632, 82),
+			new Point(743, 119),
+			new Point(834, 179)
+		];
 
 		private function initLines():void
 		{
@@ -497,6 +500,7 @@ package views.global.books.components
 
 		private function getImage(name:String):Image
 		{
+//			return BooksManager.getImage(name);
 			return new Image( a.getTexture(name) );
 		}
 
