@@ -173,9 +173,9 @@ package
 				return;
 			}
 
-			BooksManager.showBooks(0, 0, 0, false);
+//			BooksManager.showBooks(0, 0, 0, false);
 //			MC.instance.showMenu();
-			return;
+//			return;
 
 			var moduleIndex:int=int(_lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(_lastScene.charAt(1)) - 1;
