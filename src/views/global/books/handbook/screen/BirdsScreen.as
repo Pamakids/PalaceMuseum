@@ -137,12 +137,9 @@ package views.global.books.handbook.screen
 			cache.y=10;
 		}
 
-		/** so中的存储为顺序存储，小鸟显示顺序与存储序列不一致，所以在这里判断某一页是否收集时，需要将page转换为collectedCode进行判断 */
-		private const collectedCode:Array = [0, 1, 11, 12, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 		private function ifCollected(page:uint):Boolean
 		{
-//			return true;
-			return SOService.instance.getSO("birdCatched" + collectedCode[page]);
+			return SOService.instance.getSO("birdCatched" + page);
 		}
 
 		/**
