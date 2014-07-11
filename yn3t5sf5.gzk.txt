@@ -1,0 +1,53 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch dev
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	renamed:    src/assets/global/handbook/bird_collection_8.png -> src/assets/global/handbook/bird_collection_10.png
+#	modified:   src/assets/global/handbook/bird_collection_2.png
+#	modified:   src/assets/global/handbook/bird_collection_3.png
+#	renamed:    src/assets/global/handbook/bird_collection_2.png -> src/assets/global/handbook/bird_collection_4.png
+#	renamed:    src/assets/global/handbook/bird_collection_3.png -> src/assets/global/handbook/bird_collection_5.png
+#	renamed:    src/assets/global/handbook/bird_collection_4.png -> src/assets/global/handbook/bird_collection_6.png
+#	renamed:    src/assets/global/handbook/bird_collection_5.png -> src/assets/global/handbook/bird_collection_7.png
+#	renamed:    src/assets/global/handbook/bird_collection_6.png -> src/assets/global/handbook/bird_collection_8.png
+#	renamed:    src/assets/global/handbook/bird_collection_7.png -> src/assets/global/handbook/bird_collection_9.png
+#	renamed:    src/assets/global/handbook/content_page_8.png -> src/assets/global/handbook/content_page_10.png
+#	modified:   src/assets/global/handbook/content_page_3.png
+#	modified:   src/assets/global/handbook/content_page_4.png
+#	renamed:    src/assets/global/handbook/content_page_3.png -> src/assets/global/handbook/content_page_5.png
+#	renamed:    src/assets/global/handbook/content_page_4.png -> src/assets/global/handbook/content_page_6.png
+#	renamed:    src/assets/global/handbook/content_page_5.png -> src/assets/global/handbook/content_page_7.png
+#	renamed:    src/assets/global/handbook/content_page_6.png -> src/assets/global/handbook/content_page_8.png
+#	renamed:    src/assets/global/handbook/content_page_7.png -> src/assets/global/handbook/content_page_9.png
+#	modified:   src/assets/global/handbook/history_relic_2.png
+#	modified:   src/assets/global/handbook/history_relic_3.png
+#	renamed:    src/assets/global/handbook/history_relic_2.png -> src/assets/global/handbook/history_relic_4.png
+#	renamed:    src/assets/global/handbook/history_relic_3.png -> src/assets/global/handbook/history_relic_5.png
+#	renamed:    src/assets/global/handbook/history_relic_4.png -> src/assets/global/handbook/history_relic_6.png
+#	renamed:    src/assets/global/handbook/history_relic_5.png -> src/assets/global/handbook/history_relic_7.png
+#	renamed:    src/assets/global/handbook/history_relic_6.png -> src/assets/global/handbook/history_relic_8.png
+#	renamed:    src/assets/global/handbook/history_relic_7.png -> src/assets/global/handbook/history_relic_9.png
+#	modified:   src/assets/global/handbook/mainUI/assets.xml
+#	modified:   src/assets/global/userCenter/mainUI/assets.png
+#	modified:   src/assets/global/userCenter/mainUI/assets.xml
+#	modified:   src/json/catalogue.json
+#	modified:   src/json/collection.json
+#	modified:   src/views/global/books/handbook/screen/BirdsScreen.as
+#	modified:   src/views/global/books/handbook/screen/HandbookScreen.as
+#	modified:   src/views/global/books/handbook/screen/HistoricalRelicScreen.as
+#	modified:   src/views/global/books/userCenter/screen/AchievementScreen.as
+#	modified:   src/views/global/books/userCenter/screen/CollectionScreen.as
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	src/assets/global/handbook/bird_collection_11.png
+#	src/assets/global/handbook/bird_collection_12.png
+#	src/assets/global/handbook/content_page_11.png
+#	src/assets/global/handbook/content_page_12.png
+#	src/assets/global/handbook/history_relic_10.png
+#	src/assets/global/handbook/history_relic_11.png
+
