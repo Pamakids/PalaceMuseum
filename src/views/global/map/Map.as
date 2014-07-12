@@ -159,7 +159,7 @@ package views.global.map
 				var gt:Array=hotspot['goto'];
 				if (gt)
 				{
-					if (gt[0] == 1)
+					if (gt[0] == 2)
 						p=new Point(p.x + 45, p.y)
 					centerPoint[gt[0]]=p;
 					tasks[gt[0]]=hotspot.task;
@@ -178,7 +178,7 @@ package views.global.map
 				return null;
 		}
 
-		private var typeArr:Array=[[], [], [], [], []];
+		private var typeArr:Array=[[], [], [], [], [],[]];
 
 		private function getCenterFromRect(rect:Rectangle, offset:Point=null):Point
 		{

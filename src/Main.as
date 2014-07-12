@@ -1,27 +1,27 @@
 package
 {
 	import com.greensock.TweenLite;
-	
+
 	import flash.filesystem.File;
 	import flash.system.Capabilities;
-	
+
 	import controllers.MC;
 	import controllers.UserBehaviorAnalysis;
-	
+
 	import events.UserBehaviorEvent;
-	
+
 	import models.FontVo;
 	import models.PosVO;
 	import models.SOService;
-	
+
 	import sound.SoundAssets;
-	
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
-	
+
 	import views.Interlude;
 	import views.components.PalaceGuide;
 	import views.components.base.Container;
@@ -35,7 +35,7 @@ package
 			if (Capabilities.isDebugger)
 			{
 //				SOService.instance.clear();
-				SOService.instance.setSO("lastScene", "61");
+				SOService.instance.setSO("lastScene", "61map");
 			}
 			super();
 
@@ -173,12 +173,17 @@ package
 				return;
 			}
 
-			BooksManager.showBooks(0, 0, 0, false);
+//			BooksManager.showBooks(0, 0, 0, false);
 //			MC.instance.showMenu();
-			return;
+//			return;
 
 			var moduleIndex:int=int(_lastScene.charAt(0)) - 1;
 			var sceneIndex:int=int(_lastScene.charAt(1)) - 1;
+
+			if(moduleIndex==5)
+				moduleIndex=1;
+			else if(moduleIndex>0)
+				moduleIndex++;
 
 			if(MC.isFinished())
 			{

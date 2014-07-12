@@ -38,8 +38,6 @@ package views.module6
 
 			bbg.x=1024-bbg.width>>1;
 
-			bbg.addEventListener(TouchEvent.TOUCH,onBGTouch);
-
 			var king:Image=getImage('king');
 			king.x=1024-king.width>>1;
 			king.y=768-king.height;
@@ -82,7 +80,9 @@ package views.module6
 
 		private function lionSay():void
 		{
-			LionMC.instance.say('画中藏有玄机，快找到\n骑射使用的箭！',0,0,0,null,20,true);
+			LionMC.instance.say('画中藏有玄机，快找到\n骑射使用的箭！',0,0,0,function():void{
+				bbg.addEventListener(TouchEvent.TOUCH,onBGTouch);
+			},20,true);
 		}
 
 		private function onCollection(e:Event):void
@@ -93,6 +93,10 @@ package views.module6
 			}else if(e.target==game3)
 			{
 				showCard('17');
+			}
+			else if(e.target==game2)
+			{
+				showCard('18');
 			}
 		}
 

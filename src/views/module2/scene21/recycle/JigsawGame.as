@@ -7,6 +7,7 @@ package views.module2.scene21.recycle
 
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -440,6 +441,8 @@ package views.module2.scene21.recycle
 			isWin=true;
 			TweenLite.to(okHolder, .5, {alpha: 0});
 			TweenLite.to(colorBG, 1, {alpha: 1});
+
+			dispatchEvent(new Event('showCollection',true));
 		}
 
 //		private function addEdge():void
