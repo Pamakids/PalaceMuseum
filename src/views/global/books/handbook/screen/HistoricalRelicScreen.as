@@ -46,7 +46,7 @@ package views.global.books.handbook.screen
 		/**
 		 * 手册总页数（左右为1页）
 		 */
-		public static const MAX_NUM:int=10;
+		public static const MAX_NUM:int=12;
 
 		private var _assetsManager:AssetManager;
 		private var crtPage:int;

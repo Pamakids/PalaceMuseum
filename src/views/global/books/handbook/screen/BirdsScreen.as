@@ -1,16 +1,16 @@
 package views.global.books.handbook.screen
 {
 	import feathers.core.PopUpManager;
-
+	
 	import models.FontVo;
 	import models.SOService;
-
+	
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-
+	
 	import views.components.base.PalaceModule;
 	import views.global.books.BooksManager;
 	import views.global.books.events.BookEvent;
@@ -22,7 +22,7 @@ package views.global.books.handbook.screen
 	 */
 	public class BirdsScreen extends BaseScreen
 	{
-		public static const MAX_NUM:int=11;
+		public static const MAX_NUM:int=13;
 
 		/**
 		 * 获取页面内容所指向的模块索引
@@ -139,7 +139,6 @@ package views.global.books.handbook.screen
 
 		private function ifCollected(page:uint):Boolean
 		{
-//			return true;
 			return SOService.instance.getSO("birdCatched" + page);
 		}
 

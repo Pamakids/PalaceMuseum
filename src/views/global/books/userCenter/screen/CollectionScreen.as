@@ -2,14 +2,13 @@ package views.global.books.userCenter.screen
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.geom.Point;
-
+	
 	import controllers.DC;
-
+	
 	import models.CollectionVO;
-	import models.PosVO;
-
+	
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -17,7 +16,7 @@ package views.global.books.userCenter.screen
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
-
+	
 	import views.global.books.BooksManager;
 	import views.global.books.components.CollectionShow;
 	import views.global.books.events.BookEvent;
@@ -64,12 +63,12 @@ package views.global.books.userCenter.screen
 			{
 				vo=source[i];
 				texture=vo.isCollected ? BooksManager.getTexture("card_collection_" + vo.id) : textureUn;
+//				texture = BooksManager.getTexture("card_collection_" + vo.id);
 				image=new Image(texture);
 				image.scaleX=image.scaleY=.8;
 				image.x=int(paddingLeft + Math.floor(i / 3) % 2 * this.viewWidth / 2 + (i % 3) * (horizontalGap + image.width));
 				image.y=int(paddingTop + Math.floor(i / 6) * (verticalGap + image.height));
 				this.addChild(image);
-				trace(image.x, image.y);
 				vecImage[i]=image;
 				image.addEventListener(TouchEvent.TOUCH, onTouch);
 			}
@@ -169,17 +168,14 @@ package views.global.books.userCenter.screen
 			}
 		}
 
-		private const order:Array=[0, 1, 2, 3, 4, 12, 5, 6, 7, 9, 8, 13, 10, 11, 14, 15];
-//		private const order:Array=[0, 1, 2, 3, 12, 5, 6, 7, 9, 8, 13, 10, 11, 14, 15];
+		private const order:Array=[0, 1, 2, 3, 4, 12, 5, 6, 7, 9, 8, 13, 10, 11, 14, 15, 16, 17, 18];
 		private var source:Array;
-//		private var source:Vector.<CollectionVO>;
 
 		private function initDatas():void
 		{
 			var arr:Array=BooksManager.getAssetsManager().getObject("collection").source;
 			max=arr.length;
 			var tmpArr:Vector.<CollectionVO>=new Vector.<CollectionVO>(max);
-//			source=new Vector.<CollectionVO>(max);
 			var vo:CollectionVO;
 			var id:String;
 			for (var i:int=0; i < max; i++)

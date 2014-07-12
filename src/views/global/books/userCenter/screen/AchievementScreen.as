@@ -2,14 +2,13 @@ package views.global.books.userCenter.screen
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.geom.Point;
-
+	
 	import controllers.DC;
-
+	
 	import models.FontVo;
-	import models.PosVO;
-
+	
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -18,7 +17,7 @@ package views.global.books.userCenter.screen
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
-
+	
 	import views.global.books.BooksManager;
 	import views.global.books.components.AchieveIcon;
 	import views.global.books.events.BookEvent;
@@ -218,7 +217,6 @@ package views.global.books.userCenter.screen
 			if (crtPage <= 0)
 			{
 				dispatchEventWith(BookEvent.ViewUpdateFail);
-				trace("更新失败");
 				return;
 			}
 			crtPage-=1;

@@ -31,28 +31,54 @@
 		]
 	},
 	{
+		"name":	"骑射",
+		"items":
+		[
+			{
+				"type":		"0",
+				"explain":	"不忘骑射",
+				"page":		"3"
+			},
+			{
+				"type":		"0",
+				"explain":	"箭亭",
+				"page":		"4"
+			},
+			{
+				"type":		"2",
+				"explain":	"皇帝也是神箭手",
+				"page":		"2"
+			},
+			{
+				"type":		"2",
+				"explain":	"十全老人是谁？",
+				"page":		"3"
+			}
+		]
+	},
+	{
 		"name":	"早读",
 		"items":
 		[
 			{
 				"type":		"0",
 				"explain":	"活到老学到老",
-				"page":		"3"
+				"page":		"5"
 			},
 			{
 				"type":		"0",
 				"explain":	"小书房里的大乾坤",
-				"page":		"4"
+				"page":		"6"
 			},
 			{
 				"type":		"2",
 				"explain":	"最大的书",
-				"page":		"2"
+				"page":		"4"
 			},
 			{
 				"type":		"2",
 				"explain":	"康熙皇帝学科学",
-				"page":		"3"
+				"page":		"5"
 			}
 		]
 	},
@@ -63,27 +89,27 @@
 			{
 				"type":		"0",
 				"explain":	"皇帝怎么吃饭？",
-				"page":		"5"
+				"page":		"7"
 			},
 			{
 				"type":		"0",
 				"explain":	"膳牌",
-				"page":		"6"
+				"page":		"8"
 			},
 			{
 				"type":		"2",
 				"explain":	"膳单",
-				"page":		"4"
+				"page":		"6"
 			},
 			{
 				"type":		"2",
 				"explain":	"神奇的苹果",
-				"page":		"5"
+				"page":		"7"
 			},
 			{
 				"type":		"2",
 				"explain":	"千叟宴",
-				"page":		"6"
+				"page":		"8"
 			}
 		]
 	},
@@ -94,22 +120,22 @@
 			{
 				"type":		"0",
 				"explain":	"御门听政",
-				"page":		"7"
+				"page":		"9"
 			},
 			{
 				"type":		"0",
 				"explain":	"皇帝具体是怎么工作的？",
-				"page":		"8"
+				"page":		"10"
 			},
 			{
 				"type":		"2",
 				"explain":	"大臣上朝敢迟到吗？",
-				"page":		"7"
+				"page":		"9"
 			},
 			{
 				"type":		"2",
 				"explain":	"皇帝批奏折只用书面语么？",
-				"page":		"8"
+				"page":		"10"
 			}
 		]
 	},
@@ -120,22 +146,22 @@
 			{
 				"type":		"0",
 				"explain":	"皇帝平时都有哪些娱乐活动",
-				"page":		"9"
+				"page":		"11"
 			},
 			{
 				"type":		"0",
 				"explain":	"“古代的连续剧”指的是什么呢？",
-				"page":		"10"
+				"page":		"12"
 			},
 			{
 				"type":		"2",
 				"explain":	"爱作诗的乾隆皇帝",
-				"page":		"9"
+				"page":		"11"
 			},
 			{
 				"type":		"2",
 				"explain":	"最爱搞恶作剧的溥仪",
-				"page":		"10"
+				"page":		"12"
 			}
 		]
 	},
@@ -150,23 +176,28 @@
 			},
 			{
 				"type":		"1",
-				"explain":	"紫禁城的文房四宝",
+				"explain":	"清宫武备",
 				"page":		"2"
 			},
 			{
 				"type":		"1",
-				"explain":	"皇帝的餐具",
-				"page":		"5"
+				"explain":	"紫禁城的文房四宝",
+				"page":		"4"
 			},
 			{
 				"type":		"1",
-				"explain":	"二十五宝玺",
+				"explain":	"皇帝的餐具",
 				"page":		"7"
 			},
 			{
 				"type":		"1",
+				"explain":	"二十五宝玺",
+				"page":		"9"
+			},
+			{
+				"type":		"1",
 				"explain":	"小皇帝的玩具",
-				"page":		"8"
+				"page":		"10"
 			}
 		]
 	}
