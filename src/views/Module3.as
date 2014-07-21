@@ -19,7 +19,7 @@ package views
 			else if (_skipIndex > -1)
 				skipIndex++;
 			sceneArr=[Scene34, Scene31, Scene32, Scene33];
-			birdArr=[-1,4,5,6];
+			birdArr=[-1,6,7,8];
 
 //			if (skipIndex < 2)
 //				loadFirst();

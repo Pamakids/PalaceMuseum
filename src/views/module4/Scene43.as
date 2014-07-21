@@ -18,7 +18,7 @@ package views.module4
 		public function Scene43(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=10;
+			crtKnowledgeIndex=12;
 			addBG("bg43");
 //			addChild(getImage("bg43"));
 
@@ -56,3 +56,5 @@ package views.module4
 		}
 	}
 }
+
+

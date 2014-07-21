@@ -15,6 +15,8 @@ package views
 	import flash.media.SoundChannel;
 	import flash.system.Capabilities;
 
+	import models.PosVO;
+
 	import sound.SoundAssets;
 
 	import starling.core.Starling;
@@ -63,7 +65,7 @@ package views
 //			this.y=PosVO.OffsetY;
 		}
 
-//		private var arr:Array=[IntroMC,EndMC];
+		private var arr:Array=[IntroMC,EndMC];
 		private var arr2:Array=[introSnd,endSnd];
 
 		[Embed(source="end.mp3")]
@@ -118,12 +120,20 @@ package views
 			initButton();
 
 			stage.frameRate=24;
-//			mc=new arr[index]();
-//			mc.x=123; 
-//			mc.y=86;
+			mc=new arr[index]();
+			mc.x=123; 
+			mc.y=86;
 //			mc.scaleX=mc.scaleY=PosVO.scale;
-//			addChildAt(mc,0);
-//			mc.addEventListener(Event.FRAME_CONSTRUCTED,onPlay);
+
+			if(!needBG)
+			{
+				mc.x=0;
+				mc.y=0;
+				mc.scaleX=1024/mc.width;
+				mc.scaleY=768/mc.height;
+			}
+			addChildAt(mc,0);
+			mc.addEventListener(Event.FRAME_CONSTRUCTED,onPlay);
 			snd=new arr2[index]();
 			sndC=snd.play();
 

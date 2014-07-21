@@ -159,7 +159,7 @@ package views.global.map
 				var gt:Array=hotspot['goto'];
 				if (gt)
 				{
-					if (gt[0] == 1)
+					if (gt[0] == 2)
 						p=new Point(p.x + 45, p.y)
 					centerPoint[gt[0]]=p;
 					tasks[gt[0]]=hotspot.task;
@@ -178,7 +178,7 @@ package views.global.map
 				return null;
 		}
 
-		private var typeArr:Array=[[], [], [], [], []];
+		private var typeArr:Array=[[], [], [], [], [],[]];
 
 		private function getCenterFromRect(rect:Rectangle, offset:Point=null):Point
 		{
@@ -427,7 +427,7 @@ package views.global.map
 			flipAnimation.addChildAt(king, flipAnimation.numChildren);
 			if (kingPoint)
 			{
-				if (!showFromCenter && from == 3 && gardenPt)
+				if (!showFromCenter && from == 4 && gardenPt)
 					kingPoint=gardenPt;
 				king.visible=true;
 				king.x=kingPoint.x;
@@ -914,7 +914,17 @@ package views.global.map
 			if (preSky)
 				TweenLite.to(preSky, 2.3, {alpha: 0});
 
-			desSky=getImage("sky" + (Math.max(0, _to) + 1).toString());
+			var t:int;
+			if(_to<=0)
+				t=0;
+			else if(_to==1)
+				t=1;
+			else if(_to>1)
+				t=_to-1;
+
+			t++;
+
+			desSky=getImage("sky" + t.toString());
 			flipAnimation.addChildAt(desSky, 1);
 			desSky.alpha=0;
 			TweenLite.to(desSky, 2.3, {alpha: 1});

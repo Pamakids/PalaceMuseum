@@ -2,13 +2,13 @@ package views.global.books.userCenter.screen
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
+
 	import flash.geom.Point;
-	
+
 	import controllers.DC;
-	
+
 	import models.FontVo;
-	
+
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -17,7 +17,9 @@ package views.global.books.userCenter.screen
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
-	
+
+	import views.components.share.ShareVO;
+	import views.components.share.ShareView;
 	import views.global.books.BooksManager;
 	import views.global.books.components.AchieveIcon;
 	import views.global.books.events.BookEvent;
@@ -37,6 +39,9 @@ package views.global.books.userCenter.screen
 
 			TweenLite.delayedCall(0.1, dispatchEventWith, [BookEvent.InitViewPlayed]);
 		}
+
+		private static var shareStr:String='我在 #皇帝的一天# 中获得了 一个成就。你是不是也想来扮演一天的小皇帝呢？那就跟小狮子一起在紫禁城的各个角落里转转，还能学到许多知识哟~@故宫博物院 @斑马骑士'
+		private static var path:String='achieve/';
 
 		override protected function initPages():void
 		{
@@ -61,7 +66,23 @@ package views.global.books.userCenter.screen
 				obj={id: arr[i][0], achidata: arr[i]};
 				tempdatas.push(obj);
 			}
-
+			
+			if(tempdatas[max-1].achidata[2] == 0)		//最后一个成就尚未达成
+			{
+				showAchieveAction = true;
+				tempdatas[max-1].achidata[2] == 1;
+				
+				for(i=0;i<max-1;i++)
+				{
+					if(tempdatas[i].achidata[2] == 0)	//有其他未达成的成就
+					{
+						showAchieveAction = false;
+						tempdatas[max-1].achidata[2] == 0;	//更正完成状态
+						break;
+					}
+				}
+			}
+			
 			//分页处理，每页显示9个数据
 			const pageNum:int=Math.ceil(tempdatas.length / maxNum);
 			for (i=0; i < pageNum; i++)
@@ -69,7 +90,10 @@ package views.global.books.userCenter.screen
 				datas.push(tempdatas.splice(0, maxNum));
 			}
 			pageCount=pageNum;
+			
 		}
+		
+		public static var showAchieveAction:Boolean = false;
 		private var page_0:TextField;
 		private var page_1:TextField;
 
@@ -154,7 +178,7 @@ package views.global.books.userCenter.screen
 			beginX=selectIcon.x + 28;
 			beginY=selectIcon.y + 89;
 			targetX=1024 - imageWidth >> 1;
-			targetY=768 - imageHeight >> 1;
+			targetY=(768 - imageHeight >> 1)-30;
 
 			image.scaleX=image.scaleY=scale;
 			image.alpha=alpha;
@@ -163,6 +187,8 @@ package views.global.books.userCenter.screen
 
 			TweenLite.to(image, 0.3, {x: targetX, y: targetY, scaleX: 1, scaleY: 1, alpha: 1, ease: Cubic.easeInOut, onComplete: function():void {
 				move=false;
+				if(image.achieved)
+					ShareView.instance.show('分享',shareStr,ShareVO.getIMG(path+(vecIcon.indexOf(selectIcon)+1)));
 			}});
 		}
 
@@ -172,10 +198,16 @@ package views.global.books.userCenter.screen
 		{
 			if (move)
 				return;
+			e.stopImmediatePropagation();
 			var touch:Touch;
-			touch=e.getTouch(this);
-			if (touch && touch.phase == TouchPhase.ENDED)
+			touch=e.getTouch(this,TouchPhase.ENDED);
+			if(!touch)
+				return;
+			var pt:Point=touch.getLocation(this);
+			var center:Boolean=pt.x>340&&pt.x<685;
+			if (!center)
 			{
+				ShareView.instance.hide();
 				TweenLite.to(image, 0.3, {x: beginX, y: beginY, scaleX: scale, scaleY: scale, alpha: alpha, ease: Cubic.easeOut, onComplete: function():void {
 					container.visible=false;
 				}});

@@ -359,6 +359,10 @@ package views.global.books.userCenter
 		private function playedAnimation():void
 		{
 			hideAnimation();
+			if(_navigator.activeScreen is AchievementScreen && AchievementScreen.showAchieveAction)
+			{
+				BooksManager.showAchieve(33);
+			}
 		}
 
 		/**

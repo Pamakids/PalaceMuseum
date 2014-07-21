@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <application xmlns="http://ns.adobe.com/air/application/4.0">
-	<id>com.dpm.OneDayEmperor</id>
+	<id>com.pamakids.SafeBook</id>
 	<filename>皇帝的一天</filename>
 	<name>皇帝的一天</name>
 	<versionNumber>1.0.0</versionNumber>
@@ -64,5 +64,6 @@
 	<extensions>
 		<extensionID>eu.alebianco.air.extensions.analytics.NativeGATracker</extensionID>
 		<extensionID>com.pamakids.UMeng</extensionID>
-	</extensions>
+	<extensionID>com.pamakids.UMSocial</extensionID>
+    </extensions>
 </application>

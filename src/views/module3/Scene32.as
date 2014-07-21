@@ -34,7 +34,7 @@ package views.module3
 		public function Scene32(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=6;
+			crtKnowledgeIndex=8;
 
 			addBG("bg-22");
 
@@ -47,7 +47,7 @@ package views.module3
 			addCraw(new Point(463, 461));
 
 			LionMC.instance.say("宫里的饭菜起名字时常常图个吉利，看你能否给这些吉祥菜名对号入座。", 0, 0, 0, function():void {
-				birdIndex=5;
+				birdIndex=7;
 			}, 20, true);
 		}
 

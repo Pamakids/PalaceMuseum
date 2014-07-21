@@ -13,7 +13,7 @@ package views
 			SoundAssets.addModuleSnd(moduleName);
 			skipIndex=_skipIndex;
 			sceneArr=[Scene61, Scene62];
-			birdArr=[-1,-1];
+			birdArr=[2,3];
 
 			addQAS();
 			addLoading();

@@ -27,6 +27,9 @@ package
 
 	import starling.core.Starling;
 
+	import views.components.share.ShareView;
+	import views.logo.GG_Logo;
+
 //	import utils.TouchEventUtils;
 
 	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x351016")]
@@ -63,10 +66,38 @@ package
 			UserBehaviorAnalysis.init();
 			UserBehaviorAnalysis.trackView("OPENAPP");
 
+			ShareView.instance.init(this);
+
 			TweenPlugin.activate([ShakeEffect]);
 			TweenPlugin.activate([MotionBlurPlugin]);
 
+			initLogo();
 
+//			var tv:Boolean=false;
+//			if (tv)
+//				initTVRemoter();
+//			initRemoteServer();
+		}
+
+		private function initLogo():void
+		{
+			if(logo)
+			{
+				removeChild(logo);
+				logo.dispose();
+				logo=null;
+			}
+			logo=new GG_Logo(initStarling);
+			addChild(logo);
+		}
+
+		private var logo:GG_Logo;
+
+		private function initStarling():void
+		{
+			removeChild(logo);
+			logo.dispose();
+			logo=null;
 
 			Starling.multitouchEnabled=true;
 
@@ -82,7 +113,7 @@ package
 				MC.isIOS=true;
 			}
 
-			var rect:Rectangle=new Rectangle(PosVO.OffsetX, PosVO.OffsetY, 1024 * scale, 768 * scale)
+			var rect:Rectangle=new Rectangle(PosVO.OffsetX, PosVO.OffsetY, 1024 * PosVO.scale, 768 * PosVO.scale)
 			var main:Starling=new Starling(Main, stage, rect);
 			main.start();
 			main.showStats=Capabilities.isDebugger;
@@ -94,11 +125,6 @@ package
 
 			MC.instance.stage=this;
 			MC.instance.mcLayer=mcLayer;
-
-//			var tv:Boolean=false;
-//			if (tv)
-//				initTVRemoter();
-//			initRemoteServer();
 		}
 
 //		private function initTVRemoter():void

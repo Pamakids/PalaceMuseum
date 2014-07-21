@@ -2,13 +2,13 @@ package views.global.books.userCenter.screen
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
+
 	import flash.geom.Point;
-	
+
 	import controllers.DC;
-	
+
 	import models.CollectionVO;
-	
+
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -16,7 +16,9 @@ package views.global.books.userCenter.screen
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
-	
+
+	import views.components.share.ShareVO;
+	import views.components.share.ShareView;
 	import views.global.books.BooksManager;
 	import views.global.books.components.CollectionShow;
 	import views.global.books.events.BookEvent;
@@ -137,7 +139,7 @@ package views.global.books.userCenter.screen
 			container.visible=true;
 			move=true;
 			targetX=512;
-			targetY=768 - imageHeight >> 1;
+			targetY=(768 - imageHeight >> 1)-38;
 			beginX=begin.x + 28 + itemWidth / 2;
 			beginY=begin.y + 89;
 
@@ -149,26 +151,36 @@ package views.global.books.userCenter.screen
 			TweenLite.to(card, 0.3, {x: targetX, y: targetY, scaleX: 1, scaleY: 1, alpha: 1, ease: Cubic.easeInOut, onComplete: function():void {
 				move=false;
 				container.touchable=true;
+				if(card.collected)
+					ShareView.instance.show('分享',shareStr,ShareVO.getIMG(path+card.id));
 			}});
 		}
 		private var move:Boolean=false;
+
+		private static var path:String='';
+		private static var shareStr:String='我在 #皇帝的一天# 中获得了 一个卡片。你是不是也想来扮演一天的小皇帝呢？那就跟小狮子一起在紫禁城的各个角落里转转，还能学到许多知识哟~@故宫博物院 @斑马骑士'
 
 		private function onTouchPop(e:TouchEvent):void
 		{
 			if (move)
 				return;
 			var touch:Touch;
-			touch=e.getTouch(this);
-			if (touch && touch.phase == TouchPhase.ENDED)
+			touch=e.getTouch(this,TouchPhase.ENDED);
+			if(!touch)
+				return;
+			var pt:Point=touch.getLocation(this);
+			var center:Boolean=pt.x>340&&pt.x<685
+			if (!center)
 			{
 				container.touchable=false;
+				ShareView.instance.hide();
 				TweenLite.to(card, 0.3, {x: beginX, y: beginY, scaleX: scale, scaleY: scale, alpha: alpha, ease: Cubic.easeOut, onComplete: function():void {
 					container.visible=false;
 				}});
 			}
 		}
 
-		private const order:Array=[0, 1, 2, 3, 4, 12, 5, 6, 7, 9, 8, 13, 10, 11, 14, 15, 16, 17, 18];
+		private const order:Array=[0, 1, 2, 16, 17, 18,3, 4, 12, 5, 6, 7, 9, 8, 13, 10, 11, 14, 15];
 		private var source:Array;
 
 		private function initDatas():void

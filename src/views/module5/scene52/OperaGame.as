@@ -115,8 +115,11 @@ package views.module5.scene52
 		override protected function init():void
 		{
 			lastBGM=SoundAssets.crtBGM;
+//			SoundAssets.playBGM("gameBGM");
 			initTime=getTimer();
 			UserBehaviorAnalysis.trackView(gameName);
+
+//			super.init();
 		}
 
 		public var onOperaSwitch:Function;
@@ -762,3 +765,5 @@ package views.module5.scene52
 		}
 	}
 }
+
+

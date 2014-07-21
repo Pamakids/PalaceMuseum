@@ -32,7 +32,7 @@ package views.module4
 		public function Scene41(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=8;
+			crtKnowledgeIndex=10;
 			addBG("bg41");
 			bg.touchable=false;
 			bg.addEventListener(TouchEvent.TOUCH,onBGTouch);
@@ -51,7 +51,7 @@ package views.module4
 			if(kingArea.containsPoint(pt)){
 				if (chatP)
 					chatP.playHide();
-				chatP=Prompt.showTXT(537, 335, chat2, 20);
+				chatP=Prompt.showTXT(490, 335, chat2, 20,null,this,3);
 			}
 		}
 
@@ -84,7 +84,7 @@ package views.module4
 
 		private function chatOver():void
 		{
-			birdIndex=7;
+			birdIndex=9;
 			getReady();
 		}
 
@@ -140,15 +140,24 @@ package views.module4
 			var dx:Number=craw.x+30;
 			TweenLite.to(craw,.5,{x:dx});
 
+			showCard("9",showAchieve);
+
+			SoundAssets.playSFX("popup");
+		}
+
+		private function showAchieve():void
+		{
+			showAchievement(21, playEnter);
+		}
+
+		private function playEnter():void
+		{
 			TweenLite.to(chancellor,.5,{x:762,onComplete:function():void{
+				sceneOver();
 				showHint(chancellor.x + 50, chancellor.y, hintArr[0],3,function():void{
 					chancellor.addEventListener(TouchEvent.TOUCH,onChancellorTouch);
 				});
 			}});
-
-			SoundAssets.playSFX("popup");
-
-			showAchievement(21, sceneOver);
 		}
 
 		private function onChancellorTouch(e:TouchEvent):void

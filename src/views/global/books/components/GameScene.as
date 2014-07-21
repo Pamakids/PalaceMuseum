@@ -20,12 +20,13 @@ package views.global.books.components
 	import views.module3.scene32.MenuGame;
 	import views.module3.scene33.DishGame;
 	import views.module5.scene52.OperaGame;
+	import views.module6.scene62.ArcherGame;
 
 	public class GameScene extends PalaceScene
 	{
-		private var gamePathArr:Array=["22", "23", "42"];
+		private var gamePathArr:Array=["62","22", "23", "42"];
 //		private var gamePathArr:Array=["22", "23", "31", "42"];
-		private var gameArr:Array=[MenuGame, DishGame, OperaGame];
+		private var gameArr:Array=[ArcherGame,MenuGame, DishGame, OperaGame];
 //		private var gameArr:Array=[MenuGame, DishGame, JigsawGame, OperaGame];
 
 		private var game:PalaceGame;
