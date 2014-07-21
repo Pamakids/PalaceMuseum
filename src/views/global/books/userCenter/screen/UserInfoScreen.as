@@ -2,25 +2,24 @@ package views.global.books.userCenter.screen
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
+
 	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
-	
+
 	import controllers.DC;
 	import controllers.MC;
-	
+
 	import feathers.controls.Button;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.text.TextFieldTextRenderer;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
-	
-	import models.AchieveVO;
+
 	import models.FontVo;
 	import models.SOService;
-	
+
 	import sound.SoundAssets;
-	
+
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
@@ -29,7 +28,7 @@ package views.global.books.userCenter.screen
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.textures.Texture;
-	
+
 	import views.global.books.BooksManager;
 	import views.global.books.components.CurrentUserView;
 	import views.global.books.components.ModuleList;
@@ -131,7 +130,6 @@ package views.global.books.userCenter.screen
 				if(arr[i][2])
 					nums[0] ++;
 			}
-			
 			for(i=0;i<maxs[1];i++)
 			{
 				if(DC.instance.testCollectionIsOpend(i.toString()))

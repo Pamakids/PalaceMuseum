@@ -248,7 +248,7 @@ package views.global.books.handbook.screen
 			arr[crtPage]=true;
 			SOService.instance.setSO("progress_relic", arr);
 			if (checkSO())
-				BooksManager.showAchieve(32);
+				BooksManager.getCrtHandbook().showAchieve(32);
 		}
 
 		/**

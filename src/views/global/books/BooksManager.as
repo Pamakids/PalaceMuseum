@@ -1,25 +1,18 @@
 package views.global.books
 {
-	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
-	
+
 	import flash.display.MovieClip;
 	import flash.filesystem.File;
-	
+
 	import controllers.MC;
-	
-	import models.AchieveVO;
-	import models.FontVo;
-	import models.SOService;
-	
+
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
-	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.components.LionMC;
 	import views.components.base.PalaceModule;
 	import views.global.TopBar;
@@ -262,32 +255,6 @@ package views.global.books
 		public static function getImage(name:String):Image
 		{
 			return new Image(_assetsManager.getTexture(name));
-		}
-		
-		public static function showAchieve(index:int):void
-		{
-			if(SOService.instance.getSO(index + "_achieve"))
-				return;
-			SOService.instance.setSO(index+"_achieve", true);
-			var txt:String="恭喜您获得成就: " + AchieveVO.achieveList[index][0];
-			var sprite:Sprite = new Sprite();
-			var screen:Sprite = _handbook ? _handbook : _userCenter;
-			screen.addChild( sprite );
-			var image:Image = new Image( MC.assetManager.getTexture("acheivebar") );
-			image.pivotX=image.width >> 1;
-			sprite.addChild(image);
-			var tf:TextField = new TextField(400, 80, txt, FontVo.PALACE_FONT, 32, 0xfbf4cb);
-			sprite.addChild(tf);
-			tf.x=-200;
-			tf.y=15;
-			sprite.x=512;
-			sprite.y=-170;
-			TweenLite.to(sprite, .5, {y: 0});
-			TweenLite.delayedCall(2.5, function():void{
-				TweenLite.to(sprite, .5, {y: -170, onComplete: function():void{
-					sprite.removeFromParent(true);
-				}});
-			});
 		}
 
 	}

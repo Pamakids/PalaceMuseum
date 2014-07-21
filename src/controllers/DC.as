@@ -59,7 +59,6 @@ package controllers
 			for (i=0; i < max; i++)
 			{
 				t=arr[i];
-				
 				if (t)
 					_achidatas.push([t[0], t[1], (SOService.instance.getSO(i + "_achieve")) ? 1 : 0])
 			}
@@ -71,7 +70,8 @@ package controllers
 		 */
 		private const classNames:Array=["archegame", "menugame", "dishgame", "operagame"];
 		private const gameNames:Array=["百步穿杨", "吉祥菜名", "银牌试毒", "粉墨登场"];
-		
+//		private const classNames:Array=["menugame", "dishgame", "jigsawgame", "operagame"];
+//		private const gameNames:Array=["吉祥菜名", "银牌试毒", "地图拼图", "粉墨登场"];
 		/**
 		 * 游戏是否有难度区分:0 有， 1 没有
 		 */
