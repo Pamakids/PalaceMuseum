@@ -156,9 +156,17 @@ package sound
 		[Embed(source="/sound/51taihou.mp3")] //done
 		public static var taihou:Class;
 
+		public static var module6:Array=["horse", "shoot","hitted"];
+		[Embed(source="/sound/62horse.mp3")] //done
+		public static var horse:Class;
+		[Embed(source="/sound/62shoot.mp3")] //done
+		public static var shoot:Class;
+		[Embed(source="/sound/62hitted.mp3")] //done
+		public static var hitted:Class;
+
 		public static var gamescene:Array=['dishon', 'dishout', 'fly', 'kingeat', 'kingpoison',
-										   'blockfall', 'blockmatch',
-										   'gamebg52', 'bodyfall', 'maskok', 'maskwrong'];
+										   'blockfall', 'blockmatch','hitted',
+										   'gamebg52', 'bodyfall', 'maskok', 'maskwrong',"horse", "shoot"];
 		public static var loopArr:Array=["main", "gamebg52", "mapbgm", "s11bgm", "s41bgm", "fireworks", "gameBGM"];
 
 		public static function init():void

@@ -25,7 +25,7 @@ package views.module3
 		public function Scene34(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=7;
+			crtKnowledgeIndex=8;
 			addBG("bg30");
 //			addChild(getImage("bg30"));
 
@@ -77,3 +77,5 @@ package views.module3
 		}
 	}
 }
+
+

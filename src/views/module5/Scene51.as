@@ -48,7 +48,7 @@ package views.module5
 		public function Scene51(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=11;
+			crtKnowledgeIndex=13;
 			addBG("bg51");
 
 			addPeople();
@@ -56,6 +56,7 @@ package views.module5
 			LionMC.instance.say(" 待各位落座，演出就\n正式开始。", 0, 0, 0, function():void {
 				ready=true;
 				bg.addEventListener(TouchEvent.TOUCH, onBGTouch);
+				birdIndex=11;
 			}, 20, true);
 		}
 

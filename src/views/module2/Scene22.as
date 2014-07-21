@@ -68,7 +68,7 @@ package views.module2
 		{
 			super(am);
 			hintArr=[hint0, hint1, hint2, hint3]
-			crtKnowledgeIndex=5;
+			crtKnowledgeIndex=7;
 			addBG("bg32");
 
 			thermo=getImage("thermometer32");
@@ -171,7 +171,7 @@ package views.module2
 
 		private function chatOver():void
 		{
-			birdIndex=3
+			birdIndex=5
 			removeMask();
 			king.touchable=false;
 			TweenLite.to(king, 1, {y: 768 + 311, onComplete: addTouchs});

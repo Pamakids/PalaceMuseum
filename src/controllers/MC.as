@@ -67,7 +67,7 @@ package controllers
 		public var currentModule:PalaceModule;
 
 		public var main:Container;
-		private var modules:Array=[Module1, Module2, Module3, Module4, Module5, Module6];
+		private var modules:Array=[Module1,Module6, Module2, Module3, Module4, Module5];
 
 		public var stage:PalaceMuseum;
 		public var topBarLayer:starling.display.Sprite;

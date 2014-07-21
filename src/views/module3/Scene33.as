@@ -71,7 +71,7 @@ package views.module3
 		public function Scene33(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=7;
+			crtKnowledgeIndex=9;
 
 			addBG("bg23");
 			addKing();
@@ -268,7 +268,7 @@ package views.module3
 				isT=true;
 				dx=180;
 				dy=590;
-				birdIndex=6;
+				birdIndex=8;
 				if (SOService.instance.checkHintCount(silverCardClickHint))
 					addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			}

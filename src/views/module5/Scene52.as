@@ -49,7 +49,7 @@ package views.module5
 		public function Scene52(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=11;
+			crtKnowledgeIndex=13;
 			gameHolder=new Sprite();
 			addChild(gameHolder);
 
@@ -71,7 +71,6 @@ package views.module5
 			king.y=768;
 			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void {
 				Prompt.showTXT(king.x + 20, king.y + 135, "从来没见过这么神奇的戏台子，我得仔细瞧瞧", 20, lionSay, null, 3);
-				SoundAssets.playSFX("kingdragged");
 			}});
 		}
 
@@ -224,13 +223,13 @@ package views.module5
 			game.addEventListener(PalaceGame.GAME_RESTART, onGameRestart);
 		}
 
-		private function onPlayGame2(e:Event=null):void
-		{
-			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void {
-				king.play();
-				Prompt.showTXT(king.x + 20, king.y + 135, "太过瘾了，看得我眼花缭乱！", 20, gotoGame2, null, 3);
-			}});
-		}
+//		private function onPlayGame2(e:Event=null):void
+//		{
+//			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void {
+//				king.play();
+//				Prompt.showTXT(king.x + 20, king.y + 135, "太过瘾了，看得我眼花缭乱！", 20, gotoGame2, null, 3);
+//			}});
+//		}
 
 		private function gotoGame2():void
 		{
@@ -269,6 +268,8 @@ package views.module5
 			game2.onOperaSwitch=onOperaSwitch;
 			game2.addEventListener(PalaceGame.GAME_OVER, onGame2Over);
 			TailBar.hide();
+
+			birdIndex=12;
 		}
 
 		private function onGame2Over(e:Event):void
@@ -290,6 +291,8 @@ package views.module5
 			TweenLite.to(king, 1, {x: 714, y: 519, onComplete: function():void {
 				king.play();
 				Prompt.showTXT(king.x + 20, king.y + 135, "太过瘾了，看得我眼花缭乱！", 20, getGameInfo, null, 3);
+				TweenLite.delayedCall(1,SoundAssets.playSFX,['kingdragged']);
+//				SoundAssets.playSFX("kingdragged");
 			}});
 			//			var lvl:int=game.gamelevel;
 			//			initGame2(lvl);

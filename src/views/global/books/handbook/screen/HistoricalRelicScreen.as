@@ -34,7 +34,7 @@ package views.global.books.handbook.screen
 		public function get mapCrtPageToModule():int
 		{
 			//各模块内最后一个典故的页码
-			const maxPageOfModules:Array=[1, 4, 6, 7, 9];
+			const maxPageOfModules:Array=[1,3, 6, 8, 9, 11];
 			for (var i:int=0; i < maxPageOfModules.length; i++)
 			{
 				if (crtPage <= maxPageOfModules[i])
@@ -248,7 +248,7 @@ package views.global.books.handbook.screen
 			arr[crtPage]=true;
 			SOService.instance.setSO("progress_relic", arr);
 			if (checkSO())
-				BooksManager.getCrtHandbook().showAchieve(32);
+				BooksManager.showAchieve(32);
 		}
 
 		/**

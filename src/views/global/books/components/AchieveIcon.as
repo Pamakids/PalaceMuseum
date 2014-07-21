@@ -1,20 +1,20 @@
 package views.global.books.components
 {
 	import flash.geom.Point;
-	
+
 	import feathers.core.FeathersControl;
-	
+
 	import models.FontVo;
-	
+
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
-	
+
 	import views.global.books.BooksManager;
-	
+
 	public class AchieveIcon extends FeathersControl
 	{
 		private var _state:int;
@@ -28,7 +28,12 @@ package views.global.books.components
 		{
 			this._state = state;
 		}
-		
+
+		public function get achieved():Boolean
+		{
+			return _data.achidata[2]!=0;
+		}
+
 		override protected function draw():void
 		{
 			if(_data)
@@ -51,16 +56,16 @@ package views.global.books.components
 				this.visible = false;
 			}
 		}
-		
+
 		override protected function initialize():void
 		{
 			initBackground();
 			initName();
 			initContent();
-			
+
 			this.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
-		
+
 		private var begin:Point
 		private function onTouch(e:TouchEvent):void
 		{
@@ -81,7 +86,7 @@ package views.global.books.components
 				}
 			}
 		}
-		
+
 		private var _content:TextField;
 		private function initContent():void
 		{
@@ -93,7 +98,7 @@ package views.global.books.components
 			_content.y = 250;
 			_content.touchable = false;
 		}
-		
+
 		private var _name:TextField;
 		private function initName():void
 		{
@@ -110,7 +115,7 @@ package views.global.books.components
 			this.addChild( _name );
 			_name.touchable = false;
 		}
-		
+
 		private var image:Image;
 		private function initBackground():void
 		{
@@ -122,7 +127,7 @@ package views.global.books.components
 			this.height = image.height;
 			this.addChild( image );
 		}
-		
+
 		override public function dispose():void
 		{
 			if(this.hasEventListener(TouchEvent.TOUCH))
@@ -135,8 +140,8 @@ package views.global.books.components
 				_content.removeFromParent(true);
 			super.dispose();
 		}
-		
-		
+
+
 		/**
 		 * {
 		 * 		id:	""
@@ -155,6 +160,7 @@ package views.global.books.components
 		{
 			return _data;
 		}
-		
+
 	}
 }
+

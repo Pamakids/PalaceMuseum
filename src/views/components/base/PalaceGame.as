@@ -4,6 +4,7 @@ package views.components.base
 	import com.greensock.easing.Back;
 	import com.greensock.easing.Quad;
 	import com.pamakids.palace.utils.StringUtils;
+	import views.components.base.Container;
 
 	import flash.utils.getTimer;
 
