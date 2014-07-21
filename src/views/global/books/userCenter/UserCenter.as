@@ -2,16 +2,16 @@ package views.global.books.userCenter
 {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	import controllers.MC;
-
+	
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.TabBar;
 	import feathers.data.ListCollection;
-
+	
 	import sound.SoundAssets;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -20,7 +20,7 @@ package views.global.books.userCenter
 	import starling.events.TouchPhase;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
-
+	
 	import views.components.ElasticButton;
 	import views.components.SoftPaperAnimation;
 	import views.global.books.BooksManager;
@@ -359,6 +359,10 @@ package views.global.books.userCenter
 		private function playedAnimation():void
 		{
 			hideAnimation();
+			if(_navigator.activeScreen is AchievementScreen && AchievementScreen.showAchieveAction)
+			{
+				BooksManager.showAchieve(33);
+			}
 		}
 
 		/**

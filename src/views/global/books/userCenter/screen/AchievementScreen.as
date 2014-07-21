@@ -24,6 +24,8 @@ package views.global.books.userCenter.screen
 
 	public class AchievementScreen extends BaseScreen
 	{
+		public static var showAchieveAction:Boolean = false;
+		
 		public function AchievementScreen()
 		{
 		}
@@ -61,7 +63,23 @@ package views.global.books.userCenter.screen
 				obj={id: arr[i][0], achidata: arr[i]};
 				tempdatas.push(obj);
 			}
-
+			
+			if(tempdatas[max-1].achidata[2] == 0)		//最后一个成就尚未达成
+			{
+				showAchieveAction = true;
+				tempdatas[max-1].achidata[2] == 1;
+				
+				for(i=0;i<max-1;i++)
+				{
+					if(tempdatas[i].achidata[2] == 0)	//有其他未达成的成就
+					{
+						showAchieveAction = false;
+						tempdatas[max-1].achidata[2] == 0;	//更正完成状态
+						break;
+					}
+				}
+			}
+			
 			//分页处理，每页显示9个数据
 			const pageNum:int=Math.ceil(tempdatas.length / maxNum);
 			for (i=0; i < pageNum; i++)
@@ -69,6 +87,7 @@ package views.global.books.userCenter.screen
 				datas.push(tempdatas.splice(0, maxNum));
 			}
 			pageCount=pageNum;
+			
 		}
 		private var page_0:TextField;
 		private var page_1:TextField;
