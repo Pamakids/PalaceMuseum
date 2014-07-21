@@ -159,12 +159,7 @@ package views.module1
 			PopUpManager.removePopUp(clock, true);
 			clock=null;
 			if (b)
-				showCard("2",
-						 function():void
-						 {
-							 showAchievement(4, checkAcheive5);
-						 }
-						 );
+				showCard("2",checkAcheive5);
 			sceneOver();
 		}
 
@@ -180,12 +175,7 @@ package views.module1
 							 function():void
 							 {
 								 if (clock.ended)
-									 showCard("2",
-											  function():void
-											  {
-												  showAchievement(4);
-											  }
-											  );
+									 showCard("2");
 								 PopUpManager.removePopUp(clock, true);
 								 clock=null;
 								 sceneOver();

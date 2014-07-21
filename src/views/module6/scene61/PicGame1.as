@@ -46,6 +46,13 @@ package views.module6.scene61
 			}
 			pieceArr.reverse();
 			shuffle();
+
+			finishPic=getImage('art1');
+			addChild(finishPic);
+			finishPic.touchable=false;
+			finishPic.alpha=0;
+			finishPic.x=161;
+			finishPic.y=78;
 		}
 
 		private function onTouch(e:TouchEvent):void
@@ -164,6 +171,8 @@ package views.module6.scene61
 				text.y=24;
 				dispatchEvent(new Event('showCollection',true));
 				isWin=true;
+
+				TweenLite.to(finishPic,1,{alpha:1});
 			}
 		}
 
@@ -185,6 +194,8 @@ package views.module6.scene61
 		private var GAP:Number=111;
 
 		private var gameHolder:Sprite;
+
+		private var finishPic:Image;
 	}
 }
 

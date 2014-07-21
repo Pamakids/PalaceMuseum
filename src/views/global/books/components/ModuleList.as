@@ -2,13 +2,13 @@ package views.global.books.components
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
+
 	import flash.geom.Point;
-	
+
 	import controllers.MC;
-	
+
 	import models.SOService;
-	
+
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
@@ -19,7 +19,7 @@ package views.global.books.components
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
+
 	import views.Interlude;
 	import views.components.ElasticButton;
 	import views.global.books.BooksManager;
@@ -93,17 +93,23 @@ package views.global.books.components
 			activeIcon.pivotX=activeIcon.width >> 1;
 			activeIcon.pivotY=activeIcon.height >> 1;
 			var str:String=SOService.instance.getSO("lastScene") as String;
+			trace(str);
 			crtScene=int(str.charAt(1));
 			crtModule=int(str.charAt(0));
+			if(crtModule==6)
+				crtModule=2;
+			else if(crtModule>=2)
+				crtModule++;
+
 			fromMap=str.indexOf("map") >= 0;
 			var i:int=0;
 			if (str && str != "end")
 			{
 				i=crtModule;
 			}
-			if (i >= 4) //御花园之后
+			if (i >= 5) //御花园之后
 			{
-				if (i == 4)
+				if (i == 5)
 				{
 					if (crtScene >= 3) //御花园	
 						i+=1;
@@ -199,7 +205,7 @@ package views.global.books.components
 							dispatchEvent(new Event("closeMenu"));
 						return;
 					}
-					if (module == 3)
+					if (module == 4)
 					{
 						if (screen <= 0) //去模块4
 						{
@@ -321,18 +327,18 @@ package views.global.books.components
 		private const mapping:Array=[
 			"assets/video/intro.mp4",
 			"m_0_0",
-			"m_1_0",
-			"m_0_0",		//插入骑射场景
+			"m_1_0",		//插入骑射场景
 			"m_2_0",
 			"m_3_0",
-			"m_3_3",
 			"m_4_0",
+			"m_4_3",
+			"m_5_0",
 			"assets/video/end.mp4"
 			];
 
 		private function isComplete(i:int):Boolean
 		{
-						return true;
+//			return true;
 			if (i == 0)
 				return true;
 			var str:String=mapping[i];
@@ -407,6 +413,7 @@ package views.global.books.components
 		private const arrR:Array=[
 			-Math.PI / 2,
 			-10 * Math.PI / 180,
+			-10 * Math.PI / 180,
 			1 * Math.PI / 180,
 			20 * Math.PI / 180,
 			50 * Math.PI / 180,
@@ -426,7 +433,7 @@ package views.global.books.components
 			new Point(656, 140),
 			new Point(706, 182),
 			new Point(768, 238)
-		];
+			];
 		private const linePosition:Array=[
 			new Point(94, 176),
 			new Point(190, 111),
@@ -436,7 +443,7 @@ package views.global.books.components
 			new Point(632, 82),
 			new Point(743, 119),
 			new Point(834, 179)
-		];
+			];
 
 		private function initLines():void
 		{

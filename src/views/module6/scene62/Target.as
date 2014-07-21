@@ -8,6 +8,8 @@ package views.module6.scene62
 
 	import models.FontVo;
 
+	import sound.SoundAssets;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -36,19 +38,25 @@ package views.module6.scene62
 
 		public var score:Number=0;
 
-		private function playStars():void
-		{
-			new PalaceStars(0,-100,this);
-		}
+//		private function playStars():void
+//		{
+//			new PalaceStars(0,-100,this);
+//		}
 
-		private function playScore():void
+		public function playScore(img:Image):void
 		{
-			var lbl:TextField=new TextField(250,100,'+'+score,FontVo.PALACE_FONT, 100, 0x0cff3c, true);
-			addChild(lbl);
-			lbl.x=-100;
-			TweenLite.to(lbl,.5,{y:-200,alpha:.7,onComplete:function():void{
-				lbl.removeFromParent(true);
+			addChild(img);
+			img.pivotX=img.width>>1;
+			SoundAssets.playSFX('hitted');
+			TweenLite.to(img,.5,{y:-200,alpha:.7,onComplete:function():void{
+				img.removeFromParent(true);
 			}});
+//			var lbl:TextField=new TextField(250,100,'+'+score,FontVo.PALACE_FONT, 100, 0x0cff3c, true);
+//			addChild(lbl);
+//			lbl.x=-100;
+//			TweenLite.to(lbl,.5,{y:-200,alpha:.7,onComplete:function():void{
+//				lbl.removeFromParent(true);
+//			}});
 		}
 
 		public function checkArrow(arrow:Arrow):Boolean
@@ -60,21 +68,18 @@ package views.module6.scene62
 
 			if(dx<23)
 			{
-				playStars();
+//				playStars();
 				score=10;
-				playScore();
 				dispatchEvent(new Event('targetHitted',true));
 				return true;
 			}else if(dx<49)
 			{
 				score=9;
-				playScore();
 				dispatchEvent(new Event('targetHitted',true));
 				return true;
 			}else if(dx<70)
 			{
 				score=8;
-				playScore();
 				dispatchEvent(new Event('targetHitted',true));
 				return true;
 			}

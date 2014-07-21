@@ -3,6 +3,7 @@ package views.module6
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -25,13 +26,15 @@ package views.module6
 		public function Scene62(am:AssetManager=null)
 		{
 			super(am);
-
+			crtKnowledgeIndex=5;
 			addBG('bg62');
 
 //			initGame();
 
 			initAreas();
 			initKing();
+
+			addCraw(new Point(840,527));
 		}
 
 		private function initKing():void
@@ -84,8 +87,9 @@ package views.module6
 
 		private function lionSay():void
 		{
-			LionMC.instance.say('你知道射箭要用那一件兵器吗？',0,0,0,function():void{
+			LionMC.instance.say('拿上桦皮大弓操练起来喽！',0,0,0,function():void{
 				addEventListener(TouchEvent.TOUCH,onTouch);
+				birdIndex=3;
 			},20,true);
 		}
 
@@ -93,21 +97,33 @@ package views.module6
 		private var instrumentText:String='为使皇帝及八旗子弟保持满族骑射传统，乾隆帝下令在紫禁城内景运门外修建箭亭，以供平时习武。殿试武进士时，皇帝在此试弓、舞刀、举大石等技。';
 //		private var weaponsArr:Array=[];
 		private var weaponArea:Rectangle;
-		private var weaponsname:Array=['殳(shu)','偃(yan)月刀','镋(tang)','偃(yan)月刀','刀',
-									   '阿虎枪', '矛', '镋(tang)', '戟(ji)','戟(ji)'];
+		private var weaponsname:Array=[];
 		private var warriorArr:Array=[];
 		private var warriorTexts:Array=['骑射的重点是要看好靶子的位置。','拉弓射箭，臂力很重要。'];
 
 		private var gameArea:Rectangle;
 
+		private var shu:Image;
+		private var ji:Image;
+		private var tang:Image;
+		private var yan:Image;
+
 		private var kingArea:Rectangle=new Rectangle(458,468,225,236);
 
 		private function initAreas():void
 		{
-			instrumentArea=new Rectangle(167,68,696,167);
+			instrumentArea=new Rectangle(167,68,696,232);
 			gameArea=new Rectangle(842,218,61,352);
 			warriorArr.push(new Rectangle(50,273,137,211));
 			warriorArr.push(new Rectangle(858,261,137,211));
+
+			shu=getImage('shu');
+			ji=getImage('ji');
+			tang=getImage('tang');
+			yan=getImage('yan');
+
+			weaponsname.push(shu,yan,tang,yan,'刀',
+							 '阿虎枪','矛',tang,ji,ji);
 
 			weaponArea=new Rectangle(121,104,710,390);
 		}
@@ -127,7 +143,10 @@ package views.module6
 
 			if(gameArea.containsPoint(pt))
 			{
-				initGame();
+				Starling.current.stage.touchable=false;
+				var center:Point=getCenter(gameArea)
+				Prompt.showTXT(center.x,center.y,'弓',20,initGame,this,1,false,1,false);
+//				initGame();
 				return;
 			}
 
@@ -139,7 +158,7 @@ package views.module6
 
 			if(instrumentArea.containsPoint(pt))
 			{
-				Prompt.showTXT(instrumentArea.x+instrumentArea.width/3,instrumentArea.y+instrumentArea.height,
+				Prompt.showTXT(instrumentArea.x+instrumentArea.width/3,instrumentArea.y+instrumentArea.height-30,
 							   instrumentText,20,null,this,1,true);
 				return;
 			}
@@ -150,7 +169,11 @@ package views.module6
 				wi=Math.max(0,Math.min(9,wi));
 				if(weaponP)
 					weaponP.playHide();
-				weaponP=Prompt.showTXT(pt.x,pt.y,weaponsname[wi]);
+				var txt:Object=weaponsname[wi];
+				if(txt is String)
+					weaponP=Prompt.showTXT(pt.x,pt.y,txt as String);
+				else
+					weaponP=Prompt.showIMG(pt.x,pt.y,txt as Image);
 				return;
 			}
 
@@ -172,6 +195,7 @@ package views.module6
 
 		private function initGame():void
 		{
+			Starling.current.stage.touchable=true;
 			game=new ArcherGame(this.assetManager);
 			addChild(game);
 			game.addEventListener(PalaceGame.GAME_OVER,onGameOver);
@@ -180,15 +204,15 @@ package views.module6
 
 		private function onGameOver(e:Event):void
 		{
+			sceneOver();
+
 			if(game.isWin)
 			{
-
+				showAchievement(4);
 			}
 
 			game.removeFromParent(true);
 			game=null;
-
-			sceneOver();
 		}
 
 		private function onRestart(e:Event):void

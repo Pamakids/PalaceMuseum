@@ -25,7 +25,6 @@ package
 	import views.Interlude;
 	import views.components.PalaceGuide;
 	import views.components.base.Container;
-	import views.global.books.BooksManager;
 	import views.global.map.Map;
 
 	public class Main extends Container
@@ -35,7 +34,7 @@ package
 			if (Capabilities.isDebugger)
 			{
 //				SOService.instance.clear();
-				SOService.instance.setSO("lastScene", "61map");
+//				SOService.instance.setSO("lastScene", "41");
 			}
 			super();
 

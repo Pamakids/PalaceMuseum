@@ -27,13 +27,14 @@ package views.module6
 	{
 		private var game2:JigsawGame;
 
-		private var bbg:Image;
+		private var bbg:Sprite;
 		private var dpt:Point;
 		public function Scene61(am:AssetManager=null)
 		{
 			super(am);
-
-			bbg=getImage('bg61');
+			crtKnowledgeIndex=4;
+			bbg=new Sprite();
+			bbg.addChild(getImage('bg61'));
 			addChild(bbg);
 
 			bbg.x=1024-bbg.width>>1;
@@ -69,19 +70,20 @@ package views.module6
 		{
 			var tc:Touch=e.getTouch(e.currentTarget as DisplayObject,TouchPhase.ENDED);
 			if(tc)
-				Prompt.showTXT(580,540,'不是骑马吗？为什么来这里？');
+				Prompt.showTXT(580,540,'不是射箭吗？为什么来这里？');
 		}
 
 		override protected function init():void
 		{
 			super.init();
-			Prompt.showTXT(580,540,'不是骑马吗？为什么来这里？',20,lionSay);
+			Prompt.showTXT(580,540,'不是射箭吗？为什么来这里？',20,lionSay);
 		}
 
 		private function lionSay():void
 		{
-			LionMC.instance.say('画中藏有玄机，快找到\n骑射使用的箭！',0,0,0,function():void{
+			LionMC.instance.say('快找到练习用的箭，玄机就在画中！',0,0,0,function():void{
 				bbg.addEventListener(TouchEvent.TOUCH,onBGTouch);
+				birdIndex=2;
 			},20,true);
 		}
 
@@ -105,6 +107,10 @@ package views.module6
 			areaArr.push(new Rectangle(145,97,312,434));
 			areaArr.push(new Rectangle(707,97,312,434));
 			areaArr.push(new Rectangle(1217,97,312,434));
+
+			addCraw(new Point(432,507),null,bbg);
+			addCraw(new Point(979,507),null,bbg);
+			addCraw(new Point(1488,507),null,bbg);
 		}
 
 		private var arrowsArr:Array;

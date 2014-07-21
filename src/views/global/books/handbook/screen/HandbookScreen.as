@@ -146,7 +146,7 @@ package views.global.books.handbook.screen
 			arr[crtPage]=true;
 			SOService.instance.setSO("progress_handbook", arr);
 			if (checkSO())
-				BooksManager.getCrtHandbook().showAchieve(31);
+				BooksManager.showAchieve(31);
 		}
 
 		/**

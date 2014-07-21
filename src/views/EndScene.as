@@ -23,8 +23,6 @@ package views
 	import views.components.ElasticButton;
 	import views.components.base.PalaceGame;
 
-	import views.components.base.container;
-
 	public class EndScene extends PalaceGame
 	{
 		private var callback:Function;

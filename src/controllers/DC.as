@@ -38,6 +38,7 @@ package controllers
 
 		public function testCollectionIsOpend(id:String):Boolean
 		{
+			return true;
 			return so.getSO("collection_card_" + id + "collected");
 		}
 
@@ -60,7 +61,8 @@ package controllers
 			{
 				t=arr[i];
 				if (t)
-					_achidatas.push([t[0], t[1], (SOService.instance.getSO(i + "_achieve")) ? 1 : 0])
+					_achidatas.push([t[0], t[1], 1])
+//				_achidatas.push([t[0], t[1], (SOService.instance.getSO(i + "_achieve")) ? 1 : 0])
 			}
 			return _achidatas;
 		}
@@ -68,7 +70,7 @@ package controllers
 		/**
 		 * 游戏数据名称集合
 		 */
-		private const classNames:Array=["archegame", "menugame", "dishgame", "operagame"];
+		private const classNames:Array=["archergame", "menugame", "dishgame", "operagame"];
 		private const gameNames:Array=["百步穿杨", "吉祥菜名", "银牌试毒", "粉墨登场"];
 //		private const classNames:Array=["menugame", "dishgame", "jigsawgame", "operagame"];
 //		private const gameNames:Array=["吉祥菜名", "银牌试毒", "地图拼图", "粉墨登场"];

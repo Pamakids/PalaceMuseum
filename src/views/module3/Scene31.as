@@ -42,7 +42,7 @@ package views.module3
 		public function Scene31(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=6;
+			crtKnowledgeIndex=8;
 			addBG("bg21");
 
 			addChief();
@@ -62,7 +62,7 @@ package views.module3
 
 			addCraw(new Point(443, 349));
 
-			birdIndex=4;
+			birdIndex=6;
 		}
 
 		private function addKing():void

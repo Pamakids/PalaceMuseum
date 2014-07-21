@@ -48,7 +48,7 @@ package views.module2
 		public function Scene21(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=4;
+			crtKnowledgeIndex=6;
 			addBG("bg31")
 
 			addShelfs();
@@ -198,7 +198,7 @@ package views.module2
 
 		private function getReady():void
 		{
-			birdIndex=2;
+			birdIndex=4;
 			ready=true;
 			if (SOService.instance.checkHintCount(shelfHintCount))
 				addEventListener(Event.ENTER_FRAME, onEnterFrame);

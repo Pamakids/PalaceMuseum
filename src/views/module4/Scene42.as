@@ -35,7 +35,7 @@ package views.module4
 		public function Scene42(am:AssetManager=null)
 		{
 			super(am);
-			crtKnowledgeIndex=9;
+			crtKnowledgeIndex=11;
 			addBG("bg52");
 
 			hand=getImage("memorial-hand");
@@ -152,7 +152,7 @@ package views.module4
 				memorialTop.addEventListener(TouchEvent.TOUCH, onTopMemorialTouch);
 			}});
 
-			birdIndex=8;
+			birdIndex=10;
 		}
 
 		private function onTopMemorialTouch(e:TouchEvent):void
@@ -237,7 +237,7 @@ package views.module4
 				});
 			}
 			else
-				playEff();
+				showCard("8",playEff);
 		}
 
 		private function endEff(cb:Function):void
@@ -301,12 +301,10 @@ package views.module4
 			MC.instance.stage.removeChild(drawScene);
 			drawScene=null;
 
-			removeMemorial(memorialBottom, playLion2);
-			return;
+//			removeMemorial(memorialBottom, playLion2);
+//			return;
 
-			removeMemorial(memorialBottom, function():void {
-				showCard("8", playLion2);
-			});
+			removeMemorial(memorialBottom, playLion2);
 		}
 
 		private function playLion2():void

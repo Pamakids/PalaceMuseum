@@ -427,7 +427,7 @@ package views.global.map
 			flipAnimation.addChildAt(king, flipAnimation.numChildren);
 			if (kingPoint)
 			{
-				if (!showFromCenter && from == 3 && gardenPt)
+				if (!showFromCenter && from == 4 && gardenPt)
 					kingPoint=gardenPt;
 				king.visible=true;
 				king.x=kingPoint.x;
@@ -914,7 +914,17 @@ package views.global.map
 			if (preSky)
 				TweenLite.to(preSky, 2.3, {alpha: 0});
 
-			desSky=getImage("sky" + (Math.max(0, _to) + 1).toString());
+			var t:int;
+			if(_to<=0)
+				t=0;
+			else if(_to==1)
+				t=1;
+			else if(_to>1)
+				t=_to-1;
+
+			t++;
+
+			desSky=getImage("sky" + t.toString());
 			flipAnimation.addChildAt(desSky, 1);
 			desSky.alpha=0;
 			TweenLite.to(desSky, 2.3, {alpha: 1});

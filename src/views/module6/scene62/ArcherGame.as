@@ -35,6 +35,7 @@ package views.module6.scene62
 		{
 			super(am);
 
+			bigGame=true;
 //			closeBtn.visible=false;
 			addBG();
 			initStart();
@@ -148,7 +149,7 @@ package views.module6.scene62
 			super.dispose();
 		}
 
-		private var maxtime:Number=60;
+		private var maxtime:Number=40;
 		private var hz:Number=60;
 
 		private function initTargets():void
@@ -232,6 +233,7 @@ package views.module6.scene62
 
 		private function kingShoot():void
 		{
+			SoundAssets.playSFX('shoot');
 			shooting=true;
 			var mc:MovieClip=king.getChildAt(1) as MovieClip;
 			mc.currentFrame=1;
@@ -248,6 +250,7 @@ package views.module6.scene62
 
 		private function enterKing():void
 		{
+			SoundAssets.playSFX('horse');
 			TweenLite.to(king,2,{x:kingX,ease:Quad.easeOut,onComplete:function():void{
 				bgMoving=true;
 				iniContrller();
@@ -310,6 +313,7 @@ package views.module6.scene62
 		private function onHitted(e:Event):void
 		{
 			var target:Target=e.target as Target;
+			target.playScore(getImage('plus'+target.score.toString()));
 			score+=target.score;
 			scoreTF.text=score.toString();
 		}
@@ -415,9 +419,6 @@ package views.module6.scene62
 			gameHolder.addChild(sky);
 			var sky1:Image=getImage('sky');
 			sky.addChild(sky1);
-			var sky2:Image=getImage('sky');
-			sky.addChild(sky2);
-			sky2.x=sky1.width;
 		}
 
 		private var bgMoving:Boolean=false;
@@ -626,6 +627,9 @@ package views.module6.scene62
 		private function gameOverHandler():void
 		{
 			removeEventListener(Event.ENTER_FRAME,onEnterFrame);
+			removeEventListener(TouchEvent.TOUCH,onTouch);
+			removeEventListener('targetHitted',onHitted);
+
 			MC.instance.stage.stage.frameRate=30;
 			SoundAssets.stopBGM();
 //			timer.stop();
@@ -698,6 +702,16 @@ package views.module6.scene62
 			recordTF.x=520;
 			recordTF.y=370;
 			endHolder.addChild(recordTF);
+
+			if(level==1)
+			{
+				var starnum:Number=1;
+				if(score>=200)
+					starnum=3;
+				else if(score>=100)
+					starnum=2;
+				addStars(starnum,endHolder);
+			}
 
 			rsBtn=new ElasticButton(getImage("restart"));
 			rsBtn.shadow=getImage("restart-light");

@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:6789344e185b776387afffc8ffc04186$ -->
+<!-- $TexturePacker:SmartUpdate:aa1dbfa91fbce1a715af2ded364dfc37$ -->
 <TextureAtlas imagePath="game62.png">
-    <SubTexture name="archery-title" x="1184" y="2" width="718" height="562"/>
-    <SubTexture name="arrow" x="1531" y="1118" width="98" height="49"/>
-    <SubTexture name="cloud1" x="1408" y="1214" width="99" height="47"/>
-    <SubTexture name="cloud2" x="1631" y="1118" width="87" height="48"/>
-    <SubTexture name="cloud3" x="1408" y="1159" width="112" height="53"/>
+    <SubTexture name="archery-title" x="2" y="713" width="718" height="562"/>
+    <SubTexture name="arrow" x="859" y="661" width="98" height="49"/>
+    <SubTexture name="cloud1" x="1180" y="1022" width="99" height="47"/>
+    <SubTexture name="cloud2" x="1391" y="581" width="87" height="48"/>
+    <SubTexture name="cloud3" x="1066" y="1022" width="112" height="53"/>
     <SubTexture name="construction1" x="2" y="2" width="1180" height="193" frameX="-4" frameY="-6" frameWidth="1184" frameHeight="199"/>
-    <SubTexture name="construction2" x="2" y="713" width="1161" height="191" frameX="0" frameY="-8" frameWidth="1185" frameHeight="199"/>
+    <SubTexture name="construction2" x="722" y="1082" width="1161" height="191" frameX="0" frameY="-8" frameWidth="1185" frameHeight="199"/>
     <SubTexture name="field" x="2" y="197" width="855" height="514"/>
-    <SubTexture name="hard-on" x="1531" y="1027" width="184" height="89"/>
-    <SubTexture name="hard" x="1222" y="1166" width="184" height="89"/>
-    <SubTexture name="horse" x="2" y="1030" width="701" height="232"/>
-    <SubTexture name="jar" x="1048" y="500" width="78" height="66"/>
-    <SubTexture name="king1" x="1165" y="566" width="416" height="359" frameX="-10" frameY="-8" frameWidth="426" frameHeight="367"/>
-    <SubTexture name="king2" x="1583" y="566" width="342" height="367" frameX="0" frameY="0" frameWidth="426" frameHeight="367"/>
-    <SubTexture name="progress" x="1049" y="980" width="486" height="25" frameX="-14" frameY="-12" frameWidth="530" frameHeight="51"/>
-    <SubTexture name="progressbg" x="1049" y="927" width="530" height="51"/>
-    <SubTexture name="record" x="859" y="384" width="187" height="187"/>
-    <SubTexture name="scoreboard" x="859" y="906" width="188" height="90"/>
-    <SubTexture name="simple-on" x="1581" y="935" width="185" height="90"/>
-    <SubTexture name="simple" x="859" y="573" width="185" height="90"/>
-    <SubTexture name="sky" x="705" y="1030" width="515" height="218"/>
-    <SubTexture name="start-shadow" x="859" y="197" width="191" height="185"/>
-    <SubTexture name="start" x="1222" y="1007" width="155" height="157" frameX="-16" frameY="-11" frameWidth="191" frameHeight="185"/>
-    <SubTexture name="target-base" x="1052" y="197" width="66" height="301" frameX="-42" frameY="0" frameWidth="150" frameHeight="301"/>
-    <SubTexture name="target-miss" x="1768" y="935" width="150" height="150"/>
-    <SubTexture name="target" x="1379" y="1007" width="150" height="150"/>
-    <SubTexture name="wall" x="2" y="906" width="855" height="122"/>
+    <SubTexture name="hard-on" x="1829" y="707" width="184" height="89"/>
+    <SubTexture name="hard" x="1829" y="616" width="184" height="89"/>
+    <SubTexture name="horse" x="1184" y="2" width="701" height="232"/>
+    <SubTexture name="jar" x="1885" y="374" width="78" height="66"/>
+    <SubTexture name="king1" x="1066" y="661" width="416" height="359" frameX="-10" frameY="-8" frameWidth="426" frameHeight="367"/>
+    <SubTexture name="king2" x="722" y="713" width="342" height="367" frameX="0" frameY="0" frameWidth="426" frameHeight="367"/>
+    <SubTexture name="plus10" x="1674" y="920" width="115" height="59" frameX="0" frameY="-4" frameWidth="115" frameHeight="67"/>
+    <SubTexture name="plus8" x="1674" y="981" width="83" height="67" frameX="-15" frameY="0" frameWidth="115" frameHeight="67"/>
+    <SubTexture name="plus9" x="1885" y="305" width="81" height="67" frameX="-17" frameY="0" frameWidth="115" frameHeight="67"/>
+    <SubTexture name="progress" x="859" y="634" width="486" height="25" frameX="-14" frameY="-12" frameWidth="530" frameHeight="51"/>
+    <SubTexture name="progressbg" x="859" y="581" width="530" height="51"/>
+    <SubTexture name="record" x="1484" y="768" width="187" height="187"/>
+    <SubTexture name="scoreboard" x="1484" y="957" width="188" height="90"/>
+    <SubTexture name="simple-on" x="1825" y="890" width="185" height="90"/>
+    <SubTexture name="simple" x="1825" y="798" width="185" height="90"/>
+    <SubTexture name="sky" x="859" y="236" width="1024" height="219"/>
+    <SubTexture name="start-shadow" x="1484" y="581" width="191" height="185"/>
+    <SubTexture name="start" x="1716" y="457" width="155" height="157" frameX="-16" frameY="-11" frameWidth="191" frameHeight="185"/>
+    <SubTexture name="target-base" x="1887" y="2" width="66" height="301" frameX="-42" frameY="0" frameWidth="150" frameHeight="301"/>
+    <SubTexture name="target-miss" x="1673" y="768" width="150" height="150"/>
+    <SubTexture name="target" x="1677" y="616" width="150" height="150"/>
+    <SubTexture name="wall" x="859" y="457" width="855" height="122"/>
 </TextureAtlas>

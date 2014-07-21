@@ -164,6 +164,7 @@ package views.module6.scene61
 
 			isWin=true;
 			TweenLite.to(finPic,.5,{alpha:1});
+			TweenLite.to(shadowHolder,.5,{alpha:0});
 			dispatchEvent(new Event('showCollection',true));
 		}
 
