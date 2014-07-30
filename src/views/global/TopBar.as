@@ -54,7 +54,7 @@ package views.global
 			avatar.y=0;
 		}
 
-		private function avatarClickedHandler():void
+		public function avatarClickedHandler():void
 		{
 			MC.instance.main.addMask(0);
 			UserBehaviorAnalysis.trackEvent("click", "avatar");
@@ -188,3 +188,5 @@ package views.global
 		}
 	}
 }
+
+

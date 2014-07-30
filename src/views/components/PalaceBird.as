@@ -3,6 +3,8 @@ package views.components
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 
+	import controllers.MC;
+
 	import feathers.core.PopUpManager;
 
 	import models.SOService;
@@ -16,6 +18,8 @@ package views.components
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+
+	import views.global.books.BooksManager;
 
 	public class PalaceBird extends Sprite
 	{
@@ -88,12 +92,20 @@ package views.components
 
 		public var crtIndex:int;
 
+		private var isFirstBird:Boolean;
+
+		public var pause:Boolean=true;
+
 		private function open():void
 		{
-			TweenMax.pauseAll();
+			if(pause)
+				TweenMax.pauseAll();
 			if (p)
 				p.playHide();
 			SOService.instance.setSO("birdCatched" + crtIndex, true);
+
+			isFirstBird=!SOService.instance.getSO('isFirstBird');
+			SOService.instance.setSO('isFirstBird',true);
 
 			PopUpManager.addPopUp(this, true, false);
 			TweenLite.to(bird, 1, {x: 470, y: 28, rotation: 0, onComplete: function():void {
@@ -103,6 +115,15 @@ package views.components
 			var holder:Sprite=new Sprite();
 			holder.addChild(bg);
 			holder.addChild(img);
+
+			if(isFirstBird)
+			{
+				var hint:Image=new Image(MC.assetManager.getTexture('firstBird'));
+				hint.x=668;
+				hint.y=562;
+				holder.addChild(hint);
+				hint.addEventListener(TouchEvent.TOUCH,onOpenBook);
+			}
 
 			holder.pivotX=img.width >> 1;
 			holder.pivotY=img.height >> 1;
@@ -117,6 +138,18 @@ package views.components
 			close.y=140;
 			addChild(close);
 			close.addEventListener(ElasticButton.CLICK, onClose);
+		}
+
+		private function onOpenBook(e:TouchEvent):void
+		{
+			var img:Image=e.currentTarget as Image;
+			var tc:Touch=e.getTouch(img,TouchPhase.ENDED);
+			if(tc)
+			{
+				img.removeEventListener(TouchEvent.TOUCH,onOpenBook);
+				BooksManager.showBooks(1,2,crtIndex);
+				onClose(null);
+			}
 		}
 
 		private function onClose(e:Event):void
@@ -144,3 +177,5 @@ package views.components
 		private var p:Prompt;
 	}
 }
+
+

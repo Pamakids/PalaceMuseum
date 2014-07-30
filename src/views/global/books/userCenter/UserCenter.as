@@ -243,9 +243,13 @@ package views.global.books.userCenter
 				//				case HANDBOOK:
 				//					(_navigator.activeScreen as HandbookScreen).initView(crtPage_Handbook);
 				//					break;
-				//				case USERINFO:
-				//					(_navigator.activeScreen as UserInfoScreen).setMapVisible(mapVisible);
-				//					break;
+				case USERINFO:
+//					if(MC.needGuide)
+//					{
+//						MC.instance.addGuide(7,(_navigator.activeScreen as Object).show_w_chooseUser);
+//					}
+//									(_navigator.activeScreen as UserInfoScreen).setMapVisible(mapVisible);
+					break;
 				//				case BIRDS:
 				//					(_navigator.activeScreen as BirdScreen).initView(0);
 				//					break;
@@ -430,6 +434,13 @@ package views.global.books.userCenter
 		 */
 		public function turnTo(screen:int, page:int=0, closeable:Boolean=true, mapVisible:Boolean=true):void
 		{
+			if(MC.needGuide)
+			{
+				MC.instance.addGuide(7,function():void{
+//					MC.instance.main.touchable=true;
+					(_navigator.activeScreen as Object).show_w_chooseUser();
+				});
+			}
 			prevIndex=screen;
 			if (screen == 1)
 				crtPage_Handbook=page;

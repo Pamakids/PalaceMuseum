@@ -6,6 +6,8 @@ package views.components.base
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
+	import starling.textures.RenderTexture;
+	import starling.textures.Texture;
 
 	public class Container extends Sprite
 	{
@@ -15,6 +17,13 @@ package views.components.base
 			this.width=width;
 			this.height=height;
 			addEventListener(Event.ADDED_TO_STAGE, onStage);
+		}
+
+		public function getCapture():Texture
+		{
+			var render:RenderTexture=new RenderTexture(1024,768);
+			render.draw(this);
+			return render;
 		}
 
 		protected function onStage(e:Event):void

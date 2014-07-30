@@ -28,6 +28,8 @@ package views.module6.scene62
 	import views.components.ElasticButton;
 	import views.components.LionMC;
 	import views.components.base.PalaceGame;
+	import views.components.share.ShareVO;
+	import views.components.share.ShareView;
 
 	public class ArcherGame extends PalaceGame
 	{
@@ -145,6 +147,7 @@ package views.module6.scene62
 
 		override public function dispose():void
 		{
+			ShareView.instance.hide();
 			MC.instance.stage.stage.frameRate=30;
 			super.dispose();
 		}
@@ -725,6 +728,8 @@ package views.module6.scene62
 
 			if(isRecord)
 				showRecord();
+			if(isWin)
+				ShareView.instance.show('分享',getShareContent('百步穿杨',score.toString()),shareImg);
 		}
 
 		private function onRestart(e:Event):void

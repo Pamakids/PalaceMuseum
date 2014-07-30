@@ -117,7 +117,7 @@ package
 			var main:Starling=new Starling(Main, stage, rect);
 			main.start();
 			main.showStats=Capabilities.isDebugger;
-			main.antiAliasing=16;
+			main.antiAliasing=1;
 			main.simulateMultitouch=true;
 
 			var mcLayer:Sprite=new Sprite();

@@ -38,6 +38,7 @@ package views.module3.scene32
 	import views.components.ElasticButton;
 	import views.components.LionMC;
 	import views.components.base.PalaceGame;
+	import views.components.share.ShareView;
 	import views.module1.scene13.Block;
 
 	public class MenuGame extends PalaceGame
@@ -175,6 +176,7 @@ package views.module3.scene32
 
 		override public function dispose():void
 		{
+			ShareView.instance.hide();
 			for each (var b:Body in blockArr) 
 			{
 				if(b)
@@ -606,6 +608,8 @@ package views.module3.scene32
 				else
 					closeBtn.visible=closeBtn.touchable=true;
 			}});
+			if(isWin)
+				ShareView.instance.show('分享',getShareContent('吉祥菜名',resultTXT),shareImg);
 		}
 
 		private function restartGame(e:Event=null):void

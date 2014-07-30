@@ -20,8 +20,8 @@ package views.components.share
 
 			var bg:Bitmap=new ShareAssets.gesture_bg();
 			bgSP.addChild(bg);
-			bgSP.x=228;
-			bgSP.y=79;
+			bgSP.x=1024-bg.width>>1;
+			bgSP.y=768-bg.height>>1;
 
 			//			var word:Bitmap=new RecomendAssets.GESWORD();
 			//			word.x=94;
@@ -50,8 +50,8 @@ package views.components.share
 			cls=ShareAssets["gesture_" + dirArr[direction]];
 			dirImg=new cls();
 			bgSP.addChild(dirImg);
-			dirImg.x=281;
-			dirImg.y=266;
+			dirImg.x=281-37;
+			dirImg.y=266-30;
 		}
 	}
 }

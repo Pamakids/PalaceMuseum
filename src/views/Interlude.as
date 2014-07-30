@@ -13,9 +13,8 @@ package views
 	import flash.events.TouchEvent;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
+	import flash.net.getClassByAlias;
 	import flash.system.Capabilities;
-
-	import models.PosVO;
 
 	import sound.SoundAssets;
 
@@ -65,8 +64,26 @@ package views
 //			this.y=PosVO.OffsetY;
 		}
 
-		private var arr:Array=[IntroMC,EndMC];
-		private var arr2:Array=[introSnd,endSnd];
+		private var crtMCArr:Array;
+
+		private var mcArr1:Array=[IntroPart1,IntroPart2,IntroPart3,IntroPart4,IntroPart5,
+								  IntroPart6,IntroPart7,IntroPart8,IntroPart9,IntroPart10,
+								  IntroPart11,IntroPart12,IntroPart13,IntroPart14,IntroPart15];
+
+
+		private var cutArr1:Array=[0,9,17,20.5,24.5,
+								   30,35,39,43,47,
+								   53,60,65,72,77,
+								   82];
+
+		private var mcArr2:Array=[EndPart1,EndPart2,EndPart3,EndPart4,EndPart5];
+		private var cutArr2:Array=[0,5,13,22,29,38];
+//		private var gapArr:Array;
+
+//		private var cutArr2:Array=[9,17,20,	24,	30,35,39,43,
+//								   47, 53,60, 65, 72, 77];
+
+		private var sndArr:Array=[introSnd,endSnd];
 
 		[Embed(source="end.mp3")]
 		private static var endSnd:Class;
@@ -74,7 +91,6 @@ package views
 		[Embed(source="intro.mp3")]
 		private static var introSnd:Class;
 
-		private var mc:MovieClip;
 		private var snd:Sound;
 		private var sndC:SoundChannel;
 
@@ -98,6 +114,8 @@ package views
 			}
 		}
 
+		private var crtCutArr:Array;
+
 		private function onStage(e:MouseEvent):void
 		{
 			dispose();
@@ -105,36 +123,42 @@ package views
 
 		private function initialize():void
 		{
-			var os:String=Capabilities.os;
-			if(os.toLowerCase().indexOf('iphone')>=0)
+//			var os:String=Capabilities.os;
+//			if(os.toLowerCase().indexOf('iphone')>=0)
+//			{
+//				var version:String=os.charAt(10);
+//				if(Number(version)<7)
+//				{
+//					needBG=false;
+//				}
+//			}
+
+			if(index==0)
 			{
-				var version:String=os.charAt(10);
-				if(Number(version)<7)
-				{
-					needBG=false;
-				}
+				crtMCArr=mcArr1;
+				crtCutArr=cutArr1;
+			}else
+			{
+				crtMCArr=mcArr2;
+				crtCutArr=cutArr2;
 			}
-			if(needBG)
-				initBG();
+
+//			if(needBG)
+			initBG();
 			initShape();
 			initButton();
 
 			stage.frameRate=24;
-			mc=new arr[index]();
-			mc.x=123; 
-			mc.y=86;
-//			mc.scaleX=mc.scaleY=PosVO.scale;
+			mcHolder=new Sprite();
+			mcHolder.x=123; 
+			mcHolder.y=86;
 
-			if(!needBG)
-			{
-				mc.x=0;
-				mc.y=0;
-				mc.scaleX=1024/mc.width;
-				mc.scaleY=768/mc.height;
-			}
-			addChildAt(mc,0);
-			mc.addEventListener(Event.FRAME_CONSTRUCTED,onPlay);
-			snd=new arr2[index]();
+			addChildAt(mcHolder,0);
+
+			step=0;
+			startPlayMC();
+
+			snd=new sndArr[index]();
 			sndC=snd.play();
 
 			TweenLite.to(shape, 1.5, {alpha: 0, onComplete: function():void {
@@ -147,24 +171,66 @@ package views
 				startHandler();
 			if (passable)
 			{
-//				start=getTimer();
-//				this.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 				TweenLite.delayedCall(seconds,showSkip);
 			}
-
-//			initConnection();
 		} 
 
-		private function showSkip():void{
+		private function startPlayMC():void
+		{
+			var nexttime:Number=crtCutArr[step+1]-crtCutArr[step];
+			if(step<crtMCArr.length){
+
+				if(preMC)
+				{
+					TweenLite.to(preMC,.5,{alpha:0,onComplete:switchMC});
+				}
+
+				crtMC=new crtMCArr[step]();
+				crtMC.alpha=0;
+				TweenLite.to(crtMC,.5,{alpha:1});
+				mcHolder.addChild(crtMC);
+				crtMC.play();
+				crtMC.addEventListener(Event.FRAME_CONSTRUCTED,onPlay);
+				TweenLite.delayedCall(nexttime,startPlayMC);
+				step++;
+			}else
+			{
+				TweenLite.delayedCall(nexttime,dispose);
+			}
+		}
+
+		private var preMC:MovieClip;
+		private var crtMC:MovieClip;
+
+		private function switchMC():void
+		{
+			if(preMC)
+			{
+				preMC.stop();
+				preMC.removeEventListener(Event.FRAME_CONSTRUCTED,onPlay);
+				mcHolder.removeChild(preMC);
+				preMC=null;
+			}
+
+			if(crtMC)
+			{
+				preMC=crtMC;
+				crtMC=null;
+			}
+		}
+
+		private function showSkip():void
+		{
 			button.visible=true;
 		}
 
 		protected function onPlay(event:Event):void
 		{
+			var mc:MovieClip=event.currentTarget as MovieClip;
 			if(!mc)
 				return ;
 			if(mc.currentFrame==mc.totalFrames)
-				dispose();
+				mc.stop();
 		}
 
 		private function initBG():void
@@ -282,7 +348,11 @@ package views
 //			stageVideo.attachNetStream(stream);
 //			stream.play(videoURL);
 //		}
-		private var needBG:Boolean=true;
+//		private var needBG:Boolean=true;
+
+		private var mcHolder:Sprite;
+
+		private var step:int;
 
 		private function onMetaData(_obj:Object):void
 		{
@@ -338,13 +408,30 @@ package views
 //			}
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 
-			if(mc)
+//			if(mc)
+//			{
+//				mc.removeEventListener(Event.FRAME_CONSTRUCTED,onPlay);
+//				mc.stop();
+//				this.removeChild(mc);
+//			}
+//			mc=null;
+
+			if(preMC)
 			{
-				mc.removeEventListener(Event.FRAME_CONSTRUCTED,onPlay);
-				mc.stop();
-				this.removeChild(mc);
+				preMC.stop();
+				preMC.removeEventListener(Event.FRAME_CONSTRUCTED,onPlay);
+				mcHolder.removeChild(preMC);
+				preMC=null;
 			}
-			mc=null;
+
+			if(crtMC)
+			{
+				crtMC.stop();
+				crtMC.removeEventListener(Event.FRAME_CONSTRUCTED,onPlay);
+				mcHolder.removeChild(crtMC);
+				crtMC=null;
+			}
+
 			snd=null;
 			if(sndC)
 			{

@@ -9,6 +9,7 @@ package views.global.other
 
 	import views.components.LionMC;
 	import views.global.TailBar;
+	import views.global.TopBar;
 	import views.global.books.components.ModuleList;
 
 	public class Menu extends Sprite
@@ -39,6 +40,7 @@ package views.global.other
 			moduleList.addEventListener("closeMenu",onClose);
 
 			TailBar.show();
+			TopBar.show();
 			LionMC.instance.say(chatArr[int(Math.random()*chatArr.length)]);
 		}		
 
@@ -56,6 +58,7 @@ package views.global.other
 
 		override public function dispose():void
 		{
+			TopBar.hide();
 			super.dispose();
 		}
 	}

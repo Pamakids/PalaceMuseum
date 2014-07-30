@@ -33,8 +33,8 @@ package
 		{
 			if (Capabilities.isDebugger)
 			{
-//				SOService.instance.clear();
-//				SOService.instance.setSO("lastScene", "41");
+				SOService.instance.clear();
+				SOService.instance.setSO("lastScene", "11");
 			}
 			super();
 
@@ -61,7 +61,7 @@ package
 				}
 			});
 
-			Map.loadAssets();
+//			Map.loadAssets();
 
 			if (!lastScene)
 			{
@@ -163,7 +163,8 @@ package
 				var cb:Function=function():void {
 					touchable=false;
 					MC.needGuide=true;
-					Map.show();
+					Map.loadMapAssets(Map.show);
+//					Map.show();
 				};
 				if (!PalaceGuide.assetManager)
 					PalaceGuide.init(cb)
@@ -194,7 +195,7 @@ package
 //				BooksManager.showBooks(0, 0, 0, false);
 				MC.instance.showMenu();
 			else if (moduleIndex < 0 || sceneIndex < 0)
-				Map.show();
+				Map.loadMapAssets(Map.show);
 			else if (_lastScene.lastIndexOf("map") < 0)
 			{
 //				if (Capabilities.isDebugger)
@@ -204,7 +205,10 @@ package
 //					BooksManager.showBooks(0, 0, 0, false);
 			}
 			else
-				Map.show(null, moduleIndex - 1, moduleIndex);
+				Map.loadMapAssets(function():void{
+					Map.show(moduleIndex - 1, moduleIndex);
+				},true);
+//				Map.show(null, moduleIndex - 1, moduleIndex);
 		}
 	}
 }

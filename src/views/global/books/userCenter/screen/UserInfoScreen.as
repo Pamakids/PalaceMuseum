@@ -2,24 +2,24 @@ package views.global.books.userCenter.screen
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-
+	
 	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
-
+	
 	import controllers.DC;
 	import controllers.MC;
-
+	
 	import feathers.controls.Button;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.text.TextFieldTextRenderer;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
-
+	
 	import models.FontVo;
 	import models.SOService;
-
+	
 	import sound.SoundAssets;
-
+	
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
@@ -28,7 +28,7 @@ package views.global.books.userCenter.screen
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.textures.Texture;
-
+	
 	import views.global.books.BooksManager;
 	import views.global.books.components.CurrentUserView;
 	import views.global.books.components.ModuleList;
@@ -213,7 +213,12 @@ package views.global.books.userCenter.screen
 			PopUpManager.addPopUp(win, true, false);
 			win.y=768 - win.height >> 1;
 			win.x=1024;
-			TweenLite.to(win, 0.3, {x: 1024 - win.width >> 1, ease: Cubic.easeIn});
+			TweenLite.to(win, 0.3, {x: 1024 - win.width >> 1, ease: Cubic.easeIn, onComplete:function():void{
+				if(win == w_editUser &&　MC.needGuide)
+				{
+					w_editUser.showGuide();
+				}
+			}});
 		}
 
 		private var twDic:Dictionary=new Dictionary();
@@ -261,7 +266,7 @@ package views.global.books.userCenter.screen
 			}
 		}
 
-		private function show_w_chooseUser():void
+		public function show_w_chooseUser():void
 		{
 			if (!w_chooseUser)
 			{
@@ -271,6 +276,17 @@ package views.global.books.userCenter.screen
 				w_chooseUser.changeCtrUserHandler=show_W_alert;
 			}
 			showWinHandler(w_chooseUser);
+			
+			if(MC.needGuide)
+			{
+				MC.instance.addGuide(8,function():void{
+					MC.instance.main.touchable=true;
+					var ui:int=SOService.instance.getLastUser();
+					if(!ui)
+						ui=0;
+					w_chooseUser.editHandler(ui);
+				});
+			}
 		}
 
 		private var nextUser:int;
@@ -325,6 +341,9 @@ package views.global.books.userCenter.screen
 			w_editUser.closeWinHandler=hideWinHandler;
 			w_editUser.deleteHandler=show_W_deleteUser;
 			w_editUser.addEventListener(Event.CHANGE, changeUserHandler);
+			w_editUser.addEventListener("editUser", function():void{
+				crtUserView.resetData();
+			});
 		}
 
 		/**

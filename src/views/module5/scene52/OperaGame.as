@@ -33,6 +33,7 @@ package views.module5.scene52
 	import views.components.ElasticButton;
 	import views.components.LionMC;
 	import views.components.base.PalaceGame;
+	import views.components.share.ShareView;
 
 	public class OperaGame extends PalaceGame
 	{
@@ -707,6 +708,9 @@ package views.module5.scene52
 				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
 				if (isRecord)
 					showRecord();
+
+				if(isWin)
+					ShareView.instance.show('分享',getShareContent('粉墨登场',scoreTXT),shareImg);
 			}
 			if (fromCenter)
 			{
@@ -722,6 +726,7 @@ package views.module5.scene52
 
 		private function onNextShow(e:Event):void
 		{
+			ShareView.instance.hide();
 			var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE, null, nextGame);
 			onOperaSwitch(e1);
 		}
@@ -760,6 +765,7 @@ package views.module5.scene52
 
 		override public function dispose():void
 		{
+			ShareView.instance.hide();
 			SoundAssets.playBGM("main");
 			super.dispose();
 		}

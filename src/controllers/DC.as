@@ -38,7 +38,7 @@ package controllers
 
 		public function testCollectionIsOpend(id:String):Boolean
 		{
-			return true;
+//			return true;
 			return so.getSO("collection_card_" + id + "collected");
 		}
 
@@ -61,8 +61,8 @@ package controllers
 			{
 				t=arr[i];
 				if (t)
-					_achidatas.push([t[0], t[1], 1])
-//				_achidatas.push([t[0], t[1], (SOService.instance.getSO(i + "_achieve")) ? 1 : 0])
+//					_achidatas.push([t[0], t[1], 1])
+					_achidatas.push([t[0], t[1], (SOService.instance.getSO(i + "_achieve")) ? 1 : 0])
 			}
 			return _achidatas;
 		}

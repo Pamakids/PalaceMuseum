@@ -2,6 +2,8 @@ package views.module6.scene61
 {
 	import com.greensock.TweenLite;
 
+	import flash.geom.Point;
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -39,8 +41,8 @@ package views.module6.scene61
 
 				var block:Image=getImage(id);
 				var blockBG:Image=getImage(id+'s');
-
-				var piece:PicPiece=new PicPiece(block,blockBG,i);
+				var halo:Image=getImage('block-halo');
+				var piece:PicPiece=new PicPiece(block,blockBG,halo,i);
 				pieceArr.push(piece);
 				piece.addEventListener(TouchEvent.TOUCH,onTouch);
 			}
@@ -58,17 +60,67 @@ package views.module6.scene61
 		private function onTouch(e:TouchEvent):void
 		{
 			var p:PicPiece=e.currentTarget as PicPiece;
-			var tc:Touch=e.getTouch(p,TouchPhase.ENDED);
+			var tc:Touch=e.getTouch(p);
 			if(tc)
 			{
-				if(!selectedPiece)
+				if(selectedPiece&&selectedPiece!=p)
+					return;
+
+				switch(tc.phase)
 				{
-					selectedPiece=p;
-					showHalo(pieceArr.indexOf(p));
-				}else
-				{
-					swap(selectedPiece,p);
+					case TouchPhase.BEGAN:
+					{
+						if(!selectedPiece)
+						{
+							selectedPiece=p;
+							gameHolder.setChildIndex(p,gameHolder.numChildren-1);
+							p.showHalo();
+//							showHalo(pieceArr.indexOf(p));
+						}
+						break;
+					}
+
+					case TouchPhase.MOVED:
+					{
+						var mov:Point=tc.getMovement(this);
+						p.y+=mov.y;
+						if(p.y<0)
+							p.y==0;
+						if(p.y>GAP*(num-1))
+							p.y=GAP*(num-1);
+
+						break;
+					}
+
+					case TouchPhase.ENDED:
+					{
+						var di:int=Math.max(0,Math.min(tc.getLocation(gameHolder).y/GAP,pieceArr.length-1));
+						var dp:PicPiece=pieceArr[di];
+						if(dp==p||dp.checked)
+						{
+							var dy:Number=pieceArr.indexOf(p)*GAP;
+							gameHolder.touchable=false;
+//							hideHalo();
+							selectedPiece=null;
+							p.hideHalo();
+							TweenLite.to(p,.5,{y:dy,onComplete:function():void{
+								gameHolder.touchable=true;
+							}});
+
+						}else
+							swap(dp,p);
+						break;
+					}
+
+					default:
+					{
+						break;
+					}
 				}
+//				else
+//				{
+//					swap(selectedPiece,p);
+//				}
 			}
 		}
 
@@ -100,13 +152,13 @@ package views.module6.scene61
 				piece.y=i*GAP;
 			}
 
-			halo=getImage('block-halo');
-			gameHolder.addChild(halo);
-			halo.touchable=false;
-			halo.pivotX=halo.width>>1;
-			halo.pivotY=halo.height>>1;
-			halo.x=399>>1;
-			hideHalo();
+//			halo=getImage('block-halo');
+//			gameHolder.addChild(halo);
+//			halo.touchable=false;
+//			halo.pivotX=halo.width>>1;
+//			halo.pivotY=halo.height>>1;
+//			halo.x=399>>1;
+//			hideHalo();
 
 			addClose();
 		}
@@ -115,26 +167,27 @@ package views.module6.scene61
 
 		private function swap(p1:PicPiece,p2:PicPiece):void
 		{
-			hideHalo();
+//			hideHalo();
 			if(!selectedPiece||p1==p2){
 				selectedPiece=null;
 				return;
 			}
 			selectedPiece=null;
-
-			gameHolder.setChildIndex(p1,gameHolder.numChildren-2);
-			gameHolder.setChildIndex(p2,gameHolder.numChildren-2);
+			p1.hideHalo();
+			p2.hideHalo();
+			gameHolder.setChildIndex(p1,gameHolder.numChildren-1);
+			gameHolder.setChildIndex(p2,gameHolder.numChildren-1);
 
 			gameHolder.touchable=false;
 
 			var i1:int=pieceArr.indexOf(p1);
 			var i2:int=pieceArr.indexOf(p2);
 
-			var dx1:Number=p1.x;
-			var dy1:Number=p1.y;
+//			var dx1:Number=p1.x;
+			var dy1:Number=i1*GAP;
 
-			var dx2:Number=p2.x;
-			var dy2:Number=p2.y;
+//			var dx2:Number=p2.x;
+			var dy2:Number=i2*GAP;
 
 			pieceArr[i1]=p2;
 			pieceArr[i2]=p1;
@@ -145,8 +198,8 @@ package views.module6.scene61
 				checkPieces();
 			}
 
-			TweenLite.to(p1,1,{x:dx2,y:dy2});
-			TweenLite.to(p2,1,{x:dx1,y:dy1,onComplete:completeFunc});
+			TweenLite.to(p1,.5,{y:dy2});
+			TweenLite.to(p2,.5,{y:dy1,onComplete:completeFunc});
 
 		}
 
@@ -178,18 +231,18 @@ package views.module6.scene61
 
 		private var pieceArr:Array=[];
 
-		private function showHalo(index:int):void
-		{
-			halo.y=index*GAP+GAP/2;
-			halo.visible=true;
-		}
+//		private function showHalo(index:int):void
+//		{
+//			halo.y=index*GAP+GAP/2;
+//			halo.visible=true;
+//		}
 
-		private function hideHalo():void
-		{
-			halo.visible=false;
-		}
+//		private function hideHalo():void
+//		{
+//			halo.visible=false;
+//		}
 
-		private var halo:Image;
+//		private var halo:Image;
 
 		private var GAP:Number=111;
 
