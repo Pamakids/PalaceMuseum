@@ -91,14 +91,14 @@ package views.module6
 		{
 			if(e.target==game1)
 			{
-				showCard('16');
-			}else if(e.target==game3)
-			{
 				showCard('17');
 			}
 			else if(e.target==game2)
 			{
 				showCard('18');
+			}else if(e.target==game3)
+			{
+				showCard('16');
 			}
 		}
 

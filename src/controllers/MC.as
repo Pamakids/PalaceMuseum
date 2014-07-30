@@ -18,6 +18,7 @@ package controllers
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
 	import views.EndScene;
@@ -71,7 +72,7 @@ package controllers
 
 		public var stage:PalaceMuseum;
 		public var topBarLayer:starling.display.Sprite;
-		private var centerLayer:starling.display.Sprite;
+		private var bookLayer:starling.display.Sprite;
 		private var mapLayer:starling.display.Sprite;
 
 		public function init(main:Container):void
@@ -143,12 +144,18 @@ package controllers
 
 		public function set moduleIndex(value:int):void
 		{
-			if (currentModule)
+			if (currentModule){
+//				var capture:Texture=currentModule.getCapture();
 				currentModule.visible=false;
+//				clearCrtModule();
+			}
 			if (value != _moduleIndex)
 			{
 				DC.instance.completeModule();
-				Map.show(null, _moduleIndex, value);
+				Map.loadMapAssets(function():void{
+					Map.show(_moduleIndex, value);
+				},true);
+//				Map.show(null, _moduleIndex, value);
 			}
 			else
 			{
@@ -250,6 +257,7 @@ package controllers
 
 		public function restart():void
 		{
+			hideMenu();
 			main.touchable=false;
 			removeAllMC();
 			if (Map.map)
@@ -273,23 +281,23 @@ package controllers
 		private function initLayers():void
 		{
 			contentLayer=new starling.display.Sprite();
-			centerLayer=new starling.display.Sprite();
+			bookLayer=new starling.display.Sprite();
 			mapLayer=new starling.display.Sprite();
 			topBarLayer=new starling.display.Sprite();
 
 			main.addChild(contentLayer);
-			main.addChild(centerLayer);
+			main.addChild(bookLayer);
 			main.addChild(mapLayer);
 			main.addChild(topBarLayer);
 
-			BooksManager.userCenterContainer=centerLayer;
+			BooksManager.userCenterContainer=bookLayer;
 			Map.parent=mapLayer;
 			TopBar.parent=topBarLayer;
 			TailBar._parent=topBarLayer;
 
 			contentLayer.addEventListener(TouchEvent.TOUCH, onHideTopBar);
 			mapLayer.addEventListener(TouchEvent.TOUCH, onHideTopBar);
-			centerLayer.addEventListener(TouchEvent.TOUCH, onHideTopBar);
+			bookLayer.addEventListener(TouchEvent.TOUCH, onHideTopBar);
 		}
 
 		private function onHideTopBar(e:TouchEvent):void
@@ -307,30 +315,30 @@ package controllers
 
 		public function switchLayer(isMap:Boolean):void
 		{
-			var index1:int=main.getChildIndex(centerLayer);
+			var index1:int=main.getChildIndex(bookLayer);
 			var index2:int=main.getChildIndex(mapLayer);
 			var i1:int=Math.min(index1, index2);
 			var i2:int=Math.max(index1, index2);
 			if (isMap)
 			{
-				main.setChildIndex(centerLayer, i1);
+				main.setChildIndex(bookLayer, i1);
 				main.setChildIndex(mapLayer, i2);
 			}
 			else
 			{
 				main.setChildIndex(mapLayer, i1);
-				main.setChildIndex(centerLayer, i2);
+				main.setChildIndex(bookLayer, i2);
 				BooksManager.enable();
 			}
 		}
 
 		public function switchWOTB():void
 		{
-			var index1:int=main.getChildIndex(centerLayer);
+			var index1:int=main.getChildIndex(bookLayer);
 			var index2:int=main.getChildIndex(mapLayer);
 			var i1:int=Math.min(index1, index2);
 			var i2:int=Math.max(index1, index2);
-			main.setChildIndex(centerLayer, i1);
+			main.setChildIndex(bookLayer, i1);
 			main.setChildIndex(mapLayer, i2);
 		}
 

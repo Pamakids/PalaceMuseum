@@ -25,7 +25,7 @@ package views.global.books.handbook.screen
 		}
 		override protected function initPages():void
 		{
-			var image:Image = BooksManager.getImage("background_1");
+			var image:Image = BooksManager.getImage("background_0");
 			image.scaleX=image.scaleY=2;
 			this.addChild( image );
 			image.height += 6;
@@ -43,8 +43,11 @@ package views.global.books.handbook.screen
 
 		private function onTriggered():void
 		{
-			Map.show(null,-1,-1,true, true);
-			MC.instance.switchLayer(true);
+			Map.loadMapAssets(function():void{
+				Map.show(-1,-1,true, true);
+			},false);
+//			Map.show(null,-1,-1,true, true);
+//			MC.instance.switchLayer(true);
 		}
 
 		override public function dispose():void

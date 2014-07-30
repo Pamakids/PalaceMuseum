@@ -94,7 +94,8 @@ package views.module2
 				addLabel(2);
 
 			addCraw(new Point(174, 578));
-			addCraw(new Point(590, 632));
+			if(PosVO.scale!=1)
+				addCraw(new Point(590, 632));
 			addCraw(new Point(908, 461));
 
 			addMask(.6);
@@ -228,7 +229,7 @@ package views.module2
 			if (index == 4)
 			{
 				SoundAssets.playSFX("popup");
-				book=new ItemIntro(2, new Rectangle(82, 452, 260, 90));
+				book=new ItemIntro(4, new Rectangle(82, 452, 260, 90));
 				close=new ElasticButton(getImage("button_close"), getImage("button_close_down"));
 				book.addIntro(getImage("intro-bg"), getImage("intro-waterpot"), close);
 				book.addEventListener(ItemIntro.CLOSE, onClose);

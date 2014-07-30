@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:17eada8b4a5ef728a0f553fa610ddb49$ -->
+<!-- $TexturePacker:SmartUpdate:0bf62aa36f887270104b1c7dca78981b$ -->
 <TextureAtlas imagePath="common.png">
     <SubTexture name="acheivebar" x="2" y="1773" width="555" height="162"/>
     <SubTexture name="bg-task" x="672" y="1088" width="355" height="207" frameX="0" frameY="-2" frameWidth="355" frameHeight="209"/>

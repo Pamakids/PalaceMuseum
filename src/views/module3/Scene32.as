@@ -38,13 +38,13 @@ package views.module3
 
 			addBG("bg-22");
 
-			areaArr.push(new Rectangle(316, 238, 182, 342));
+			areaArr.push(new Rectangle(400, 400, 200, 300));
 			areaArr.push(new Rectangle(148, 326, 205, 288));
 			areaArr.push(new Rectangle(718, 272, 185, 300));
 
 			addEventListener(TouchEvent.TOUCH, onTouch);
 
-			addCraw(new Point(463, 461));
+			addCraw(new Point(480, 650));
 
 			LionMC.instance.say("宫里的饭菜起名字时常常图个吉利，看你能否给这些吉祥菜名对号入座。", 0, 0, 0, function():void {
 				birdIndex=7;

@@ -198,7 +198,9 @@ package views.global.books.components
 					if (fromMap)
 					{
 						if (!Map.map)
-							Map.show(null, module - 1, module);
+							Map.loadMapAssets(function():void{
+								Map.show(module - 1, module);
+							},true);
 						if(needBG)
 							BooksManager.closeCtrBook();
 						else
@@ -413,7 +415,7 @@ package views.global.books.components
 		private const arrR:Array=[
 			-Math.PI / 2,
 			-10 * Math.PI / 180,
-			-10 * Math.PI / 180,
+			1 * Math.PI / 180,
 			1 * Math.PI / 180,
 			20 * Math.PI / 180,
 			50 * Math.PI / 180,

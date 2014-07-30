@@ -88,12 +88,12 @@ package models
 		 * @param index
 		 * @param value
 		 */
-		public function editUser(index:int, value:Object):void
+		public function editUser(index:int, value:Object,change:Boolean):void
 		{
 			var arr:Vector.<Object>=getUserSO("users") as Vector.<Object>;
 			arr[index]=value;
 			setUserSO("users", arr);
-			if (value)
+			if (value&&change)
 				setUserSO("lastUser", index);
 //			else
 //				changeUser(0);
@@ -105,7 +105,7 @@ package models
 				return false;
 			else
 			{
-				editUser(index, null);
+				editUser(index, null,true);
 				so.clear();
 				return true;
 			}
@@ -273,3 +273,5 @@ package models
 		}
 	}
 }
+
+

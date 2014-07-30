@@ -205,7 +205,7 @@ package views.global.books.userCenter.screen
 			source=[];
 			for (var j:int = 0; j < tmpArr.length; j++) 
 			{
-				if(j!=4)
+				if(j!=7)
 					source.push(tmpArr[j]);
 			}
 

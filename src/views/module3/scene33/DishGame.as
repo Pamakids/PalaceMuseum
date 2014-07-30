@@ -29,6 +29,7 @@ package views.module3.scene33
 	import views.components.ElasticButton;
 	import views.components.LionMC;
 	import views.components.base.PalaceGame;
+	import views.components.share.ShareView;
 
 	public class DishGame extends PalaceGame
 	{
@@ -61,6 +62,12 @@ package views.module3.scene33
 		public function get poisonTest():Boolean
 		{
 			return _poisonTest;
+		}
+
+		override public function dispose():void
+		{
+			ShareView.instance.hide();
+			super.dispose();
 		}
 
 		public function set poisonTest(value:Boolean):void
@@ -764,6 +771,9 @@ package views.module3.scene33
 				if (isRecord)
 					showRecord();
 			}});
+
+			if(isWin)
+				ShareView.instance.show('分享',getShareContent('银牌试毒',scoreTXT),shareImg);
 		}
 
 		private function showRecord():void

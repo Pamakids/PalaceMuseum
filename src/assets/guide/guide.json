@@ -5,6 +5,9 @@
 {"arrowAngle":-135,"arrowPos":[226,148],"area":[82,31,111,77],"action":0,"hand":"F"},
 {"arrowAngle":90,"arrowPos":[411,269],"area":[163,348,381,39],"action":0,"hand":"F"},
 {"arrowAngle":180,"arrowPos":[812,587],"area":[578,631,416,71],"action":1,"hand":"T","handPos":[888,647]},
-{"arrowAngle":-45,"arrowPos":[863,161],"area":[902,18,115,90],"action":0,"hand":"F"}
+{"arrowAngle":-45,"arrowPos":[863,161],"area":[902,18,115,90],"action":0,"hand":"F"},
+{"arrowAngle":-135,"arrowPos":[197,176],"area":[0,0,133,119],"action":0,"hand":"F"},
+{"arrowAngle":-90,"arrowPos":[423,309],"area":[380,187,103,70],"action":0,"hand":"F"},
+{"arrowAngle":-90,"arrowPos":[650,358],"area":[580,225,138,77],"action":0,"hand":"F"}
 ]
 }

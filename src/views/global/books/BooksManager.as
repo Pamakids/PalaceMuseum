@@ -191,17 +191,17 @@ package views.global.books
 
 		private static function initLoadImage():void
 		{
-			if (!MC.instance.currentModule && (!Map.map || !Map.map.visible))
-			{
-				_loadBG=Image.fromBitmap(new PalaceModule.gameBG());
-				MC.instance.main.addChildAt(_loadBG, 0);
-				_loadImage=new LoadingMC();
-				MC.instance.addMC(_loadImage as MovieClip);
-				_loadImage.x=1024 - 172;
-				_loadImage.y=768 - 126;
-				_loadImage.play();
-			}
-			else
+//			if (!MC.instance.currentModule && (!Map.map || !Map.map.visible))
+//			{
+//				_loadBG=Image.fromBitmap(new PalaceModule.gameBG());
+//				MC.instance.main.addChildAt(_loadBG, 0);
+//				_loadImage=new LoadingMC();
+//				MC.instance.addMC(_loadImage as MovieClip);
+//				_loadImage.x=1024 - 172;
+//				_loadImage.y=768 - 126;
+//				_loadImage.play();
+//			}
+//			else
 			{
 				_loadImage=new Image(Texture.fromBitmap(new PalaceModule.loading()));
 				_loadImage.pivotX=_loadImage.width >> 1;
