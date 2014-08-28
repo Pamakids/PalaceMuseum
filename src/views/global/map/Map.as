@@ -97,8 +97,9 @@ package views.global.map
 		private static var taskInitTime:int=-1;
 		private static var sceneOverTime:int=-1;
 
-		public static function loadMapAssets(cb:Function=null,needBG:Boolean=false):void
+		public static function loadMapAssets(cb:Function=null,needBG:Boolean=false,_fromCenter:Boolean=false):void
 		{
+			showFromCenter=_fromCenter;
 			if(cb!=null)
 			{
 				if(needBG)
@@ -292,10 +293,11 @@ package views.global.map
 		 * @param from 	   当前模块
 		 * @param to   	   转向模块
 		 */
-		public static function show(from:int=-1, to:int=-1, fromCenter:Boolean=false, _buttonShow:Boolean=false):void
+		public static function show(from:int=-1, to:int=-1, _fromCenter:Boolean=false, _buttonShow:Boolean=false):void
 		{
+			showFromCenter=_fromCenter;
 			initTime=getTimer();
-			if (!fromCenter)
+			if (!showFromCenter)
 			{
 				SoundAssets.playBGM("mapbgm");
 			}
@@ -303,16 +305,27 @@ package views.global.map
 			var msIndex:String=SOService.instance.getSO("lastScene") as String;
 			if (!msIndex)
 				msIndex="11map";
-			if (!fromCenter && to >= 0)
-				msIndex=(to + 1).toString() + "1map";
-			else if (msIndex.lastIndexOf("map") < 0)
-				msIndex=msIndex + "map";
-			if (!fromCenter)
+			else
+			{
+				if (!showFromCenter && to >= 0)
+				{
+					var _to:int=to;
+					if(_to==0)
+						_to=0;
+					else if(_to==1)
+						_to=5;
+					else
+						_to--;
+					msIndex=(_to + 1).toString() + "1map";
+				}
+				else if (msIndex.lastIndexOf("map") < 0)
+					msIndex=msIndex + "map";
+			}
+			if (!showFromCenter)
 				SOService.instance.setSO("lastScene", msIndex);
 			MC.instance.hideMC();
-			if (fromCenter)
+			if (showFromCenter)
 				MC.instance.switchWOTB();
-			showFromCenter=fromCenter;
 //			var ec:Boolean=true;
 //			if (from || to || callback == null)
 //				ec=false;

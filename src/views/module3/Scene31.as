@@ -122,7 +122,7 @@ package views.module3
 			})
 		}
 
-		private var fish_hint:String="两只羊，五只鸡……皇帝每天的食材也有分例";
+		private var fish_hint:String="两只羊，五只鸡……\n皇帝每天的食材也有分例";
 		private var dish_hint:String="皇帝的饭菜，用料讲究，营养丰富";
 		private var chef_hint:String="被皇帝钦点的御厨拿手菜，可是莫大的荣耀。";
 		private var area1:Rectangle=new Rectangle(931, 179, 69, 102);

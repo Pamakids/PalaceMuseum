@@ -413,7 +413,7 @@ package views.components.base
 			firstHint.x=79;
 			firstHint.y=82;
 			addChild(firstHint);
-			addEventListener(TouchEvent.TOUCH,onClearTouch);
+			stage.addEventListener(TouchEvent.TOUCH,onClearTouch);
 		}
 
 		private var firstCB:Function;
@@ -422,7 +422,7 @@ package views.components.base
 
 		private function onClearTouch(e:TouchEvent):void
 		{
-			var tc:Touch=e.getTouch(this,TouchPhase.ENDED);
+			var tc:Touch=e.getTouch(stage,TouchPhase.ENDED);
 			if(tc)
 			{
 				removeEventListener(TouchEvent.TOUCH,onClearTouch);
@@ -453,6 +453,9 @@ package views.components.base
 			SoundAssets.playSFX("getcard");
 			SOService.instance.setSO("collection_card_" + _cardName + "collected", true);
 
+			var firstCard:Boolean=!SOService.instance.getSO('firstCard');
+			SOService.instance.setSO('firstCard',true);
+
 			var cardShow:Sprite=new Sprite();
 			cardShow.x=512;
 			cardShow.y=768 / 2;
@@ -470,24 +473,57 @@ package views.components.base
 			haloSP.addChild(halo);
 
 			halo.rotation=0;
+
+			function clearShow():void
+			{
+				halo.visible=false;
+				TweenLite.delayedCall(.5, function():void
+				{
+					dispatchEvent(new Event("resumeTimer",true));
+					PopUpManager.removePopUp(cardShow);
+					cardShow.dispose()
+				});
+			}
+
 			TweenLite.to(halo, 2.5, {rotation: Math.PI, ease: com.greensock.easing.Quad.easeOut,
-							 onComplete: function():void
-							 {
-								 halo.visible=false;
-								 TweenLite.delayedCall(.5, function():void
-								 {
-									 dispatchEvent(new Event("resumeTimer",true));
-									 PopUpManager.removePopUp(cardShow);
-									 cardShow.dispose()
-								 });
-							 }});
+							 onComplete: firstCard?addHint:clearShow});
 
 			var card:CollectionCard=new CollectionCard(callback);
 			card.addChild(getImage("collection_card_" + _cardName));
 			card.pivotX=card.width >> 1;
 			card.pivotY=card.height >> 1;
-			card.show();
+			card.show(!firstCard);
 			cardShow.addChild(card);
+
+			var hint:Image;
+			function addHint():void
+			{
+				var rimg:Image=getImage("ribbon");
+				cardShow.addChild(rimg);
+				rimg.x=-45-512;
+				rimg.y=38-768/2;
+				rimg.addEventListener(TouchEvent.TOUCH,onImgTouch);
+
+				hint=getImage("firstCard");
+				cardShow.addChild(hint);
+				hint.x=79-512;
+				hint.y=82-768/2;
+			}
+
+			function onImgTouch(e:TouchEvent):void
+			{
+				var img:Image=e.currentTarget as Image;
+				var tc:Touch=e.getTouch(img,TouchPhase.ENDED);
+				if(tc)
+				{
+					img.removeFromParent(true);
+					if(hint)
+						hint.removeFromParent(true);
+					card.hide();
+					clearShow();
+					TweenLite.delayedCall(.5,TopBar.instance.showBookAndAvatar);
+				}
+			}
 
 		}
 	}

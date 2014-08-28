@@ -58,7 +58,7 @@ package views.module1.scene12
 					hintShow.removeFromParent(true);
 				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			}
-			if (count < 30 * 5)
+			if (count < 30 * 10)
 				count++;
 			else
 			{

@@ -286,7 +286,7 @@ package views.module6.scene62
 
 		private function initScore():void
 		{
-			scoreTF=new TextField(100, 40, '0');
+			scoreTF=new TextField(100, 40, '0',FontVo.PALACE_FONT);
 			scoreTF.fontSize=24;
 			scoreTF.color=0xb83d00;
 			infoHolder.addChild(scoreTF);
@@ -691,7 +691,7 @@ package views.module6.scene62
 			}
 
 //			TweenLite.delayedCall(1, function():void {
-			var scoreTF:TextField=new TextField(300, 100, scoreTXT);
+			var scoreTF:TextField=new TextField(300, 100, scoreTXT,FontVo.PALACE_FONT);
 			scoreTF.fontSize=48;
 			scoreTF.color=0xb83d00;
 			scoreTF.x=500 - 40;
@@ -699,7 +699,7 @@ package views.module6.scene62
 			endHolder.addChild(scoreTF);
 //			});
 
-			var recordTF:TextField=new TextField(100, 40, recordTXT);
+			var recordTF:TextField=new TextField(100, 40, recordTXT,FontVo.PALACE_FONT);
 			recordTF.fontSize=24;
 			recordTF.color=0xb83d00;
 			recordTF.x=520;

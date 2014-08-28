@@ -32,7 +32,13 @@ package views.module4
 			king.y=pos1.y;
 			king.touchable=false;
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			TweenLite.delayedCall(1.5, kingSay);
+//			TweenLite.delayedCall(1.5, kingSay);
+		}
+
+		override protected function init():void
+		{
+			super.init();
+			assetManager.playSound("bird",0,2);
 		}
 
 		private function moveKing():void
@@ -50,8 +56,13 @@ package views.module4
 		private var pos1:Point=new Point(399, 663);
 		private var pos2:Point=new Point(617, 302);
 
+		private var count:int=0;
+
 		private function onEnterFrame(e:Event):void
 		{
+			count++;
+			if(count==45)
+				kingSay();
 			king.shake();
 		}
 	}

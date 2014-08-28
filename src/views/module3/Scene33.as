@@ -199,7 +199,7 @@ package views.module3
 			kingBody.x=602-2;
 			kingBody.y=339+3;
 
-			kingHungry=new MovieClip(assetManager.getTextures("kingHungry"), 12);
+			kingHungry=new MovieClip(assetManager.getTextures("kingHungry"), 10);
 			kingHolder.addChild(kingHungry);
 			Starling.juggler.add(kingHungry);
 			kingHungry.loop=true;
@@ -421,7 +421,7 @@ package views.module3
 			trace(kingSit.x, kingSit.y);
 			kingHolder.addChild(kingSit);
 
-			kingFull=new MovieClip(assetManager.getTextures("kingFull"), 18);
+			kingFull=new MovieClip(assetManager.getTextures("kingFull"), 10);
 			kingHolder.addChild(kingFull);
 			Starling.juggler.add(kingFull);
 			kingFull.play();

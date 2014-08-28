@@ -269,7 +269,7 @@ package views.module3.scene33
 				infoHolder.addChild(lifeIcon);
 			}
 
-			scoreTF=new TextField(100, 40, "");
+			scoreTF=new TextField(100, 40, "",FontVo.PALACE_FONT);
 			scoreTF.fontSize=24;
 			scoreTF.color=0xb83d00;
 			scoreTF.vAlign="top";
@@ -730,7 +730,7 @@ package views.module3.scene33
 				}
 
 				TweenLite.delayedCall(1, function():void {
-					var scoreTF:TextField=new TextField(300, 100, scoreTXT);
+					var scoreTF:TextField=new TextField(300, 100, scoreTXT,FontVo.PALACE_FONT);
 					scoreTF.fontSize=48;
 					scoreTF.color=0xb83d00;
 					scoreTF.x=500 - 40;
@@ -738,7 +738,7 @@ package views.module3.scene33
 					endSP.addChild(scoreTF);
 				});
 
-				var recordTF:TextField=new TextField(100, 40, recordTXT);
+				var recordTF:TextField=new TextField(100, 40, recordTXT,FontVo.PALACE_FONT);
 				recordTF.fontSize=24;
 				recordTF.color=0xb83d00;
 				recordTF.x=520;
@@ -967,7 +967,7 @@ package views.module3.scene33
 			gameSP.addChild(dishHolder);
 		}
 
-		private var expArr:Array=["高兴", "无聊", "平时", "吃饭", "中毒"];
+		private var expArr:Array=["高兴", "无聊", "无聊", "吃饭", "中毒"];
 
 		/**
 		 * @param 0:高兴,1:无聊,2:平时,3:吃饭,4:中毒
@@ -981,7 +981,7 @@ package views.module3.scene33
 				king.removeFromParent(true);
 				king=null;
 			}
-			king=new MovieClip(assetManager.getTextures(expArr[index]), 8);
+			king=new MovieClip(assetManager.getTextures(expArr[index]), index==0?2:6);
 			king.x=kingArea.x + 50;
 			king.y=kingArea.y + 30;
 			kingHolder.addChild(king);

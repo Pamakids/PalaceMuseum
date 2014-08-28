@@ -4,6 +4,8 @@ package views.module1
 
 	import flash.geom.Point;
 
+	import sound.SoundAssets;
+
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -84,6 +86,7 @@ package views.module1
 
 		private function momSay():void
 		{
+			SoundAssets.playSFX("taihou");
 			p=Prompt.showTXT(pos3.x, pos3.y, txt2, 20, kingSay2);
 		}
 
@@ -103,6 +106,8 @@ package views.module1
 			{
 				talkIndex++;
 				var txt:String=this["txt" + talkIndex.toString()]
+				if(talkIndex==2)
+					SoundAssets.playSFX("taihou");
 				if (talkIndex == 9)
 				{
 					pos=this["pos1"];
@@ -119,6 +124,7 @@ package views.module1
 
 		private function moveKingBack():void
 		{
+			SoundAssets.playSFX("taihou");
 			talkIndex++;
 			if (!king)
 				return;
@@ -127,13 +133,13 @@ package views.module1
 			TweenLite.to(king, 3, {x: pos1.x, y: pos1.y, onComplete: sayNext});
 		}
 
-		private var txt1:String="孩，孩儿给\n太后请安。";
+		private var txt1:String="孩……孩儿给太后请安了。";
 		private var txt2:String="皇儿最近可好？都读了哪些书呢？";
 		private var txt3:String="回母后，孩儿一切安好，至于哪些书……";
-		private var txt4:String="咦，皇儿声音怎么有些奇怪？";
-		private var txt5:String="厄……可能孩儿前些天偶感风寒，还，还没有痊愈。";
+		private var txt4:String="咦?皇儿声音怎么有些奇怪？";
+		private var txt5:String="呃……可能孩儿前些天偶感风寒，\n还……还没有痊愈。";
 		private var txt6:String="皇帝你政务繁忙，勤奋的同时也要注意身体啊。";
-		private var txt7:String="谢母后关心，孩儿告退。";
+		private var txt7:String="多谢母后关心，孩儿告退。";
 		private var txt9:String="哎哟，好险！";
 
 		private var pos1:Point=new Point(747, 275);

@@ -80,7 +80,7 @@ package views.module4
 		private var h0:String="石子做的画\n\n古朴别致的彩石路面，是御花园的一大特色。不同颜色的卵石，精心铺成900多幅丰富多彩的图案，有人物、花卉、景物、戏剧等，沿路观赏，逸趣横生。";
 		private var h1:String="为什么只有御花园有树？\n\n是为了怕树上隐藏刺客，威胁皇帝安全。御花园有不少奇花异草，这种两棵树的枝干合生在一起的“连理柏”，也是令人惊叹的植物瑰宝。";
 		private var h2:String="堆秀山\n\n这座假山高14米，完全是由奇形怪状的石块堆砌而成，因此而得名“堆秀山”。山上有些石块酷似鸡、狗、猪、猴等动物，形状各异，活泼可爱。";
-		private var h3:String="御花园的最高点\n\n站在山上的这座“御景亭”里，可以俯瞰宫苑，还可以远眺紫禁城、景山。每年的中秋节和重阳节，皇帝和后妃们都会来这儿登高赏月、饮酒作诗。";
+		private var h3:String="御花园的最高点\n\n站在山上的这座“御景亭”里，可以俯瞰宫苑，还可以俯瞰紫禁城、眺望景山。每年的中秋节和重阳节，皇帝和后妃们都会来登高赏月、饮酒作诗。";
 
 		private function addLion():void
 		{
@@ -468,7 +468,7 @@ package views.module4
 				{
 					if (kingP)
 						kingP.playHide();
-					kingP=Prompt.showTXT(512, 600, "哇，好气派的花园，咦，小狮子去哪了？", 20, null, this);
+					kingP=Prompt.showTXT(512, 600, "哇！好气派的花园。咦？小狮子去哪了？", 20, null, this);
 					outMove=false;
 				}
 				moveBG(-10);
@@ -526,7 +526,7 @@ package views.module4
 			{
 				if (kingP)
 					kingP.playHide();
-				kingP=Prompt.showTXT(512, 600, "哇，好气派的花园，咦，小狮子去哪了？", 20, null, this);
+				kingP=Prompt.showTXT(512, 600, "哇！好气派的花园。咦？小狮子去哪了？", 20, null, this);
 				outMove=false;
 			}
 			switch (tc.phase)
@@ -572,7 +572,8 @@ package views.module4
 				rect=fgAreaArr[i];
 				if (rect.containsPoint(fpt))
 				{
-					showHint(this["h" + i], fg, fpt, i == 1 ? 7 : 1)
+//					showHint(this["h" + i], fg, fpt, i == 1 ? 7 : 1)
+					showHint(this["h" + i], fg, new Point(rect.x+rect.width/2,rect.y+rect.height/2), i == 1 ? 7 : 1)
 					return;
 				}
 			}
@@ -583,7 +584,8 @@ package views.module4
 				rect=bgAreaArr[j];
 				if (rect.containsPoint(bpt))
 				{
-					showHint(this["h" + (j + 2)], bg2, bpt, j == 1 ? 7 : 1)
+//					showHint(this["h" + (j + 2)], bg2, bpt, j == 1 ? 7 : 1)
+					showHint(this["h" + (j + 2)], bg2, new Point(rect.x+rect.width/2,rect.y+rect.height/2), j == 1 ? 7 : 1)
 					return;
 				}
 			}

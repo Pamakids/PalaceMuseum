@@ -209,7 +209,7 @@ package views.module3.scene32
 		{
 			timeHolder=new Sprite();
 			timeHolder.addChild(getImage("menu-timebar"));
-			lbl=new TextField(200, 50, "00:00:00");
+			lbl=new TextField(200, 50, "00:00:00",FontVo.PALACE_FONT);
 			lbl.fontSize=32;
 			lbl.color=0x83d00;
 			lbl.vAlign="top";
@@ -571,7 +571,7 @@ package views.module3.scene32
 			t2.y=390;
 			endSP.addChild(t2);
 
-			var resultTF:TextField=new TextField(400, 100, resultTXT);
+			var resultTF:TextField=new TextField(400, 100, resultTXT,FontVo.PALACE_FONT);
 			resultTF.fontSize=48;
 			resultTF.color=0xb83d00;
 			resultTF.x=468;
@@ -580,7 +580,7 @@ package views.module3.scene32
 			resultTF.hAlign="left";
 			endSP.addChild(resultTF);
 
-			var recordTF:TextField=new TextField(150, 40, recordTXT);
+			var recordTF:TextField=new TextField(150, 40, recordTXT,FontVo.PALACE_FONT);
 			recordTF.fontSize=26;
 			recordTF.color=0x602508;
 			recordTF.x=482;

@@ -45,7 +45,7 @@ package views.global.books.handbook.screen
 		{
 			Map.loadMapAssets(function():void{
 				Map.show(-1,-1,true, true);
-			},false);
+			},false,true);
 //			Map.show(null,-1,-1,true, true);
 //			MC.instance.switchLayer(true);
 		}

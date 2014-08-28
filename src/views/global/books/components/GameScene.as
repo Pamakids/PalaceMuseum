@@ -17,6 +17,7 @@ package views.global.books.components
 	import views.components.base.PalaceGame;
 	import views.components.base.PalaceModule;
 	import views.components.base.PalaceScene;
+	import views.components.share.ShareView;
 	import views.module3.scene32.MenuGame;
 	import views.module3.scene33.DishGame;
 	import views.module5.scene52.OperaGame;
@@ -127,6 +128,7 @@ package views.global.books.components
 
 		private function onGamePlayed(e:Event):void
 		{
+			ShareView.instance.hide();
 			game.removeChildren();
 			game.removeEventListener(PalaceGame.GAME_OVER, onGamePlayed);
 			game.removeEventListener(PalaceGame.GAME_RESTART, onGameRestart);
