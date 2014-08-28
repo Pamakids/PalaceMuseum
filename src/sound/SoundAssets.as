@@ -62,7 +62,7 @@ package sound
 		public static var gameLose:Class;
 
 		public static var module1:Array=["lighton", "opendoor", "step", "dresson", "switching", "clockmatch", "clockroll",
-										 "windowwrong", "boxopen", "boxscale", "twistermatch", "twisting", "s11bgm", "blockmatch"];
+										 "windowwrong", "boxopen", "boxscale", "twistermatch", "twisting", "s11bgm", "blockmatch","taihou"];
 		[Embed(source="/sound/11lighton.mp3")] //done
 		public static var lighton:Class;
 		[Embed(source="/sound/11opendoor.mp3")] //done

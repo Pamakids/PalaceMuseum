@@ -132,7 +132,7 @@ package views.components.base
 
 		protected function getShareContent(game:String,score:String):String
 		{
-			var s:String='我在 #皇帝的一天#'+game+'游戏中获得了'+score+'分。快来挑战我的成绩吧！@故宫博物院@斑马骑士';
+			var s:String='我在 #皇帝的一天#'+game+'游戏中获得了'+score+'分。快来挑战我的成绩吧！@故宫博物院';
 			return s;
 		}
 

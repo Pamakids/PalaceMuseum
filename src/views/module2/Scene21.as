@@ -193,7 +193,7 @@ package views.module2
 
 		private var chat1:String="长大后，皇帝还要上学吗？";
 		private var chat2:String="无论多么繁忙，皇帝们从来不放松学习。";
-		private var chat3:String="这么多书，都…都要看吗？";
+		private var chat3:String="这么多书，\n都……都要看吗？";
 		private var chat4:String="猜猜哪两本是皇帝每天必读的书，都是与前代皇帝治国之道相关的书。";
 
 		private function getReady():void

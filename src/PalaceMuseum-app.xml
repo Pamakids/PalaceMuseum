@@ -3,7 +3,7 @@
 	<id>com.pamakids.SafeBook</id>
 	<filename>皇帝的一天</filename>
 	<name>皇帝的一天</name>
-	<versionNumber>1.0.0</versionNumber>
+	<versionNumber>0.9.7</versionNumber>
 	<initialWindow>
 		<content>PalaceMuseum.swf</content>
 		<autoOrients>true</autoOrients>
@@ -64,6 +64,6 @@
 	<extensions>
 		<extensionID>eu.alebianco.air.extensions.analytics.NativeGATracker</extensionID>
 		<extensionID>com.pamakids.UMeng</extensionID>
-	<extensionID>com.pamakids.UMSocial</extensionID>
-    </extensions>
+		<extensionID>com.pamakids.UMSocial</extensionID>
+	</extensions>
 </application>
