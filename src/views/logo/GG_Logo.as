@@ -4,6 +4,7 @@ package views.logo
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -22,13 +23,15 @@ package views.logo
 		private var w:Number=1024;
 		private var h:Number=768;
 
-		private var logo2:Sprite;
+		private var logo2:MovieClip;
 
 		private var stars:Sprite;
 
 		private var cb:Function;
 
 		private var starArr:Array=[];
+
+		private static var starNum:int=400;
 
 		public function GG_Logo(_cb:Function)
 		{
@@ -49,7 +52,7 @@ package views.logo
 			stars.y=h/2;
 			addChild(stars);
 
-			for (var i:int = 0; i < 200; i++) 
+			for (var i:int = 0; i < starNum; i++) 
 			{
 				var star:Star=new Star(new pot());
 				stars.addChild(star);
@@ -60,24 +63,35 @@ package views.logo
 				starArr.push(star);
 			}
 
-			logo2=new Sprite();
-			var logoImg:Bitmap=new logo();
-			logoImg.smoothing=true;
+			logo2=new LogoGG();
 			addChild(logo2);
-			logo2.addChild(logoImg);
-			logoImg.x=-logoImg.width>>1;
-			logoImg.y=-logoImg.height>>1;
+			logo2.x=1024/2;
+			logo2.y=768/2;
+			logo2.play();
+			logo2.addEventListener(Event.FRAME_CONSTRUCTED,function(e:Event):void{
+				if(logo2.currentFrame==logo2.totalFrames)
+					logo2.stop();
+			});
 
-			logo2.x=w>>1;
-			logo2.y=h>>1;
-//			logo2.alpha=0;
-			logo2.scaleX=logo2.scaleY=.8;
+			logo2.scaleX=logo2.scaleY=.6;
+
+//			logo2=new Sprite();
+//			var logoImg:Bitmap=new logo();
+//			logoImg.smoothing=true;
+//			addChild(logo2);
+//			logo2.addChild(logoImg);
+//			logoImg.x=-logoImg.width>>1;
+//			logoImg.y=-logoImg.height>>1;
+//
+//			logo2.x=w>>1;
+//			logo2.y=h>>1;
+//			logo2.scaleX=logo2.scaleY=.8;
 
 			addEventListener(Event.ENTER_FRAME,onEnterFrame);
 
-			TweenLite.to(msk,1.5,{alpha:0});
+			TweenLite.to(msk,1.5,{alpha:0,onComplete:end});
 //			TweenLite.to(logo2,2,{});
-			TweenLite.to(logo2,totaltime,{scaleX:1,scaleY:1,onComplete:end});
+//			TweenLite.to(logo2,totaltime,{scaleX:1,scaleY:1,});
 		}
 
 		private static var totaltime:Number=2.5;

@@ -5,6 +5,8 @@ package views.global.books.userCenter.win
 
 	import flash.geom.Point;
 
+	import controllers.MC;
+
 	import feathers.controls.Button;
 	import feathers.core.FeathersControl;
 
@@ -14,8 +16,10 @@ package views.global.books.userCenter.win
 	import starling.events.Event;
 
 	import views.components.DateChangeDevice;
+	import views.components.PalaceGuide;
 	import views.global.books.BooksManager;
 	import views.global.books.components.ItemForUserList;
+	import views.global.map.Map;
 
 	/**
 	 * 用户编辑窗口
@@ -76,15 +80,11 @@ package views.global.books.userCenter.win
 		{
 			button_close=new Button();
 			button_close.defaultSkin=BooksManager.getImage("button_close_small");
-			button_close.addEventListener(Event.TRIGGERED, closeWindow);
-			this.addChild(button_close);
 			button_close.x=432;
 
 			button_delete=new Button();
 			button_delete.defaultSkin=BooksManager.getImage("button_deleteUser_up");
 			button_delete.downSkin=BooksManager.getImage("button_deleteUser_down");
-			button_delete.addEventListener(Event.TRIGGERED, deleteUser);
-			this.addChild(button_delete);
 			button_delete.x=44;
 			button_delete.y=310;
 			if (isCreat || userIndex == SOService.instance.getLastUser() || userIndex == 0)
@@ -94,23 +94,46 @@ package views.global.books.userCenter.win
 			}
 
 			button_choose=new Button();
-			button_choose.defaultSkin=BooksManager.getImage("button_agreeChange_up");
-			button_choose.downSkin=BooksManager.getImage("button_agreeChange_down");
-			button_choose.addEventListener(Event.TRIGGERED, changeCrtUser);
-			this.addChild(button_choose);
+			if(userIndex == SOService.instance.getLastUser())
+			{
+				button_choose.defaultSkin=BooksManager.getImage("button_agreeChange_up_2");
+				button_choose.downSkin=BooksManager.getImage("button_agreeChange_down_2");
+			}
+			else
+			{
+				button_choose.defaultSkin=BooksManager.getImage("button_agreeChange_up");
+				button_choose.downSkin=BooksManager.getImage("button_agreeChange_down");
+			}
 			button_choose.x=260;
 			button_choose.y=310;
+
+			this.addChild(button_close);
+			this.addChild(button_delete);
+			this.addChild(button_choose);
+
+			button_close.addEventListener(Event.TRIGGERED, closeWindow);
+			button_delete.addEventListener(Event.TRIGGERED, deleteUser);
+			button_choose.addEventListener(Event.TRIGGERED, changeCrtUser);
 		}
 
 		private function changeCrtUser():void
 		{
+			hideGuide();
+
 			//重新获取生日数据
 			this.userdata.birthday=SOService.dateToString(this.dateView.getCrtDate());
 
-			SOService.instance.editUser(this.userIndex, this.userdata);
-			dispatchEvent(new Event(Event.CHANGE));
-
-//			closeWindow();
+			if(userIndex == SOService.instance.getLastUser())
+			{
+				SOService.instance.editUser(this.userIndex, this.userdata,false);
+				dispatchEvent(new Event("editUser"));
+				closeWindow();
+			}
+			else
+			{
+				SOService.instance.editUser(this.userIndex, this.userdata,true);
+				dispatchEvent(new Event(Event.CHANGE));
+			}
 		}
 
 		public var deleteHandler:Function;
@@ -183,6 +206,10 @@ package views.global.books.userCenter.win
 
 		override public function dispose():void
 		{
+			if(guideBG)
+			{
+				guideBG.removeFromParent(true);
+			}
 			if (iconList)
 			{
 				iconList.removeEventListener(Event.TRIGGERED, changeHeadIcon);
@@ -234,6 +261,17 @@ package views.global.books.userCenter.win
 				button_delete.alpha=1;
 				button_delete.touchable=true;
 			}
+
+			if(userIndex == SOService.instance.getLastUser())
+			{
+				button_choose.defaultSkin=BooksManager.getImage("button_agreeChange_up_2");
+				button_choose.downSkin=BooksManager.getImage("button_agreeChange_down_2");
+			}
+			else
+			{
+				button_choose.defaultSkin=BooksManager.getImage("button_agreeChange_up");
+				button_choose.downSkin=BooksManager.getImage("button_agreeChange_down");
+			}
 		}
 
 		private function creatUserInfo():void
@@ -248,10 +286,6 @@ package views.global.books.userCenter.win
 						birthday: SOService.dateToString(new Date())
 					};
 			}
-			else
-			{
-				isCreat=false;
-			}
 		}
 
 		public var closeWinHandler:Function;
@@ -262,5 +296,36 @@ package views.global.books.userCenter.win
 				iconList.visible=false;
 			closeWinHandler(this);
 		}
+
+		private var guideBG:Image;
+		public function showGuide():void
+		{
+			guideBG=PalaceGuide.getImage("other_0");
+			this.addChild(guideBG);
+			var point:Point = this.globalToLocal(new Point(0, 0));
+			guideBG.x = point.x;
+			guideBG.y = point.y;
+			guideBG.touchable=false;
+
+			button_close.touchable = false;
+		}
+
+		private function hideGuide():void
+		{
+			if(guideBG)
+			{
+				guideBG.removeFromParent(true);
+				guideBG = null;
+				button_close.touchable = true;
+				MC.instance.main.touchable=false;
+				MC.instance.addGuide(5, function():void{
+					BooksManager.closeCtrBook();
+					Map.loadMapAssets(Map.show,true);
+//					Map.show();
+				});
+			}
+		}
 	}
 }
+
+

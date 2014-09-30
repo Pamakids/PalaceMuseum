@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:68d583c23b64e54deb868e5173f72f35$ -->
+<!-- $TexturePacker:SmartUpdate:0061850602ed0d519e440a20fce90030$ -->
 <TextureAtlas imagePath="scene61.png">
     <SubTexture name="arrow" x="1354" y="501" width="289" height="320"/>
     <SubTexture name="art1" x="938" y="2" width="399" height="555"/>

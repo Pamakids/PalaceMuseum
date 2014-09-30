@@ -177,6 +177,8 @@ package views.module1
 		private function showNext2():void
 		{
 			showHint(400, 100, lionHint2, 1, king, 1, function():void {
+				birdDelay=100;
+				birdIndex=0;
 				touchReady=true;
 			}, true);
 		}
@@ -185,7 +187,6 @@ package views.module1
 		{
 			function removeGA():void {
 				TweenLite.to(ga, 2, {alpha: 0, onComplete: function():void {
-					birdIndex=0;
 					ga.removeFromParent(true);
 					MC.instance.main.removeMask();
 					moveScene();

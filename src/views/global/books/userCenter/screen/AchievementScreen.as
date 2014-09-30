@@ -40,7 +40,7 @@ package views.global.books.userCenter.screen
 			TweenLite.delayedCall(0.1, dispatchEventWith, [BookEvent.InitViewPlayed]);
 		}
 
-		private static var shareStr:String='我在 #皇帝的一天# 中获得了 一个成就。你是不是也想来扮演一天的小皇帝呢？那就跟小狮子一起在紫禁城的各个角落里转转，还能学到许多知识哟~@故宫博物院 @斑马骑士'
+		private static var shareStr:String='我在 #皇帝的一天# 中获得了 一个成就。你是不是也想来扮演一天的小皇帝呢？那就跟小狮子一起在紫禁城的各个角落里转转，还能学到许多知识哟~@故宫博物院 '
 		private static var path:String='achieve/';
 
 		override protected function initPages():void
@@ -66,12 +66,12 @@ package views.global.books.userCenter.screen
 				obj={id: arr[i][0], achidata: arr[i]};
 				tempdatas.push(obj);
 			}
-			
+
 			if(tempdatas[max-1].achidata[2] == 0)		//最后一个成就尚未达成
 			{
 				showAchieveAction = true;
 				tempdatas[max-1].achidata[2] == 1;
-				
+
 				for(i=0;i<max-1;i++)
 				{
 					if(tempdatas[i].achidata[2] == 0)	//有其他未达成的成就
@@ -82,7 +82,7 @@ package views.global.books.userCenter.screen
 					}
 				}
 			}
-			
+
 			//分页处理，每页显示9个数据
 			const pageNum:int=Math.ceil(tempdatas.length / maxNum);
 			for (i=0; i < pageNum; i++)
@@ -90,9 +90,9 @@ package views.global.books.userCenter.screen
 				datas.push(tempdatas.splice(0, maxNum));
 			}
 			pageCount=pageNum;
-			
+
 		}
-		
+
 		public static var showAchieveAction:Boolean = false;
 		private var page_0:TextField;
 		private var page_1:TextField;

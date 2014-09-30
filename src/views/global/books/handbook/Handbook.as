@@ -16,6 +16,7 @@ package views.global.books.handbook
 
 	import models.AchieveVO;
 	import models.FontVo;
+	import models.PosVO;
 	import models.SOService;
 
 	import sound.SoundAssets;
@@ -130,6 +131,8 @@ package views.global.books.handbook
 														selectedUpIcon:	BooksManager.getImage("map_down")
 													}
 													]);
+			if(PosVO.scale==1)
+				_tabBar.dataProvider.pop();
 			_tabBar.direction=TabBar.DIRECTION_HORIZONTAL;
 			_tabBar.gap=1;
 			_tabBar.x=204;
@@ -186,14 +189,15 @@ package views.global.books.handbook
 																	width: contentWidth, height: contentHeight,
 																	viewWidth: contentWidth, viewHeight: contentHeight
 																}));
-			_navigator.addScreen(MAP, new ScreenNavigatorItem(MapScreen,
-															  {
-																  initViewPlayed: onInitViewPlayed
-															  },
-															  {
-																  width: contentWidth, height: contentHeight,
-																  viewWidth: contentWidth, viewHeight: contentHeight
-															  }));
+			if(PosVO.scale>1)
+				_navigator.addScreen(MAP, new ScreenNavigatorItem(MapScreen,
+																  {
+																	  initViewPlayed: onInitViewPlayed
+																  },
+																  {
+																	  width: contentWidth, height: contentHeight,
+																	  viewWidth: contentWidth, viewHeight: contentHeight
+																  }));
 			_navigator.x=27;
 			_navigator.y=89;
 			this.addChild(_navigator);
@@ -477,7 +481,8 @@ package views.global.books.handbook
 					MC.instance.addGuide(5, function():void{
 						BooksManager.closeCtrBook();
 						PalaceGuide.disposeAll();
-						Map.show();
+						Map.loadMapAssets(Map.show,true);
+//						Map.show();
 					});
 				}
 			}

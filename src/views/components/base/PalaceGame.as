@@ -4,7 +4,6 @@ package views.components.base
 	import com.greensock.easing.Back;
 	import com.greensock.easing.Quad;
 	import com.pamakids.palace.utils.StringUtils;
-	import views.components.base.Container;
 
 	import flash.utils.getTimer;
 
@@ -22,6 +21,8 @@ package views.components.base
 	import starling.utils.AssetManager;
 
 	import views.components.ElasticButton;
+	import views.components.base.Container;
+	import views.components.share.ShareVO;
 
 	/**
 	 *
@@ -128,6 +129,17 @@ package views.components.base
 		}
 
 		protected var lastBGM:String;
+
+		protected function getShareContent(game:String,score:String):String
+		{
+			var s:String='我在 #皇帝的一天#'+game+'游戏中获得了'+score+'分。快来挑战我的成绩吧！@故宫博物院';
+			return s;
+		}
+
+		protected function get shareImg():String
+		{
+			return ShareVO.getIMG(gameName);
+		}
 
 		override protected function init():void
 		{

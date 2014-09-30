@@ -29,9 +29,12 @@ package views.components.base
 
 	import starling.display.Image;
 	import starling.display.MovieClip;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.Touch;
 	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
@@ -91,7 +94,7 @@ package views.components.base
 //													   bg=Image.fromBitmap(b);
 //												   b=null;
 //											   });
-				timer=new Timer(1000,10);
+				timer=new Timer(birdDelay,10);
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE,onComplete);
 				addEventListener("pauseTimer",pauseTimer);
 				addEventListener("resumeTimer",resumeTimer);
@@ -107,6 +110,9 @@ package views.components.base
 //				});
 			}
 		}
+
+		protected var birdDelay:Number=1000;
+		protected var pause:Boolean=true;
 
 		private function resumeTimer(e:Event):void
 		{
@@ -164,6 +170,7 @@ package views.components.base
 		private function initBird(img:Image, bg:Image):void
 		{
 			var bird:PalaceBird=new PalaceBird();
+			bird.pause=pause;
 			bird.crtIndex=birdIndex;
 			bird.bg=bg;
 			bird.img=img;
@@ -328,12 +335,6 @@ package views.components.base
 			return StringUtils.getClassName(this);
 		}
 
-		public function getCapture():Texture{
-			var render:RenderTexture=new RenderTexture(1024,768);
-			render.draw(this);
-			return render;
-		}
-
 		protected function showAchievement(_achieveIndex:int, _callback:Function=null):void
 		{
 			if (SOService.instance.getSO(_achieveIndex.toString() + "_achieve"))
@@ -346,6 +347,10 @@ package views.components.base
 			UserBehaviorAnalysis.trackEvent("collect", "achievement", "", _achieveIndex);
 			SoundAssets.playSFX("getachieve");
 			SOService.instance.setSO(_achieveIndex.toString() + "_achieve", true);
+
+			isFirstAchieve=!SOService.instance.getSO('isFirstAchieve');
+			SOService.instance.setSO('isFirstAchieve', true);
+
 //			var txt:String="xxx";
 			var txt:String="恭喜您获得成就: " + AchieveVO.achieveList[_achieveIndex][0];
 			addMask(0);
@@ -373,8 +378,18 @@ package views.components.base
 				tfSP.y=-170;
 				addChildAt(tfSP, numChildren - 1);
 			}
-			TweenLite.to(tfSP, .5, {y: 0});
-			TweenLite.delayedCall(2.5, resetTFSP, [_callback]);
+
+			if(isFirstAchieve)
+			{
+				TweenLite.to(tfSP, .5, {y: 0,onComplete:function():void{
+					firstAchievementAction(function():void{
+						resetTFSP(_callback);
+					});
+				}});
+			}else{
+				TweenLite.to(tfSP, .5, {y: 0});
+				TweenLite.delayedCall(2.5, resetTFSP, [_callback]);
+			}
 		}
 
 		private function resetTFSP(cb:Function):void
@@ -386,6 +401,44 @@ package views.components.base
 					cb();
 			}})
 		}
+
+		private function firstAchievementAction(cb:Function):void
+		{
+			msk2=new starling.display.Quad(1024,768,0);
+			msk2.alpha=.6;
+			addChild(msk2);
+			firstCB=cb;
+			TopBar.instance.visible=true;
+			firstHint=getImage('firstAchieve');
+			firstHint.x=79;
+			firstHint.y=82;
+			addChild(firstHint);
+			stage.addEventListener(TouchEvent.TOUCH,onClearTouch);
+		}
+
+		private var firstCB:Function;
+		private var firstHint:Image;
+		private var msk2:starling.display.Quad;
+
+		private function onClearTouch(e:TouchEvent):void
+		{
+			var tc:Touch=e.getTouch(stage,TouchPhase.ENDED);
+			if(tc)
+			{
+				removeEventListener(TouchEvent.TOUCH,onClearTouch);
+				if(msk2)
+					msk2.removeFromParent(true);
+				msk2=null;
+				if(firstHint)
+					firstHint.removeFromParent(true);
+				firstHint=null;
+				if(firstCB!=null)
+					firstCB();
+				firstCB=null;
+			}
+		}
+
+		private var isFirstAchieve:Boolean;
 
 		protected function showCard(_cardName:String, callback:Function=null):void
 		{
@@ -399,6 +452,9 @@ package views.components.base
 			UserBehaviorAnalysis.trackEvent("collect", "card", "", int(_cardName));
 			SoundAssets.playSFX("getcard");
 			SOService.instance.setSO("collection_card_" + _cardName + "collected", true);
+
+			var firstCard:Boolean=!SOService.instance.getSO('firstCard');
+			SOService.instance.setSO('firstCard',true);
 
 			var cardShow:Sprite=new Sprite();
 			cardShow.x=512;
@@ -417,24 +473,57 @@ package views.components.base
 			haloSP.addChild(halo);
 
 			halo.rotation=0;
-			TweenLite.to(halo, 2.5, {rotation: Math.PI, ease: Quad.easeOut,
-							 onComplete: function():void
-							 {
-								 halo.visible=false;
-								 TweenLite.delayedCall(.5, function():void
-								 {
-									 dispatchEvent(new Event("resumeTimer",true));
-									 PopUpManager.removePopUp(cardShow);
-									 cardShow.dispose()
-								 });
-							 }});
+
+			function clearShow():void
+			{
+				halo.visible=false;
+				TweenLite.delayedCall(.5, function():void
+				{
+					dispatchEvent(new Event("resumeTimer",true));
+					PopUpManager.removePopUp(cardShow);
+					cardShow.dispose()
+				});
+			}
+
+			TweenLite.to(halo, 2.5, {rotation: Math.PI, ease: com.greensock.easing.Quad.easeOut,
+							 onComplete: firstCard?addHint:clearShow});
 
 			var card:CollectionCard=new CollectionCard(callback);
 			card.addChild(getImage("collection_card_" + _cardName));
 			card.pivotX=card.width >> 1;
 			card.pivotY=card.height >> 1;
-			card.show();
+			card.show(!firstCard);
 			cardShow.addChild(card);
+
+			var hint:Image;
+			function addHint():void
+			{
+				var rimg:Image=getImage("ribbon");
+				cardShow.addChild(rimg);
+				rimg.x=-45-512;
+				rimg.y=38-768/2;
+				rimg.addEventListener(TouchEvent.TOUCH,onImgTouch);
+
+				hint=getImage("firstCard");
+				cardShow.addChild(hint);
+				hint.x=79-512;
+				hint.y=82-768/2;
+			}
+
+			function onImgTouch(e:TouchEvent):void
+			{
+				var img:Image=e.currentTarget as Image;
+				var tc:Touch=e.getTouch(img,TouchPhase.ENDED);
+				if(tc)
+				{
+					img.removeFromParent(true);
+					if(hint)
+						hint.removeFromParent(true);
+					card.hide();
+					clearShow();
+					TweenLite.delayedCall(.5,TopBar.instance.showBookAndAvatar);
+				}
+			}
 
 		}
 	}

@@ -94,7 +94,8 @@ package views.module2
 				addLabel(2);
 
 			addCraw(new Point(174, 578));
-			addCraw(new Point(590, 632));
+			if(PosVO.scale!=1)
+				addCraw(new Point(590, 632));
 			addCraw(new Point(908, 461));
 
 			addMask(.6);
@@ -181,7 +182,7 @@ package views.module2
 
 		private var chat1:String="这些新鲜玩意儿是什么？";
 		private var chat2:String="都是洋人老师带来的西洋仪器。"
-		private var chat3:String="西方传教士东来，皇帝也要与时俱进啊，这些仪器你至少要学会一样！"
+		private var chat3:String="西方传教士东来，皇帝也要与时俱进啊，这些仪器你至少要学会一种！"
 
 		private var nameArr:Array=["thermo", "tele", "prism"];
 		private var labelPosArr:Array=[new Point(198, 552),
@@ -228,7 +229,7 @@ package views.module2
 			if (index == 4)
 			{
 				SoundAssets.playSFX("popup");
-				book=new ItemIntro(2, new Rectangle(82, 452, 260, 90));
+				book=new ItemIntro(4, new Rectangle(82, 452, 260, 90));
 				close=new ElasticButton(getImage("button_close"), getImage("button_close_down"));
 				book.addIntro(getImage("intro-bg"), getImage("intro-waterpot"), close);
 				book.addEventListener(ItemIntro.CLOSE, onClose);

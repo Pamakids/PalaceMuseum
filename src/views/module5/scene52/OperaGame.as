@@ -33,6 +33,7 @@ package views.module5.scene52
 	import views.components.ElasticButton;
 	import views.components.LionMC;
 	import views.components.base.PalaceGame;
+	import views.components.share.ShareView;
 
 	public class OperaGame extends PalaceGame
 	{
@@ -328,7 +329,7 @@ package views.module5.scene52
 				infoHolder.addChild(lifeIcon);
 			}
 
-			scoreTF=new TextField(100, 40, "");
+			scoreTF=new TextField(100, 40, "",FontVo.PALACE_FONT);
 			scoreTF.fontSize=24;
 			scoreTF.color=0xb83d00;
 			infoHolder.addChild(scoreTF);
@@ -626,12 +627,14 @@ package views.module5.scene52
 				t1.x=332;
 				t1.y=283;
 				endHolder.addChild(t1);
+				t1.fontName=FontVo.PALACE_FONT;
 				var t2:TextField=new TextField(200, 40, "最高：", FontVo.PALACE_FONT, 26, 0xb83d00);
 				t2.vAlign="top";
 				t2.hAlign="left";
 				t2.x=362;
 				t2.y=370;
 				endHolder.addChild(t2);
+				t2.fontName=FontVo.PALACE_FONT;
 
 				var scoreTXT:String;
 				var recordTXT:String;
@@ -650,7 +653,7 @@ package views.module5.scene52
 				}
 
 				TweenLite.delayedCall(1, function():void {
-					var scoreTF:TextField=new TextField(300, 100, scoreTXT);
+					var scoreTF:TextField=new TextField(300, 100, scoreTXT,FontVo.PALACE_FONT);
 					scoreTF.fontSize=48;
 					scoreTF.color=0xb83d00;
 					scoreTF.x=500 - 40;
@@ -658,7 +661,7 @@ package views.module5.scene52
 					endHolder.addChild(scoreTF);
 				});
 
-				var recordTF:TextField=new TextField(100, 40, recordTXT);
+				var recordTF:TextField=new TextField(100, 40, recordTXT,FontVo.PALACE_FONT);
 				recordTF.fontSize=24;
 				recordTF.color=0xb83d00;
 				recordTF.x=520;
@@ -703,10 +706,14 @@ package views.module5.scene52
 			}
 
 			function openCallback():void {
-				addStars(life, endHolder);
+				if(gamelevel>0)
+					addStars(life, endHolder);
 				rsBtn.addEventListener(ElasticButton.CLICK, restartGame);
 				if (isRecord)
 					showRecord();
+
+				if(isWin)
+					ShareView.instance.show('分享',getShareContent('粉墨登场',scoreTXT),shareImg);
 			}
 			if (fromCenter)
 			{
@@ -722,6 +729,7 @@ package views.module5.scene52
 
 		private function onNextShow(e:Event):void
 		{
+			ShareView.instance.hide();
 			var e1:OperaSwitchEvent=new OperaSwitchEvent(OperaSwitchEvent.CLOSE, null, nextGame);
 			onOperaSwitch(e1);
 		}
@@ -760,6 +768,7 @@ package views.module5.scene52
 
 		override public function dispose():void
 		{
+			ShareView.instance.hide();
 			SoundAssets.playBGM("main");
 			super.dispose();
 		}

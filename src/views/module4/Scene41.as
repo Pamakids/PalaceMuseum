@@ -89,10 +89,10 @@ package views.module4
 		}
 
 		private var chatP:Prompt;
-		private var chat1:String="御门听政也叫“上早朝”，就在这儿\n举行。";
+		private var chat1:String="御门听政也叫“上早朝”，就在乾清门前举行。";
 		private var chat2:String="皇帝为什么在室外办公呢？"
 		private var chat3:String="这是皇帝在向天地彰显他的公正和勤勉！"
-		private var chat4:String="对于皇帝来说御门听政是很严肃的工作，你要熟悉整个过程，绝对不能马虎。" //task
+		private var chat4:String="对于皇帝来说，御门听政是很严肃的工作，你要熟悉整个过程，绝对不能马虎。" //task
 
 		private function getReady():void
 		{

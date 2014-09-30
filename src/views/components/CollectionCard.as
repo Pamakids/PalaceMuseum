@@ -18,7 +18,7 @@ package views.components
 			callback=_callback;
 		}
 
-		public function show():void
+		public function show(autoHide:Boolean):void
 		{
 			eff=new MovieClip(MC.assetManager.getTextures("cardEff"), 24);
 			Starling.juggler.add(eff);
@@ -32,7 +32,8 @@ package views.components
 			this.scaleX=this.scaleY=.1;
 			TweenLite.to(this, .5, {scaleX: 1, scaleY: 1,
 							 onComplete: function():void {
-								 TweenLite.delayedCall(2, hide);
+								 if(autoHide)
+									 TweenLite.delayedCall(2, hide);
 							 }});
 		}
 

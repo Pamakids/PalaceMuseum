@@ -158,7 +158,7 @@ package views.global.books.userCenter.screen
 		private var move:Boolean=false;
 
 		private static var path:String='';
-		private static var shareStr:String='我在 #皇帝的一天# 中获得了 一个卡片。你是不是也想来扮演一天的小皇帝呢？那就跟小狮子一起在紫禁城的各个角落里转转，还能学到许多知识哟~@故宫博物院 @斑马骑士'
+		private static var shareStr:String='我在 #皇帝的一天# 中获得了 一个卡片。你是不是也想来扮演一天的小皇帝呢？那就跟小狮子一起在紫禁城的各个角落里转转，还能学到许多知识哟~@故宫博物院 '
 
 		private function onTouchPop(e:TouchEvent):void
 		{
@@ -205,7 +205,7 @@ package views.global.books.userCenter.screen
 			source=[];
 			for (var j:int = 0; j < tmpArr.length; j++) 
 			{
-				if(j!=4)
+				if(j!=7)
 					source.push(tmpArr[j]);
 			}
 
