@@ -16,7 +16,7 @@ package views.components.share
 	{
 		public function ShareView()
 		{
-			UMSocial.instance.init(ShareVO.SINA_APPKEY,ShareVO.WEIXIN_APPKEY);
+//			UMSocial.instance.init(ShareVO.SINA_APPKEY,ShareVO.WEIXIN_APPKEY);
 			for (var i:int = 0; i < typeArr.length; i++) 
 			{
 				var btnname:String=typeArr[i]
@@ -204,7 +204,7 @@ package views.components.share
 				content='';
 				title='';
 			}
-			UMSocial.instance.share(id,content,img,title,type);
+//			UMSocial.instance.share(id,content,img,title,type);
 		}
 
 		private var checkArr:Vector.<Boolean>=new Vector.<Boolean>(2);

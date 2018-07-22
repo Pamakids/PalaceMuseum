@@ -23,7 +23,8 @@ package views.logo
 		private var w:Number=1024;
 		private var h:Number=768;
 
-		private var logo2:MovieClip;
+//		private var logo2:MovieClip;
+		private var logo2:Sprite;
 
 		private var stars:Sprite;
 
@@ -63,29 +64,29 @@ package views.logo
 				starArr.push(star);
 			}
 
-			logo2=new LogoGG();
-			addChild(logo2);
-			logo2.x=1024/2;
-			logo2.y=768/2;
-			logo2.play();
-			logo2.addEventListener(Event.FRAME_CONSTRUCTED,function(e:Event):void{
-				if(logo2.currentFrame==logo2.totalFrames)
-					logo2.stop();
-			});
-
-			logo2.scaleX=logo2.scaleY=.6;
-
-//			logo2=new Sprite();
-//			var logoImg:Bitmap=new logo();
-//			logoImg.smoothing=true;
+//			logo2=new LogoGG();
 //			addChild(logo2);
-//			logo2.addChild(logoImg);
-//			logoImg.x=-logoImg.width>>1;
-//			logoImg.y=-logoImg.height>>1;
+//			logo2.x=1024/2;
+//			logo2.y=768/2;
+//			logo2.play();
+//			logo2.addEventListener(Event.FRAME_CONSTRUCTED,function(e:Event):void{
+//				if(logo2.currentFrame==logo2.totalFrames)
+//					logo2.stop();
+//			});
 //
-//			logo2.x=w>>1;
-//			logo2.y=h>>1;
-//			logo2.scaleX=logo2.scaleY=.8;
+//			logo2.scaleX=logo2.scaleY=.6;
+
+			logo2=new Sprite();
+			var logoImg:Bitmap=new logo();
+			logoImg.smoothing=true;
+			addChild(logo2);
+			logo2.addChild(logoImg);
+			logoImg.x=-logoImg.width>>1;
+			logoImg.y=-logoImg.height>>1;
+
+			logo2.x=w>>1;
+			logo2.y=h>>1;
+			logo2.scaleX=logo2.scaleY=.8;
 
 			addEventListener(Event.ENTER_FRAME,onEnterFrame);
 

@@ -4,7 +4,7 @@ package controllers
 	{
 		public function ShareService()
 		{
-			UMSocial.instance.init();
+//			UMSocial.instance.init();
 		}
 
 		private static var _instance:ShareService;
@@ -18,7 +18,7 @@ package controllers
 
 		public function share():void
 		{
-			UMSocial.instance.share('test','testStr');
+//			UMSocial.instance.share('test','testStr');
 		}
 	}
 }

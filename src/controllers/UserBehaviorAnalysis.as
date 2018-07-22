@@ -2,8 +2,8 @@ package controllers
 {
 	import flash.system.Capabilities;
 
-	import eu.alebianco.air.extensions.analytics.Analytics;
-	import eu.alebianco.air.extensions.analytics.api.ITracker;
+//	import eu.alebianco.air.extensions.analytics.Analytics;
+//	import eu.alebianco.air.extensions.analytics.api.ITracker;
 
 
 	/**
@@ -23,7 +23,7 @@ package controllers
 		 *
 		 * @default
 		 */
-		public static var tracker:ITracker;
+		public static var tracker:Object;
 		/**
 		 *
 		 * @default
@@ -38,12 +38,11 @@ package controllers
 		{
 			if (Capabilities.os.indexOf("Windows") >= 0)
 				return;
-//			trace("initAnalyst")
-			UMeng.instance.init("52897e3b56240b9bf21d435e", "Appstore", Capabilities.isDebugger);
-			UID=UMeng.instance.getUDID();
-			var analytics:Analytics=Analytics.getInstance();
-			tracker=analytics.getTracker(GA_ID);
-			trackEvent("login", "user", UID);
+//			UMeng.instance.init("52897e3b56240b9bf21d435e", "Appstore", Capabilities.isDebugger);
+//			UID=UMeng.instance.getUDID();
+//			var analytics:Analytics=Analytics.getInstance();
+//			tracker=analytics.getTracker(GA_ID);
+//			trackEvent("login", "user", UID);
 		}
 
 		/**
